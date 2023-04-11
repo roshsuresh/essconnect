@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:essconnect/Domain/Staff/NoticeBoardListModel.dart';
 import 'package:essconnect/Domain/Staff/NoticeboardSendModel.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:http/http.dart' as http;
@@ -139,7 +140,7 @@ class StaffNoticeboardSendProviders with ChangeNotifier {
     var request = http.MultipartRequest(
         'POST', Uri.parse('${UIGuide.baseURL}/files/single/School'));
     request.fields.addAll({'': ''});
-    request.files.add(await http.MultipartFile.fromPath('', '$path'));
+    request.files.add(await http.MultipartFile.fromPath('', path));
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
@@ -350,6 +351,112 @@ class StaffNoticeboardSendProviders with ChangeNotifier {
       }
     } catch (e) {
       print(e);
+    }
+  }
+
+  List<Results> noticeList = [];
+  int page = 1;
+  int? currentPage;
+  int? pageSize;
+  int? count;
+
+  bool _loadList = false;
+  bool get loadList => _loadList;
+  setLoadList(bool value) {
+    _loadList = value;
+    notifyListeners();
+  }
+
+  noticeBoardSendList() async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    setLoadList(true);
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+    };
+    var request = http.Request(
+        'GET',
+        Uri.parse(
+            '${UIGuide.baseURL}/notice-board/notice-board-list?page=$page&'));
+    print('${UIGuide.baseURL}/notice-board/notice-board-list?page=$page&');
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+    setLoadList(true);
+    if (response.statusCode == 200) {
+      setLoadList(true);
+      Map<String, dynamic> data =
+          jsonDecode(await response.stream.bytesToString());
+
+      //   print(data);
+
+      List<Results> templist = List<Results>.from(
+          data["noticeBoardList"].map((x) => Results.fromJson(x)));
+      noticeList.addAll(templist);
+
+      // page++;
+
+      //Pagination pagee = Pagination.fromJson(data['pagination']);
+      setLoadList(false);
+      notifyListeners();
+    } else {
+      setLoadList(false);
+      print('Error in DivisionNotice stf');
+    }
+    return true;
+  }
+
+  Future noticeDeleteStaff(
+      BuildContext context, String eventID, int indexx) async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+    };
+    var request = http.Request('DELETE',
+        Uri.parse('${UIGuide.baseURL}/notice-board/delete-event/$eventID'));
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 204) {
+      noticeList.removeAt(indexx);
+
+      print(await response.stream.bytesToString());
+      print('correct');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          elevation: 10,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+          ),
+          duration: Duration(seconds: 1),
+          margin: EdgeInsets.only(bottom: 80, left: 30, right: 30),
+          behavior: SnackBarBehavior.floating,
+          content: Text(
+            'Deleted Successfully',
+            textAlign: TextAlign.center,
+          ),
+        ),
+      );
+      notifyListeners();
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        elevation: 10,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+        ),
+        duration: Duration(seconds: 1),
+        margin: EdgeInsets.only(bottom: 80, left: 30, right: 30),
+        behavior: SnackBarBehavior.floating,
+        content: Text(
+          'Something Went Wrong....',
+          textAlign: TextAlign.center,
+        ),
+      ));
+      print('Error in Notice Delete stf');
     }
   }
 }

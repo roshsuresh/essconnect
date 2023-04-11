@@ -60,9 +60,6 @@ class MarkentryReportByAdmin extends StatelessWidget {
                                         print(snapshot
                                             .markReportCourseList.length);
                                         return ListTile(
-                                          selected: snapshot.isCourseSelected(
-                                              snapshot
-                                                  .markReportCourseList[index]),
                                           onTap: () async {
                                             courseController.text = snapshot
                                                     .markReportCourseList[index]
@@ -75,9 +72,6 @@ class MarkentryReportByAdmin extends StatelessWidget {
                                             courseId = courseController.text
                                                 .toString();
 
-                                            snapshot.addSelectedCourse(snapshot
-                                                .markReportCourseList[index]);
-                                            print(courseId);
                                             await Provider.of<
                                                         MarkEntryReportProvider_stf>(
                                                     context,
@@ -170,12 +164,6 @@ class MarkentryReportByAdmin extends StatelessWidget {
                                             .markReportDivisions.length);
                                         //    value.removeCourseAll();
                                         return ListTile(
-                                          selectedTileColor:
-                                              Colors.blue.shade100,
-                                          selectedColor: UIGuide.PRIMARY2,
-                                          selected: snapshot.isDivisionSelected(
-                                              snapshot
-                                                  .markReportDivisions[index]),
                                           onTap: () async {
                                             print(snapshot
                                                 .markReportDivisions.length);
@@ -190,9 +178,6 @@ class MarkentryReportByAdmin extends StatelessWidget {
                                             courseId = courseController.text
                                                 .toString();
 
-                                            snapshot.addSelectedDivision(
-                                                snapshot.markReportDivisions[
-                                                    index]);
                                             print(courseId);
 
                                             Navigator.of(context).pop();
@@ -280,9 +265,6 @@ class MarkentryReportByAdmin extends StatelessWidget {
                                           selectedTileColor:
                                               Colors.blue.shade100,
                                           selectedColor: UIGuide.PRIMARY2,
-                                          selected: snapshot.isPartSelected(
-                                              snapshot
-                                                  .markReportPartList[index]),
                                           onTap: () async {
                                             print(snapshot
                                                 .markReportPartList.length);
@@ -294,10 +276,6 @@ class MarkentryReportByAdmin extends StatelessWidget {
                                                     .markReportPartList[index]
                                                     .text ??
                                                 '--';
-
-                                            snapshot.addSelectedPart(snapshot
-                                                .markReportPartList[index]);
-                                            print(courseId);
 
                                             Navigator.of(context).pop();
                                           },
@@ -378,12 +356,6 @@ class MarkentryReportByAdmin extends StatelessWidget {
                                         print(snapshot
                                             .markReportDivisions.length);
                                         return ListTile(
-                                          selectedTileColor:
-                                              Colors.blue.shade100,
-                                          selectedColor: UIGuide.PRIMARY2,
-                                          selected: snapshot.isDivisionSelected(
-                                              snapshot
-                                                  .markReportDivisions[index]),
                                           onTap: () async {
                                             print(snapshot
                                                 .markReportDivisions.length);
@@ -398,9 +370,6 @@ class MarkentryReportByAdmin extends StatelessWidget {
                                             courseId = courseController.text
                                                 .toString();
 
-                                            snapshot.addSelectedDivision(
-                                                snapshot.markReportDivisions[
-                                                    index]);
                                             Navigator.of(context).pop();
                                           },
                                           title: Text(

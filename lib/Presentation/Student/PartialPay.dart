@@ -31,6 +31,8 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
   final _busController = TextEditingController();
   final _feeController = TextEditingController();
 
+  // List bus = [];
+
   @override
   void initState() {
     super.initState();
@@ -40,30 +42,20 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
       p.feeList.clear();
       p.feesData();
       totalPartial = 0;
-      totalBusPartial = 0;
       totallPartial = 0;
-      totalFeePartial = 0;
       totalFeeCollect = 0;
+      partialBUS = 0;
+      partialFee = 0;
       p.transactionList.clear();
       p.gatewayName();
     });
   }
 
   double totalPartial = 0;
-  double totalBusPartial = 0;
   double totallPartial = 0;
-  double totalFeePartial = 0;
   double totalFeeCollect = 0;
-
-  feeDate() {
-    totalFeePartial = totalFeePartial + totallPartial;
-    print("totalFeePartial:  $totalFeePartial");
-  }
-
-  busFee() {
-    totalBusPartial = (totalBusPartial + totalPartial);
-    print('totalbusfee:   $totalBusPartial');
-  }
+  double partialBUS = 0;
+  double partialFee = 0;
 
   totalFeeCollection() {
     if (_feeController.text.isEmpty) {
@@ -101,7 +93,7 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
                     children: [
                       kheight20,
                       value.feeList.isEmpty
-                          ? SizedBox(
+                          ? const SizedBox(
                               height: 0,
                               width: 0,
                             )
@@ -145,10 +137,24 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
                                                   itemBuilder:
                                                       (BuildContext context,
                                                           int index) {
-                                                    totallPartial = valuee
-                                                        .feeList[index].netDue!;
+                                                    // totallPartial = valuee
+                                                    //     .feeList[index].netDue!;
 
-                                                    feeDate();
+                                                    partialFee = 0;
+                                                    for (int i = 0;
+                                                        i <
+                                                            valuee
+                                                                .feeList.length;
+                                                        i++) {
+                                                      totallPartial = valuee
+                                                          .feeList[i].netDue!;
+                                                      partialFee +=
+                                                          totallPartial;
+                                                    }
+                                                    print(
+                                                        "totalFeePartial----$partialFee");
+
+                                                    // feeDate();
 
                                                     return ListTile(
                                                       trailing: Text(
@@ -222,7 +228,7 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
                                             } else if (double.parse(
                                                         _feeController.text) -
                                                     1 >=
-                                                totalFeePartial) {
+                                                partialFee) {
                                               _feeController.clear();
                                             }
                                           },
@@ -275,9 +281,19 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
                                               itemBuilder:
                                                   (BuildContext context,
                                                       int index) {
-                                                totalPartial = val
-                                                    .busFeeList[index].netDue!;
-                                                busFee();
+                                                // totalPartial = val
+                                                //     .busFeeList[index].netDue!;
+                                                partialBUS = 0;
+                                                for (int i = 0;
+                                                    i < buss.busFeeList.length;
+                                                    i++) {
+                                                  totalPartial =
+                                                      val.busFeeList[i].netDue!;
+                                                  partialBUS += totalPartial;
+                                                }
+                                                print(
+                                                    "totalBus----$partialBUS");
+
                                                 return ListTile(
                                                   trailing: Text(
                                                     val.busFeeList[index].netDue
@@ -345,7 +361,7 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
                                             } else if (double.parse(
                                                         _busController.text) -
                                                     1 >=
-                                                totalBusPartial) {
+                                                partialBUS) {
                                               _busController.clear();
                                             }
                                           },

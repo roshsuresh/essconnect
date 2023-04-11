@@ -22,7 +22,6 @@ class StaffTimetableProvider with ChangeNotifier {
 
   Future getTimeTable() async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
-
     print(_pref.getString('subDomain'));
     setLoading(true);
     var headers = {
@@ -33,10 +32,8 @@ class StaffTimetableProvider with ChangeNotifier {
     var response = await http.get(
         Uri.parse("${UIGuide.baseURL}/mobileapp/staff/class-timetable-preview"),
         headers: headers);
-
     try {
       if (response.statusCode == 200) {
-        print("corect");
         final data = json.decode(response.body);
         staff_timetableRespo = data['timeTable'];
         StaffTimeTable tabl = StaffTimeTable.fromJson(data['timeTable']);
@@ -46,7 +43,6 @@ class StaffTimetableProvider with ChangeNotifier {
         id = tabl.id;
         print(name);
         setLoading(false);
-
         notifyListeners();
       } else {
         setLoading(false);

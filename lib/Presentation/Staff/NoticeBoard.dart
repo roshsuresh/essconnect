@@ -1,12 +1,12 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:essconnect/Application/Staff_Providers/NoticeboardSend.dart';
+import 'package:essconnect/Presentation/Staff/NoticeBoardList.dart';
 import 'package:essconnect/Presentation/Staff/ReceivedNoticeBoard.dart';
 import 'package:essconnect/utils/spinkit.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
-
 import 'package:provider/provider.dart';
 import '../../Constants.dart';
 import '../../utils/constants.dart';
@@ -17,7 +17,7 @@ class StaffNoticeBoard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-        length: 2,
+        length: 3,
         child: Scaffold(
             appBar: AppBar(
               title: const Text('Notice Board'),
@@ -38,6 +38,9 @@ class StaffNoticeBoard extends StatelessWidget {
                   Tab(text: "Received"),
                   Tab(
                     text: "Send",
+                  ),
+                  Tab(
+                    text: "List",
                   ),
                 ],
               ),
@@ -76,6 +79,7 @@ class StaffNoticeBoard extends StatelessWidget {
                   }
                 },
               ),
+              const NoticeBoardListstaff()
             ])));
   }
 }
@@ -104,12 +108,10 @@ class _StaffNoticeBoard_sentState extends State<StaffNoticeBoard_sent> {
 
   final coursevalueController = TextEditingController();
   final coursevalueController1 = TextEditingController();
-
   final categoryvalueController = TextEditingController();
   final categoryvalueController1 = TextEditingController();
   final divisionvalueController = TextEditingController();
   final divisionvalueController1 = TextEditingController();
-
   final titleController = TextEditingController();
   final mattercontroller = TextEditingController();
 
@@ -128,11 +130,10 @@ class _StaffNoticeBoard_sentState extends State<StaffNoticeBoard_sent> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Spacer(),
-            Container(
+            SizedBox(
               height: 41,
               width: size.width * 0.44,
               child: MaterialButton(
-                  //  minWidth: size.width - 250,
                   color: Colors.white70,
                   child: Text('Date: ${datee.toString()}'),
                   onPressed: () async {
@@ -543,7 +544,6 @@ class _StaffNoticeBoard_sentState extends State<StaffNoticeBoard_sent> {
               width: MediaQuery.of(context).size.width * 0.49,
               child: Consumer<StaffNoticeboardSendProviders>(
                   builder: (context, snapshot, child) {
-                //   attachmentid = snapshot.id ?? '';
                 return InkWell(
                   onTap: () {
                     showDialog(
@@ -677,7 +677,6 @@ class _StaffNoticeBoard_sentState extends State<StaffNoticeBoard_sent> {
                           divisionvalueController.text,
                           categoryvalueController.text,
                           attachmentid!);
-
                 }
               }),
               child: const Text(
@@ -692,6 +691,3 @@ class _StaffNoticeBoard_sentState extends State<StaffNoticeBoard_sent> {
     );
   }
 }
-
-//Notification Send Page TExt & Matter
-

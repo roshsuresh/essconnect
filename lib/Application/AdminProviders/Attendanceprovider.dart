@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
-
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:essconnect/Presentation/Admin/AttendanceTaken/SmsPage.dart';
 
@@ -131,7 +129,6 @@ class AttendanceReportProvider with ChangeNotifier {
       providerName = prov.providerName;
       print("provid,$providerName".toString());
 
-      print('correct');
       setLoading(false);
       notifyListeners();
     } else {
@@ -182,7 +179,6 @@ class AttendanceReportProvider with ChangeNotifier {
       });
       isselectAll = true;
     }
-
     notifyListeners();
   }
 
@@ -207,7 +203,6 @@ class AttendanceReportProvider with ChangeNotifier {
         ),
       ));
     } else {
-      print('selected.....');
       print(
           attendanceList.where((element) => element.selected == true).toList());
       Navigator.push(

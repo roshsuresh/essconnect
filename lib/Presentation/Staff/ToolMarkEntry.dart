@@ -1,12 +1,11 @@
+import 'dart:developer';
+
 import 'package:essconnect/Application/Staff_Providers/ToolMarkProvider.dart';
 import 'package:essconnect/Constants.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:essconnect/utils/spinkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
@@ -97,7 +96,7 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                     ),
                     const Center(
                       child: Text(
-                        'Mark Entry Locked',
+                        'Tool Mark Entry Locked',
                         style: TextStyle(fontSize: 25),
                       ),
                     ),
@@ -1217,8 +1216,8 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                                                       .toolList!
                                                       .length,
                                                   itemBuilder: (context, ind) {
-                                                    // final controller =
-                                                    //     TextEditingController();
+                                                    final controller =
+                                                        TextEditingController();
                                                     // List<TextEditingController>
                                                     //     controller = [];
                                                     // for (int i = 0;
@@ -1228,10 +1227,29 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                                                     //     i++) {
                                                     _controllers.add(
                                                         TextEditingController());
-                                                    _controllers[ind]
+                                                    // controller.text.isEmpty
+                                                    //     ? controller
+                                                    //         .text = value
+                                                    //                 .studentMEList[
+                                                    //                     index]
+                                                    //                 .toolList![
+                                                    //                     ind]
+                                                    //                 .teMark ==
+                                                    //             null
+                                                    //         ? controller.text
+                                                    //         : value
+                                                    //             .studentMEList[
+                                                    //                 index]
+                                                    //             .toolList![ind]
+                                                    //             .teMark
+                                                    //             .toString()
+                                                    //     : controller.text;
+                                                    //}
+
+                                                    _controllers[index]
                                                             .text
                                                             .isEmpty
-                                                        ? _controllers[ind]
+                                                        ? _controllers[index]
                                                             .text = value
                                                                     .studentMEList[
                                                                         index]
@@ -1239,7 +1257,8 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                                                                         ind]
                                                                     .teMark ==
                                                                 null
-                                                            ? _controllers[ind]
+                                                            ? _controllers[
+                                                                    index]
                                                                 .text
                                                             : value
                                                                 .studentMEList[
@@ -1247,11 +1266,10 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                                                                 .toolList![ind]
                                                                 .teMark
                                                                 .toString()
-                                                        : _controllers[ind]
+                                                        : _controllers[index]
                                                             .text;
-                                                    //}
-                                                    // print(
-                                                    //     _controllers[ind].text);
+                                                    print(_controllers[index]
+                                                        .text);
 
                                                     return Padding(
                                                       padding:
@@ -1279,7 +1297,7 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                                                                       .ellipsis,
                                                             ),
                                                           ),
-                                                          Text(': '),
+                                                          const Text(': '),
                                                           Padding(
                                                             padding:
                                                                 const EdgeInsets
@@ -1378,30 +1396,30 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                                                                                 109))),
                                                                 onChanged:
                                                                     (value1) {
-                                                                  print(
-                                                                      _controllers[
-                                                                          ind]);
-                                                                  // _controllers[index]
-                                                                  //         .text =
-                                                                  //     value
-                                                                  //         .studentMEList[
-                                                                  //             index]
-                                                                  //         .toolList![
-                                                                  //             ind]
-                                                                  //         .teMark
-                                                                  //         .toString();
+                                                                  // print(
+                                                                  //     _controllers[
+                                                                  //         ind]);
+
+                                                                  controller.text = value
+                                                                      .studentMEList[
+                                                                          index]
+                                                                      .toolList![
+                                                                          ind]
+                                                                      .teMark
+                                                                      .toString();
+                                                                  controller
+                                                                          .text =
+                                                                      value1;
 
                                                                   // teMarkController[
                                                                   //         index]
                                                                   //     .text = value1;
-                                                                  // teMarkController[
-                                                                  //             index]
-                                                                  //         .selection =
-                                                                  //     TextSelection.collapsed(
-                                                                  //         offset: teMarkController[
-                                                                  //                 index]
-                                                                  //             .text
-                                                                  //             .length);
+                                                                  controller
+                                                                          .selection =
+                                                                      TextSelection.collapsed(
+                                                                          offset: controller
+                                                                              .text
+                                                                              .length);
 
                                                                   // if (double.parse(
                                                                   //         teMarkController[
@@ -1435,6 +1453,461 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                   ],
                 );
         },
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            kWidth,
+            const Spacer(),
+            Consumer<ToolMarkEntryProviders>(builder: (context, value, child) {
+              return value.loading
+                  ? MaterialButton(
+                      onPressed: () {},
+                      color: UIGuide.light_Purple,
+                      child: const Text(
+                        'Saving...',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    )
+                  : MaterialButton(
+                      onPressed: () async {
+                        List initialList = [];
+                        initialList.clear();
+                        List toolListt = [];
+                        toolListt.clear();
+
+                        for (int i = 0; i < value.studentMEList.length; i++) {
+                          toolListt.clear();
+                          for (int j = 0;
+                              j < value.studentMEList[i].toolList!.length;
+                              j++) {
+                            print(value.studentMEList.length);
+                            print(value.studentMEList[i].toolList!.length);
+                            toolListt.add({
+                              "attendance": "P",
+                              "ceGrade": null,
+                              "ceGradeId": null,
+                              "ceMark": null,
+                              "markEntryId": '',
+                              "peGrade": null,
+                              "peGradeId": null,
+                              "peMark": null,
+                              "presentDetId": "",
+                              "teGrade": null,
+                              "teGradeId": null,
+                              "teMark": null,
+                              "teMaxMark": "",
+                              "toolId": ""
+                            });
+                          }
+
+                          initialList.add({
+                            "attendance": "P",
+                            "description": null,
+                            "disableAbsentRow": false,
+                            "name": value.studentMEList[i].name ?? '',
+                            "rollNo": value.studentMEList[i].rollNo ?? '',
+                            "studentPresentDetailsId": value
+                                    .studentMEList[i].studentPresentDetailsId ??
+                                '',
+                            "toolList": toolListt[i],
+                            "totalGrade": null,
+                            "totalMark": null,
+                            "totalPer": null,
+                          });
+                        }
+
+                        log("Litsssss   $initialList");
+                        log("ToolLists   $toolListt");
+
+                        if (toolDivisionListController.text.isEmpty &&
+                            toolInitialValuesController1.text.isEmpty) {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            elevation: 10,
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10)),
+                            ),
+                            duration: Duration(seconds: 1),
+                            margin: EdgeInsets.only(
+                                bottom: 80, left: 30, right: 30),
+                            behavior: SnackBarBehavior.floating,
+                            content: Text(
+                              "Select mandatory fileds...!",
+                              textAlign: TextAlign.center,
+                            ),
+                          ));
+                        } else {
+                          String course =
+                              toolInitialValuesController.text.toString();
+                          String division =
+                              toolDivisionListController.text.toString();
+                          String part = toolPartListController.text.toString();
+                          String subject =
+                              toolSubjectListController.text.toString();
+                          String exam = toolExamListController.text.toString();
+                          String optional =
+                              toolOptionSubListController1.text.toString();
+                          Map<String, dynamic> criteria = await {
+                            "course": course,
+                            "division": division,
+                            "part": part,
+                            "subject": subject,
+                            "subOptionSubject":
+                                optional.isEmpty ? null : optional,
+                            "exam": exam,
+                            "search": null
+                          };
+                          print(criteria);
+                          print(value.toollListView);
+                          value.loading
+                              ? spinkitLoader()
+                              : await value.markEntrySave(context,
+                                  value.toollListView, initialList, criteria);
+                        }
+                      },
+                      color: UIGuide.light_Purple,
+                      child: const Text(
+                        'Save',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    );
+            }),
+            kWidth,
+            Consumer<ToolMarkEntryProviders>(builder: (context, value, child) {
+              return value.loading
+                  ? MaterialButton(
+                      onPressed: () {},
+                      color: Colors.green,
+                      child: const Text(
+                        'Verifying...',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    )
+                  : MaterialButton(
+                      onPressed: () {
+                        value.examStatus == "Pending" &&
+                                _controllers[0].text.isEmpty
+                            ? ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
+                                elevation: 10,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20)),
+                                ),
+                                duration: Duration(seconds: 1),
+                                margin: EdgeInsets.only(
+                                    bottom: 80, left: 30, right: 30),
+                                behavior: SnackBarBehavior.floating,
+                                content: Text(
+                                  'No data to Verify....',
+                                  textAlign: TextAlign.center,
+                                ),
+                              ))
+                            : showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Center(
+                                      child: Text(
+                                        "Are You Sure Want To Verify",
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                    ),
+                                    actions: <Widget>[
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 8.0),
+                                            child: OutlinedButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              style: ButtonStyle(
+                                                  side:
+                                                      MaterialStateProperty.all(
+                                                          const BorderSide(
+                                                              color: UIGuide
+                                                                  .light_Purple,
+                                                              width: 1.0,
+                                                              style: BorderStyle
+                                                                  .solid))),
+                                              child: const Text(
+                                                '  Cancel  ',
+                                                style: TextStyle(
+                                                  color: Color.fromARGB(
+                                                      255, 201, 13, 13),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          OutlinedButton(
+                                            onPressed: () async {
+                                              if (toolDivisionListController
+                                                      .text.isEmpty &&
+                                                  toolInitialValuesController1
+                                                      .text.isEmpty) {
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                        const SnackBar(
+                                                  elevation: 10,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                10)),
+                                                  ),
+                                                  duration:
+                                                      Duration(seconds: 1),
+                                                  margin: EdgeInsets.only(
+                                                      bottom: 80,
+                                                      left: 30,
+                                                      right: 30),
+                                                  behavior:
+                                                      SnackBarBehavior.floating,
+                                                  content: Text(
+                                                    "Select mandatory fileds...!",
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ));
+                                              } else {
+                                                String course =
+                                                    toolInitialValuesController
+                                                        .text
+                                                        .toString();
+                                                String division =
+                                                    toolDivisionListController
+                                                        .text
+                                                        .toString();
+                                                String part =
+                                                    toolPartListController.text
+                                                        .toString();
+                                                String subject =
+                                                    toolSubjectListController
+                                                        .text
+                                                        .toString();
+                                                String exam =
+                                                    toolExamListController.text
+                                                        .toString();
+                                                String optional =
+                                                    toolOptionSubListController1
+                                                        .text
+                                                        .toString();
+                                                Map<String, dynamic> criteria =
+                                                    await {
+                                                  "course": course,
+                                                  "division": division,
+                                                  "part": part,
+                                                  "subject": subject,
+                                                  "subOptionSubject":
+                                                      optional.isEmpty
+                                                          ? null
+                                                          : optional,
+                                                  "exam": exam,
+                                                  "search": null
+                                                };
+                                                print(criteria);
+                                                print(value.toollListView);
+                                                value.loading
+                                                    ? spinkitLoader()
+                                                    : await value
+                                                        .markEntryVerify(
+                                                            context,
+                                                            value.toollListView,
+                                                            criteria);
+                                              }
+                                            },
+                                            style: ButtonStyle(
+                                                side: MaterialStateProperty.all(
+                                                    const BorderSide(
+                                                        color: UIGuide
+                                                            .light_Purple,
+                                                        width: 1.0,
+                                                        style: BorderStyle
+                                                            .solid))),
+                                            child: const Text(
+                                              'Confirm',
+                                              style: TextStyle(
+                                                color: Color.fromARGB(
+                                                    255, 12, 162, 46),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  );
+                                },
+                              );
+                      },
+                      color: Colors.green,
+                      child: const Text(
+                        "Verify",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    );
+            }),
+            kWidth,
+            Consumer<ToolMarkEntryProviders>(builder: (context, value, child) {
+              return MaterialButton(
+                onPressed: () {
+                  value.examStatus == "Pending"
+                      ? ScaffoldMessenger.of(context)
+                          .showSnackBar(const SnackBar(
+                          elevation: 10,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                          ),
+                          duration: Duration(seconds: 1),
+                          margin:
+                              EdgeInsets.only(bottom: 80, left: 30, right: 30),
+                          behavior: SnackBarBehavior.floating,
+                          content: Text(
+                            'No data to Delete....',
+                            textAlign: TextAlign.center,
+                          ),
+                        ))
+                      : showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Center(
+                                child: Text(
+                                  "Are You Sure Want To Delete",
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                  ),
+                                ),
+                              ),
+                              actions: <Widget>[
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 8.0),
+                                      child: OutlinedButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        style: ButtonStyle(
+                                            side: MaterialStateProperty.all(
+                                                const BorderSide(
+                                                    color: UIGuide.light_Purple,
+                                                    width: 1.0,
+                                                    style: BorderStyle.solid))),
+                                        child: const Text(
+                                          '  Cancel  ',
+                                          style: TextStyle(
+                                            color: Color.fromARGB(
+                                                255, 201, 13, 13),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    OutlinedButton(
+                                      onPressed: () async {
+                                        if (toolDivisionListController
+                                                .text.isEmpty &&
+                                            toolInitialValuesController1
+                                                .text.isEmpty) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(const SnackBar(
+                                            elevation: 10,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(10)),
+                                            ),
+                                            duration: Duration(seconds: 1),
+                                            margin: EdgeInsets.only(
+                                                bottom: 80,
+                                                left: 30,
+                                                right: 30),
+                                            behavior: SnackBarBehavior.floating,
+                                            content: Text(
+                                              "Select mandatory fileds...!",
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ));
+                                        } else {
+                                          String course =
+                                              toolInitialValuesController.text
+                                                  .toString();
+                                          String division =
+                                              toolDivisionListController.text
+                                                  .toString();
+                                          String part = toolPartListController
+                                              .text
+                                              .toString();
+                                          String subject =
+                                              toolSubjectListController.text
+                                                  .toString();
+                                          String exam = toolExamListController
+                                              .text
+                                              .toString();
+                                          String optional =
+                                              toolOptionSubListController1.text
+                                                  .toString();
+                                          Map<String, dynamic> criteria =
+                                              await {
+                                            "course": course,
+                                            "division": division,
+                                            "part": part,
+                                            "subject": subject,
+                                            "subOptionSubject": optional.isEmpty
+                                                ? null
+                                                : optional,
+                                            "exam": exam,
+                                            "search": null
+                                          };
+                                          print(criteria);
+                                          print(value.toollListView);
+                                          value.loading
+                                              ? spinkitLoader()
+                                              : await value.markEntryDelete(
+                                                  context,
+                                                  value.toollListView,
+                                                  criteria);
+                                        }
+                                      },
+                                      style: ButtonStyle(
+                                          side: MaterialStateProperty.all(
+                                              const BorderSide(
+                                                  color: UIGuide.light_Purple,
+                                                  width: 1.0,
+                                                  style: BorderStyle.solid))),
+                                      child: const Text(
+                                        'Confirm',
+                                        style: TextStyle(
+                                          color:
+                                              Color.fromARGB(255, 12, 162, 46),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            );
+                          },
+                        );
+                },
+                color: Colors.red,
+                child: const Text(
+                  'Delete',
+                  style: TextStyle(color: Colors.white),
+                ),
+              );
+            }),
+            kWidth
+          ],
+        ),
       ),
     );
   }

@@ -37,7 +37,7 @@ class GalleryListStaff extends StatelessWidget {
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
                           width: size.width,
-                          height: 100,
+                          // height: 100,
                           decoration: BoxDecoration(
                               border: Border.all(
                                   color: UIGuide.light_Purple, width: 1),
@@ -64,12 +64,12 @@ class GalleryListStaff extends StatelessWidget {
                                             .galleryViewList[index].id
                                             .toString();
                                         await provider.galleryDeleteStaff(
-                                            context, event);
+                                            context, event, index);
 
-                                        provider.galleryViewList.clear();
+                                        // provider.galleryViewList.clear();
 
-                                        await provider
-                                            .galleryViewListStaff(context);
+                                        // await provider
+                                        //     .galleryViewListStaff(context);
                                       },
                                       child: const Icon(
                                         Icons.delete_forever_outlined,

@@ -218,7 +218,7 @@ class GalleryListAdmin extends StatelessWidget {
                                                           child: Row(
                                                             children: [
                                                               const Text(
-                                                                'Start Date: ',
+                                                                'End Date: ',
                                                                 style: TextStyle(
                                                                     fontSize:
                                                                         16,

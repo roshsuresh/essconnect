@@ -15,10 +15,9 @@ class Diary extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      await Provider.of<DiaryProvidersstud>(context, listen: false)
-          .clearDiary();
-      await Provider.of<DiaryProvidersstud>(context, listen: false)
-          .getDiaryList();
+      var p = Provider.of<DiaryProvidersstud>(context, listen: false);
+      await p.clearDiary();
+      await p.getDiaryList();
     });
 
     var size = MediaQuery.of(context).size;

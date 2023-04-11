@@ -385,7 +385,8 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
             context,
             MaterialPageRoute(
                 builder: (BuildContext context) => const AdminHome()));
-      } else if (parsedResponse['role'] == "Teacher") {
+      } else if (parsedResponse['role'] == "Teacher" ||
+          parsedResponse['role'] == "NonTeachingStaff") {
         if (isLoading) return;
         setState(() {
           isLoading = true;
@@ -433,10 +434,8 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
           isLoading = true;
         });
         await Permission.videos.request();
-
         await Permission.photos.request();
         await Future.delayed(const Duration(seconds: 3));
-
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (BuildContext context) => ChildHome()));
       } else {
@@ -453,10 +452,6 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 16),
             )));
-        // Navigator.pushReplacement(
-        //     context,
-        //     MaterialPageRoute(
-        //         builder: (BuildContext context) => StudentHome()));
       }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:essconnect/Domain/Staff/ToolMarkEntryModel.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -66,19 +67,14 @@ class ToolMarkEntryProviders with ChangeNotifier {
         'GET', Uri.parse('${UIGuide.baseURL}/toolmarkentry/coursedetails/$id'));
 
     request.headers.addAll(headers);
-
     http.StreamedResponse response = await request.send();
-
     if (response.statusCode == 200) {
       Map<String, dynamic> data =
           jsonDecode(await response.stream.bytesToString());
-
       log(data.toString());
-
       List<ToolDivisionList> templist = List<ToolDivisionList>.from(
           data["divisionList"].map((x) => ToolDivisionList.fromJson(x)));
       toolDivisionList.addAll(templist);
-
       notifyListeners();
     } else {
       print('Error in toolDivisionList stf');
@@ -184,14 +180,12 @@ class ToolMarkEntryProviders with ChangeNotifier {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
-
     var request = http.Request(
         'GET',
         Uri.parse(
             '${UIGuide.baseURL}/toolmarkentry/subOptionsubjectdetails/$subjectId/$divisionId'));
 
     request.headers.addAll(headers);
-
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
@@ -266,7 +260,7 @@ class ToolMarkEntryProviders with ChangeNotifier {
   String? typeCode;
   String? examStatus;
   List<StudentMEList> studentMEList = [];
-  List<ToolList> toolList = [];
+  List toollListView = [];
   List<GradeList> gradeList = [];
   Future<bool> getMarkEntryView(String course, String date, String division,
       String exam, String part, String subject, String optionalSubject) async {
@@ -323,11 +317,9 @@ class ToolMarkEntryProviders with ChangeNotifier {
       List<GradeList> templist2 = List<GradeList>.from(
           data["gradeList"].map((x) => GradeList.fromJson(x)));
       gradeList.addAll(templist2);
-      // List studTool = data["studentMEList"]["toolList"];
 
-      // List<ToolList> templist1 = List<ToolList>.from(
-      //     data["studentMEList"]["toolList"].map((x) => ToolList.fromJson(x)));
-      // toolList.addAll(templist1);
+      toollListView = data["toolList"];
+      log(toollListView.toString());
 
       setLoading(false);
       notifyListeners();
@@ -341,7 +333,223 @@ class ToolMarkEntryProviders with ChangeNotifier {
   clearStudList() async {
     studentMEList.clear();
     gradeList.clear();
-    toolList.clear();
+    toollListView.clear();
     notifyListeners();
+  }
+
+  //SAVE
+  bool _load = false;
+  bool get load => _load;
+  setLoad(bool value) {
+    _load = value;
+    notifyListeners();
+  }
+
+  Future markEntrySave(BuildContext context, List toolLists, List studentList,
+      Map criteria) async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    setLoad(true);
+
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+    };
+
+    var request = http.Request(
+        'POST', Uri.parse('${UIGuide.baseURL}/toolmarkentry/save'));
+
+    request.body = json.encode({
+      "ToolList": toolLists,
+      "StudentList": studentList,
+      "Criteria": criteria
+    });
+
+    log(json.encode({
+      "ToolList": toolLists,
+      "StudentList": studentList,
+      "Criteria": criteria
+    }));
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+    setLoad(true);
+
+    if (response.statusCode == 200) {
+      setLoad(true);
+
+      print('Correct........______________________________');
+      print(await response.stream.bytesToString());
+      await AwesomeDialog(
+              dismissOnTouchOutside: false,
+              dismissOnBackKeyPress: false,
+              context: context,
+              dialogType: DialogType.success,
+              animType: AnimType.rightSlide,
+              headerAnimationLoop: false,
+              title: 'Success',
+              desc: 'Successfully Saved',
+              btnOkOnPress: () async {
+                await clearStudList();
+              },
+              btnOkColor: Colors.green)
+          .show();
+      gradeList.clear();
+      setLoad(false);
+
+      notifyListeners();
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        elevation: 10,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+        ),
+        duration: Duration(seconds: 1),
+        margin: EdgeInsets.only(bottom: 80, left: 30, right: 30),
+        behavior: SnackBarBehavior.floating,
+        content: Text(
+          'Something Went Wrong....',
+          textAlign: TextAlign.center,
+        ),
+      ));
+      setLoad(false);
+      print('Error Response in tool save');
+    }
+    setLoad(false);
+  }
+
+  //verify
+  bool _loadVerify = false;
+  bool get loadVerify => _loadVerify;
+  setLoadVerify(bool value) {
+    _loadVerify = value;
+    notifyListeners();
+  }
+
+  Future markEntryVerify(
+      BuildContext context, List toolLists, Map criteria) async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    setLoadVerify(true);
+
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+    };
+
+    var request = http.Request(
+        'POST', Uri.parse('${UIGuide.baseURL}/toolmarkentry/verify'));
+
+    request.body = json.encode({"ToolList": toolLists, "Criteria": criteria});
+
+    log(json.encode({"ToolList": toolLists, "Criteria": criteria}));
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+    setLoadVerify(true);
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      setLoadVerify(true);
+      print('Correct........_ _ _ _ _ _ _ _ _ _ _ _ _ _ ');
+      print(await response.stream.bytesToString());
+      await AwesomeDialog(
+              dismissOnTouchOutside: false,
+              dismissOnBackKeyPress: false,
+              context: context,
+              dialogType: DialogType.success,
+              animType: AnimType.rightSlide,
+              headerAnimationLoop: false,
+              title: 'Verified',
+              desc: 'Verified Successfully',
+              btnOkOnPress: () async {
+                await clearStudList();
+                Navigator.pop(context);
+              },
+              btnOkColor: Colors.green)
+          .show();
+
+      setLoadVerify(false);
+      notifyListeners();
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        elevation: 10,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+        ),
+        duration: Duration(seconds: 1),
+        margin: EdgeInsets.only(bottom: 80, left: 30, right: 30),
+        behavior: SnackBarBehavior.floating,
+        content: Text(
+          'Something Went Wrong....',
+          textAlign: TextAlign.center,
+        ),
+      ));
+      setLoadVerify(false);
+      print('Error Response in tool verify');
+    }
+    setLoadVerify(false);
+  }
+
+  Future markEntryDelete(
+      BuildContext context, List toolLists, Map criteria) async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    setLoading(true);
+
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+    };
+
+    var request = http.Request(
+        'POST', Uri.parse('${UIGuide.baseURL}/toolmarkentry/verify'));
+
+    request.body = json.encode({"ToolList": toolLists, "Criteria": criteria});
+
+    log(json.encode({"ToolList": toolLists, "Criteria": criteria}));
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+    setLoading(true);
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      setLoading(true);
+      print('Correct........______________________________');
+      print(await response.stream.bytesToString());
+      await AwesomeDialog(
+              dismissOnTouchOutside: false,
+              dismissOnBackKeyPress: false,
+              context: context,
+              dialogType: DialogType.error,
+              animType: AnimType.rightSlide,
+              headerAnimationLoop: false,
+              title: 'Delete',
+              desc: 'Deleted Successfully',
+              btnOkOnPress: () async {
+                await clearStudList();
+                Navigator.pop(context);
+              },
+              btnOkColor: Color.fromARGB(255, 217, 14, 14))
+          .show();
+      setLoading(true);
+      notifyListeners();
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        elevation: 10,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+        ),
+        duration: Duration(seconds: 1),
+        margin: EdgeInsets.only(bottom: 80, left: 30, right: 30),
+        behavior: SnackBarBehavior.floating,
+        content: Text(
+          'Something Went Wrong....',
+          textAlign: TextAlign.center,
+        ),
+      ));
+      setLoading(true);
+      print('Error Response in tool Delete');
+    }
+    setLoading(true);
   }
 }

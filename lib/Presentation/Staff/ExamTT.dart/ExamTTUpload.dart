@@ -137,7 +137,7 @@ class _ExamTTUploadStaffState extends State<ExamTTUploadStaff> {
                       ? Container(
                           child: const Center(
                               child: Text(
-                          'Uploading Image....',
+                          'Uploading File....',
                           style: TextStyle(color: UIGuide.light_Purple),
                         )))
                       : MaterialButton(
@@ -288,10 +288,10 @@ class _ExamTTUploadStaffState extends State<ExamTTUploadStaff> {
           Row(
             children: [
               Spacer(),
-              Container(
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey, width: 1),
-                    borderRadius: BorderRadius.circular(10)),
+              SizedBox(
+                // decoration: BoxDecoration(
+                //     border: Border.all(color: Colors.grey, width: 1),
+                //     borderRadius: BorderRadius.circular(10)),
                 height: 50,
                 width: MediaQuery.of(context).size.width * 0.46,
                 child: Consumer<ExamTTAdmProvidersStaff>(
@@ -328,6 +328,9 @@ class _ExamTTUploadStaffState extends State<ExamTTUploadStaff> {
                                               .toString();
                                           print(
                                               studReportcourseController.text);
+                                          divisionData.clear();
+                                          snapshot.divisionLen = 0;
+                                          snapshot.divisionClear();
 
                                           await Provider.of<
                                                       ExamTTAdmProvidersStaff>(
@@ -360,41 +363,55 @@ class _ExamTTUploadStaffState extends State<ExamTTUploadStaff> {
                           Container(
                             decoration: BoxDecoration(
                                 border:
-                                    Border.all(color: Colors.grey, width: 1),
+                                    Border.all(color: Colors.grey, width: 2),
                                 borderRadius: BorderRadius.circular(10)),
-                            height: 48.0,
+                            height: 50.0,
                             child: TextField(
                               textAlign: TextAlign.center,
                               controller: studReportcourseController1,
-                              decoration: const InputDecoration(
+                              decoration: InputDecoration(
                                 filled: true,
                                 contentPadding:
-                                    EdgeInsets.only(left: 1, top: 0),
+                                    EdgeInsets.only(left: 0, top: 0),
                                 fillColor: UIGuide.WHITE,
-                                border: OutlineInputBorder(),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
                                 floatingLabelBehavior:
                                     FloatingLabelBehavior.never,
                                 labelText: "  Select Course",
                                 labelStyle: TextStyle(color: UIGuide.BLACK),
                                 hintText: "Course",
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.white, width: 2.0),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderSide: BorderSide(
+                                    color: Colors.white,
+                                    width: 2.0,
+                                  ),
+                                ),
                               ),
                               enabled: false,
                             ),
                           ),
-                          SizedBox(
-                            height: 0,
-                            child: TextField(
-                              controller: studReportcourseController,
-                              decoration: const InputDecoration(
-                                filled: true,
-                                fillColor: UIGuide.WHITE,
-                                border: OutlineInputBorder(),
-                                labelText: "",
-                                hintText: "",
-                              ),
-                              enabled: false,
-                            ),
-                          ),
+                          // SizedBox(
+                          //   height: 0,
+                          //   child: TextField(
+                          //     controller: studReportcourseController,
+                          //     decoration: const InputDecoration(
+                          //       filled: true,
+                          //       fillColor: UIGuide.WHITE,
+                          //       border: OutlineInputBorder(),
+                          //       labelText: "",
+                          //       hintText: "",
+                          //     ),
+                          //     enabled: false,
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),
@@ -458,6 +475,7 @@ class _ExamTTUploadStaffState extends State<ExamTTUploadStaff> {
                       chipDisplay: MultiSelectChipDisplay.none(),
                       onConfirm: (results) async {
                         divisionData = [];
+                        // value.divisionLen = 0;
                         for (var i = 0; i < results.length; i++) {
                           DivisionsExam data = results[i] as DivisionsExam;
                           print(data.text);
@@ -470,6 +488,7 @@ class _ExamTTUploadStaffState extends State<ExamTTUploadStaff> {
                         await Provider.of<ExamTTAdmProvidersStaff>(context,
                                 listen: false)
                             .divisionCounter(results.length);
+                        results.clear();
 
                         print(divisionData.join(','));
                       },

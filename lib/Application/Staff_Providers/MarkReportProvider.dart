@@ -3,44 +3,15 @@ import 'package:essconnect/Domain/Staff/MarkEntryReport.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-Map? markSubject;
-List? markReportSub;
-List? markRepoExam;
+// Map? markSubject;
+// List? markReportSub;
+// List? markRepoExam;
 
 class MarkEntryReportProvider_stf with ChangeNotifier {
-  List<MarkReportCourseList> selectedCourse = [];
-
 //course List
-  addSelectedCourse(MarkReportCourseList item) {
-    if (selectedCourse.contains(item)) {
-      print("removing");
-      selectedCourse.remove(item);
-      notifyListeners();
-    } else {
-      print("adding");
-      selectedCourse.add(item);
-      notifyListeners();
-    }
-  }
-
-  removeCourse(MarkReportCourseList item) {
-    selectedCourse.remove(item);
-    notifyListeners();
-  }
-
-  removeCourseAll() {
-    selectedCourse.clear();
-  }
-
-  isCourseSelected(MarkReportCourseList item) {
-    if (selectedCourse.contains(item)) {
-      return true;
-    } else {
-      return false;
-    }
-  }
 
   courseClear() {
     markReportCourseList.clear();
@@ -82,41 +53,23 @@ class MarkEntryReportProvider_stf with ChangeNotifier {
 
   //division list
 
-  List<MarkReportDivisions> selectedDivision = [];
-  addSelectedDivision(MarkReportDivisions item) {
-    if (selectedDivision.contains(item)) {
-      print("removing");
-      selectedDivision.remove(item);
-      notifyListeners();
-    } else {
-      print("adding");
-      selectedDivision.add(item);
-      notifyListeners();
-    }
-  }
-
-  removeDivision(MarkReportDivisions item) {
-    selectedDivision.remove(item);
-    notifyListeners();
-  }
-
-  removeDivisionAll() {
-    selectedDivision.clear();
-  }
-
-  isDivisionSelected(MarkReportDivisions item) {
-    if (selectedDivision.contains(item)) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
   divisionClear() {
     markReportDivisions.clear();
+    divisionDrop.clear();
   }
 
   List<MarkReportDivisions> markReportDivisions = [];
+  List<MultiSelectItem> divisionDrop = [];
+  int divisionLen = 0;
+  divisionCounter(int len) async {
+    divisionLen = 0;
+    if (len == 0) {
+      divisionLen = 0;
+    } else {
+      divisionLen = len;
+    }
+    notifyListeners();
+  }
 
   Future markReportDivisionList(String courseId) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
@@ -138,6 +91,9 @@ class MarkEntryReportProvider_stf with ChangeNotifier {
         List<MarkReportDivisions> templist = List<MarkReportDivisions>.from(
             data["divisions"].map((x) => MarkReportDivisions.fromJson(x)));
         markReportDivisions.addAll(templist);
+        divisionDrop = markReportDivisions.map((subjectdata) {
+          return MultiSelectItem(subjectdata, subjectdata.text!);
+        }).toList();
 
         notifyListeners();
       } else {
@@ -149,35 +105,6 @@ class MarkEntryReportProvider_stf with ChangeNotifier {
   }
 
   //part list
-  List<MarkReportPartList> selectedPart = [];
-  addSelectedPart(MarkReportPartList item) {
-    if (selectedPart.contains(item)) {
-      print("removing");
-      selectedPart.remove(item);
-      notifyListeners();
-    } else {
-      print("adding");
-      selectedPart.add(item);
-      notifyListeners();
-    }
-  }
-
-  removePart(MarkReportPartList item) {
-    selectedPart.remove(item);
-    notifyListeners();
-  }
-
-  removePartAll() {
-    selectedPart.clear();
-  }
-
-  isPartSelected(MarkReportPartList item) {
-    if (selectedPart.contains(item)) {
-      return true;
-    } else {
-      return false;
-    }
-  }
 
   partClear() {
     markReportPartList.clear();
@@ -216,43 +143,28 @@ class MarkEntryReportProvider_stf with ChangeNotifier {
   }
 
   //subject
-  // List<MarkReportSubjectList> selectedSubject = [];
-  // addSelectedSubject(MarkReportSubjectList item) {
-  //   if (selectedSubject.contains(item)) {
-  //     print("removing");
-  //     selectedSubject.remove(item);
-  //     notifyListeners();
-  //   } else {
-  //     print("adding");
-  //     selectedSubject.add(item);
-  //     notifyListeners();
-  //   }
-  // }
+  List<MultiSelectItem> subjectDrop = [];
 
-  // removeSubject(MarkReportSubjectList item) {
-  //   selectedSubject.remove(item);
-  //   notifyListeners();
-  // }
+  int subjectLen = 0;
+  subjectCounter(int len) async {
+    subjectLen = 0;
+    if (len == 0) {
+      subjectLen = 0;
+    } else {
+      subjectLen = len;
+    }
 
-  // removeSubjectAll() {
-  //   selectedSubject.clear();
-  // }
+    notifyListeners();
+  }
 
-  // isSubjectSelected(MarkReportSubjectList item) {
-  //   if (selectedSubject.contains(item)) {
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // }
+  subjectClear() {
+    markSubjectList.clear();
 
-  // subjectClear() {
-  //   markReportSubjectList.clear();
-  // }
+    notifyListeners();
+  }
 
   List<MarkReportSubjectList> markSubjectList = [];
-  Future markReportSubject(
-      String courseId, String division, String part) async {
+  Future markReportSubject(String courseId, List division, String part) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     var headers = {
       'Content-Type': 'application/json',
@@ -261,75 +173,63 @@ class MarkEntryReportProvider_stf with ChangeNotifier {
 
     var request = http.Request(
         'POST', Uri.parse('${UIGuide.baseURL}/markentryReport/subjects'));
-    request.body = json.encode({
-      "CourseId": courseId,
-      "DivisionId": [division],
-      "PartId": part
-    });
+    request.body = json
+        .encode({"CourseId": courseId, "DivisionId": division, "PartId": part});
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
-      // print(await response.stream.bytesToString());
-      markSubject = jsonDecode(await response.stream.bytesToString());
-      markReportSub = await markSubject!['subjectList'];
-      // print(markSubject);
-      print(markReportSub);
+      final data = await jsonDecode(await response.stream.bytesToString());
+
+      print(data);
+      List<MarkReportSubjectList> templist = List<MarkReportSubjectList>.from(
+          data["subjectList"].map((x) => MarkReportSubjectList.fromJson(x)));
+      markSubjectList.addAll(templist);
+      subjectDrop = markSubjectList.map((subjectdata) {
+        return MultiSelectItem(subjectdata, subjectdata.text!);
+      }).toList();
+
       notifyListeners();
-      // List<MarkReportSubjectList> templist = List<MarkReportSubjectList>.from(
-      //     data["subjectList"].map((x) => MarkReportSubjectList.fromJson(x)));
-      // markSubjectList.addAll(templist);
-    }
-    // http.StreamedResponse response = await request.send();
-    // if (response.statusCode == 200) {
-    //   print('Success--------------------');
-    //   Map<String, dynamic> data =
-    //       jsonDecode(await response.stream.bytesToString());
-    //   log(data.toString());
-    //   List<MarkReportSubjectList> templist = List<MarkReportSubjectList>.from(
-    //       data["subjectList"].map((x) => MarkReportSubjectList.fromJson(x)));
-    //   markSubjectList.addAll(templist);
-
-    //   notifyListeners();
-
-    //   print('Success--------------------');
-    //   print(await response.stream.bytesToString());
-    // }
-    else {
+    } else {
       print(response.reasonPhrase);
     }
     return true;
   }
 
   // exam
+  examClear() {
+    markReportExamList.clear();
+
+    notifyListeners();
+  }
+
   List<MarkReportExamList> markReportExamList = [];
   Future markReportExam(
-      String course, String division, String part, String subject) async {
+      String course, List division, String part, List subject) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     var headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
-
     var request = http.Request(
         'POST', Uri.parse('${UIGuide.baseURL}/markentryReport/exam'));
     request.body = json.encode({
       "CourseId": course,
-      "DivisionId": [division],
+      "DivisionId": division,
       "PartId": part,
-      "SubjectId": [subject]
+      "SubjectId": subject
     });
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
-      //print(await response.stream.bytesToString());
-
       final data = await jsonDecode(await response.stream.bytesToString());
-      markRepoExam = data['examList'];
-      print(markRepoExam);
+      print(data);
+      List<MarkReportExamList> templist = List<MarkReportExamList>.from(
+          data["examList"].map((x) => MarkReportExamList.fromJson(x)));
+      markReportExamList.addAll(templist);
       notifyListeners();
     } else {
       print(response.reasonPhrase);
@@ -346,8 +246,11 @@ class MarkEntryReportProvider_stf with ChangeNotifier {
   }
 
   List meList = [];
+
   List studList = [];
+
   List<MarkReportStudentList> markReportStudList = [];
+
   Future markReportView(String course, String division, String part,
       String exam, String subject, String subText, String divText) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
@@ -360,32 +263,59 @@ class MarkEntryReportProvider_stf with ChangeNotifier {
     var request = http.Request(
         'POST', Uri.parse('${UIGuide.baseURL}/markentryReport/view'));
     request.body = json.encode({
-      "staffId": _pref.getString('StaffId'),
-      "CourseId": course,
-      "DivisionId": division,
-      "PartId": part,
-      "ExamId": exam,
-      "SubjectId": subject,
-      "SubjectIdList": [
-        {"text": subText, "value": subject}
+      "courseId": "77d9839f-c910-47d6-94ee-9bd119e2dae7",
+      "divisionId":
+          "b2ba13d8-9834-4393-ae11-a9714045ec44,be83b908-f6ee-4529-a877-5f927303a275",
+      "divisionIdList": [
+        {
+          "value": "b2ba13d8-9834-4393-ae11-a9714045ec44",
+          "text": "I-A",
+          "selected": null,
+          "active": null,
+          "order": 1
+        },
+        {
+          "value": "be83b908-f6ee-4529-a877-5f927303a275",
+          "text": "1-B",
+          "selected": null,
+          "active": null,
+          "order": 2
+        }
       ],
-      "DivisionIdList": [
-        {"text": divText, "value": division}
-      ]
+      "partId": "415854e0-9d90-40c3-bc30-9e1ce619ba29",
+      "examId": "Term-1_NBS1",
+      "subjectId":
+          "f20e6138-e1f7-4d88-8a60-3c73820f1415,75a5d2d1-027a-4f97-900f-8faacf9dc256",
+      "subjectIdList": [
+        {
+          "value": "f20e6138-e1f7-4d88-8a60-3c73820f1415",
+          "text": "English",
+          "selected": null,
+          "active": null,
+          "order": null
+        },
+        {
+          "value": "75a5d2d1-027a-4f97-900f-8faacf9dc256",
+          "text": "Environmental Studies",
+          "selected": null,
+          "active": null,
+          "order": null
+        }
+      ],
+      "showOptions": 0,
+      "ShowSubsubjects": 0
     });
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
-      // print(await response.stream.bytesToString());
       Map<String, dynamic> data =
           jsonDecode(await response.stream.bytesToString());
 
       meList = data['meList'];
       studList = meList[0]['studentList'];
       print(studList);
-
       List<MarkReportStudentList> templist = List<MarkReportStudentList>.from(
           meList[0]['studentList']
               .map((x) => MarkReportStudentList.fromJson(x)));

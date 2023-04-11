@@ -133,6 +133,7 @@ class ExamTTAdmProvidersStaff with ChangeNotifier {
 
   divisionClear() {
     divisionList.clear();
+    divisionDropDown.clear();
     notifyListeners();
   }
 
@@ -323,7 +324,7 @@ class ExamTTAdmProvidersStaff with ChangeNotifier {
   }
 
   //delete
-  Future examTTDelete(String eventID, BuildContext context) async {
+  Future examTTDelete(String eventID, BuildContext context, int indexx) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
 
     var headers = {
@@ -338,7 +339,8 @@ class ExamTTAdmProvidersStaff with ChangeNotifier {
 
     http.StreamedResponse response = await request.send();
 
-    if (response.statusCode == 204) {
+    if (response.statusCode == 204 || response.statusCode == 200) {
+      examlist.removeAt(indexx);
       print(await response.stream.bytesToString());
       print('correct');
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -357,6 +359,19 @@ class ExamTTAdmProvidersStaff with ChangeNotifier {
 
       notifyListeners();
     } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        elevation: 10,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+        ),
+        duration: Duration(seconds: 1),
+        margin: EdgeInsets.only(bottom: 80, left: 30, right: 30),
+        behavior: SnackBarBehavior.floating,
+        content: Text(
+          'Something Went Wrong....',
+          textAlign: TextAlign.center,
+        ),
+      ));
       print('Error in ExamDelete admin');
     }
   }

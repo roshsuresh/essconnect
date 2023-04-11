@@ -136,6 +136,8 @@ class UASmarkentryReport extends StatelessWidget {
                                                 ),
                                               ),
                                               ListView.builder(
+                                                physics:
+                                                    const NeverScrollableScrollPhysics(),
                                                 shrinkWrap: true,
                                                 itemCount: provider
                                                         .markReportStudList

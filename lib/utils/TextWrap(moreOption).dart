@@ -35,7 +35,7 @@ class _TextWrapperState extends State<TextWrapper>
           height: 4,
         ),
         widget.text.length < 80
-            ? SizedBox()
+            ? const SizedBox()
             : InkWell(
                 onTap: () {
                   setState(() {
@@ -46,7 +46,7 @@ class _TextWrapperState extends State<TextWrapper>
                   alignment: Alignment.topLeft,
                   child: Text(
                     isExpanded == false ? 'Read more' : 'Read less',
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: UIGuide.light_Purple,
                       fontSize: 12,
                     ),

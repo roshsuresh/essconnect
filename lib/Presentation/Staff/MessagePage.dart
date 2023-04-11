@@ -37,7 +37,6 @@ class _MessagePageState extends State<MessagePage> {
       text: message.text,
     );
     //debugPrint("to list length ${widget.toList.length}");
-
     // Provider.of<AdminToGuardian>(context, listen: false).sendNotification(
     //     context, message.text, widget.toList,
     //     sentTo: widget.type);

@@ -570,7 +570,7 @@ class _AdminGalleryUploadState extends State<AdminGalleryUpload> {
                     if (titleController.text.isNotEmpty &&
                         course.toString().isNotEmpty &&
                         division.toString().isNotEmpty &&
-                        attachmentid.toString().isNotEmpty) {
+                        attachmentid.text.isNotEmpty) {
                       await Provider.of<GalleryProviderAdmin>(context,
                               listen: false)
                           .gallerySave(
@@ -601,7 +601,7 @@ class _AdminGalleryUploadState extends State<AdminGalleryUpload> {
                   } else if (value.toggleVal == 'staff') {
                     if (titleController.text.isNotEmpty &&
                         section.toString().isNotEmpty &&
-                        attachmentid.toString().isNotEmpty) {
+                        attachmentid.text.isNotEmpty) {
                       await Provider.of<GalleryProviderAdmin>(context,
                               listen: false)
                           .gallerySave(
@@ -630,7 +630,8 @@ class _AdminGalleryUploadState extends State<AdminGalleryUpload> {
                     }
                   } else {
                     if (titleController.text.isNotEmpty &&
-                        attachmentid.toString().isNotEmpty) {
+                        attachmentid.text.isNotEmpty) {
+                      print("------------------${attachmentid.toString()}");
                       await Provider.of<GalleryProviderAdmin>(context,
                               listen: false)
                           .gallerySave(

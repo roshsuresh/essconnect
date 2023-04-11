@@ -390,7 +390,8 @@ class GallerySendProvider_Stf with ChangeNotifier {
 
 //delete gallery
 
-  Future galleryDeleteStaff(BuildContext context, String eventID) async {
+  Future galleryDeleteStaff(
+      BuildContext context, String eventID, int indexx) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
 
     var headers = {
@@ -404,6 +405,7 @@ class GallerySendProvider_Stf with ChangeNotifier {
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 204) {
+      galleryViewList.removeAt(indexx);
       print(await response.stream.bytesToString());
       print('correct');
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

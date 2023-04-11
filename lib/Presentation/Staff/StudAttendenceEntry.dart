@@ -16,7 +16,6 @@ class AttendenceEntry extends StatefulWidget {
 }
 
 class _AttendenceEntryState extends State<AttendenceEntry> {
-  // String date = '';
   String? forattd;
   String? aftattd;
   DateTime? curdate;
@@ -51,21 +50,10 @@ class _AttendenceEntryState extends State<AttendenceEntry> {
   final markEntryInitialValuesController1 = TextEditingController();
   final markEntryDivisionListController = TextEditingController();
   final markEntryDivisionListController1 = TextEditingController();
-  // var dateController1 = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    // String dateFinal =
-    //     Provider.of<AttendenceStaffProvider>(context, listen: false)
-    //         .timeNew
-    //         .toString();
-    // print(dateFinal);
-
     var size = MediaQuery.of(context).size;
-    print('object');
-    print(DateFormat().format(DateTime.now()));
-    Provider.of<AttendenceStaffProvider>(context, listen: false)
-        .attendenceCourseStaff();
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -164,17 +152,20 @@ class _AttendenceEntryState extends State<AttendenceEntry> {
                                                       .toString();
 
                                               print(courseId);
+
                                               await Provider.of<
                                                           AttendenceStaffProvider>(
                                                       context,
                                                       listen: false)
                                                   .divisionClear();
+
                                               await Provider.of<
                                                           AttendenceStaffProvider>(
                                                       context,
                                                       listen: false)
                                                   .getAttendenceDivisionValues(
                                                       courseId);
+
                                               Navigator.of(context).pop();
                                             },
                                             title: Text(
@@ -373,17 +364,12 @@ class _AttendenceEntryState extends State<AttendenceEntry> {
                           ),
                           onPressed: () async {
                             await value.loading
-                                ? CircularProgressIndicator()
+                                ? const CircularProgressIndicator()
                                 : await Provider.of<AttendenceStaffProvider>(
                                         context,
                                         listen: false)
                                     .clearStudentList();
                             print(dateFinal);
-                            // dateFinal = Provider.of<AttendenceStaffProvider>(
-                            //             context,
-                            //             listen: false)
-                            //         .timeNew ??
-                            //     date.toString();
                             if (dateFinal.isEmpty) {
                               ScaffoldMessenger.of(context)
                                   .showSnackBar(const SnackBar(
@@ -1023,7 +1009,7 @@ class _AttendenceEntryState extends State<AttendenceEntry> {
                             context: context,
                             builder: (BuildContext context) {
                               return AlertDialog(
-                                title: Center(
+                                title: const Center(
                                   child: Text(
                                     "Are You Sure Want To Delete",
                                     style: TextStyle(
@@ -1040,34 +1026,27 @@ class _AttendenceEntryState extends State<AttendenceEntry> {
                                         padding:
                                             const EdgeInsets.only(left: 8.0),
                                         child: OutlinedButton(
-                                          child: Text(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          style: ButtonStyle(
+                                              side: MaterialStateProperty.all(
+                                                  const BorderSide(
+                                                      color:
+                                                          UIGuide.light_Purple,
+                                                      width: 1.0,
+                                                      style:
+                                                          BorderStyle.solid))),
+                                          child: const Text(
                                             '  Cancel  ',
                                             style: TextStyle(
                                               color: Color.fromARGB(
                                                   255, 201, 13, 13),
                                             ),
                                           ),
-                                          onPressed: () {
-                                            Navigator.of(context).pop();
-                                          },
-                                          style: ButtonStyle(
-                                              side: MaterialStateProperty.all(
-                                                  BorderSide(
-                                                      color:
-                                                          UIGuide.light_Purple,
-                                                      width: 1.0,
-                                                      style:
-                                                          BorderStyle.solid))),
                                         ),
                                       ),
                                       OutlinedButton(
-                                        child: Text(
-                                          'Confirm',
-                                          style: TextStyle(
-                                            color: Color.fromARGB(
-                                                255, 12, 162, 46),
-                                          ),
-                                        ),
                                         onPressed: () {
                                           value.attendanceDelete(
                                               divisionId, dateFinal, context);
@@ -1075,10 +1054,17 @@ class _AttendenceEntryState extends State<AttendenceEntry> {
                                         },
                                         style: ButtonStyle(
                                             side: MaterialStateProperty.all(
-                                                BorderSide(
+                                                const BorderSide(
                                                     color: UIGuide.light_Purple,
                                                     width: 1.0,
                                                     style: BorderStyle.solid))),
+                                        child: const Text(
+                                          'Confirm',
+                                          style: TextStyle(
+                                            color: Color.fromARGB(
+                                                255, 12, 162, 46),
+                                          ),
+                                        ),
                                       ),
                                     ],
                                   )

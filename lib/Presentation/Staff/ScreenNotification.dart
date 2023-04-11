@@ -112,8 +112,6 @@ class StaffNotificationReceived extends StatelessWidget {
                                 width: size.width - 4,
                                 decoration: const BoxDecoration(
                                     color: Color.fromARGB(255, 255, 255, 255),
-                                    // border: Border.all(
-                                    //     color: UIGuide.light_Purple),
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(10))),
                                 child: Padding(
@@ -124,7 +122,7 @@ class StaffNotificationReceived extends StatelessWidget {
                                     children: [
                                       Row(
                                         children: [
-                                          Container(
+                                          SizedBox(
                                             height: 25,
                                             width: 25,
                                             child: LottieBuilder.network(
@@ -192,7 +190,7 @@ class StaffNotificationReceived extends StatelessWidget {
                             ),
                           ),
                         ),
-                        //Column(
+                        //Column( coloumn end poin
                         //   children: [
                         //     kheight,
                         //     Container(
@@ -289,6 +287,7 @@ class StaffNotificationSendHistory extends StatelessWidget {
       p.historyList.clear();
     });
     var size = MediaQuery.of(context).size;
+
     return Consumer<StaffNotificationScreenProvider>(
       builder: (context, value, child) => value.loading
           ? spinkitLoader()

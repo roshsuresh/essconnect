@@ -658,6 +658,7 @@ class MarkEntryProvider with ChangeNotifier {
   clearStudentMEList() {
     studentMEList.clear();
     maxmarkList.clear();
+    examStatus = '';
     notifyListeners();
   }
 }

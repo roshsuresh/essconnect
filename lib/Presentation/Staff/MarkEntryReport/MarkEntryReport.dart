@@ -1,6 +1,10 @@
 import 'package:essconnect/Application/Staff_Providers/MarkReportProvider.dart';
+import 'package:essconnect/Domain/Staff/MarkEntryReport.dart';
 import 'package:essconnect/Presentation/Staff/MarkEntryReport/UASmarkEntry.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_ui/flutter_chat_ui.dart';
+import 'package:multi_select_flutter/multi_select_flutter.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import '../../../Constants.dart';
 import '../../../utils/constants.dart';
@@ -25,36 +29,77 @@ class _MarkEntryReportState extends State<MarkEntryReport> {
 
   final courseController1 = TextEditingController();
 
-  final divisionController = TextEditingController();
-
-  final divisionController1 = TextEditingController();
-
   final partController = TextEditingController();
 
   final partController1 = TextEditingController();
-
-  final subjectController = TextEditingController();
-
-  final subjectController1 = TextEditingController();
 
   final examController = TextEditingController();
 
   final examController1 = TextEditingController();
 
+  List divisionData = [];
+
+  String division = '';
+
+  List subjectData = [];
+
+  String subject = '';
+
+  bool checked = false;
+  bool checked1 = false;
+
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       var p = Provider.of<MarkEntryReportProvider_stf>(context, listen: false);
-      p.markReportcourse();
-      p.removeCourseAll();
-      p.courseClear();
-      p.divisionClear();
-      p.removeDivisionAll();
-      p.partClear();
-      p.removePartAll();
+      await p.courseClear();
+      await p.divisionClear();
+      await p.partClear();
+      await p.divisionClear();
+      await p.subjectClear();
+      subjectData.clear();
+      divisionData.clear();
+      await p.divisionCounter(0);
+      await p.subjectCounter(0);
       p.markReportStudList.clear();
+      courseController1.clear();
+      courseController.clear();
+      divisionData.clear();
+      partController.clear();
+      partController1.clear();
+      examController.clear();
+      examController1.clear();
+      checked = false;
+      checked1 = false;
+      await p.markReportcourse();
     });
+  }
+
+  Future<void> refresh() async {
+    await Future.delayed(Duration(seconds: 1));
+    var p = Provider.of<MarkEntryReportProvider_stf>(context, listen: false);
+
+    await p.courseClear();
+    await p.divisionClear();
+    await p.partClear();
+    await p.divisionClear();
+    await p.subjectClear();
+    subjectData.clear();
+    divisionData.clear();
+    await p.divisionCounter(0);
+    await p.subjectCounter(0);
+    p.markReportStudList.clear();
+    courseController1.clear();
+    courseController.clear();
+    divisionData.clear();
+    partController.clear();
+    partController1.clear();
+    examController.clear();
+    examController1.clear();
+    checked = false;
+    checked1 = false;
+    await p.markReportcourse();
   }
 
   @override
@@ -62,9 +107,23 @@ class _MarkEntryReportState extends State<MarkEntryReport> {
     var size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Mark Entry Report',
-          style: TextStyle(fontSize: 20),
+        title: Row(
+          children: [
+            const Spacer(),
+            const Text('Mark Entry Report'),
+            const Spacer(),
+            IconButton(
+                onPressed: () {
+                  Navigator.pushReplacement(
+                      context,
+                      PageTransition(
+                        type: PageTransitionType.rightToLeft,
+                        child: MarkEntryReport(),
+                        duration: const Duration(milliseconds: 300),
+                      ));
+                },
+                icon: const Icon(Icons.refresh))
+          ],
         ),
         titleSpacing: 00.0,
         centerTitle: true,
@@ -77,42 +136,35 @@ class _MarkEntryReportState extends State<MarkEntryReport> {
         ),
         backgroundColor: UIGuide.light_Purple,
       ),
-      body: ListView(
-        children: [
-          Row(
-            children: [
-              SizedBox(
-                height: 50,
-                width: MediaQuery.of(context).size.width * 0.49,
-                child: Consumer<MarkEntryReportProvider_stf>(
-                    builder: (context, snapshot, child) {
-                  return InkWell(
-                    onTap: () {
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return Dialog(
-                                child: Container(
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  ListView.builder(
+      body: RefreshIndicator(
+        strokeWidth: 4,
+        color: UIGuide.light_Purple,
+        onRefresh: () => refresh(),
+        child: ListView(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.46,
+                    child: Consumer<MarkEntryReportProvider_stf>(
+                        builder: (context, snapshot, child) {
+                      return InkWell(
+                        onTap: () {
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return Dialog(
+                                    child: LimitedBox(
+                                  maxHeight: size.height - 300,
+                                  child: ListView.builder(
                                       shrinkWrap: true,
                                       itemCount:
                                           snapshot.markReportCourseList.length,
                                       itemBuilder: (context, index) {
-                                        print(snapshot
-                                            .markReportCourseList.length);
                                         return ListTile(
-                                          selectedTileColor:
-                                              Colors.blue.shade100,
-                                          selectedColor: UIGuide.PRIMARY2,
-                                          selected: snapshot.isCourseSelected(
-                                              snapshot
-                                                  .markReportCourseList[index]),
                                           onTap: () async {
-                                            print(snapshot
-                                                .markReportCourseList.length);
                                             courseController.text = snapshot
                                                     .markReportCourseList[index]
                                                     .id ??
@@ -123,22 +175,26 @@ class _MarkEntryReportState extends State<MarkEntryReport> {
                                                 '--';
                                             courseId = courseController.text
                                                 .toString();
+                                            snapshot.divisionClear();
+                                            snapshot.divisionLen = 0;
+                                            divisionData.clear();
 
-                                            snapshot.addSelectedCourse(snapshot
-                                                .markReportCourseList[index]);
-                                            print(courseId);
-                                            // Provider.of<MarkEntryReportProvider_stf>(
-                                            await Provider.of<
-                                                        MarkEntryReportProvider_stf>(
-                                                    context,
-                                                    listen: false)
+                                            partController.clear();
+                                            partController1.clear();
+                                            snapshot.partClear();
+
+                                            examController.clear();
+                                            examController1.clear();
+                                            snapshot.examClear();
+
+                                            snapshot.subjectClear();
+                                            subjectData.clear();
+                                            snapshot.subjectLen = 0;
+
+                                            await snapshot
                                                 .markReportDivisionList(
                                                     courseId);
-                                            await Provider.of<
-                                                        MarkEntryReportProvider_stf>(
-                                                    context,
-                                                    listen: false)
-                                                .markReportPart(courseId);
+
                                             Navigator.of(context).pop();
                                           },
                                           title: Text(
@@ -149,191 +205,169 @@ class _MarkEntryReportState extends State<MarkEntryReport> {
                                           ),
                                         );
                                       }),
-                                ],
+                                ));
+                              });
+                        },
+                        child: Column(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                    color: const Color.fromARGB(255, 2, 50, 90),
+                                    width: 1),
                               ),
-                            ));
-                          });
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: 40,
-                            child: TextField(
-                              textAlign: TextAlign.center,
-                              controller: courseController1,
-                              decoration: const InputDecoration(
-                                filled: true,
-                                fillColor: Color.fromARGB(255, 238, 237, 237),
-                                border: OutlineInputBorder(),
-                                labelText: "Select Course",
-                                hintText: "Course",
+                              height: 50,
+                              child: TextField(
+                                textAlign: TextAlign.center,
+                                controller: courseController1,
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  contentPadding:
+                                      const EdgeInsets.only(left: 0, top: 0),
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.never,
+                                  fillColor:
+                                      const Color.fromARGB(255, 255, 255, 255),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                        color: Colors.white, width: 1.0),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    borderSide: const BorderSide(
+                                      color: Colors.white,
+                                      width: 2.0,
+                                    ),
+                                  ),
+                                  labelText: "  Select Course",
+                                  hintText: "   Select Course",
+                                ),
+                                readOnly: true,
+                                enabled: false,
                               ),
-                              enabled: false,
                             ),
+                          ],
+                        ),
+                      );
+                    }),
+                  ),
+                  const Spacer(),
+                  Consumer<MarkEntryReportProvider_stf>(
+                    builder: (context, value, child) => SizedBox(
+                      width: size.width * .46,
+                      height: 50,
+                      child: MultiSelectDialogField(
+                        items: value.divisionDrop,
+                        listType: MultiSelectListType.CHIP,
+                        title: const Text(
+                          "Select Division",
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                        selectedItemsTextStyle: const TextStyle(
+                            fontWeight: FontWeight.w900,
+                            color: UIGuide.light_Purple),
+                        confirmText: const Text(
+                          'OK',
+                          style: TextStyle(color: UIGuide.light_Purple),
+                        ),
+                        cancelText: const Text(
+                          'Cancel',
+                          style: TextStyle(color: UIGuide.light_Purple),
+                        ),
+                        separateSelectedItems: true,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(10)),
+                          border: Border.all(
+                            color: UIGuide.light_Purple,
+                            width: 1,
                           ),
-                          SizedBox(
-                            height: 0,
-                            child: TextField(
-                              textAlign: TextAlign.center,
-                              controller: courseController,
-                              enabled: false,
-                            ),
-                          ),
-                        ],
+                        ),
+                        buttonIcon: const Icon(
+                          Icons.arrow_drop_down_outlined,
+                          color: Colors.grey,
+                        ),
+                        buttonText: value.divisionLen == 0
+                            ? const Text(
+                                "Select Division",
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 16,
+                                ),
+                              )
+                            : Text(
+                                "   ${value.divisionLen.toString()} Selected",
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16,
+                                ),
+                              ),
+                        searchable: true,
+                        chipDisplay: MultiSelectChipDisplay.none(),
+                        onConfirm: (results) async {
+                          divisionData = [];
+                          for (var i = 0; i < results.length; i++) {
+                            MarkReportDivisions data =
+                                results[i] as MarkReportDivisions;
+                            print(data.text);
+                            print(data.value);
+                            divisionData.add(data.value);
+                            divisionData.map((e) => data.value);
+                            print("${divisionData.map((e) => data.value)}");
+                          }
+                          division = divisionData.join(',');
+                          await value.divisionCounter(results.length);
+                          await value.partClear();
+                          partController.clear();
+                          partController1.clear();
+
+                          examController.clear();
+                          examController1.clear();
+                          await value.examClear();
+
+                          await value.subjectClear();
+                          subjectData.clear();
+                          value.subjectLen = 0;
+                          await value.markReportPart(courseId);
+                          results.clear();
+                          print("data $division");
+                        },
                       ),
                     ),
-                  );
-                }),
+                  ),
+                ],
               ),
-              const Spacer(),
-              SizedBox(
-                height: 50,
-                width: MediaQuery.of(context).size.width * 0.49,
-                child: Consumer<MarkEntryReportProvider_stf>(
-                    builder: (context, snapshot, child) {
-                  return InkWell(
-                    onTap: () {
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return Dialog(
-                                child: Container(
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  ListView.builder(
-                                      shrinkWrap: true,
-                                      itemCount:
-                                          snapshot.markReportDivisions.length,
-                                      itemBuilder: (context, index) {
-                                        print(snapshot
-                                            .markReportDivisions.length);
-                                        return ListTile(
-                                          selectedTileColor:
-                                              Colors.blue.shade100,
-                                          selectedColor: UIGuide.PRIMARY2,
-                                          selected: snapshot.isDivisionSelected(
-                                              snapshot
-                                                  .markReportDivisions[index]),
-                                          onTap: () async {
-                                            print(snapshot
-                                                .markReportDivisions.length);
-                                            divisionController.text = snapshot
-                                                    .markReportDivisions[index]
-                                                    .value ??
-                                                '--';
-                                            divisionController1.text = snapshot
-                                                    .markReportDivisions[index]
-                                                    .text ??
-                                                '--';
-                                            courseId = courseController.text
-                                                .toString();
-                                            divisionId = divisionController.text
-                                                .toString();
-                                            divText = divisionController1.text
-                                                .toString();
-                                            snapshot.addSelectedDivision(
-                                                snapshot.markReportDivisions[
-                                                    index]);
-                                            print(courseId);
-                                            Provider.of<MarkEntryReportProvider_stf>(
-                                                    context,
-                                                    listen: false)
-                                                .markReportDivisions
-                                                .clear();
-                                            Navigator.of(context).pop();
-                                          },
-                                          title: Text(
-                                            snapshot.markReportDivisions[index]
-                                                    .text ??
-                                                '--',
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        );
-                                      }),
-                                ],
-                              ),
-                            ));
-                          });
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: 40,
-                            child: TextField(
-                              textAlign: TextAlign.center,
-                              controller: divisionController1,
-                              decoration: const InputDecoration(
-                                filled: true,
-                                fillColor: Color.fromARGB(255, 238, 237, 237),
-                                border: OutlineInputBorder(),
-                                labelText: "Select Division",
-                                hintText: "Division",
-                              ),
-                              enabled: false,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 0,
-                            child: TextField(
-                              textAlign: TextAlign.center,
-                              controller: divisionController,
-                              decoration: const InputDecoration(
-                                filled: true,
-                                fillColor: Color.fromARGB(255, 238, 237, 237),
-                                border: OutlineInputBorder(),
-                                labelText: "",
-                                hintText: "",
-                              ),
-                              enabled: false,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                }),
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              SizedBox(
-                height: 50,
-                width: MediaQuery.of(context).size.width * 0.49,
-                child: Consumer<MarkEntryReportProvider_stf>(
-                    builder: (context, snapshot, child) {
-                  return InkWell(
-                    onTap: () {
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return Dialog(
-                                child: Container(
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  ListView.builder(
+            ),
+            Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: Row(
+                children: [
+                  SizedBox(
+                    height: 50,
+                    width: MediaQuery.of(context).size.width * 0.46,
+                    child: Consumer<MarkEntryReportProvider_stf>(
+                        builder: (context, snapshot, child) {
+                      return InkWell(
+                        onTap: () {
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return Dialog(
+                                    child: LimitedBox(
+                                  maxHeight: size.height - 300,
+                                  child: ListView.builder(
                                       shrinkWrap: true,
                                       itemCount:
                                           snapshot.markReportPartList.length,
                                       itemBuilder: (context, index) {
-                                        print(
-                                            snapshot.markReportPartList.length);
                                         return ListTile(
-                                          selectedTileColor:
-                                              Colors.blue.shade100,
-                                          selectedColor: UIGuide.PRIMARY2,
-                                          selected: snapshot.isPartSelected(
-                                              snapshot
-                                                  .markReportPartList[index]),
                                           onTap: () async {
-                                            print(snapshot
-                                                .markReportPartList.length);
                                             partController.text = snapshot
                                                     .markReportPartList[index]
                                                     .value ??
@@ -344,21 +378,19 @@ class _MarkEntryReportState extends State<MarkEntryReport> {
                                                 '--';
                                             partId =
                                                 partController.text.toString();
-                                            snapshot.addSelectedPart(snapshot
-                                                .markReportPartList[index]);
-                                            print(courseId);
+                                            examController.clear();
+                                            examController1.clear();
+                                            snapshot.examClear();
 
-                                            Provider.of<MarkEntryReportProvider_stf>(
-                                                    context,
-                                                    listen: false)
-                                                .markReportPartList
-                                                .clear();
-                                            await Provider.of<
-                                                        MarkEntryReportProvider_stf>(
-                                                    context,
-                                                    listen: false)
-                                                .markReportSubject(courseId,
-                                                    divisionId, partId);
+                                            snapshot.subjectClear();
+                                            subjectData.clear();
+                                            snapshot.subjectLen = 0;
+
+                                            await snapshot.markReportExam(
+                                                courseId,
+                                                divisionData,
+                                                partId,
+                                                subjectData);
                                             Navigator.of(context).pop();
                                           },
                                           title: Text(
@@ -369,286 +401,343 @@ class _MarkEntryReportState extends State<MarkEntryReport> {
                                           ),
                                         );
                                       }),
-                                ],
+                                ));
+                              });
+                        },
+                        child: Column(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                    color: UIGuide.light_Purple, width: 1),
                               ),
-                            ));
-                          });
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: 40,
-                            child: TextField(
-                              textAlign: TextAlign.center,
-                              controller: partController1,
-                              decoration: const InputDecoration(
-                                filled: true,
-                                fillColor: Color.fromARGB(255, 238, 237, 237),
-                                border: OutlineInputBorder(),
-                                labelText: "Select Part",
-                                hintText: "Part",
+                              height: 50,
+                              child: TextField(
+                                textAlign: TextAlign.center,
+                                controller: partController1,
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  contentPadding:
+                                      const EdgeInsets.only(left: 0, top: 0),
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.never,
+                                  fillColor:
+                                      const Color.fromARGB(255, 255, 255, 255),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                        color: Colors.white, width: 2.0),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    borderSide: const BorderSide(
+                                      color: Colors.white,
+                                      width: 2.0,
+                                    ),
+                                  ),
+                                  labelText: "  Select Part",
+                                  hintText: "   Select Part",
+                                ),
+                                readOnly: true,
+                                enabled: false,
                               ),
-                              enabled: false,
                             ),
-                          ),
-                          SizedBox(
-                            height: 0,
-                            child: TextField(
-                              textAlign: TextAlign.center,
-                              controller: partController,
-                              decoration: const InputDecoration(
-                                filled: true,
-                                fillColor: Color.fromARGB(255, 238, 237, 237),
-                                border: OutlineInputBorder(),
-                                labelText: "",
-                                hintText: "",
+                          ],
+                        ),
+                      );
+                    }),
+                  ),
+                  const Spacer(),
+                  SizedBox(
+                    height: 50,
+                    width: MediaQuery.of(context).size.width * 0.46,
+                    child: Consumer<MarkEntryReportProvider_stf>(
+                        builder: (context, snapshot, child) {
+                      return InkWell(
+                        onTap: () {
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return Dialog(
+                                    child: Container(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      ListView.builder(
+                                          shrinkWrap: true,
+                                          itemCount: snapshot
+                                                  .markReportExamList.isEmpty
+                                              ? 0
+                                              : snapshot
+                                                  .markReportExamList.length,
+                                          itemBuilder: (context, index) {
+                                            return ListTile(
+                                              selectedTileColor:
+                                                  Colors.blue.shade100,
+                                              selectedColor: UIGuide.PRIMARY2,
+                                              onTap: () async {
+                                                examController1.text = snapshot
+                                                        .markReportExamList[
+                                                            index]
+                                                        .text ??
+                                                    '';
+                                                examController.text = snapshot
+                                                        .markReportExamList[
+                                                            index]
+                                                        .value ??
+                                                    '';
+                                                examId = examController.text
+                                                    .toString();
+
+                                                snapshot.subjectClear();
+                                                subjectData.clear();
+                                                snapshot.subjectLen = 0;
+
+                                                await Provider.of<
+                                                            MarkEntryReportProvider_stf>(
+                                                        context,
+                                                        listen: false)
+                                                    .markReportSubject(courseId,
+                                                        divisionData, partId);
+                                                Navigator.of(context).pop();
+                                              },
+                                              title: Text(
+                                                snapshot
+                                                        .markReportExamList[
+                                                            index]
+                                                        .text ??
+                                                    '--',
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            );
+                                          }),
+                                    ],
+                                  ),
+                                ));
+                              });
+                        },
+                        child: Column(
+                          children: [
+                            Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(
+                                    color: UIGuide.light_Purple, width: 1),
                               ),
-                              enabled: false,
+                              height: 50,
+                              child: TextField(
+                                textAlign: TextAlign.center,
+                                controller: examController1,
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  contentPadding:
+                                      const EdgeInsets.only(left: 0, top: 0),
+                                  floatingLabelBehavior:
+                                      FloatingLabelBehavior.never,
+                                  fillColor:
+                                      const Color.fromARGB(255, 255, 255, 255),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                        color: Colors.white, width: 1.0),
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    borderSide: const BorderSide(
+                                      color: Colors.white,
+                                      width: 2.0,
+                                    ),
+                                  ),
+                                  labelText: "  Select Exam",
+                                  hintText: "   Select Exam",
+                                ),
+                                readOnly: true,
+                                enabled: false,
+                              ),
                             ),
+                          ],
+                        ),
+                      );
+                    }),
+                  ),
+                ],
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: Row(
+                children: [
+                  Consumer<MarkEntryReportProvider_stf>(
+                    builder: (context, value, child) => SizedBox(
+                      width: size.width * .46,
+                      height: 50,
+                      child: MultiSelectDialogField(
+                        items: value.subjectDrop,
+                        listType: MultiSelectListType.CHIP,
+                        title: const Text(
+                          "Select Subject",
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                        selectedItemsTextStyle: const TextStyle(
+                            fontWeight: FontWeight.w900,
+                            color: UIGuide.light_Purple),
+                        confirmText: const Text(
+                          'OK',
+                          style: TextStyle(color: UIGuide.light_Purple),
+                        ),
+                        cancelText: const Text(
+                          'Cancel',
+                          style: TextStyle(color: UIGuide.light_Purple),
+                        ),
+                        separateSelectedItems: true,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(10)),
+                          border: Border.all(
+                            color: UIGuide.light_Purple,
+                            width: 1,
                           ),
-                        ],
+                        ),
+                        buttonIcon: const Icon(
+                          Icons.arrow_drop_down_outlined,
+                          color: Colors.grey,
+                        ),
+                        buttonText: value.subjectLen == 0
+                            ? const Text(
+                                "Select Subject",
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 16,
+                                ),
+                              )
+                            : Text(
+                                "   ${value.subjectLen.toString()} Selected",
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                        searchable: true,
+                        chipDisplay: MultiSelectChipDisplay.none(),
+                        onConfirm: (results) async {
+                          subjectData = [];
+                          for (var i = 0; i < results.length; i++) {
+                            MarkReportSubjectList data =
+                                results[i] as MarkReportSubjectList;
+                            print(data.text);
+                            print(data.value);
+                            subjectData.add(data.value);
+                            subjectData.map((e) => data.value);
+                            print("${subjectData.map((e) => data.value)}");
+                          }
+                          subject = subjectData.join(',');
+                          await value.subjectCounter(results.length);
+                          results.clear();
+
+                          print("data $subject");
+                        },
                       ),
                     ),
-                  );
-                }),
-              ),
-              const Spacer(),
-              SizedBox(
-                height: 50,
-                width: MediaQuery.of(context).size.width * 0.49,
-                child: Consumer<MarkEntryReportProvider_stf>(
-                    builder: (context, snapshot, child) {
-                  return InkWell(
-                    onTap: () {
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return Dialog(
-                                child: Container(
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  ListView.builder(
-                                      shrinkWrap: true,
-                                      itemCount: markReportSub!.length == null
-                                          ? 0
-                                          : markReportSub!.length,
-                                      itemBuilder: (context, index) {
-                                        print(markReportSub?.length);
-
-                                        return ListTile(
-                                          selectedTileColor:
-                                              Colors.blue.shade100,
-                                          selectedColor: UIGuide.PRIMARY2,
-                                          onTap: () async {
-                                            subjectController1.text =
-                                                markReportSub![index]['text'] ??
-                                                    '';
-                                            subjectController.text =
-                                                markReportSub![index]
-                                                        ['value'] ??
-                                                    '';
-                                            subjectId = subjectController.text
-                                                .toString();
-                                            subText = subjectController1.text
-                                                .toString();
-                                            await Provider.of<
-                                                        MarkEntryReportProvider_stf>(
-                                                    context,
-                                                    listen: false)
-                                                .markReportExam(
-                                                    courseId,
-                                                    divisionId,
-                                                    partId,
-                                                    subjectId);
-                                            Navigator.of(context).pop();
-                                          },
-                                          title: Text(
-                                            markReportSub![index]['text'] ??
-                                                '--',
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        );
-                                      }),
-                                ],
-                              ),
-                            ));
-                          });
+                  ),
+                  const Spacer(),
+                  Checkbox(
+                    activeColor: UIGuide.WHITE,
+                    checkColor: UIGuide.light_Purple,
+                    value: checked,
+                    onChanged: (value) async {
+                      setState(() {
+                        checked = value!;
+                      });
                     },
-                    child: Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: 40,
-                            child: TextField(
-                              textAlign: TextAlign.center,
-                              controller: subjectController1,
-                              decoration: const InputDecoration(
-                                filled: true,
-                                fillColor: Color.fromARGB(255, 238, 237, 237),
-                                border: OutlineInputBorder(),
-                                labelText: "Select Subject",
-                                hintText: "Subject",
-                              ),
-                              enabled: false,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 0,
-                            child: TextField(
-                              textAlign: TextAlign.center,
-                              controller: subjectController,
-                              decoration: const InputDecoration(
-                                filled: true,
-                                fillColor: Color.fromARGB(255, 238, 237, 237),
-                                border: OutlineInputBorder(),
-                                labelText: "",
-                                hintText: "",
-                              ),
-                              enabled: false,
-                            ),
-                          ),
-                        ],
+                  ),
+                  SizedBox(
+                    width: size.width * .35,
+                    height: 46,
+                    child: const Center(
+                      child: Text(
+                        'Show options Separately',
+                        style: TextStyle(fontSize: 14),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                  );
-                }),
+                  ),
+                  const Spacer(),
+                ],
               ),
-            ],
-          ),
-          Row(
-            children: [
-              SizedBox(
-                height: 50,
-                width: MediaQuery.of(context).size.width * 0.49,
-                child: Consumer<MarkEntryReportProvider_stf>(
-                    builder: (context, snapshot, child) {
-                  return InkWell(
-                    onTap: () {
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return Dialog(
-                                child: Container(
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  ListView.builder(
-                                      shrinkWrap: true,
-                                      itemCount: markRepoExam!.length == null
-                                          ? 0
-                                          : markRepoExam!.length,
-                                      itemBuilder: (context, index) {
-                                        print(markRepoExam?.length);
-
-                                        return ListTile(
-                                          selectedTileColor:
-                                              Colors.blue.shade100,
-                                          selectedColor: UIGuide.PRIMARY2,
-                                          onTap: () async {
-                                            examController1.text =
-                                                markRepoExam![index]['text'] ??
-                                                    '';
-                                            examController.text =
-                                                markRepoExam![index]['value'] ??
-                                                    '';
-                                            examId =
-                                                examController.text.toString();
-
-                                            await Provider.of<
-                                                        MarkEntryReportProvider_stf>(
-                                                    context,
-                                                    listen: false)
-                                                .markReportExam(
-                                                    courseId,
-                                                    divisionId,
-                                                    partId,
-                                                    subjectId);
-                                            Navigator.of(context).pop();
-                                          },
-                                          title: Text(
-                                            markRepoExam![index]['text'] ??
-                                                '--',
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        );
-                                      }),
-                                ],
-                              ),
-                            ));
-                          });
+            ),
+            Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: Row(
+                children: [
+                  Checkbox(
+                    activeColor: UIGuide.WHITE,
+                    checkColor: UIGuide.light_Purple,
+                    value: checked1,
+                    onChanged: (value) async {
+                      setState(() {
+                        checked1 = value!;
+                      });
                     },
-                    child: Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            height: 40,
-                            child: TextField(
-                              textAlign: TextAlign.center,
-                              controller: examController1,
-                              decoration: const InputDecoration(
-                                filled: true,
-                                fillColor: Color.fromARGB(255, 238, 237, 237),
-                                border: OutlineInputBorder(),
-                                labelText: "Select Exam",
-                                hintText: "Exam",
-                              ),
-                              enabled: false,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 0,
-                            width: 0,
-                            child: TextField(
-                              textAlign: TextAlign.center,
-                              controller: examController,
-                              decoration: const InputDecoration(
-                                filled: true,
-                                fillColor: Color.fromARGB(255, 238, 237, 237),
-                                border: OutlineInputBorder(),
-                                labelText: "",
-                                hintText: "",
-                              ),
-                              enabled: false,
-                            ),
-                          ),
-                        ],
+                  ),
+                  SizedBox(
+                    width: size.width * .35,
+                    height: 46,
+                    child: const Center(
+                      child: Text(
+                        'Show Subsubjects Separately',
+                        style: TextStyle(fontSize: 14),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                  );
-                }),
-              ),
-              const Spacer(),
-              MaterialButton(
-                color: UIGuide.light_Purple,
-                onPressed: () async {
-                  Provider.of<MarkEntryReportProvider_stf>(context,
-                          listen: false)
-                      .markReportStudList
-                      .clear();
+                  ),
+                  Spacer(),
+                  SizedBox(
+                    height: 48,
+                    width: MediaQuery.of(context).size.width * 0.46,
+                    child: MaterialButton(
+                      shape: const RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(10.0))),
+                      color: UIGuide.light_Purple,
+                      onPressed: () async {
+                        Provider.of<MarkEntryReportProvider_stf>(context,
+                                listen: false)
+                            .markReportStudList
+                            .clear();
 
-                  await Provider.of<MarkEntryReportProvider_stf>(context,
-                          listen: false)
-                      .markReportView(courseId, divisionId, partId, examId,
-                          subjectId, subText, divText);
-                },
-                child: const Text(
-                  'View',
-                  style: TextStyle(color: Colors.white),
-                ),
+                        await Provider.of<MarkEntryReportProvider_stf>(context,
+                                listen: false)
+                            .markReportView(courseId, divisionId, partId,
+                                examId, subjectId, subText, divText);
+                      },
+                      child: const Text(
+                        'View',
+                        style: TextStyle(
+                            letterSpacing: 2,
+                            color: UIGuide.WHITE,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              const Spacer(),
-            ],
-          ),
-          kheight20,
-          const UASmarkentryReport()
-        ],
+            ),
+            kheight20,
+            //const UASmarkentryReport()
+          ],
+        ),
       ),
     );
   }

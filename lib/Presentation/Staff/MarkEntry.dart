@@ -1115,7 +1115,7 @@ class _MarkEntryState extends State<MarkEntry> {
                               ),
                       ],
                     ),
-                    kheight20,
+                    //  kheight20,
                     Consumer<MarkEntryProvider>(
                         builder: (context, providerr, child) {
                       if (providerr.loading) {
@@ -1314,6 +1314,7 @@ class _MarkEntryState extends State<MarkEntry> {
                                                       height: 30,
                                                       width: 80,
                                                       child: TextField(
+                                                        focusNode: FocusNode(),
                                                         controller:
                                                             _controllers[index],
                                                         enabled: value
@@ -2791,8 +2792,7 @@ class _MarkEntryState extends State<MarkEntry> {
                                       markfieldController.text = pre;
                                       teMarkController
                                           .add(new TextEditingController());
-                                      ceMarkController
-                                          .add(new TextEditingController());
+
                                       practicalMarkController
                                           .add(new TextEditingController());
                                       teMarkController[index].text.isEmpty
@@ -4341,8 +4341,8 @@ class _MarkEntryState extends State<MarkEntry> {
                               ));
                         }
 ///////////////----------------------------------------------------------------------///////////////
-///////////////-----------------------     TE MARK -------------------------  --------///////////////
-///////////////----------------------------------------------------------------------///////////////
+///////////////-----------------------     TE MARK  --------------------------------///////////////
+///////////////--------------------------------------------------------------------///////////////
 
                         else if (providerr.maxmarkList[0].teMax != null &&
                             providerr.maxmarkList[0].peMax == null &&
@@ -8615,6 +8615,30 @@ class _MarkEntryState extends State<MarkEntry> {
                         );
                       }
                     }),
+
+                    value.examStatus == "Verified"
+                        ? Row(
+                            children: [
+                              Spacer(),
+                              const Text(
+                                'Verified ',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: UIGuide.light_Purple,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(
+                                  height: 20,
+                                  width: 20,
+                                  child: LottieBuilder.network(
+                                      'https://assets4.lottiefiles.com/packages/lf20_s3tatv3q.json')),
+                              Spacer(),
+                            ],
+                          )
+                        : SizedBox(
+                            height: 0,
+                            width: 0,
+                          )
                   ],
                 );
         },

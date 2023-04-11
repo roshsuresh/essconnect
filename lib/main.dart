@@ -7,6 +7,7 @@ import 'package:essconnect/Application/AdminProviders/ExamTTPtoviders.dart';
 import 'package:essconnect/Application/AdminProviders/chatProviders.dart';
 import 'package:essconnect/Application/Module%20Providers.dart/MobileAppCheckin.dart';
 import 'package:essconnect/Application/Staff_Providers/ExamTTProviderStaff.dart';
+import 'package:essconnect/Application/Staff_Providers/MissingReportProviders.dart';
 import 'package:essconnect/Application/Staff_Providers/NotificationCount.dart';
 import 'package:essconnect/Application/Staff_Providers/TimetableProvider.dart';
 import 'package:essconnect/Application/Staff_Providers/ToolMarkProvider.dart';
@@ -271,6 +272,7 @@ class _GjInfoTechState extends State<GjInfoTech> {
             create: (context) => TokenExpiryCheckProviders()),
         ChangeNotifierProvider(create: (context) => ChatProviders()),
         ChangeNotifierProvider(create: (context) => ToolMarkEntryProviders()),
+        ChangeNotifierProvider(create: (context) => MissingReportProviders()),
       ],
       child: MaterialApp(
         title: 'e-SS Connect',
@@ -322,7 +324,8 @@ class _SplashFuturePageState extends State<SplashFuturePage>
             context,
             MaterialPageRoute(builder: (context) => StudentHome()),
           );
-        } else if (data['role'] == "Teacher") {
+        } else if (data['role'] == "Teacher" ||
+            data['role'] == "NonTeachingStaff") {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => StaffHome()),

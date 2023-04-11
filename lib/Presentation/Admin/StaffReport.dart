@@ -76,7 +76,6 @@ class _TeachingStaffState extends State<TeachingStaff> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       var p = Provider.of<StaffReportProviders>(context, listen: false);
-
       p.staffReportt();
       p.clearStudentList();
     });

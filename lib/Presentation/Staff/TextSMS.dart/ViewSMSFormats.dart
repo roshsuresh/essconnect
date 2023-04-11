@@ -3,177 +3,6 @@ import 'package:essconnect/Constants.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'dart:async';
-
-class ListViewDemo extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() {
-    return ListViewDemoState();
-  }
-}
-
-class ListViewDemoState extends State<ListViewDemo> {
-  List<String> selectedItemValue = <String>[];
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text("ListView"),
-        ),
-        body: ListView(
-          children: [
-            Column(
-              children: <Widget>[
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      new SizedBox(
-                        width: 80,
-                        child: new TextField(
-                            decoration: InputDecoration(
-                                contentPadding: EdgeInsets.all(10))),
-                      ),
-                      SizedBox(
-                        width: 20.0,
-                      ),
-                      new SizedBox(
-                        width: 80,
-                        child: new TextField(
-                            decoration: InputDecoration(
-                                contentPadding: EdgeInsets.all(10))),
-                      ),
-                      SizedBox(
-                        width: 20.0,
-                      ),
-                      new SizedBox(
-                        width: 80,
-                        child: new TextField(
-                            decoration: InputDecoration(
-                                contentPadding: EdgeInsets.all(10))),
-                      ),
-                      SizedBox(
-                        width: 20.0,
-                      ),
-                      new SizedBox(
-                        width: 80,
-                        child: new TextField(
-                            decoration: InputDecoration(
-                                contentPadding: EdgeInsets.all(10))),
-                      ),
-                      SizedBox(
-                        width: 20.0,
-                      ),
-                      new SizedBox(
-                        width: 80,
-                        child: new TextField(
-                            decoration: InputDecoration(
-                                contentPadding: EdgeInsets.all(10))),
-                      ),
-                      SizedBox(
-                        width: 20.0,
-                      ),
-                      new SizedBox(
-                        width: 80,
-                        child: new TextField(
-                            decoration: InputDecoration(
-                                contentPadding: EdgeInsets.all(10))),
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ],
-        ));
-  }
-}
-
-List<DropdownMenuItem<String>> _dropDownItem() {
-  List<String> ddl = ["NONE", "1 YEAR", "2 YEAR"];
-  return ddl
-      .map((value) => DropdownMenuItem(
-            value: value,
-            child: Text(value),
-          ))
-      .toList();
-}
-
-class MyHomePageDemooo extends StatefulWidget {
-  const MyHomePageDemooo({Key? key}) : super(key: key);
-
-  @override
-  _MyHomePageDemoooState createState() => _MyHomePageDemoooState();
-}
-
-class _MyHomePageDemoooState extends State<MyHomePageDemooo> {
-  List categoryItemlist = [];
-
-  Future getAllCategory() async {
-    var baseUrl = "https://gssskhokhar.com/api/classes/";
-
-    http.Response response = await http.get(Uri.parse(baseUrl));
-
-    if (response.statusCode == 200) {
-      var jsonData = json.decode(response.body);
-      setState(() {
-        categoryItemlist = jsonData;
-      });
-    }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    getAllCategory();
-  }
-
-  var dropdownvalue;
-  var dropdownvalueSubject;
-  var subjectItemlist = [];
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("DropDown List"),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            DropdownButton(
-              hint: const Text('Selected grade'),
-              items: subjectItemlist.map((item) {
-                return DropdownMenuItem(
-                  value: item['ClassCode'].toString(),
-                  child: Text(item['ClassName'].toString()),
-                );
-              }).toList(),
-              onChanged: (newValSubject) {
-                setState(() {
-                  dropdownvalueSubject = newValSubject;
-                  print(newValSubject);
-                });
-              },
-              value: dropdownvalueSubject,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
 
 class Text_Matter_SMS extends StatelessWidget {
   Text_Matter_SMS({Key? key}) : super(key: key);
@@ -232,11 +61,7 @@ class Text_Matter_SMS extends StatelessWidget {
                                       shrinkWrap: true,
                                       itemCount: snapshot.smsFormatList.length,
                                       itemBuilder: (context, index) {
-                                        // print(snapshot
-
-                                        //     .attendenceInitialValues.length);
-
-                                        // value.removeCourseAll();
+                                        // print(snapshot.attendenceInitialValues.length);// value.removeCourseAll();
                                         return ListTile(
                                           selectedTileColor:
                                               const Color.fromARGB(
@@ -327,11 +152,11 @@ class Text_Matter_SMS extends StatelessWidget {
                 width: MediaQuery.of(context).size.width * 0.30,
                 child: MaterialButton(
                   onPressed: () {},
+                  color: UIGuide.light_Purple,
                   child: const Text(
                     'Preview',
                     style: TextStyle(color: Colors.white),
                   ),
-                  color: UIGuide.light_Purple,
                 ),
               ),
               kWidth,
@@ -350,11 +175,11 @@ class Text_Matter_SMS extends StatelessWidget {
             height: 50,
             child: MaterialButton(
               onPressed: () {},
+              color: UIGuide.light_Purple,
               child: const Text(
                 'Send',
                 style: TextStyle(color: Colors.white, fontSize: 18),
               ),
-              color: UIGuide.light_Purple,
             ),
           ),
         ),

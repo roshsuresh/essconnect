@@ -84,15 +84,16 @@ class StaffGalleryView extends StatelessWidget {
                                               border: Border.all(
                                                   color: const Color.fromARGB(
                                                       255, 219, 215, 215)),
-                                              borderRadius: const BorderRadius
-                                                      .only(
-                                                  topRight: Radius.circular(0),
-                                                  bottomRight:
-                                                      Radius.circular(40.0),
-                                                  topLeft:
-                                                      Radius.circular(40.0),
-                                                  bottomLeft:
-                                                      Radius.circular(0.0)),
+                                              borderRadius:
+                                                  const BorderRadius.only(
+                                                      topLeft:
+                                                          Radius.circular(40),
+                                                      bottomRight:
+                                                          Radius.circular(40),
+                                                      topRight:
+                                                          Radius.circular(0),
+                                                      bottomLeft:
+                                                          Radius.circular(0)),
                                             ),
                                           )),
                                           kWidth,
