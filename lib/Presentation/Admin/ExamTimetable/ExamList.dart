@@ -88,9 +88,9 @@ class ExamTTHistory extends StatelessWidget {
                                               .examlist[index].id
                                               .toString();
                                           await provider.examTTDelete(
-                                              event, context);
-                                          await provider.clearTTexamList();
-                                          await provider.getExamTimeTableList();
+                                              event, context, index);
+                                          // await provider.clearTTexamList();
+                                          // await provider.getExamTimeTableList();
                                         } else {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(

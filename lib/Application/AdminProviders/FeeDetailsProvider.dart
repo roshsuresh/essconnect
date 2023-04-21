@@ -36,7 +36,6 @@ class FeeDetailsProvider with ChangeNotifier {
       setLoading(true);
       Map<String, dynamic> data =
           jsonDecode(await response.stream.bytesToString());
-
       List<SearchStudReport> templist = List<SearchStudReport>.from(
           data["viewStudentReport"].map((x) => SearchStudReport.fromJson(x)));
       searchStudent.addAll(templist);
@@ -111,6 +110,7 @@ class FeeDetailsProvider with ChangeNotifier {
       allTotalDuePaidAmount = adm.allTotalDuePaidAmount;
       allTotalDueNetDueAmount = adm.allTotalDueNetDueAmount;
       allPaidAmount = adm.allPaidAmount;
+
       print(allTotalDueFineAmount);
 
 //general due

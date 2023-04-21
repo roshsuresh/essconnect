@@ -5,6 +5,7 @@ import 'dart:ui';
 import 'package:essconnect/utils/spinkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
@@ -16,10 +17,31 @@ import '../../utils/constants.dart';
 class ReportCard extends StatelessWidget {
   const ReportCard({Key? key}) : super(key: key);
 
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+  //     var p = Provider.of<FeesProvider>(context, listen: false);
+  //     p.busFeeList.clear();
+  //     p.feeList.clear();
+  //     p.feesData();
+  //     totalPartial = 0;
+  //     totallPartial = 0;
+  //     totalFeeCollect = 0;
+  //     partialBUS = 0;
+  //     partialFee = 0;
+  //     p.transactionList.clear();
+  //     p.gatewayName();
+  //   });
+  // }
+
   @override
   Widget build(BuildContext context) {
-    final _provider = Provider.of<ReportCardProvider>(context, listen: false);
-    _provider.getReportCard();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      final _provider = Provider.of<ReportCardProvider>(context, listen: false);
+      await _provider.clearReportCard();
+      await _provider.getReportCard();
+    });
     var size = MediaQuery.of(context).size;
     var height = size.height;
 
@@ -42,7 +64,7 @@ class ReportCard extends StatelessWidget {
         child: Consumer<ReportCardProvider>(
           builder: (context, value, child) => value.loading
               ? spinkitLoader()
-              : reportResponse.isEmpty
+              : value.reportcardList.isEmpty || value.reportcardList == null
                   ? LottieBuilder.network(
                       'https://assets2.lottiefiles.com/private_files/lf30_lkquf6qz.json')
                   : ListView(
@@ -52,7 +74,7 @@ class ReportCard extends StatelessWidget {
                         kheight20,
                         Table(
                           border: TableBorder.all(
-                              color: const Color.fromARGB(255, 245, 243, 243)),
+                              color: const Color.fromRGBO(245, 243, 243, 1)),
                           columnWidths: const {
                             0: FlexColumnWidth(3),
                             1: FlexColumnWidth(5),
@@ -101,17 +123,25 @@ class ReportCard extends StatelessWidget {
                             builder: (context, provider, child) {
                               return ListView.builder(
                                   shrinkWrap: true,
-                                  itemCount: reportResponse == null
+                                  itemCount: value.reportcardList.isEmpty
                                       ? 0
-                                      : reportResponse.length,
+                                      : value.reportcardList.length,
                                   itemBuilder: ((context, index) {
-                                    String time =
-                                        reportResponse[index]['uploadedDate'];
+                                    String time = value.reportcardList[index]
+                                            .uploadedDate ??
+                                        '--';
+                                    var updatedDate =
+                                        DateFormat('yyyy-MM-dd').parse(time);
+                                    String newDate = updatedDate.toString();
                                     String Corect_tym =
-                                        time.replaceRange(10, 20, '');
+                                        newDate.replaceRange(10, 23, '');
+
+                                    // String Corect_tym =
+                                    //     time.replaceRange(10, 20, '');
                                     print('dob $Corect_tym');
                                     String reAttach =
-                                        reportResponse[index]['fileId'];
+                                        value.reportcardList[index].fileId ??
+                                            '--';
                                     print(reAttach);
                                     return GestureDetector(
                                       onTap: () async {
@@ -169,12 +199,14 @@ class ReportCard extends StatelessWidget {
                                                   padding:
                                                       const EdgeInsets.all(8.0),
                                                   child: Text(
-                                                    reportResponse[index][
-                                                                'description'] ==
+                                                    value.reportcardList[index]
+                                                                .description ==
                                                             null
                                                         ? '----'
-                                                        : reportResponse[index]
-                                                                ['description']
+                                                        : value
+                                                            .reportcardList[
+                                                                index]
+                                                            .description
                                                             .toString(),
                                                     style: const TextStyle(
                                                         color: UIGuide
@@ -265,14 +297,26 @@ class _PdfDownloadState extends State<PdfDownload> {
 
   Future<void> requestDownload(String _url, String _name) async {
     final dir = await getExternalStorageDirectory();
-    var _localPath = dir!.path;
+    var _localPath;
+
+    //dir!.path;
+
+    // Directory downloadsDir;
+
+    // Check platform
+    if (Platform.isAndroid) {
+      _localPath = '/storage/emulated/0/Download';
+    } else if (Platform.isIOS) {
+      final dir = await getExternalStorageDirectory();
+      _localPath = dir!.path;
+    }
     print("pathhhh  $_localPath");
     final savedDir = Directory(_localPath);
     await savedDir.create(recursive: true).then((value) async {
       String? _taskid = await FlutterDownloader.enqueue(
         savedDir: _localPath,
         url: _url,
-        fileName: "$_name.pdf",
+        fileName: "Report Card $_name.pdf",
         showNotification: true,
         openFileFromNotification: true,
       );

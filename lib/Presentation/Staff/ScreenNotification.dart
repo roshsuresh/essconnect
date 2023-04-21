@@ -60,12 +60,18 @@ class StaffNotificationReceived extends StatelessWidget {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       var p =
           Provider.of<StaffNotificationScreenProvider>(context, listen: false);
+
       p.notificationList.clear();
+
       p.getNotificationReceived();
     });
+
     size = MediaQuery.of(context).size;
+
     height = size.height;
+
     width = size.width;
+
     return Consumer<StaffNotificationScreenProvider>(
       builder: (context, value, child) => value.loading
           ? spinkitLoader()
@@ -313,7 +319,6 @@ class StaffNotificationSendHistory extends StatelessWidget {
                             maxHeight: 100,
                             child: Container(
                               width: size.width,
-                              // height: 100,
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(5),
                                   border:

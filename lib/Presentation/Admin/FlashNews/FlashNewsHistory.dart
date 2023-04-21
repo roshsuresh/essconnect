@@ -85,10 +85,10 @@ class FlashNewsHistory extends StatelessWidget {
                                           .flashlist[index].id
                                           .toString();
                                       await provider.flashnewsDelete(
-                                          event, context);
+                                          event, context, index);
 
-                                      provider.flashlist.clear();
-                                      await provider.getFlashnewsList();
+                                      // provider.flashlist.clear();
+                                      // await provider.getFlashnewsList();
                                     },
                                     child: Container(
                                       width: 40,

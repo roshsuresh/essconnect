@@ -1488,6 +1488,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
     var size = MediaQuery.of(context).size;
     await Provider.of<FinalStatusProvider>(context, listen: false)
         .transactionStatus(orderID);
+
     showDialog(
         context: context,
         barrierDismissible: false,
@@ -2419,14 +2420,20 @@ class _PdfDownloadState extends State<PdfDownload> {
 
   Future<void> requestDownload(String _url, String _name) async {
     final dir = await getExternalStorageDirectory();
-    var _localPath = dir!.path;
+    var _localPath;
+    if (Platform.isAndroid) {
+      _localPath = '/storage/emulated/0/Download';
+    } else if (Platform.isIOS) {
+      final dir = await getExternalStorageDirectory();
+      _localPath = dir!.path;
+    }
     print("pathhhh  $_localPath");
     final savedDir = Directory(_localPath);
     await savedDir.create(recursive: true).then((value) async {
       String? _taskid = await FlutterDownloader.enqueue(
         savedDir: _localPath,
         url: _url,
-        fileName: "$_name.pdf",
+        fileName: "Payment Receipt $_name.pdf",
         showNotification: true,
         openFileFromNotification: true,
       );

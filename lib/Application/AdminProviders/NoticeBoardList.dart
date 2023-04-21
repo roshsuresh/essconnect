@@ -68,7 +68,7 @@ class NoticeBoardListAdminProvider with ChangeNotifier {
   }
   //delete Notice
 
-  Future noticeDelete(String eventID, BuildContext context) async {
+  Future noticeDelete(String eventID, BuildContext context, int indexx) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
 
     var headers = {
@@ -82,6 +82,7 @@ class NoticeBoardListAdminProvider with ChangeNotifier {
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 204) {
+      noticeList.removeAt(indexx);
       print(await response.stream.bytesToString());
       print('correct');
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

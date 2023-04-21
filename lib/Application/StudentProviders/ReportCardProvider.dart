@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../Domain/Student/ReportCardModel.dart';
 import '../../utils/constants.dart';
 
-List reportResponse = [];
+//List reportResponse = [];
 
 class ReportCardProvider with ChangeNotifier {
   String? name;
@@ -19,6 +19,12 @@ class ReportCardProvider with ChangeNotifier {
   bool get loading => _loading;
   setLoading(bool value) {
     _loading = value;
+    notifyListeners();
+  }
+
+  List<ReportCardModel> reportcardList = [];
+  clearReportCard() {
+    reportcardList.clear();
     notifyListeners();
   }
 
@@ -37,7 +43,10 @@ class ReportCardProvider with ChangeNotifier {
     try {
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        reportResponse = data['reportCardList'];
+        // reportResponse = data['reportCardList'];
+        List<ReportCardModel> templist = List<ReportCardModel>.from(
+            data['reportCardList'].map((x) => ReportCardModel.fromJson(x)));
+        reportcardList.addAll(templist);
         setLoading(false);
         notifyListeners();
       } else {

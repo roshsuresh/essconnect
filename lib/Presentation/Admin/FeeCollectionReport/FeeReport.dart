@@ -122,6 +122,7 @@ class _FeeReportState extends State<FeeReport> {
                                 width: 2,
                               ),
                             ),
+                            searchable: true,
                             buttonIcon: const Icon(
                               Icons.arrow_drop_down_outlined,
                               color: Colors.grey,
@@ -201,7 +202,7 @@ class _FeeReportState extends State<FeeReport> {
                           height: 50,
                           child: MultiSelectDialogField(
                             // height: 200,
-                            items: value.courseDrop,
+                            items: value.courseDrop, searchable: true,
                             listType: MultiSelectListType.CHIP,
                             title: const Text(
                               "Select Course",

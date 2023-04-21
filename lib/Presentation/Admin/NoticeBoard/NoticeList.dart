@@ -61,10 +61,7 @@ class NoticeBoardListAdmin extends StatelessWidget {
                                 const Spacer(),
                                 GestureDetector(
                                   onTap: () async {
-                                    Provider.of<NoticeBoardListAdminProvider>(
-                                            context,
-                                            listen: false)
-                                        .editNoticeList(even);
+                                    provider.editNoticeList(even);
                                     showDialog(
                                         context: context,
                                         builder: (context) {
@@ -318,10 +315,11 @@ class NoticeBoardListAdmin extends StatelessWidget {
                                   onTap: () async {
                                     String event = provider.noticeList[index].id
                                         .toString();
-                                    await provider.noticeDelete(event, context);
+                                    await provider.noticeDelete(
+                                        event, context, index);
 
-                                    provider.noticeList.clear();
-                                    await provider.getNoticeListView(context);
+                                    // provider.noticeList.clear();
+                                    // await provider.getNoticeListView(context);
                                   },
                                   child: const Icon(
                                     Icons.delete_forever_outlined,

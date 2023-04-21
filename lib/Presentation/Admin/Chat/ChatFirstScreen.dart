@@ -1,5 +1,5 @@
 import 'package:badges/badges.dart' as badges;
-import 'package:essconnect/Application/AdminProviders/chatProviders.dart';
+import 'package:essconnect/Application/AdminProviders/ChatProviders.dart';
 import 'package:essconnect/Constants.dart';
 import 'package:essconnect/Presentation/Admin/Chat/ChatContactListScreen.dart';
 import 'package:essconnect/Presentation/Admin/Chat/ChatPage.dart';
@@ -113,7 +113,8 @@ class _ChatFirstScreenState extends State<ChatFirstScreen> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => ChatPage()));
+                                        builder: (context) =>
+                                            const ChatPage()));
                               },
                               child: Container(
                                 height: 70,
@@ -149,7 +150,7 @@ class _ChatFirstScreenState extends State<ChatFirstScreen> {
                                                 initial.initialList[index]
                                                         .name ??
                                                     '--',
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                     fontSize: 16,
                                                     fontWeight: FontWeight.bold,
                                                     color:
@@ -165,7 +166,7 @@ class _ChatFirstScreenState extends State<ChatFirstScreen> {
                                                 initial.initialList[index]
                                                         .receiveUserRole ??
                                                     '--',
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                     color: Colors.grey),
                                                 overflow: TextOverflow.ellipsis,
                                                 maxLines: 1,
@@ -189,12 +190,12 @@ class _ChatFirstScreenState extends State<ChatFirstScreen> {
                                               initial.initialList[index]
                                                       .lastChatTime ??
                                                   '--',
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                   color: Color.fromARGB(
                                                       255, 117, 117, 117),
                                                   fontSize: 10),
                                             ),
-                                            SizedBox(
+                                            const SizedBox(
                                               height: 3,
                                             ),
                                             SizedBox(
@@ -219,23 +220,24 @@ class _ChatFirstScreenState extends State<ChatFirstScreen> {
                                                 badgeContent: Center(
                                                   child: Text(
                                                     countt.toString(),
-                                                    style: TextStyle(
+                                                    style: const TextStyle(
                                                         color: Colors.black,
                                                         fontSize: 10,
                                                         fontWeight:
                                                             FontWeight.bold),
                                                   ),
                                                 ),
-                                                badgeStyle: badges.BadgeStyle(
-                                                    shape: badges
-                                                        .BadgeShape.square,
-                                                    badgeColor:
-                                                        UIGuide.THEME_LIGHT,
-                                                    // UIGuide.light_Purple,
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                            Radius.circular(
-                                                                20))),
+                                                badgeStyle:
+                                                    const badges.BadgeStyle(
+                                                        shape: badges
+                                                            .BadgeShape.square,
+                                                        badgeColor:
+                                                            UIGuide.THEME_LIGHT,
+                                                        // UIGuide.light_Purple,
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    20))),
                                               ),
                                             ),
                                           ],

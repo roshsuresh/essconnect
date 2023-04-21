@@ -1,5 +1,5 @@
+import 'package:essconnect/Application/AdminProviders/ChatProviders.dart';
 import 'package:essconnect/Constants.dart';
-import 'package:essconnect/Application/AdminProviders/chatProviders.dart';
 import 'package:essconnect/Presentation/Admin/Chat/ChatPage.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:flutter/material.dart';
@@ -19,8 +19,10 @@ class _ChatContactListScreenState extends State<ChatContactListScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       var p = Provider.of<ChatProviders>(context, listen: false);
-      await p.clearcontactList();
+      // await p.clearcontactList();
+      // p.currentList.clear();
       await p.getChatcontactList();
+      await p.chatViewList();
     });
   }
 

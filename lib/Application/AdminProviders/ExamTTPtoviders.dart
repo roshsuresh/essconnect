@@ -295,7 +295,7 @@ class ExamTTAdmProviders with ChangeNotifier {
   }
 
   //delete
-  Future examTTDelete(String eventID, BuildContext context) async {
+  Future examTTDelete(String eventID, BuildContext context, int indexx) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
 
     var headers = {
@@ -311,6 +311,7 @@ class ExamTTAdmProviders with ChangeNotifier {
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
+      examlist.removeAt(indexx);
       print('correct');
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         elevation: 10,

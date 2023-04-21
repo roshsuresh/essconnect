@@ -2,7 +2,6 @@ import 'dart:developer';
 import 'dart:io';
 import 'dart:isolate';
 import 'dart:ui';
-
 import 'package:essconnect/utils/spinkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
@@ -89,7 +88,7 @@ class _ClasstimetableState extends State<Classtimetable> {
         child: Consumer<Timetableprovider>(
           builder: (context, value, child) => value.loading
               ? spinkitLoader()
-              : value.url == null
+              : value.url == null || value.url!.isEmpty
                   ? LottieBuilder.network(
                       'https://assets2.lottiefiles.com/private_files/lf30_lkquf6qz.json')
                   : ListView(
@@ -165,8 +164,6 @@ class _ClasstimetableState extends State<Classtimetable> {
                                           child: SizedBox(
                                             height: 25,
                                             width: 25,
-                                            // color: Color.fromARGB(
-                                            //     255, 241, 241, 241),
                                             child: LottieBuilder.network(
                                                         "https://assets2.lottiefiles.com/temp/lf20_D0nz3r.json") ==
                                                     null
@@ -425,14 +422,20 @@ class _PdfDownloaderState extends State<PdfDownloader> {
 
   Future<void> requestDownload(String _url, String _name) async {
     final dir = await getExternalStorageDirectory();
-    var _localPath = dir!.path;
+    var _localPath;
+    if (Platform.isAndroid) {
+      _localPath = '/storage/emulated/0/Download';
+    } else if (Platform.isIOS) {
+      final dir = await getExternalStorageDirectory();
+      _localPath = dir!.path;
+    }
     print("pathhhh  $_localPath");
     final savedDir = Directory(_localPath);
     await savedDir.create(recursive: true).then((value) async {
       String? _taskid = await FlutterDownloader.enqueue(
         savedDir: _localPath,
         url: _url,
-        fileName: "$_name.pdf",
+        fileName: "Timetable $_name.pdf",
         showNotification: true,
         openFileFromNotification: true,
       );
@@ -475,17 +478,112 @@ class _PdfDownloaderState extends State<PdfDownloader> {
   }
 }
 
-class PdfViewPages extends StatelessWidget {
+class PdfViewPages extends StatefulWidget {
   PdfViewPages({Key? key}) : super(key: key);
+  static void downloadCallback(
+      String id, DownloadTaskStatus status, int progress) {
+    final SendPort send =
+        IsolateNameServer.lookupPortByName('downloader_send_port')!;
+    send.send([id, status, progress]);
+  }
+
+  @override
+  State<PdfViewPages> createState() => _PdfViewPagesState();
+}
+
+class _PdfViewPagesState extends State<PdfViewPages> {
+  final ReceivePort _port = ReceivePort();
+  @override
+  void initState() {
+    super.initState();
+
+    IsolateNameServer.registerPortWithName(
+        _port.sendPort, 'downloader_send_port');
+    _port.listen((dynamic data) {
+      String id = data[0];
+      DownloadTaskStatus status = data[1];
+      int progress = data[2];
+
+      setState(() {});
+    });
+
+    FlutterDownloader.registerCallback(PdfViewPages.downloadCallback);
+  }
+
+  @pragma('vm:entry-point')
+  static void downloadCallback(
+      String id, DownloadTaskStatus status, int progress) {
+    final SendPort? send =
+        IsolateNameServer.lookupPortByName('downloader_send_port');
+    send!.send([id, status, progress]);
+  }
+
+  @override
+  void dispose() {
+    IsolateNameServer.removePortNameMapping('downloader_send_port');
+    super.dispose();
+  }
+
+  Future<void> requestDownload(String _url, String _name) async {
+    final dir = await getExternalStorageDirectory();
+    var _localPath;
+
+    //dir!.path;
+
+    // Directory downloadsDir;
+
+    if (Platform.isAndroid) {
+      _localPath = '/storage/emulated/0/Download';
+    } else if (Platform.isIOS) {
+      final dir = await getExternalStorageDirectory();
+      _localPath = dir!.path;
+    }
+    print("pathhhh  $_localPath");
+    final savedDir = Directory(_localPath);
+    await savedDir.create(recursive: true).then((value) async {
+      String? _taskid = await FlutterDownloader.enqueue(
+        savedDir: _localPath,
+        url: _url,
+        fileName: " $_name",
+        showNotification: true,
+        openFileFromNotification: true,
+      );
+      log("nweurlll $_url");
+
+      print(_taskid);
+    });
+  }
 
   bool isLoading = false;
 
-  imageview(String result) {
+  imageview(String result, String name) {
     return Scaffold(
+      backgroundColor: UIGuide.WHITE,
+      appBar: AppBar(
+        title: const Text('Timetable'),
+        titleSpacing: 00.0,
+        centerTitle: true,
+        toolbarHeight: 50.2,
+        toolbarOpacity: 0.8,
+        backgroundColor: UIGuide.light_Purple,
+        actions: [
+          Padding(
+              padding: const EdgeInsets.only(right: 15.0),
+              child: IconButton(
+                  onPressed: () async {
+                    await requestDownload(
+                      result == null ? '--' : result.toString(),
+                      name == null ? '---' : name.toString(),
+                    );
+                  },
+                  icon: const Icon(Icons.download_outlined))),
+        ],
+      ),
       body: isLoading
           ? spinkitLoader()
           : Center(
               child: PhotoView(
+                backgroundDecoration: BoxDecoration(color: UIGuide.WHITE),
                 loadingBuilder: (context, event) {
                   return spinkitLoader();
                 },
@@ -504,13 +602,16 @@ class PdfViewPages extends StatelessWidget {
     return Consumer<Timetableprovider>(builder: (context, provider, _) {
       if (provider.extension.toString() == '.jpg') {
         final imgResult = provider.url.toString();
-        return imageview(imgResult);
+        final name = provider.name.toString();
+        return imageview(imgResult, name);
       } else if (provider.extension.toString() == '.png') {
         final imgResult2 = provider.url.toString();
-        return imageview(imgResult2);
+        final name = provider.name.toString();
+        return imageview(imgResult2, name);
       } else if (provider.extension.toString() == '.jpeg') {
         final imgResult3 = provider.url.toString();
-        return imageview(imgResult3);
+        final name = provider.name.toString();
+        return imageview(imgResult3, name);
       } else {
         return const Scaffold(
           body: Center(
@@ -526,45 +627,6 @@ class PdfViewPages extends StatelessWidget {
 }
 
 ////////Exam
-
-// class ExamPdfView extends StatelessWidget {
-//   ExamPdfView({
-//     Key? key,
-//   }) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Consumer<Timetableprovider>(
-//       builder: (context, value, child) => Scaffold(
-//           appBar: AppBar(
-//             title: const Text('TimeTable'),
-//             titleSpacing: 00.0,
-//             centerTitle: true,
-//             toolbarHeight: 50.2,
-//             toolbarOpacity: 0.8,
-//             backgroundColor: UIGuide.light_Purple,
-//             actions: [
-//               Padding(
-//                 padding: const EdgeInsets.only(right: 15.0),
-//                 child: DownloandPdf(
-//                   isUseIcon: true,
-//                   pdfUrl: value.urlExam.toString().isEmpty
-//                       ? '--'
-//                       : value.urlExam.toString(),
-//                   fileNames: value.nameExam.toString().isEmpty
-//                       ? '---'
-//                       : value.nameExam.toString(),
-//                   color: Colors.white,
-//                 ),
-//               ),
-//             ],
-//           ),
-//           body: SfPdfViewer.network(
-//             value.urlExam == null ? '--' : value.urlExam.toString(),
-//           )),
-//     );
-//   }
-// }
 
 class ExamPdfView extends StatefulWidget {
   ExamPdfView({
@@ -616,14 +678,20 @@ class _ExamPdfViewState extends State<ExamPdfView> {
 
   Future<void> requestDownload(String _url, String _name) async {
     final dir = await getExternalStorageDirectory();
-    var _localPath = dir!.path;
+    var _localPath;
+    if (Platform.isAndroid) {
+      _localPath = '/storage/emulated/0/Download';
+    } else if (Platform.isIOS) {
+      final dir = await getExternalStorageDirectory();
+      _localPath = dir!.path;
+    }
     print("pathhhh  $_localPath");
     final savedDir = Directory(_localPath);
     await savedDir.create(recursive: true).then((value) async {
       String? _taskid = await FlutterDownloader.enqueue(
         savedDir: _localPath,
         url: _url,
-        fileName: "$_name.pdf",
+        fileName: "Exam Timetable $_name.pdf",
         showNotification: true,
         openFileFromNotification: true,
       );
@@ -670,17 +738,112 @@ class _ExamPdfViewState extends State<ExamPdfView> {
   }
 }
 
-class ImageViewExam extends StatelessWidget {
+class ImageViewExam extends StatefulWidget {
   ImageViewExam({Key? key}) : super(key: key);
+  static void downloadCallback(
+      String id, DownloadTaskStatus status, int progress) {
+    final SendPort send =
+        IsolateNameServer.lookupPortByName('downloader_send_port')!;
+    send.send([id, status, progress]);
+  }
+
+  @override
+  State<ImageViewExam> createState() => _ImageViewExamState();
+}
+
+class _ImageViewExamState extends State<ImageViewExam> {
+  final ReceivePort _port = ReceivePort();
+  @override
+  void initState() {
+    super.initState();
+
+    IsolateNameServer.registerPortWithName(
+        _port.sendPort, 'downloader_send_port');
+    _port.listen((dynamic data) {
+      String id = data[0];
+      DownloadTaskStatus status = data[1];
+      int progress = data[2];
+
+      setState(() {});
+    });
+
+    FlutterDownloader.registerCallback(ImageViewExam.downloadCallback);
+  }
+
+  @pragma('vm:entry-point')
+  static void downloadCallback(
+      String id, DownloadTaskStatus status, int progress) {
+    final SendPort? send =
+        IsolateNameServer.lookupPortByName('downloader_send_port');
+    send!.send([id, status, progress]);
+  }
+
+  @override
+  void dispose() {
+    IsolateNameServer.removePortNameMapping('downloader_send_port');
+    super.dispose();
+  }
+
+  Future<void> requestDownload(String _url, String _name) async {
+    final dir = await getExternalStorageDirectory();
+    var _localPath;
+
+    //dir!.path;
+
+    // Directory downloadsDir;
+
+    if (Platform.isAndroid) {
+      _localPath = '/storage/emulated/0/Download';
+    } else if (Platform.isIOS) {
+      final dir = await getExternalStorageDirectory();
+      _localPath = dir!.path;
+    }
+    print("pathhhh  $_localPath");
+    final savedDir = Directory(_localPath);
+    await savedDir.create(recursive: true).then((value) async {
+      String? _taskid = await FlutterDownloader.enqueue(
+        savedDir: _localPath,
+        url: _url,
+        fileName: " $_name",
+        showNotification: true,
+        openFileFromNotification: true,
+      );
+      log("nweurlll $_url");
+
+      print(_taskid);
+    });
+  }
 
   bool isLoading = false;
 
-  imageview(String result) {
+  imageview(String result, String name) {
     return Scaffold(
+      backgroundColor: UIGuide.WHITE,
+      appBar: AppBar(
+        title: const Text('Exam Timetable'),
+        titleSpacing: 00.0,
+        centerTitle: true,
+        toolbarHeight: 50.2,
+        toolbarOpacity: 0.8,
+        backgroundColor: UIGuide.light_Purple,
+        actions: [
+          Padding(
+              padding: const EdgeInsets.only(right: 15.0),
+              child: IconButton(
+                  onPressed: () async {
+                    await requestDownload(
+                      result == null ? '--' : result.toString(),
+                      name == null ? '---' : name.toString(),
+                    );
+                  },
+                  icon: const Icon(Icons.download_outlined))),
+        ],
+      ),
       body: isLoading
           ? spinkitLoader()
           : Center(
               child: PhotoView(
+                backgroundDecoration: BoxDecoration(color: UIGuide.WHITE),
                 loadingBuilder: (context, event) {
                   return spinkitLoader();
                 },
@@ -699,13 +862,16 @@ class ImageViewExam extends StatelessWidget {
     return Consumer<Timetableprovider>(builder: (context, provider, _) {
       if (provider.extensionExam.toString() == '.jpg') {
         final imgResult = provider.urlExam.toString();
-        return imageview(imgResult);
+        final name = provider.nameExam.toString();
+        return imageview(imgResult, name);
       } else if (provider.extensionExam.toString() == '.png') {
         final imgResult2 = provider.urlExam.toString();
-        return imageview(imgResult2);
+        final name = provider.nameExam.toString();
+        return imageview(imgResult2, name);
       } else if (provider.extensionExam.toString() == '.jpeg') {
         final imgResult3 = provider.urlExam.toString();
-        return imageview(imgResult3);
+        final name = provider.nameExam.toString();
+        return imageview(imgResult3, name);
       } else {
         return const Scaffold(
           body: Center(

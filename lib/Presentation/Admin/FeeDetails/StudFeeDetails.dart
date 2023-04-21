@@ -2,6 +2,7 @@ import 'package:essconnect/Constants.dart';
 import 'package:essconnect/utils/spinkit.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import '../../../Application/AdminProviders/FeeDetailsProvider.dart';
 import '../../../utils/constants.dart';
@@ -29,20 +30,12 @@ class _StudFeeDetailsState extends State<StudFeeDetails> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      await Provider.of<FeeDetailsProvider>(context, listen: false)
-          .generalPaidListClear();
-
-      await Provider.of<FeeDetailsProvider>(context, listen: false)
-          .busPaidListClear();
-
-      await Provider.of<FeeDetailsProvider>(context, listen: false)
-          .generalDueListClear();
-
-      await Provider.of<FeeDetailsProvider>(context, listen: false)
-          .busDueListClear();
-
-      await Provider.of<FeeDetailsProvider>(context, listen: false)
-          .getFeeDetails(widget.studid);
+      var p = Provider.of<FeeDetailsProvider>(context, listen: false);
+      await p.generalPaidListClear();
+      await p.busPaidListClear();
+      await p.generalDueListClear();
+      await p.busDueListClear();
+      await p.getFeeDetails(widget.studid);
     });
   }
 
@@ -50,6 +43,7 @@ class _StudFeeDetailsState extends State<StudFeeDetails> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('Student Fee Report'),
         titleSpacing: 20.0,
@@ -77,14 +71,11 @@ class _StudFeeDetailsState extends State<StudFeeDetails> {
                         ? Center(
                             child: Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                                height: size.height / 2,
-                                decoration: const BoxDecoration(
-                                    image: DecorationImage(
-                                  image: NetworkImage(
-                                      'https://i.pinimg.com/originals/49/e5/8d/49e58d5922019b8ec4642a2e2b9291c2.png'),
-                                  fit: BoxFit.fill,
-                                ))),
+                            child: SizedBox(
+                              height: size.height / 2,
+                              child: LottieBuilder.network(
+                                  'https://assets9.lottiefiles.com/packages/lf20_rdjfuniz.json'),
+                            ),
                           ))
                         : Scrollbar(
                             thickness: 5,
@@ -644,203 +635,340 @@ class _StudFeeDetailsState extends State<StudFeeDetails> {
                                                                             .all(
                                                                         4.0),
                                                                 child:
-                                                                    Container(
-                                                                  decoration: BoxDecoration(
-                                                                      border: Border.all(
-                                                                          color: UIGuide
-                                                                              .light_Purple),
-                                                                      borderRadius: const BorderRadius
-                                                                              .all(
-                                                                          Radius.circular(
-                                                                              10)),
-                                                                      color: UIGuide
-                                                                          .WHITE),
-                                                                  height: 63,
-                                                                  child:
-                                                                      Padding(
-                                                                    padding: const EdgeInsets
-                                                                            .only(
-                                                                        left:
-                                                                            8.0),
-                                                                    child:
-                                                                        Column(
-                                                                      children: [
-                                                                        Row(
-                                                                          children: [
-                                                                            const Text(
-                                                                              'Date: ',
-                                                                              style: TextStyle(color: UIGuide.light_Purple),
-                                                                            ),
-                                                                            Text(
-                                                                              finalDate.isEmpty ? '--' : finalDate,
-                                                                            ),
-                                                                            const Spacer(),
-                                                                            GestureDetector(
-                                                                              onTap: () {
-                                                                                showDialog(
-                                                                                    context: context,
-                                                                                    builder: (context) {
-                                                                                      return Dialog(
+                                                                    GestureDetector(
+                                                                  onTap: () {
+                                                                    print(
+                                                                        '------');
+                                                                    showDialog(
+                                                                        context:
+                                                                            context,
+                                                                        builder:
+                                                                            (context) {
+                                                                          return Dialog(
+                                                                              child: Container(
+                                                                            child:
+                                                                                SingleChildScrollView(
+                                                                              scrollDirection: Axis.vertical,
+                                                                              child: Column(
+                                                                                mainAxisSize: MainAxisSize.min,
+                                                                                children: [
+                                                                                  ListView.builder(
+                                                                                      physics: const BouncingScrollPhysics(),
+                                                                                      shrinkWrap: true,
+                                                                                      itemCount: generalPaid.generalFeePaidList[indexx].schoolFees!.isEmpty ? 0 : generalPaid.generalFeePaidList[indexx].schoolFees!.length,
+                                                                                      itemBuilder: (context, index) {
+                                                                                        return Padding(
+                                                                                          padding: const EdgeInsets.all(3.0),
                                                                                           child: Container(
-                                                                                        child: SingleChildScrollView(
-                                                                                          scrollDirection: Axis.vertical,
-                                                                                          child: Column(
-                                                                                            mainAxisSize: MainAxisSize.min,
-                                                                                            children: [
-                                                                                              ListView.builder(
-                                                                                                  physics: const BouncingScrollPhysics(),
-                                                                                                  shrinkWrap: true,
-                                                                                                  itemCount: generalPaid.generalFeePaidList[indexx].schoolFees!.isEmpty ? 0 : generalPaid.generalFeePaidList[indexx].schoolFees!.length,
-                                                                                                  itemBuilder: (context, index) {
-                                                                                                    return Padding(
-                                                                                                      padding: const EdgeInsets.all(3.0),
-                                                                                                      child: Container(
-                                                                                                        decoration: BoxDecoration(border: Border.all(color: UIGuide.light_Purple), borderRadius: const BorderRadius.all(Radius.circular(10)), color: UIGuide.WHITE),
-                                                                                                        height: 90,
-                                                                                                        child: Padding(
-                                                                                                          padding: const EdgeInsets.only(left: 8.0),
-                                                                                                          child: Column(
-                                                                                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                                            mainAxisAlignment: MainAxisAlignment.start,
-                                                                                                            children: [
-                                                                                                              Row(
-                                                                                                                children: [
-                                                                                                                  const Text('Installment Name: '),
-                                                                                                                  Flexible(
-                                                                                                                    child: RichText(
-                                                                                                                      overflow: TextOverflow.ellipsis,
-                                                                                                                      strutStyle: const StrutStyle(fontSize: 12.0),
-                                                                                                                      text: TextSpan(
-                                                                                                                        style: const TextStyle(color: Colors.black),
-                                                                                                                        text: generalPaid.generalFeePaidList[indexx].schoolFees![index].installmentname ?? '--',
-                                                                                                                      ),
-                                                                                                                    ),
-                                                                                                                  ),
-                                                                                                                ],
-                                                                                                              ),
-                                                                                                              const SizedBox(
-                                                                                                                height: 2,
-                                                                                                              ),
-                                                                                                              Row(
-                                                                                                                children: [
-                                                                                                                  const Text('Due Amount: '),
-                                                                                                                  Flexible(
-                                                                                                                    child: RichText(
-                                                                                                                      overflow: TextOverflow.ellipsis,
-                                                                                                                      strutStyle: const StrutStyle(fontSize: 12.0),
-                                                                                                                      text: TextSpan(
-                                                                                                                        style: const TextStyle(color: Colors.black),
-                                                                                                                        text: generalPaid.generalFeePaidList[indexx].schoolFees![index].dueAmount == null ? '0.00' : generalPaid.generalFeePaidList[indexx].schoolFees![index].dueAmount.toString(),
-                                                                                                                      ),
-                                                                                                                    ),
-                                                                                                                  ),
-                                                                                                                ],
-                                                                                                              ),
-                                                                                                              const SizedBox(
-                                                                                                                height: 2,
-                                                                                                              ),
-                                                                                                              Row(
-                                                                                                                children: [
-                                                                                                                  const Text('Concession Amount: '),
-                                                                                                                  Flexible(
-                                                                                                                    child: RichText(
-                                                                                                                      overflow: TextOverflow.ellipsis,
-                                                                                                                      strutStyle: const StrutStyle(fontSize: 12.0),
-                                                                                                                      text: TextSpan(
-                                                                                                                        style: const TextStyle(color: Colors.black),
-                                                                                                                        text: generalPaid.generalFeePaidList[indexx].schoolFees![index].concessionAmount == null ? '0.00' : generalPaid.generalFeePaidList[indexx].schoolFees![index].concessionAmount.toString(),
-                                                                                                                      ),
-                                                                                                                    ),
-                                                                                                                  ),
-                                                                                                                ],
-                                                                                                              ),
-                                                                                                              const SizedBox(
-                                                                                                                height: 2,
-                                                                                                              ),
-                                                                                                              Row(
-                                                                                                                children: [
-                                                                                                                  const Text('Fine Amount: '),
-                                                                                                                  Flexible(
-                                                                                                                    child: RichText(
-                                                                                                                      overflow: TextOverflow.ellipsis,
-                                                                                                                      strutStyle: const StrutStyle(fontSize: 12.0),
-                                                                                                                      text: TextSpan(
-                                                                                                                        style: const TextStyle(color: Colors.black),
-                                                                                                                        text: generalPaid.generalFeePaidList[indexx].schoolFees![index].fineAmount == null ? '0.00' : generalPaid.generalFeePaidList[indexx].schoolFees![index].fineAmount.toString(),
-                                                                                                                      ),
-                                                                                                                    ),
-                                                                                                                  ),
-                                                                                                                ],
-                                                                                                              ),
-                                                                                                              const SizedBox(
-                                                                                                                height: 2,
-                                                                                                              ),
-                                                                                                              Row(
-                                                                                                                children: [
-                                                                                                                  const Text('Paid: '),
-                                                                                                                  Flexible(
-                                                                                                                    child: RichText(
-                                                                                                                      overflow: TextOverflow.ellipsis,
-                                                                                                                      strutStyle: const StrutStyle(fontSize: 12.0),
-                                                                                                                      text: TextSpan(
-                                                                                                                        style: const TextStyle(color: Colors.black),
-                                                                                                                        text: generalPaid.generalFeePaidList[indexx].schoolFees![index].paidAmount == null ? '0.00' : generalPaid.generalFeePaidList[indexx].schoolFees![index].paidAmount.toString(),
-                                                                                                                      ),
-                                                                                                                    ),
-                                                                                                                  ),
-                                                                                                                ],
-                                                                                                              )
-                                                                                                            ],
+                                                                                            decoration: BoxDecoration(border: Border.all(color: UIGuide.light_Purple), borderRadius: const BorderRadius.all(Radius.circular(10)), color: UIGuide.WHITE),
+                                                                                            height: 90,
+                                                                                            child: Padding(
+                                                                                              padding: const EdgeInsets.only(left: 8.0),
+                                                                                              child: Column(
+                                                                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                                                                children: [
+                                                                                                  Row(
+                                                                                                    children: [
+                                                                                                      const Text('Installment Name: '),
+                                                                                                      Flexible(
+                                                                                                        child: RichText(
+                                                                                                          overflow: TextOverflow.ellipsis,
+                                                                                                          strutStyle: const StrutStyle(fontSize: 12.0),
+                                                                                                          text: TextSpan(
+                                                                                                            style: const TextStyle(color: Colors.black),
+                                                                                                            text: generalPaid.generalFeePaidList[indexx].schoolFees![index].installmentname ?? '--',
                                                                                                           ),
                                                                                                         ),
                                                                                                       ),
-                                                                                                    );
-                                                                                                  }),
-                                                                                            ],
+                                                                                                    ],
+                                                                                                  ),
+                                                                                                  const SizedBox(
+                                                                                                    height: 2,
+                                                                                                  ),
+                                                                                                  Row(
+                                                                                                    children: [
+                                                                                                      const Text('Due Amount: '),
+                                                                                                      Flexible(
+                                                                                                        child: RichText(
+                                                                                                          overflow: TextOverflow.ellipsis,
+                                                                                                          strutStyle: const StrutStyle(fontSize: 12.0),
+                                                                                                          text: TextSpan(
+                                                                                                            style: const TextStyle(color: Colors.black),
+                                                                                                            text: generalPaid.generalFeePaidList[indexx].schoolFees![index].dueAmount == null ? '0.00' : generalPaid.generalFeePaidList[indexx].schoolFees![index].dueAmount.toString(),
+                                                                                                          ),
+                                                                                                        ),
+                                                                                                      ),
+                                                                                                    ],
+                                                                                                  ),
+                                                                                                  const SizedBox(
+                                                                                                    height: 2,
+                                                                                                  ),
+                                                                                                  Row(
+                                                                                                    children: [
+                                                                                                      const Text('Concession Amount: '),
+                                                                                                      Flexible(
+                                                                                                        child: RichText(
+                                                                                                          overflow: TextOverflow.ellipsis,
+                                                                                                          strutStyle: const StrutStyle(fontSize: 12.0),
+                                                                                                          text: TextSpan(
+                                                                                                            style: const TextStyle(color: Colors.black),
+                                                                                                            text: generalPaid.generalFeePaidList[indexx].schoolFees![index].concessionAmount == null ? '0.00' : generalPaid.generalFeePaidList[indexx].schoolFees![index].concessionAmount.toString(),
+                                                                                                          ),
+                                                                                                        ),
+                                                                                                      ),
+                                                                                                    ],
+                                                                                                  ),
+                                                                                                  const SizedBox(
+                                                                                                    height: 2,
+                                                                                                  ),
+                                                                                                  Row(
+                                                                                                    children: [
+                                                                                                      const Text('Fine Amount: '),
+                                                                                                      Flexible(
+                                                                                                        child: RichText(
+                                                                                                          overflow: TextOverflow.ellipsis,
+                                                                                                          strutStyle: const StrutStyle(fontSize: 12.0),
+                                                                                                          text: TextSpan(
+                                                                                                            style: const TextStyle(color: Colors.black),
+                                                                                                            text: generalPaid.generalFeePaidList[indexx].schoolFees![index].fineAmount == null ? '0.00' : generalPaid.generalFeePaidList[indexx].schoolFees![index].fineAmount.toString(),
+                                                                                                          ),
+                                                                                                        ),
+                                                                                                      ),
+                                                                                                    ],
+                                                                                                  ),
+                                                                                                  const SizedBox(
+                                                                                                    height: 2,
+                                                                                                  ),
+                                                                                                  Row(
+                                                                                                    children: [
+                                                                                                      const Text('Paid: '),
+                                                                                                      Flexible(
+                                                                                                        child: RichText(
+                                                                                                          overflow: TextOverflow.ellipsis,
+                                                                                                          strutStyle: const StrutStyle(fontSize: 12.0),
+                                                                                                          text: TextSpan(
+                                                                                                            style: const TextStyle(color: Colors.black),
+                                                                                                            text: generalPaid.generalFeePaidList[indexx].schoolFees![index].paidAmount == null ? '0.00' : generalPaid.generalFeePaidList[indexx].schoolFees![index].paidAmount.toString(),
+                                                                                                          ),
+                                                                                                        ),
+                                                                                                      ),
+                                                                                                    ],
+                                                                                                  )
+                                                                                                ],
+                                                                                              ),
+                                                                                            ),
                                                                                           ),
-                                                                                        ),
-                                                                                      ));
-                                                                                    });
-                                                                              },
-                                                                              child: const Icon(
+                                                                                        );
+                                                                                      }),
+                                                                                ],
+                                                                              ),
+                                                                            ),
+                                                                          ));
+                                                                        });
+                                                                  },
+                                                                  child:
+                                                                      Container(
+                                                                    decoration: BoxDecoration(
+                                                                        border: Border.all(
+                                                                            color: UIGuide
+                                                                                .light_Purple),
+                                                                        borderRadius:
+                                                                            const BorderRadius.all(Radius.circular(
+                                                                                10)),
+                                                                        color: UIGuide
+                                                                            .WHITE),
+                                                                    height: 63,
+                                                                    child:
+                                                                        Padding(
+                                                                      padding: const EdgeInsets
+                                                                              .only(
+                                                                          left:
+                                                                              8.0),
+                                                                      child:
+                                                                          Column(
+                                                                        children: [
+                                                                          Row(
+                                                                            children: [
+                                                                              const Text(
+                                                                                'Date: ',
+                                                                                style: TextStyle(color: UIGuide.light_Purple),
+                                                                              ),
+                                                                              Text(
+                                                                                finalDate.isEmpty ? '--' : finalDate,
+                                                                              ),
+                                                                              const Spacer(),
+                                                                              // GestureDetector(
+                                                                              //   onTap: () {
+                                                                              //     showDialog(
+                                                                              //         context: context,
+                                                                              //         builder: (context) {
+                                                                              //           return Dialog(
+                                                                              //               child: Container(
+                                                                              //             child: SingleChildScrollView(
+                                                                              //               scrollDirection: Axis.vertical,
+                                                                              //               child: Column(
+                                                                              //                 mainAxisSize: MainAxisSize.min,
+                                                                              //                 children: [
+                                                                              //                   ListView.builder(
+                                                                              //                       physics: const BouncingScrollPhysics(),
+                                                                              //                       shrinkWrap: true,
+                                                                              //                       itemCount: generalPaid.generalFeePaidList[indexx].schoolFees!.isEmpty ? 0 : generalPaid.generalFeePaidList[indexx].schoolFees!.length,
+                                                                              //                       itemBuilder: (context, index) {
+                                                                              //                         return Padding(
+                                                                              //                           padding: const EdgeInsets.all(3.0),
+                                                                              //                           child: Container(
+                                                                              //                             decoration: BoxDecoration(border: Border.all(color: UIGuide.light_Purple), borderRadius: const BorderRadius.all(Radius.circular(10)), color: UIGuide.WHITE),
+                                                                              //                             height: 90,
+                                                                              //                             child: Padding(
+                                                                              //                               padding: const EdgeInsets.only(left: 8.0),
+                                                                              //                               child: Column(
+                                                                              //                                 crossAxisAlignment: CrossAxisAlignment.start,
+                                                                              //                                 mainAxisAlignment: MainAxisAlignment.start,
+                                                                              //                                 children: [
+                                                                              //                                   Row(
+                                                                              //                                     children: [
+                                                                              //                                       const Text('Installment Name: '),
+                                                                              //                                       Flexible(
+                                                                              //                                         child: RichText(
+                                                                              //                                           overflow: TextOverflow.ellipsis,
+                                                                              //                                           strutStyle: const StrutStyle(fontSize: 12.0),
+                                                                              //                                           text: TextSpan(
+                                                                              //                                             style: const TextStyle(color: Colors.black),
+                                                                              //                                             text: generalPaid.generalFeePaidList[indexx].schoolFees![index].installmentname ?? '--',
+                                                                              //                                           ),
+                                                                              //                                         ),
+                                                                              //                                       ),
+                                                                              //                                     ],
+                                                                              //                                   ),
+                                                                              //                                   const SizedBox(
+                                                                              //                                     height: 2,
+                                                                              //                                   ),
+                                                                              //                                   Row(
+                                                                              //                                     children: [
+                                                                              //                                       const Text('Due Amount: '),
+                                                                              //                                       Flexible(
+                                                                              //                                         child: RichText(
+                                                                              //                                           overflow: TextOverflow.ellipsis,
+                                                                              //                                           strutStyle: const StrutStyle(fontSize: 12.0),
+                                                                              //                                           text: TextSpan(
+                                                                              //                                             style: const TextStyle(color: Colors.black),
+                                                                              //                                             text: generalPaid.generalFeePaidList[indexx].schoolFees![index].dueAmount == null ? '0.00' : generalPaid.generalFeePaidList[indexx].schoolFees![index].dueAmount.toString(),
+                                                                              //                                           ),
+                                                                              //                                         ),
+                                                                              //                                       ),
+                                                                              //                                     ],
+                                                                              //                                   ),
+                                                                              //                                   const SizedBox(
+                                                                              //                                     height: 2,
+                                                                              //                                   ),
+                                                                              //                                   Row(
+                                                                              //                                     children: [
+                                                                              //                                       const Text('Concession Amount: '),
+                                                                              //                                       Flexible(
+                                                                              //                                         child: RichText(
+                                                                              //                                           overflow: TextOverflow.ellipsis,
+                                                                              //                                           strutStyle: const StrutStyle(fontSize: 12.0),
+                                                                              //                                           text: TextSpan(
+                                                                              //                                             style: const TextStyle(color: Colors.black),
+                                                                              //                                             text: generalPaid.generalFeePaidList[indexx].schoolFees![index].concessionAmount == null ? '0.00' : generalPaid.generalFeePaidList[indexx].schoolFees![index].concessionAmount.toString(),
+                                                                              //                                           ),
+                                                                              //                                         ),
+                                                                              //                                       ),
+                                                                              //                                     ],
+                                                                              //                                   ),
+                                                                              //                                   const SizedBox(
+                                                                              //                                     height: 2,
+                                                                              //                                   ),
+                                                                              //                                   Row(
+                                                                              //                                     children: [
+                                                                              //                                       const Text('Fine Amount: '),
+                                                                              //                                       Flexible(
+                                                                              //                                         child: RichText(
+                                                                              //                                           overflow: TextOverflow.ellipsis,
+                                                                              //                                           strutStyle: const StrutStyle(fontSize: 12.0),
+                                                                              //                                           text: TextSpan(
+                                                                              //                                             style: const TextStyle(color: Colors.black),
+                                                                              //                                             text: generalPaid.generalFeePaidList[indexx].schoolFees![index].fineAmount == null ? '0.00' : generalPaid.generalFeePaidList[indexx].schoolFees![index].fineAmount.toString(),
+                                                                              //                                           ),
+                                                                              //                                         ),
+                                                                              //                                       ),
+                                                                              //                                     ],
+                                                                              //                                   ),
+                                                                              //                                   const SizedBox(
+                                                                              //                                     height: 2,
+                                                                              //                                   ),
+                                                                              //                                   Row(
+                                                                              //                                     children: [
+                                                                              //                                       const Text('Paid: '),
+                                                                              //                                       Flexible(
+                                                                              //                                         child: RichText(
+                                                                              //                                           overflow: TextOverflow.ellipsis,
+                                                                              //                                           strutStyle: const StrutStyle(fontSize: 12.0),
+                                                                              //                                           text: TextSpan(
+                                                                              //                                             style: const TextStyle(color: Colors.black),
+                                                                              //                                             text: generalPaid.generalFeePaidList[indexx].schoolFees![index].paidAmount == null ? '0.00' : generalPaid.generalFeePaidList[indexx].schoolFees![index].paidAmount.toString(),
+                                                                              //                                           ),
+                                                                              //                                         ),
+                                                                              //                                       ),
+                                                                              //                                     ],
+                                                                              //                                   )
+                                                                              //                                 ],
+                                                                              //                               ),
+                                                                              //                             ),
+                                                                              //                           ),
+                                                                              //                         );
+                                                                              //                       }),
+                                                                              //                 ],
+                                                                              //               ),
+                                                                              //             ),
+                                                                              //           ));
+                                                                              //         });
+                                                                              //   },
+                                                                              //   child: const Icon(
+                                                                              //     Icons.info_outline_rounded,
+                                                                              //     //  size: 13,
+                                                                              //   ),
+                                                                              // ),
+                                                                              const Icon(
                                                                                 Icons.info_outline_rounded,
-                                                                                //  size: 13,
+                                                                                size: 18,
                                                                               ),
-                                                                            ),
-                                                                            kWidth,
-                                                                          ],
-                                                                        ),
-                                                                        Row(
-                                                                          children: [
-                                                                            const Text(
-                                                                              'Txn ID: ',
-                                                                              style: TextStyle(color: UIGuide.light_Purple),
-                                                                            ),
-                                                                            Flexible(
-                                                                              child: RichText(
-                                                                                overflow: TextOverflow.ellipsis,
-                                                                                strutStyle: const StrutStyle(fontSize: 12.0),
-                                                                                text: TextSpan(style: const TextStyle(color: Colors.black), text: generalPaid.generalFeePaidList[indexx].transactionId ?? '--'),
+                                                                              kWidth,
+                                                                            ],
+                                                                          ),
+                                                                          Row(
+                                                                            children: [
+                                                                              const Text(
+                                                                                'Txn ID: ',
+                                                                                style: TextStyle(color: UIGuide.light_Purple),
                                                                               ),
-                                                                            ),
-                                                                          ],
-                                                                        ),
-                                                                        const SizedBox(
-                                                                          height:
-                                                                              2,
-                                                                        ),
-                                                                        Row(
-                                                                          children: [
-                                                                            const Text(
-                                                                              'Paid Amount: ',
-                                                                              style: TextStyle(color: UIGuide.light_Purple),
-                                                                            ),
-                                                                            Text(
-                                                                              generalPaid.generalFeePaidList[indexx].totalPaidAmount == null ? "0.00" : generalPaid.generalFeePaidList[indexx].totalPaidAmount.toString(),
-                                                                            ),
-                                                                          ],
-                                                                        ),
-                                                                      ],
+                                                                              Flexible(
+                                                                                child: RichText(
+                                                                                  overflow: TextOverflow.ellipsis,
+                                                                                  strutStyle: const StrutStyle(fontSize: 12.0),
+                                                                                  text: TextSpan(style: const TextStyle(color: Colors.black), text: generalPaid.generalFeePaidList[indexx].transactionId ?? '--'),
+                                                                                ),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                          const SizedBox(
+                                                                            height:
+                                                                                2,
+                                                                          ),
+                                                                          Row(
+                                                                            children: [
+                                                                              const Text(
+                                                                                'Paid Amount: ',
+                                                                                style: TextStyle(color: UIGuide.light_Purple),
+                                                                              ),
+                                                                              Text(
+                                                                                generalPaid.generalFeePaidList[indexx].totalPaidAmount == null ? "0.00" : generalPaid.generalFeePaidList[indexx].totalPaidAmount.toString(),
+                                                                              ),
+                                                                            ],
+                                                                          ),
+                                                                        ],
+                                                                      ),
                                                                     ),
                                                                   ),
                                                                 ),
@@ -917,171 +1045,287 @@ class _StudFeeDetailsState extends State<StudFeeDetails> {
 
                                                                             return Padding(
                                                                               padding: const EdgeInsets.all(4.0),
-                                                                              child: Container(
-                                                                                decoration: BoxDecoration(border: Border.all(color: UIGuide.light_Purple), borderRadius: const BorderRadius.all(Radius.circular(10)), color: UIGuide.WHITE),
-                                                                                height: 60,
-                                                                                child: Padding(
-                                                                                  padding: const EdgeInsets.only(left: 8.0),
-                                                                                  child: Column(
-                                                                                    children: [
-                                                                                      Row(
-                                                                                        children: [
-                                                                                          const Text(
-                                                                                            'Date: ',
-                                                                                            style: TextStyle(color: UIGuide.light_Purple),
-                                                                                          ),
-                                                                                          Text(
-                                                                                            finalDate.isEmpty ? '--' : finalDate,
-                                                                                          ),
-                                                                                          const Spacer(),
-                                                                                          GestureDetector(
-                                                                                            onTap: () {
-                                                                                              showDialog(
-                                                                                                  context: context,
-                                                                                                  builder: (context) {
-                                                                                                    return Dialog(
+                                                                              child: GestureDetector(
+                                                                                onTap: () {
+                                                                                  showDialog(
+                                                                                      context: context,
+                                                                                      builder: (context) {
+                                                                                        return Dialog(
+                                                                                            child: Container(
+                                                                                          child: SingleChildScrollView(
+                                                                                            scrollDirection: Axis.vertical,
+                                                                                            child: Column(
+                                                                                              mainAxisSize: MainAxisSize.min,
+                                                                                              children: [
+                                                                                                ListView.builder(
+                                                                                                    physics: const BouncingScrollPhysics(),
+                                                                                                    shrinkWrap: true,
+                                                                                                    itemCount: busPaid.busFeePaidList[indexx].busFees!.isEmpty ? 0 : busPaid.busFeePaidList[indexx].busFees!.length,
+                                                                                                    itemBuilder: (context, index) {
+                                                                                                      return Padding(
+                                                                                                        padding: const EdgeInsets.all(3.0),
                                                                                                         child: Container(
-                                                                                                      child: SingleChildScrollView(
-                                                                                                        scrollDirection: Axis.vertical,
-                                                                                                        child: Column(
-                                                                                                          mainAxisSize: MainAxisSize.min,
-                                                                                                          children: [
-                                                                                                            ListView.builder(
-                                                                                                                physics: const BouncingScrollPhysics(),
-                                                                                                                shrinkWrap: true,
-                                                                                                                itemCount: busPaid.busFeePaidList[indexx].busFees!.isEmpty ? 0 : busPaid.busFeePaidList[indexx].busFees!.length,
-                                                                                                                itemBuilder: (context, index) {
-                                                                                                                  return Padding(
-                                                                                                                    padding: const EdgeInsets.all(3.0),
-                                                                                                                    child: Container(
-                                                                                                                      decoration: BoxDecoration(border: Border.all(color: UIGuide.light_Purple), borderRadius: const BorderRadius.all(Radius.circular(10)), color: UIGuide.WHITE),
-                                                                                                                      height: 80,
-                                                                                                                      child: Center(
-                                                                                                                        child: Padding(
-                                                                                                                          padding: const EdgeInsets.only(left: 4.0),
-                                                                                                                          child: Column(
-                                                                                                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                                                            mainAxisAlignment: MainAxisAlignment.start,
-                                                                                                                            children: [
-                                                                                                                              Row(
-                                                                                                                                children: [
-                                                                                                                                  const Text('Installment Name: '),
-                                                                                                                                  Flexible(
-                                                                                                                                    child: RichText(
-                                                                                                                                      overflow: TextOverflow.ellipsis,
-                                                                                                                                      strutStyle: const StrutStyle(fontSize: 12.0),
-                                                                                                                                      text: TextSpan(
-                                                                                                                                        style: const TextStyle(color: Colors.black),
-                                                                                                                                        text: busPaid.busFeePaidList[indexx].busFees![index].installmentname ?? '--',
-                                                                                                                                      ),
-                                                                                                                                    ),
-                                                                                                                                  ),
-                                                                                                                                ],
-                                                                                                                              ),
-                                                                                                                              const SizedBox(
-                                                                                                                                height: 2,
-                                                                                                                              ),
-                                                                                                                              Row(
-                                                                                                                                children: [
-                                                                                                                                  const Text('Due Amount: '),
-                                                                                                                                  Flexible(
-                                                                                                                                    child: RichText(
-                                                                                                                                      overflow: TextOverflow.ellipsis,
-                                                                                                                                      strutStyle: const StrutStyle(fontSize: 12.0),
-                                                                                                                                      text: TextSpan(
-                                                                                                                                        style: const TextStyle(color: Colors.black),
-                                                                                                                                        text: busPaid.busFeePaidList[indexx].busFees![index].dueAmount == null ? '--' : busPaid.busFeePaidList[indexx].busFees![index].dueAmount.toString(),
-                                                                                                                                      ),
-                                                                                                                                    ),
-                                                                                                                                  ),
-                                                                                                                                ],
-                                                                                                                              ),
-                                                                                                                              const SizedBox(
-                                                                                                                                height: 2,
-                                                                                                                              ),
-                                                                                                                              Row(
-                                                                                                                                children: [
-                                                                                                                                  const Text('Fine Amount: '),
-                                                                                                                                  Flexible(
-                                                                                                                                    child: RichText(
-                                                                                                                                      overflow: TextOverflow.ellipsis,
-                                                                                                                                      strutStyle: const StrutStyle(fontSize: 12.0),
-                                                                                                                                      text: TextSpan(
-                                                                                                                                        style: const TextStyle(color: Colors.black),
-                                                                                                                                        text: busPaid.busFeePaidList[indexx].busFees![index].fineAmount == null ? '--' : busPaid.busFeePaidList[indexx].busFees![index].fineAmount.toString(),
-                                                                                                                                      ),
-                                                                                                                                    ),
-                                                                                                                                  ),
-                                                                                                                                ],
-                                                                                                                              ),
-                                                                                                                              const SizedBox(
-                                                                                                                                height: 2,
-                                                                                                                              ),
-                                                                                                                              Row(
-                                                                                                                                children: [
-                                                                                                                                  const Text(' Paid: '),
-                                                                                                                                  Flexible(
-                                                                                                                                    child: RichText(
-                                                                                                                                      overflow: TextOverflow.ellipsis,
-                                                                                                                                      strutStyle: const StrutStyle(fontSize: 12.0),
-                                                                                                                                      text: TextSpan(
-                                                                                                                                        style: const TextStyle(color: Colors.black),
-                                                                                                                                        text: busPaid.busFeePaidList[indexx].busFees![index].paidAmount == null ? '--' : busPaid.busFeePaidList[indexx].busFees![index].paidAmount.toString(),
-                                                                                                                                      ),
-                                                                                                                                    ),
-                                                                                                                                  ),
-                                                                                                                                ],
-                                                                                                                              )
-                                                                                                                            ],
+                                                                                                          decoration: BoxDecoration(border: Border.all(color: UIGuide.light_Purple), borderRadius: const BorderRadius.all(Radius.circular(10)), color: UIGuide.WHITE),
+                                                                                                          height: 80,
+                                                                                                          child: Center(
+                                                                                                            child: Padding(
+                                                                                                              padding: const EdgeInsets.only(left: 4.0),
+                                                                                                              child: Column(
+                                                                                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                                                                                children: [
+                                                                                                                  Row(
+                                                                                                                    children: [
+                                                                                                                      const Text('Installment Name: '),
+                                                                                                                      Flexible(
+                                                                                                                        child: RichText(
+                                                                                                                          overflow: TextOverflow.ellipsis,
+                                                                                                                          strutStyle: const StrutStyle(fontSize: 12.0),
+                                                                                                                          text: TextSpan(
+                                                                                                                            style: const TextStyle(color: Colors.black),
+                                                                                                                            text: busPaid.busFeePaidList[indexx].busFees![index].installmentname ?? '--',
                                                                                                                           ),
                                                                                                                         ),
                                                                                                                       ),
-                                                                                                                    ),
-                                                                                                                  );
-                                                                                                                }),
-                                                                                                          ],
+                                                                                                                    ],
+                                                                                                                  ),
+                                                                                                                  const SizedBox(
+                                                                                                                    height: 2,
+                                                                                                                  ),
+                                                                                                                  Row(
+                                                                                                                    children: [
+                                                                                                                      const Text('Due Amount: '),
+                                                                                                                      Flexible(
+                                                                                                                        child: RichText(
+                                                                                                                          overflow: TextOverflow.ellipsis,
+                                                                                                                          strutStyle: const StrutStyle(fontSize: 12.0),
+                                                                                                                          text: TextSpan(
+                                                                                                                            style: const TextStyle(color: Colors.black),
+                                                                                                                            text: busPaid.busFeePaidList[indexx].busFees![index].dueAmount == null ? '--' : busPaid.busFeePaidList[indexx].busFees![index].dueAmount.toString(),
+                                                                                                                          ),
+                                                                                                                        ),
+                                                                                                                      ),
+                                                                                                                    ],
+                                                                                                                  ),
+                                                                                                                  const SizedBox(
+                                                                                                                    height: 2,
+                                                                                                                  ),
+                                                                                                                  Row(
+                                                                                                                    children: [
+                                                                                                                      const Text('Fine Amount: '),
+                                                                                                                      Flexible(
+                                                                                                                        child: RichText(
+                                                                                                                          overflow: TextOverflow.ellipsis,
+                                                                                                                          strutStyle: const StrutStyle(fontSize: 12.0),
+                                                                                                                          text: TextSpan(
+                                                                                                                            style: const TextStyle(color: Colors.black),
+                                                                                                                            text: busPaid.busFeePaidList[indexx].busFees![index].fineAmount == null ? '--' : busPaid.busFeePaidList[indexx].busFees![index].fineAmount.toString(),
+                                                                                                                          ),
+                                                                                                                        ),
+                                                                                                                      ),
+                                                                                                                    ],
+                                                                                                                  ),
+                                                                                                                  const SizedBox(
+                                                                                                                    height: 2,
+                                                                                                                  ),
+                                                                                                                  Row(
+                                                                                                                    children: [
+                                                                                                                      const Text(' Paid: '),
+                                                                                                                      Flexible(
+                                                                                                                        child: RichText(
+                                                                                                                          overflow: TextOverflow.ellipsis,
+                                                                                                                          strutStyle: const StrutStyle(fontSize: 12.0),
+                                                                                                                          text: TextSpan(
+                                                                                                                            style: const TextStyle(color: Colors.black),
+                                                                                                                            text: busPaid.busFeePaidList[indexx].busFees![index].paidAmount == null ? '--' : busPaid.busFeePaidList[indexx].busFees![index].paidAmount.toString(),
+                                                                                                                          ),
+                                                                                                                        ),
+                                                                                                                      ),
+                                                                                                                    ],
+                                                                                                                  )
+                                                                                                                ],
+                                                                                                              ),
+                                                                                                            ),
+                                                                                                          ),
                                                                                                         ),
-                                                                                                      ),
-                                                                                                    ));
-                                                                                                  });
-                                                                                            },
-                                                                                            child: const Icon(
+                                                                                                      );
+                                                                                                    }),
+                                                                                              ],
+                                                                                            ),
+                                                                                          ),
+                                                                                        ));
+                                                                                      });
+                                                                                },
+                                                                                child: Container(
+                                                                                  decoration: BoxDecoration(border: Border.all(color: UIGuide.light_Purple), borderRadius: const BorderRadius.all(Radius.circular(10)), color: UIGuide.WHITE),
+                                                                                  height: 60,
+                                                                                  child: Padding(
+                                                                                    padding: const EdgeInsets.only(left: 8.0),
+                                                                                    child: Column(
+                                                                                      children: [
+                                                                                        Row(
+                                                                                          children: [
+                                                                                            const Text(
+                                                                                              'Date: ',
+                                                                                              style: TextStyle(color: UIGuide.light_Purple),
+                                                                                            ),
+                                                                                            Text(
+                                                                                              finalDate.isEmpty ? '--' : finalDate,
+                                                                                            ),
+                                                                                            const Spacer(),
+                                                                                            // GestureDetector(
+                                                                                            // onTap: () {
+                                                                                            //   showDialog(
+                                                                                            //       context: context,
+                                                                                            //       builder: (context) {
+                                                                                            //         return Dialog(
+                                                                                            //             child: Container(
+                                                                                            //           child: SingleChildScrollView(
+                                                                                            //             scrollDirection: Axis.vertical,
+                                                                                            //             child: Column(
+                                                                                            //               mainAxisSize: MainAxisSize.min,
+                                                                                            //               children: [
+                                                                                            //                 ListView.builder(
+                                                                                            //                     physics: const BouncingScrollPhysics(),
+                                                                                            //                     shrinkWrap: true,
+                                                                                            //                     itemCount: busPaid.busFeePaidList[indexx].busFees!.isEmpty ? 0 : busPaid.busFeePaidList[indexx].busFees!.length,
+                                                                                            //                     itemBuilder: (context, index) {
+                                                                                            //                       return Padding(
+                                                                                            //                         padding: const EdgeInsets.all(3.0),
+                                                                                            //                         child: Container(
+                                                                                            //                           decoration: BoxDecoration(border: Border.all(color: UIGuide.light_Purple), borderRadius: const BorderRadius.all(Radius.circular(10)), color: UIGuide.WHITE),
+                                                                                            //                           height: 80,
+                                                                                            //                           child: Center(
+                                                                                            //                             child: Padding(
+                                                                                            //                               padding: const EdgeInsets.only(left: 4.0),
+                                                                                            //                               child: Column(
+                                                                                            //                                 crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                            //                                 mainAxisAlignment: MainAxisAlignment.start,
+                                                                                            //                                 children: [
+                                                                                            //                                   Row(
+                                                                                            //                                     children: [
+                                                                                            //                                       const Text('Installment Name: '),
+                                                                                            //                                       Flexible(
+                                                                                            //                                         child: RichText(
+                                                                                            //                                           overflow: TextOverflow.ellipsis,
+                                                                                            //                                           strutStyle: const StrutStyle(fontSize: 12.0),
+                                                                                            //                                           text: TextSpan(
+                                                                                            //                                             style: const TextStyle(color: Colors.black),
+                                                                                            //                                             text: busPaid.busFeePaidList[indexx].busFees![index].installmentname ?? '--',
+                                                                                            //                                           ),
+                                                                                            //                                         ),
+                                                                                            //                                       ),
+                                                                                            //                                     ],
+                                                                                            //                                   ),
+                                                                                            //                                   const SizedBox(
+                                                                                            //                                     height: 2,
+                                                                                            //                                   ),
+                                                                                            //                                   Row(
+                                                                                            //                                     children: [
+                                                                                            //                                       const Text('Due Amount: '),
+                                                                                            //                                       Flexible(
+                                                                                            //                                         child: RichText(
+                                                                                            //                                           overflow: TextOverflow.ellipsis,
+                                                                                            //                                           strutStyle: const StrutStyle(fontSize: 12.0),
+                                                                                            //                                           text: TextSpan(
+                                                                                            //                                             style: const TextStyle(color: Colors.black),
+                                                                                            //                                             text: busPaid.busFeePaidList[indexx].busFees![index].dueAmount == null ? '--' : busPaid.busFeePaidList[indexx].busFees![index].dueAmount.toString(),
+                                                                                            //                                           ),
+                                                                                            //                                         ),
+                                                                                            //                                       ),
+                                                                                            //                                     ],
+                                                                                            //                                   ),
+                                                                                            //                                   const SizedBox(
+                                                                                            //                                     height: 2,
+                                                                                            //                                   ),
+                                                                                            //                                   Row(
+                                                                                            //                                     children: [
+                                                                                            //                                       const Text('Fine Amount: '),
+                                                                                            //                                       Flexible(
+                                                                                            //                                         child: RichText(
+                                                                                            //                                           overflow: TextOverflow.ellipsis,
+                                                                                            //                                           strutStyle: const StrutStyle(fontSize: 12.0),
+                                                                                            //                                           text: TextSpan(
+                                                                                            //                                             style: const TextStyle(color: Colors.black),
+                                                                                            //                                             text: busPaid.busFeePaidList[indexx].busFees![index].fineAmount == null ? '--' : busPaid.busFeePaidList[indexx].busFees![index].fineAmount.toString(),
+                                                                                            //                                           ),
+                                                                                            //                                         ),
+                                                                                            //                                       ),
+                                                                                            //                                     ],
+                                                                                            //                                   ),
+                                                                                            //                                   const SizedBox(
+                                                                                            //                                     height: 2,
+                                                                                            //                                   ),
+                                                                                            //                                   Row(
+                                                                                            //                                     children: [
+                                                                                            //                                       const Text(' Paid: '),
+                                                                                            //                                       Flexible(
+                                                                                            //                                         child: RichText(
+                                                                                            //                                           overflow: TextOverflow.ellipsis,
+                                                                                            //                                           strutStyle: const StrutStyle(fontSize: 12.0),
+                                                                                            //                                           text: TextSpan(
+                                                                                            //                                             style: const TextStyle(color: Colors.black),
+                                                                                            //                                             text: busPaid.busFeePaidList[indexx].busFees![index].paidAmount == null ? '--' : busPaid.busFeePaidList[indexx].busFees![index].paidAmount.toString(),
+                                                                                            //                                           ),
+                                                                                            //                                         ),
+                                                                                            //                                       ),
+                                                                                            //                                     ],
+                                                                                            //                                   )
+                                                                                            //                                 ],
+                                                                                            //                               ),
+                                                                                            //                             ),
+                                                                                            //                           ),
+                                                                                            //                         ),
+                                                                                            //                       );
+                                                                                            //                     }),
+                                                                                            //               ],
+                                                                                            //             ),
+                                                                                            //           ),
+                                                                                            //         ));
+                                                                                            //       });
+                                                                                            // },
+                                                                                            //   child: const Icon(
+                                                                                            //     Icons.info_outline_rounded,
+                                                                                            //   ),
+                                                                                            // ),
+                                                                                            const Icon(
                                                                                               Icons.info_outline_rounded,
+                                                                                              size: 18,
                                                                                             ),
-                                                                                          ),
-                                                                                          kWidth,
-                                                                                        ],
-                                                                                      ),
-                                                                                      Row(
-                                                                                        children: [
-                                                                                          const Text(
-                                                                                            'Txn ID: ',
-                                                                                            style: TextStyle(color: UIGuide.light_Purple),
-                                                                                          ),
-                                                                                          Flexible(
-                                                                                            child: RichText(
-                                                                                              overflow: TextOverflow.ellipsis,
-                                                                                              strutStyle: const StrutStyle(fontSize: 12.0),
-                                                                                              text: TextSpan(style: const TextStyle(color: Colors.black), text: busPaid.busFeePaidList[indexx].transactionId ?? '--'),
+                                                                                            kWidth,
+                                                                                          ],
+                                                                                        ),
+                                                                                        Row(
+                                                                                          children: [
+                                                                                            const Text(
+                                                                                              'Txn ID: ',
+                                                                                              style: TextStyle(color: UIGuide.light_Purple),
                                                                                             ),
-                                                                                          ),
-                                                                                        ],
-                                                                                      ),
-                                                                                      const SizedBox(
-                                                                                        height: 2,
-                                                                                      ),
-                                                                                      Row(
-                                                                                        children: [
-                                                                                          const Text(
-                                                                                            'Paid Amount: ',
-                                                                                            style: TextStyle(color: UIGuide.light_Purple),
-                                                                                          ),
-                                                                                          Text(
-                                                                                            busPaid.busFeePaidList[indexx].totalPaidAmount == null ? "0.00" : busPaid.busFeePaidList[indexx].totalPaidAmount.toString(),
-                                                                                          ),
-                                                                                        ],
-                                                                                      ),
-                                                                                    ],
+                                                                                            Flexible(
+                                                                                              child: RichText(
+                                                                                                overflow: TextOverflow.ellipsis,
+                                                                                                strutStyle: const StrutStyle(fontSize: 12.0),
+                                                                                                text: TextSpan(style: const TextStyle(color: Colors.black), text: busPaid.busFeePaidList[indexx].transactionId ?? '--'),
+                                                                                              ),
+                                                                                            ),
+                                                                                          ],
+                                                                                        ),
+                                                                                        const SizedBox(
+                                                                                          height: 2,
+                                                                                        ),
+                                                                                        Row(
+                                                                                          children: [
+                                                                                            const Text(
+                                                                                              'Paid Amount: ',
+                                                                                              style: TextStyle(color: UIGuide.light_Purple),
+                                                                                            ),
+                                                                                            Text(
+                                                                                              busPaid.busFeePaidList[indexx].totalPaidAmount == null ? "0.00" : busPaid.busFeePaidList[indexx].totalPaidAmount.toString(),
+                                                                                            ),
+                                                                                          ],
+                                                                                        ),
+                                                                                      ],
+                                                                                    ),
                                                                                   ),
                                                                                 ),
                                                                               ),

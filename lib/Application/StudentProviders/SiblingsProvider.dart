@@ -22,15 +22,12 @@ class SibingsProvider with ChangeNotifier {
         Uri.parse("${UIGuide.baseURL}/parent-home/get-guardian-children"),
         headers: headers);
     var data = jsonDecode(response.body.toString());
-    print('ghj...........$data');
-
+    print('data...........$data');
     if (response.statusCode == 200) {
       var jsonrespo = json.decode(response.body);
-
       List<SiblingsNameModel> templist = List<SiblingsNameModel>.from(
           data.map((x) => SiblingsNameModel.fromJson(x)));
       siblingList.addAll(templist);
-
       notifyListeners();
     } else {
       print('Error');
@@ -59,7 +56,6 @@ class SibingsProvider with ChangeNotifier {
     print('Responde body  ${request.body}');
 
     request.headers.addAll(headers);
-
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
@@ -94,9 +90,7 @@ class SibingsProvider with ChangeNotifier {
         MaterialPageRoute(builder: (context) => StudentHome()),
         (Route<dynamic> route) => false,
       );
-
       isLoading = false;
-
       notifyListeners();
     } else {
       print('something went wrong in siblings list provider');

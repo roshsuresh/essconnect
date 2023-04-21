@@ -36,7 +36,7 @@ class Screen_Search_Providers with ChangeNotifier {
       Map<String, dynamic> data =
           jsonDecode(await response.stream.bytesToString());
 
-      log(data.toString());
+      // log(data.toString());
 
       List<SearchStudReport> templist = List<SearchStudReport>.from(
           data["viewStudentReport"].map((x) => SearchStudReport.fromJson(x)));

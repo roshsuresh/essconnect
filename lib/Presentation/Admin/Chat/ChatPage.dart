@@ -1,3 +1,4 @@
+import 'package:essconnect/Application/AdminProviders/ChatProviders.dart';
 import 'package:essconnect/Constants.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +6,7 @@ import 'dart:convert';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 class ChatPage extends StatefulWidget {
@@ -14,14 +16,24 @@ class ChatPage extends StatefulWidget {
 }
 
 class _ChatPageState extends State<ChatPage> {
-  List<types.Message> _messages = [];
-  final _user = const types.User(id: '82091008-a484-4a89-ae75-a22bf8d6f3ac');
+  // List<types.Message> _messages = [];
+  // final _user = const types.User(id: '82091008-a484-4a89-ae75-a22bf8d6f3ac');
 
   // @override
   // void initState() {
   //   super.initState();
   //   _loadMessages();
   // }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      var p = Provider.of<ChatProviders>(context, listen: false);
+      p.currentList.clear();
+      await p.chatViewList();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,115 +76,124 @@ class _ChatPageState extends State<ChatPage> {
           ],
         ),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: LimitedBox(
-              maxHeight: size.height - 100,
-              child: ListView.builder(
-                itemCount: 15,
-                shrinkWrap: true,
-                reverse: true,
-                itemBuilder: (ctx, index) {
-                  if (index.isEven) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Container(
-                            constraints:
-                                BoxConstraints(maxWidth: size.width / 1.3),
-                            // width: size.width / 1.3,
-                            decoration: const BoxDecoration(
-                                color: Color.fromARGB(255, 191, 191, 194),
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(20),
-                                    topRight: Radius.circular(20),
-                                    bottomRight: Radius.circular(20))),
-                            child: const Padding(
-                              padding: EdgeInsets.all(6.0),
-                              child: Text("Hello, How are you"),
-                            ),
-                          ),
-                          const Spacer()
-                        ],
-                      ),
-                    );
-                  }
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        const Spacer(),
-                        Container(
-                          constraints:
-                              BoxConstraints(maxWidth: size.width / 1.3),
-                          decoration: const BoxDecoration(
-                              color: Color.fromARGB(255, 232, 232, 235),
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(20),
-                                  topRight: Radius.circular(20),
-                                  bottomLeft: Radius.circular(20))),
-                          child: const Padding(
-                            padding: EdgeInsets.all(6.0),
-                            child: Text(
-                                ' userAvatarImageBa ckgroun dColor: UIGuide.PRIMARY, userAvatarIm ageBackgr oundColor: UIGuide.PRIMARY,'),
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+      body: Consumer<ChatProviders>(
+        builder: (context, value, child) {
+          return Column(
             children: [
               Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: SizedBox(
-                    height: 40,
-                    child: TextFormField(
-                      cursorColor: Colors.black54,
-                      cursorWidth: 1,
-                      cursorHeight: 20,
-                      autocorrect: false,
-                      textAlign: TextAlign.start,
-                      decoration: InputDecoration(
-                        contentPadding: const EdgeInsets.all(10),
-                        fillColor: const Color.fromARGB(255, 74, 75, 75),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                              color: Colors.black54, width: 1.0),
-                          borderRadius: BorderRadius.circular(20.0),
+                child: LimitedBox(
+                  maxHeight: size.height - 100,
+                  child: ListView.builder(
+                    itemCount: value.currentList.length,
+                    shrinkWrap: true,
+                    reverse: true,
+                    itemBuilder: (ctx, index) {
+                      print(value.currentList.length);
+                      print(value.currentList[index].chats![1].messages
+                          .toString());
+                      // if (index.isEven) {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                              constraints:
+                                  BoxConstraints(maxWidth: size.width / 1.3),
+                              // width: size.width / 1.3,
+                              decoration: const BoxDecoration(
+                                  color: Color.fromARGB(255, 191, 191, 194),
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(20),
+                                      topRight: Radius.circular(20),
+                                      bottomRight: Radius.circular(20))),
+                              child: Padding(
+                                padding: const EdgeInsets.all(6.0),
+                                child: Text(value
+                                    .currentList[index].chats![1].messages
+                                    .toString()),
+                              ),
+                            ),
+                            const Spacer()
+                          ],
                         ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                              color: Colors.black54, width: 1.0),
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                        border: const OutlineInputBorder(
-                            borderSide: BorderSide(
-                          color: Colors.black54,
-                        )),
-                      ),
-                    ),
+                      );
+                      // }
+                      // return Padding(
+                      //   padding: const EdgeInsets.all(8.0),
+                      //   child: Row(
+                      //     crossAxisAlignment: CrossAxisAlignment.start,
+                      //     mainAxisAlignment: MainAxisAlignment.start,
+                      //     children: [
+                      //       const Spacer(),
+                      //       Container(
+                      //         constraints:
+                      //             BoxConstraints(maxWidth: size.width / 1.3),
+                      //         decoration: const BoxDecoration(
+                      //             color: Color.fromARGB(255, 232, 232, 235),
+                      //             borderRadius: BorderRadius.only(
+                      //                 topLeft: Radius.circular(20),
+                      //                 topRight: Radius.circular(20),
+                      //                 bottomLeft: Radius.circular(20))),
+                      //         child: const Padding(
+                      //           padding: EdgeInsets.all(6.0),
+                      //           child: Text(
+                      //               ' userAvatarImageBa ckgroun dColor: UIGuide.PRIMARY, userAvatarIm ageBackgr oundColor: UIGuide.PRIMARY,'),
+                      //         ),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // );
+                    },
                   ),
                 ),
               ),
-              IconButton(onPressed: () {}, icon: const Icon(Icons.send)),
-              const SizedBox(
-                width: 5,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SizedBox(
+                        height: 40,
+                        child: TextFormField(
+                          cursorColor: Colors.black54,
+                          cursorWidth: 1,
+                          cursorHeight: 20,
+                          autocorrect: false,
+                          textAlign: TextAlign.start,
+                          decoration: InputDecoration(
+                            contentPadding: const EdgeInsets.all(10),
+                            fillColor: const Color.fromARGB(255, 74, 75, 75),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  color: Colors.black54, width: 1.0),
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                  color: Colors.black54, width: 1.0),
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            border: const OutlineInputBorder(
+                                borderSide: BorderSide(
+                              color: Colors.black54,
+                            )),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  IconButton(onPressed: () {}, icon: const Icon(Icons.send)),
+                  const SizedBox(
+                    width: 5,
+                  )
+                ],
               )
             ],
-          )
-        ],
+          );
+        },
       ),
 
       // Chat(

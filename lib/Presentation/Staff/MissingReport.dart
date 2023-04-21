@@ -646,19 +646,46 @@ class _MissingReportState extends State<MissingReport> {
                       )
                     : MaterialButton(
                         onPressed: () async {
-                          await value.clearViewStaffList();
-                          await value.clearViewStudentList();
-                          checked == true
-                              ? await value.getViewStudent(
-                                  courseId,
-                                  partID,
-                                  examId,
-                                  divisionData,
-                                  subjectData,
-                                  checked,
-                                  context)
-                              : await value.getView(courseId, partID, examId,
-                                  divisionData, subjectData, checked, context);
+                          if (missingInitialValuesController.text.isEmpty &&
+                              missingExamController.text.isEmpty &&
+                              missingPartController.text.isEmpty) {
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
+                              elevation: 10,
+                              shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20)),
+                              ),
+                              duration: Duration(seconds: 3),
+                              margin: EdgeInsets.only(
+                                  bottom: 80, left: 30, right: 30),
+                              behavior: SnackBarBehavior.floating,
+                              content: Text(
+                                'Enter mandatory fields...',
+                                textAlign: TextAlign.center,
+                              ),
+                            ));
+                          } else {
+                            await value.clearViewStaffList();
+                            await value.clearViewStudentList();
+                            checked == true
+                                ? await value.getViewStudent(
+                                    courseId,
+                                    partID,
+                                    examId,
+                                    divisionData,
+                                    subjectData,
+                                    checked,
+                                    context)
+                                : await value.getView(
+                                    courseId,
+                                    partID,
+                                    examId,
+                                    divisionData,
+                                    subjectData,
+                                    checked,
+                                    context);
+                          }
                         },
                         color: UIGuide.light_Purple,
                         shape: const RoundedRectangleBorder(

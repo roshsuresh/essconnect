@@ -554,9 +554,10 @@ class _StaffHomeState extends State<StaffHome> {
                                                                   .rightToLeft,
                                                           child:
                                                               AttendenceEntry(),
-                                                          duration: Duration(
-                                                              milliseconds:
-                                                                  300),
+                                                          duration:
+                                                              const Duration(
+                                                                  milliseconds:
+                                                                      300),
                                                           // childCurrent:this
                                                         ));
                                                     // Navigator.push(
@@ -1286,8 +1287,9 @@ class _StaffHomeState extends State<StaffHome> {
                                         context,
                                         PageTransition(
                                           type: PageTransitionType.rightToLeft,
-                                          child: StaffGallery(),
-                                          duration: Duration(milliseconds: 300),
+                                          child: const StaffGallery(),
+                                          duration:
+                                              const Duration(milliseconds: 300),
                                           // childCurrent:this
                                         ));
                                     // Navigator.push(
@@ -1362,16 +1364,7 @@ class _StaffHomeState extends State<StaffHome> {
                                                   ),
                                                   duration: Duration(
                                                       milliseconds: 300),
-                                                  // childCurrent:this
                                                 ));
-                                            // await Navigator.push(
-                                            //   context,
-                                            //   MaterialPageRoute(
-                                            //       builder: (context) =>
-                                            //           CurriculamPage(
-                                            //             token: token,
-                                            //           )),
-                                            // );
                                           },
                                           child: Padding(
                                             padding: const EdgeInsets.only(
@@ -1638,13 +1631,14 @@ class _StaffHomeState extends State<StaffHome> {
                                         PageTransition(
                                           type: PageTransitionType.rightToLeft,
                                           child: PasswordChange(),
-                                          duration: Duration(milliseconds: 300),
+                                          duration:
+                                              const Duration(milliseconds: 300),
                                           // childCurrent:this
                                         ));
                                     // Navigator.of(context).push(
                                     //   MaterialPageRoute(
                                     //       builder: (context) =>
-                                    //           PasswordChange()),
+                                    //         PasswordChange(),),
                                     // );
                                   },
                                   child: const Icon(
@@ -1706,7 +1700,6 @@ class _StaffHomeState extends State<StaffHome> {
                             ],
                           ),
                           kheight20,
-                          // kheight20, kheight10,
                           const Center(
                             child: Text(
                               "Powered By GJ Infotech (P) Ltd.",
@@ -1718,7 +1711,6 @@ class _StaffHomeState extends State<StaffHome> {
                           ),
                           kheight20,
                           kheight10,
-                          //kheight20,
                           kheight10,
                         ],
                       ),

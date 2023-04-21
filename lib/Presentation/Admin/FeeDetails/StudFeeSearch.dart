@@ -50,7 +50,7 @@ class _StudentFeeSearchState extends State<StudentFeeSearch> {
             child: AnimSearchBar(
               width: 400,
               textController: textControllerr,
-              helpText: 'Enter student name..',
+              helpText: 'Enter student name...',
               color: UIGuide.THEME_LIGHT,
               autoFocus: false,
               animationDurationInMilli: 900,
@@ -61,9 +61,9 @@ class _StudentFeeSearchState extends State<StudentFeeSearch> {
               ),
               onSuffixTap: () async {
                 print('object');
-                Provider.of<FeeDetailsProvider>(context, listen: false)
+                await Provider.of<FeeDetailsProvider>(context, listen: false)
                     .getSearchView(textControllerr.text.toString());
-                Provider.of<FeeDetailsProvider>(context, listen: false)
+                await Provider.of<FeeDetailsProvider>(context, listen: false)
                     .clearStudentList();
               },
               onSubmitted: (String s) {
@@ -85,7 +85,7 @@ class _StudentFeeSearchState extends State<StudentFeeSearch> {
                       child: ListView.builder(
                         physics: const BouncingScrollPhysics(),
                         shrinkWrap: true,
-                        itemCount: provider.searchStudent.length == null
+                        itemCount: provider.searchStudent.isEmpty
                             ? 0
                             : provider.searchStudent.length,
                         itemBuilder: (context, index) {

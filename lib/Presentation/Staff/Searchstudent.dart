@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'package:essconnect/Application/Staff_Providers/SearchProvider.dart';
 import 'package:essconnect/Constants.dart';
+import 'package:essconnect/Debouncer.dart';
 import 'package:essconnect/Domain/Staff/SearchStudReport.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:essconnect/utils/spinkit.dart';
@@ -26,6 +28,7 @@ class _SearchStudent_stfState extends State<SearchStudent_stf> {
     });
   }
 
+  final _debouncer = Debouncer(milliseconds: 1000);
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -49,6 +52,17 @@ class _SearchStudent_stfState extends State<SearchStudent_stf> {
                   Expanded(
                     child: TextField(
                       controller: clearValue,
+                      onChanged: (value) {
+                        _debouncer.run(() async {
+                          await Provider.of<Screen_Search_Providers>(context,
+                                  listen: false)
+                              .clearStudentList();
+                          await Provider.of<Screen_Search_Providers>(context,
+                                  listen: false)
+                              .getSearch_View(value);
+                          print('-***--**-*-*-*-*-*');
+                        });
+                      },
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(20.0),

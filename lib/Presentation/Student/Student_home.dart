@@ -13,6 +13,7 @@ import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:lottie/lottie.dart';
 import 'package:marquee/marquee.dart';
 import 'package:badges/badges.dart' as badges;
+import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:upgrader/upgrader.dart';
@@ -175,13 +176,22 @@ class _StudentHomeState extends State<StudentHome> {
                                 ),
                               ),
                               GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const NoticeBoard()),
-                                  );
+                                onTap: () async {
+                                  await Navigator.push(
+                                      context,
+                                      PageTransition(
+                                        type: PageTransitionType.rightToLeft,
+                                        child: NoticeBoard(),
+                                        duration: Duration(milliseconds: 300),
+                                        // childCurrent:this
+                                      ));
+
+                                  // Navigator.push(
+                                  //   context,
+                                  //   MaterialPageRoute(
+                                  //       builder: (context) =>
+                                  //           const NoticeBoard()),
+                                  // );
                                 },
                                 child: Padding(
                                   padding: const EdgeInsets.only(
@@ -226,12 +236,21 @@ class _StudentHomeState extends State<StudentHome> {
                                 ),
                               ),
                               GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => const Diary()),
-                                  );
+                                onTap: () async {
+                                  await Navigator.push(
+                                      context,
+                                      PageTransition(
+                                        type: PageTransitionType.rightToLeft,
+                                        child: const Diary(),
+                                        duration:
+                                            const Duration(milliseconds: 300),
+                                        // childCurrent:this
+                                      ));
+                                  // Navigator.push(
+                                  //   context,
+                                  //   MaterialPageRoute(
+                                  //       builder: (context) => const Diary()),
+                                  // );
                                 },
                                 child: Padding(
                                   padding: const EdgeInsets.only(
@@ -361,12 +380,24 @@ class _StudentHomeState extends State<StudentHome> {
                                                     context,
                                                     listen: false)
                                                 .getnotificationCount();
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      Stud_Notification()),
-                                            );
+
+                                            await Navigator.push(
+                                                context,
+                                                PageTransition(
+                                                  type: PageTransitionType
+                                                      .rightToLeft,
+                                                  child: Stud_Notification(),
+                                                  duration: Duration(
+                                                      milliseconds: 300),
+                                                  // childCurrent:this
+                                                ));
+
+                                            // Navigator.push(
+                                            //   context,
+                                            //   MaterialPageRoute(
+                                            //       builder: (context) =>
+                                            //           Stud_Notification()),
+                                            // );
                                           },
                                           child: Padding(
                                             padding: const EdgeInsets.only(
@@ -463,13 +494,23 @@ class _StudentHomeState extends State<StudentHome> {
                               children: [
                                 module.offlineAttendence == true
                                     ? GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const Attendence()),
-                                          );
+                                        onTap: () async {
+                                          await Navigator.push(
+                                              context,
+                                              PageTransition(
+                                                type: PageTransitionType
+                                                    .rightToLeft,
+                                                child: Attendence(),
+                                                duration:
+                                                    Duration(milliseconds: 300),
+                                                // childCurrent:this
+                                              ));
+                                          // Navigator.push(
+                                          //   context,
+                                          //   MaterialPageRoute(
+                                          //       builder: (context) =>
+                                          //           const Attendence()),
+                                          // );
                                         },
                                         child: Padding(
                                           padding: const EdgeInsets.only(
@@ -585,12 +626,22 @@ class _StudentHomeState extends State<StudentHome> {
                                                       context,
                                                       listen: false)
                                                   .getTimeTable(divId);
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        const Timetable()),
-                                              );
+                                              await Navigator.push(
+                                                  context,
+                                                  PageTransition(
+                                                    type: PageTransitionType
+                                                        .rightToLeft,
+                                                    child: Timetable(),
+                                                    duration: Duration(
+                                                        milliseconds: 300),
+                                                  ));
+
+                                              // Navigator.push(
+                                              //   context,
+                                              //   MaterialPageRoute(
+                                              //       builder: (context) =>
+                                              //           const Timetable()),
+                                              // );
                                             },
                                             child: Padding(
                                               padding: const EdgeInsets.only(
@@ -697,12 +748,22 @@ class _StudentHomeState extends State<StudentHome> {
                                   padding: const EdgeInsets.only(
                                       left: 10, right: 10),
                                   child: GestureDetector(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => Gallery()),
-                                      );
+                                    onTap: () async {
+                                      await Navigator.push(
+                                          context,
+                                          PageTransition(
+                                            type:
+                                                PageTransitionType.rightToLeft,
+                                            child: Gallery(),
+                                            duration:
+                                                Duration(milliseconds: 300),
+                                          ));
+
+                                      // Navigator.push(
+                                      //   context,
+                                      //   MaterialPageRoute(
+                                      //       builder: (context) => Gallery()),
+                                      // );
                                     },
                                     child: Column(
                                       mainAxisAlignment:
@@ -757,14 +818,27 @@ class _StudentHomeState extends State<StudentHome> {
                                                 .getCuriculamtoken();
                                             String token =
                                                 await curri.token.toString();
+
                                             await Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      CurriculamPage(
-                                                        token: token,
-                                                      )),
-                                            );
+                                                context,
+                                                PageTransition(
+                                                  type: PageTransitionType
+                                                      .rightToLeft,
+                                                  child: CurriculamPage(
+                                                    token: token,
+                                                  ),
+                                                  duration: Duration(
+                                                      milliseconds: 300),
+                                                ));
+
+                                            // await Navigator.push(
+                                            //   context,
+                                            //   MaterialPageRoute(
+                                            //       builder: (context) =>
+                                            //           CurriculamPage(
+                                            //             token: token,
+                                            //           )),
+                                            // );
                                           },
                                           child: Padding(
                                             padding: const EdgeInsets.only(
@@ -916,13 +990,23 @@ class _StudentHomeState extends State<StudentHome> {
                                               padding: const EdgeInsets.only(
                                                   left: 10, right: 10),
                                               child: GestureDetector(
-                                                onTap: () {
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            const ReportCard()),
-                                                  );
+                                                onTap: () async {
+                                                  await Navigator.push(
+                                                      context,
+                                                      PageTransition(
+                                                        type: PageTransitionType
+                                                            .rightToLeft,
+                                                        child: ReportCard(),
+                                                        duration: Duration(
+                                                            milliseconds: 300),
+                                                      ));
+
+                                                  // Navigator.push(
+                                                  //   context,
+                                                  //   MaterialPageRoute(
+                                                  //       builder: (context) =>
+                                                  //           const ReportCard()),
+                                                  // );
                                                 },
                                                 child: Column(
                                                   mainAxisAlignment:
@@ -1039,13 +1123,23 @@ class _StudentHomeState extends State<StudentHome> {
                                               padding: const EdgeInsets.only(
                                                   left: 10, right: 10),
                                               child: GestureDetector(
-                                                onTap: () {
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            PayFee()),
-                                                  );
+                                                onTap: () async {
+                                                  await Navigator.push(
+                                                      context,
+                                                      PageTransition(
+                                                        type: PageTransitionType
+                                                            .rightToLeft,
+                                                        child: PayFee(),
+                                                        duration: Duration(
+                                                            milliseconds: 300),
+                                                      ));
+
+                                                  // Navigator.push(
+                                                  //   context,
+                                                  //   MaterialPageRoute(
+                                                  //       builder: (context) =>
+                                                  //           PayFee()),
+                                                  // );
                                                 },
                                                 child: Column(
                                                   mainAxisAlignment:
@@ -1153,13 +1247,26 @@ class _StudentHomeState extends State<StudentHome> {
                                               padding: const EdgeInsets.only(
                                                   left: 10, right: 10),
                                               child: GestureDetector(
-                                                onTap: () {
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            const PaymentHistory()),
-                                                  );
+                                                onTap: () async {
+                                                  await Navigator.push(
+                                                      context,
+                                                      PageTransition(
+                                                        type: PageTransitionType
+                                                            .rightToLeft,
+                                                        child:
+                                                            const PaymentHistory(),
+                                                        duration:
+                                                            const Duration(
+                                                                milliseconds:
+                                                                    300),
+                                                      ));
+
+                                                  // Navigator.push(
+                                                  //   context,
+                                                  //   MaterialPageRoute(
+                                                  //       builder: (context) =>
+                                                  //           const PaymentHistory()),
+                                                  // );
                                                 },
                                                 child: Column(
                                                   mainAxisAlignment:
@@ -1315,23 +1422,32 @@ class _StudentHomeState extends State<StudentHome> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               MaterialButton(
-                                  elevation: 10,
-                                  minWidth: 50,
-                                  color: UIGuide.THEME_LIGHT,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(30.0)),
-                                  onPressed: () async {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              PasswordChange()),
-                                    );
-                                  },
-                                  child: const Icon(
-                                    Icons.key_sharp,
-                                    color: UIGuide.light_Purple,
-                                  )),
+                                elevation: 10,
+                                minWidth: 50,
+                                color: UIGuide.THEME_LIGHT,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(30.0)),
+                                onPressed: () async {
+                                  await Navigator.push(
+                                    context,
+                                    PageTransition(
+                                      type: PageTransitionType.rightToLeft,
+                                      child: PasswordChange(),
+                                      duration:
+                                          const Duration(milliseconds: 300),
+                                    ),
+                                  );
+                                  // Navigator.of(context).push(
+                                  //   MaterialPageRoute(
+                                  //       builder: (context) =>
+                                  //           PasswordChange()),
+                                  // );
+                                },
+                                child: const Icon(
+                                  Icons.key_sharp,
+                                  color: UIGuide.light_Purple,
+                                ),
+                              ),
                               MaterialButton(
                                   elevation: 10,
                                   minWidth: 50,
@@ -1401,8 +1517,6 @@ class _StudentHomeState extends State<StudentHome> {
                                   itemBuilder: (context, index) {
                                     var idd =
                                         value.siblingList[index].id ?? '--';
-
-                                    print(idd);
                                     Provider.of<SibingsProvider>(context,
                                             listen: false)
                                         .getToken(idd);

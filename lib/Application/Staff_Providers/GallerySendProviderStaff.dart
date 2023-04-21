@@ -213,7 +213,7 @@ class GallerySendProvider_Stf with ChangeNotifier {
         ),
       ));
       setLoadingg(false);
-      print('...............   $id');
+      print('Image ID............$id');
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         elevation: 10,
@@ -312,8 +312,6 @@ class GallerySendProvider_Stf with ChangeNotifier {
               btnOkIcon: Icons.cancel,
               btnOkColor: Colors.green)
           .show();
-
-      //print(await response.stream.bytesToString());
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         elevation: 10,
@@ -502,7 +500,6 @@ class GallerySendProvider_Stf with ChangeNotifier {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
-
     var response = await http.get(
         Uri.parse(
             "${UIGuide.baseURL}/systemadmindashboard/gallery-photos/$galleryId"),

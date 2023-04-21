@@ -111,7 +111,8 @@ class FlashNewsProviderAdmin with ChangeNotifier {
 
   //delete flashnews
 
-  Future flashnewsDelete(String eventID, BuildContext context) async {
+  Future flashnewsDelete(
+      String eventID, BuildContext context, int indexx) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
 
     var headers = {
@@ -127,6 +128,7 @@ class FlashNewsProviderAdmin with ChangeNotifier {
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 204) {
+      flashlist.removeAt(indexx);
       print(await response.stream.bytesToString());
       print('correct');
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:developer';
+import 'package:essconnect/Application/StudentProviders/ProfileProvider.dart';
 import 'package:essconnect/Domain/Admin/StaffReportModel.dart';
 import 'package:essconnect/Domain/Staff/StudentReport_staff.dart';
 import 'package:essconnect/utils/constants.dart';
@@ -34,7 +36,6 @@ class StaffReportProviders with ChangeNotifier {
     if (response.statusCode == 200) {
       Map<String, dynamic> data =
           jsonDecode(await response.stream.bytesToString());
-      //  log(data.toString());
       List<StaffReportByAdmin> templist = List<StaffReportByAdmin>.from(
           data["staffReport"].map((x) => StaffReportByAdmin.fromJson(x)));
       staffReportList.addAll(templist);
@@ -92,7 +93,6 @@ class StaffReportProviders with ChangeNotifier {
 
   removeSection(StudReportSectionList item) {
     selectedSection.remove(item);
-    notifyListeners();
   }
 
   removeSectionAll() {
@@ -109,6 +109,7 @@ class StaffReportProviders with ChangeNotifier {
 
   sectionClear() {
     stdReportInitialValues.clear();
+    notifyListeners();
   }
 
   List<StudReportSectionList> stdReportInitialValues = [];
@@ -119,12 +120,10 @@ class StaffReportProviders with ChangeNotifier {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
-
     var response = await http.get(
         Uri.parse(
             "${UIGuide.baseURL}/mobileapp/staffdet/studentreportinitialvalues"),
         headers: headers);
-
     try {
       if (response.statusCode == 200) {
         print("corect");

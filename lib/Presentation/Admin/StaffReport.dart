@@ -105,6 +105,7 @@ class _TeachingStaffState extends State<TeachingStaff> {
                                 ? '--'
                                 : value.staffReportList[index].staffRole
                                     .toString();
+
                         if (status.toString() == "Teacher") {
                           return AnimationConfiguration.staggeredList(
                               position: index,

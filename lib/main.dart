@@ -3,8 +3,9 @@ import 'dart:async';
 import 'dart:core';
 import 'dart:io';
 import 'package:essconnect/Application/AdminProviders/Attendanceprovider.dart';
+import 'package:essconnect/Application/AdminProviders/ChatProviders.dart';
 import 'package:essconnect/Application/AdminProviders/ExamTTPtoviders.dart';
-import 'package:essconnect/Application/AdminProviders/chatProviders.dart';
+
 import 'package:essconnect/Application/Module%20Providers.dart/MobileAppCheckin.dart';
 import 'package:essconnect/Application/Staff_Providers/ExamTTProviderStaff.dart';
 import 'package:essconnect/Application/Staff_Providers/MissingReportProviders.dart';
