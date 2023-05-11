@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:essconnect/Application/AdminProviders/GalleryProviders.dart';
 import 'package:essconnect/Constants.dart';
 import 'package:essconnect/Domain/Admin/Course&DivsionList.dart';
@@ -33,39 +35,36 @@ class _AdminGalleryUploadState extends State<AdminGalleryUpload> {
 
   DateTime? _mydatetimeTo;
 
-  String time = '--';
+  String time = '🗓️';
 
-  String timeNow = '--';
+  String timeNow = '🗓️';
   List subjectData = [];
 
   String section = '';
 
   String? checkname;
   final titleController = TextEditingController();
-  final attachmentid = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       var p = Provider.of<GalleryProviderAdmin>(context, listen: false);
-
       p.courseDropDown.clear();
       p.courseList.clear();
       p.divisionList.clear();
       p.divisionDropDown.clear();
       titleController.clear();
-      attachmentid.clear();
+      p.imageIDList.clear();
       p.dropDown.clear();
       p.stdReportInitialValues.clear();
-      // p.toggleVal == 'All';
-      // p.indval = 0;
-
       p.getCourseList();
       p.stdReportSectionStaff();
       await p.sectionCounter(0);
       p.divisionCounter(0);
       p.courseCounter(0);
+      p.indval = 0;
+      p.toggleVal = 'All';
     });
   }
 
@@ -82,9 +81,12 @@ class _AdminGalleryUploadState extends State<AdminGalleryUpload> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             MaterialButton(
-                minWidth: size.width - 250,
+                minWidth: size.width / 2.4,
                 color: Colors.white70,
-                child: Text('Date: ${datee.toString()}'),
+                elevation: 5,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(5.0))),
+                child: Text('🗓️   Date: ${datee.toString()}'),
                 onPressed: () async {
                   return;
                 }),
@@ -116,53 +118,90 @@ class _AdminGalleryUploadState extends State<AdminGalleryUpload> {
         ),
         Center(
           child: SizedBox(
-            width: 120,
+            width: size.width / 2.4,
             child: Consumer<GalleryProviderAdmin>(
               builder: (context, value, child) => value.loading
                   ? spinkitLoader()
                   : MaterialButton(
+                      height: 35,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(5.0))),
+                      highlightColor: UIGuide.THEME_LIGHT,
                       color: Colors.white70,
                       onPressed: (() async {
+                        List<File> filePaths = [];
+                        List<String> fileP = [];
                         final result = await FilePicker.platform.pickFiles(
                             type: FileType.custom,
+                            allowMultiple: true,
                             allowedExtensions: ['png', 'jpeg', 'jpg']);
                         if (result == null) {
                           return;
-                        }
-                        final file = result.files.first;
-                        print('Name: ${file.name}');
-                        print('Path: ${file.path}');
-                        print('Extension: ${file.extension}');
-
-                        int sizee = file.size;
-
-                        if (sizee <= 200000) {
+                        } else if (result.count <= 10) {
+                          filePaths =
+                              result.paths.map((path) => File(path!)).toList();
+                          for (File file in filePaths) {
+                            print('File size: ${await file.length()} bytes');
+                            if (await file.length() <= 200000) {
+                              fileP.add(file.path);
+                              print("---------------$fileP");
+                            } else {
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(const SnackBar(
+                                      content: Text(
+                                "Size Exceed (Less than 200KB allowed)",
+                                textAlign: TextAlign.center,
+                              )));
+                            }
+                          }
                           await Provider.of<GalleryProviderAdmin>(context,
                                   listen: false)
-                              .galleryImageSave(context, file.path.toString());
-
-                          attach = await value.id.toString();
-                          if (file.name.length >= 6) {
-                            setState(() {
-                              checkname = file.name
-                                  .replaceRange(6, file.name.length, '');
-                            });
-
-                            print(checkname);
-                          }
+                              .galleryImageSave(context, fileP);
+                          print(fileP);
                         } else {
-                          print('Size Exceed');
                           ScaffoldMessenger.of(context)
                               .showSnackBar(const SnackBar(
+                                  duration: Duration(seconds: 4),
                                   content: Text(
-                            "Size Exceed (Less than 200KB allowed)",
-                            textAlign: TextAlign.center,
-                          )));
+                                    "Can't upload more than 10 files",
+                                    textAlign: TextAlign.center,
+                                  )));
                         }
+
+                        // final file = result.files.first;
+                        // print('Name: ${file.name}');
+                        // print('Path: ${file.path}');
+                        // print('Extension: ${file.extension}');
+
+                        // int sizee = file.size;
+
+                        // if (sizee <= 200000) {
+                        //   await Provider.of<GalleryProviderAdmin>(context,
+                        //           listen: false)
+                        //       .galleryImageSave(context, file.path.toString());
+
+                        //   attach = await value.id.toString();
+                        //   if (file.name.length >= 6) {
+                        //     setState(() {
+                        //       checkname = file.name
+                        //           .replaceRange(6, file.name.length, '');
+                        //     });
+
+                        //     print(checkname);
+                        //   }
+                        // } else {
+                        //   print('Size Exceed');
+                        //   ScaffoldMessenger.of(context)
+                        //       .showSnackBar(const SnackBar(
+                        //           content: Text(
+                        //     "Size Exceed (Less than 200KB allowed)",
+                        //     textAlign: TextAlign.center,
+                        //   )));
+                        // }
                       }),
-                      child: Text(checkname == null
-                          ? 'Choose File'
-                          : checkname.toString()),
+                      child: Text(value.imageIDList.isEmpty
+                          ? 'Choose Image'
+                          : "${value.imageIDList.length} Image added"),
                     ),
             ),
           ),
@@ -170,17 +209,25 @@ class _AdminGalleryUploadState extends State<AdminGalleryUpload> {
         const Center(
             child: Text(
           'Maximum allowed file size is 200 KB',
-          style:
-              TextStyle(fontSize: 9, color: Color.fromARGB(255, 241, 104, 94)),
+          style: TextStyle(
+              fontSize: 9,
+              color: Color.fromARGB(255, 241, 104, 94),
+              fontWeight: FontWeight.w600),
         )),
-        kheight10,
+        kheight20,
         Row(
           children: [
             const Spacer(),
-            SizedBox(
+            Container(
+              decoration: BoxDecoration(
+                  border: Border.all(color: UIGuide.light_Purple, width: 1),
+                  borderRadius: BorderRadius.circular(5)),
               width: size.width * .45,
               height: 35,
               child: MaterialButton(
+                elevation: 5,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(5.0))),
                 //  minWidth: size.width - 216,
                 color: Colors.white,
                 onPressed: (() async {
@@ -212,10 +259,16 @@ class _AdminGalleryUploadState extends State<AdminGalleryUpload> {
               ),
             ),
             const Spacer(),
-            SizedBox(
+            Container(
+              decoration: BoxDecoration(
+                  border: Border.all(color: UIGuide.light_Purple, width: 1),
+                  borderRadius: BorderRadius.circular(5)),
               width: size.width * .45,
               height: 35,
               child: MaterialButton(
+                elevation: 5,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(5.0))),
                 //  minWidth: size.width - 216,
                 color: Colors.white,
                 onPressed: (() async {
@@ -247,10 +300,10 @@ class _AdminGalleryUploadState extends State<AdminGalleryUpload> {
                 child: Center(child: Text('To  $timeNow')),
               ),
             ),
-            const Spacer()
+            const Spacer(),
           ],
         ),
-        kheight10,
+        kheight20,
         Consumer<GalleryProviderAdmin>(
           builder: (context, value, child) => Center(
             child: ToggleSwitch(
@@ -267,7 +320,7 @@ class _AdminGalleryUploadState extends State<AdminGalleryUpload> {
             ),
           ),
         ),
-        kheight10,
+        kheight20,
         Consumer<GalleryProviderAdmin>(builder: (context, value, child) {
           if (value.toggleVal == "All") {
             return Container(
@@ -537,7 +590,7 @@ class _AdminGalleryUploadState extends State<AdminGalleryUpload> {
         kheight20,
         Center(
           child: SizedBox(
-            width: 100,
+            width: size.width / 2.3,
             child: Consumer<GalleryProviderAdmin>(
               builder: (context, value, child) => MaterialButton(
                 shape: const RoundedRectangleBorder(
@@ -546,9 +599,7 @@ class _AdminGalleryUploadState extends State<AdminGalleryUpload> {
                 minWidth: size.width - 150,
                 color: UIGuide.light_Purple,
                 onPressed: (() async {
-                  attachmentid.text = attach;
-                  print(attachmentid);
-                  if (attachmentid.toString().isEmpty) {
+                  if (value.imageIDList.isEmpty) {
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                       content: Text(
                         'Select Image..',
@@ -570,7 +621,7 @@ class _AdminGalleryUploadState extends State<AdminGalleryUpload> {
                     if (titleController.text.isNotEmpty &&
                         course.toString().isNotEmpty &&
                         division.toString().isNotEmpty &&
-                        attachmentid.text.isNotEmpty) {
+                        value.imageIDList.isNotEmpty) {
                       await Provider.of<GalleryProviderAdmin>(context,
                               listen: false)
                           .gallerySave(
@@ -583,12 +634,12 @@ class _AdminGalleryUploadState extends State<AdminGalleryUpload> {
                               divisionData,
                               null,
                               toggleVal.toString(),
-                              attachmentid.text.toString());
+                              value.imageIDList);
 
                       titleController.clear();
                       courseData.clear();
                       divisionData.clear();
-                      attachmentid.clear();
+                      value.imageIDList.clear();
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                         content: Text(
@@ -601,7 +652,7 @@ class _AdminGalleryUploadState extends State<AdminGalleryUpload> {
                   } else if (value.toggleVal == 'staff') {
                     if (titleController.text.isNotEmpty &&
                         section.toString().isNotEmpty &&
-                        attachmentid.text.isNotEmpty) {
+                        value.imageIDList.isNotEmpty) {
                       await Provider.of<GalleryProviderAdmin>(context,
                               listen: false)
                           .gallerySave(
@@ -614,11 +665,11 @@ class _AdminGalleryUploadState extends State<AdminGalleryUpload> {
                               null,
                               subjectData,
                               toggleVal.toString(),
-                              attachmentid.text.toString());
+                              value.imageIDList);
 
                       titleController.clear();
                       subjectData.clear();
-                      attachmentid.clear();
+                      value.imageIDList.clear();
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                         content: Text(
@@ -630,8 +681,7 @@ class _AdminGalleryUploadState extends State<AdminGalleryUpload> {
                     }
                   } else {
                     if (titleController.text.isNotEmpty &&
-                        attachmentid.text.isNotEmpty) {
-                      print("------------------${attachmentid.toString()}");
+                        value.imageIDList.isNotEmpty) {
                       await Provider.of<GalleryProviderAdmin>(context,
                               listen: false)
                           .gallerySave(
@@ -644,11 +694,10 @@ class _AdminGalleryUploadState extends State<AdminGalleryUpload> {
                               null,
                               null,
                               toggleVal.toString(),
-                              attachmentid.text.toString());
+                              value.imageIDList);
 
                       titleController.clear();
-
-                      attachmentid.clear();
+                      value.imageIDList.clear();
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                         content: Text(

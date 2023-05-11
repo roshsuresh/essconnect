@@ -136,7 +136,7 @@ class StaffNotificationHistoryy extends StatelessWidget {
                                                 '--',
                                           ),
                                           const SizedBox(
-                                            width: 4,
+                                            width: 6,
                                           )
                                         ],
                                       ),

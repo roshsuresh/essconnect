@@ -191,6 +191,7 @@ class _GjInfoTechState extends State<GjInfoTech> {
               channel.id,
               channel.name,
               icon: '@mipmap/ic_launcher',
+              playSound: true,
             ),
           ),
         );

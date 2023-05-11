@@ -27,17 +27,12 @@ class Screen_Search_Providers with ChangeNotifier {
         'GET',
         Uri.parse(
             '${UIGuide.baseURL}/mobileapp/staffdet/studentreport/viewStudentReport?search=$word'));
-
     request.headers.addAll(headers);
-
     http.StreamedResponse response = await request.send();
-
     if (response.statusCode == 200) {
       Map<String, dynamic> data =
           jsonDecode(await response.stream.bytesToString());
-
       // log(data.toString());
-
       List<SearchStudReport> templist = List<SearchStudReport>.from(
           data["viewStudentReport"].map((x) => SearchStudReport.fromJson(x)));
       searchStudent.addAll(templist);

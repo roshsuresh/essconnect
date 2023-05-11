@@ -71,18 +71,19 @@ class _SearchStudent_stfState extends State<SearchStudent_stf> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            IconButton(
-                              icon: const Icon(Icons.search),
-                              color: Colors.grey,
-                              onPressed: (() async {
-                                Provider.of<Screen_Search_Providers>(context,
-                                        listen: false)
-                                    .getSearch_View(clearValue.text.toString());
-                                Provider.of<Screen_Search_Providers>(context,
-                                        listen: false)
-                                    .clearStudentList();
-                              }),
-                            ),
+                            // IconButton(
+                            //   icon: const Icon(Icons.search),
+                            //   color: Colors.grey,
+                            //   onPressed: (() async {
+                            //     Provider.of<Screen_Search_Providers>(context,
+                            //             listen: false)
+                            //         .getSearch_View(clearValue.text.toString());
+                            //     Provider.of<Screen_Search_Providers>(context,
+                            //             listen: false)
+                            //         .clearStudentList();
+                            //   }),
+                            // ),
+
                             IconButton(
                               icon: const Icon(Icons.close),
                               color: Colors.grey,

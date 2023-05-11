@@ -61,17 +61,21 @@ class _StudentFeeSearchState extends State<StudentFeeSearch> {
               ),
               onSuffixTap: () async {
                 print('object');
-                await Provider.of<FeeDetailsProvider>(context, listen: false)
-                    .getSearchView(textControllerr.text.toString());
-                await Provider.of<FeeDetailsProvider>(context, listen: false)
+
+                Provider.of<FeeDetailsProvider>(context, listen: false)
                     .clearStudentList();
+                Provider.of<FeeDetailsProvider>(context, listen: false)
+                    .getSearchView(textControllerr.text.toString());
+                print(textControllerr.text.toString());
               },
-              onSubmitted: (String s) {
+              onSubmitted: (String s) async {
                 print('Str $s');
-                Provider.of<FeeDetailsProvider>(context, listen: false)
-                    .getSearchView(textControllerr.text.toString());
+
                 Provider.of<FeeDetailsProvider>(context, listen: false)
                     .clearStudentList();
+                Provider.of<FeeDetailsProvider>(context, listen: false)
+                    .getSearchView(textControllerr.text.toString());
+                print(textControllerr.text.toString());
               },
             ),
           ),

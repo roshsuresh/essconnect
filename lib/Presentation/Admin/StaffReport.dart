@@ -119,7 +119,7 @@ class _TeachingStaffState extends State<TeachingStaff> {
                                     padding: const EdgeInsets.all(6),
                                     child: Container(
                                         width: size.width - 4,
-                                        height: 100,
+                                        height: 97,
                                         decoration: const BoxDecoration(
                                             boxShadow: [
                                               BoxShadow(
@@ -137,7 +137,7 @@ class _TeachingStaffState extends State<TeachingStaff> {
                                                 MainAxisAlignment.center,
                                             children: [
                                               const SizedBox(
-                                                height: 3,
+                                                height: 2,
                                               ),
                                               GestureDetector(
                                                 onTap: () {
@@ -496,7 +496,7 @@ class _NonTeachingStaffState extends State<NonTeachingStaff> {
                                     padding: const EdgeInsets.all(6.0),
                                     child: Container(
                                         width: size.width - 4,
-                                        height: 100,
+                                        height: 97,
                                         decoration: const BoxDecoration(
                                             boxShadow: [
                                               BoxShadow(
@@ -509,7 +509,7 @@ class _NonTeachingStaffState extends State<NonTeachingStaff> {
                                         child: Column(
                                           children: [
                                             const SizedBox(
-                                              height: 3,
+                                              height: 2,
                                             ),
                                             GestureDetector(
                                               onTap: () {
@@ -524,7 +524,7 @@ class _NonTeachingStaffState extends State<NonTeachingStaff> {
                                               },
                                               child: Container(
                                                 width: size.width - 10,
-                                                height: 97,
+                                                height: 95,
                                                 decoration: const BoxDecoration(
                                                     color: Color.fromARGB(
                                                         255, 255, 255, 255),
@@ -866,7 +866,7 @@ class _BothStaffState extends State<BothStaff> {
                                   padding: const EdgeInsets.all(6.0),
                                   child: Container(
                                       width: size.width - 4,
-                                      height: 100,
+                                      height: 97,
                                       decoration: const BoxDecoration(
                                           boxShadow: [
                                             BoxShadow(
@@ -879,7 +879,7 @@ class _BothStaffState extends State<BothStaff> {
                                       child: Column(
                                         children: [
                                           const SizedBox(
-                                            height: 3,
+                                            height: 2,
                                           ),
                                           GestureDetector(
                                             onTap: () {
@@ -894,7 +894,7 @@ class _BothStaffState extends State<BothStaff> {
                                             },
                                             child: Container(
                                               width: size.width - 10,
-                                              height: 97,
+                                              height: 95,
                                               decoration: const BoxDecoration(
                                                   color: Color.fromARGB(
                                                       255, 255, 255, 255),

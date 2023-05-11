@@ -20,10 +20,24 @@ class StaffNoticeBoard extends StatelessWidget {
         length: 3,
         child: Scaffold(
             appBar: AppBar(
-              title: const Text('Notice Board'),
+              title: Row(
+                children: [
+                  const Spacer(),
+                  const Text('NoticeBoard'),
+                  const Spacer(),
+                  IconButton(
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => StaffNoticeBoard()));
+                      },
+                      icon: const Icon(Icons.refresh))
+                ],
+              ),
               titleSpacing: 20.0,
               centerTitle: true,
-              toolbarHeight: 30.2,
+              toolbarHeight: 50.2,
               toolbarOpacity: 0.8,
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.only(
@@ -100,9 +114,9 @@ class _StaffNoticeBoard_sentState extends State<StaffNoticeBoard_sent> {
 
   DateTime? _mydatetimeTo;
 
-  String time = '--';
+  String time = '🗓️';
 
-  String timeNow = '--';
+  String timeNow = '🗓️';
 
   String? checkname;
 
@@ -126,24 +140,30 @@ class _StaffNoticeBoard_sentState extends State<StaffNoticeBoard_sent> {
     return ListView(
       physics: const BouncingScrollPhysics(),
       children: [
+        kheight10,
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Spacer(),
-            SizedBox(
-              height: 41,
-              width: size.width * 0.44,
-              child: MaterialButton(
-                  color: Colors.white70,
-                  child: Text('Date: ${datee.toString()}'),
-                  onPressed: () async {
-                    return;
-                  }),
+            Padding(
+              padding: const EdgeInsets.only(top: 1.0),
+              child: Container(
+                decoration: BoxDecoration(
+                    border: Border.all(color: UIGuide.light_Purple, width: 2)),
+                height: 40,
+                width: size.width * 0.45,
+                child: MaterialButton(
+                    color: Colors.white70,
+                    child: Text('🗓️ Date: ${datee.toString()}'),
+                    onPressed: () async {
+                      return;
+                    }),
+              ),
             ),
             const Spacer(),
             SizedBox(
               height: 50,
-              width: MediaQuery.of(context).size.width * 0.49,
+              width: MediaQuery.of(context).size.width * 0.45,
               child: Consumer<StaffNoticeboardSendProviders>(
                   builder: (context, snapshot, child) {
                 return InkWell(
@@ -286,13 +306,14 @@ class _StaffNoticeBoard_sentState extends State<StaffNoticeBoard_sent> {
         ),
         Center(
           child: SizedBox(
-            width: 120,
+            width: size.width / 2.4,
             child: Consumer<StaffNoticeboardSendProviders>(
               builder: (context, value, child) => value.loadingg
                   ? spinkitLoader()
                   : MaterialButton(
+                      elevation: 5,
                       // minWidth: size.width - 200,
-                      color: Colors.white70,
+                      color: Colors.white,
                       onPressed: (() async {
                         final result = await FilePicker.platform.pickFiles(
                             type: FileType.custom,
@@ -344,7 +365,7 @@ class _StaffNoticeBoard_sentState extends State<StaffNoticeBoard_sent> {
                       }),
                       // minWidth: size.width - 200,
                       child: Text(checkname == null
-                          ? 'Choose File'
+                          ? '📁   Choose File'
                           : checkname.toString()),
                     ),
             ),
@@ -356,13 +377,15 @@ class _StaffNoticeBoard_sentState extends State<StaffNoticeBoard_sent> {
           style:
               TextStyle(fontSize: 9, color: Color.fromARGB(255, 241, 104, 94)),
         )),
+        kheight10,
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Spacer(),
             SizedBox(
-              width: MediaQuery.of(context).size.width * 0.45,
+              width: MediaQuery.of(context).size.width * 0.46,
               child: MaterialButton(
+                elevation: 5,
                 color: Colors.white,
                 onPressed: (() async {
                   _mydatetimeFrom = await showDatePicker(
@@ -393,8 +416,9 @@ class _StaffNoticeBoard_sentState extends State<StaffNoticeBoard_sent> {
             ),
             const Spacer(),
             SizedBox(
-              width: MediaQuery.of(context).size.width * 0.45,
+              width: MediaQuery.of(context).size.width * 0.46,
               child: MaterialButton(
+                elevation: 5,
                 color: Colors.white,
                 onPressed: (() async {
                   _mydatetimeTo = await showDatePicker(
@@ -427,6 +451,7 @@ class _StaffNoticeBoard_sentState extends State<StaffNoticeBoard_sent> {
             const Spacer()
           ],
         ),
+        kheight10,
         Row(
           children: [
             const Spacer(),
@@ -635,14 +660,13 @@ class _StaffNoticeBoard_sentState extends State<StaffNoticeBoard_sent> {
           ],
         ),
         kheight20,
-        kheight20,
+        kheight10,
         Center(
           child: SizedBox(
-            width: 100,
+            width: size.width / 2.4,
             child: MaterialButton(
               shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(10.0))),
-              minWidth: size.width - 150,
               color: UIGuide.light_Purple,
               onPressed: (() async {
                 if (titleController.text.isEmpty ||

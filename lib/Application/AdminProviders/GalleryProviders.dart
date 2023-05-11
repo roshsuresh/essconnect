@@ -196,66 +196,71 @@ class GalleryProviderAdmin with ChangeNotifier {
   }
 
   String? id;
-  Future galleryImageSave(BuildContext context, String path) async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    setLoading(true);
-    var headers = {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
-    };
-    var request = http.MultipartRequest(
-        'POST', Uri.parse('${UIGuide.baseURL}/files/single/School'));
-    request.files.add(await http.MultipartFile.fromPath('file', path));
-    request.headers.addAll(headers);
-    print(path);
-
-    http.StreamedResponse response = await request.send();
-    print(request);
-    setLoading(true);
-    if (response.statusCode == 200) {
+  List<String> imageIDList = [];
+  Future galleryImageSave(BuildContext context, List<String> path) async {
+    imageIDList.clear();
+    for (String filePath in path) {
+      SharedPreferences pref = await SharedPreferences.getInstance();
       setLoading(true);
-      Map<String, dynamic> data =
-          jsonDecode(await response.stream.bytesToString());
-
-      GalleryImageId idd = GalleryImageId.fromJson(data);
-      id = idd.id;
+      var headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ${pref.getString('accesstoken')}'
+      };
+      var request = http.MultipartRequest(
+          'POST', Uri.parse('${UIGuide.baseURL}/files/single/School'));
+      request.files.add(await http.MultipartFile.fromPath('file', filePath));
+      request.headers.addAll(headers);
       print(path);
-      print('...............   $id');
 
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        elevation: 10,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(20)),
-        ),
-        duration: Duration(seconds: 1),
-        margin: EdgeInsets.only(bottom: 80, left: 30, right: 30),
-        behavior: SnackBarBehavior.floating,
-        content: Text(
-          'Image added...',
-          textAlign: TextAlign.center,
-        ),
-      ));
-      setLoading(false);
+      http.StreamedResponse response = await request.send();
+      print(request);
+      setLoading(true);
+      if (response.statusCode == 200) {
+        setLoading(true);
+        Map<String, dynamic> data =
+            jsonDecode(await response.stream.bytesToString());
 
-      notifyListeners();
-    } else {
-      setLoading(false);
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        elevation: 10,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(20)),
-        ),
-        duration: Duration(seconds: 1),
-        margin: EdgeInsets.only(bottom: 80, left: 30, right: 30),
-        behavior: SnackBarBehavior.floating,
-        content: Text(
-          'Something Went Wrong....',
-          textAlign: TextAlign.center,
-        ),
-      ));
-      print(response.reasonPhrase);
+        GalleryImageId idd = GalleryImageId.fromJson(data);
+        id = idd.id;
+        print(path);
+        imageIDList.add(id!);
+        print('...............   $id');
+
+        // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        //   elevation: 10,
+        //   shape: RoundedRectangleBorder(
+        //     borderRadius: BorderRadius.all(Radius.circular(20)),
+        //   ),
+        //   duration: Duration(seconds: 1),
+        //   margin: EdgeInsets.only(bottom: 80, left: 30, right: 30),
+        //   behavior: SnackBarBehavior.floating,
+        //   content: Text(
+        //     'Image added...',
+        //     textAlign: TextAlign.center,
+        //   ),
+        // ));
+        setLoading(false);
+
+        notifyListeners();
+      } else {
+        setLoading(false);
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          elevation: 10,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+          ),
+          duration: Duration(seconds: 1),
+          margin: EdgeInsets.only(bottom: 80, left: 30, right: 30),
+          behavior: SnackBarBehavior.floating,
+          content: Text(
+            'Something Went Wrong....',
+            textAlign: TextAlign.center,
+          ),
+        ));
+        print(response.reasonPhrase);
+      }
     }
-    notifyListeners();
+    print("imageIDList--------$imageIDList");
   }
 
   //gallery save
@@ -272,14 +277,20 @@ class GalleryProviderAdmin with ChangeNotifier {
       divisionn,
       section,
       String toggle,
-      String attachmentId) async {
+      List<String> imgID) async {
+    List imgg = [];
+    print("imageIDList=====$imageIDList");
+    for (String imggID in imageIDList) {
+      imgg.add({"fileId": imggID, "isMaster": true});
+    }
+    print("imgg ---===  $imgg");
     SharedPreferences _pref = await SharedPreferences.getInstance();
 
     var headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
-    print('$attachmentId  __________________');
+
     var request =
         http.Request('POST', Uri.parse('${UIGuide.baseURL}/gallery/create'));
     request.body = json.encode({
@@ -291,29 +302,28 @@ class GalleryProviderAdmin with ChangeNotifier {
       "divisionId": divisionn,
       "entryDate": entryDate,
       "forClassTeacherOnly": false,
-      "photoList": [
-        {"fileId": attachmentId, "isMaster": true}
-      ],
+      "photoList": imgg,
       "sectionId": section,
       "staffRole": null,
       "title": titlee
     });
-    print(json.encode({
-      "cancel": null,
-      "courseId": coursee,
-      "displayEndDate": displayEndDate,
-      "displayStartDate": displayStartDate,
-      "displayTo": toggle,
-      "divisionId": divisionn,
-      "entryDate": entryDate,
-      "forClassTeacherOnly": false,
-      "photoList": [
-        {"fileId": attachmentId, "isMaster": true}
-      ],
-      "sectionId": section,
-      "staffRole": null,
-      "title": titlee
-    }));
+    print(request.body);
+    // print(json.encode({
+    //   "cancel": null,
+    //   "courseId": coursee,
+    //   "displayEndDate": displayEndDate,
+    //   "displayStartDate": displayStartDate,
+    //   "displayTo": toggle,
+    //   "divisionId": divisionn,
+    //   "entryDate": entryDate,
+    //   "forClassTeacherOnly": false,
+    //   "photoList": [
+    //     {"fileId": attachmentId, "isMaster": true}
+    //   ],
+    //   "sectionId": section,
+    //   "staffRole": null,
+    //   "title": titlee
+    // }));
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
@@ -396,7 +406,7 @@ class GalleryProviderAdmin with ChangeNotifier {
 
 //delete gallery
 
-  Future galleryDelete(String eventID, BuildContext context) async {
+  Future galleryDelete(String eventID, BuildContext context, int indexx) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
 
     var headers = {
@@ -410,6 +420,7 @@ class GalleryProviderAdmin with ChangeNotifier {
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 204) {
+      galleryViewList.removeAt(indexx);
       print(await response.stream.bytesToString());
       print('correct');
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

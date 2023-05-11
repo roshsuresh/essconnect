@@ -27,10 +27,10 @@ class _ExamTTUploadState extends State<ExamTTUpload> {
   DateTime? _mydatetimeTo;
   DateTime? _mydisplayFrom;
   String? checkname;
-  String time = '--';
+  String time = '🗓️';
   List divisionData = [];
   String division = '';
-  String timeNow = '--';
+  String timeNow = '🗓️';
   String displayFrom = 'Exam start date';
   String? courseId;
   String attach = '';

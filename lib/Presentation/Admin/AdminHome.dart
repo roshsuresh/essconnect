@@ -15,6 +15,7 @@ import 'package:essconnect/Presentation/Admin/History/NotificationHistoryStaff.d
 import 'package:essconnect/Presentation/Admin/MarkentryReport.dart';
 import 'package:essconnect/Presentation/Admin/StudentStatistiics.dart';
 import 'package:essconnect/Presentation/Admin/WebViewLogin.dart';
+import 'package:essconnect/Presentation/Staff/MarkEntry.dart';
 import 'package:essconnect/Presentation/Staff/StudAttendenceEntry.dart';
 import 'package:essconnect/Presentation/Staff/StudReport.dart';
 import 'package:essconnect/Presentation/Student/CurriculamScreen.dart';
@@ -620,7 +621,8 @@ class AdminHomeContent extends StatelessWidget {
                           ),
                           kheight10,
                           const Text(
-                            'Notification\n     History',
+                            'Notification\nHistory',
+                            textAlign: TextAlign.center,
                             style: TextStyle(
                                 fontSize: 11,
                                 color: Colors.black87,
@@ -919,117 +921,117 @@ class AdminHomeContent extends StatelessWidget {
                               ),
                             ),
                           ),
-                    module.curiculam == true
-                        ? Consumer<Curriculamprovider>(
-                            builder: (context, curri, child) => GestureDetector(
-                              onTap: () async {
-                                await Navigator.push(
-                                    context,
-                                    PageTransition(
-                                        type: PageTransitionType.rightToLeft,
-                                        child: ChatFirstScreen(),
-                                        duration:
-                                            const Duration(milliseconds: 200),
-                                        childCurrent: this));
+                    // module.curiculam == true
+                    //     ? Consumer<Curriculamprovider>(
+                    //         builder: (context, curri, child) => GestureDetector(
+                    //           onTap: () async {
+                    //             await Navigator.push(
+                    //                 context,
+                    //                 PageTransition(
+                    //                     type: PageTransitionType.rightToLeft,
+                    //                     child: ChatFirstScreen(),
+                    //                     duration:
+                    //                         const Duration(milliseconds: 200),
+                    //                     childCurrent: this));
 
-                                //  Navigator.push(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //       builder: (context) => ChatFirstScreen()),
-                                // );
-                              },
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 10, right: 10),
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Card(
-                                      elevation: 10,
-                                      color: Colors.white,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(12.0),
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Container(
-                                          height: 38,
-                                          width: 38,
-                                          decoration: BoxDecoration(
-                                            image: const DecorationImage(
-                                              opacity: 20,
-                                              image: AssetImage(
-                                                'assets/Curriculum.png',
-                                              ),
-                                            ),
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    kheight10,
-                                    const Text(
-                                      'Chat',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 11,
-                                          color: Colors.black87),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                          )
-                        : GestureDetector(
-                            onTap: () async {
-                              _noAcess(context);
-                            },
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 10, right: 10),
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Card(
-                                    elevation: 10,
-                                    color: Colors.white,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12.0),
-                                    ),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Container(
-                                        height: 38,
-                                        width: 38,
-                                        decoration: BoxDecoration(
-                                          image: const DecorationImage(
-                                            opacity: 20,
-                                            image: AssetImage(
-                                              'assets/Curriculum.png',
-                                            ),
-                                          ),
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  kheight10,
-                                  const Text(
-                                    'Chat',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 11,
-                                        color: Colors.black87),
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
+                    //             //  Navigator.push(
+                    //             //   context,
+                    //             //   MaterialPageRoute(
+                    //             //       builder: (context) => ChatFirstScreen()),
+                    //             // );
+                    //           },
+                    //           child: Padding(
+                    //             padding:
+                    //                 const EdgeInsets.only(left: 10, right: 10),
+                    //             child: Column(
+                    //               mainAxisAlignment:
+                    //                   MainAxisAlignment.spaceEvenly,
+                    //               children: [
+                    //                 Card(
+                    //                   elevation: 10,
+                    //                   color: Colors.white,
+                    //                   shape: RoundedRectangleBorder(
+                    //                     borderRadius:
+                    //                         BorderRadius.circular(12.0),
+                    //                   ),
+                    //                   child: Padding(
+                    //                     padding: const EdgeInsets.all(8.0),
+                    //                     child: Container(
+                    //                       height: 38,
+                    //                       width: 38,
+                    //                       decoration: BoxDecoration(
+                    //                         image: const DecorationImage(
+                    //                           opacity: 20,
+                    //                           image: AssetImage(
+                    //                             'assets/Curriculum.png',
+                    //                           ),
+                    //                         ),
+                    //                         borderRadius:
+                    //                             BorderRadius.circular(10),
+                    //                       ),
+                    //                     ),
+                    //                   ),
+                    //                 ),
+                    //                 kheight10,
+                    //                 const Text(
+                    //                   'Chat',
+                    //                   style: TextStyle(
+                    //                       fontWeight: FontWeight.bold,
+                    //                       fontSize: 11,
+                    //                       color: Colors.black87),
+                    //                 )
+                    //               ],
+                    //             ),
+                    //           ),
+                    //         ),
+                    //       )
+                    //     : GestureDetector(
+                    //         onTap: () async {
+                    //           _noAcess(context);
+                    //         },
+                    //         child: Padding(
+                    //           padding:
+                    //               const EdgeInsets.only(left: 10, right: 10),
+                    //           child: Column(
+                    //             mainAxisAlignment:
+                    //                 MainAxisAlignment.spaceEvenly,
+                    //             children: [
+                    //               Card(
+                    //                 elevation: 10,
+                    //                 color: Colors.white,
+                    //                 shape: RoundedRectangleBorder(
+                    //                   borderRadius: BorderRadius.circular(12.0),
+                    //                 ),
+                    //                 child: Padding(
+                    //                   padding: const EdgeInsets.all(8.0),
+                    //                   child: Container(
+                    //                     height: 38,
+                    //                     width: 38,
+                    //                     decoration: BoxDecoration(
+                    //                       image: const DecorationImage(
+                    //                         opacity: 20,
+                    //                         image: AssetImage(
+                    //                           'assets/Curriculum.png',
+                    //                         ),
+                    //                       ),
+                    //                       borderRadius:
+                    //                           BorderRadius.circular(10),
+                    //                     ),
+                    //                   ),
+                    //                 ),
+                    //               ),
+                    //               kheight10,
+                    //               const Text(
+                    //                 'Chat',
+                    //                 style: TextStyle(
+                    //                     fontWeight: FontWeight.bold,
+                    //                     fontSize: 11,
+                    //                     color: Colors.black87),
+                    //               )
+                    //             ],
+                    //           ),
+                    //         ),
+                    //       ),
                   ],
                 ),
               ),
@@ -1627,9 +1629,10 @@ class AdminHomeContent extends StatelessWidget {
                                   context,
                                   PageTransition(
                                       type: PageTransitionType.rightToLeft,
-                                      child: LoginScreenWeb(
-                                        schdomain: schdomain,
-                                      ),
+                                      child: MarkEntry(),
+                                      // LoginScreenWeb(
+                                      //   schdomain: schdomain,
+                                      // ),
                                       duration:
                                           const Duration(milliseconds: 200),
                                       childCurrent: this));

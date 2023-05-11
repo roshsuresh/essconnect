@@ -83,13 +83,14 @@ class _StaffHomeState extends State<StaffHome> {
                       width: size.width,
                       height: size.height - 200,
                       decoration: const BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(blurRadius: 5, offset: Offset(1, 3))
-                          ],
-                          color: Colors.white,
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(30),
-                              topRight: Radius.circular(30))),
+                        boxShadow: [
+                          BoxShadow(blurRadius: 5, offset: Offset(1, 3))
+                        ],
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(30),
+                            topRight: Radius.circular(30)),
+                      ),
                       child: ListView(
                         physics: const BouncingScrollPhysics(),
                         children: [
@@ -105,8 +106,9 @@ class _StaffHomeState extends State<StaffHome> {
                                       context,
                                       PageTransition(
                                         type: PageTransitionType.rightToLeft,
-                                        child: StaffProfileView(),
-                                        duration: Duration(milliseconds: 300),
+                                        child: const StaffProfileView(),
+                                        duration:
+                                            const Duration(milliseconds: 300),
                                         // childCurrent:this
                                       ));
                                   // Navigator.push(
@@ -815,71 +817,71 @@ class _StaffHomeState extends State<StaffHome> {
                                                   ),
                                                 ),
                                               ),
-                                        GestureDetector(
-                                          onTap: () async {
-                                            await Navigator.push(
-                                                context,
-                                                PageTransition(
-                                                  type: PageTransitionType
-                                                      .rightToLeft,
-                                                  child: ToolMarkEntry(),
-                                                  duration: Duration(
-                                                      milliseconds: 300),
-                                                  // childCurrent:this
-                                                ));
-                                            // await Navigator.push(
-                                            //   context,
-                                            //   MaterialPageRoute(
-                                            //       builder: (context) =>
-                                            //           ToolMarkEntry()),
-                                            // );
-                                          },
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 10, right: 10),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                Card(
-                                                  elevation: 10,
-                                                  color: Colors.white,
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            12.0),
-                                                  ),
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: Container(
-                                                      height: 38,
-                                                      width: 38,
-                                                      decoration:
-                                                          const BoxDecoration(
-                                                        image: DecorationImage(
-                                                          image: AssetImage(
-                                                            'assets/Tabulation.png',
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                kheight10,
-                                                const Text(
-                                                  'Tool Mark Entry',
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      fontSize: 11,
-                                                      color: Colors.black),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        ),
+                                        // GestureDetector(
+                                        //   onTap: () async {
+                                        //     await Navigator.push(
+                                        //         context,
+                                        //         PageTransition(
+                                        //           type: PageTransitionType
+                                        //               .rightToLeft,
+                                        //           child: ToolMarkEntry(),
+                                        //           duration: Duration(
+                                        //               milliseconds: 300),
+                                        //           // childCurrent:this
+                                        //         ));
+                                        //     // await Navigator.push(
+                                        //     //   context,
+                                        //     //   MaterialPageRoute(
+                                        //     //       builder: (context) =>
+                                        //     //           ToolMarkEntry()),
+                                        //     // );
+                                        //   },
+                                        //   child: Padding(
+                                        //     padding: const EdgeInsets.only(
+                                        //         left: 10, right: 10),
+                                        //     child: Column(
+                                        //       mainAxisAlignment:
+                                        //           MainAxisAlignment.spaceEvenly,
+                                        //       children: [
+                                        //         Card(
+                                        //           elevation: 10,
+                                        //           color: Colors.white,
+                                        //           shape: RoundedRectangleBorder(
+                                        //             borderRadius:
+                                        //                 BorderRadius.circular(
+                                        //                     12.0),
+                                        //           ),
+                                        //           child: Padding(
+                                        //             padding:
+                                        //                 const EdgeInsets.all(
+                                        //                     8.0),
+                                        //             child: Container(
+                                        //               height: 38,
+                                        //               width: 38,
+                                        //               decoration:
+                                        //                   const BoxDecoration(
+                                        //                 image: DecorationImage(
+                                        //                   image: AssetImage(
+                                        //                     'assets/Tabulation.png',
+                                        //                   ),
+                                        //                 ),
+                                        //               ),
+                                        //             ),
+                                        //           ),
+                                        //         ),
+                                        //         kheight10,
+                                        //         const Text(
+                                        //           'Tool Mark Entry',
+                                        //           style: TextStyle(
+                                        //               fontWeight:
+                                        //                   FontWeight.w400,
+                                        //               fontSize: 11,
+                                        //               color: Colors.black),
+                                        //         )
+                                        //       ],
+                                        //     ),
+                                        //   ),
+                                        // ),
                                         module.timetable == true
                                             ? GestureDetector(
                                                 onTap: () async {

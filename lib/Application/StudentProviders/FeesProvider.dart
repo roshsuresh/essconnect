@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:essconnect/Domain/Student/RazorPayModel.dart';
+import 'package:essconnect/Domain/Student/TrakNpayModel.dart';
 import 'package:essconnect/Domain/Student/TransactionModel.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -239,78 +240,7 @@ class FeesProvider with ChangeNotifier {
     } else {
       print("no dta");
     }
-    // if (selected == true) {
-    //   selectedBusFee.add(busfeeName);
-    //   print(index);
-    //   final double tot = feeNetDue;
-    //   print(busfeeName);
-    //   print(tot);
-    //   totalBusFee = tot + totalBusFee;
-    //   print(totalBusFee);
-    //   total = totalFees + totalBusFee;
-    //   print(total);
-    //   notifyListeners();
-    // } else {
-    //   if (selectedBusFee.remove(busfeeName)) {
-    //     final double tot = feeNetDue;
-    //     totalBusFee = totalBusFee - tot;
-    //     total = totalFees + totalBusFee;
-    //     print(total);
-    //   }
-    //   notifyListeners();
-    // }
   }
-
-  // void onFeeSelected(bool selected, feeName, int index, feeNetDue) {
-  //   if (selected == true) {
-  //     selecteCategorys.add(feeName);
-  //     print(index);
-  //     final double tot = feeNetDue;
-  //     print(feeName);
-  //     print(tot);
-  //     totalFees = tot + totalFees;
-  //     print(totalFees);
-  //     total = totalFees + totalBusFee;
-  //     print(total);
-  //     print("selecteCategorys   $selecteCategorys");
-  //     notifyListeners();
-  //   } else {
-  //     if (selecteCategorys.remove(feeName)) {
-  //       final double tot = feeNetDue;
-  //       totalFees = totalFees - tot;
-  //       total = totalFees + totalBusFee;
-  //       print(total);
-  //     }
-  //     notifyListeners();
-  //   }
-  // }
-
-  // //bus fee
-
-  // List selectedBusFee = [];
-
-  // void onBusSelected(bool selected, busfeeName, int index, feeNetDue) {
-  //   if (selected == true) {
-  //     selectedBusFee.add(busfeeName);
-  //     print(index);
-  //     final double tot = feeNetDue;
-  //     print(busfeeName);
-  //     print(tot);
-  //     totalBusFee = tot + totalBusFee;
-  //     print(totalBusFee);
-  //     total = totalFees + totalBusFee;
-  //     print(total);
-  //     notifyListeners();
-  //   } else {
-  //     if (selectedBusFee.remove(busfeeName)) {
-  //       final double tot = feeNetDue;
-  //       totalBusFee = totalBusFee - tot;
-  //       total = totalFees + totalBusFee;
-  //       print(total);
-  //     }
-  //     notifyListeners();
-  //   }
-  // }
 
   //total
 
@@ -874,6 +804,328 @@ class FeesProvider with ChangeNotifier {
       Map<String, dynamic> note = data['notes'];
       Notes inf = Notes.fromJson(note);
       readableOrderid2 = inf.readableOrderid;
+
+      notifyListeners();
+    } else {
+      setLoading(false);
+      print("Error in  transaction index TWO  response");
+    }
+  }
+
+//////////////////////////////////////////////////////////////////////////////////////////
+////////------------------------------ TRAKNPAY  ---------------------------------------
+/////////////////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////    get data  1 index  TRAKNPAY    ////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////
+
+  String? orderIdTPay1;
+  String? addressLine1TPay1;
+  String? cityTPay1;
+  String? udf5TPay1;
+  String? stateTPay1;
+  String? udf4TPay1;
+  String? phoneTPay1;
+  String? zipCodeTPay1;
+  String? currencyTPay1;
+  String? returnUrlFailureTPay1;
+  String? hashTPay1;
+  String? returnUrlCancelTPay1;
+  String? emailTPay1;
+  String? countryTPay1;
+  String? modeTPay1;
+  String? saltTPay1;
+  String? amountTPay1;
+  String? nameTPay1;
+  String? apiKeyTPay1;
+  String? udf3TPay1;
+  String? udf2TPay1;
+  String? returnUrlTPay1;
+  String? descriptionTPay1;
+  String? udf1TPay1;
+  String? addressLine2TPay1;
+
+  Future getDataOneTpay(String fees, String idFee, String feeAmount,
+      String amount, String gateName) async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    setLoading(true);
+
+    final http.Response response = await http.post(
+      Uri.parse('${UIGuide.baseURL}/online-payment/traknpay/get-data'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      },
+      body: jsonEncode({
+        "Description": "Online Fees Payment",
+        "TransactionType": [
+          {"name": fees, "id": idFee, "amount": feeAmount}
+        ],
+        "ReturnUrl": "",
+        "Amount": amount,
+        "PaymentGateWay": gateName
+      }),
+    );
+
+    print(json.encode({
+      "Description": "Online Fees Payment",
+      "TransactionType": [
+        {"name": fees, "id": idFee, "amount": feeAmount}
+      ],
+      "ReturnUrl": "",
+      "Amount": amount,
+      "PaymentGateWay": gateName
+    }));
+
+    try {
+      if (response.statusCode == 200) {
+        Map<String, dynamic> data = await json.decode(response.body);
+
+        print(data);
+        TrackNPayModel trak = TrackNPayModel.fromJson(data);
+
+        orderIdTPay1 = trak.orderId;
+        addressLine1TPay1 = trak.addressLine1;
+        cityTPay1 = trak.city;
+        udf5TPay1 = trak.udf5;
+        stateTPay1 = trak.state;
+        udf4TPay1 = trak.udf4;
+        phoneTPay1 = trak.phone;
+        zipCodeTPay1 = trak.zipCode;
+        currencyTPay1 = trak.currency;
+        returnUrlFailureTPay1 = trak.returnUrlFailure;
+        hashTPay1 = trak.hash;
+        returnUrlCancelTPay1 = trak.returnUrlCancel;
+        emailTPay1 = trak.email;
+        countryTPay1 = trak.country;
+        modeTPay1 = trak.mode;
+        saltTPay1 = trak.salt;
+        amountTPay1 = trak.amount;
+        nameTPay1 = trak.name;
+        apiKeyTPay1 = trak.apiKey;
+        udf3TPay1 = trak.udf3;
+        udf2TPay1 = trak.udf2;
+        returnUrlTPay1 = trak.returnUrl;
+        descriptionTPay1 = trak.description;
+        udf1TPay1 = trak.udf1;
+        addressLine2TPay1 = trak.addressLine2;
+
+        notifyListeners();
+      } else {
+        setLoading(false);
+        print("Error in  transaction index one  response");
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+//////////////////////////////////////////                             ||||||||
+///////    get data  1 index  TRAKNPAY --------------  "BUS FEES"      ||||||||
+//////////////////////////////////////////                             ||||||||
+  String? orderIdTPay1B;
+  String? addressLine1TPay1B;
+  String? cityTPay1B;
+  String? udf5TPay1B;
+  String? stateTPay1B;
+  String? udf4TPay1B;
+  String? phoneTPay1B;
+  String? zipCodeTPay1B;
+  String? currencyTPay1B;
+  String? returnUrlFailureTPay1B;
+  String? hashTPay1B;
+  String? returnUrlCancelTPay1B;
+  String? emailTPay1B;
+  String? countryTPay1B;
+  String? modeTPay1B;
+  String? saltTPay1B;
+  String? amountTPay1B;
+  String? nameTPay1B;
+  String? apiKeyTPay1B;
+  String? udf3TPay1B;
+  String? udf2TPay1B;
+  String? returnUrlTPay1B;
+  String? descriptionTPay1B;
+  String? udf1TPay1B;
+  String? addressLine2TPay1B;
+  Future getDataOneBusTpay(String fees, String idFee, String feeAmount,
+      String amount, String gateName) async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    setLoading(true);
+
+    final http.Response response = await http.post(
+      Uri.parse('${UIGuide.baseURL}/online-payment/traknpay/get-data'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      },
+      body: jsonEncode({
+        "Description": "Online Fees Payment",
+        "TransactionType": [
+          {"name": fees, "id": idFee, "amount": feeAmount}
+        ],
+        "ReturnUrl": "",
+        "Amount": amount,
+        "PaymentGateWay": gateName
+      }),
+    );
+
+    print(json.encode({
+      "Description": "Online Fees Payment",
+      "TransactionType": [
+        {"name": fees, "id": idFee, "amount": feeAmount}
+      ],
+      "ReturnUrl": "",
+      "Amount": amount,
+      "PaymentGateWay": gateName
+    }));
+
+    try {
+      if (response.statusCode == 200) {
+        Map<String, dynamic> data = await json.decode(response.body);
+
+        print(data);
+        TrackNPayModel trak = TrackNPayModel.fromJson(data);
+
+        orderIdTPay1B = trak.orderId;
+        addressLine1TPay1B = trak.addressLine1;
+        cityTPay1B = trak.city;
+        udf5TPay1B = trak.udf5;
+        stateTPay1B = trak.state;
+        udf4TPay1B = trak.udf4;
+        phoneTPay1B = trak.phone;
+        zipCodeTPay1B = trak.zipCode;
+        currencyTPay1B = trak.currency;
+        returnUrlFailureTPay1B = trak.returnUrlFailure;
+        hashTPay1B = trak.hash;
+        returnUrlCancelTPay1B = trak.returnUrlCancel;
+        emailTPay1B = trak.email;
+        countryTPay1B = trak.country;
+        modeTPay1B = trak.mode;
+        saltTPay1B = trak.salt;
+        amountTPay1B = trak.amount;
+        nameTPay1B = trak.name;
+        apiKeyTPay1B = trak.apiKey;
+        udf3TPay1B = trak.udf3;
+        udf2TPay1B = trak.udf2;
+        returnUrlTPay1B = trak.returnUrl;
+        descriptionTPay1B = trak.description;
+        udf1TPay1B = trak.udf1;
+        addressLine2TPay1B = trak.addressLine2;
+        setLoading(false);
+
+        notifyListeners();
+      } else {
+        setLoading(false);
+        print("Error in  transaction index one Bus  response");
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+///////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////    get data  2 index TRAKNPAY   ///////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////
+  String? orderIdTPay2;
+  String? addressLine1TPay2;
+  String? cityTPay2;
+  String? udf5TPay2;
+  String? stateTPay2;
+  String? udf4TPay2;
+  String? phoneTPay2;
+  String? zipCodeTPay2;
+  String? currencyTPay2;
+  String? returnUrlFailureTPay2;
+  String? hashTPay2;
+  String? returnUrlCancelTPay2;
+  String? emailTPay2;
+  String? countryTPay2;
+  String? modeTPay2;
+  String? saltTPay2;
+  String? amountTPay2;
+  String? nameTPay2;
+  String? apiKeyTPay2;
+  String? udf3TPay2;
+  String? udf2TPay2;
+  String? returnUrlTPay2;
+  String? descriptionTPay2;
+  String? udf1TPay2;
+  String? addressLine2TPay2;
+
+  Future getDataTwoTpay(
+      String fees,
+      String idFee,
+      String feeAmount,
+      String buss,
+      String idBus,
+      String busAmount,
+      String amount,
+      String gateName) async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    setLoading(true);
+
+    final http.Response response = await http.post(
+      Uri.parse('${UIGuide.baseURL}/online-payment/traknpay/get-data'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      },
+      body: jsonEncode({
+        "Description": "Online Fees Payment",
+        "TransactionType": [
+          {"name": fees, "id": idFee, "amount": feeAmount},
+          {"name": buss, "id": idBus, "amount": busAmount}
+        ],
+        "ReturnUrl": "",
+        "Amount": amount,
+        "PaymentGateWay": gateName
+      }),
+    );
+
+    print(json.encode({
+      "Description": "Online Fees Payment",
+      "TransactionType": [
+        {"name": fees, "id": idFee, "amount": feeAmount},
+        {"name": buss, "id": idBus, "amount": busAmount}
+      ],
+      "ReturnUrl": "",
+      "Amount": amount,
+      "PaymentGateWay": gateName
+    }));
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> data = await json.decode(response.body);
+
+      print(data);
+      TrackNPayModel trak = TrackNPayModel.fromJson(data);
+
+      orderIdTPay2 = trak.orderId;
+      addressLine1TPay2 = trak.addressLine1;
+      cityTPay2 = trak.city;
+      udf5TPay2 = trak.udf5;
+      stateTPay2 = trak.state;
+      udf4TPay2 = trak.udf4;
+      phoneTPay2 = trak.phone;
+      zipCodeTPay2 = trak.zipCode;
+      currencyTPay2 = trak.currency;
+      returnUrlFailureTPay2 = trak.returnUrlFailure;
+      hashTPay2 = trak.hash;
+      returnUrlCancelTPay2 = trak.returnUrlCancel;
+      emailTPay2 = trak.email;
+      countryTPay2 = trak.country;
+      modeTPay2 = trak.mode;
+      saltTPay2 = trak.salt;
+      amountTPay2 = trak.amount;
+      nameTPay2 = trak.name;
+      apiKeyTPay2 = trak.apiKey;
+      udf3TPay2 = trak.udf3;
+      udf2TPay2 = trak.udf2;
+      returnUrlTPay2 = trak.returnUrl;
+      descriptionTPay2 = trak.description;
+      udf1TPay2 = trak.udf1;
+      addressLine2TPay2 = trak.addressLine2;
 
       notifyListeners();
     } else {

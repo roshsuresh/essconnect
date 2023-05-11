@@ -1,6 +1,7 @@
 import 'package:essconnect/Application/AdminProviders/SearchstaffProviders.dart';
 import 'package:essconnect/Application/Staff_Providers/SearchProvider.dart';
 import 'package:essconnect/Constants.dart';
+import 'package:essconnect/Debouncer.dart';
 import 'package:essconnect/Presentation/Admin/StaffInfo.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:essconnect/utils/spinkit.dart';
@@ -27,7 +28,7 @@ class _SearchStaffState extends State<SearchStaff> {
   }
 
   TextEditingController clearValue = TextEditingController();
-
+  final _debouncer = Debouncer(milliseconds: 1000);
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -38,70 +39,92 @@ class _SearchStaffState extends State<SearchStaff> {
             kheight10,
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  IconButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      icon: const Icon(
-                        Icons.arrow_back_ios_new,
-                        color: Colors.grey,
-                      )),
-                  Expanded(
-                    child: TextField(
-                      controller: clearValue,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                        suffixIcon: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            IconButton(
-                              icon: const Icon(Icons.search),
-                              color: Colors.grey,
-                              onPressed: (() {
-                                Provider.of<SearchStaffProviders>(context,
-                                        listen: false)
-                                    .getSearchStaffView(
-                                        clearValue.text.toString());
-                                Provider.of<SearchStaffProviders>(context,
-                                        listen: false)
-                                    .clearStaffList();
-                              }),
-                            ),
-                            IconButton(
-                              icon: const Icon(Icons.close),
-                              color: Colors.grey,
-                              onPressed: (() {
-                                clearValue.clear();
-                              }),
-                            ),
-                          ],
-                        ),
-                        hintText: 'Search',
-                        hintStyle: const TextStyle(
+              child: Consumer<SearchStaffProviders>(
+                builder: (context, val, child) => Row(
+                  children: [
+                    IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: const Icon(
+                          Icons.arrow_back_ios_new,
                           color: Colors.grey,
-                          fontSize: 20,
+                        )),
+                    Expanded(
+                      child: TextField(
+                        controller: clearValue,
+                        onChanged: (value) {
+                          _debouncer.run(() async {
+                            await Provider.of<SearchStaffProviders>(context,
+                                    listen: false)
+                                .clearStaffList();
+                            await Provider.of<SearchStaffProviders>(context,
+                                    listen: false)
+                                .getSearchStaffView(clearValue.text.toString());
+
+                            print('-***--**-*-*-*-*-*');
+                          });
+                        },
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                          suffixIcon: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              // val.loading
+                              //     ? IconButton(
+                              //         onPressed: () {},
+                              //         icon: const Icon(Icons.search),
+                              //         color: Colors.grey,
+                              //       )
+                              //     : IconButton(
+                              //         icon: const Icon(Icons.search),
+                              //         color: Colors.grey,
+                              //         onPressed: (() {
+                              //           Provider.of<SearchStaffProviders>(
+                              //                   context,
+                              //                   listen: false)
+                              //               .getSearchStaffView(
+                              //                   clearValue.text.toString());
+                              //           Provider.of<SearchStaffProviders>(
+                              //                   context,
+                              //                   listen: false)
+                              //               .clearStaffList();
+                              //         }),
+                              //       ),
+                              IconButton(
+                                icon: const Icon(Icons.close),
+                                color: Colors.grey,
+                                onPressed: (() {
+                                  clearValue.clear();
+                                }),
+                              ),
+                            ],
+                          ),
+                          hintText: 'Search',
+                          hintStyle: const TextStyle(
+                            color: Colors.grey,
+                            fontSize: 20,
+                          ),
+                          fillColor: UIGuide.light_black,
+                          filled: true,
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                                color: UIGuide.light_Purple, width: .5),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: const BorderSide(color: Colors.grey),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                         ),
-                        fillColor: UIGuide.light_black,
-                        filled: true,
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                              color: UIGuide.light_Purple, width: .5),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: const BorderSide(color: Colors.grey),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
+                        style: const TextStyle(color: UIGuide.light_Purple),
                       ),
-                      style: const TextStyle(color: UIGuide.light_Purple),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             Expanded(

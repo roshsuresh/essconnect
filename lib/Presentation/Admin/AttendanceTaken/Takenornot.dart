@@ -286,7 +286,7 @@ class _AttendanceTakenReportState extends State<AttendanceTakenReport> {
                 width: size.width * .42,
                 child: MaterialButton(
                   // minWidth: size.width - 250,
-                  color: Colors.white,
+                  color: Colors.white, elevation: 5,
                   onPressed: (() async {
                     _mydatetime = await showDatePicker(
                       context: context,
@@ -313,8 +313,13 @@ class _AttendanceTakenReportState extends State<AttendanceTakenReport> {
                   }),
                   // minWidth: size.width - 250,
                   child: Center(
-                      child:
-                          Text(timeNow == '--' ? newdate.toString() : timeNow)),
+                      child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('🗓️  '),
+                      Text(timeNow == '--' ? newdate.toString() : timeNow),
+                    ],
+                  )),
                 ),
               ),
               const Spacer()

@@ -63,7 +63,6 @@ class ExamTTAdmProviders with ChangeNotifier {
   List<MultiSelectItem> divisionDropDown = [];
   Future<bool> getDivisionList(String courseId) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
-
     var headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
@@ -72,7 +71,6 @@ class ExamTTAdmProviders with ChangeNotifier {
         'GET',
         Uri.parse(
             '${UIGuide.baseURL}/mobileapp/staffdet/studentreport/divisions/$courseId'));
-
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
@@ -187,7 +185,7 @@ class ExamTTAdmProviders with ChangeNotifier {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
-    print('$attachmentId  __________________');
+    print('$attachmentId ___________________');
     var request = http.Request(
         'POST',
         Uri.parse(
@@ -313,6 +311,7 @@ class ExamTTAdmProviders with ChangeNotifier {
     if (response.statusCode == 200) {
       examlist.removeAt(indexx);
       print('correct');
+
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         elevation: 10,
         shape: RoundedRectangleBorder(

@@ -8,7 +8,6 @@ import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import '../../Application/Staff_Providers/MarkEntryProvider.dart';
-import '../../Application/Staff_Providers/MarkEntryProvider.dart';
 import '../../Constants.dart';
 import '../../utils/constants.dart';
 
@@ -87,20 +86,19 @@ class _MarkEntryState extends State<MarkEntry> {
     var size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Mark Entry',
-        ),
-        titleSpacing: 00.0,
-        centerTitle: true,
-        toolbarHeight: 60.2,
-        toolbarOpacity: 0.8,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-              bottomRight: Radius.circular(25),
-              bottomLeft: Radius.circular(25)),
-        ),
-        backgroundColor: UIGuide.light_Purple,
-      ),
+          title: const Text(
+            'Mark Entry',
+          ),
+          titleSpacing: 00.0,
+          centerTitle: true,
+          toolbarHeight: 60.2,
+          toolbarOpacity: 0.8,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                bottomRight: Radius.circular(25),
+                bottomLeft: Radius.circular(25)),
+          ),
+          backgroundColor: UIGuide.light_Purple),
       body: Consumer<MarkEntryProvider>(
         builder: (context, value, child) {
           return value.isLocked == true
@@ -110,8 +108,8 @@ class _MarkEntryState extends State<MarkEntry> {
                   children: [
                     LottieBuilder.network(
                       'https://assets1.lottiefiles.com/packages/lf20_6ZeYZ9ZcjI.json',
-// height: size.height / 2,
-// width: size.width / 2,
+                      // height: size.height / 2,
+                      // width: size.width / 2,
                     ),
                     const Center(
                       child: Text(

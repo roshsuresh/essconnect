@@ -28,8 +28,8 @@ class _SendNoticeBoardAdminState extends State<SendNoticeBoardAdmin> {
   String course = '';
   DateTime? _mydatetimeFrom;
   DateTime? _mydatetimeTo;
-  String time = '--';
-  String timeNow = '--';
+  String time = '🗓️';
+  String timeNow = '🗓️';
   String checkname = '';
   List courseData = [];
   List divisionData = [];
@@ -61,6 +61,8 @@ class _SendNoticeBoardAdminState extends State<SendNoticeBoardAdmin> {
 
       titleController.clear();
       attachmentid.clear();
+      p.indval = 0;
+      p.toggleVal = 'All';
       // var m = Provider.of<SchoolPhotoProviders>(context, listen: false);
       // await m.stdReportSectionStaff();
 
@@ -87,16 +89,21 @@ class _SendNoticeBoardAdminState extends State<SendNoticeBoardAdmin> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Spacer(),
-            Container(
-              height: 41,
-              width: size.width * 0.38,
-              child: MaterialButton(
-                  //  minWidth: size.width - 250,
-                  color: Colors.white70,
-                  child: Text(datee.toString()),
-                  onPressed: () async {
-                    return;
-                  }),
+            Padding(
+              padding: const EdgeInsets.only(top: 3.0),
+              child: Container(
+                decoration: BoxDecoration(
+                    border: Border.all(color: UIGuide.light_Purple, width: 2)),
+                height: 40,
+                width: size.width * 0.38,
+                child: MaterialButton(
+                    //  minWidth: size.width - 250,
+                    color: Colors.white70,
+                    child: Text("🗓️  ${datee.toString()}"),
+                    onPressed: () async {
+                      return;
+                    }),
+              ),
             ),
             const Spacer(),
             Padding(
@@ -199,15 +206,18 @@ class _SendNoticeBoardAdminState extends State<SendNoticeBoardAdmin> {
                   MaterialPageRoute(builder: (context) => AddCategory()),
                 );
               },
-              child: Container(
-                height: 38,
-                width: MediaQuery.of(context).size.width * 0.10,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: UIGuide.light_Purple, width: 1),
-                  color: Color.fromARGB(255, 218, 218, 221),
+              child: Padding(
+                padding: const EdgeInsets.only(top: 2.0),
+                child: Container(
+                  height: 40,
+                  width: MediaQuery.of(context).size.width * 0.10,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(0),
+                    border: Border.all(color: UIGuide.light_Purple, width: 2),
+                    color: Color.fromARGB(255, 218, 218, 221),
+                  ),
+                  child: Icon(Icons.category_outlined),
                 ),
-                child: Icon(Icons.category_outlined),
               ),
             ),
             Spacer()
@@ -264,13 +274,18 @@ class _SendNoticeBoardAdminState extends State<SendNoticeBoardAdmin> {
             const Spacer(),
             Center(
               child: SizedBox(
-                width: 120,
+                width: size.width / 2.4,
                 child: Consumer<NoticeBoardAdminProvider>(
                   builder: (context, value, child) => value.loaddg
                       ? spinkitLoader()
                       : MaterialButton(
+                          elevation: 5,
+                          shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(5.0))),
+
                           // minWidth: size.width - 200,
-                          color: Colors.white70,
+                          color: Colors.white,
                           onPressed: (() async {
                             final result = await FilePicker.platform.pickFiles(
                                 type: FileType.custom,
@@ -319,8 +334,9 @@ class _SendNoticeBoardAdminState extends State<SendNoticeBoardAdmin> {
                             }
                           }),
                           // minWidth: size.width - 200,
-                          child: Text(
-                              checkname.isEmpty ? 'Choose File' : checkname),
+                          child: Text(checkname.isEmpty
+                              ? '📁  Choose File'
+                              : checkname),
                         ),
                 ),
               ),
@@ -334,14 +350,21 @@ class _SendNoticeBoardAdminState extends State<SendNoticeBoardAdmin> {
           style:
               TextStyle(fontSize: 9, color: Color.fromARGB(255, 241, 104, 94)),
         )),
+        kheight20,
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Spacer(),
-            SizedBox(
-              // height: 30,
-              width: MediaQuery.of(context).size.width * 0.45,
+            Container(
+              decoration: BoxDecoration(
+                  border: Border.all(color: UIGuide.light_Purple, width: 1),
+                  borderRadius: BorderRadius.circular(5)),
+              width: size.width * .45,
+              height: 35,
               child: MaterialButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(5.0))),
+
                 // minWidth: size.width - 250,
                 color: Colors.white,
                 onPressed: (() async {
@@ -374,9 +397,12 @@ class _SendNoticeBoardAdminState extends State<SendNoticeBoardAdmin> {
             ),
             const Spacer(),
             //  kWidth, kWidth,
-            SizedBox(
-              // height: 30,
-              width: MediaQuery.of(context).size.width * 0.45,
+            Container(
+              decoration: BoxDecoration(
+                  border: Border.all(color: UIGuide.light_Purple, width: 1),
+                  borderRadius: BorderRadius.circular(5)),
+              width: size.width * .45,
+              height: 35,
               child: MaterialButton(
                 //   minWidth: size.width - 250,
                 color: Colors.white,
@@ -412,7 +438,7 @@ class _SendNoticeBoardAdminState extends State<SendNoticeBoardAdmin> {
             const Spacer()
           ],
         ),
-        kheight10,
+        kheight20,
         Consumer<NoticeBoardAdminProvider>(
           builder: (context, value, child) => Center(
             child: ToggleSwitch(
@@ -563,6 +589,7 @@ class _SendNoticeBoardAdminState extends State<SendNoticeBoardAdmin> {
                           Icons.arrow_drop_down_outlined,
                           color: Colors.grey,
                         ),
+                        searchable: true,
                         buttonText: val.courseLen == 0
                             ? const Text(
                                 "Select Course",
@@ -653,6 +680,7 @@ class _SendNoticeBoardAdminState extends State<SendNoticeBoardAdmin> {
                           Icons.arrow_drop_down_outlined,
                           color: Colors.grey,
                         ),
+                        searchable: true,
                         buttonText: value.divisionLen == 0
                             ? const Text(
                                 "Select Division",
@@ -697,10 +725,10 @@ class _SendNoticeBoardAdminState extends State<SendNoticeBoardAdmin> {
           }
         }),
         kheight20,
-        kheight20,
+        kheight10,
         Center(
           child: SizedBox(
-            width: 150,
+            width: size.width / 2.4,
             child: Consumer<NoticeBoardAdminProvider>(
               builder: (context, value, child) => MaterialButton(
                 minWidth: size.width - 150,

@@ -20,9 +20,9 @@ class _FlashNewsUploadState extends State<FlashNewsUpload> {
 
   DateTime? _mydatetimeTo;
 
-  String time = '--';
+  String time = '🗓️';
 
-  String timeNow = '--';
+  String timeNow = '🗓️';
 
   final titleController = TextEditingController();
 
@@ -40,9 +40,12 @@ class _FlashNewsUploadState extends State<FlashNewsUpload> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             MaterialButton(
-                minWidth: size.width - 250,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(5.0))),
+                elevation: 5,
+                minWidth: size.width / 2.4,
                 color: Colors.white70,
-                child: Text('Date: ${datee.toString()}'),
+                child: Text('🗓️  Date: ${datee.toString()}'),
                 onPressed: () async {
                   return;
                 }),
@@ -77,11 +80,19 @@ class _FlashNewsUploadState extends State<FlashNewsUpload> {
         kheight10,
         Row(
           children: [
-            SizedBox(
+            Spacer(),
+            Container(
+              decoration: BoxDecoration(
+                  border: Border.all(color: UIGuide.light_Purple, width: 1),
+                  borderRadius: BorderRadius.circular(5)),
               width: size.width * .45,
               height: 35,
               child: MaterialButton(
-                minWidth: size.width - 216,
+                elevation: 5,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(5.0))),
+
+                //minWidth: size.width - 216,
                 color: Colors.white,
                 onPressed: (() async {
                   _mydatetimeFrom = await showDatePicker(
@@ -111,10 +122,16 @@ class _FlashNewsUploadState extends State<FlashNewsUpload> {
               ),
             ),
             const Spacer(),
-            SizedBox(
+            Container(
+              decoration: BoxDecoration(
+                  border: Border.all(color: UIGuide.light_Purple, width: 1),
+                  borderRadius: BorderRadius.circular(5)),
               width: size.width * .45,
               height: 35,
               child: MaterialButton(
+                elevation: 5,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(5.0))),
                 minWidth: size.width - 216,
                 color: Colors.white,
                 onPressed: (() async {
@@ -145,18 +162,18 @@ class _FlashNewsUploadState extends State<FlashNewsUpload> {
                 child: Center(child: Text('To  $timeNow')),
               ),
             ),
+            Spacer()
           ],
         ),
         kheight20,
-        kheight20,
+        kheight10,
         Center(
           child: Consumer<FlashNewsProviderAdmin>(
             builder: (context, value, child) => SizedBox(
-              width: 150,
+              width: size.width / 2.4,
               child: MaterialButton(
-                minWidth: size.width - 150,
                 shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(20.0))),
+                    borderRadius: BorderRadius.all(Radius.circular(10.0))),
                 color: UIGuide.light_Purple,
                 onPressed: (() async {
                   print(titleController);

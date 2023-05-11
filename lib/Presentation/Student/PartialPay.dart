@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:basispaysdk/basispaysdk.dart';
 import 'package:essconnect/Application/StudentProviders/FeesProvider.dart';
 import 'package:essconnect/Application/StudentProviders/FinalStatusProvider.dart';
 import 'package:essconnect/Constants.dart';
@@ -711,7 +712,7 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
                               if (value.lastOrderStatus == 'Success' ||
                                   value.lastOrderStatus == 'Failed' ||
                                   value.lastOrderStatus == 'Cancelled' ||
-                                  // value.lastOrderStatus == 'Processing' ||
+                                  value.lastOrderStatus == 'Processing' ||
                                   value.lastOrderStatus == null) {
                                 if (_busController.text.isEmpty &&
                                     _feeController.text.isEmpty) {
@@ -755,7 +756,7 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
                                     print(transId1);
 
                                     await AwesomeDialog(
-                                      context: cont,
+                                      context: context,
                                       animType: AnimType.scale,
                                       dialogType: DialogType.info,
                                       title:
@@ -889,6 +890,103 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
                                               orede,
                                             );
                                           }
+                                        }
+
+//  -----------------------------------------------------------------------------------------------------------------  //
+///////////////////                                 TrakNPay                                    ////////////////////////
+//  -----------------------------------------------------------------------------------------------------------------  //
+                                        else if (trans.gateway == 'TrakNPay') {
+                                          await Provider.of<FeesProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .getDataOneTpay(
+                                                  transType,
+                                                  transId1,
+                                                  _feeController.text
+                                                      .toString(),
+                                                  totalFeeCollect.toString(),
+                                                  gateWay);
+
+                                          String orderId =
+                                              trans.orderIdTPay1 ?? '';
+                                          String addressLine1 =
+                                              trans.addressLine1TPay1 ?? '';
+                                          String city = trans.cityTPay1 ?? '';
+                                          String udf5 = trans.udf1TPay1 ?? '';
+                                          String state = trans.stateTPay1 ?? '';
+                                          String udf4 = trans.udf4TPay1 ?? '';
+                                          String phone = trans.phoneTPay1 ?? '';
+                                          String zipCode =
+                                              trans.zipCodeTPay1 ?? '';
+                                          String currency =
+                                              trans.currencyTPay1 ?? '';
+                                          String email = trans.emailTPay1 ?? '';
+                                          String country =
+                                              trans.countryTPay1 ?? '';
+
+                                          String salt = trans.saltTPay1 ?? '';
+                                          String amount =
+                                              trans.amountTPay1 ?? '';
+                                          String name = trans.nameTPay1 ?? '';
+                                          String apiKey =
+                                              trans.apiKeyTPay1 ?? '';
+                                          String udf3 = trans.udf3TPay1 ?? '';
+                                          String udf2 = trans.udf2TPay1 ?? '';
+                                          String returnUrl =
+                                              trans.returnUrlTPay1 ?? '';
+                                          String description =
+                                              trans.descriptionTPay1 ?? '';
+                                          String udf1 = trans.udf1TPay1 ?? '';
+                                          String addressLine2 =
+                                              trans.addressLine2TPay1 ?? '';
+
+                                          if (apiKey.isEmpty) {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              const SnackBar(
+                                                elevation: 10,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(10)),
+                                                ),
+                                                duration: Duration(seconds: 1),
+                                                margin: EdgeInsets.only(
+                                                    bottom: 80,
+                                                    left: 30,
+                                                    right: 30),
+                                                behavior:
+                                                    SnackBarBehavior.floating,
+                                                content: Text(
+                                                  'Something went wrong...',
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                              ),
+                                            );
+                                          } else {
+                                            await _startTrakNPay(
+                                                orderId,
+                                                amount,
+                                                currency,
+                                                description,
+                                                name,
+                                                email,
+                                                phone,
+                                                addressLine1,
+                                                addressLine2,
+                                                city,
+                                                state,
+                                                country,
+                                                zipCode,
+                                                udf1,
+                                                udf2,
+                                                udf3,
+                                                udf4,
+                                                udf5,
+                                                apiKey,
+                                                salt,
+                                                returnUrl);
+                                          }
                                         } else {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(
@@ -921,9 +1019,10 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
                                       },
                                     ).show();
                                   }
-/////////////////////////////////////////////////////////
+
+/////////////////////////////////////////////////////////-------------------------------------------------
 //////               get data of one    ----------   Bus Fee
-/////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////-------------------------------------------------
                                   else if (trans.transactionList.length == 1 &&
                                       trans.transactionList[0].name
                                               .toString() ==
@@ -1075,6 +1174,106 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
                                               contact1,
                                               orede,
                                             );
+                                          }
+                                        }
+
+//  -----------------------------------------------------------------------------------------------------------------  //
+///////////////////                                 TrakNPay                                    ////////////////////////
+//  -----------------------------------------------------------------------------------------------------------------  //
+                                        else if (trans.gateway == 'TrakNPay') {
+                                          await Provider.of<FeesProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .getDataOneBusTpay(
+                                                  transType,
+                                                  transId1,
+                                                  _busController.text
+                                                      .toString(),
+                                                  totalFeeCollect.toString(),
+                                                  gateWay);
+
+                                          String orderId =
+                                              trans.orderIdTPay1B ?? '';
+                                          String addressLine1 =
+                                              trans.addressLine1TPay1B ?? '';
+                                          String city = trans.cityTPay1B ?? '';
+                                          String udf5 = trans.udf1TPay1B ?? '';
+                                          String state =
+                                              trans.stateTPay1B ?? '';
+                                          String udf4 = trans.udf4TPay1B ?? '';
+                                          String phone =
+                                              trans.phoneTPay1B ?? '';
+                                          String zipCode =
+                                              trans.zipCodeTPay1B ?? '';
+                                          String currency =
+                                              trans.currencyTPay1B ?? '';
+                                          String email =
+                                              trans.emailTPay1B ?? '';
+                                          String country =
+                                              trans.countryTPay1B ?? '';
+
+                                          String salt = trans.saltTPay1B ?? '';
+                                          String amount =
+                                              trans.amountTPay1B ?? '';
+                                          String name = trans.nameTPay1B ?? '';
+                                          String apiKey =
+                                              trans.apiKeyTPay1B ?? '';
+                                          String udf3 = trans.udf3TPay1B ?? '';
+                                          String udf2 = trans.udf2TPay1B ?? '';
+                                          String returnUrl =
+                                              trans.returnUrlTPay1B ?? '';
+                                          String description =
+                                              trans.descriptionTPay1B ?? '';
+                                          String udf1 = trans.udf1TPay1B ?? '';
+                                          String addressLine2 =
+                                              trans.addressLine2TPay1B ?? '';
+
+                                          if (apiKey.isEmpty) {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              const SnackBar(
+                                                elevation: 10,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(10)),
+                                                ),
+                                                duration: Duration(seconds: 1),
+                                                margin: EdgeInsets.only(
+                                                    bottom: 80,
+                                                    left: 30,
+                                                    right: 30),
+                                                behavior:
+                                                    SnackBarBehavior.floating,
+                                                content: Text(
+                                                  'Something went wrong...',
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                              ),
+                                            );
+                                          } else {
+                                            await _startTrakNPay(
+                                                orderId,
+                                                amount,
+                                                currency,
+                                                description,
+                                                name,
+                                                email,
+                                                phone,
+                                                addressLine1,
+                                                addressLine2,
+                                                city,
+                                                state,
+                                                country,
+                                                zipCode,
+                                                udf1,
+                                                udf2,
+                                                udf3,
+                                                udf4,
+                                                udf5,
+                                                apiKey,
+                                                salt,
+                                                returnUrl);
                                           }
                                         } else {
                                           ScaffoldMessenger.of(context)
@@ -1283,6 +1482,112 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
                                                   contact2,
                                                   orede2);
                                             }
+                                          }
+
+//  -----------------------------------------------------------------------------------------------------------------  //
+///////////////////                                 TrakNPay                                    ////////////////////////
+//  -----------------------------------------------------------------------------------------------------------------  //
+                                          else if (trans.gateway ==
+                                              'TrakNPay') {
+                                            await Provider.of<FeesProvider>(
+                                                    context,
+                                                    listen: false)
+                                                .getDataTwoTpay(
+                                                    transType1,
+                                                    transID1,
+                                                    feeZero,
+                                                    transType2,
+                                                    transID2,
+                                                    _busController.text
+                                                        .toString(),
+                                                    totalFeeCollect.toString(),
+                                                    gateway.toString());
+
+                                            String orderId =
+                                                trans.orderIdTPay2 ?? '';
+                                            String addressLine1 =
+                                                trans.addressLine1TPay2 ?? '';
+                                            String city = trans.cityTPay2 ?? '';
+                                            String udf5 = trans.udf1TPay2 ?? '';
+                                            String state =
+                                                trans.stateTPay2 ?? '';
+                                            String udf4 = trans.udf4TPay2 ?? '';
+                                            String phone =
+                                                trans.phoneTPay2 ?? '';
+                                            String zipCode =
+                                                trans.zipCodeTPay2 ?? '';
+                                            String currency =
+                                                trans.currencyTPay2 ?? '';
+                                            String email =
+                                                trans.emailTPay2 ?? '';
+                                            String country =
+                                                trans.countryTPay2 ?? '';
+
+                                            String salt = trans.saltTPay2 ?? '';
+                                            String amount =
+                                                trans.amountTPay2 ?? '';
+                                            String name = trans.nameTPay2 ?? '';
+                                            String apiKey =
+                                                trans.apiKeyTPay2 ?? '';
+                                            String udf3 = trans.udf3TPay2 ?? '';
+                                            String udf2 = trans.udf2TPay2 ?? '';
+                                            String returnUrl =
+                                                trans.returnUrlTPay2 ?? '';
+                                            String description =
+                                                trans.descriptionTPay2 ?? '';
+                                            String udf1 = trans.udf1TPay2 ?? '';
+                                            String addressLine2 =
+                                                trans.addressLine2TPay2 ?? '';
+
+                                            if (apiKey.isEmpty) {
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                const SnackBar(
+                                                  elevation: 10,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                10)),
+                                                  ),
+                                                  duration:
+                                                      Duration(seconds: 1),
+                                                  margin: EdgeInsets.only(
+                                                      bottom: 80,
+                                                      left: 30,
+                                                      right: 30),
+                                                  behavior:
+                                                      SnackBarBehavior.floating,
+                                                  content: Text(
+                                                    'Something went wrong...',
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ),
+                                              );
+                                            } else {
+                                              await _startTrakNPay(
+                                                  orderId,
+                                                  amount,
+                                                  currency,
+                                                  description,
+                                                  name,
+                                                  email,
+                                                  phone,
+                                                  addressLine1,
+                                                  addressLine2,
+                                                  city,
+                                                  state,
+                                                  country,
+                                                  zipCode,
+                                                  udf1,
+                                                  udf2,
+                                                  udf3,
+                                                  udf4,
+                                                  udf5,
+                                                  apiKey,
+                                                  salt,
+                                                  returnUrl);
+                                            }
                                           } else {
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(
@@ -1468,6 +1773,112 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
                                                   contact2,
                                                   orede2);
                                             }
+                                          }
+
+//  -----------------------------------------------------------------------------------------------------------------  //
+///////////////////                                 TrakNPay                                    ////////////////////////
+//  -----------------------------------------------------------------------------------------------------------------  //
+                                          else if (trans.gateway ==
+                                              'TrakNPay') {
+                                            await Provider.of<FeesProvider>(
+                                                    context,
+                                                    listen: false)
+                                                .getDataTwoTpay(
+                                                    transType1,
+                                                    transID1,
+                                                    _feeController.text
+                                                        .toString(),
+                                                    transType2,
+                                                    transID2,
+                                                    busZero,
+                                                    totalFeeCollect.toString(),
+                                                    gateway.toString());
+
+                                            String orderId =
+                                                trans.orderIdTPay2 ?? '';
+                                            String addressLine1 =
+                                                trans.addressLine1TPay2 ?? '';
+                                            String city = trans.cityTPay2 ?? '';
+                                            String udf5 = trans.udf1TPay2 ?? '';
+                                            String state =
+                                                trans.stateTPay2 ?? '';
+                                            String udf4 = trans.udf4TPay2 ?? '';
+                                            String phone =
+                                                trans.phoneTPay2 ?? '';
+                                            String zipCode =
+                                                trans.zipCodeTPay2 ?? '';
+                                            String currency =
+                                                trans.currencyTPay2 ?? '';
+                                            String email =
+                                                trans.emailTPay2 ?? '';
+                                            String country =
+                                                trans.countryTPay2 ?? '';
+
+                                            String salt = trans.saltTPay2 ?? '';
+                                            String amount =
+                                                trans.amountTPay2 ?? '';
+                                            String name = trans.nameTPay2 ?? '';
+                                            String apiKey =
+                                                trans.apiKeyTPay2 ?? '';
+                                            String udf3 = trans.udf3TPay2 ?? '';
+                                            String udf2 = trans.udf2TPay2 ?? '';
+                                            String returnUrl =
+                                                trans.returnUrlTPay2 ?? '';
+                                            String description =
+                                                trans.descriptionTPay2 ?? '';
+                                            String udf1 = trans.udf1TPay2 ?? '';
+                                            String addressLine2 =
+                                                trans.addressLine2TPay2 ?? '';
+
+                                            if (apiKey.isEmpty) {
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                const SnackBar(
+                                                  elevation: 10,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                10)),
+                                                  ),
+                                                  duration:
+                                                      Duration(seconds: 1),
+                                                  margin: EdgeInsets.only(
+                                                      bottom: 80,
+                                                      left: 30,
+                                                      right: 30),
+                                                  behavior:
+                                                      SnackBarBehavior.floating,
+                                                  content: Text(
+                                                    'Something went wrong...',
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ),
+                                              );
+                                            } else {
+                                              await _startTrakNPay(
+                                                  orderId,
+                                                  amount,
+                                                  currency,
+                                                  description,
+                                                  name,
+                                                  email,
+                                                  phone,
+                                                  addressLine1,
+                                                  addressLine2,
+                                                  city,
+                                                  state,
+                                                  country,
+                                                  zipCode,
+                                                  udf1,
+                                                  udf2,
+                                                  udf3,
+                                                  udf4,
+                                                  udf5,
+                                                  apiKey,
+                                                  salt,
+                                                  returnUrl);
+                                            }
                                           } else {
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(
@@ -1649,6 +2060,113 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
                                                   email2,
                                                   contact2,
                                                   orede2);
+                                            }
+                                          }
+
+//  -----------------------------------------------------------------------------------------------------------------  //
+///////////////////                                 TrakNPay                                    ////////////////////////
+//  -----------------------------------------------------------------------------------------------------------------  //
+                                          else if (trans.gateway ==
+                                              'TrakNPay') {
+                                            await Provider.of<FeesProvider>(
+                                                    context,
+                                                    listen: false)
+                                                .getDataTwoTpay(
+                                                    transType1,
+                                                    transID1,
+                                                    _feeController.text
+                                                        .toString(),
+                                                    transType2,
+                                                    transID2,
+                                                    _busController.text
+                                                        .toString(),
+                                                    totalFeeCollect.toString(),
+                                                    gateway.toString());
+
+                                            String orderId =
+                                                trans.orderIdTPay2 ?? '';
+                                            String addressLine1 =
+                                                trans.addressLine1TPay2 ?? '';
+                                            String city = trans.cityTPay2 ?? '';
+                                            String udf5 = trans.udf1TPay2 ?? '';
+                                            String state =
+                                                trans.stateTPay2 ?? '';
+                                            String udf4 = trans.udf4TPay2 ?? '';
+                                            String phone =
+                                                trans.phoneTPay2 ?? '';
+                                            String zipCode =
+                                                trans.zipCodeTPay2 ?? '';
+                                            String currency =
+                                                trans.currencyTPay2 ?? '';
+                                            String email =
+                                                trans.emailTPay2 ?? '';
+                                            String country =
+                                                trans.countryTPay2 ?? '';
+
+                                            String salt = trans.saltTPay2 ?? '';
+                                            String amount =
+                                                trans.amountTPay2 ?? '';
+                                            String name = trans.nameTPay2 ?? '';
+                                            String apiKey =
+                                                trans.apiKeyTPay2 ?? '';
+                                            String udf3 = trans.udf3TPay2 ?? '';
+                                            String udf2 = trans.udf2TPay2 ?? '';
+                                            String returnUrl =
+                                                trans.returnUrlTPay2 ?? '';
+                                            String description =
+                                                trans.descriptionTPay2 ?? '';
+                                            String udf1 = trans.udf1TPay2 ?? '';
+                                            String addressLine2 =
+                                                trans.addressLine2TPay2 ?? '';
+
+                                            if (apiKey.isEmpty) {
+                                              ScaffoldMessenger.of(context)
+                                                  .showSnackBar(
+                                                const SnackBar(
+                                                  elevation: 10,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                10)),
+                                                  ),
+                                                  duration:
+                                                      Duration(seconds: 1),
+                                                  margin: EdgeInsets.only(
+                                                      bottom: 80,
+                                                      left: 30,
+                                                      right: 30),
+                                                  behavior:
+                                                      SnackBarBehavior.floating,
+                                                  content: Text(
+                                                    'Something went wrong...',
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ),
+                                              );
+                                            } else {
+                                              await _startTrakNPay(
+                                                  orderId,
+                                                  amount,
+                                                  currency,
+                                                  description,
+                                                  name,
+                                                  email,
+                                                  phone,
+                                                  addressLine1,
+                                                  addressLine2,
+                                                  city,
+                                                  state,
+                                                  country,
+                                                  zipCode,
+                                                  udf1,
+                                                  udf2,
+                                                  udf3,
+                                                  udf4,
+                                                  udf5,
+                                                  apiKey,
+                                                  salt,
+                                                  returnUrl);
                                             }
                                           } else {
                                             ScaffoldMessenger.of(context)
@@ -2682,5 +3200,80 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
                 );
               },
             ));
+  }
+
+//////////////----------------------------  TrakNpay    ---------------------
+  _startTrakNPay(
+      String orderId,
+      String amount,
+      String currency,
+      String description,
+      String name,
+      String email,
+      String phone,
+      String address1,
+      String address2,
+      String city,
+      String state,
+      String country,
+      String zipcode,
+      String udf1,
+      String udf2,
+      String udf3,
+      String udf4,
+      String udf5,
+      String apiKey,
+      String saltKey,
+      String returnUrl) async {
+    Map<String, dynamic>? paymentRequestDictionary = {
+      "orderId": orderId,
+      "amount": amount,
+      "currency": currency,
+      "description": description.isEmpty ? "Online Fees Payment" : description,
+      "name": name.isEmpty ? "demo" : name,
+      "email": email.isEmpty ? "gjinfotech@gmail.com" : email,
+      "phone": phone.isEmpty ? "7356642999" : phone,
+      "addressLine1": address1.isEmpty ? "address" : address1,
+      "addressLine2": address2.isEmpty ? "address" : address2,
+      "city": city.isEmpty ? "Irinjalakkuda" : city,
+      "state": state.isEmpty ? "Kerala" : state,
+      "country": country.isEmpty ? "India" : country,
+      "zipCode": zipcode.isEmpty ? "680125" : zipcode,
+      "udf1": udf1.isEmpty ? "udf1" : udf1,
+      "udf2": udf2.isEmpty ? "udf2" : udf2,
+      "udf3": udf3.isEmpty ? "udf3" : udf3,
+      "udf4": udf4.isEmpty ? "udf4" : udf4,
+      "udf5": udf5.isEmpty ? "udf5" : udf5,
+    };
+    print(
+        "******************            $paymentRequestDictionary        ***********************");
+    try {
+      var response = Basispaysdk.startTransaction(
+          apiKey, //[API-KEY From Basispay team]
+          saltKey, //[SALT-KEY From Basispay team]
+          returnUrl, //[YOUR- RETURN URL to get the response]
+          true,
+          paymentRequestDictionary);
+      response.then((value) {
+        print(value);
+        print("=======================================================");
+        setState(() {});
+      }).catchError((onError) {
+        if (onError is PlatformException) {
+          print('-------------------Failed-----------------');
+          setState(() {
+            print(onError.message! + " \n  " + onError.details.toString());
+          });
+        } else {
+          setState(() {
+            print('-------------------Pending-----------------');
+            print(onError.toString());
+          });
+        }
+      });
+    } catch (err) {
+      print('-------------------ERROR-----------------');
+      print(err.toString());
+    }
   }
 }

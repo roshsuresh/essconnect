@@ -912,6 +912,7 @@ class _AttendenceEntryState extends State<AttendenceEntry> {
                         onPressed: () async {
                           List obj = [];
                           obj.clear();
+                          List attendLen = [];
                           print(
                               "length:  ${value.studentsAttendenceView.length}");
                           for (int i = 0;
@@ -933,8 +934,19 @@ class _AttendenceEntryState extends State<AttendenceEntry> {
                               "terminatedStatus": value
                                   .studentsAttendenceView[i].terminatedStatus,
                             });
+                            // if (value.isDualAttendance == true) {
+                            //   if (value.studentsAttendenceView[i].forenoon ==
+                            //       "A") {}
+                            // } else if (value
+                            //         .studentsAttendenceView[i].forenoon ==
+                            //     "A") {
+                            //   attendLen.add(
+                            //       value.studentsAttendenceView[i].forenoon);
+                            // }
                           }
-                          log("Litsssss   $obj");
+                          // print("Length==$attendLen");
+                          // print("length   ${attendLen.length}");
+                          // log("Litsssss   $obj");
 
                           if (markEntryDivisionListController.text.isEmpty &&
                               markEntryInitialValuesController.text.isEmpty) {

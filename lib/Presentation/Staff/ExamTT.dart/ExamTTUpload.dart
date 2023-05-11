@@ -24,10 +24,10 @@ class _ExamTTUploadStaffState extends State<ExamTTUploadStaff> {
   DateTime? _mydatetimeTo;
   DateTime? _mydisplayFrom;
   String? checkname;
-  String time = '--';
+  String time = '🗓️';
   List divisionData = [];
   String division = '';
-  String timeNow = '--';
+  String timeNow = '🗓️';
   String displayFrom = 'Exam start date';
   String? courseId;
   String attach = '';
@@ -96,6 +96,7 @@ class _ExamTTUploadStaffState extends State<ExamTTUploadStaff> {
                 width: size.width * .45,
                 height: 35,
                 child: MaterialButton(
+                  elevation: 5,
                   //  minWidth: size.width - 216,
                   color: Colors.white,
                   onPressed: (() async {
@@ -141,6 +142,7 @@ class _ExamTTUploadStaffState extends State<ExamTTUploadStaff> {
                           style: TextStyle(color: UIGuide.light_Purple),
                         )))
                       : MaterialButton(
+                          elevation: 5,
                           color: Colors.white,
                           onPressed: (() async {
                             final result = await FilePicker.platform.pickFiles(
@@ -218,6 +220,7 @@ class _ExamTTUploadStaffState extends State<ExamTTUploadStaff> {
                 width: size.width * .45,
                 height: 35,
                 child: MaterialButton(
+                  elevation: 5,
                   color: Colors.white,
                   onPressed: (() async {
                     _mydatetimeFrom = await showDatePicker(
@@ -252,6 +255,7 @@ class _ExamTTUploadStaffState extends State<ExamTTUploadStaff> {
                 width: size.width * .45,
                 height: 35,
                 child: MaterialButton(
+                  elevation: 5,
                   color: Colors.white,
                   onPressed: (() async {
                     _mydatetimeTo = await showDatePicker(
@@ -502,11 +506,12 @@ class _ExamTTUploadStaffState extends State<ExamTTUploadStaff> {
           kheight20,
           Center(
             child: SizedBox(
-              width: 150,
+              width: size.width / 2.4,
               child: MaterialButton(
-                minWidth: size.width - 150,
+                elevation: 5,
+                // minWidth: size.width - 150,
                 shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(20.0))),
+                    borderRadius: BorderRadius.all(Radius.circular(10.0))),
                 color: UIGuide.light_Purple,
                 onPressed: (() async {
                   attachmentid.text = attach;

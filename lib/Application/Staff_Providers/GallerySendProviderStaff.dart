@@ -178,59 +178,65 @@ class GallerySendProvider_Stf with ChangeNotifier {
 //find image id
 
   String? id;
-  Future galleryImageSave(BuildContext context, String path) async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
-    setLoadingg(true);
-    var headers = {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
-    };
-    var request = http.MultipartRequest(
-        'POST', Uri.parse('${UIGuide.baseURL}/files/single/School'));
-    request.fields.addAll({'': ''});
-    request.files.add(await http.MultipartFile.fromPath('', path));
-    request.headers.addAll(headers);
-
-    http.StreamedResponse response = await request.send();
-    setLoadingg(true);
-    if (response.statusCode == 200) {
-      Map<String, dynamic> data =
-          jsonDecode(await response.stream.bytesToString());
+  List<String> imageIDList = [];
+  Future galleryImageSave(BuildContext context, List<String> path) async {
+    imageIDList.clear();
+    for (String filePath in path) {
+      SharedPreferences _pref = await SharedPreferences.getInstance();
       setLoadingg(true);
-      GalleryImageId idd = GalleryImageId.fromJson(data);
-      id = idd.id;
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        elevation: 10,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(20)),
-        ),
-        duration: Duration(seconds: 1),
-        margin: EdgeInsets.only(bottom: 80, left: 30, right: 30),
-        behavior: SnackBarBehavior.floating,
-        content: Text(
-          'Image added...',
-          textAlign: TextAlign.center,
-        ),
-      ));
-      setLoadingg(false);
-      print('Image ID............$id');
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        elevation: 10,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(20)),
-        ),
-        duration: Duration(seconds: 1),
-        margin: EdgeInsets.only(bottom: 80, left: 30, right: 30),
-        behavior: SnackBarBehavior.floating,
-        content: Text(
-          'Something Went Wrong....',
-          textAlign: TextAlign.center,
-        ),
-      ));
-      print(response.reasonPhrase);
-      setLoadingg(false);
+      var headers = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      };
+      var request = http.MultipartRequest(
+          'POST', Uri.parse('${UIGuide.baseURL}/files/single/School'));
+      request.fields.addAll({'': ''});
+      request.files.add(await http.MultipartFile.fromPath('file', filePath));
+      request.headers.addAll(headers);
+
+      http.StreamedResponse response = await request.send();
+      setLoadingg(true);
+      if (response.statusCode == 200) {
+        Map<String, dynamic> data =
+            jsonDecode(await response.stream.bytesToString());
+        setLoadingg(true);
+        GalleryImageId idd = GalleryImageId.fromJson(data);
+        id = idd.id;
+        imageIDList.add(id!);
+        // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        //   elevation: 10,
+        //   shape: RoundedRectangleBorder(
+        //     borderRadius: BorderRadius.all(Radius.circular(20)),
+        //   ),
+        //   duration: Duration(seconds: 1),
+        //   margin: EdgeInsets.only(bottom: 80, left: 30, right: 30),
+        //   behavior: SnackBarBehavior.floating,
+        //   content: Text(
+        //     'Image added...',
+        //     textAlign: TextAlign.center,
+        //   ),
+        // ));
+        setLoadingg(false);
+        print('Image ID............$id');
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          elevation: 10,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+          ),
+          duration: Duration(seconds: 1),
+          margin: EdgeInsets.only(bottom: 80, left: 30, right: 30),
+          behavior: SnackBarBehavior.floating,
+          content: Text(
+            'Something Went Wrong....',
+            textAlign: TextAlign.center,
+          ),
+        ));
+        print(response.reasonPhrase);
+        setLoadingg(false);
+      }
     }
+    print("imageIDList--------$imageIDList");
   }
 
   //gallery save
@@ -243,7 +249,13 @@ class GallerySendProvider_Stf with ChangeNotifier {
       String Titlee,
       String CourseId,
       String DivisionId,
-      String AttachmentId) async {
+      List<String> imgID) async {
+    List imgg = [];
+    print("imageIDList=====$imageIDList");
+    for (String imggID in imageIDList) {
+      imgg.add({"fileId": imggID, "isMaster": true});
+    }
+    print("imgg ---===  $imgg");
     SharedPreferences _pref = await SharedPreferences.getInstance();
 
     var headers = {
@@ -262,45 +274,17 @@ class GallerySendProvider_Stf with ChangeNotifier {
       "ForClassTeacherOnly": "false",
       "DisplayTo": "student",
       "StaffRole": "null",
-      "PhotoList": [
-        {"PhotoCaption": "null", "FileId": AttachmentId, "IsMaster": "true"},
-      ]
+      "PhotoList": imgg
     });
     request.headers.addAll(headers);
 
-    print(json.encode({
-      "EntryDate": entryDate,
-      "DisplayStartDate": DisplayStartDate,
-      "DisplayEndDate": DisplayEndDate,
-      "Title": Titlee,
-      "CourseId": [CourseId],
-      "DivisionId": [DivisionId],
-      "ForClassTeacherOnly": "false",
-      "DisplayTo": "student",
-      "StaffRole": "null",
-      "PhotoList": [
-        {"PhotoCaption": "null", "FileId": AttachmentId, "IsMaster": "true"},
-      ]
-    }));
+    print(request.body);
 
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200 || response.statusCode == 204) {
       print('Correct...______________________________');
 
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        elevation: 10,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(20)),
-        ),
-        duration: Duration(seconds: 1),
-        margin: EdgeInsets.only(bottom: 80, left: 30, right: 30),
-        behavior: SnackBarBehavior.floating,
-        content: Text(
-          'Uploaded Successfully',
-          textAlign: TextAlign.center,
-        ),
-      ));
       return AwesomeDialog(
               context: context,
               dialogType: DialogType.success,

@@ -81,107 +81,123 @@ class Diary extends StatelessWidget {
                                         width: width,
                                         decoration: BoxDecoration(
                                             color: const Color.fromARGB(
-                                                255, 243, 243, 252),
+                                                255, 255, 255, 255),
                                             border: Border.all(
                                                 color: UIGuide.light_Purple,
                                                 width: .5),
                                             borderRadius:
                                                 const BorderRadius.all(
                                                     Radius.circular(5))),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(4.0),
-                                              child: Row(
-                                                children: [
-                                                  kWidth,
-                                                  const Text('📘  '),
-                                                  Flexible(
-                                                    child: RichText(
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      strutStyle:
-                                                          const StrutStyle(
-                                                              fontSize: 14.0),
-                                                      text: TextSpan(
-                                                          style: const TextStyle(
-                                                              color: UIGuide
-                                                                  .light_Purple,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(4.0),
+                                          child: Container(
+                                            width: width,
+                                            decoration: const BoxDecoration(
+                                                color: Color.fromARGB(
+                                                    255, 243, 243, 252),
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(5))),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(4.0),
+                                                  child: Row(
+                                                    children: [
+                                                      //  kWidth,
+                                                      const Text('  📘  '),
+                                                      Flexible(
+                                                        child: RichText(
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          strutStyle:
+                                                              const StrutStyle(
+                                                                  fontSize:
+                                                                      14.0),
+                                                          text: TextSpan(
+                                                              style: const TextStyle(
+                                                                  color: UIGuide
+                                                                      .light_Purple,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500),
+                                                              text: value
+                                                                          .diarylist[
+                                                                              index]
+                                                                          .category ==
+                                                                      null
+                                                                  ? '--'
+                                                                  : value
+                                                                      .diarylist[
+                                                                          index]
+                                                                      .category
+                                                                      .toString()),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(4.0),
+                                                  child: Container(
+                                                    width: width - 15,
+                                                    // decoration: BoxDecoration(
+                                                    //     color: const Color.fromARGB(
+                                                    //         255, 236, 237, 245),
+                                                    //     border: Border.all(
+                                                    //         color: const Color
+                                                    //                 .fromARGB(255,
+                                                    //             215, 207, 236)),
+                                                    //     borderRadius:
+                                                    //         const BorderRadius.all(
+                                                    //             Radius.circular(
+                                                    //                 4))),
+                                                    child: Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        TextWrapper(
                                                           text: value
                                                                       .diarylist[
                                                                           index]
-                                                                      .category ==
+                                                                      .remarks ==
                                                                   null
                                                               ? '--'
                                                               : value
                                                                   .diarylist[
                                                                       index]
-                                                                  .category
-                                                                  .toString()),
+                                                                  .remarks
+                                                                  .toString(),
+                                                          fSize: 16,
+                                                        )
+                                                      ],
                                                     ),
                                                   ),
-                                                ],
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(4.0),
-                                              child: Container(
-                                                width: width - 15,
-                                                decoration: BoxDecoration(
-                                                    color: const Color.fromARGB(
-                                                        255, 236, 237, 245),
-                                                    border: Border.all(
-                                                        color: const Color
-                                                                .fromARGB(255,
-                                                            215, 207, 236)),
-                                                    borderRadius:
-                                                        const BorderRadius.all(
-                                                            Radius.circular(
-                                                                4))),
-                                                child: Column(
+                                                ),
+                                                Row(
                                                   crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
+                                                      CrossAxisAlignment.end,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
                                                   children: [
-                                                    TextWrapper(
-                                                      text: value
-                                                                  .diarylist[
-                                                                      index]
-                                                                  .remarks ==
-                                                              null
-                                                          ? '--'
-                                                          : value
-                                                              .diarylist[index]
-                                                              .remarks
-                                                              .toString(),
-                                                      fSize: 16,
-                                                    )
+                                                    const Spacer(),
+                                                    Text(
+                                                      finalCreatedDate
+                                                          .toString(),
+                                                      style: const TextStyle(
+                                                          fontSize: 12),
+                                                    ),
+                                                    kWidth,
                                                   ],
-                                                ),
-                                              ),
-                                            ),
-                                            Row(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.end,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                const Spacer(),
-                                                Text(
-                                                  finalCreatedDate.toString(),
-                                                  style: const TextStyle(
-                                                      fontSize: 12),
-                                                ),
-                                                kWidth,
+                                                )
                                               ],
-                                            )
-                                          ],
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ),

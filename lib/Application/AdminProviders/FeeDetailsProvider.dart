@@ -18,7 +18,7 @@ class FeeDetailsProvider with ChangeNotifier {
   Future<bool> getSearchView(String word) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoading(true);
-
+    print(word);
     var headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
@@ -29,13 +29,15 @@ class FeeDetailsProvider with ChangeNotifier {
             '${UIGuide.baseURL}/mobileapp/staffdet/studentreport/viewStudentReport?search=$word'));
     setLoading(true);
     request.headers.addAll(headers);
-
+    print(
+        "${UIGuide.baseURL}/mobileapp/staffdet/studentreport/viewStudentReport?search=$word");
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
       setLoading(true);
       Map<String, dynamic> data =
           jsonDecode(await response.stream.bytesToString());
+      print(data);
       List<SearchStudReport> templist = List<SearchStudReport>.from(
           data["viewStudentReport"].map((x) => SearchStudReport.fromJson(x)));
       searchStudent.addAll(templist);
