@@ -3258,22 +3258,491 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
         print(value);
         print("=======================================================");
         setState(() {});
+        showAlertTrakNPay(context, orderId);
       }).catchError((onError) {
         if (onError is PlatformException) {
           print('-------------------Failed-----------------');
+          showAlertTrakNPay(context, orderId);
           setState(() {
             print(onError.message! + " \n  " + onError.details.toString());
           });
         } else {
           setState(() {
+            showAlertTrakNPay(context, orderId);
             print('-------------------Pending-----------------');
             print(onError.toString());
           });
         }
       });
     } catch (err) {
+      showAlertTrakNPay(context, orderId);
       print('-------------------ERROR-----------------');
       print(err.toString());
     }
+  }
+
+  //////////////////
+
+  String cutStringAfterLetter(String originalString, String letter) {
+    int index = originalString.indexOf(letter);
+    if (index != -1) {
+      // If the letter is found in the string
+      return originalString.substring(index + 1, originalString.length);
+    } else {
+      // If the letter is not found in the string
+      return originalString;
+    }
+  }
+
+  showAlertTrakNPay(
+    BuildContext context,
+    String orderID,
+  ) async {
+    var size = MediaQuery.of(context).size;
+    String order = orderID;
+    String underScore = '_';
+    String cutString = cutStringAfterLetter(order, underScore);
+
+    print(cutString);
+    log(cutString.toString());
+    await Provider.of<FeesProvider>(context, listen: false)
+        .payStatusButton(cutString);
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => Consumer<FeesProvider>(
+              builder: (context, trak, child) {
+                if (trak.statusss == 'Success') {
+                  return AlertDialog(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)),
+                    content: Container(
+                      height: size.height / 4.5,
+                      width: size.width * 3,
+                      child: Stack(
+                        clipBehavior: Clip.none,
+                        alignment: AlignmentDirectional.center,
+                        children: [
+                          Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height: size.height / 10,
+                              ),
+                              const Text(
+                                "TRANSACTION SUCCESS",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w800,
+                                    fontSize: 20,
+                                    color: UIGuide.light_Purple),
+                              ),
+                              kheight20,
+                              Expanded(
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    ElevatedButton(
+                                        style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all(
+                                                  UIGuide.light_Purple),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.of(context)
+                                              .pushAndRemoveUntil(
+                                                  MaterialPageRoute(
+                                                      builder:
+                                                          (context) =>
+                                                              StudentHome()),
+                                                  (Route<dynamic> route) =>
+                                                      false);
+                                        },
+                                        child: const Text(
+                                          'Back to Home',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w800,
+                                              fontSize: 18,
+                                              color: UIGuide.WHITE),
+                                        ))
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                          Positioned(
+                            top: -190,
+                            child: CircleAvatar(
+                                radius: 165,
+                                backgroundColor: Colors.transparent,
+                                child: LottieBuilder.asset(
+                                  'assets/89618-gopay-succesfull-payment.json',
+                                )),
+                          )
+                        ],
+                      ),
+                    ),
+                  );
+                } else if (trak.statusss == 'Failed') {
+                  return AlertDialog(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)),
+                    content: Container(
+                      height: size.height / 4.5,
+                      width: size.width * 3,
+                      child: Stack(
+                        clipBehavior: Clip.none,
+                        alignment: AlignmentDirectional.center,
+                        children: [
+                          Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height: size.height / 10,
+                              ),
+                              const Text(
+                                "TRANSACTION FAILED",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w800,
+                                    fontSize: 20,
+                                    color: UIGuide.light_Purple),
+                              ),
+                              kheight20,
+                              Expanded(
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    ElevatedButton(
+                                        style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all(
+                                                  UIGuide.light_Purple),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.of(context)
+                                              .pushAndRemoveUntil(
+                                                  MaterialPageRoute(
+                                                      builder:
+                                                          (context) =>
+                                                              StudentHome()),
+                                                  (Route<dynamic> route) =>
+                                                      false);
+                                        },
+                                        child: const Text(
+                                          'Back to Home',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w800,
+                                              fontSize: 18,
+                                              color: UIGuide.WHITE),
+                                        ))
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                          Positioned(
+                            top: -80,
+                            child: CircleAvatar(
+                                radius: 70,
+                                backgroundColor: Colors.white,
+                                child: SvgPicture.asset(UIGuide.failed)),
+                          )
+                        ],
+                      ),
+                    ),
+                  );
+                } else if (trak.statusss == "Processing" ||
+                    trak.statusss == "Pending") {
+                  AlertDialog(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)),
+                    content: Container(
+                      height: size.height / 4.5,
+                      width: size.width * 3,
+                      child: Stack(
+                        clipBehavior: Clip.none,
+                        alignment: AlignmentDirectional.center,
+                        children: [
+                          Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height: size.height / 10,
+                              ),
+                              const Text(
+                                "TRANSACTION PENDING",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w800,
+                                    fontSize: 20,
+                                    color: UIGuide.light_Purple),
+                              ),
+                              kheight20,
+                              Expanded(
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    ElevatedButton(
+                                        style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all(
+                                                  UIGuide.light_Purple),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.of(context)
+                                              .pushAndRemoveUntil(
+                                                  MaterialPageRoute(
+                                                      builder:
+                                                          (context) =>
+                                                              StudentHome()),
+                                                  (Route<dynamic> route) =>
+                                                      false);
+                                        },
+                                        child: const Text(
+                                          'Back to Home',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w800,
+                                              fontSize: 18,
+                                              color: UIGuide.WHITE),
+                                        ))
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                          Positioned(
+                            top: -90,
+                            child: CircleAvatar(
+                                radius: 80,
+                                backgroundColor: Colors.transparent,
+                                child: SvgPicture.asset(UIGuide.pending)),
+                          )
+                        ],
+                      ),
+                    ),
+                  );
+                } else if (trak.statusss == null) {
+                  AlertDialog(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)),
+                    content: Container(
+                      height: size.height / 4.5,
+                      width: size.width * 3,
+                      child: Stack(
+                        clipBehavior: Clip.none,
+                        alignment: AlignmentDirectional.center,
+                        children: [
+                          Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height: size.height / 10,
+                              ),
+                              const Text(
+                                "TRANSACTION PENDING",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w800,
+                                    fontSize: 20,
+                                    color: UIGuide.light_Purple),
+                              ),
+                              kheight20,
+                              Expanded(
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    ElevatedButton(
+                                        style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all(
+                                                  UIGuide.light_Purple),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.of(context)
+                                              .pushAndRemoveUntil(
+                                                  MaterialPageRoute(
+                                                      builder:
+                                                          (context) =>
+                                                              StudentHome()),
+                                                  (Route<dynamic> route) =>
+                                                      false);
+                                        },
+                                        child: const Text(
+                                          'Back to Home',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w800,
+                                              fontSize: 18,
+                                              color: UIGuide.WHITE),
+                                        ))
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                          Positioned(
+                            top: -90,
+                            child: CircleAvatar(
+                                radius: 80,
+                                backgroundColor: Colors.transparent,
+                                child: SvgPicture.asset(UIGuide.pending)),
+                          )
+                        ],
+                      ),
+                    ),
+                  );
+                } else {
+                  AlertDialog(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)),
+                    content: Container(
+                      height: size.height / 4.5,
+                      width: size.width * 3,
+                      child: Stack(
+                        clipBehavior: Clip.none,
+                        alignment: AlignmentDirectional.center,
+                        children: [
+                          Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height: size.height / 10,
+                              ),
+                              const Text(
+                                "Something went wrong",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w800,
+                                    fontSize: 20,
+                                    color: UIGuide.light_Purple),
+                              ),
+                              kheight20,
+                              Expanded(
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    ElevatedButton(
+                                        style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all(
+                                                  UIGuide.light_Purple),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.of(context)
+                                              .pushAndRemoveUntil(
+                                                  MaterialPageRoute(
+                                                      builder:
+                                                          (context) =>
+                                                              StudentHome()),
+                                                  (Route<dynamic> route) =>
+                                                      false);
+                                        },
+                                        child: const Text(
+                                          'Back to Home',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w800,
+                                              fontSize: 18,
+                                              color: UIGuide.WHITE),
+                                        ))
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                          Positioned(
+                            top: -90,
+                            child: CircleAvatar(
+                                radius: 80,
+                                backgroundColor: Colors.transparent,
+                                child: SvgPicture.asset(
+                                    UIGuide.somethingWentWrong)),
+                          )
+                        ],
+                      ),
+                    ),
+                  );
+                }
+                return AlertDialog(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20)),
+                  content: Container(
+                    height: size.height / 4.5,
+                    width: size.width * 3,
+                    child: Stack(
+                      clipBehavior: Clip.none,
+                      alignment: AlignmentDirectional.center,
+                      children: [
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              height: size.height / 10,
+                            ),
+                            const Text(
+                              "Something went wrong",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w800,
+                                  fontSize: 20,
+                                  color: UIGuide.light_Purple),
+                            ),
+                            kheight20,
+                            Expanded(
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  ElevatedButton(
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all(
+                                                UIGuide.light_Purple),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.of(context)
+                                            .pushAndRemoveUntil(
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        StudentHome()),
+                                                (Route<dynamic> route) =>
+                                                    false);
+                                      },
+                                      child: const Text(
+                                        'Back to Home',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w800,
+                                            fontSize: 18,
+                                            color: UIGuide.WHITE),
+                                      ))
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                        Positioned(
+                          top: -90,
+                          child: CircleAvatar(
+                              radius: 80,
+                              backgroundColor: Colors.transparent,
+                              child:
+                                  SvgPicture.asset(UIGuide.somethingWentWrong)),
+                        )
+                      ],
+                    ),
+                  ),
+                );
+              },
+            ));
   }
 }

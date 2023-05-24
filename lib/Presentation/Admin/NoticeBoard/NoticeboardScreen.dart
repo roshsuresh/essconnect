@@ -30,7 +30,7 @@ class NoticeBoardAdnin extends StatelessWidget {
               ),
               titleSpacing: 20.0,
               centerTitle: true,
-              toolbarHeight: 30.2,
+              toolbarHeight: 49.2,
               toolbarOpacity: 0.8,
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.only(

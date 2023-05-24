@@ -29,7 +29,7 @@ class AdminGallery extends StatelessWidget {
               ),
               titleSpacing: 20.0,
               centerTitle: true,
-              toolbarHeight: 40,
+              // toolbarHeight: 40,
               toolbarOpacity: 0.8,
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.only(

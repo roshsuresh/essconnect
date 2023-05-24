@@ -388,15 +388,11 @@ class StaffNoticeboardSendProviders with ChangeNotifier {
       setLoadList(true);
       Map<String, dynamic> data =
           jsonDecode(await response.stream.bytesToString());
-
       //   print(data);
-
       List<Results> templist = List<Results>.from(
           data["noticeBoardList"].map((x) => Results.fromJson(x)));
       noticeList.addAll(templist);
-
       // page++;
-
       //Pagination pagee = Pagination.fromJson(data['pagination']);
       setLoadList(false);
       notifyListeners();

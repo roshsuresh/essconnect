@@ -21,6 +21,7 @@ class StaffGallery extends StatelessWidget {
         length: 3,
         child: Scaffold(
             appBar: AppBar(
+              toolbarHeight: 50,
               title: Row(
                 children: [
                   const Spacer(),
@@ -280,7 +281,7 @@ class _StaffGalleryUPloadState extends State<StaffGalleryUPload> {
                         // }
                       }),
                       child: Text(value.imageIDList.isEmpty
-                          ? 'Choose Image'
+                          ? 'Choose Image 🖼️'
                           : "${value.imageIDList.length} Image added"),
                     ),
             ),
@@ -288,7 +289,7 @@ class _StaffGalleryUPloadState extends State<StaffGalleryUPload> {
         ),
         const Center(
             child: Text(
-          'Maximum allowed file size is 200 KB',
+          'Maximum allowed image size is 200 KB',
           style:
               TextStyle(fontSize: 9, color: Color.fromARGB(255, 241, 104, 94)),
         )),
@@ -367,7 +368,6 @@ class _StaffGalleryUPloadState extends State<StaffGalleryUPload> {
                             child: child!);
                       },
                     );
-
                     setState(() {
                       timeNow =
                           DateFormat('dd/MMM/yyyy').format(_mydatetimeTo!);
@@ -390,15 +390,11 @@ class _StaffGalleryUPloadState extends State<StaffGalleryUPload> {
               height: 50,
               width: MediaQuery.of(context).size.width * 0.49,
               child: Consumer<GallerySendProvider_Stf>(
-                  builder: (context, snapshot, child) {
+                  builder: (context, snapshot, _) {
                 return InkWell(
                   onTap: () async {
-                    await Provider.of<GallerySendProvider_Stf>(context,
-                            listen: false)
-                        .courseClear();
-                    await Provider.of<GallerySendProvider_Stf>(context,
-                            listen: false)
-                        .sendGallery();
+                    await snapshot.courseClear();
+                    await snapshot.sendGallery();
                     showDialog(
                         context: context,
                         builder: (context) {
@@ -412,7 +408,6 @@ class _StaffGalleryUPloadState extends State<StaffGalleryUPload> {
                                     itemCount: snapshot.courselistt.length,
                                     itemBuilder: (context, index) {
                                       print(snapshot.courselistt[index].value);
-
                                       return ListTile(
                                         selectedTileColor: Colors.blue.shade100,
                                         selectedColor: UIGuide.PRIMARY2,

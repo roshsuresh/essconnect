@@ -302,8 +302,8 @@ class NoticeBoardListAdmin extends StatelessWidget {
                                           );
                                         });
 
-                                    provider.noticeList.clear();
-                                    await provider.getNoticeListView(context);
+                                    // provider.noticeList.clear();
+                                    // await provider.getNoticeListView(context);
                                   },
                                   child: const Icon(
                                     Icons.mode_edit_outline_outlined,

@@ -129,7 +129,7 @@ class _StaffNoticeBoard_sentState extends State<StaffNoticeBoard_sent> {
   final titleController = TextEditingController();
   final mattercontroller = TextEditingController();
 
-  String? attachmentid;
+  String attachmentid = '';
   @override
   Widget build(BuildContext context) {
     Provider.of<StaffNoticeboardSendProviders>(context, listen: false)
@@ -154,7 +154,7 @@ class _StaffNoticeBoard_sentState extends State<StaffNoticeBoard_sent> {
                 width: size.width * 0.45,
                 child: MaterialButton(
                     color: Colors.white70,
-                    child: Text('🗓️ Date: ${datee.toString()}'),
+                    child: Text('🗓️  ${datee.toString()}'),
                     onPressed: () async {
                       return;
                     }),
@@ -700,7 +700,7 @@ class _StaffNoticeBoard_sentState extends State<StaffNoticeBoard_sent> {
                           coursevalueController.text,
                           divisionvalueController.text,
                           categoryvalueController.text,
-                          attachmentid!);
+                          attachmentid);
                 }
               }),
               child: const Text(

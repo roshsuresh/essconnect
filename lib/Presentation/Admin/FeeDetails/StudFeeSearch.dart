@@ -80,7 +80,7 @@ class _StudentFeeSearchState extends State<StudentFeeSearch> {
             ),
           ),
           LimitedBox(
-            maxHeight: size.height - 180,
+            maxHeight: size.height - 210,
             child: Consumer<FeeDetailsProvider>(
                 builder: (context, provider, child) {
               return provider.loading

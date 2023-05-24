@@ -58,11 +58,11 @@ class _AdminGalleryUploadState extends State<AdminGalleryUpload> {
       p.imageIDList.clear();
       p.dropDown.clear();
       p.stdReportInitialValues.clear();
-      p.getCourseList();
-      p.stdReportSectionStaff();
+      await p.getCourseList();
+      await p.stdReportSectionStaff();
       await p.sectionCounter(0);
-      p.divisionCounter(0);
-      p.courseCounter(0);
+      await p.divisionCounter(0);
+      await p.courseCounter(0);
       p.indval = 0;
       p.toggleVal = 'All';
     });
@@ -124,7 +124,7 @@ class _AdminGalleryUploadState extends State<AdminGalleryUpload> {
                   ? spinkitLoader()
                   : MaterialButton(
                       height: 35,
-                      shape: RoundedRectangleBorder(
+                      shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(5.0))),
                       highlightColor: UIGuide.THEME_LIGHT,
                       color: Colors.white70,
@@ -135,13 +135,16 @@ class _AdminGalleryUploadState extends State<AdminGalleryUpload> {
                             type: FileType.custom,
                             allowMultiple: true,
                             allowedExtensions: ['png', 'jpeg', 'jpg']);
+
                         if (result == null) {
                           return;
                         } else if (result.count <= 10) {
+                          print("object");
                           filePaths =
                               result.paths.map((path) => File(path!)).toList();
                           for (File file in filePaths) {
                             print('File size: ${await file.length()} bytes');
+
                             if (await file.length() <= 200000) {
                               fileP.add(file.path);
                               print("---------------$fileP");
@@ -200,7 +203,7 @@ class _AdminGalleryUploadState extends State<AdminGalleryUpload> {
                         // }
                       }),
                       child: Text(value.imageIDList.isEmpty
-                          ? 'Choose Image'
+                          ? 'Choose Image 🖼️'
                           : "${value.imageIDList.length} Image added"),
                     ),
             ),
@@ -208,7 +211,7 @@ class _AdminGalleryUploadState extends State<AdminGalleryUpload> {
         ),
         const Center(
             child: Text(
-          'Maximum allowed file size is 200 KB',
+          'Maximum allowed image size is 200 KB',
           style: TextStyle(
               fontSize: 9,
               color: Color.fromARGB(255, 241, 104, 94),
@@ -226,7 +229,7 @@ class _AdminGalleryUploadState extends State<AdminGalleryUpload> {
               height: 35,
               child: MaterialButton(
                 elevation: 5,
-                shape: RoundedRectangleBorder(
+                shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(5.0))),
                 //  minWidth: size.width - 216,
                 color: Colors.white,
@@ -304,6 +307,7 @@ class _AdminGalleryUploadState extends State<AdminGalleryUpload> {
           ],
         ),
         kheight20,
+        kheight10,
         Consumer<GalleryProviderAdmin>(
           builder: (context, value, child) => Center(
             child: ToggleSwitch(
@@ -339,7 +343,7 @@ class _AdminGalleryUploadState extends State<AdminGalleryUpload> {
                     height: 50,
                     child: MultiSelectDialogField(
                       // height: 200,
-                      items: val.dropDown,
+                      items: val.dropDown, searchable: true,
 
                       listType: MultiSelectListType.CHIP,
                       title: const Text(
@@ -424,7 +428,7 @@ class _AdminGalleryUploadState extends State<AdminGalleryUpload> {
                       height: 50,
                       child: MultiSelectDialogField(
                         // height: 200,
-                        items: value.courseDropDown,
+                        items: value.courseDropDown, searchable: true,
                         listType: MultiSelectListType.CHIP,
                         title: const Text(
                           "Select Course",
@@ -518,6 +522,7 @@ class _AdminGalleryUploadState extends State<AdminGalleryUpload> {
                           "Select Division",
                           style: TextStyle(color: Colors.black),
                         ),
+                        searchable: true,
                         selectedItemsTextStyle: const TextStyle(
                             fontWeight: FontWeight.w900,
                             color: UIGuide.light_Purple),
@@ -587,7 +592,7 @@ class _AdminGalleryUploadState extends State<AdminGalleryUpload> {
             );
           }
         }),
-        kheight20,
+        kheight10,
         Center(
           child: SizedBox(
             width: size.width / 2.3,

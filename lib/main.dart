@@ -8,6 +8,7 @@ import 'package:essconnect/Application/AdminProviders/ExamTTPtoviders.dart';
 
 import 'package:essconnect/Application/Module%20Providers.dart/MobileAppCheckin.dart';
 import 'package:essconnect/Application/Staff_Providers/ExamTTProviderStaff.dart';
+import 'package:essconnect/Application/Staff_Providers/MarkEntryNewProvider.dart';
 import 'package:essconnect/Application/Staff_Providers/MissingReportProviders.dart';
 import 'package:essconnect/Application/Staff_Providers/NotificationCount.dart';
 import 'package:essconnect/Application/Staff_Providers/TimetableProvider.dart';
@@ -275,6 +276,7 @@ class _GjInfoTechState extends State<GjInfoTech> {
         ChangeNotifierProvider(create: (context) => ChatProviders()),
         ChangeNotifierProvider(create: (context) => ToolMarkEntryProviders()),
         ChangeNotifierProvider(create: (context) => MissingReportProviders()),
+        ChangeNotifierProvider(create: (context) => MarkEntryNewProvider()),
       ],
       child: MaterialApp(
         title: 'e-SS Connect',

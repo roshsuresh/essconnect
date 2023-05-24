@@ -476,7 +476,7 @@ class _SendNoticeBoardAdminState extends State<SendNoticeBoardAdmin> {
                       // height: 200,
                       items: val.dropDown,
 
-                      listType: MultiSelectListType.CHIP,
+                      listType: MultiSelectListType.CHIP, searchable: true,
                       title: const Text(
                         "Select Section",
                         style: TextStyle(color: Colors.grey),

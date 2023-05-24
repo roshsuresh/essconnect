@@ -796,8 +796,10 @@ class _ImageViewExamState extends State<ImageViewExam> {
       _localPath = '/storage/emulated/0/Download';
     } else if (Platform.isIOS) {
       final dir = await getExternalStorageDirectory();
+
       _localPath = dir!.path;
     }
+
     print("pathhhh  $_localPath");
     final savedDir = Directory(_localPath);
     await savedDir.create(recursive: true).then((value) async {

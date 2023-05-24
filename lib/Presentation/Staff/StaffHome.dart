@@ -6,6 +6,7 @@ import 'package:essconnect/Application/StudentProviders/InternetConnection.dart'
 import 'package:essconnect/Presentation/Admin/WebViewLogin.dart';
 import 'package:essconnect/Presentation/Staff/ExamTT.dart/ExamTTScreen.dart';
 import 'package:essconnect/Presentation/Staff/MarkEntry.dart';
+import 'package:essconnect/Presentation/Staff/MarkEntryNew.dart';
 import 'package:essconnect/Presentation/Staff/MarkEntryReport/MarkEntryReport.dart';
 import 'package:essconnect/Presentation/Staff/MissingReport.dart';
 import 'package:essconnect/Presentation/Staff/ScreenNotification.dart';
@@ -1577,6 +1578,60 @@ class _StaffHomeState extends State<StaffHome> {
                                       kheight10,
                                       const Text(
                                         'MarkEntry\n Report ',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 11,
+                                            color: Colors.black),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () async {
+                                  await Navigator.push(
+                                      context,
+                                      PageTransition(
+                                        type: PageTransitionType.rightToLeft,
+                                        child: MarkEntryNew(),
+                                        duration:
+                                            const Duration(milliseconds: 300),
+                                      ));
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 10, right: 10),
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Card(
+                                        elevation: 10,
+                                        color: Colors.white,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(12.0),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Container(
+                                            height: 38,
+                                            width: 38,
+                                            decoration: const BoxDecoration(
+                                              image: DecorationImage(
+                                                opacity: 20,
+                                                image: AssetImage(
+                                                  'assets/Gallery.png',
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      kheight10,
+                                      const Text(
+                                        'MarkEntry\n New ',
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                             fontWeight: FontWeight.w400,

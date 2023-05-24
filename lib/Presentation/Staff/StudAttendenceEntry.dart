@@ -79,8 +79,9 @@ class _AttendenceEntryState extends State<AttendenceEntry> {
               children: [
                 MaterialButton(
                     color: Colors.white,
+                    elevation: 5,
                     child: Text(
-                      dateFinal == '--' ? newdate.toString() : dateFinal,
+                      dateFinal == '--' ? '🗓️   $newdate' : "🗓️   $dateFinal",
                       style: const TextStyle(color: UIGuide.light_Purple),
                     ),
                     onPressed: () async {
@@ -342,7 +343,7 @@ class _AttendenceEntryState extends State<AttendenceEntry> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(
-                  height: 40,
+                  height: 35,
                   width: 150,
                   child: value.loading
                       ? Container(
