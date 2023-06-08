@@ -60,7 +60,7 @@ class StaffGallery extends StatelessWidget {
               backgroundColor: UIGuide.light_Purple,
             ),
             body: TabBarView(children: [
-              StaffGalleryView(),
+              const StaffGalleryView(),
               Consumer<GallerySendProvider_Stf>(
                 builder: (context, value, child) {
                   if (value.isClassTeacher != false) {
@@ -126,6 +126,7 @@ class _StaffGalleryUPloadState extends State<StaffGalleryUPload> {
   final titleController = TextEditingController();
   String attachmentid = '';
 
+  @override
   void initState() {
     super.initState();
     datee = DateFormat('dd/MMM/yyyy').format(DateTime.now());
@@ -446,6 +447,13 @@ class _StaffGalleryUPloadState extends State<StaffGalleryUPload> {
                                         ),
                                       );
                                     }),
+                                Column(
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(),
+                                    )
+                                  ],
+                                )
                               ],
                             ),
                           ));

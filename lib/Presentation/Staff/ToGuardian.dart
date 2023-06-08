@@ -5,6 +5,7 @@ import 'package:essconnect/utils/spinkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import '../../Constants.dart';
 import '../../utils/constants.dart';
@@ -632,125 +633,139 @@ class Text_Matter_Notification extends StatelessWidget {
         ),
         backgroundColor: UIGuide.light_Purple,
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SizedBox(
-              height: 40,
-              child: TextFormField(
-                inputFormatters: [LengthLimitingTextInputFormatter(20)],
-                controller: titleController,
-                minLines: 1,
-                maxLines: 1,
-                keyboardType: TextInputType.multiline,
-                decoration: const InputDecoration(
-                  labelText: 'Title*',
-                  hintText: 'Enter Title',
-                  labelStyle: TextStyle(color: UIGuide.light_Purple),
-                  hintStyle: TextStyle(color: Colors.grey),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        topRight: Radius.circular(0),
-                        bottomLeft: Radius.circular(0),
-                        bottomRight: Radius.circular(20)),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: UIGuide.light_Purple, width: 1.0),
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        topRight: Radius.circular(0),
-                        bottomLeft: Radius.circular(0),
-                        bottomRight: Radius.circular(20)),
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SizedBox(
-              height: 100,
-              child: TextFormField(
-                inputFormatters: [LengthLimitingTextInputFormatter(100)],
-                controller: matterController,
-                minLines: 1,
-                maxLines: 5,
-                keyboardType: TextInputType.multiline,
-                decoration: const InputDecoration(
-                  labelText: 'Matter*',
-                  hintText: 'Enter Matter',
-                  labelStyle: TextStyle(color: UIGuide.light_Purple),
-                  hintStyle: TextStyle(color: Colors.grey),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        topRight: Radius.circular(0),
-                        bottomLeft: Radius.circular(0),
-                        bottomRight: Radius.circular(20)),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: UIGuide.light_Purple, width: 1.0),
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        topRight: Radius.circular(0),
-                        bottomLeft: Radius.circular(0),
-                        bottomRight: Radius.circular(20)),
+      body: SingleChildScrollView(
+        child: Column(
+          // crossAxisAlignment: CrossAxisAlignment.center,
+          // mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            LottieBuilder.network(
+                'https://assets10.lottiefiles.com/private_files/lf30_kBx3K1.json'),
+            kheight20,
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SizedBox(
+                height: 50,
+                child: TextFormField(
+                  inputFormatters: [LengthLimitingTextInputFormatter(20)],
+                  controller: titleController,
+                  minLines: 1,
+                  maxLines: 1,
+                  keyboardType: TextInputType.multiline,
+                  decoration: const InputDecoration(
+                    labelText: 'Title*',
+                    hintText: 'Enter Title',
+                    labelStyle: TextStyle(color: UIGuide.light_Purple),
+                    hintStyle: TextStyle(color: Colors.grey),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(0),
+                          bottomLeft: Radius.circular(0),
+                          bottomRight: Radius.circular(20)),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: UIGuide.light_Purple, width: 1.0),
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(0),
+                          bottomLeft: Radius.circular(0),
+                          bottomRight: Radius.circular(20)),
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-          SizedBox(
-            width: 150,
-            height: 40,
-            child: MaterialButton(
-              onPressed: () async {
-                if (titleController.text.isNotEmpty &&
-                    matterController.text.isNotEmpty) {
-                  await Provider.of<NotificationToGuardian_Providers>(context,
-                          listen: false)
-                      .sendNotification(context, titleController.text,
-                          matterController.text, toList,
-                          sentTo: type);
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      elevation: 10,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                      ),
-                      duration: Duration(seconds: 1),
-                      margin: EdgeInsets.only(bottom: 80, left: 30, right: 30),
-                      behavior: SnackBarBehavior.floating,
-                      content: Text(
-                        'Enter Title & Matter!',
-                        textAlign: TextAlign.center,
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SizedBox(
+                height: 100,
+                child: TextFormField(
+                  inputFormatters: [LengthLimitingTextInputFormatter(500)],
+                  controller: matterController,
+                  minLines: 1,
+                  maxLines: 5,
+                  keyboardType: TextInputType.multiline,
+                  decoration: const InputDecoration(
+                    labelText: 'Matter*',
+                    hintText: 'Enter Matter',
+                    labelStyle: TextStyle(color: UIGuide.light_Purple),
+                    hintStyle: TextStyle(color: Colors.grey),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(0),
+                          bottomLeft: Radius.circular(0),
+                          bottomRight: Radius.circular(20)),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: UIGuide.light_Purple, width: 1.0),
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(0),
+                          bottomLeft: Radius.circular(0),
+                          bottomRight: Radius.circular(20)),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Consumer<NotificationToGuardian_Providers>(
+              builder: (context, value, _) => value.load
+                  ? spinkitLoader()
+                  : SizedBox(
+                      width: 150,
+                      height: 40,
+                      child: MaterialButton(
+                        onPressed: () async {
+                          if (titleController.text.isNotEmpty &&
+                              matterController.text.isNotEmpty) {
+                            await Provider.of<NotificationToGuardian_Providers>(
+                                    context,
+                                    listen: false)
+                                .sendNotification(context, titleController.text,
+                                    matterController.text, toList,
+                                    sentTo: type);
+                            titleController.clear();
+                            matterController.clear();
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                elevation: 10,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                ),
+                                duration: Duration(seconds: 1),
+                                margin: EdgeInsets.only(
+                                    bottom: 80, left: 30, right: 30),
+                                behavior: SnackBarBehavior.floating,
+                                content: Text(
+                                  'Enter Title & Matter!',
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            );
+                          }
+                        },
+                        color: UIGuide.light_Purple,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(20),
+                              topRight: Radius.circular(0),
+                              bottomLeft: Radius.circular(0),
+                              bottomRight: Radius.circular(20)),
+                        ),
+                        child: const Text(
+                          'Send',
+                          style: TextStyle(color: Colors.white),
+                        ),
                       ),
                     ),
-                  );
-                }
-              },
-              color: UIGuide.light_Purple,
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(0),
-                    bottomLeft: Radius.circular(0),
-                    bottomRight: Radius.circular(20)),
-              ),
-              child: const Text(
-                'Send',
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }

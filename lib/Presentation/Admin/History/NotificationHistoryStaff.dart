@@ -1,9 +1,11 @@
 import 'package:essconnect/Constants.dart';
 import 'package:essconnect/Presentation/Admin/History/StaffNotificationHIstory.dart';
+import 'package:essconnect/utils/TextWrap(moreOption).dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:essconnect/utils/spinkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import '../../../Application/AdminProviders/NotificationToGuardian.dart';
 
@@ -77,115 +79,93 @@ class StudentNotificationHistory extends StatelessWidget {
                         horizontalOffset: 30,
                         verticalOffset: 300.0,
                         child: FlipAnimation(
-                            duration: const Duration(milliseconds: 3000),
-                            curve: Curves.fastLinearToSlowEaseIn,
-                            flipAxis: FlipAxis.y,
-                            child: Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: LimitedBox(
-                                maxHeight: 100,
+                          duration: const Duration(milliseconds: 3000),
+                          curve: Curves.fastLinearToSlowEaseIn,
+                          flipAxis: FlipAxis.y,
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                left: 6.0, right: 6, bottom: 3, top: 3),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color:
+                                      const Color.fromARGB(255, 238, 238, 245),
+                                  border: Border.all(
+                                      color: const Color.fromARGB(
+                                          255, 136, 187, 235)),
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(10))),
+                              width: size.width,
+                              child: Padding(
+                                padding: const EdgeInsets.all(5.0),
                                 child: Container(
-                                  width: size.width,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      border: Border.all(
-                                          color: UIGuide.light_Purple)),
-                                  child: Column(
-                                    children: [
-                                      const SizedBox(
-                                        height: 2,
-                                      ),
-                                      Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          const SizedBox(
-                                            width: 3,
-                                          ),
-                                          const Text(
-                                            'Title: ',
-                                            style: TextStyle(
-                                                fontSize: 15,
-                                                color: UIGuide.light_Purple),
-                                          ),
-                                          Flexible(
-                                            child: Text(
-                                              value.historyList[index].title ??
-                                                  '--',
-                                              overflow: TextOverflow.ellipsis,
-                                              maxLines: 1,
-                                              style: const TextStyle(
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                      Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          const SizedBox(
-                                            width: 3,
-                                          ),
-                                          const Text(
-                                            'Matter: ',
-                                            style: TextStyle(
-                                                fontSize: 15,
-                                                color: UIGuide.light_Purple),
-                                          ),
-                                          Flexible(
-                                            child: RichText(
-                                              overflow: TextOverflow.ellipsis,
-                                              strutStyle: const StrutStyle(
-                                                  fontSize: 13),
-                                              maxLines: 3,
-                                              text: TextSpan(
-                                                style: const TextStyle(
-                                                    fontSize: 15,
-                                                    color: Color.fromARGB(
-                                                        255, 44, 43, 43)),
-                                                text: value.historyList[index]
-                                                        .body ??
-                                                    '--',
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      Expanded(
-                                        child: Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
+                                  width: size.width - 4,
+                                  decoration: const BoxDecoration(
+                                      color: Color.fromARGB(255, 253, 253, 253),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10))),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(6.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
                                           children: [
+                                            SizedBox(
+                                              height: 25,
+                                              width: 25,
+                                              child: LottieBuilder.network(
+                                                  'https://assets7.lottiefiles.com/private_files/lf30_ggnpo3y5.json'),
+                                            ),
+                                            Text(
+                                              value.historyList[index].title ==
+                                                      null
+                                                  ? '--'
+                                                  : value
+                                                      .historyList[index].title
+                                                      .toString(),
+                                              style: const TextStyle(
+                                                  color: UIGuide.light_Purple,
+                                                  fontWeight: FontWeight.w700),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ],
+                                        ),
+                                        kheight10,
+                                        TextWrapper(
+                                            text:
+                                                value.historyList[index].body ??
+                                                    '--',
+                                            fSize: 13),
+                                        kheight10,
+                                        Row(
+                                          children: [
+                                            const Spacer(),
                                             const Text(
-                                              'Created: ',
+                                              'Created  date: ',
                                               style: TextStyle(
-                                                  fontSize: 15,
-                                                  color: UIGuide.light_Purple),
+                                                  color: Colors.grey,
+                                                  fontSize: 12),
                                             ),
                                             Text(
                                               value.historyList[index]
                                                       .createdDate ??
                                                   '--',
+                                              style: const TextStyle(
+                                                  color: Color.fromARGB(
+                                                      255, 49, 47, 47),
+                                                  fontSize: 12),
                                             ),
-                                            const SizedBox(
-                                              width: 6,
-                                            )
                                           ],
                                         ),
-                                      )
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
-                            )),
+                            ),
+                          ),
+                        ),
                       ),
                     );
                   },

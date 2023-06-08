@@ -57,6 +57,9 @@ class FeesProvider with ChangeNotifier {
             data['onlineFeePaymentStudentDetails'];
         Map<String, dynamic> feedata = feeinitial['feeOrder'];
         FeeOrder fee = FeeOrder.fromJson(feedata);
+        OnlineFeePayModel feemode = OnlineFeePayModel.fromJson(feeinitial);
+        allowPartialPayment = feemode.allowPartialPayment;
+        print("--------------$allowPartialPayment");
         lastOrderStatus = fee.lastOrderStatus;
         lastTransactionStartDate = fee.lastTransactionStartDate;
         lastTransactionAmount = fee.lastTransactionAmount;

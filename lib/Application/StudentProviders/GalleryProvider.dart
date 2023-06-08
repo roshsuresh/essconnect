@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -90,7 +91,7 @@ class GalleryProvider with ChangeNotifier {
       if (response.statusCode == 200) {
         setLoadingg(true);
         final data = json.decode(response.body);
-
+        log(data.toString());
         galleryList = data;
         print(galleryList);
         setLoadingg(false);

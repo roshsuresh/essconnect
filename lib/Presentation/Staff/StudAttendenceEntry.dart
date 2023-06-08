@@ -50,7 +50,8 @@ class _AttendenceEntryState extends State<AttendenceEntry> {
   final markEntryInitialValuesController1 = TextEditingController();
   final markEntryDivisionListController = TextEditingController();
   final markEntryDivisionListController1 = TextEditingController();
-
+  int forecount = 0;
+  int aftcount = 0;
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -912,6 +913,8 @@ class _AttendenceEntryState extends State<AttendenceEntry> {
                     : MaterialButton(
                         onPressed: () async {
                           List obj = [];
+                          forecount = 0;
+                          aftcount = 0;
                           obj.clear();
                           List attendLen = [];
                           print(
@@ -935,6 +938,13 @@ class _AttendenceEntryState extends State<AttendenceEntry> {
                               "terminatedStatus": value
                                   .studentsAttendenceView[i].terminatedStatus,
                             });
+                            value.studentsAttendenceView[i].forenoon == 'A'
+                                ? forecount = forecount + 1
+                                : forecount;
+                            print("count ,$forecount");
+                            value.studentsAttendenceView[i].afternoon == 'A'
+                                ? aftcount = aftcount + 1
+                                : aftcount;
                             // if (value.isDualAttendance == true) {
                             //   if (value.studentsAttendenceView[i].forenoon ==
                             //       "A") {}
@@ -985,7 +995,8 @@ class _AttendenceEntryState extends State<AttendenceEntry> {
                               ),
                             ));
                           } else {
-                            await value.attendanceSave(context, obj, dateFinal);
+                            await value.attendanceSave(
+                                context, obj, dateFinal, forecount, aftcount);
                           }
                         },
                         color: UIGuide.light_Purple,

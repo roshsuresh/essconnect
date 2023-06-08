@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:essconnect/Domain/Staff/NotifcationSendModel.dart';
 import 'package:essconnect/Domain/Staff/ToGuardian.dart';
 import 'package:essconnect/Presentation/Admin/Communication/ToGuardian.dart';
@@ -93,11 +94,20 @@ class NotificationToGuardianAdmin with ChangeNotifier {
     notifyListeners();
   }
 
+//send
+  bool _load = false;
+  bool get load => _load;
+  setLoad(bool value) {
+    _load = value;
+    notifyListeners();
+  }
+
   sendNotification(
       BuildContext context, String body, String content, List<String> to,
       {required String sentTo}) async {
     Map<String, dynamic> data = await parseJWT();
     SharedPreferences _pref = await SharedPreferences.getInstance();
+    setLoad(true);
 
     var headers = {
       'Content-Type': 'application/json',
@@ -130,23 +140,39 @@ class NotificationToGuardianAdmin with ChangeNotifier {
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
+      setLoad(true);
       print(await response.stream.bytesToString());
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          elevation: 10,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
-          ),
-          duration: Duration(seconds: 1),
-          margin: EdgeInsets.only(bottom: 80, left: 30, right: 30),
-          behavior: SnackBarBehavior.floating,
-          content: Text(
-            "Notification Sent Successfully",
-            textAlign: TextAlign.center,
-          ),
-        ),
-      );
+
+      await AwesomeDialog(
+              context: context,
+              dialogType: DialogType.success,
+              animType: AnimType.rightSlide,
+              headerAnimationLoop: false,
+              title: 'Success',
+              desc: 'Notification Sent Successfully',
+              btnOkOnPress: () {},
+              btnOkIcon: Icons.cancel,
+              btnOkColor: Colors.green)
+          .show();
+      setLoad(false);
+      notifyListeners();
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   const SnackBar(
+      //     elevation: 10,
+      //     shape: RoundedRectangleBorder(
+      //       borderRadius: BorderRadius.all(Radius.circular(10)),
+      //     ),
+      //     duration: Duration(seconds: 1),
+      //     margin: EdgeInsets.only(bottom: 80, left: 30, right: 30),
+      //     behavior: SnackBarBehavior.floating,
+      //     content: Text(
+      //       "Notification Sent Successfully",
+      //       textAlign: TextAlign.center,
+      //     ),
+      //   ),
+      // );
     } else {
+      setLoad(false);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           elevation: 10,

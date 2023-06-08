@@ -5,13 +5,11 @@ import 'dart:ui';
 
 import 'package:essconnect/Application/Staff_Providers/NoticeboardSend.dart';
 import 'package:essconnect/Constants.dart';
-import 'package:essconnect/utils/LoadingIndication.dart';
 import 'package:essconnect/utils/TextWrap(moreOption).dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:essconnect/utils/spinkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
-import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:photo_view/photo_view.dart';

@@ -432,7 +432,7 @@ class Text_Matter_NotificationAdminToStaff extends StatelessWidget {
               child: SizedBox(
                 height: 100,
                 child: TextFormField(
-                  inputFormatters: [LengthLimitingTextInputFormatter(100)],
+                  inputFormatters: [LengthLimitingTextInputFormatter(500)],
                   controller: matterController,
                   minLines: 1,
                   maxLines: 5,
@@ -462,51 +462,58 @@ class Text_Matter_NotificationAdminToStaff extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
-              width: 150,
-              height: 40,
-              child: MaterialButton(
-                onPressed: () async {
-                  if (titleController.text.isNotEmpty &&
-                      matterController.text.isNotEmpty) {
-                    await Provider.of<NotificationToStaffAdminProviders>(
-                            context,
-                            listen: false)
-                        .sendNotification(context, titleController.text,
-                            matterController.text, toList,
-                            sentTo: type);
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        elevation: 10,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
+            Consumer<NotificationToStaffAdminProviders>(
+              builder: (context, value, _) => value.load
+                  ? spinkitLoader()
+                  : SizedBox(
+                      width: 150,
+                      height: 40,
+                      child: MaterialButton(
+                        onPressed: () async {
+                          if (titleController.text.isNotEmpty &&
+                              matterController.text.isNotEmpty) {
+                            await value.sendNotification(
+                                context,
+                                titleController.text,
+                                matterController.text,
+                                toList,
+                                sentTo: type);
+                            titleController.clear();
+                            matterController.clear();
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                elevation: 10,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                ),
+                                duration: Duration(seconds: 1),
+                                margin: EdgeInsets.only(
+                                    bottom: 80, left: 30, right: 30),
+                                behavior: SnackBarBehavior.floating,
+                                content: Text(
+                                  'Enter Title & Matter!',
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            );
+                          }
+                        },
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(20),
+                              topRight: Radius.circular(0),
+                              bottomLeft: Radius.circular(0),
+                              bottomRight: Radius.circular(20)),
                         ),
-                        duration: Duration(seconds: 1),
-                        margin:
-                            EdgeInsets.only(bottom: 80, left: 30, right: 30),
-                        behavior: SnackBarBehavior.floating,
-                        content: Text(
-                          'Enter Title & Matter!',
-                          textAlign: TextAlign.center,
+                        color: UIGuide.light_Purple,
+                        child: const Text(
+                          'Send',
+                          style: TextStyle(color: Colors.white),
                         ),
                       ),
-                    );
-                  }
-                },
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(0),
-                      bottomLeft: Radius.circular(0),
-                      bottomRight: Radius.circular(20)),
-                ),
-                color: UIGuide.light_Purple,
-                child: const Text(
-                  'Send',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
+                    ),
             )
           ],
         ),

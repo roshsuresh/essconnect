@@ -1,18 +1,14 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:dependencies/dependencies.dart';
-
 import 'package:essconnect/Application/AdminProviders/SchoolPhotoProviders.dart';
 import 'package:essconnect/Application/AdminProviders/dashboardProvider.dart';
 import 'package:essconnect/Application/Module%20Providers.dart/Module.dart';
 import 'package:essconnect/Application/StudentProviders/CurriculamProviders.dart';
 import 'package:essconnect/Presentation/Admin/AttendanceTaken/AbsentReport.dart';
 import 'package:essconnect/Presentation/Admin/AttendanceTaken/Takenornot.dart';
-import 'package:essconnect/Presentation/Admin/Chat/ChatFirstScreen.dart';
 import 'package:essconnect/Presentation/Admin/Communication/ToStaff.dart';
 import 'package:essconnect/Presentation/Admin/ExamTimetable/ExamScreen.dart';
 import 'package:essconnect/Presentation/Admin/History/NotificationHistoryStaff.dart';
-import 'package:essconnect/Presentation/Admin/MarkentryReport.dart';
 import 'package:essconnect/Presentation/Admin/StudentStatistiics.dart';
 import 'package:essconnect/Presentation/Admin/WebViewLogin.dart';
 import 'package:essconnect/Presentation/Staff/MarkEntry.dart';
@@ -20,7 +16,6 @@ import 'package:essconnect/Presentation/Staff/StudAttendenceEntry.dart';
 import 'package:essconnect/Presentation/Staff/StudReport.dart';
 import 'package:essconnect/Presentation/Student/CurriculamScreen.dart';
 import 'package:essconnect/Presentation/Student/NoInternetScreen.dart';
-import 'package:essconnect/Presentation/Student/TimeTable.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:essconnect/utils/spinkit.dart';
 import 'package:flutter/material.dart';
@@ -148,9 +143,6 @@ class AdminHomeContent extends StatelessWidget {
                                 child: const StudReport(),
                                 duration: const Duration(milliseconds: 200),
                                 childCurrent: this));
-                        //   MaterialPageRoute(
-                        //       builder: (context) => const StudReport()),
-                        // );
                       },
                       child: Padding(
                         padding: const EdgeInsets.only(left: 10, right: 10),
@@ -1629,10 +1621,11 @@ class AdminHomeContent extends StatelessWidget {
                                   context,
                                   PageTransition(
                                       type: PageTransitionType.rightToLeft,
-                                      child: MarkEntry(),
-                                      // LoginScreenWeb(
-                                      //   schdomain: schdomain,
-                                      // ),
+                                      child:
+                                          //MarkEntry(),
+                                          LoginScreenWeb(
+                                        schdomain: schdomain,
+                                      ),
                                       duration:
                                           const Duration(milliseconds: 200),
                                       childCurrent: this));

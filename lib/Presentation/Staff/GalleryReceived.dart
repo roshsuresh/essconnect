@@ -1,8 +1,16 @@
+import 'dart:developer';
+import 'dart:io';
+import 'dart:isolate';
+import 'dart:ui';
+
 import 'package:essconnect/Application/Staff_Providers/GallerySendProviderStaff.dart';
 import 'package:essconnect/Constants.dart';
+import 'package:essconnect/utils/constants.dart';
 import 'package:essconnect/utils/spinkit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:lottie/lottie.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:provider/provider.dart';
@@ -213,7 +221,7 @@ class GalleryonTapStaff extends StatelessWidget {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => ViewImageOntapStaff(
-                                      inde: index,
+                                      currentIndex: index,
                                     )),
                           );
                         },
@@ -227,29 +235,145 @@ class GalleryonTapStaff extends StatelessWidget {
   }
 }
 
-class ViewImageOntapStaff extends StatelessWidget {
-  ViewImageOntapStaff({Key? key, required int inde}) : super(key: key);
+class ViewImageOntapStaff extends StatefulWidget {
+  late int currentIndex;
+  ViewImageOntapStaff({Key? key, required this.currentIndex}) : super(key: key);
+  static void downloadCallback(
+      String id, DownloadTaskStatus status, int progress) {
+    final SendPort send =
+        IsolateNameServer.lookupPortByName('downloader_send_port')!;
+    send.send([id, status, progress]);
+  }
+
+  @override
+  State<ViewImageOntapStaff> createState() => _ViewImageOntapStaffState();
+}
+
+class _ViewImageOntapStaffState extends State<ViewImageOntapStaff> {
+  final ReceivePort _port = ReceivePort();
+  @override
+  void initState() {
+    super.initState();
+
+    IsolateNameServer.registerPortWithName(
+        _port.sendPort, 'downloader_send_port');
+    _port.listen((dynamic data) {
+      String id = data[0];
+      DownloadTaskStatus status = data[1];
+      int progress = data[2];
+
+      setState(() {});
+    });
+
+    FlutterDownloader.registerCallback(ViewImageOntapStaff.downloadCallback);
+  }
+
+  @pragma('vm:entry-point')
+  static void downloadCallback(
+      String id, DownloadTaskStatus status, int progress) {
+    final SendPort? send =
+        IsolateNameServer.lookupPortByName('downloader_send_port');
+    send!.send([id, status, progress]);
+  }
+
+  @override
+  void dispose() {
+    IsolateNameServer.removePortNameMapping('downloader_send_port');
+    super.dispose();
+  }
+
+  Future<void> requestDownload(String _url, String _name) async {
+    final dir = await getExternalStorageDirectory();
+    var _localPath;
+
+    //dir!.path;
+
+    // Directory downloadsDir;
+
+    // Check platform
+    if (Platform.isAndroid) {
+      _localPath = '/storage/emulated/0/Download';
+    } else if (Platform.isIOS) {
+      final dir = await getExternalStorageDirectory();
+      _localPath = dir!.path;
+    }
+    print("pathhhh  $_localPath");
+    final savedDir = Directory(_localPath);
+    await savedDir.create(recursive: true).then((value) async {
+      String? _taskid = await FlutterDownloader.enqueue(
+        savedDir: _localPath,
+        url: _url,
+        fileName: "image $_name.jpeg",
+        showNotification: true,
+        openFileFromNotification: true,
+      );
+      log("nweurlll $_url");
+
+      print(_taskid);
+    });
+  }
+
   bool isLoading = false;
-  int? indee;
+
+  void onPageChanged(int index) {
+    setState(() {
+      widget.currentIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<GallerySendProvider_Stf>(
-      builder: (context, value, child) => PhotoViewGallery.builder(
-          scrollPhysics: const BouncingScrollPhysics(),
-          enableRotation: false,
-          itemCount: value.galleryAttachResponse == null
-              ? 0
-              : value.galleryAttachResponse!.length,
-          builder: ((context, inde) {
-            final imgUrl = value.galleryAttachResponse![inde]['url'];
-            return PhotoViewGalleryPageOptions(
-                imageProvider: NetworkImage(
-                    imgUrl ?? const AssetImage('assets/noimages.png')),
-                initialScale: PhotoViewComputedScale.contained * 0.8,
-                heroAttributes: PhotoViewHeroAttributes(
-                    tag: value.galleryAttachResponse![inde]['url']));
-          }),
-          loadingBuilder: (context, event) => spinkitLoader()),
+      builder: (context, value, child) => Scaffold(
+        appBar: AppBar(
+          title: const Text('Gallery'),
+          titleSpacing: 00.0,
+          centerTitle: true,
+          toolbarHeight: 50.2,
+          toolbarOpacity: 0.8,
+          backgroundColor: UIGuide.light_Purple,
+          actions: [
+            Padding(
+                padding: const EdgeInsets.only(right: 15.0),
+                child: IconButton(
+                    onPressed: () async {
+                      await requestDownload(
+                        value.galleryAttachResponse![widget.currentIndex]
+                                    ['url'] ==
+                                null
+                            ? '--'
+                            : value.galleryAttachResponse![widget.currentIndex]
+                                    ['url']
+                                .toString(),
+                        value.id == null
+                            ? '--- ${widget.currentIndex}'
+                            : value.id.toString() + '${widget.currentIndex}',
+                      );
+                    },
+                    icon: const Icon(Icons.download_outlined))),
+          ],
+        ),
+        body: PhotoViewGallery.builder(
+            backgroundDecoration: const BoxDecoration(color: UIGuide.WHITE),
+            scrollPhysics: const BouncingScrollPhysics(),
+            enableRotation: false,
+            onPageChanged: onPageChanged,
+            itemCount: value.galleryAttachResponse!.isEmpty
+                ? 0
+                : value.galleryAttachResponse!.length,
+            builder: ((context, inde) {
+              final imgUrl =
+                  value.galleryAttachResponse![widget.currentIndex]['url'];
+              return PhotoViewGalleryPageOptions(
+                  imageProvider: NetworkImage(
+                      imgUrl ?? const AssetImage('assets/noimages.png')),
+                  initialScale: PhotoViewComputedScale.contained * 0.8,
+                  heroAttributes: PhotoViewHeroAttributes(
+                      tag: value.galleryAttachResponse![widget.currentIndex]
+                          ['url']));
+            }),
+            loadingBuilder: (context, event) => spinkitLoader()),
+      ),
     );
   }
 }

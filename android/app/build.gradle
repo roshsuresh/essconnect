@@ -75,5 +75,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.android.material:material:1.6.0'
     implementation 'com.android.support:multidex:2.0.1'
+    implementation('com.google.firebase:firebase-auth') {
+        exclude module: "play-services-safetynet"
+    }
 
 }

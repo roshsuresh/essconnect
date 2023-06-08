@@ -93,7 +93,8 @@ class PaymentHistory extends StatelessWidget {
                                     padding: EdgeInsets.all(3.0),
                                     child: Center(
                                         child: Text(
-                                      'Payment \n  Mode',
+                                      'Payment\nMode',
+                                      textAlign: TextAlign.center,
                                       style: TextStyle(
                                           fontWeight: FontWeight.w700),
                                     )),
@@ -102,7 +103,8 @@ class PaymentHistory extends StatelessWidget {
                                     padding: EdgeInsets.all(3.0),
                                     child: Center(
                                         child: Text(
-                                      'Amount \n   paid',
+                                      'Amount\npaid',
+                                      textAlign: TextAlign.center,
                                       style: TextStyle(
                                           fontWeight: FontWeight.w700),
                                     )),

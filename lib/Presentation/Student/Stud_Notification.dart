@@ -99,7 +99,7 @@ class Stud_Notification extends StatelessWidget {
                                           children: [
                                             Row(
                                               children: [
-                                                Container(
+                                                SizedBox(
                                                   height: 25,
                                                   width: 25,
                                                   child: LottieBuilder.network(

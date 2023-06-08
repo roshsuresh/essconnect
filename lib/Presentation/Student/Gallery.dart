@@ -27,8 +27,8 @@ class _GalleryState extends State<Gallery> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Provider.of<GalleryProvider>(context, listen: false)
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      await Provider.of<GalleryProvider>(context, listen: false)
           .getGalleyList(context);
     });
   }
@@ -54,7 +54,7 @@ class _GalleryState extends State<Gallery> {
       body: Consumer<GalleryProvider>(
         builder: (context, value, child) => value.loading
             ? spinkitLoader()
-            : galleryResponse! == null || galleryResponse!.isEmpty
+            : galleryResponse == null || galleryResponse!.isEmpty
                 ? Container(
                     child: LottieBuilder.network(
                         'https://assets2.lottiefiles.com/private_files/lf30_lkquf6qz.json'),
@@ -219,47 +219,58 @@ class GalleryonTap extends StatelessWidget {
   bool isLoading = false;
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Consumer<GalleryProvider>(
-          builder: (context, value, child) => Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: GridView.count(
-              crossAxisCount: 3,
-              mainAxisSpacing: 8,
-              crossAxisSpacing: 4,
-              children: List.generate(value.galleryList.length, (index) {
-                return GestureDetector(
-                  child: isLoading
-                      ? const Center(
-                          child: CircularProgressIndicator(),
-                        )
-                      : Container(
-                          height: 100,
-                          width: 50,
-                          decoration: BoxDecoration(
-                              color: Colors.black12,
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(10)),
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: NetworkImage(
-                                  value.galleryList[index]['url'].toString(),
-                                ),
-                              )),
-                        ),
-                  onTap: () async {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => ViewImageOntap(
-                                currentIndex: index,
-                              )),
-                    );
-                  },
-                );
-              }),
-            ),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text(''),
+        titleSpacing: 00.0,
+        centerTitle: true,
+        toolbarHeight: 50.2,
+        toolbarOpacity: 0.8,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              bottomRight: Radius.circular(25),
+              bottomLeft: Radius.circular(25)),
+        ),
+        backgroundColor: UIGuide.light_Purple,
+      ),
+      body: Consumer<GalleryProvider>(
+        builder: (context, value, child) => Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: GridView.count(
+            crossAxisCount: 3,
+            mainAxisSpacing: 8,
+            crossAxisSpacing: 4,
+            children: List.generate(value.galleryList.length, (index) {
+              return GestureDetector(
+                child: isLoading
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : Container(
+                        height: 100,
+                        width: 50,
+                        decoration: BoxDecoration(
+                            color: Colors.black12,
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(10)),
+                            image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: NetworkImage(
+                                value.galleryList[index]['url'].toString(),
+                              ),
+                            )),
+                      ),
+                onTap: () async {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ViewImageOntap(
+                              currentIndex: index,
+                            )),
+                  );
+                },
+              );
+            }),
           ),
         ),
       ),
@@ -357,32 +368,36 @@ class _ViewImageOntapState extends State<ViewImageOntap> {
   Widget build(BuildContext context) {
     return Consumer<GalleryProvider>(
       builder: (context, value, child) => Scaffold(
-        // appBar: AppBar(
-        //   title: const Text('Report card'),
-        //   titleSpacing: 00.0,
-        //   centerTitle: true,
-        //   toolbarHeight: 50.2,
-        //   toolbarOpacity: 0.8,
-        //   backgroundColor: UIGuide.light_Purple,
-        //   actions: [
-        //     Padding(
-        //         padding: const EdgeInsets.only(right: 15.0),
-        //         child: IconButton(
-        //             onPressed: () async {
-        //               await requestDownload(
-        //                   value.galleryList[widget.currentIndex]['url'] == null
-        //                       ? '--'
-        //                       : value.galleryList[widget.currentIndex]['url']
-        //                           .toString(),
-        //                   // value.id == null
-        //                   //     ?
-        //                   '---'
-        //                   //   : value.id.toString() + value.name.toString(),
-        //                   );
-        //             },
-        //             icon: const Icon(Icons.download_outlined))),
-        //   ],
-        // ),
+        appBar: AppBar(
+          title: const Text('Gallery'),
+          titleSpacing: 00.0,
+          centerTitle: true,
+          toolbarHeight: 50.2,
+          toolbarOpacity: 0.8,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                bottomRight: Radius.circular(25),
+                bottomLeft: Radius.circular(25)),
+          ),
+          backgroundColor: UIGuide.light_Purple,
+          actions: [
+            Padding(
+                padding: const EdgeInsets.only(right: 15.0),
+                child: IconButton(
+                    onPressed: () async {
+                      await requestDownload(
+                        value.galleryList[widget.currentIndex]['url'] == null
+                            ? '--'
+                            : value.galleryList[widget.currentIndex]['url']
+                                .toString(),
+                        value.galleryList[widget.currentIndex]['title'] == null
+                            ? '---${widget.currentIndex}'
+                            : value.galleryList[widget.currentIndex]['title'],
+                      );
+                    },
+                    icon: const Icon(Icons.download_outlined))),
+          ],
+        ),
         body: PhotoViewGallery.builder(
             backgroundDecoration: const BoxDecoration(color: UIGuide.WHITE),
             scrollPhysics: const BouncingScrollPhysics(),

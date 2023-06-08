@@ -231,8 +231,8 @@ class AttendenceStaffProvider with ChangeNotifier {
   }
   //save
 
-  Future attendanceSave(
-      BuildContext context, List finallList, String date) async {
+  Future attendanceSave(BuildContext context, List finallList, String date,
+      int forecount, int aftcount) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoadingg(true);
 
@@ -262,8 +262,10 @@ class AttendenceStaffProvider with ChangeNotifier {
               dialogType: DialogType.success,
               animType: AnimType.rightSlide,
               headerAnimationLoop: false,
-              title: 'Success',
-              desc: 'Successfully Saved',
+              title: 'Saved',
+              desc: isDualAttendance == true
+                  ? 'Absentees in ForeNoon  : $forecount \nAbsentees in AfterNoon : $aftcount'
+                  : 'No.of Absentees : $forecount',
               btnOkOnPress: () async {
                 await clearStudentList();
               },
@@ -290,7 +292,6 @@ class AttendenceStaffProvider with ChangeNotifier {
       print('Error Response in attendance');
     }
   }
-
   //delete
 
   Future attendanceDelete(

@@ -1,4 +1,3 @@
-// @dart=2.9
 import 'dart:async';
 import 'dart:core';
 import 'dart:io';
@@ -83,23 +82,23 @@ import 'Presentation/Staff/StaffHome.dart';
 import 'Presentation/Student/Student_home.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  RemoteNotification notification = message.notification;
+  RemoteNotification? notification = message.notification;
   print('Handling a background message ${message.messageId}');
 
-  flutterLocalNotificationsPlugin.show(
+  flutterLocalNotificationsPlugin?.show(
     notification.hashCode,
-    notification.title,
+    notification!.title,
     notification.body,
     NotificationDetails(
-      android: AndroidNotificationDetails(channel.id, channel.name,
+      android: AndroidNotificationDetails(channel!.id, channel!.name,
           icon: '@mipmap/ic_launcher', channelShowBadge: true),
     ),
   );
 }
 
-AndroidNotificationChannel channel;
+AndroidNotificationChannel? channel;
 
-FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+FlutterLocalNotificationsPlugin? flutterLocalNotificationsPlugin;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -117,10 +116,10 @@ Future<void> main() async {
 
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
-    await flutterLocalNotificationsPlugin
+    await flutterLocalNotificationsPlugin!
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()
-        ?.createNotificationChannel(channel);
+        ?.createNotificationChannel(channel!);
 
     await FirebaseMessaging.instance
         .setForegroundNotificationPresentationOptions(
@@ -160,7 +159,7 @@ class GjInfoTech extends StatefulWidget {
 }
 
 class _GjInfoTechState extends State<GjInfoTech> {
-  SharedPreferences prefs;
+  late SharedPreferences prefs;
   _checkSession() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -169,7 +168,7 @@ class _GjInfoTechState extends State<GjInfoTech> {
     }
   }
 
-  bool activated;
+  late bool activated;
 
   @override
   void initState() {
@@ -180,17 +179,17 @@ class _GjInfoTechState extends State<GjInfoTech> {
       }
     });
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      RemoteNotification notification = message.notification;
-      AndroidNotification android = message.notification?.android;
+      RemoteNotification? notification = message.notification;
+      AndroidNotification? android = message.notification?.android;
       if (notification != null && android != null && !kIsWeb) {
-        flutterLocalNotificationsPlugin.show(
+        flutterLocalNotificationsPlugin!.show(
           notification.hashCode,
           notification.title,
           notification.body,
           NotificationDetails(
             android: AndroidNotificationDetails(
-              channel.id,
-              channel.name,
+              channel!.id,
+              channel!.name,
               icon: '@mipmap/ic_launcher',
               playSound: true,
             ),
@@ -297,7 +296,7 @@ class _GjInfoTechState extends State<GjInfoTech> {
 }
 
 class SplashFuturePage extends StatefulWidget {
-  SplashFuturePage({Key key}) : super(key: key);
+  SplashFuturePage({Key? key}) : super(key: key);
 
   @override
   State<SplashFuturePage> createState() => _SplashFuturePageState();
@@ -310,8 +309,8 @@ class _SplashFuturePageState extends State<SplashFuturePage>
   double _textOpacity = 0.0;
   double _containerOpacity = 0.0;
 
-  AnimationController _controller;
-  Animation<double> animation1;
+  late AnimationController _controller;
+  late Animation<double> animation1;
 
   Future _checkSession() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -435,7 +434,7 @@ class _SplashFuturePageState extends State<SplashFuturePage>
                   style: TextStyle(
                     color: UIGuide.light_Purple,
                     fontWeight: FontWeight.bold,
-                    fontSize: animation1?.value,
+                    fontSize: animation1.value,
                   ),
                 ),
               ),
