@@ -16,7 +16,6 @@ class NoticeProvider with ChangeNotifier {
   String? extension;
   String? name;
   String? idd;
-
   String? url;
 
   bool _loading = false;

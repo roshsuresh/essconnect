@@ -34,12 +34,12 @@ dependencies:
   awesome_dialog: ^3.0.2
   awesome_notifications: ^0.7.4+1
   badges: ^3.0.2
+  basispaysdk: ^1.1.2
   carousel_slider: ^4.1.1
   collection: ^1.16.0
   connectivity_plus: ^3.0.2
   context_storage: ^1.0.0+1
   cupertino_icons: ^1.0.2
-  dependencies: ^0.1.5
   dropdown_search: ^5.0.3
   file_picker: ^5.2.5
   firebase_analytics: ^10.1.0

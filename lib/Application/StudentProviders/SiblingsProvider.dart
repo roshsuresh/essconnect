@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:essconnect/Presentation/StaffAsGuardian.dart/StudentHomeStaff.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -90,6 +91,40 @@ class SibingsProvider with ChangeNotifier {
         MaterialPageRoute(builder: (context) => StudentHome()),
         (Route<dynamic> route) => false,
       );
+      isLoading = false;
+      notifyListeners();
+    } else {
+      print('something went wrong in siblings list provider');
+    }
+  }
+
+  //For teacher -- guardian
+
+  Future getSiblingByStaff(BuildContext context, String childId) async {
+    isLoading = true;
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+    };
+    var request = http.Request('POST',
+        Uri.parse('${UIGuide.baseURL}/user/load-new-token-guardian/$childId'));
+    request.headers.addAll(headers);
+    print(request);
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      var data = jsonDecode(await response.stream.bytesToString());
+      SiblingTokenModel respo = SiblingTokenModel.fromJson(data);
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('accesstoken', respo.accessToken);
+      print('accessToken ${respo.accessToken}');
+      await Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => StudentHomeByStaff()),
+        (Route<dynamic> route) => false,
+      );
+
       isLoading = false;
       notifyListeners();
     } else {

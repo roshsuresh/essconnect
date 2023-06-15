@@ -395,9 +395,9 @@ class Text_Matter_NotificationAdminToStaff extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: SizedBox(
-                height: 40,
+                height: 55,
                 child: TextFormField(
-                  inputFormatters: [LengthLimitingTextInputFormatter(20)],
+                  inputFormatters: [LengthLimitingTextInputFormatter(50)],
                   controller: titleController,
                   minLines: 1,
                   maxLines: 1,

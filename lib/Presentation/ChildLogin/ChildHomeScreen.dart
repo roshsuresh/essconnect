@@ -755,11 +755,11 @@ class _ChildHomeState extends State<ChildHome> {
                                             ),
                                             child: GestureDetector(
                                               onTap: () async {
-                                                await Provider.of<
-                                                            StudNotificationCountProviders>(
-                                                        context,
-                                                        listen: false)
-                                                    .seeNotification();
+                                                // await Provider.of<
+                                                //             StudNotificationCountProviders>(
+                                                //         context,
+                                                //         listen: false)
+                                                //     .seeNotification();
                                                 await Provider.of<
                                                             StudNotificationCountProviders>(
                                                         context,

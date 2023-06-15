@@ -3,9 +3,19 @@ import 'package:essconnect/Application/StudentProviders/CurriculamProviders.dart
 import 'package:essconnect/Application/StudentProviders/InternetConnection.dart';
 import 'package:essconnect/Application/StudentProviders/NotificationCountProviders.dart';
 import 'package:essconnect/Constants.dart';
+import 'package:essconnect/Presentation/Student/Attendence.dart';
 import 'package:essconnect/Presentation/Student/CurriculamScreen.dart';
 import 'package:essconnect/Presentation/Student/Diary.dart';
+import 'package:essconnect/Presentation/Student/Gallery.dart';
 import 'package:essconnect/Presentation/Student/NoInternetScreen.dart';
+import 'package:essconnect/Presentation/Student/NoticeBoard.dart';
+import 'package:essconnect/Presentation/Student/PasswordChange.dart';
+import 'package:essconnect/Presentation/Student/PayFee.dart';
+import 'package:essconnect/Presentation/Student/PaymentHistory.dart';
+import 'package:essconnect/Presentation/Student/Profile_Info.dart';
+import 'package:essconnect/Presentation/Student/Reportcard.dart';
+import 'package:essconnect/Presentation/Student/Stud_Notification.dart';
+import 'package:essconnect/Presentation/Student/TimeTable.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:essconnect/utils/spinkit.dart';
 import 'package:flutter/material.dart';
@@ -22,25 +32,15 @@ import '../../Application/StudentProviders/ProfileProvider.dart';
 import '../../Application/StudentProviders/SiblingsProvider.dart';
 import '../../Application/StudentProviders/TimetableProvider.dart';
 import '../Login_Activation/Login_page.dart';
-import 'Attendence.dart';
-import 'Gallery.dart';
-import 'NoticeBoard.dart';
-import 'PasswordChange.dart';
-import 'PayFee.dart';
-import 'PaymentHistory.dart';
-import 'Profile_Info.dart';
-import 'Reportcard.dart';
-import 'Stud_Notification.dart';
-import 'TimeTable.dart';
 
-class StudentHome extends StatefulWidget {
-  StudentHome({Key? key}) : super(key: key);
+class StudentHomeByStaff extends StatefulWidget {
+  StudentHomeByStaff({Key? key}) : super(key: key);
 
   @override
-  State<StudentHome> createState() => _StudentHomeState();
+  State<StudentHomeByStaff> createState() => _StudentHomeByStaffState();
 }
 
-class _StudentHomeState extends State<StudentHome> {
+class _StudentHomeByStaffState extends State<StudentHomeByStaff> {
   var size, height, width, kheight, kheight20;
 
   @override
@@ -1389,149 +1389,149 @@ class _StudentHomeState extends State<StudentHome> {
                             ),
                           ),
                           kheight20,
-                          Row(children: <Widget>[
-                            // Expanded(
-                            //   child: Container(
-                            //       margin: const EdgeInsets.only(
-                            //           left: 10.0, right: 20.0),
-                            //       child: const Divider(
-                            //         color: Colors.black45,
-                            //         height: 36,
-                            //       )),
-                            // ),
-                            const Text(
-                              "──   ",
-                              style: TextStyle(color: Colors.black26),
-                            ),
-                            const Text(
-                              "Change Password | Sign Out",
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                  //fontStyle: FontStyle.italic,
-                                  color: UIGuide.light_Purple,
-                                  fontWeight: FontWeight.w900),
-                            ),
-                            Expanded(
-                              child: Container(
-                                  margin: const EdgeInsets.only(
-                                      left: 16.0, right: 10.0),
-                                  child: const Divider(
-                                    color: Colors.black45,
-                                    height: 36,
-                                  )),
-                            ),
-                          ]),
-                          kheight,
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              MaterialButton(
-                                elevation: 10,
-                                minWidth: 50,
-                                color: UIGuide.THEME_LIGHT,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(30.0)),
-                                onPressed: () async {
-                                  await Navigator.push(
-                                    context,
-                                    PageTransition(
-                                      type: PageTransitionType.rightToLeft,
-                                      child: PasswordChange(),
-                                      duration:
-                                          const Duration(milliseconds: 300),
-                                    ),
-                                  );
-                                  // Navigator.of(context).push(
-                                  //   MaterialPageRoute(
-                                  //       builder: (context) =>
-                                  //           PasswordChange()),
-                                  // );
-                                },
-                                child: const Icon(
-                                  Icons.key_sharp,
-                                  color: UIGuide.light_Purple,
-                                ),
-                              ),
-                              MaterialButton(
-                                  elevation: 10,
-                                  minWidth: 50,
-                                  color: UIGuide.THEME_LIGHT,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(30.0)),
-                                  onPressed: () async {
-                                    AwesomeDialog(
-                                            context: context,
-                                            dialogType: DialogType.info,
-                                            borderSide: const BorderSide(
-                                                color: UIGuide.light_Purple,
-                                                width: 2),
-                                            buttonsBorderRadius:
-                                                const BorderRadius.all(
-                                                    Radius.circular(2)),
-                                            headerAnimationLoop: false,
-                                            animType: AnimType.bottomSlide,
-                                            title: 'SignOut',
-                                            desc:
-                                                'Are you sure want to sign out',
-                                            showCloseIcon: true,
-                                            btnCancelColor: UIGuide.button2,
-                                            btnOkColor: UIGuide.button1,
-                                            btnCancelOnPress: () {
-                                              return;
-                                            },
-                                            btnOkOnPress: () async {
-                                              SharedPreferences prefs =
-                                                  await SharedPreferences
-                                                      .getInstance();
-                                              print("accesstoken  $prefs");
-                                              await prefs.remove("accesstoken");
-                                              print("username  $prefs");
-                                              await prefs.remove("username");
-                                              print("password  $prefs");
-                                              await prefs.remove("password");
+                          // Row(children: <Widget>[
+                          //   // Expanded(
+                          //   //   child: Container(
+                          //   //       margin: const EdgeInsets.only(
+                          //   //           left: 10.0, right: 20.0),
+                          //   //       child: const Divider(
+                          //   //         color: Colors.black45,
+                          //   //         height: 36,
+                          //   //       )),
+                          //   // ),
+                          //   const Text(
+                          //     "──   ",
+                          //     style: TextStyle(color: Colors.black26),
+                          //   ),
+                          //   const Text(
+                          //     "Change Password | Sign Out",
+                          //     textAlign: TextAlign.left,
+                          //     style: TextStyle(
+                          //         //fontStyle: FontStyle.italic,
+                          //         color: UIGuide.light_Purple,
+                          //         fontWeight: FontWeight.w900),
+                          //   ),
+                          //   Expanded(
+                          //     child: Container(
+                          //         margin: const EdgeInsets.only(
+                          //             left: 16.0, right: 10.0),
+                          //         child: const Divider(
+                          //           color: Colors.black45,
+                          //           height: 36,
+                          //         )),
+                          //   ),
+                          // ]),
+                          // kheight,
+                          // Row(
+                          //   crossAxisAlignment: CrossAxisAlignment.center,
+                          //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          //   children: [
+                          //     MaterialButton(
+                          //       elevation: 10,
+                          //       minWidth: 50,
+                          //       color: UIGuide.THEME_LIGHT,
+                          //       shape: RoundedRectangleBorder(
+                          //           borderRadius: BorderRadius.circular(30.0)),
+                          //       onPressed: () async {
+                          //         await Navigator.push(
+                          //           context,
+                          //           PageTransition(
+                          //             type: PageTransitionType.rightToLeft,
+                          //             child: PasswordChange(),
+                          //             duration:
+                          //                 const Duration(milliseconds: 300),
+                          //           ),
+                          //         );
+                          //         // Navigator.of(context).push(
+                          //         //   MaterialPageRoute(
+                          //         //       builder: (context) =>
+                          //         //           PasswordChange()),
+                          //         // );
+                          //       },
+                          //       child: const Icon(
+                          //         Icons.key_sharp,
+                          //         color: UIGuide.light_Purple,
+                          //       ),
+                          //     ),
+                          //     MaterialButton(
+                          //         elevation: 10,
+                          //         minWidth: 50,
+                          //         color: UIGuide.THEME_LIGHT,
+                          //         shape: RoundedRectangleBorder(
+                          //             borderRadius:
+                          //                 BorderRadius.circular(30.0)),
+                          //         onPressed: () async {
+                          //           AwesomeDialog(
+                          //                   context: context,
+                          //                   dialogType: DialogType.info,
+                          //                   borderSide: const BorderSide(
+                          //                       color: UIGuide.light_Purple,
+                          //                       width: 2),
+                          //                   buttonsBorderRadius:
+                          //                       const BorderRadius.all(
+                          //                           Radius.circular(2)),
+                          //                   headerAnimationLoop: false,
+                          //                   animType: AnimType.bottomSlide,
+                          //                   title: 'SignOut',
+                          //                   desc:
+                          //                       'Are you sure want to sign out',
+                          //                   showCloseIcon: true,
+                          //                   btnCancelColor: UIGuide.button2,
+                          //                   btnOkColor: UIGuide.button1,
+                          //                   btnCancelOnPress: () {
+                          //                     return;
+                          //                   },
+                          //                   btnOkOnPress: () async {
+                          //                     SharedPreferences prefs =
+                          //                         await SharedPreferences
+                          //                             .getInstance();
+                          //                     print("accesstoken  $prefs");
+                          //                     await prefs.remove("accesstoken");
+                          //                     print("username  $prefs");
+                          //                     await prefs.remove("username");
+                          //                     print("password  $prefs");
+                          //                     await prefs.remove("password");
 
-                                              Navigator.of(context)
-                                                  .pushAndRemoveUntil(
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              LoginPage()),
-                                                      (Route<dynamic> route) =>
-                                                          false);
-                                            },
-                                            buttonsTextStyle: const TextStyle(
-                                                color: Colors.white))
-                                        .show();
-                                  },
-                                  child: const Icon(
-                                    Icons.logout_outlined,
-                                    color: UIGuide.light_Purple,
-                                  )),
-                            ],
-                          ),
+                          //                     Navigator.of(context)
+                          //                         .pushAndRemoveUntil(
+                          //                             MaterialPageRoute(
+                          //                                 builder: (context) =>
+                          //                                     LoginPage()),
+                          //                             (Route<dynamic> route) =>
+                          //                                 false);
+                          //                   },
+                          //                   buttonsTextStyle: const TextStyle(
+                          //                       color: Colors.white))
+                          //               .show();
+                          //         },
+                          //         child: const Icon(
+                          //           Icons.logout_outlined,
+                          //           color: UIGuide.light_Purple,
+                          //         )),
+                          //   ],
+                          // ),
                           kheight20,
                           kheight20,
-                          Consumer<SibingsProvider>(
-                            builder: (context, value, child) {
-                              return ListView.builder(
-                                  shrinkWrap: true,
-                                  itemCount: value.siblingList.isEmpty
-                                      ? 0
-                                      : value.siblingList.length,
-                                  itemBuilder: (context, index) {
-                                    var idd =
-                                        value.siblingList[index].id ?? '--';
-                                    Provider.of<SibingsProvider>(context,
-                                            listen: false)
-                                        .getToken(idd);
-                                    return Container(
-                                      height: 0,
-                                      width: 0,
-                                    );
-                                  });
-                            },
-                          ),
+                          // Consumer<SibingsProvider>(
+                          //   builder: (context, value, child) {
+                          //     return ListView.builder(
+                          //         shrinkWrap: true,
+                          //         itemCount: value.siblingList.isEmpty
+                          //             ? 0
+                          //             : value.siblingList.length,
+                          //         itemBuilder: (context, index) {
+                          //           var idd =
+                          //               value.siblingList[index].id ?? '--';
+                          //           Provider.of<SibingsProvider>(context,
+                          //                   listen: false)
+                          //               .getToken(idd);
+                          //           return Container(
+                          //             height: 0,
+                          //             width: 0,
+                          //           );
+                          //         });
+                          //   },
+                          // ),
                           const Center(
                             child: Text(
                               "Powered By GJ Infotech (P) Ltd.",
@@ -1860,7 +1860,7 @@ class ProfileHome extends StatelessWidget {
                                   : siblinggResponse![index]['id'].toString();
                               await Provider.of<SibingsProvider>(context,
                                       listen: false)
-                                  .getSibling(context, idd);
+                                  .getSiblingByStaff(context, idd);
                             },
                             title: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,

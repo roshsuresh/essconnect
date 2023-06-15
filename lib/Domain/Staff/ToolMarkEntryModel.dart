@@ -205,41 +205,42 @@ class ToolViewModel {
     if (json['studentMEList'] != null) {
       studentMEList = <StudentMEList>[];
       json['studentMEList'].forEach((v) {
-        studentMEList!.add(StudentMEList.fromJson(v));
+        studentMEList!.add(new StudentMEList.fromJson(v));
       });
     }
     if (json['gradeList'] != null) {
       gradeList = <GradeList>[];
       json['gradeList'].forEach((v) {
-        gradeList!.add(GradeList.fromJson(v));
+        gradeList!.add(new GradeList.fromJson(v));
       });
     }
     totalToolMaxmark = json['totalToolMaxmark'];
     if (json['toolList'] != null) {
       toolList = <ToolList>[];
       json['toolList'].forEach((v) {
-        toolList!.add(ToolList.fromJson(v));
+        toolList!.add(new ToolList.fromJson(v));
       });
     }
     toolBasicData = json['toolBasicData'] != null
-        ? ToolBasicData.fromJson(json['toolBasicData'])
+        ? new ToolBasicData.fromJson(json['toolBasicData'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    if (studentMEList != null) {
-      data['studentMEList'] = studentMEList!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.studentMEList != null) {
+      data['studentMEList'] =
+          this.studentMEList!.map((v) => v.toJson()).toList();
     }
-    if (gradeList != null) {
-      data['gradeList'] = gradeList!.map((v) => v.toJson()).toList();
+    if (this.gradeList != null) {
+      data['gradeList'] = this.gradeList!.map((v) => v.toJson()).toList();
     }
-    data['totalToolMaxmark'] = totalToolMaxmark;
-    if (toolList != null) {
-      data['toolList'] = toolList!.map((v) => v.toJson()).toList();
+    data['totalToolMaxmark'] = this.totalToolMaxmark;
+    if (this.toolList != null) {
+      data['toolList'] = this.toolList!.map((v) => v.toJson()).toList();
     }
-    if (toolBasicData != null) {
-      data['toolBasicData'] = toolBasicData!.toJson();
+    if (this.toolBasicData != null) {
+      data['toolBasicData'] = this.toolBasicData!.toJson();
     }
     return data;
   }
@@ -279,7 +280,7 @@ class StudentMEList {
     if (json['toolList'] != null) {
       toolList = <ToolList>[];
       json['toolList'].forEach((v) {
-        toolList!.add(ToolList.fromJson(v));
+        toolList!.add(new ToolList.fromJson(v));
       });
     }
     totalMark = json['totalMark'];
@@ -288,19 +289,19 @@ class StudentMEList {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['name'] = name;
-    data['rollNo'] = rollNo;
-    data['studentPresentDetailsId'] = studentPresentDetailsId;
-    data['attendance'] = attendance;
-    data['description'] = description;
-    data['disableAbsentRow'] = disableAbsentRow;
-    if (toolList != null) {
-      data['toolList'] = toolList!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['name'] = this.name;
+    data['rollNo'] = this.rollNo;
+    data['studentPresentDetailsId'] = this.studentPresentDetailsId;
+    data['attendance'] = this.attendance;
+    data['description'] = this.description;
+    data['disableAbsentRow'] = this.disableAbsentRow;
+    if (this.toolList != null) {
+      data['toolList'] = this.toolList!.map((v) => v.toJson()).toList();
     }
-    data['totalMark'] = totalMark;
-    data['totalPer'] = totalPer;
-    data['totalGrade'] = totalGrade;
+    data['totalMark'] = this.totalMark;
+    data['totalPer'] = this.totalPer;
+    data['totalGrade'] = this.totalGrade;
     return data;
   }
 }

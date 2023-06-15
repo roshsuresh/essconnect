@@ -34,3 +34,56 @@ class StudNotificationReceivedList {
     return data;
   }
 }
+
+class NotificationListModel {
+  String? notificationId;
+  String? staffId;
+  String? notificationEntryId;
+  String? title;
+  String? message;
+  String? sendStaff;
+  bool? readStatus;
+  String? sentOn;
+  String? sentOnDisplay;
+  double? orderBy;
+
+  NotificationListModel(
+      {this.notificationId,
+      this.staffId,
+      this.notificationEntryId,
+      this.title,
+      this.message,
+      this.sendStaff,
+      this.readStatus,
+      this.sentOn,
+      this.sentOnDisplay,
+      this.orderBy});
+
+  NotificationListModel.fromJson(Map<String, dynamic> json) {
+    notificationId = json['notificationId'];
+    staffId = json['staffId'];
+    notificationEntryId = json['notificationEntryId'];
+    title = json['title'];
+    message = json['message'];
+    sendStaff = json['sendStaff'];
+    readStatus = json['readStatus'];
+    sentOn = json['sentOn'];
+    sentOnDisplay = json['sentOnDisplay'];
+    orderBy = json['orderBy'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['notificationId'] = this.notificationId;
+    data['staffId'] = this.staffId;
+    data['notificationEntryId'] = this.notificationEntryId;
+    data['title'] = this.title;
+    data['message'] = this.message;
+    data['sendStaff'] = this.sendStaff;
+    data['readStatus'] = this.readStatus;
+    data['sentOn'] = this.sentOn;
+    data['sentOnDisplay'] = this.sentOnDisplay;
+    data['orderBy'] = this.orderBy;
+    return data;
+  }
+}

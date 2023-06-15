@@ -3,14 +3,19 @@ import 'package:essconnect/Application/Module%20Providers.dart/Module.dart';
 import 'package:essconnect/Application/Staff_Providers/NotificationCount.dart';
 import 'package:essconnect/Application/StudentProviders/CurriculamProviders.dart';
 import 'package:essconnect/Application/StudentProviders/InternetConnection.dart';
+import 'package:essconnect/Application/StudentProviders/SiblingsProvider.dart';
 import 'package:essconnect/Presentation/Admin/WebViewLogin.dart';
 import 'package:essconnect/Presentation/Staff/ExamTT.dart/ExamTTScreen.dart';
-import 'package:essconnect/Presentation/Staff/MarkEntry.dart';
-import 'package:essconnect/Presentation/Staff/MarkEntryNew.dart';
-import 'package:essconnect/Presentation/Staff/MarkEntryReport/MarkEntryReport.dart';
-import 'package:essconnect/Presentation/Staff/MissingReport.dart';
+import 'package:essconnect/Presentation/Staff/GalleryUpload.dart';
+import 'package:essconnect/Presentation/Staff/NoticeBoard.dart';
 import 'package:essconnect/Presentation/Staff/ScreenNotification.dart';
+import 'package:essconnect/Presentation/Staff/StaffProfile.dart';
+import 'package:essconnect/Presentation/Staff/StaffTimeTable.dart';
+import 'package:essconnect/Presentation/Staff/StudAttendenceEntry.dart';
+import 'package:essconnect/Presentation/Staff/StudReport.dart';
+import 'package:essconnect/Presentation/Staff/ToGuardian.dart';
 import 'package:essconnect/Presentation/Staff/ToolMarkEntry.dart';
+import 'package:essconnect/Presentation/StaffAsGuardian.dart/StudentHomeStaff.dart';
 import 'package:essconnect/Presentation/Student/CurriculamScreen.dart';
 import 'package:essconnect/Presentation/Student/NoInternetScreen.dart';
 import 'package:essconnect/utils/spinkit.dart';
@@ -22,29 +27,21 @@ import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:upgrader/upgrader.dart';
-import '../../Application/Staff_Providers/Notification_ToGuardianProvider.dart';
 import '../../Application/Staff_Providers/StaffFlashnews.dart';
 import '../../Application/Staff_Providers/StaffProfile.dart';
 import '../../Constants.dart';
 import '../../utils/constants.dart';
 import '../Login_Activation/Login_page.dart';
 import '../Student/PasswordChange.dart';
-import 'GalleryUpload.dart';
-import 'NoticeBoard.dart';
-import 'StaffProfile.dart';
-import 'StaffTimeTable.dart';
-import 'StudAttendenceEntry.dart';
-import 'StudReport.dart';
-import 'ToGuardian.dart';
 
-class StaffHome extends StatefulWidget {
-  StaffHome({Key? key}) : super(key: key);
+class StaffHomeScreen extends StatefulWidget {
+  StaffHomeScreen({Key? key}) : super(key: key);
 
   @override
-  State<StaffHome> createState() => _StaffHomeState();
+  State<StaffHomeScreen> createState() => _StaffHomeScreenState();
 }
 
-class _StaffHomeState extends State<StaffHome> {
+class _StaffHomeScreenState extends State<StaffHomeScreen> {
   @override
   void initState() {
     super.initState();
@@ -54,9 +51,9 @@ class _StaffHomeState extends State<StaffHome> {
           .getnotificationCount();
       await Provider.of<ModuleProviders>(context, listen: false)
           .getModuleDetails();
-      await Provider.of<NotificationToGuardian_Providers>(context,
-              listen: false)
-          .communicationToGuardianCourseStaff();
+      Provider.of<SibingsProvider>(context, listen: false).siblingList.clear();
+      await Provider.of<SibingsProvider>(context, listen: false)
+          .getSiblingName();
     });
   }
 
@@ -159,6 +156,65 @@ class _StaffHomeState extends State<StaffHome> {
                                         )
                                       ],
                                     ),
+                                  ),
+                                ),
+                              ),
+                              GestureDetector(
+                                onTap: () async {
+                                  await Navigator.push(
+                                      context,
+                                      PageTransition(
+                                        type: PageTransitionType.rightToLeft,
+                                        child: StudentHomeByStaff(),
+                                        duration: Duration(milliseconds: 300),
+                                        // childCurrent:this
+                                      ));
+                                  // Navigator.push(
+                                  //   context,
+                                  //   MaterialPageRoute(
+                                  //       builder: (context) =>
+                                  //           Staff_ToGuardian()),
+                                  // );
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 10, right: 10),
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Card(
+                                        elevation: 10,
+                                        color: Colors.white,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(12.0),
+                                        ),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Container(
+                                            height: 38,
+                                            width: 38,
+                                            decoration: const BoxDecoration(
+                                              image: DecorationImage(
+                                                opacity: 20,
+                                                image: AssetImage(
+                                                  'assets/01communicationto guardian.png',
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      kheight10,
+                                      const Text(
+                                        'Child Login',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 11,
+                                            color: Colors.black),
+                                      )
+                                    ],
                                   ),
                                 ),
                               ),
@@ -365,123 +421,6 @@ class _StaffHomeState extends State<StaffHome> {
                                                 )
                                               ],
                                             ),
-                                          ),
-                                        ),
-                                      ),
-                              ),
-                              Consumer<ModuleProviders>(
-                                builder: (context, module, child) => module
-                                            .timetable ==
-                                        true
-                                    ? GestureDetector(
-                                        onTap: () async {
-                                          Navigator.push(
-                                              context,
-                                              PageTransition(
-                                                type: PageTransitionType
-                                                    .rightToLeft,
-                                                child: Staff_Timetable(),
-                                                duration:
-                                                    Duration(milliseconds: 300),
-                                                // childCurrent:this
-                                              ));
-
-                                          // Navigator.push(
-                                          //   context,
-                                          //   MaterialPageRoute(
-                                          //       builder: (context) =>
-                                          //           const Staff_Timetable()),
-                                          // );
-                                        },
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 10, right: 10),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              Card(
-                                                elevation: 10,
-                                                color: Colors.white,
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          12.0),
-                                                ),
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: Container(
-                                                    height: 38,
-                                                    width: 38,
-                                                    decoration:
-                                                        const BoxDecoration(
-                                                      image: DecorationImage(
-                                                        image: AssetImage(
-                                                          'assets/Timetable.png',
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              kheight10,
-                                              const Text(
-                                                'Timetable',
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w400,
-                                                    fontSize: 11,
-                                                    color: Colors.black),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      )
-                                    : GestureDetector(
-                                        onTap: () async {
-                                          _noAcess();
-                                        },
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 10, right: 10),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              Card(
-                                                elevation: 10,
-                                                color: Colors.white,
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          12.0),
-                                                ),
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: Container(
-                                                    height: 38,
-                                                    width: 38,
-                                                    decoration:
-                                                        const BoxDecoration(
-                                                      image: DecorationImage(
-                                                        image: AssetImage(
-                                                          'assets/Timetable.png',
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              kheight10,
-                                              const Text(
-                                                'Timetable',
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w400,
-                                                    fontSize: 11,
-                                                    color: Colors.black),
-                                              )
-                                            ],
                                           ),
                                         ),
                                       ),
@@ -886,137 +825,7 @@ class _StaffHomeState extends State<StaffHome> {
                                             ),
                                           ),
                                         ),
-                                        module.timetable == true
-                                            ? GestureDetector(
-                                                onTap: () async {
-                                                  await Navigator.push(
-                                                      context,
-                                                      PageTransition(
-                                                        type: PageTransitionType
-                                                            .rightToLeft,
-                                                        child:
-                                                            ExamTimetableStaff(),
-                                                        duration: Duration(
-                                                            milliseconds: 300),
-                                                        // childCurrent:this
-                                                      ));
-                                                  // Navigator.push(
-                                                  //   context,
-                                                  //   MaterialPageRoute(
-                                                  //       builder: (context) =>
-                                                  //           const ExamTimetableStaff()),
-                                                  // );
-                                                },
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 10, right: 10),
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceEvenly,
-                                                    children: [
-                                                      Card(
-                                                        elevation: 10,
-                                                        color: Colors.white,
-                                                        shape:
-                                                            RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      12.0),
-                                                        ),
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
-                                                          child: Container(
-                                                            height: 38,
-                                                            width: 38,
-                                                            decoration:
-                                                                const BoxDecoration(
-                                                              image:
-                                                                  DecorationImage(
-                                                                image:
-                                                                    AssetImage(
-                                                                  'assets/diary.png',
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      kheight10,
-                                                      const Text(
-                                                        '    Exam\nTimetable',
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.w400,
-                                                            fontSize: 11,
-                                                            color:
-                                                                Colors.black),
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                              )
-                                            : GestureDetector(
-                                                onTap: () async {
-                                                  _noAcess();
-                                                },
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 10, right: 10),
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceEvenly,
-                                                    children: [
-                                                      Card(
-                                                        elevation: 10,
-                                                        color: Colors.white,
-                                                        shape:
-                                                            RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      12.0),
-                                                        ),
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
-                                                          child: Container(
-                                                            height: 38,
-                                                            width: 38,
-                                                            decoration:
-                                                                const BoxDecoration(
-                                                              image:
-                                                                  DecorationImage(
-                                                                image:
-                                                                    AssetImage(
-                                                                  'assets/diary.png',
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      kheight10,
-                                                      const Text(
-                                                        '    Exam\nTimetable',
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.w400,
-                                                            fontSize: 11,
-                                                            color:
-                                                                Colors.black),
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
+
                                         // GestureDetector(
                                         //   onTap: () {
                                         //     Navigator.push(
@@ -1478,175 +1287,350 @@ class _StaffHomeState extends State<StaffHome> {
                               ],
                             ),
                           ),
-                          // Row(
-                          //   crossAxisAlignment: CrossAxisAlignment.start,
-                          //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          //   children: [
-                          //     GestureDetector(
-                          //       onTap: () async {
-                          //         await Navigator.push(
-                          //             context,
-                          //             PageTransition(
-                          //               type: PageTransitionType.rightToLeft,
-                          //               child: MissingReport(),
-                          //               duration:
-                          //                   const Duration(milliseconds: 300),
-                          //               // childCurrent:this
-                          //             ));
-                          //       },
-                          //       child: Padding(
-                          //         padding: const EdgeInsets.only(
-                          //             left: 10, right: 10),
-                          //         child: Column(
-                          //           mainAxisAlignment:
-                          //               MainAxisAlignment.spaceEvenly,
-                          //           children: [
-                          //             Card(
-                          //               elevation: 10,
-                          //               color: Colors.white,
-                          //               shape: RoundedRectangleBorder(
-                          //                 borderRadius:
-                          //                     BorderRadius.circular(12.0),
-                          //               ),
-                          //               child: Padding(
-                          //                 padding: const EdgeInsets.all(8.0),
-                          //                 child: Container(
-                          //                   height: 38,
-                          //                   width: 38,
-                          //                   decoration: const BoxDecoration(
-                          //                     image: DecorationImage(
-                          //                       opacity: 20,
-                          //                       image: AssetImage(
-                          //                         'assets/Gallery.png',
-                          //                       ),
-                          //                     ),
-                          //                   ),
-                          //                 ),
-                          //               ),
-                          //             ),
-                          //             kheight10,
-                          //             const Text(
-                          //               'MarkEntry\nMissing Report ',
-                          //               textAlign: TextAlign.center,
-                          //               style: TextStyle(
-                          //                   fontWeight: FontWeight.w400,
-                          //                   fontSize: 11,
-                          //                   color: Colors.black),
-                          //             )
-                          //           ],
-                          //         ),
-                          //       ),
-                          //     ),
-                          //     GestureDetector(
-                          //       onTap: () async {
-                          //         await Navigator.push(
-                          //             context,
-                          //             PageTransition(
-                          //               type: PageTransitionType.rightToLeft,
-                          //               child: MarkEntryReport(),
-                          //               duration:
-                          //                   const Duration(milliseconds: 300),
-                          //             ));
-                          //       },
-                          //       child: Padding(
-                          //         padding: const EdgeInsets.only(
-                          //             left: 10, right: 10),
-                          //         child: Column(
-                          //           mainAxisAlignment:
-                          //               MainAxisAlignment.spaceEvenly,
-                          //           children: [
-                          //             Card(
-                          //               elevation: 10,
-                          //               color: Colors.white,
-                          //               shape: RoundedRectangleBorder(
-                          //                 borderRadius:
-                          //                     BorderRadius.circular(12.0),
-                          //               ),
-                          //               child: Padding(
-                          //                 padding: const EdgeInsets.all(8.0),
-                          //                 child: Container(
-                          //                   height: 38,
-                          //                   width: 38,
-                          //                   decoration: const BoxDecoration(
-                          //                     image: DecorationImage(
-                          //                       opacity: 20,
-                          //                       image: AssetImage(
-                          //                         'assets/Gallery.png',
-                          //                       ),
-                          //                     ),
-                          //                   ),
-                          //                 ),
-                          //               ),
-                          //             ),
-                          //             kheight10,
-                          //             const Text(
-                          //               'MarkEntry\n Report ',
-                          //               textAlign: TextAlign.center,
-                          //               style: TextStyle(
-                          //                   fontWeight: FontWeight.w400,
-                          //                   fontSize: 11,
-                          //                   color: Colors.black),
-                          //             )
-                          //           ],
-                          //         ),
-                          //       ),
-                          //     ),
-                          //     GestureDetector(
-                          //       onTap: () async {
-                          //         await Navigator.push(
-                          //             context,
-                          //             PageTransition(
-                          //               type: PageTransitionType.rightToLeft,
-                          //               child: MarkEntryNew(),
-                          //               duration:
-                          //                   const Duration(milliseconds: 300),
-                          //             ));
-                          //       },
-                          //       child: Padding(
-                          //         padding: const EdgeInsets.only(
-                          //             left: 10, right: 10),
-                          //         child: Column(
-                          //           mainAxisAlignment:
-                          //               MainAxisAlignment.spaceEvenly,
-                          //           children: [
-                          //             Card(
-                          //               elevation: 10,
-                          //               color: Colors.white,
-                          //               shape: RoundedRectangleBorder(
-                          //                 borderRadius:
-                          //                     BorderRadius.circular(12.0),
-                          //               ),
-                          //               child: Padding(
-                          //                 padding: const EdgeInsets.all(8.0),
-                          //                 child: Container(
-                          //                   height: 38,
-                          //                   width: 38,
-                          //                   decoration: const BoxDecoration(
-                          //                     image: DecorationImage(
-                          //                       opacity: 20,
-                          //                       image: AssetImage(
-                          //                         'assets/Gallery.png',
-                          //                       ),
-                          //                     ),
-                          //                   ),
-                          //                 ),
-                          //               ),
-                          //             ),
-                          //             kheight10,
-                          //             const Text(
-                          //               'MarkEntry\n New ',
-                          //               textAlign: TextAlign.center,
-                          //               style: TextStyle(
-                          //                   fontWeight: FontWeight.w400,
-                          //                   fontSize: 11,
-                          //                   color: Colors.black),
-                          //             )
-                          //           ],
-                          //         ),
-                          //       ),
-                          //     ),
-                          //   ],
-                          // ),
+                          Consumer<ModuleProviders>(
+                            builder: (context, module, _) => Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                // GestureDetector(
+                                //   onTap: () async {
+                                //     await Navigator.push(
+                                //         context,
+                                //         PageTransition(
+                                //           type: PageTransitionType.rightToLeft,
+                                //           child: MissingReport(),
+                                //           duration:
+                                //               const Duration(milliseconds: 300),
+                                //           // childCurrent:this
+                                //         ));
+                                //   },
+                                //   child: Padding(
+                                //     padding: const EdgeInsets.only(
+                                //         left: 10, right: 10),
+                                //     child: Column(
+                                //       mainAxisAlignment:
+                                //           MainAxisAlignment.spaceEvenly,
+                                //       children: [
+                                //         Card(
+                                //           elevation: 10,
+                                //           color: Colors.white,
+                                //           shape: RoundedRectangleBorder(
+                                //             borderRadius:
+                                //                 BorderRadius.circular(12.0),
+                                //           ),
+                                //           child: Padding(
+                                //             padding: const EdgeInsets.all(8.0),
+                                //             child: Container(
+                                //               height: 38,
+                                //               width: 38,
+                                //               decoration: const BoxDecoration(
+                                //                 image: DecorationImage(
+                                //                   opacity: 20,
+                                //                   image: AssetImage(
+                                //                     'assets/Gallery.png',
+                                //                   ),
+                                //                 ),
+                                //               ),
+                                //             ),
+                                //           ),
+                                //         ),
+                                //         kheight10,
+                                //         const Text(
+                                //           'MarkEntry\nMissing Report ',
+                                //           textAlign: TextAlign.center,
+                                //           style: TextStyle(
+                                //               fontWeight: FontWeight.w400,
+                                //               fontSize: 11,
+                                //               color: Colors.black),
+                                //         )
+                                //       ],
+                                //     ),
+                                //   ),
+                                // ),
+                                // GestureDetector(
+                                //   onTap: () async {
+                                //     await Navigator.push(
+                                //         context,
+                                //         PageTransition(
+                                //           type: PageTransitionType.rightToLeft,
+                                //           child: MarkEntryReport(),
+                                //           duration:
+                                //               const Duration(milliseconds: 300),
+                                //         ));
+                                //   },
+                                //   child: Padding(
+                                //     padding: const EdgeInsets.only(
+                                //         left: 10, right: 10),
+                                //     child: Column(
+                                //       mainAxisAlignment:
+                                //           MainAxisAlignment.spaceEvenly,
+                                //       children: [
+                                //         Card(
+                                //           elevation: 10,
+                                //           color: Colors.white,
+                                //           shape: RoundedRectangleBorder(
+                                //             borderRadius:
+                                //                 BorderRadius.circular(12.0),
+                                //           ),
+                                //           child: Padding(
+                                //             padding: const EdgeInsets.all(8.0),
+                                //             child: Container(
+                                //               height: 38,
+                                //               width: 38,
+                                //               decoration: const BoxDecoration(
+                                //                 image: DecorationImage(
+                                //                   opacity: 20,
+                                //                   image: AssetImage(
+                                //                     'assets/Gallery.png',
+                                //                   ),
+                                //                 ),
+                                //               ),
+                                //             ),
+                                //           ),
+                                //         ),
+                                //         kheight10,
+                                //         const Text(
+                                //           'MarkEntry\n Report ',
+                                //           textAlign: TextAlign.center,
+                                //           style: TextStyle(
+                                //               fontWeight: FontWeight.w400,
+                                //               fontSize: 11,
+                                //               color: Colors.black),
+                                //         )
+                                //       ],
+                                //     ),
+                                //   ),
+                                // ),
+                                module.timetable == true
+                                    ? GestureDetector(
+                                        onTap: () async {
+                                          Navigator.push(
+                                              context,
+                                              PageTransition(
+                                                type: PageTransitionType
+                                                    .rightToLeft,
+                                                child: Staff_Timetable(),
+                                                duration:
+                                                    Duration(milliseconds: 300),
+                                                // childCurrent:this
+                                              ));
+
+                                          // Navigator.push(
+                                          //   context,
+                                          //   MaterialPageRoute(
+                                          //       builder: (context) =>
+                                          //           const Staff_Timetable()),
+                                          // );
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 10, right: 10),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Card(
+                                                elevation: 10,
+                                                color: Colors.white,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          12.0),
+                                                ),
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: Container(
+                                                    height: 38,
+                                                    width: 38,
+                                                    decoration:
+                                                        const BoxDecoration(
+                                                      image: DecorationImage(
+                                                        image: AssetImage(
+                                                          'assets/Timetable.png',
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              kheight10,
+                                              const Text(
+                                                'Timetable',
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.w400,
+                                                    fontSize: 11,
+                                                    color: Colors.black),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      )
+                                    : GestureDetector(
+                                        onTap: () async {
+                                          _noAcess();
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 10, right: 10),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Card(
+                                                elevation: 10,
+                                                color: Colors.white,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          12.0),
+                                                ),
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: Container(
+                                                    height: 38,
+                                                    width: 38,
+                                                    decoration:
+                                                        const BoxDecoration(
+                                                      image: DecorationImage(
+                                                        image: AssetImage(
+                                                          'assets/Timetable.png',
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              kheight10,
+                                              const Text(
+                                                'Timetable',
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.w400,
+                                                    fontSize: 11,
+                                                    color: Colors.black),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+
+                                module.timetable == true
+                                    ? GestureDetector(
+                                        onTap: () async {
+                                          await Navigator.push(
+                                              context,
+                                              PageTransition(
+                                                type: PageTransitionType
+                                                    .rightToLeft,
+                                                child: ExamTimetableStaff(),
+                                                duration:
+                                                    Duration(milliseconds: 300),
+                                                // childCurrent:this
+                                              ));
+                                          // Navigator.push(
+                                          //   context,
+                                          //   MaterialPageRoute(
+                                          //       builder: (context) =>
+                                          //           const ExamTimetableStaff()),
+                                          // );
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 10, right: 10),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Card(
+                                                elevation: 10,
+                                                color: Colors.white,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          12.0),
+                                                ),
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: Container(
+                                                    height: 38,
+                                                    width: 38,
+                                                    decoration:
+                                                        const BoxDecoration(
+                                                      image: DecorationImage(
+                                                        image: AssetImage(
+                                                          'assets/diary.png',
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              kheight10,
+                                              const Text(
+                                                'Exam Timetable',
+                                                textAlign: TextAlign.end,
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.w400,
+                                                    fontSize: 11,
+                                                    color: Colors.black),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      )
+                                    : GestureDetector(
+                                        onTap: () async {
+                                          _noAcess();
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 10, right: 10),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Card(
+                                                elevation: 10,
+                                                color: Colors.white,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          12.0),
+                                                ),
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: Container(
+                                                    height: 38,
+                                                    width: 38,
+                                                    decoration:
+                                                        const BoxDecoration(
+                                                      image: DecorationImage(
+                                                        image: AssetImage(
+                                                          'assets/diary.png',
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              kheight10,
+                                              const Text(
+                                                '    Exam\nTimetable',
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.w400,
+                                                    fontSize: 11,
+                                                    color: Colors.black),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                              ],
+                            ),
+                          ),
                           kheight10,
                           kheight20,
                           Row(children: <Widget>[
@@ -1760,6 +1744,26 @@ class _StaffHomeState extends State<StaffHome> {
                             ],
                           ),
                           kheight20,
+                          Consumer<SibingsProvider>(
+                            builder: (context, value, child) {
+                              return ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: value.siblingList.isEmpty
+                                      ? 0
+                                      : value.siblingList.length,
+                                  itemBuilder: (context, index) {
+                                    var idd =
+                                        value.siblingList[index].id ?? '--';
+                                    Provider.of<SibingsProvider>(context,
+                                            listen: false)
+                                        .getToken(idd);
+                                    return Container(
+                                      height: 0,
+                                      width: 0,
+                                    );
+                                  });
+                            },
+                          ),
                           const Center(
                             child: Text(
                               "Powered By GJ Infotech (P) Ltd.",

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:essconnect/Domain/Staff/NotifcationSendModel.dart';
 import 'package:essconnect/Domain/Staff/NotificationReceived.dart';
+import 'package:essconnect/Domain/Student/NotificationReceivedStud.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,7 +16,7 @@ class StaffNotificationScreenProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  List<StaffNotificationReceivedModel> notificationList = [];
+  List<NotificationListModel> notificationList = [];
   Future getNotificationReceived() async {
     Map<String, dynamic> parse = await parseJWT();
     SharedPreferences _pref = await SharedPreferences.getInstance();
@@ -25,31 +26,22 @@ class StaffNotificationScreenProvider with ChangeNotifier {
       'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
 
-    var request = http.Request(
-        'GET', Uri.parse("${UIGuide.baseURL}/mobileapp/token/receivedlist"));
-    request.body = json.encode({
-      // "SchoolId": _pref.getString('schoolId'),
-      "CreatedDate": null,
-      "StaffGuardianStudId": parse['StaffId'],
-      "Type": "Staff"
-    });
-    print(json.encode({
-      // "SchoolId": _pref.getString('schoolId'),
-      "CreatedDate": null,
-      "StaffGuardianStudId": parse['StaffId'],
-      "Type": "Staff"
-    }));
+    var request = http.Request('GET',
+        Uri.parse("${UIGuide.baseURL}/mobileapp/staffdet/staff-notification"));
+
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
 
     try {
       if (response.statusCode == 200) {
+        print("corect");
+        // final data = json.decode(await response.stream.bytesToString());
         Map<String, dynamic> data =
             jsonDecode(await response.stream.bytesToString());
 
-        List<StaffNotificationReceivedModel> templist =
-            List<StaffNotificationReceivedModel>.from(data["receiveList"]
-                .map((x) => StaffNotificationReceivedModel.fromJson(x)));
+        List<NotificationListModel> templist = List<NotificationListModel>.from(
+            data["notificationList"]
+                .map((x) => NotificationListModel.fromJson(x)));
         notificationList.addAll(templist);
 
         setLoading(false);

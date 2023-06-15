@@ -53,13 +53,13 @@ class StaffNotificationCountProviders with ChangeNotifier {
     final staffID = await parsedResponse['StaffId'];
     var response = await http.get(
         Uri.parse(
-            "${UIGuide.baseURL}/mobileapp/token/initial-Notification-Count?Type=Staff&StudentId=null&StaffId=$staffID"),
+            "${UIGuide.baseURL}/mobileapp/staffdet/initial-staffnotification-Count?staffId=$staffID"),
         headers: headers);
     try {
       if (response.statusCode == 200) {
         setLoading(true);
         final data = json.decode(response.body);
-        NotifiCountModel not = NotifiCountModel.fromJson(data);
+        CountmodelNotification not = CountmodelNotification.fromJson(data);
         count = not.totalCount;
         print("Notification Count = $count");
         setLoading(false);

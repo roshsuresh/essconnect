@@ -1,8 +1,6 @@
 import 'package:essconnect/Application/Staff_Providers/MarkReportProvider.dart';
 import 'package:essconnect/Domain/Staff/MarkEntryReport.dart';
-import 'package:essconnect/Presentation/Staff/MarkEntryReport/UASmarkEntry.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';

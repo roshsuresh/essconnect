@@ -79,6 +79,7 @@ import 'Presentation/Admin/AdminHome.dart';
 import 'Presentation/Login_Activation/ActivatePage.dart';
 import 'Presentation/Login_Activation/Login_page.dart';
 import 'Presentation/Staff/StaffHome.dart';
+import 'Presentation/StaffAsGuardian.dart/StaffHomeScreen.dart';
 import 'Presentation/Student/Student_home.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -314,9 +315,16 @@ class _SplashFuturePageState extends State<SplashFuturePage>
 
   Future _checkSession() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+
     if (prefs.getBool('activated') != null) {
       if (prefs.getString('accesstoken') != null) {
         var data = await parseJWT();
+        List<dynamic> roleList = [];
+        print(data['role'] is List);
+        if (data['role'] is List) {
+          roleList = await data['role'];
+          print(roleList);
+        }
         if (data['role'] == "SystemAdmin") {
           Navigator.pushReplacement(
             context,
@@ -333,6 +341,18 @@ class _SplashFuturePageState extends State<SplashFuturePage>
             context,
             MaterialPageRoute(builder: (context) => StaffHome()),
           );
+        } else if ((roleList.contains("Guardian") &&
+                roleList.contains("Teacher")) ||
+            (roleList.contains("NonTeachingStaff") &&
+                roleList.contains("Guardian"))) {
+          await Permission.videos.request();
+          await Permission.photos.request();
+          await Future.delayed(const Duration(seconds: 3));
+
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => StaffHomeScreen()));
         } else if (data['role'] == "SchoolSuperAdmin") {
           Navigator.pushReplacement(
             context,

@@ -52,10 +52,10 @@ class FeesProvider with ChangeNotifier {
         setLoading(true);
         print("Fee Response..........");
 
-        Map<String, dynamic> data = json.decode(response.body);
+        Map<String, dynamic> data = await json.decode(response.body);
         Map<String, dynamic> feeinitial =
-            data['onlineFeePaymentStudentDetails'];
-        Map<String, dynamic> feedata = feeinitial['feeOrder'];
+            await data['onlineFeePaymentStudentDetails'];
+        Map<String, dynamic> feedata = await feeinitial['feeOrder'];
         FeeOrder fee = FeeOrder.fromJson(feedata);
         OnlineFeePayModel feemode = OnlineFeePayModel.fromJson(feeinitial);
         allowPartialPayment = feemode.allowPartialPayment;
@@ -275,7 +275,7 @@ class FeesProvider with ChangeNotifier {
 
     try {
       if (response.statusCode == 200) {
-        Map<String, dynamic> data = json.decode(response.body);
+        Map<String, dynamic> data = await json.decode(response.body);
 
         FilePathPdfDownload att = FilePathPdfDownload.fromJson(data);
         extension = att.extension;
@@ -313,7 +313,7 @@ class FeesProvider with ChangeNotifier {
 
     try {
       if (response.statusCode == 200) {
-        Map<String, dynamic> data = json.decode(response.body);
+        Map<String, dynamic> data = await json.decode(response.body);
 
         StatusPayment att = StatusPayment.fromJson(data);
         log(data.toString());
@@ -391,11 +391,11 @@ class FeesProvider with ChangeNotifier {
         txnToken1 = txn.txnToken;
         print(mid1);
 
-        Map<String, dynamic> txnAmnt = data['txnAmount'];
+        Map<String, dynamic> txnAmnt = await data['txnAmount'];
         TxnAmount amnt = TxnAmount.fromJson(txnAmnt);
         txnAmount1 = amnt.value;
 
-        Map<String, dynamic> userInf = data['userInfo'];
+        Map<String, dynamic> userInf = await data['userInfo'];
         UserInfo user = UserInfo.fromJson(userInf);
         customerID1 = user.custId;
         emailID1 = user.email;
@@ -471,11 +471,11 @@ class FeesProvider with ChangeNotifier {
         txnToken1B = txn.txnToken;
         print(mid1B);
 
-        Map<String, dynamic> txnAmnt = data['txnAmount'];
+        Map<String, dynamic> txnAmnt = await data['txnAmount'];
         TxnAmount amnt = TxnAmount.fromJson(txnAmnt);
         txnAmount1B = amnt.value;
 
-        Map<String, dynamic> userInf = data['userInfo'];
+        Map<String, dynamic> userInf = await data['userInfo'];
         UserInfo user = UserInfo.fromJson(userInf);
         customerID1B = user.custId;
         emailID1B = user.email;
@@ -552,11 +552,11 @@ class FeesProvider with ChangeNotifier {
       txnToken2 = txn.txnToken;
       print(mid2);
 
-      Map<String, dynamic> txnAmnt = data['txnAmount'];
+      Map<String, dynamic> txnAmnt = await data['txnAmount'];
       TxnAmount amnt = TxnAmount.fromJson(txnAmnt);
       txnAmount2 = amnt.value;
 
-      Map<String, dynamic> userInf = data['userInfo'];
+      Map<String, dynamic> userInf = await data['userInfo'];
       UserInfo user = UserInfo.fromJson(userInf);
       customerID2 = user.custId;
       emailID2 = user.email;
@@ -633,13 +633,13 @@ class FeesProvider with ChangeNotifier {
         description1Razo = raz.description;
         order1 = raz.orderId;
 
-        Map<String, dynamic> pre = data['prefill'];
+        Map<String, dynamic> pre = await data['prefill'];
         Prefill info = Prefill.fromJson(pre);
         customer1Razo = info.name;
         email1Razo = info.email;
         contact1Razo = info.contact;
 
-        Map<String, dynamic> note = data['notes'];
+        Map<String, dynamic> note = await data['notes'];
         Notes inf = Notes.fromJson(note);
         readableOrderid1 = inf.readableOrderid;
 
@@ -710,13 +710,13 @@ class FeesProvider with ChangeNotifier {
         description1RazoBus = raz.description;
         order1Bus = raz.orderId;
 
-        Map<String, dynamic> pre = data['prefill'];
+        Map<String, dynamic> pre = await data['prefill'];
         Prefill info = Prefill.fromJson(pre);
         customer1RazoBus = info.name;
         email1RazoBus = info.email;
         contact1RazoBus = info.contact;
 
-        Map<String, dynamic> note = data['notes'];
+        Map<String, dynamic> note = await data['notes'];
         Notes inf = Notes.fromJson(note);
         readableOrderid1Bus = inf.readableOrderid;
 
@@ -798,13 +798,13 @@ class FeesProvider with ChangeNotifier {
       description2Razo = raz.description;
       order2 = raz.orderId;
 
-      Map<String, dynamic> pre = data['prefill'];
+      Map<String, dynamic> pre = await data['prefill'];
       Prefill info = Prefill.fromJson(pre);
       customer2Razo = info.name;
       email2Razo = info.email;
       contact2Razo = info.contact;
 
-      Map<String, dynamic> note = data['notes'];
+      Map<String, dynamic> note = await data['notes'];
       Notes inf = Notes.fromJson(note);
       readableOrderid2 = inf.readableOrderid;
 
@@ -1157,7 +1157,7 @@ class FeesProvider with ChangeNotifier {
 
     try {
       if (response.statusCode == 200) {
-        Map<String, dynamic> data = json.decode(response.body);
+        Map<String, dynamic> data = await json.decode(response.body);
 
         GateWayName att = GateWayName.fromJson(data);
 
@@ -1193,7 +1193,7 @@ class FeesProvider with ChangeNotifier {
 
     try {
       if (response.statusCode == 200) {
-        Map<String, dynamic> data = json.decode(response.body);
+        Map<String, dynamic> data = await json.decode(response.body);
 
         VendorMapModel ven = VendorMapModel.fromJson(data);
 

@@ -57,13 +57,15 @@ class StaffNoticeBoardReceived extends StatelessWidget {
                           left: 6.0, right: 6, bottom: 3, top: 3),
                       child: Container(
                         decoration: BoxDecoration(
-                            color: const Color.fromARGB(255, 234, 234, 236),
-                            border: Border.all(
-                                color:
-                                    const Color.fromARGB(255, 136, 187, 235)),
-                            borderRadius: const BorderRadius.only(
-                                topRight: Radius.circular(20),
-                                bottomLeft: Radius.circular(20))),
+                          color: const Color.fromARGB(255, 234, 234, 236),
+                          border: Border.all(
+                            color: const Color.fromARGB(255, 136, 187, 235),
+                          ),
+                          borderRadius: const BorderRadius.only(
+                            topRight: Radius.circular(20),
+                            bottomLeft: Radius.circular(20),
+                          ),
+                        ),
                         width: size.width,
                         child: Padding(
                           padding: const EdgeInsets.all(6.0),
@@ -90,17 +92,17 @@ class StaffNoticeBoardReceived extends StatelessWidget {
                                             strutStyle: const StrutStyle(
                                                 fontSize: 14.0),
                                             text: TextSpan(
-                                                style: const TextStyle(
-                                                    color: UIGuide.light_Purple,
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                                text: staffNoticeView![index]
-                                                            ['title'] ==
-                                                        null
-                                                    ? '--'
-                                                    : staffNoticeView![index]
-                                                            ['title']
-                                                        .toString()),
+                                              style: const TextStyle(
+                                                  color: UIGuide.light_Purple,
+                                                  fontWeight: FontWeight.w500),
+                                              text: staffNoticeView![index]
+                                                          ['title'] ==
+                                                      null
+                                                  ? '--'
+                                                  : staffNoticeView![index]
+                                                          ['title']
+                                                      .toString(),
+                                            ),
                                           ),
                                         ),
                                       ],

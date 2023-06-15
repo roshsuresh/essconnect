@@ -1,8 +1,10 @@
+import 'dart:developer';
 import 'dart:io';
 import 'dart:isolate';
 import 'dart:math';
 import 'dart:ui';
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:basispaysdk/basispaysdk.dart';
 import 'package:essconnect/Application/StudentProviders/FinalStatusProvider.dart';
 import 'package:essconnect/Application/StudentProviders/InternetConnection.dart';
 import 'package:essconnect/Presentation/Student/NoInternetScreen.dart';
@@ -181,23 +183,6 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                                             fontWeight: FontWeight.w900,
                                             color: UIGuide.light_Purple),
                                       ),
-                                      // Consumer<FeesProvider>(
-                                      //     builder: (context, snap, child) {
-                                      //   //   child:
-                                      //   return Padding(
-                                      //     padding: const EdgeInsets.only(
-                                      //         right: 20.0),
-                                      //     child: Checkbox(
-                                      //       value: snap.isselectAll,
-                                      //       onChanged: (bool? value) {
-                                      //         setState(() {
-                                      //           value = snap.isselectAll;
-                                      //         });
-                                      //       },
-                                      //       //       },
-                                      //     ),
-                                      //   );
-                                      // }),
                                     ],
                                   ),
                                 ),
@@ -901,7 +886,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
 //  -----------------------------------------------------------------------------------------------------------------  //
 ///////////////////                                 TrakNPay                                    ////////////////////////
 //  -----------------------------------------------------------------------------------------------------------------  //
-                                    else if (trans.gateway == 'TrakNPayyyy') {
+                                    else if (trans.gateway == 'TrakNPay') {
                                       await Provider.of<FeesProvider>(context,
                                               listen: false)
                                           .getDataOneTpay(
@@ -1162,7 +1147,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
 //  -----------------------------------------------------------------------------------------------------------------  //
 ///////////////////                                 TrakNPay                                    ////////////////////////
 //  -----------------------------------------------------------------------------------------------------------------  //
-                                    else if (trans.gateway == 'TrakNPayyyy') {
+                                    else if (trans.gateway == 'TrakNPay') {
                                       await Provider.of<FeesProvider>(context,
                                               listen: false)
                                           .getDataOneBusTpay(
@@ -1429,7 +1414,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
 //  -----------------------------------------------------------------------------------------------------------------  //
 ///////////////////                                 TrakNPay                                    ////////////////////////
 //  -----------------------------------------------------------------------------------------------------------------  //
-                                    else if (trans.gateway == 'TrakNPayyyy') {
+                                    else if (trans.gateway == 'TrakNPay') {
                                       await Provider.of<FeesProvider>(context,
                                               listen: false)
                                           .getDataTwoTpay(
@@ -1762,7 +1747,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
     await Provider.of<FinalStatusProvider>(context, listen: false)
         .transactionStatus(orderID);
 
-    showDialog(
+    await showDialog(
         context: context,
         barrierDismissible: false,
         builder: (context) => Consumer<FinalStatusProvider>(
@@ -2210,7 +2195,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
     String order = (readable + "_" + orderID);
     await Provider.of<FinalStatusProvider>(context, listen: false)
         .transactionStatusRazorPay(order);
-    showDialog(
+    await showDialog(
         context: context,
         barrierDismissible: false,
         builder: (context) => Consumer<FinalStatusProvider>(
@@ -2623,32 +2608,32 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
     print(
         "******************            $paymentRequestDictionary        ***********************");
     try {
-      // var response = Basispaysdk.startTransaction(
-      //     apiKey, //[API-KEY From Basispay team]
-      //     saltKey, //[SALT-KEY From Basispay team]
-      //     returnUrl, //[YOUR- RETURN URL to get the response]
-      //     true,
-      //     paymentRequestDictionary);
-      // response.then((value) {
-      //   print(value);
-      //   print("=======================================================");
-      //   setState(() {});
-      //   showAlertTrakNPay(context, orderId);
-      // }).catchError((onError) {
-      //   if (onError is PlatformException) {
-      //     print('-------------------Failed-----------------');
-      //     showAlertTrakNPay(context, orderId);
-      //     setState(() {
-      //       print(onError.message! + " \n  " + onError.details.toString());
-      //     });
-      //   } else {
-      //     setState(() {
-      //       print('-------------------Pending-----------------');
-      //       print(onError.toString());
-      //       showAlertTrakNPay(context, orderId);
-      //     });
-      //   }
-      // });
+      var response = Basispaysdk.startTransaction(
+          apiKey, //[API-KEY From Basispay team]
+          saltKey, //[SALT-KEY From Basispay team]
+          returnUrl, //[YOUR- RETURN URL to get the response]
+          true,
+          paymentRequestDictionary);
+      response.then((value) {
+        print(value);
+        print("=======================================================");
+        setState(() {});
+        showAlertTrakNPay(context, orderId);
+      }).catchError((onError) {
+        if (onError is PlatformException) {
+          print('-------------------Failed-----------------');
+          showAlertTrakNPay(context, orderId);
+          setState(() {
+            print(onError.message! + " \n  " + onError.details.toString());
+          });
+        } else {
+          setState(() {
+            print('-------------------Pending-----------------');
+            print(onError.toString());
+            showAlertTrakNPay(context, orderId);
+          });
+        }
+      });
     } catch (err) {
       showAlertTrakNPay(context, orderId);
       print('-------------------ERROR-----------------');
@@ -2681,7 +2666,8 @@ showAlertTrakNPay(
 
   await Provider.of<FeesProvider>(context, listen: false)
       .payStatusButton(cutString);
-  showDialog(
+
+  await showDialog(
       context: context,
       barrierDismissible: false,
       builder: (context) => Consumer<FeesProvider>(

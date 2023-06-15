@@ -117,17 +117,22 @@ class StudentNotificationHistory extends StatelessWidget {
                                               child: LottieBuilder.network(
                                                   'https://assets7.lottiefiles.com/private_files/lf30_ggnpo3y5.json'),
                                             ),
-                                            Text(
-                                              value.historyList[index].title ==
-                                                      null
-                                                  ? '--'
-                                                  : value
-                                                      .historyList[index].title
-                                                      .toString(),
-                                              style: const TextStyle(
-                                                  color: UIGuide.light_Purple,
-                                                  fontWeight: FontWeight.w700),
-                                              textAlign: TextAlign.center,
+                                            SizedBox(
+                                              width: size.width - 90,
+                                              child: Text(
+                                                value.historyList[index]
+                                                            .title ==
+                                                        null
+                                                    ? '--'
+                                                    : value.historyList[index]
+                                                        .title
+                                                        .toString(),
+                                                style: const TextStyle(
+                                                    color: UIGuide.light_Purple,
+                                                    fontWeight:
+                                                        FontWeight.w700),
+                                                //   textAlign: TextAlign.center,
+                                              ),
                                             ),
                                           ],
                                         ),

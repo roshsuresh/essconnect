@@ -1,12 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:ui';
 import 'package:animate_gradient/animate_gradient.dart';
 import 'package:essconnect/Constants.dart';
+import 'package:essconnect/Domain/Student/activation_model.dart';
 import 'package:essconnect/Presentation/Admin/AdminHome.dart';
 import 'package:essconnect/Presentation/ChildLogin/ChildHomeScreen.dart';
+import 'package:essconnect/Presentation/Login_Activation/ForgotPassword.dart';
 import 'package:essconnect/Presentation/SchoolHead/SchoolHeadHome.dart';
 import 'package:essconnect/Presentation/SchoolSuperAdmin/SuperAdminHome.dart';
+import 'package:essconnect/Presentation/StaffAsGuardian.dart/StaffHomeScreen.dart';
 import 'package:essconnect/Presentation/Student/Student_home.dart';
 import 'package:essconnect/utils/LoadingIndication.dart';
 import 'package:essconnect/utils/constants.dart';
@@ -319,6 +321,25 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                   ),
                                 ],
                               ),
+                              kheight10,
+                              InkWell(
+                                splashColor: UIGuide.THEME_LIGHT,
+                                onTap: () async {
+                                  await Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              ForgotPasswordScreen()));
+                                },
+                                child: Text(
+                                  "Forgot Password",
+                                  style: TextStyle(
+                                      color: UIGuide.light_Purple, fontSize: 15
+                                      //fontWeight: FontWeight.w400
+                                      ),
+                                ),
+                              )
+
                               //   ],
                               // ),
                             ],
@@ -359,6 +380,12 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
       await Provider.of<LoginProvider>(context, listen: false)
           .getToken(context);
       var parsedResponse = await parseJWT();
+      List<dynamic> roleList = [];
+      print(parsedResponse['role'] is List);
+      if (parsedResponse['role'] is List) {
+        roleList = await parsedResponse['role'];
+        print(roleList);
+      }
 
       if (parsedResponse['role'] == "Guardian") {
         if (isLoading) return;
@@ -398,6 +425,23 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
 
         Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (BuildContext context) => StaffHome()));
+      } else if ((roleList.contains("Guardian") &&
+              roleList.contains("Teacher")) ||
+          (roleList.contains("NonTeachingStaff") &&
+              roleList.contains("Guardian"))) {
+        if (isLoading) return;
+        setState(() {
+          isLoading = true;
+        });
+        await Permission.videos.request();
+
+        await Permission.photos.request();
+        await Future.delayed(const Duration(seconds: 3));
+
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) => StaffHomeScreen()));
       }
       //SchoolSuperAdmin
       else if (parsedResponse['role'] == "SchoolSuperAdmin") {

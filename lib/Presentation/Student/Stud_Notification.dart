@@ -1,3 +1,4 @@
+import 'package:essconnect/Application/StudentProviders/NotificationCountProviders.dart';
 import 'package:essconnect/Application/StudentProviders/NotificationReceived.dart';
 import 'package:essconnect/utils/spinkit.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,10 @@ class Stud_Notification extends StatelessWidget {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       var p = Provider.of<NotificationReceivedProviderStudent>(context,
           listen: false);
+      Provider.of<StudNotificationCountProviders>(context, listen: false)
+          .count = 0;
+      print(Provider.of<StudNotificationCountProviders>(context, listen: false)
+          .count);
       p.clearReceivedList();
       await p.getNotificationReceived();
     });
@@ -54,7 +59,7 @@ class Stud_Notification extends StatelessWidget {
                             : value.receivedList.length,
                         itemBuilder: (BuildContext context, int index) {
                           String createddate =
-                              value.receivedList[index].createdDate ?? '--';
+                              value.receivedList[index].sentOn ?? '--';
                           var updatedDate =
                               DateFormat('yyyy-MM-dd').parse(createddate);
                           String newDate = updatedDate.toString();
@@ -105,32 +110,35 @@ class Stud_Notification extends StatelessWidget {
                                                   child: LottieBuilder.network(
                                                       'https://assets7.lottiefiles.com/packages/lf20_0skurerf.json'),
                                                 ),
-                                                Text(
-                                                  value.receivedList[index]
-                                                              .title ==
-                                                          null
-                                                      ? '--'
-                                                      : value
-                                                          .receivedList[index]
-                                                          .title
-                                                          .toString(),
-                                                  style: const TextStyle(
-                                                      color:
-                                                          UIGuide.light_Purple,
-                                                      fontWeight:
-                                                          FontWeight.w700),
-                                                  textAlign: TextAlign.center,
+                                                SizedBox(
+                                                  width: size.width - 90,
+                                                  child: Text(
+                                                    value.receivedList[index]
+                                                                .title ==
+                                                            null
+                                                        ? '--'
+                                                        : value
+                                                            .receivedList[index]
+                                                            .title
+                                                            .toString(),
+                                                    style: const TextStyle(
+                                                        color: UIGuide
+                                                            .light_Purple,
+                                                        fontWeight:
+                                                            FontWeight.w700),
+                                                    // textAlign: TextAlign.center,
+                                                  ),
                                                 ),
                                               ],
                                             ),
                                             kheight,
                                             TextWrapper(
                                               text: value.receivedList[index]
-                                                          .body ==
+                                                          .message ==
                                                       null
                                                   ? '--'
-                                                  : value
-                                                      .receivedList[index].body
+                                                  : value.receivedList[index]
+                                                      .message
                                                       .toString(),
                                               fSize: 14,
                                             ),
@@ -162,12 +170,12 @@ class Stud_Notification extends StatelessWidget {
                                                 ),
                                                 Text(
                                                   value.receivedList[index]
-                                                              .fromStaff ==
+                                                              .sendStaff ==
                                                           null
                                                       ? '--'
                                                       : value
                                                           .receivedList[index]
-                                                          .fromStaff
+                                                          .sendStaff
                                                           .toString(),
                                                   style: const TextStyle(
                                                       color: Color.fromARGB(

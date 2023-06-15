@@ -57,6 +57,7 @@ class StaffNotificationReceived extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       var p =
           Provider.of<StaffNotificationScreenProvider>(context, listen: false);
@@ -65,8 +66,6 @@ class StaffNotificationReceived extends StatelessWidget {
 
       p.getNotificationReceived();
     });
-
-    size = MediaQuery.of(context).size;
 
     height = size.height;
 
@@ -86,7 +85,7 @@ class StaffNotificationReceived extends StatelessWidget {
                       : value.notificationList.length,
                   itemBuilder: (BuildContext context, int index) {
                     String createddate =
-                        value.notificationList[index].createdDate ?? '--';
+                        value.notificationList[index].sentOn ?? '--';
                     var updatedDate =
                         DateFormat('yyyy-MM-dd').parse(createddate);
                     String newDate = updatedDate.toString();
@@ -134,22 +133,23 @@ class StaffNotificationReceived extends StatelessWidget {
                                             child: LottieBuilder.network(
                                                 'https://assets7.lottiefiles.com/packages/lf20_0skurerf.json'),
                                           ),
-                                          // Text('🔔'),
-                                          Text(
-                                            value.notificationList[index]
-                                                    .title ??
-                                                '--',
-                                            style: const TextStyle(
-                                                color: UIGuide.light_Purple,
-                                                fontWeight: FontWeight.w700),
-                                            textAlign: TextAlign.center,
+                                          SizedBox(
+                                            width: size.width - 90,
+                                            child: Text(
+                                              value.notificationList[index]
+                                                      .title ??
+                                                  '--',
+                                              style: const TextStyle(
+                                                  color: UIGuide.light_Purple,
+                                                  fontWeight: FontWeight.w700),
+                                            ),
                                           ),
                                         ],
                                       ),
                                       kheight,
                                       TextWrapper(
-                                        text: value
-                                                .notificationList[index].body ??
+                                        text: value.notificationList[index]
+                                                .message ??
                                             '--',
                                         fSize: 14,
                                       ),
@@ -180,7 +180,7 @@ class StaffNotificationReceived extends StatelessWidget {
                                           ),
                                           Text(
                                             value.notificationList[index]
-                                                    .fromStaff ??
+                                                    .sendStaff ??
                                                 '--',
                                             style: const TextStyle(
                                                 color: Color.fromARGB(
@@ -347,16 +347,20 @@ class StaffNotificationSendHistory extends StatelessWidget {
                                             child: LottieBuilder.network(
                                                 'https://assets7.lottiefiles.com/private_files/lf30_ggnpo3y5.json'),
                                           ),
-                                          Text(
-                                            value.historyList[index].title ==
-                                                    null
-                                                ? '--'
-                                                : value.historyList[index].title
-                                                    .toString(),
-                                            style: const TextStyle(
-                                                color: UIGuide.light_Purple,
-                                                fontWeight: FontWeight.w700),
-                                            textAlign: TextAlign.center,
+                                          SizedBox(
+                                            width: size.width - 90,
+                                            child: Text(
+                                              value.historyList[index].title ==
+                                                      null
+                                                  ? '--'
+                                                  : value
+                                                      .historyList[index].title
+                                                      .toString(),
+                                              style: const TextStyle(
+                                                  color: UIGuide.light_Purple,
+                                                  fontWeight: FontWeight.w700),
+                                              //textAlign: TextAlign.center,
+                                            ),
                                           ),
                                         ],
                                       ),

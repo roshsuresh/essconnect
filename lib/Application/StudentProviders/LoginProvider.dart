@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -91,6 +92,88 @@ class LoginProvider with ChangeNotifier {
     } else {
       log("student not added.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-!");
       debugPrint(response.reasonPhrase);
+    }
+  }
+
+  bool _load = false;
+  bool get load => _load;
+  setLoad(bool value) {
+    _load = value;
+    notifyListeners();
+  }
+
+  //forgot pssword
+  String? item2;
+  Future forgotPassword(BuildContext context, String uname) async {
+    Map<String, dynamic> data = await parseJWT();
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    setLoad(true);
+    var headers = {
+      'Content-Type': 'application/json',
+    };
+
+    var response = await http.post(
+        Uri.parse(
+            "${UIGuide.baseURL}/request-forgot-password?id=${_pref.getString('schoolId')}"),
+        body: json.encode({"username": uname}),
+        headers: headers);
+
+    setLoad(true);
+
+    print(response);
+
+    if (response.statusCode == 200) {
+      final jsonData = json.decode(response.body);
+
+      ForgotPassword fp = ForgotPassword.fromJson(jsonData);
+      setLoad(true);
+      item2 = fp.item2;
+      print(item2);
+
+      await AwesomeDialog(
+              dismissOnTouchOutside: false,
+              dismissOnBackKeyPress: false,
+              context: context,
+              dialogType: DialogType.success,
+              animType: AnimType.rightSlide,
+              headerAnimationLoop: false,
+              title: 'Success',
+              desc: item2 == "Email"
+                  ? "You can reset your password using the link send on your registered Mail id"
+                  : "Your new Username and password will be sent on your registered Mobile no.",
+              btnOkOnPress: () async {},
+              btnOkColor: Colors.green)
+          .show();
+      setLoad(false);
+      notifyListeners();
+    } else if (response.statusCode == 404) {
+      await AwesomeDialog(
+              dismissOnTouchOutside: false,
+              dismissOnBackKeyPress: false,
+              context: context,
+              dialogType: DialogType.warning,
+              animType: AnimType.rightSlide,
+              headerAnimationLoop: false,
+              title: 'Invalid',
+              desc: "Cannot find user with this Username",
+              btnOkOnPress: () async {},
+              btnOkColor: Colors.orange)
+          .show();
+      setLoad(false);
+    } else {
+      await AwesomeDialog(
+              dismissOnTouchOutside: false,
+              dismissOnBackKeyPress: false,
+              context: context,
+              dialogType: DialogType.error,
+              animType: AnimType.rightSlide,
+              headerAnimationLoop: false,
+              title: 'Error',
+              desc: "Something went wrong",
+              btnOkOnPress: () async {},
+              btnOkColor: Colors.orange)
+          .show();
+      setLoad(false);
     }
   }
 }

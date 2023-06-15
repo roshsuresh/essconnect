@@ -20,7 +20,7 @@ class NotificationReceivedProviderStudent with ChangeNotifier {
     notifyListeners();
   }
 
-  List<StudNotificationReceivedList> receivedList = [];
+  List<NotificationListModel> receivedList = [];
   Future getNotificationReceived() async {
     Map<String, dynamic> parse = await parseJWT();
     SharedPreferences _pref = await SharedPreferences.getInstance();
@@ -31,19 +31,8 @@ class NotificationReceivedProviderStudent with ChangeNotifier {
     };
 
     var request = http.Request(
-        'GET', Uri.parse("${UIGuide.baseURL}/mobileapp/token/receivedlist"));
-    request.body = json.encode({
-      //"SchoolId": _pref.getString('schoolId'),
-      "CreatedDate": null,
-      "StaffGuardianStudId": parse['ChildId'],
-      "Type": "Student"
-    });
-    print(json.encode({
-      //  "SchoolId": _pref.getString('schoolId'),
-      "CreatedDate": null,
-      "StaffGuardianStudId": parse['ChildId'],
-      "Type": "Student"
-    }));
+        'GET', Uri.parse("${UIGuide.baseURL}/mobileapp/parent/notification"));
+
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
 
@@ -54,9 +43,9 @@ class NotificationReceivedProviderStudent with ChangeNotifier {
         Map<String, dynamic> data =
             jsonDecode(await response.stream.bytesToString());
 
-        List<StudNotificationReceivedList> templist =
-            List<StudNotificationReceivedList>.from(data["receiveList"]
-                .map((x) => StudNotificationReceivedList.fromJson(x)));
+        List<NotificationListModel> templist = List<NotificationListModel>.from(
+            data["notificationList"]
+                .map((x) => NotificationListModel.fromJson(x)));
         receivedList.addAll(templist);
 
         setLoading(false);
