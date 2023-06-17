@@ -624,13 +624,13 @@ class Text_Matter_NotificationAdmin extends StatelessWidget {
             kheight20,
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: SizedBox(
-                height: 60,
+              child: LimitedBox(
+                maxHeight: 80,
                 child: TextFormField(
                   inputFormatters: [LengthLimitingTextInputFormatter(50)],
                   controller: titleController,
                   minLines: 1,
-                  maxLines: 1,
+                  maxLines: 4,
                   keyboardType: TextInputType.multiline,
                   decoration: const InputDecoration(
                     labelText: 'Title*',
@@ -659,13 +659,13 @@ class Text_Matter_NotificationAdmin extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: SizedBox(
-                height: 100,
+              child: LimitedBox(
+                maxHeight: 150,
                 child: TextFormField(
                   inputFormatters: [LengthLimitingTextInputFormatter(500)],
                   controller: matterController,
                   minLines: 1,
-                  maxLines: 5,
+                  maxLines: 15,
                   keyboardType: TextInputType.multiline,
                   decoration: const InputDecoration(
                     labelText: 'Matter*',
@@ -692,6 +692,7 @@ class Text_Matter_NotificationAdmin extends StatelessWidget {
                 ),
               ),
             ),
+            kheight20,
             Consumer<NotificationToGuardianAdmin>(
               builder: (context, value, _) => value.load
                   ? spinkitLoader()

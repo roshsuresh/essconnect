@@ -360,7 +360,7 @@ class _StudentHomeState extends State<StudentHome> {
                                         position:
                                             badges.BadgePosition.topEnd(end: 9),
                                         badgeContent: Text(
-                                          count.count == 0
+                                          count.count == null
                                               ? '0'
                                               : count.count.toString(),
                                           style: const TextStyle(
@@ -370,9 +370,19 @@ class _StudentHomeState extends State<StudentHome> {
                                         ),
                                         child: GestureDetector(
                                           onTap: () async {
-                                            setState(() {
-                                              count.count == 0;
-                                            });
+                                            // setState(() {
+                                            //   count.count == 0;
+                                            // });
+                                            await Provider.of<
+                                                        StudNotificationCountProviders>(
+                                                    context,
+                                                    listen: false)
+                                                .seeNotification();
+                                            await Provider.of<
+                                                        StudNotificationCountProviders>(
+                                                    context,
+                                                    listen: false)
+                                                .getnotificationCount();
 
                                             // Provider.of<StudNotificationCountProviders>(
                                             //         context,

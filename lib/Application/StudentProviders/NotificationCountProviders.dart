@@ -13,6 +13,36 @@ class StudNotificationCountProviders with ChangeNotifier {
     notifyListeners();
   }
 
+  Future seeNotification() async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    setLoading(true);
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+    };
+    var parsedResponse = await parseJWT();
+    final studId = await parsedResponse['ChildId'];
+    var request = http.Request(
+        'POST',
+        Uri.parse(
+            '${UIGuide.baseURL}/mobileapp/token/updateWebStatus?studentId=$studId'));
+    request.body = json.encode({"IsSeen": true, "Type": "Parent"});
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      setLoading(true);
+      print(
+          '_ _ _ _ _ _ _ _ _ _ _ _   Correct   _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _');
+      setLoading(false);
+    } else {
+      setLoading(false);
+      print(response.statusCode);
+      print('Error in notificationInitial respo');
+    }
+  }
+
   int? count;
   Future getnotificationCount() async {
     SharedPreferences _pref = await SharedPreferences.getInstance();

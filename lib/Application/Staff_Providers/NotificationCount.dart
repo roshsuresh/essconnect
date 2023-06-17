@@ -25,7 +25,7 @@ class StaffNotificationCountProviders with ChangeNotifier {
     var request = http.Request(
         'POST',
         Uri.parse(
-            '${UIGuide.baseURL}/mobileapp/token/updateStatus?StudentId=null&StaffId=$staffId'));
+            '${UIGuide.baseURL}/mobileapp/token/updateWebStatus?staffId=$staffId'));
     request.body = json.encode({"IsSeen": true, "Type": "Staff"});
     request.headers.addAll(headers);
 

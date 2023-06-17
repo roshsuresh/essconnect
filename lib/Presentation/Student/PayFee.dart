@@ -738,7 +738,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                           if (trans.lastOrderStatus == 'Success' ||
                               trans.lastOrderStatus == 'Failed' ||
                               trans.lastOrderStatus == 'Cancelled' ||
-                              trans.lastOrderStatus == 'Processing' ||
+                              // trans.lastOrderStatus == 'Processing' ||
                               trans.lastOrderStatus == null) {
                             if (trans.total != 0) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

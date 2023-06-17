@@ -370,15 +370,26 @@ class _StudentHomeByStaffState extends State<StudentHomeByStaff> {
                                         ),
                                         child: GestureDetector(
                                           onTap: () async {
-                                            setState(() {
-                                              count.count == 0;
-                                            });
+                                            // setState(() {
+                                            //   count.count == 0;
+                                            // });
 
                                             // Provider.of<StudNotificationCountProviders>(
                                             //         context,
                                             //         listen: false)
                                             //     .count = 0;
                                             print(count.count);
+
+                                            await Provider.of<
+                                                        StudNotificationCountProviders>(
+                                                    context,
+                                                    listen: false)
+                                                .seeNotification();
+                                            await Provider.of<
+                                                        StudNotificationCountProviders>(
+                                                    context,
+                                                    listen: false)
+                                                .getnotificationCount();
                                             //     .getnotificationCount();
                                             // await Provider.of<
                                             //             StudNotificationCountProviders>(
