@@ -1,3 +1,50 @@
+class FeeInitialModel {
+  OnlineFeePayModel? onlineFeePaymentStudentDetails;
+  bool? isLocked;
+  // IsBankAdmnNoCheck? isBankAdmnNoCheck;
+  bool? installmentDueDateCheck;
+  bool? isExistFeegroup;
+  bool? isBusFeeGeneralFeeTogether;
+
+  FeeInitialModel(
+      {this.onlineFeePaymentStudentDetails,
+      this.isLocked,
+      // this.isBankAdmnNoCheck,
+      this.installmentDueDateCheck,
+      this.isExistFeegroup,
+      this.isBusFeeGeneralFeeTogether});
+
+  FeeInitialModel.fromJson(Map<String, dynamic> json) {
+    onlineFeePaymentStudentDetails =
+        json['onlineFeePaymentStudentDetails'] != null
+            ? OnlineFeePayModel.fromJson(json['onlineFeePaymentStudentDetails'])
+            : null;
+    isLocked = json['isLocked'];
+    // isBankAdmnNoCheck = json['isBankAdmnNoCheck'] != null
+    //     ? new IsBankAdmnNoCheck.fromJson(json['isBankAdmnNoCheck'])
+    //     : null;
+    installmentDueDateCheck = json['installmentDueDateCheck'];
+    isExistFeegroup = json['isExistFeegroup'];
+    isBusFeeGeneralFeeTogether = json['isBusFeeGeneralFeeTogether'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.onlineFeePaymentStudentDetails != null) {
+      data['onlineFeePaymentStudentDetails'] =
+          this.onlineFeePaymentStudentDetails!.toJson();
+    }
+    data['isLocked'] = this.isLocked;
+    // if (this.isBankAdmnNoCheck != null) {
+    //   data['isBankAdmnNoCheck'] = this.isBankAdmnNoCheck!.toJson();
+    // }
+    data['installmentDueDateCheck'] = this.installmentDueDateCheck;
+    data['isExistFeegroup'] = this.isExistFeegroup;
+    data['isBusFeeGeneralFeeTogether'] = this.isBusFeeGeneralFeeTogether;
+    return data;
+  }
+}
+
 class OnlineFeePayModel {
   bool? allowPartialPayment;
   // Null? concessionCaption;

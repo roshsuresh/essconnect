@@ -84,7 +84,7 @@ class PayFee extends StatelessWidget {
                         Consumer<FeesProvider>(builder: ((context, pro, child) {
                           print(pro.allowPartialPayment);
                           print("-****************************-");
-                          if (pro.allowPartialPayment != false) {
+                          if (pro.allowPartialPayment == true) {
                             print(pro.allowPartialPayment);
                             print(
                                 "---------------------------------------------------");
@@ -98,19 +98,42 @@ class PayFee extends StatelessWidget {
                       ],
                     ),
                   ),
-                  body: TabBarView(
-                    physics: const NeverScrollableScrollPhysics(),
-                    children: [
-                      const FeePayInstallment(),
-                      Consumer<FeesProvider>(builder: ((context, snap, child) {
-                        if (snap.allowPartialPayment != false) {
-                          return FeePartialPayment();
-                        }
-                        return const Text('');
-                      }))
-                    ],
+                  body: Consumer<FeesProvider>(
+                    builder: (context, snap, child) => TabBarView(
+                      physics: const NeverScrollableScrollPhysics(),
+                      children: [
+                        snap.isLocked == true
+                            ? const NotAvailable()
+                            : const FeePayInstallment(),
+                        snap.isLocked == true
+                            ? const NotAvailable()
+                            : snap.allowPartialPayment == true
+                                ? FeePartialPayment()
+                                : const Text('')
+                      ],
+                    ),
                   )),
             ),
+    );
+  }
+}
+
+class NotAvailable extends StatelessWidget {
+  const NotAvailable({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(
+      body: Center(
+        child: Text(
+          "This facility is not available",
+          style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: UIGuide.light_Purple),
+          textAlign: TextAlign.center,
+        ),
+      ),
     );
   }
 }

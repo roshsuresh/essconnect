@@ -208,7 +208,7 @@ class _StaffHomeScreenState extends State<StaffHomeScreen> {
                                       ),
                                       kheight10,
                                       const Text(
-                                        'Child Login',
+                                        'Student Login',
                                         style: TextStyle(
                                             fontWeight: FontWeight.w400,
                                             fontSize: 11,
@@ -966,7 +966,7 @@ class _StaffHomeScreenState extends State<StaffHomeScreen> {
                                                       image: DecorationImage(
                                                         opacity: 20,
                                                         image: AssetImage(
-                                                          'assets/01communicationto guardian.png',
+                                                          'assets/01communication to staff.png',
                                                         ),
                                                       ),
                                                     ),

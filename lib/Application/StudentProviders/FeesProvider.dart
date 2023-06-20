@@ -33,6 +33,7 @@ class FeesProvider with ChangeNotifier {
   String? paymentGatewayId;
   String? readableOrderId;
   int? orderId;
+  bool? isLocked;
 
   Future<Object> feesData() async {
     setLoading(true);
@@ -53,6 +54,8 @@ class FeesProvider with ChangeNotifier {
         print("Fee Response..........");
 
         Map<String, dynamic> data = await json.decode(response.body);
+        FeeInitialModel inita = FeeInitialModel.fromJson(data);
+        isLocked = inita.isLocked;
         Map<String, dynamic> feeinitial =
             await data['onlineFeePaymentStudentDetails'];
         Map<String, dynamic> feedata = await feeinitial['feeOrder'];
