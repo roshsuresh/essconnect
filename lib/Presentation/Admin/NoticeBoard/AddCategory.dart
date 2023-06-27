@@ -140,7 +140,7 @@ class _AddCategoryState extends State<AddCategory> {
                                 bottom: 80, left: 30, right: 30),
                             behavior: SnackBarBehavior.floating,
                             content: Text(
-                              'Enter mandatory fileds...',
+                              'Enter mandatory fields...',
                               textAlign: TextAlign.center,
                             ),
                           ));

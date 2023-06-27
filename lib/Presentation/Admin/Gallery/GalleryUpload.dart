@@ -641,10 +641,10 @@ class _AdminGalleryUploadState extends State<AdminGalleryUpload> {
                               toggleVal.toString(),
                               value.imageIDList);
 
-                      titleController.clear();
-                      courseData.clear();
-                      divisionData.clear();
-                      value.imageIDList.clear();
+                      // titleController.clear();
+                      // courseData.clear();
+                      // divisionData.clear();
+                      // value.imageIDList.clear();
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                         content: Text(
@@ -672,9 +672,9 @@ class _AdminGalleryUploadState extends State<AdminGalleryUpload> {
                               toggleVal.toString(),
                               value.imageIDList);
 
-                      titleController.clear();
-                      subjectData.clear();
-                      value.imageIDList.clear();
+                      //  titleController.clear();
+                      // subjectData.clear();
+                      // value.imageIDList.clear();
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                         content: Text(
@@ -701,8 +701,8 @@ class _AdminGalleryUploadState extends State<AdminGalleryUpload> {
                               toggleVal.toString(),
                               value.imageIDList);
 
-                      titleController.clear();
-                      value.imageIDList.clear();
+                      // titleController.clear();
+                      //  value.imageIDList.clear();
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                         content: Text(

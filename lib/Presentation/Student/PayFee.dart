@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 import 'dart:isolate';
 import 'dart:math';
@@ -102,14 +101,8 @@ class PayFee extends StatelessWidget {
                     builder: (context, snap, child) => TabBarView(
                       physics: const NeverScrollableScrollPhysics(),
                       children: [
-                        snap.isLocked == true
-                            ? const NotAvailable()
-                            : const FeePayInstallment(),
-                        snap.isLocked == true
-                            ? const NotAvailable()
-                            : snap.allowPartialPayment == true
-                                ? FeePartialPayment()
-                                : const Text('')
+                        const FeePayInstallment(),
+                        FeePartialPayment()
                       ],
                     ),
                   )),
@@ -181,550 +174,596 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
           Consumer<FeesProvider>(
             builder: (context, value, child) => value.loading
                 ? const ProgressBarFee()
-                : ListView(
-                    physics: const BouncingScrollPhysics(),
-                    children: [
-                      kheight20,
-                      value.feeList.isEmpty
-                          ? const SizedBox(
-                              height: 0,
-                              width: 0,
-                            )
-                          : Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 20, bottom: 10),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: const [
-                                      Text(
-                                        'Installment',
+                : value.isLocked == true
+                    ? const NotAvailable()
+                    : ListView(
+                        physics: const BouncingScrollPhysics(),
+                        children: [
+                          kheight20,
+                          value.feeList.isEmpty
+                              ? const SizedBox(
+                                  height: 0,
+                                  width: 0,
+                                )
+                              : Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 20, bottom: 10),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: const [
+                                          Text(
+                                            'Installment',
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w900,
+                                                color: UIGuide.light_Purple),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Scrollbar(
+                                      controller: _controller,
+                                      thumbVisibility: true,
+                                      thickness: 10,
+                                      radius: const Radius.circular(20),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 20.0, right: 8),
+                                        child: LimitedBox(
+                                            maxHeight: 160,
+                                            child: Consumer<FeesProvider>(
+                                              builder: (context, value,
+                                                      child) =>
+                                                  ListView.builder(
+                                                      physics:
+                                                          const BouncingScrollPhysics(),
+                                                      shrinkWrap: true,
+                                                      controller: _controller,
+                                                      itemCount:
+                                                          value.feeList.isEmpty
+                                                              ? 0
+                                                              : value.feeList
+                                                                  .length,
+                                                      itemBuilder:
+                                                          (BuildContext context,
+                                                              int index) {
+                                                        print(value
+                                                            .feeList.length);
+                                                        return CheckboxListTile(
+                                                          activeColor:
+                                                              const Color
+                                                                      .fromARGB(
+                                                                  255,
+                                                                  243,
+                                                                  243,
+                                                                  243),
+                                                          checkColor: UIGuide
+                                                              .light_Purple,
+                                                          selectedTileColor:
+                                                              UIGuide
+                                                                  .light_Purple,
+                                                          value: value
+                                                              .selecteCategorys
+                                                              .contains(value
+                                                                      .feeList[
+                                                                          index]
+                                                                      .installmentName ??
+                                                                  '--'),
+                                                          onChanged: (bool?
+                                                              selected) async {
+                                                            value.onFeeSelected(
+                                                                selected!,
+                                                                value
+                                                                    .feeList[
+                                                                        index]
+                                                                    .installmentName,
+                                                                index,
+                                                                value
+                                                                    .feeList[
+                                                                        index]
+                                                                    .netDue);
+                                                          },
+                                                          title: Text(
+                                                            value.feeList[index]
+                                                                        .netDue ==
+                                                                    null
+                                                                ? '--'
+                                                                : value
+                                                                    .feeList[
+                                                                        index]
+                                                                    .netDue
+                                                                    .toString(),
+                                                            textAlign:
+                                                                TextAlign.end,
+                                                          ),
+                                                          secondary: Text(
+                                                            value.feeList[index]
+                                                                    .installmentName ??
+                                                                '--',
+                                                          ),
+                                                        );
+                                                      }),
+                                            )),
+                                      ),
+                                    ),
+                                    Consumer<FeesProvider>(
+                                      builder: (context, value, child) =>
+                                          Center(
+                                        child: Text(
+                                          'TotalFee:  ${value.totalFees}',
+                                          style: const TextStyle(fontSize: 12),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                          Consumer<FeesProvider>(
+                            builder: (context, bus, child) {
+                              if (bus.busFeeList.isNotEmpty) {
+                                return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    const Padding(
+                                      padding: EdgeInsets.only(
+                                          left: 20, bottom: 10, top: 10),
+                                      child: Text(
+                                        'Bus Fee',
                                         style: TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.w900,
                                             color: UIGuide.light_Purple),
                                       ),
-                                    ],
-                                  ),
-                                ),
-                                Scrollbar(
-                                  controller: _controller,
-                                  thumbVisibility: true,
-                                  thickness: 10,
-                                  radius: const Radius.circular(20),
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 20.0, right: 8),
-                                    child: LimitedBox(
-                                        maxHeight: 160,
-                                        child: Consumer<FeesProvider>(
-                                          builder: (context, value, child) =>
-                                              ListView.builder(
-                                                  physics:
-                                                      const BouncingScrollPhysics(),
-                                                  shrinkWrap: true,
-                                                  controller: _controller,
-                                                  itemCount: value
-                                                          .feeList.isEmpty
-                                                      ? 0
-                                                      : value.feeList.length,
-                                                  itemBuilder:
-                                                      (BuildContext context,
-                                                          int index) {
-                                                    print(value.feeList.length);
-                                                    return CheckboxListTile(
-                                                      activeColor:
-                                                          const Color.fromARGB(
-                                                              255,
-                                                              243,
-                                                              243,
-                                                              243),
-                                                      checkColor:
-                                                          UIGuide.light_Purple,
-                                                      selectedTileColor:
-                                                          UIGuide.light_Purple,
-                                                      value: value
-                                                          .selecteCategorys
-                                                          .contains(value
-                                                                  .feeList[
+                                    ),
+                                    Scrollbar(
+                                      controller: _controller2,
+                                      thumbVisibility: true,
+                                      thickness: 10,
+                                      radius: const Radius.circular(20),
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 20, right: 8),
+                                        child: LimitedBox(
+                                            maxHeight: 160,
+                                            child: Consumer<FeesProvider>(
+                                              builder: (context, value,
+                                                      child) =>
+                                                  ListView.builder(
+                                                      physics:
+                                                          const BouncingScrollPhysics(),
+                                                      shrinkWrap: true,
+                                                      controller: _controller2,
+                                                      itemCount: value
+                                                              .busFeeList
+                                                              .isEmpty
+                                                          ? 0
+                                                          : value.busFeeList
+                                                              .length,
+                                                      itemBuilder:
+                                                          (BuildContext context,
+                                                              int index) {
+                                                        return CheckboxListTile(
+                                                          activeColor:
+                                                              const Color
+                                                                      .fromARGB(
+                                                                  255,
+                                                                  238,
+                                                                  236,
+                                                                  236),
+                                                          checkColor: UIGuide
+                                                              .light_Purple,
+                                                          selectedTileColor:
+                                                              UIGuide
+                                                                  .light_Purple,
+                                                          value: value
+                                                              .selectedBusFee
+                                                              .contains(value
+                                                                  .busFeeList[
+                                                                      index]
+                                                                  .installmentName),
+                                                          onChanged:
+                                                              (bool? selected) {
+                                                            value.onBusSelected(
+                                                                selected!,
+                                                                value
+                                                                    .busFeeList[
+                                                                        index]
+                                                                    .installmentName,
+                                                                index,
+                                                                value
+                                                                    .busFeeList[
+                                                                        index]
+                                                                    .netDue);
+
+                                                            print(selected);
+                                                          },
+                                                          title: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .only(
+                                                                    left: 75),
+                                                            child: Text(
+                                                              value
+                                                                  .busFeeList[
+                                                                      index]
+                                                                  .netDue
+                                                                  .toString(),
+                                                              textAlign:
+                                                                  TextAlign.end,
+                                                            ),
+                                                          ),
+                                                          secondary: Text(value
+                                                                  .busFeeList[
                                                                       index]
                                                                   .installmentName ??
                                                               '--'),
-                                                      onChanged: (bool?
-                                                          selected) async {
-                                                        value.onFeeSelected(
-                                                            selected!,
-                                                            value.feeList[index]
-                                                                .installmentName,
-                                                            index,
-                                                            value.feeList[index]
-                                                                .netDue);
-                                                      },
-                                                      title: Text(
-                                                        value.feeList[index]
-                                                                    .netDue ==
-                                                                null
-                                                            ? '--'
-                                                            : value
-                                                                .feeList[index]
-                                                                .netDue
-                                                                .toString(),
-                                                        textAlign:
-                                                            TextAlign.end,
-                                                      ),
-                                                      secondary: Text(
-                                                        value.feeList[index]
-                                                                .installmentName ??
-                                                            '--',
-                                                      ),
-                                                    );
-                                                  }),
-                                        )),
-                                  ),
-                                ),
-                                Consumer<FeesProvider>(
-                                  builder: (context, value, child) => Center(
-                                    child: Text(
-                                      'TotalFee:  ${value.totalFees}',
-                                      style: const TextStyle(fontSize: 12),
+                                                        );
+                                                      }),
+                                            )),
+                                      ),
                                     ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                      Consumer<FeesProvider>(
-                        builder: (context, bus, child) {
-                          if (bus.busFeeList.isNotEmpty) {
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                const Padding(
-                                  padding: EdgeInsets.only(
-                                      left: 20, bottom: 10, top: 10),
-                                  child: Text(
-                                    'Bus Fee',
-                                    style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w900,
-                                        color: UIGuide.light_Purple),
-                                  ),
-                                ),
-                                Scrollbar(
-                                  controller: _controller2,
-                                  thumbVisibility: true,
-                                  thickness: 10,
-                                  radius: const Radius.circular(20),
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 20, right: 8),
-                                    child: LimitedBox(
-                                        maxHeight: 160,
-                                        child: Consumer<FeesProvider>(
-                                          builder: (context, value, child) =>
-                                              ListView.builder(
-                                                  physics:
-                                                      const BouncingScrollPhysics(),
-                                                  shrinkWrap: true,
-                                                  controller: _controller2,
-                                                  itemCount: value
-                                                          .busFeeList.isEmpty
-                                                      ? 0
-                                                      : value.busFeeList.length,
-                                                  itemBuilder:
-                                                      (BuildContext context,
-                                                          int index) {
-                                                    return CheckboxListTile(
-                                                      activeColor:
-                                                          const Color.fromARGB(
-                                                              255,
-                                                              238,
-                                                              236,
-                                                              236),
-                                                      checkColor:
-                                                          UIGuide.light_Purple,
-                                                      selectedTileColor:
-                                                          UIGuide.light_Purple,
-                                                      value: value
-                                                          .selectedBusFee
-                                                          .contains(value
-                                                              .busFeeList[index]
-                                                              .installmentName),
-                                                      onChanged:
-                                                          (bool? selected) {
-                                                        value.onBusSelected(
-                                                            selected!,
-                                                            value
-                                                                .busFeeList[
-                                                                    index]
-                                                                .installmentName,
-                                                            index,
-                                                            value
-                                                                .busFeeList[
-                                                                    index]
-                                                                .netDue);
-
-                                                        print(selected);
-                                                      },
-                                                      title: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .only(left: 75),
-                                                        child: Text(
-                                                          value
-                                                              .busFeeList[index]
-                                                              .netDue
-                                                              .toString(),
-                                                          textAlign:
-                                                              TextAlign.end,
-                                                        ),
-                                                      ),
-                                                      secondary: Text(value
-                                                              .busFeeList[index]
-                                                              .installmentName ??
-                                                          '--'),
-                                                    );
-                                                  }),
-                                        )),
-                                  ),
-                                ),
-                                Consumer<FeesProvider>(
-                                  builder: (context, value, child) => Center(
-                                    child: Text(
-                                      'TotalBus fee :  ${value.totalBusFee}',
-                                      style: const TextStyle(fontSize: 12),
+                                    Consumer<FeesProvider>(
+                                      builder: (context, value, child) =>
+                                          Center(
+                                        child: Text(
+                                          'TotalBus fee :  ${value.totalBusFee}',
+                                          style: const TextStyle(fontSize: 12),
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                ),
-                              ],
-                            );
-                          } else {
-                            return Container(
-                              height: 0,
-                              width: 0,
-                            );
-                          }
-                        },
-                      ),
-                      kheight20,
-                      kheight20,
-                      Center(
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text(
-                              'Total : ',
-                              style: TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.w700),
-                            ),
-                            // totalFee()
-                            Consumer<FeesProvider>(
-                              builder: (context, value, child) =>
-                                  Text(value.total.toString()),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 40,
-                      ),
-                      GestureDetector(
-                        child: const Text(
-                          'Last Transaction Details',
-                          style: TextStyle(
-                            color: UIGuide.light_Purple,
-                            decoration: TextDecoration.underline,
-                            decorationStyle: TextDecorationStyle.dashed,
+                                  ],
+                                );
+                              } else {
+                                return Container(
+                                  height: 0,
+                                  width: 0,
+                                );
+                              }
+                            },
                           ),
-                          textAlign: TextAlign.center,
-                        ),
-                        onTap: () async {
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return Dialog(
-                                  child: Consumer<FeesProvider>(
-                                      builder: (context, provider, child) {
-                                    String date =
-                                        provider.lastTransactionStartDate ??
-                                            '--';
-                                    var updatedDate =
-                                        DateFormat('yyyy-MM-dd').parse(date);
-                                    String newDate = updatedDate.toString();
-                                    String finalDate =
-                                        newDate.replaceRange(10, 23, '');
-                                    return SingleChildScrollView(
-                                      scrollDirection: Axis.vertical,
-                                      child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          kheight10,
-                                          const Padding(
-                                            padding: EdgeInsets.all(8.0),
-                                            child: Text(
-                                              'Your last transaction  details',
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  color: UIGuide.light_Purple),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Row(
-                                              children: [
-                                                const Text(
-                                                  'Transaction Date: ',
-                                                ),
-                                                Flexible(
-                                                  child: RichText(
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    strutStyle:
-                                                        const StrutStyle(),
-                                                    maxLines: 3,
-                                                    text: TextSpan(
-                                                        style: const TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            color: UIGuide
-                                                                .light_Purple),
-                                                        text: finalDate),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Row(
-                                              children: [
-                                                const Text(
-                                                  'Transaction amount: ',
-                                                ),
-                                                Text(
-                                                  provider.lastTransactionAmount ==
-                                                          null
-                                                      ? ''
-                                                      : provider
-                                                          .lastTransactionAmount
-                                                          .toString(),
-                                                  style: const TextStyle(
+                          kheight20,
+                          kheight20,
+                          Center(
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text(
+                                  'Total : ',
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                                // totalFee()
+                                Consumer<FeesProvider>(
+                                  builder: (context, value, child) =>
+                                      Text(value.total.toString()),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 40,
+                          ),
+                          GestureDetector(
+                            child: const Text(
+                              'Last Transaction Details',
+                              style: TextStyle(
+                                color: UIGuide.light_Purple,
+                                decoration: TextDecoration.underline,
+                                decorationStyle: TextDecorationStyle.dashed,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            onTap: () async {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return Dialog(
+                                      child: Consumer<FeesProvider>(
+                                          builder: (context, provider, child) {
+                                        String date =
+                                            provider.lastTransactionStartDate ??
+                                                '--';
+                                        var updatedDate =
+                                            DateFormat('yyyy-MM-dd')
+                                                .parse(date);
+                                        String newDate = updatedDate.toString();
+                                        String finalDate =
+                                            newDate.replaceRange(10, 23, '');
+                                        return SingleChildScrollView(
+                                          scrollDirection: Axis.vertical,
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              kheight10,
+                                              const Padding(
+                                                padding: EdgeInsets.all(8.0),
+                                                child: Text(
+                                                  'Your last transaction  details',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
                                                       fontWeight:
                                                           FontWeight.bold,
                                                       color:
                                                           UIGuide.light_Purple),
                                                 ),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Row(
-                                              children: [
-                                                const Text(
-                                                  'Transaction Status: ',
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Row(
+                                                  children: [
+                                                    const Text(
+                                                      'Transaction Date: ',
+                                                    ),
+                                                    Flexible(
+                                                      child: RichText(
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        strutStyle:
+                                                            const StrutStyle(),
+                                                        maxLines: 3,
+                                                        text: TextSpan(
+                                                            style: const TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                color: UIGuide
+                                                                    .light_Purple),
+                                                            text: finalDate),
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
-                                                Consumer<FeesProvider>(
-                                                  builder:
-                                                      (context, value, child) {
-                                                    String stats =
-                                                        provider.lastOrderStatus ==
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Row(
+                                                  children: [
+                                                    const Text(
+                                                      'Transaction amount: ',
+                                                    ),
+                                                    Text(
+                                                      provider.lastTransactionAmount ==
+                                                              null
+                                                          ? ''
+                                                          : provider
+                                                              .lastTransactionAmount
+                                                              .toString(),
+                                                      style: const TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: UIGuide
+                                                              .light_Purple),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Row(
+                                                  children: [
+                                                    const Text(
+                                                      'Transaction Status: ',
+                                                    ),
+                                                    Consumer<FeesProvider>(
+                                                      builder: (context, value,
+                                                          child) {
+                                                        String stats = provider
+                                                                    .lastOrderStatus ==
                                                                 null
                                                             ? ''
                                                             : provider
                                                                 .lastOrderStatus
                                                                 .toString();
-                                                    if (stats == "Success") {
-                                                      return const Text(
-                                                        "Success",
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            color:
-                                                                Colors.green),
-                                                      );
-                                                    } else if (stats ==
-                                                        "Failed") {
-                                                      return const Text(
-                                                        "Failed",
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            color: Colors.red),
-                                                      );
-                                                    } else if (stats ==
-                                                        "Cancelled") {
-                                                      return const Text(
-                                                        "Cancelled",
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            color:
-                                                                Color.fromARGB(
-                                                                    255,
-                                                                    192,
-                                                                    56,
-                                                                    7)),
-                                                      );
-                                                    } else if (stats ==
-                                                        "Processing") {
-                                                      return const Text(
-                                                        "Processing",
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            color:
-                                                                Colors.orange),
-                                                      );
-                                                    } else if (stats ==
-                                                        "Pending") {
-                                                      return const Text(
-                                                        "Pending",
-                                                        style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            color:
-                                                                Colors.orange),
-                                                      );
-                                                    } else {
-                                                      return const Text(
-                                                        "--",
-                                                        style: TextStyle(
+                                                        if (stats ==
+                                                            "Success") {
+                                                          return const Text(
+                                                            "Success",
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                color: Colors
+                                                                    .green),
+                                                          );
+                                                        } else if (stats ==
+                                                            "Failed") {
+                                                          return const Text(
+                                                            "Failed",
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                color:
+                                                                    Colors.red),
+                                                          );
+                                                        } else if (stats ==
+                                                            "Cancelled") {
+                                                          return const Text(
+                                                            "Cancelled",
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                color: Color
+                                                                    .fromARGB(
+                                                                        255,
+                                                                        192,
+                                                                        56,
+                                                                        7)),
+                                                          );
+                                                        } else if (stats ==
+                                                            "Processing") {
+                                                          return const Text(
+                                                            "Processing",
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                color: Colors
+                                                                    .orange),
+                                                          );
+                                                        } else if (stats ==
+                                                            "Pending") {
+                                                          return const Text(
+                                                            "Pending",
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                color: Colors
+                                                                    .orange),
+                                                          );
+                                                        } else {
+                                                          return const Text(
+                                                            "--",
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                color: UIGuide
+                                                                    .light_Purple),
+                                                          );
+                                                        }
+                                                      },
+                                                      child: Text(
+                                                        provider.lastOrderStatus ==
+                                                                null
+                                                            ? ''
+                                                            : provider
+                                                                .lastOrderStatus
+                                                                .toString(),
+                                                        style: const TextStyle(
                                                             fontWeight:
                                                                 FontWeight.bold,
                                                             color: UIGuide
                                                                 .light_Purple),
-                                                      );
-                                                    }
-                                                  },
-                                                  child: Text(
-                                                    provider.lastOrderStatus ==
-                                                            null
-                                                        ? ''
-                                                        : provider
-                                                            .lastOrderStatus
-                                                            .toString(),
-                                                    style: const TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: UIGuide
-                                                            .light_Purple),
-                                                  ),
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
-                                              ],
-                                            ),
-                                          ),
-                                          Consumer<FeesProvider>(
-                                            builder: (context, value, child) {
-                                              String status =
-                                                  provider.lastOrderStatus ==
+                                              ),
+                                              Consumer<FeesProvider>(
+                                                builder:
+                                                    (context, value, child) {
+                                                  String status = provider
+                                                              .lastOrderStatus ==
                                                           null
                                                       ? ''
                                                       : provider.lastOrderStatus
                                                           .toString();
-                                              if (status == 'Success' ||
-                                                  status == 'Failed') {
-                                                return Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: Row(
-                                                    children: [
-                                                      const Text(
-                                                        'Download receipt: ',
-                                                      ),
-                                                      GestureDetector(
-                                                        onTap: () async {
-                                                          String orderID =
-                                                              await provider
-                                                                          .orderId ==
-                                                                      null
-                                                                  ? ''
-                                                                  : provider
-                                                                      .orderId
-                                                                      .toString();
+                                                  if (status == 'Success' ||
+                                                      status == 'Failed') {
+                                                    return Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: Row(
+                                                        children: [
+                                                          const Text(
+                                                            'Download receipt: ',
+                                                          ),
+                                                          GestureDetector(
+                                                            onTap: () async {
+                                                              String orderID =
+                                                                  await provider
+                                                                              .orderId ==
+                                                                          null
+                                                                      ? ''
+                                                                      : provider
+                                                                          .orderId
+                                                                          .toString();
 
-                                                          await Provider.of<
-                                                                      FeesProvider>(
+                                                              await Provider.of<
+                                                                          FeesProvider>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .pdfDownload(
+                                                                      orderID);
+                                                              String
+                                                                  extenstion =
+                                                                  await provider
+                                                                          .extension ??
+                                                                      '--';
+
+                                                              SchedulerBinding
+                                                                  .instance
+                                                                  .addPostFrameCallback(
+                                                                      (_) {
+                                                                Navigator
+                                                                    .pushReplacement(
                                                                   context,
-                                                                  listen: false)
-                                                              .pdfDownload(
-                                                                  orderID);
-                                                          String extenstion =
-                                                              await provider
-                                                                      .extension ??
-                                                                  '--';
-
-                                                          SchedulerBinding
-                                                              .instance
-                                                              .addPostFrameCallback(
-                                                                  (_) {
-                                                            Navigator
-                                                                .pushReplacement(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                  builder:
-                                                                      (context) =>
-                                                                          PdfDownload()),
-                                                            );
-                                                          });
-                                                        },
-                                                        child: const Icon(
-                                                            Icons.download,
-                                                            color: UIGuide
-                                                                .light_Purple),
-                                                      )
-                                                    ],
-                                                  ),
-                                                );
-                                              } else {
-                                                return Container(
-                                                  height: 0,
-                                                  width: 0,
-                                                );
-                                              }
-                                            },
+                                                                  MaterialPageRoute(
+                                                                      builder:
+                                                                          (context) =>
+                                                                              PdfDownload()),
+                                                                );
+                                                              });
+                                                            },
+                                                            child: const Icon(
+                                                                Icons.download,
+                                                                color: UIGuide
+                                                                    .light_Purple),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    );
+                                                  } else {
+                                                    return Container(
+                                                      height: 0,
+                                                      width: 0,
+                                                    );
+                                                  }
+                                                },
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.end,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.end,
+                                                  children: [
+                                                    kWidth,
+                                                    MaterialButton(
+                                                      height: 30,
+                                                      onPressed: () async {
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: const Text(
+                                                        'OK',
+                                                        style: TextStyle(
+                                                            color:
+                                                                UIGuide.WHITE),
+                                                      ),
+                                                      color:
+                                                          UIGuide.light_Purple,
+                                                    )
+                                                  ],
+                                                ),
+                                              )
+                                            ],
                                           ),
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.end,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.end,
-                                              children: [
-                                                kWidth,
-                                                MaterialButton(
-                                                  height: 30,
-                                                  onPressed: () async {
-                                                    Navigator.pop(context);
-                                                  },
-                                                  child: const Text(
-                                                    'OK',
-                                                    style: TextStyle(
-                                                        color: UIGuide.WHITE),
-                                                  ),
-                                                  color: UIGuide.light_Purple,
-                                                )
-                                              ],
-                                            ),
-                                          )
-                                        ],
-                                      ),
+                                        );
+                                      }),
                                     );
-                                  }),
-                                );
-                              });
-                        },
+                                  });
+                            },
+                          ),
+                          const SizedBox(
+                            height: 100,
+                          ),
+                        ],
                       ),
-                      const SizedBox(
-                        height: 100,
-                      ),
-                    ],
-                  ),
           ),
           Positioned(
             bottom: 2,

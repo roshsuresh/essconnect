@@ -760,71 +760,136 @@ class _StaffHomeScreenState extends State<StaffHomeScreen> {
                                                   ),
                                                 ),
                                               ),
-                                        GestureDetector(
-                                          onTap: () async {
-                                            await Navigator.push(
-                                                context,
-                                                PageTransition(
-                                                  type: PageTransitionType
-                                                      .rightToLeft,
-                                                  child: ToolMarkEntry(),
-                                                  duration: Duration(
-                                                      milliseconds: 300),
-                                                  // childCurrent:this
-                                                ));
-                                            // await Navigator.push(
-                                            //   context,
-                                            //   MaterialPageRoute(
-                                            //       builder: (context) =>
-                                            //           ToolMarkEntry()),
-                                            // );
-                                          },
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 10, right: 10),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                Card(
-                                                  elevation: 10,
-                                                  color: Colors.white,
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            12.0),
-                                                  ),
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: Container(
-                                                      height: 38,
-                                                      width: 38,
-                                                      decoration:
-                                                          const BoxDecoration(
-                                                        image: DecorationImage(
-                                                          image: AssetImage(
-                                                            'assets/Tabulation.png',
+                                        module.tabulation == true
+                                            ? GestureDetector(
+                                                onTap: () async {
+                                                  await Navigator.push(
+                                                      context,
+                                                      PageTransition(
+                                                        type: PageTransitionType
+                                                            .rightToLeft,
+                                                        child: ToolMarkEntry(),
+                                                        duration: Duration(
+                                                            milliseconds: 300),
+                                                        // childCurrent:this
+                                                      ));
+                                                  // await Navigator.push(
+                                                  //   context,
+                                                  //   MaterialPageRoute(
+                                                  //       builder: (context) =>
+                                                  //           ToolMarkEntry()),
+                                                  // );
+                                                },
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 10, right: 10),
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
+                                                    children: [
+                                                      Card(
+                                                        elevation: 10,
+                                                        color: Colors.white,
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      12.0),
+                                                        ),
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                          child: Container(
+                                                            height: 38,
+                                                            width: 38,
+                                                            decoration:
+                                                                const BoxDecoration(
+                                                              image:
+                                                                  DecorationImage(
+                                                                image:
+                                                                    AssetImage(
+                                                                  'assets/Tabulation.png',
+                                                                ),
+                                                              ),
+                                                            ),
                                                           ),
                                                         ),
                                                       ),
-                                                    ),
+                                                      kheight10,
+                                                      const Text(
+                                                        'Tool Mark Entry',
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.w400,
+                                                            fontSize: 11,
+                                                            color:
+                                                                Colors.black),
+                                                      )
+                                                    ],
                                                   ),
                                                 ),
-                                                kheight10,
-                                                const Text(
-                                                  'Tool Mark Entry',
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      fontSize: 11,
-                                                      color: Colors.black),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        ),
+                                              )
+                                            : GestureDetector(
+                                                onTap: () async {
+                                                  _noAcess();
+                                                },
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 10, right: 10),
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
+                                                    children: [
+                                                      Card(
+                                                        elevation: 10,
+                                                        color: Colors.white,
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      12.0),
+                                                        ),
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                          child: Container(
+                                                            height: 38,
+                                                            width: 38,
+                                                            decoration:
+                                                                const BoxDecoration(
+                                                              image:
+                                                                  DecorationImage(
+                                                                image:
+                                                                    AssetImage(
+                                                                  'assets/Tabulation.png',
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      kheight10,
+                                                      const Text(
+                                                        'Tool Mark Entry',
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.w400,
+                                                            fontSize: 11,
+                                                            color:
+                                                                Colors.black),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
 
                                         // GestureDetector(
                                         //   onTap: () {
@@ -1287,6 +1352,7 @@ class _StaffHomeScreenState extends State<StaffHomeScreen> {
                               ],
                             ),
                           ),
+                          kheight20,
                           Consumer<ModuleProviders>(
                             builder: (context, module, _) => Row(
                               crossAxisAlignment: CrossAxisAlignment.start,

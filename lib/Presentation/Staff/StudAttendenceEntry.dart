@@ -404,7 +404,7 @@ class _AttendenceEntryState extends State<AttendenceEntry> {
                                     bottom: 80, left: 30, right: 30),
                                 behavior: SnackBarBehavior.floating,
                                 content: Text(
-                                  "Select mandatory fileds...!",
+                                  "Select mandatory fields...!",
                                   textAlign: TextAlign.center,
                                 ),
                               ));
@@ -973,7 +973,7 @@ class _AttendenceEntryState extends State<AttendenceEntry> {
                                   bottom: 80, left: 30, right: 30),
                               behavior: SnackBarBehavior.floating,
                               content: Text(
-                                "Select mandatory fileds...!",
+                                "Select mandatory fields...!",
                                 textAlign: TextAlign.center,
                               ),
                             ));

@@ -5,7 +5,6 @@ import 'package:essconnect/Constants.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
@@ -29,7 +28,7 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
   double? result;
 
   List<List<List<int>>> dataList = [];
-
+  var date;
   double? maxscore;
   @override
   void initState() {
@@ -1048,7 +1047,7 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                                           Radius.circular(10.0))),
                                   color: UIGuide.light_Purple,
                                   onPressed: (() async {
-                                    var date = await DateFormat('dd/MMM/yyyy')
+                                    date = await DateFormat('dd/MMM/yyyy')
                                         .format(DateTime.now());
                                     print(DateFormat('dd/MMM/yyyy')
                                         .format(DateTime.now()));
@@ -1091,7 +1090,7 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                                             bottom: 80, left: 30, right: 30),
                                         behavior: SnackBarBehavior.floating,
                                         content: Text(
-                                          "Select Mandatory Fields",
+                                          "Select Mandatory fields",
                                           textAlign: TextAlign.center,
                                         ),
                                       ));
@@ -2474,7 +2473,7 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                               EdgeInsets.only(bottom: 80, left: 30, right: 30),
                           behavior: SnackBarBehavior.floating,
                           content: Text(
-                            "Select mandatory fileds...!",
+                            "Select mandatory fields...!",
                             textAlign: TextAlign.center,
                           ),
                         ));
@@ -2505,6 +2504,8 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                             ? spinkitLoader()
                             : await value.markEntrySave(context,
                                 value.toollListView, initialList, criteria);
+                        await value.getMarkEntryView(course, date, division,
+                            exam, part, subject, optional);
                       }
                     },
                     color: UIGuide.light_Purple,
@@ -2695,7 +2696,7 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                                                 behavior:
                                                     SnackBarBehavior.floating,
                                                 content: Text(
-                                                  "Select mandatory fileds...!",
+                                                  "Select mandatory fields...!",
                                                   textAlign: TextAlign.center,
                                                 ),
                                               ));
@@ -2949,7 +2950,7 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                                                 right: 30),
                                             behavior: SnackBarBehavior.floating,
                                             content: Text(
-                                              "Select mandatory fileds...!",
+                                              "Select mandatory fields...!",
                                               textAlign: TextAlign.center,
                                             ),
                                           ));

@@ -662,7 +662,7 @@ class Text_Matter_NotificationAdmin extends StatelessWidget {
               child: LimitedBox(
                 maxHeight: 150,
                 child: TextFormField(
-                  inputFormatters: [LengthLimitingTextInputFormatter(500)],
+                  inputFormatters: [LengthLimitingTextInputFormatter(1000)],
                   controller: matterController,
                   minLines: 1,
                   maxLines: 15,

@@ -547,7 +547,7 @@ class _ExamTTUploadState extends State<ExamTTUpload> {
                               dialogType: DialogType.warning,
                               animType: AnimType.rightSlide,
                               headerAnimationLoop: false,
-                              desc: 'Enter mandatory fileds',
+                              desc: 'Enter mandatory fields',
                               btnOkOnPress: () {},
                               btnOkIcon: Icons.cancel,
                               btnOkColor: Colors.red)

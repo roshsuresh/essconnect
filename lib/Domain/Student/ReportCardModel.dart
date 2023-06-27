@@ -1,23 +1,26 @@
 class ReportModel {
   List<ReportCardModel>? reportCardList;
+  bool? isLocked;
 
-  ReportModel({this.reportCardList});
+  ReportModel({this.reportCardList, this.isLocked});
 
   ReportModel.fromJson(Map<String, dynamic> json) {
     if (json['reportCardList'] != null) {
-      reportCardList = [];
+      reportCardList = <ReportCardModel>[];
       json['reportCardList'].forEach((v) {
-        reportCardList!.add(ReportCardModel.fromJson(v));
+        reportCardList!.add(new ReportCardModel.fromJson(v));
       });
     }
+    isLocked = json['isLocked'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = new Map<String, dynamic>();
     if (this.reportCardList != null) {
       data['reportCardList'] =
           this.reportCardList!.map((v) => v.toJson()).toList();
     }
+    data['isLocked'] = this.isLocked;
     return data;
   }
 }

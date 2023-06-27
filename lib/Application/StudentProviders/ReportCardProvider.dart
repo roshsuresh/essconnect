@@ -28,6 +28,7 @@ class ReportCardProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  bool? isLocked;
   Future getReportCard() async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoading(true);
@@ -43,6 +44,8 @@ class ReportCardProvider with ChangeNotifier {
     try {
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
+        ReportModel repo = ReportModel.fromJson(data);
+        isLocked = repo.isLocked;
         // reportResponse = data['reportCardList'];
         List<ReportCardModel> templist = List<ReportCardModel>.from(
             data['reportCardList'].map((x) => ReportCardModel.fromJson(x)));

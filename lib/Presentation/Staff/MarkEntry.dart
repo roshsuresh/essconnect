@@ -8873,7 +8873,7 @@ class _MarkEntryState extends State<MarkEntry> {
                                 bottom: 80, left: 30, right: 30),
                             behavior: SnackBarBehavior.floating,
                             content: Text(
-                              "Select mandatory fileds...!",
+                              "Select mandatory fields...!",
                               textAlign: TextAlign.center,
                             ),
                           ));
@@ -9067,7 +9067,7 @@ class _MarkEntryState extends State<MarkEntry> {
                                                   behavior:
                                                       SnackBarBehavior.floating,
                                                   content: Text(
-                                                    "Select mandatory fileds...!",
+                                                    "Select mandatory fields...!",
                                                     textAlign: TextAlign.center,
                                                   ),
                                                 ));
@@ -9279,7 +9279,7 @@ class _MarkEntryState extends State<MarkEntry> {
                                                 right: 30),
                                             behavior: SnackBarBehavior.floating,
                                             content: Text(
-                                              "Select mandatory fileds...!",
+                                              "Select mandatory fields...!",
                                               textAlign: TextAlign.center,
                                             ),
                                           ));
