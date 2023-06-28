@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:essconnect/Domain/Student/RazorPayModel.dart';
 import 'package:essconnect/Domain/Student/TrakNpayModel.dart';
 import 'package:essconnect/Domain/Student/TransactionModel.dart';
+import 'package:essconnect/Domain/Student/WorldLineModel.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -1137,6 +1138,245 @@ class FeesProvider with ChangeNotifier {
     } else {
       setLoading(false);
       print("Error in  transaction index TWO  response");
+    }
+  }
+
+//////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////               WORLDLINE         ///////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////    get data  1 index  WORLDLINE    ////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////
+
+  String? token1WL;
+  String? paymentMode1WL;
+  String? merchantId1WL;
+  String? currency1WL;
+  String? consumerId1WL;
+  String? consumerMobileNo1WL;
+  String? consumerEmailId1WL;
+  String? txnId1WL;
+  bool? enableExpressPay1WL;
+  List? items1WL;
+
+  Future getDataOneWORLDLINE(String fees, String idFee, String feeAmount,
+      String amount, String gateName) async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    setLoading(true);
+
+    final http.Response response = await http.post(
+      Uri.parse('${UIGuide.baseURL}/online-payment/world-line/get-data'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      },
+      body: jsonEncode({
+        "Description": "Online Fees Payment",
+        "TransactionType": [
+          {"name": fees, "id": idFee, "amount": feeAmount}
+        ],
+        "ReturnUrl": "",
+        "Amount": amount,
+        "PaymentGateWay": gateName
+      }),
+    );
+
+    print(json.encode({
+      "Description": "Online Fees Payment",
+      "TransactionType": [
+        {"name": fees, "id": idFee, "amount": feeAmount}
+      ],
+      "ReturnUrl": "",
+      "Amount": amount,
+      "PaymentGateWay": gateName
+    }));
+
+    try {
+      if (response.statusCode == 200) {
+        Map<String, dynamic> data = await json.decode(response.body);
+
+        print(data);
+
+        Features raz = Features.fromJson(data['features']);
+        enableExpressPay1WL = raz.enableExpressPay;
+
+        ConsumerData con = ConsumerData.fromJson(data["consumerData"]);
+        token1WL = con.token;
+        paymentMode1WL = con.paymentMode;
+        merchantId1WL = con.merchantId;
+        currency1WL = con.currency;
+        consumerId1WL = con.consumerId;
+        consumerMobileNo1WL = con.consumerMobileNo;
+        consumerEmailId1WL = con.consumerEmailId;
+        txnId1WL = con.txnId;
+
+        items2WL = await data["consumerData"]["items"];
+        print(items2WL);
+
+        notifyListeners();
+      } else {
+        setLoading(false);
+        print("Error in  transaction index one WORLDLINE response");
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+/////////////////////////////////////////////
+//////////    get data  1 index  WORLDLINE    ----------- "BUS FEES"
+/////////////////////////////////////////////
+  String? token1WLBus;
+  String? paymentMode1WLBus;
+  String? merchantId1WLBus;
+  String? currency1WLBus;
+  String? consumerId1WLBus;
+  String? consumerMobileNo1WLBus;
+  String? consumerEmailId1WLBus;
+  String? txnId1WLBus;
+  bool? enableExpressPay1WLBus;
+  List? items1WLBus;
+  Future getDataOneWORLDLINEBus(String fees, String idFee, String feeAmount,
+      String amount, String gateName) async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    setLoading(true);
+
+    final http.Response response = await http.post(
+      Uri.parse('${UIGuide.baseURL}/online-payment/world-line/get-data'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      },
+      body: jsonEncode({
+        "Description": "Online Fees Payment",
+        "TransactionType": [
+          {"name": fees, "id": idFee, "amount": feeAmount}
+        ],
+        "ReturnUrl": "",
+        "Amount": amount,
+        "PaymentGateWay": gateName
+      }),
+    );
+
+    print(json.encode({
+      "Description": "Online Fees Payment",
+      "TransactionType": [
+        {"name": fees, "id": idFee, "amount": feeAmount}
+      ],
+      "ReturnUrl": "",
+      "Amount": amount,
+      "PaymentGateWay": gateName
+    }));
+
+    try {
+      if (response.statusCode == 200) {
+        Map<String, dynamic> data = await json.decode(response.body);
+
+        Features raz = Features.fromJson(data['features']);
+        enableExpressPay1WLBus = raz.enableExpressPay;
+
+        ConsumerData con = ConsumerData.fromJson(data["consumerData"]);
+        token1WLBus = con.token;
+        paymentMode1WLBus = con.paymentMode;
+        merchantId1WLBus = con.merchantId;
+        currency1WLBus = con.currency;
+        consumerId1WLBus = con.consumerId;
+        consumerMobileNo1WLBus = con.consumerMobileNo;
+        consumerEmailId1WLBus = con.consumerEmailId;
+        txnId1WLBus = con.txnId;
+
+        items2WL = await data["consumerData"]["items"];
+        print(items2WL);
+
+        notifyListeners();
+      } else {
+        setLoading(false);
+        print("Error in  transaction index one WORLDLINE Bus response");
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+///////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////    get data  2 index WORLDLINE   //////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////
+  String? token2WL;
+  String? paymentMode2WL;
+  String? merchantId2WL;
+  String? currency2WL;
+  String? consumerId2WL;
+  String? consumerMobileNo2WL;
+  String? consumerEmailId2WL;
+  String? txnId2WL;
+  bool? enableExpressPay2WL;
+  List? items2WL;
+  Future getDataTwoWORLDLINE(
+      String fees,
+      String idFee,
+      String feeAmount,
+      String buss,
+      String idBus,
+      String busAmount,
+      String amount,
+      String gateName) async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    setLoading(true);
+
+    final http.Response response = await http.post(
+      Uri.parse('${UIGuide.baseURL}/online-payment/world-line/get-data'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      },
+      body: jsonEncode({
+        "Description": "Online Fees Payment",
+        "TransactionType": [
+          {"name": fees, "id": idFee, "amount": feeAmount},
+          {"name": buss, "id": idBus, "amount": busAmount}
+        ],
+        "ReturnUrl": "",
+        "Amount": amount,
+        "PaymentGateWay": gateName
+      }),
+    );
+
+    print(json.encode({
+      "Description": "Online Fees Payment",
+      "TransactionType": [
+        {"name": fees, "id": idFee, "amount": feeAmount},
+        {"name": buss, "id": idBus, "amount": busAmount}
+      ],
+      "ReturnUrl": "",
+      "Amount": amount,
+      "PaymentGateWay": gateName
+    }));
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> data = await json.decode(response.body);
+
+      print(data);
+      Features raz = Features.fromJson(data['features']);
+      enableExpressPay2WL = raz.enableExpressPay;
+
+      ConsumerData con = ConsumerData.fromJson(data["consumerData"]);
+      token2WL = con.token;
+      paymentMode2WL = con.paymentMode;
+      merchantId2WL = con.merchantId;
+      currency2WL = con.currency;
+      consumerId2WL = con.consumerId;
+      consumerMobileNo2WL = con.consumerMobileNo;
+      consumerEmailId2WL = con.consumerEmailId;
+      txnId2WL = con.txnId;
+
+      items2WL = await data["consumerData"]["items"];
+      print(items2WL);
+
+      notifyListeners();
+    } else {
+      setLoading(false);
+      print("Error in  transaction index TWO  response WORLDLINE");
     }
   }
 
