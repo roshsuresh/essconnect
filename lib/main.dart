@@ -104,7 +104,7 @@ FlutterLocalNotificationsPlugin? flutterLocalNotificationsPlugin;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   await FlutterDownloader.initialize(debug: true, ignoreSsl: true);
   if (!kIsWeb) {

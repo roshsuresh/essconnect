@@ -29,9 +29,7 @@ class PaymentHistoryProvider with ChangeNotifier {
     try {
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-
         print(data);
-
         List<OnlineFeePaymentHistoryDetails> templist =
             List<OnlineFeePaymentHistoryDetails>.from(
                 data["onlineFeePaymentHistoryDetails"]

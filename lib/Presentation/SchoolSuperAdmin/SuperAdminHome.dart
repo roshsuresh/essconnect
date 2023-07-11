@@ -60,7 +60,7 @@ class _SuperAdminHomeState extends State<SuperAdminHome> {
             : UpgradeAlert(
                 upgrader: Upgrader(
                     dialogStyle: UpgradeDialogStyle.cupertino,
-                    durationUntilAlertAgain: Duration(days: 1)),
+                    durationUntilAlertAgain: const Duration(days: 1)),
                 child: ListView(
                   physics: const BouncingScrollPhysics(),
                   children: [
@@ -1070,7 +1070,7 @@ class SuperAdminHomeContents extends StatelessWidget {
                                     image: const DecorationImage(
                                       opacity: 20,
                                       image: AssetImage(
-                                        'assets/01staffreport.jpg',
+                                        'assets/01staffreport.png',
                                       ),
                                     ),
                                     borderRadius: BorderRadius.circular(10),

@@ -108,7 +108,7 @@ class _SendNoticeBoardAdminState extends State<SendNoticeBoardAdmin> {
             const Spacer(),
             Padding(
               padding: const EdgeInsets.only(top: 8.0),
-              child: Container(
+              child: SizedBox(
                 height: 55,
                 width: MediaQuery.of(context).size.width * 0.44,
                 child: Consumer<NoticeBoardAdminProvider>(
@@ -136,7 +136,6 @@ class _SendNoticeBoardAdminState extends State<SendNoticeBoardAdmin> {
                                             await noticeCategoryAdmin![index]
                                                     ['text'] ??
                                                 '--';
-
                                         Navigator.of(context).pop();
                                       },
                                       title: Text(

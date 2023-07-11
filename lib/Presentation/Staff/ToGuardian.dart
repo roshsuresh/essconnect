@@ -720,8 +720,8 @@ class Text_Matter_Notification extends StatelessWidget {
                       height: 40,
                       child: MaterialButton(
                         onPressed: () async {
-                          if (titleController.text.isNotEmpty &&
-                              matterController.text.isNotEmpty) {
+                          if (titleController.text.trim().isNotEmpty &&
+                              matterController.text.trim().isNotEmpty) {
                             await Provider.of<NotificationToGuardian_Providers>(
                                     context,
                                     listen: false)

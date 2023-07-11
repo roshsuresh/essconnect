@@ -273,7 +273,7 @@ class AdminHomeContent extends StatelessWidget {
                                     image: const DecorationImage(
                                       opacity: 20,
                                       image: AssetImage(
-                                        'assets/01staffreport.jpg',
+                                        'assets/01staffreport.png',
                                       ),
                                     ),
                                     borderRadius: BorderRadius.circular(10),

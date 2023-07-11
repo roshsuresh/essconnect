@@ -1,4 +1,3 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:essconnect/Application/StudentProviders/CurriculamProviders.dart';
 import 'package:essconnect/Application/StudentProviders/InternetConnection.dart';
 import 'package:essconnect/Application/StudentProviders/NotificationCountProviders.dart';
@@ -9,7 +8,6 @@ import 'package:essconnect/Presentation/Student/Diary.dart';
 import 'package:essconnect/Presentation/Student/Gallery.dart';
 import 'package:essconnect/Presentation/Student/NoInternetScreen.dart';
 import 'package:essconnect/Presentation/Student/NoticeBoard.dart';
-import 'package:essconnect/Presentation/Student/PasswordChange.dart';
 import 'package:essconnect/Presentation/Student/PayFee.dart';
 import 'package:essconnect/Presentation/Student/PaymentHistory.dart';
 import 'package:essconnect/Presentation/Student/Profile_Info.dart';
@@ -25,13 +23,11 @@ import 'package:marquee/marquee.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:upgrader/upgrader.dart';
 import '../../Application/Module Providers.dart/Module.dart';
 import '../../Application/StudentProviders/ProfileProvider.dart';
 import '../../Application/StudentProviders/SiblingsProvider.dart';
 import '../../Application/StudentProviders/TimetableProvider.dart';
-import '../Login_Activation/Login_page.dart';
 
 class StudentHomeByStaff extends StatefulWidget {
   StudentHomeByStaff({Key? key}) : super(key: key);

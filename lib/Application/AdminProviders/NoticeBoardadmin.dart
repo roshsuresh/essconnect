@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:essconnect/Domain/Admin/NoticeBoardList.dart';
 import 'package:essconnect/Domain/Staff/StudentReport_staff.dart';
+import 'package:essconnect/Presentation/Admin/NoticeBoard/NoticeboardScreen.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:multi_select_flutter/util/multi_select_item.dart';
@@ -352,7 +353,12 @@ class NoticeBoardAdminProvider with ChangeNotifier {
               headerAnimationLoop: false,
               title: 'Success',
               desc: 'Uploaded Successfully',
-              btnOkOnPress: () {},
+              btnOkOnPress: () {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => NoticeBoardAdnin()));
+              },
               btnOkIcon: Icons.cancel,
               btnOkColor: Colors.green)
           .show();

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:essconnect/Presentation/Admin/FlashNews/FlashnewsScreen.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -47,12 +48,16 @@ class FlashNewsProviderAdmin with ChangeNotifier {
               headerAnimationLoop: false,
               title: 'Success',
               desc: 'Uploaded Successfully',
-              btnOkOnPress: () {},
+              btnOkOnPress: () {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ScreenFlashNews()));
+              },
               btnOkIcon: Icons.cancel,
               btnOkColor: Colors.green)
           .show();
     } else {
-      print('Error in gallery save respo');
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         elevation: 10,
         shape: RoundedRectangleBorder(

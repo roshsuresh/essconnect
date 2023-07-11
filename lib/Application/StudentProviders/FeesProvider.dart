@@ -319,10 +319,10 @@ class FeesProvider with ChangeNotifier {
       if (response.statusCode == 200) {
         Map<String, dynamic> data = await json.decode(response.body);
 
-        StatusPayment att = StatusPayment.fromJson(data);
+        StatusPayment att = await StatusPayment.fromJson(data);
         log(data.toString());
 
-        statusss = att.status;
+        statusss = await att.status;
         print(statusss);
 
         notifyListeners();

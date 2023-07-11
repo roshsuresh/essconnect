@@ -7,7 +7,6 @@ import 'package:essconnect/Presentation/Admin/Chat/ChatSearch.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class ChatFirstScreen extends StatefulWidget {
@@ -47,11 +46,11 @@ class _ChatFirstScreenState extends State<ChatFirstScreen> {
               kWidth,
               Text(
                 'Chat',
-                style: GoogleFonts.notoSansBamum(
-                    textStyle: const TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.w600,
-                )),
+                // style: GoogleFonts.notoSansBamum(
+                //     textStyle: const TextStyle(
+                //   fontSize: 25,
+                //   fontWeight: FontWeight.w600,
+                // )),
               ),
               const Spacer(),
               IconButton(

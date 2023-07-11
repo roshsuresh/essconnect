@@ -373,16 +373,16 @@ class _StudentHomeState extends State<StudentHome> {
                                             // setState(() {
                                             //   count.count == 0;
                                             // });
-                                            await Provider.of<
-                                                        StudNotificationCountProviders>(
-                                                    context,
-                                                    listen: false)
-                                                .seeNotification();
-                                            await Provider.of<
-                                                        StudNotificationCountProviders>(
-                                                    context,
-                                                    listen: false)
-                                                .getnotificationCount();
+                                            // await Provider.of<
+                                            //             StudNotificationCountProviders>(
+                                            //         context,
+                                            //         listen: false)
+                                            //     .seeNotification();
+                                            // await Provider.of<
+                                            //             StudNotificationCountProviders>(
+                                            //         context,
+                                            //         listen: false)
+                                            //     .getnotificationCount();
 
                                             // Provider.of<StudNotificationCountProviders>(
                                             //         context,

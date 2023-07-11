@@ -802,7 +802,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                           if (trans.lastOrderStatus == 'Success' ||
                               trans.lastOrderStatus == 'Failed' ||
                               trans.lastOrderStatus == 'Cancelled' ||
-                              trans.lastOrderStatus == 'Processing' ||
+                              //  trans.lastOrderStatus == 'Processing' ||
                               trans.lastOrderStatus == null) {
                             if (trans.total != 0) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2946,7 +2946,9 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
         context: context,
         barrierDismissible: false,
         builder: (context) => Consumer<FeesProvider>(
-              builder: (context, trak, child) {
+              builder: (contex, trak, child) {
+                print(trak.statusss);
+                print('----------');
                 if (trak.statusss == 'Success') {
                   return AlertDialog(
                     shape: RoundedRectangleBorder(
@@ -2968,6 +2970,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                               ),
                               const Text(
                                 "TRANSACTION SUCCESS",
+                                textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontWeight: FontWeight.w800,
                                     fontSize: 20,
@@ -3041,6 +3044,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                               ),
                               const Text(
                                 "TRANSACTION FAILED",
+                                textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontWeight: FontWeight.w800,
                                     fontSize: 20,
@@ -3091,9 +3095,80 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                       ),
                     ),
                   );
-                } else if (trak.statusss == "Processing" ||
-                    trak.statusss == "Pending") {
-                  AlertDialog(
+                } else if (trak.statusss == "Processing") {
+                  return AlertDialog(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)),
+                    content: Container(
+                      height: size.height / 4.5,
+                      width: size.width * 3,
+                      child: Stack(
+                        clipBehavior: Clip.none,
+                        alignment: AlignmentDirectional.center,
+                        children: [
+                          Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height: size.height / 10,
+                              ),
+                              const Text(
+                                "TRANSACTION PROCESSING",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w800,
+                                    fontSize: 16,
+                                    color: UIGuide.light_Purple),
+                              ),
+                              kheight20,
+                              Expanded(
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    ElevatedButton(
+                                        style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all(
+                                                  UIGuide.light_Purple),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.of(context)
+                                              .pushAndRemoveUntil(
+                                                  MaterialPageRoute(
+                                                      builder:
+                                                          (context) =>
+                                                              StudentHome()),
+                                                  (Route<dynamic> route) =>
+                                                      false);
+                                        },
+                                        child: const Text(
+                                          'Back to Home',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w800,
+                                              fontSize: 18,
+                                              color: UIGuide.WHITE),
+                                        ))
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                          Positioned(
+                            top: -90,
+                            child: CircleAvatar(
+                                radius: 80,
+                                backgroundColor: Colors.transparent,
+                                child: SvgPicture.asset(UIGuide.pending)),
+                          )
+                        ],
+                      ),
+                    ),
+                  );
+                } else if (trak.statusss == "Pending") {
+                  return AlertDialog(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)),
                     content: Container(
@@ -3164,7 +3239,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                     ),
                   );
                 } else if (trak.statusss == null) {
-                  AlertDialog(
+                  return AlertDialog(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)),
                     content: Container(
@@ -3235,7 +3310,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                     ),
                   );
                 } else {
-                  AlertDialog(
+                  return AlertDialog(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)),
                     content: Container(
@@ -3307,76 +3382,6 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                     ),
                   );
                 }
-                return AlertDialog(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
-                  content: Container(
-                    height: size.height / 4.5,
-                    width: size.width * 3,
-                    child: Stack(
-                      clipBehavior: Clip.none,
-                      alignment: AlignmentDirectional.center,
-                      children: [
-                        Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              height: size.height / 10,
-                            ),
-                            const Text(
-                              "Something went wrong",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: 20,
-                                  color: UIGuide.light_Purple),
-                            ),
-                            kheight20,
-                            Expanded(
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  ElevatedButton(
-                                      style: ButtonStyle(
-                                        backgroundColor:
-                                            MaterialStateProperty.all(
-                                                UIGuide.light_Purple),
-                                      ),
-                                      onPressed: () {
-                                        Navigator.of(context)
-                                            .pushAndRemoveUntil(
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        StudentHome()),
-                                                (Route<dynamic> route) =>
-                                                    false);
-                                      },
-                                      child: const Text(
-                                        'Back to Home',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w800,
-                                            fontSize: 18,
-                                            color: UIGuide.WHITE),
-                                      ))
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                        Positioned(
-                          top: -90,
-                          child: CircleAvatar(
-                              radius: 80,
-                              backgroundColor: Colors.transparent,
-                              child:
-                                  SvgPicture.asset(UIGuide.somethingWentWrong)),
-                        )
-                      ],
-                    ),
-                  ),
-                );
               },
             ));
   }
@@ -3450,25 +3455,38 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
     await showAlertWORLDLine(context, "WL SDK Response");
   }
 
-  showAlertWORLDLine(
-    BuildContext context,
+  Future showAlertWORLDLine(
+    BuildContext contex,
     String orderID,
   ) async {
     var size = MediaQuery.of(context).size;
     String order = orderID;
     String underScore = '_';
-    String cutString = cutStringAfterLetter(order, underScore);
+    String cutStringAfterLet(String originalString, String letter) {
+      int index = originalString.indexOf(letter);
+      if (index != -1) {
+        // If the letter is found in the string
+        return originalString.substring(index + 1, originalString.length);
+      } else {
+        // If the letter is not found in the string
+        return originalString;
+      }
+    }
+
+    String cutString = await cutStringAfterLet(order, underScore);
 
     print(cutString);
 
-    await Provider.of<FeesProvider>(context, listen: false)
+    await Provider.of<FeesProvider>(contex, listen: false)
         .payStatusButton(cutString);
 
     await showDialog(
-        context: context,
+        context: contex,
         barrierDismissible: false,
         builder: (context) => Consumer<FeesProvider>(
-              builder: (context, trak, child) {
+              builder: (contex, trak, child) {
+                print(trak.statusss);
+                print('----------');
                 if (trak.statusss == 'Success') {
                   return AlertDialog(
                     shape: RoundedRectangleBorder(
@@ -3490,6 +3508,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                               ),
                               const Text(
                                 "TRANSACTION SUCCESS",
+                                textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontWeight: FontWeight.w800,
                                     fontSize: 20,
@@ -3563,6 +3582,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                               ),
                               const Text(
                                 "TRANSACTION FAILED",
+                                textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontWeight: FontWeight.w800,
                                     fontSize: 20,
@@ -3613,9 +3633,80 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                       ),
                     ),
                   );
-                } else if (trak.statusss == "Processing" ||
-                    trak.statusss == "Pending") {
-                  AlertDialog(
+                } else if (trak.statusss == "Processing") {
+                  return AlertDialog(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)),
+                    content: Container(
+                      height: size.height / 4.5,
+                      width: size.width * 3,
+                      child: Stack(
+                        clipBehavior: Clip.none,
+                        alignment: AlignmentDirectional.center,
+                        children: [
+                          Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height: size.height / 10,
+                              ),
+                              const Text(
+                                "TRANSACTION PROCESSING",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w800,
+                                    fontSize: 16,
+                                    color: UIGuide.light_Purple),
+                              ),
+                              kheight20,
+                              Expanded(
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    ElevatedButton(
+                                        style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all(
+                                                  UIGuide.light_Purple),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.of(context)
+                                              .pushAndRemoveUntil(
+                                                  MaterialPageRoute(
+                                                      builder:
+                                                          (context) =>
+                                                              StudentHome()),
+                                                  (Route<dynamic> route) =>
+                                                      false);
+                                        },
+                                        child: const Text(
+                                          'Back to Home',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w800,
+                                              fontSize: 18,
+                                              color: UIGuide.WHITE),
+                                        ))
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                          Positioned(
+                            top: -90,
+                            child: CircleAvatar(
+                                radius: 80,
+                                backgroundColor: Colors.transparent,
+                                child: SvgPicture.asset(UIGuide.pending)),
+                          )
+                        ],
+                      ),
+                    ),
+                  );
+                } else if (trak.statusss == "Pending") {
+                  return AlertDialog(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)),
                     content: Container(
@@ -3686,7 +3777,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                     ),
                   );
                 } else if (trak.statusss == null) {
-                  AlertDialog(
+                  return AlertDialog(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)),
                     content: Container(
@@ -3757,7 +3848,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                     ),
                   );
                 } else {
-                  AlertDialog(
+                  return AlertDialog(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)),
                     content: Container(
@@ -3829,76 +3920,6 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                     ),
                   );
                 }
-                return AlertDialog(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
-                  content: Container(
-                    height: size.height / 4.5,
-                    width: size.width * 3,
-                    child: Stack(
-                      clipBehavior: Clip.none,
-                      alignment: AlignmentDirectional.center,
-                      children: [
-                        Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              height: size.height / 10,
-                            ),
-                            const Text(
-                              "Something went wrong",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w800,
-                                  fontSize: 20,
-                                  color: UIGuide.light_Purple),
-                            ),
-                            kheight20,
-                            Expanded(
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  ElevatedButton(
-                                      style: ButtonStyle(
-                                        backgroundColor:
-                                            MaterialStateProperty.all(
-                                                UIGuide.light_Purple),
-                                      ),
-                                      onPressed: () {
-                                        Navigator.of(context)
-                                            .pushAndRemoveUntil(
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        StudentHome()),
-                                                (Route<dynamic> route) =>
-                                                    false);
-                                      },
-                                      child: const Text(
-                                        'Back to Home',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w800,
-                                            fontSize: 18,
-                                            color: UIGuide.WHITE),
-                                      ))
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                        Positioned(
-                          top: -90,
-                          child: CircleAvatar(
-                              radius: 80,
-                              backgroundColor: Colors.transparent,
-                              child:
-                                  SvgPicture.asset(UIGuide.somethingWentWrong)),
-                        )
-                      ],
-                    ),
-                  ),
-                );
               },
             ));
   }

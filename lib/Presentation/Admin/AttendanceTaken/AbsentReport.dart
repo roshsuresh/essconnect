@@ -426,6 +426,9 @@ class _AttendanceReportState extends State<AttendanceReport> {
                     // minWidth: size.width - 250,
                     color: Colors.white,
                     onPressed: (() async {
+                      await Provider.of<AttendanceReportProvider>(context,
+                              listen: false)
+                          .clearList();
                       _mydatetime = await showDatePicker(
                         context: context,
                         initialDate: _mydatetime ?? DateTime.now(),

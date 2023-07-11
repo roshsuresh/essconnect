@@ -471,8 +471,8 @@ class Text_Matter_NotificationAdminToStaff extends StatelessWidget {
                       height: 40,
                       child: MaterialButton(
                         onPressed: () async {
-                          if (titleController.text.isNotEmpty &&
-                              matterController.text.isNotEmpty) {
+                          if (titleController.text.trim().isNotEmpty &&
+                              matterController.text.trim().isNotEmpty) {
                             await value.sendNotification(
                                 context,
                                 titleController.text,

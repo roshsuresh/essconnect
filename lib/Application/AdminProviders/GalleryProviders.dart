@@ -4,6 +4,7 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:essconnect/Domain/Admin/GalleryEdit.dart';
 import 'package:essconnect/Domain/Staff/GallerySendStaff.dart';
 import 'package:essconnect/Domain/Staff/StudentReport_staff.dart';
+import 'package:essconnect/Presentation/Admin/Gallery/GalleryScreen.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -337,7 +338,10 @@ class GalleryProviderAdmin with ChangeNotifier {
               headerAnimationLoop: false,
               title: 'Success',
               desc: 'Uploaded Successfully',
-              btnOkOnPress: () {},
+              btnOkOnPress: () {
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => AdminGallery()));
+              },
               btnOkIcon: Icons.cancel,
               btnOkColor: Colors.green)
           .show();
