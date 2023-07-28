@@ -1099,7 +1099,7 @@ class ProfileHome extends StatelessWidget {
                                           // opacity: 20,
                                           image: NetworkImage(
                                             value.studPhoto == null
-                                                ? 'https://png.pngtree.com/element_our/png/20181129/male-student-icon-png_251938.jpg'
+                                                ? 'https://gj-eschool-files-public.s3.ap-south-1.amazonaws.com/ess-connect/student/avathar-02.jpeg'
                                                 : value.studPhoto.toString(),
                                           ),
                                         ),

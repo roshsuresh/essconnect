@@ -178,13 +178,12 @@ class _TeachingStaffState extends State<TeachingStaff> {
                                                                         233,
                                                                         233),
                                                                 image: DecorationImage(
+                                                                    fit: BoxFit
+                                                                        .cover,
                                                                     image: NetworkImage(value.staffReportList[index].staffPhoto ==
                                                                             null
-                                                                        ? 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhwaLDKaK49tsHmdMGOrmTdns5qiw080F2Yw&usqp=CAU'
-                                                                        : value
-                                                                            .staffReportList[
-                                                                                index]
-                                                                            .staffPhoto
+                                                                        ? 'https://gj-eschool-files-public.s3.ap-south-1.amazonaws.com/ess-connect/student/avathar-01.jpeg'
+                                                                        : value.staffReportList[index].staffPhoto
                                                                             .toString())),
                                                                 borderRadius:
                                                                     const BorderRadius.all(
@@ -542,15 +541,13 @@ class _NonTeachingStaffState extends State<NonTeachingStaff> {
                                                         width: 70,
                                                         height: 70,
                                                         decoration: BoxDecoration(
-                                                            color:
-                                                                const Color.fromARGB(
-                                                                    255,
-                                                                    236,
-                                                                    233,
-                                                                    233),
+                                                            color: const Color.fromARGB(
+                                                                255, 236, 233, 233),
                                                             image: DecorationImage(
+                                                                fit: BoxFit
+                                                                    .cover,
                                                                 image: NetworkImage(value.staffReportList[index].staffPhoto == null
-                                                                    ? 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhwaLDKaK49tsHmdMGOrmTdns5qiw080F2Yw&usqp=CAU'
+                                                                    ? 'https://gj-eschool-files-public.s3.ap-south-1.amazonaws.com/ess-connect/student/avathar-01.jpeg'
                                                                     : value
                                                                         .staffReportList[
                                                                             index]
@@ -914,9 +911,10 @@ class _BothStaffState extends State<BothStaff> {
                                                           color: const Color.fromARGB(
                                                               255, 236, 233, 233),
                                                           image: DecorationImage(
+                                                              fit: BoxFit.cover,
                                                               image: NetworkImage(value.staffReportList[index].staffPhoto ==
                                                                       null
-                                                                  ? 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhwaLDKaK49tsHmdMGOrmTdns5qiw080F2Yw&usqp=CAU'
+                                                                  ? 'https://gj-eschool-files-public.s3.ap-south-1.amazonaws.com/ess-connect/student/avathar-01.jpeg'
                                                                   : value
                                                                       .staffReportList[
                                                                           index]

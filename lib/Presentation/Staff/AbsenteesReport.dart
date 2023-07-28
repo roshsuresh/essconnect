@@ -148,6 +148,11 @@ class _AbsenteesReportStaffState extends State<AbsenteesReportStaff> {
                             ),
                             height: 40,
                             child: TextField(
+                              style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: UIGuide.BLACK,
+                                  overflow: TextOverflow.clip),
                               textAlign: TextAlign.center,
                               controller: courseController1,
                               decoration: const InputDecoration(
@@ -259,6 +264,11 @@ class _AbsenteesReportStaffState extends State<AbsenteesReportStaff> {
                             ),
                             height: 40,
                             child: TextField(
+                              style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: UIGuide.BLACK,
+                                  overflow: TextOverflow.clip),
                               textAlign: TextAlign.center,
                               controller: divisionListController1,
                               decoration: const InputDecoration(

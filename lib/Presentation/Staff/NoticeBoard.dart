@@ -217,6 +217,11 @@ class _StaffNoticeBoard_sentState extends State<StaffNoticeBoard_sent> {
                           ),
                           height: 40,
                           child: TextField(
+                            style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: UIGuide.BLACK,
+                                overflow: TextOverflow.clip),
                             textAlign: TextAlign.center,
                             controller: categoryvalueController1,
                             decoration: const InputDecoration(
@@ -527,6 +532,11 @@ class _StaffNoticeBoard_sentState extends State<StaffNoticeBoard_sent> {
                           ),
                           height: 40,
                           child: TextField(
+                            style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: UIGuide.BLACK,
+                                overflow: TextOverflow.clip),
                             textAlign: TextAlign.center,
                             controller: coursevalueController1,
                             decoration: const InputDecoration(
@@ -620,6 +630,11 @@ class _StaffNoticeBoard_sentState extends State<StaffNoticeBoard_sent> {
                           ),
                           height: 40,
                           child: TextField(
+                            style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: UIGuide.BLACK,
+                                overflow: TextOverflow.clip),
                             textAlign: TextAlign.center,
                             controller: divisionvalueController1,
                             decoration: const InputDecoration(

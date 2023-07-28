@@ -373,6 +373,11 @@ class _ExamTTUploadState extends State<ExamTTUpload> {
                                 borderRadius: BorderRadius.circular(10)),
                             height: 48.0,
                             child: TextField(
+                              style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: UIGuide.BLACK,
+                                  overflow: TextOverflow.clip),
                               textAlign: TextAlign.center,
                               controller: studReportcourseController1,
                               decoration: const InputDecoration(

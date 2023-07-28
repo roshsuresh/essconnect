@@ -761,7 +761,7 @@ class _StaffHomeScreenState extends State<StaffHomeScreen> {
                                                   ),
                                                 ),
                                               ),
-                                        module.tabulation == true
+                                        module.timetable == true
                                             ? GestureDetector(
                                                 onTap: () async {
                                                   await Navigator.push(
@@ -769,16 +769,17 @@ class _StaffHomeScreenState extends State<StaffHomeScreen> {
                                                       PageTransition(
                                                         type: PageTransitionType
                                                             .rightToLeft,
-                                                        child: ToolMarkEntry(),
+                                                        child:
+                                                            ExamTimetableStaff(),
                                                         duration: Duration(
                                                             milliseconds: 300),
                                                         // childCurrent:this
                                                       ));
-                                                  // await Navigator.push(
+                                                  // Navigator.push(
                                                   //   context,
                                                   //   MaterialPageRoute(
                                                   //       builder: (context) =>
-                                                  //           ToolMarkEntry()),
+                                                  //           const ExamTimetableStaff()),
                                                   // );
                                                 },
                                                 child: Padding(
@@ -813,7 +814,7 @@ class _StaffHomeScreenState extends State<StaffHomeScreen> {
                                                                   DecorationImage(
                                                                 image:
                                                                     AssetImage(
-                                                                  'assets/Tabulation.png',
+                                                                  'assets/diary.png',
                                                                 ),
                                                               ),
                                                             ),
@@ -822,7 +823,9 @@ class _StaffHomeScreenState extends State<StaffHomeScreen> {
                                                       ),
                                                       kheight10,
                                                       const Text(
-                                                        'Tool Mark Entry',
+                                                        'Exam Timetable',
+                                                        textAlign:
+                                                            TextAlign.end,
                                                         style: TextStyle(
                                                             fontWeight:
                                                                 FontWeight.w400,
@@ -870,7 +873,7 @@ class _StaffHomeScreenState extends State<StaffHomeScreen> {
                                                                   DecorationImage(
                                                                 image:
                                                                     AssetImage(
-                                                                  'assets/Tabulation.png',
+                                                                  'assets/diary.png',
                                                                 ),
                                                               ),
                                                             ),
@@ -879,7 +882,7 @@ class _StaffHomeScreenState extends State<StaffHomeScreen> {
                                                       ),
                                                       kheight10,
                                                       const Text(
-                                                        'Tool Mark Entry',
+                                                        '    Exam\nTimetable',
                                                         style: TextStyle(
                                                             fontWeight:
                                                                 FontWeight.w400,
@@ -891,60 +894,6 @@ class _StaffHomeScreenState extends State<StaffHomeScreen> {
                                                   ),
                                                 ),
                                               ),
-
-                                        // GestureDetector(
-                                        //   onTap: () {
-                                        //     Navigator.push(
-                                        //       context,
-                                        //       MaterialPageRoute(
-                                        //           builder: (context) =>
-                                        //               MarkEntryReport()),
-                                        //     );
-                                        //   },
-                                        //   child: Padding(
-                                        //     padding: const EdgeInsets.only(
-                                        //         left: 10, right: 10),
-                                        //     child: Column(
-                                        //       mainAxisAlignment:
-                                        //           MainAxisAlignment.spaceEvenly,
-                                        //       children: [
-                                        //         Card(
-                                        //           elevation: 10,
-                                        //           color: Colors.white,
-                                        //           shape: RoundedRectangleBorder(
-                                        //             borderRadius:
-                                        //                 BorderRadius.circular(12.0),
-                                        //           ),
-                                        //           child: Padding(
-                                        //             padding:
-                                        //                 const EdgeInsets.all(8.0),
-                                        //             child: Container(
-                                        //               height: 38,
-                                        //               width: 38,
-                                        //               decoration: BoxDecoration(
-                                        //                 image: const DecorationImage(
-                                        //                   image: AssetImage(
-                                        //                     'assets/Marksheet.png',
-                                        //                   ),
-                                        //                 ),
-                                        //                 borderRadius:
-                                        //                     BorderRadius.circular(0),
-                                        //               ),
-                                        //             ),
-                                        //           ),
-                                        //         ),
-                                        //         kheight10,
-                                        //         const Text(
-                                        //           'Mark Entry \n   Report',
-                                        //           style: TextStyle(
-                                        //               fontWeight: FontWeight.w400,
-                                        //               fontSize: 11,
-                                        //               color: Colors.black),
-                                        //         )
-                                        //       ],
-                                        //     ),
-                                        //   ),
-                                        // ),
                                       ],
                                     ),
                                   ),
@@ -1222,6 +1171,15 @@ class _StaffHomeScreenState extends State<StaffHomeScreen> {
                                     ),
                                   ),
                                 ),
+                              ],
+                            ),
+                          ),
+                          kheight20,
+                          Consumer<ModuleProviders>(
+                            builder: (context, module, _) => Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
                                 module.curiculam == true
                                     ? Consumer<Curriculamprovider>(
                                         builder: (context, curri, child) =>
@@ -1350,124 +1308,6 @@ class _StaffHomeScreenState extends State<StaffHomeScreen> {
                                           ),
                                         ),
                                       ),
-                              ],
-                            ),
-                          ),
-                          kheight20,
-                          Consumer<ModuleProviders>(
-                            builder: (context, module, _) => Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                // GestureDetector(
-                                //   onTap: () async {
-                                //     await Navigator.push(
-                                //         context,
-                                //         PageTransition(
-                                //           type: PageTransitionType.rightToLeft,
-                                //           child: MissingReport(),
-                                //           duration:
-                                //               const Duration(milliseconds: 300),
-                                //           // childCurrent:this
-                                //         ));
-                                //   },
-                                //   child: Padding(
-                                //     padding: const EdgeInsets.only(
-                                //         left: 10, right: 10),
-                                //     child: Column(
-                                //       mainAxisAlignment:
-                                //           MainAxisAlignment.spaceEvenly,
-                                //       children: [
-                                //         Card(
-                                //           elevation: 10,
-                                //           color: Colors.white,
-                                //           shape: RoundedRectangleBorder(
-                                //             borderRadius:
-                                //                 BorderRadius.circular(12.0),
-                                //           ),
-                                //           child: Padding(
-                                //             padding: const EdgeInsets.all(8.0),
-                                //             child: Container(
-                                //               height: 38,
-                                //               width: 38,
-                                //               decoration: const BoxDecoration(
-                                //                 image: DecorationImage(
-                                //                   opacity: 20,
-                                //                   image: AssetImage(
-                                //                     'assets/Gallery.png',
-                                //                   ),
-                                //                 ),
-                                //               ),
-                                //             ),
-                                //           ),
-                                //         ),
-                                //         kheight10,
-                                //         const Text(
-                                //           'MarkEntry\nMissing Report ',
-                                //           textAlign: TextAlign.center,
-                                //           style: TextStyle(
-                                //               fontWeight: FontWeight.w400,
-                                //               fontSize: 11,
-                                //               color: Colors.black),
-                                //         )
-                                //       ],
-                                //     ),
-                                //   ),
-                                // ),
-                                // GestureDetector(
-                                //   onTap: () async {
-                                //     await Navigator.push(
-                                //         context,
-                                //         PageTransition(
-                                //           type: PageTransitionType.rightToLeft,
-                                //           child: MarkEntryReport(),
-                                //           duration:
-                                //               const Duration(milliseconds: 300),
-                                //         ));
-                                //   },
-                                //   child: Padding(
-                                //     padding: const EdgeInsets.only(
-                                //         left: 10, right: 10),
-                                //     child: Column(
-                                //       mainAxisAlignment:
-                                //           MainAxisAlignment.spaceEvenly,
-                                //       children: [
-                                //         Card(
-                                //           elevation: 10,
-                                //           color: Colors.white,
-                                //           shape: RoundedRectangleBorder(
-                                //             borderRadius:
-                                //                 BorderRadius.circular(12.0),
-                                //           ),
-                                //           child: Padding(
-                                //             padding: const EdgeInsets.all(8.0),
-                                //             child: Container(
-                                //               height: 38,
-                                //               width: 38,
-                                //               decoration: const BoxDecoration(
-                                //                 image: DecorationImage(
-                                //                   opacity: 20,
-                                //                   image: AssetImage(
-                                //                     'assets/Gallery.png',
-                                //                   ),
-                                //                 ),
-                                //               ),
-                                //             ),
-                                //           ),
-                                //         ),
-                                //         kheight10,
-                                //         const Text(
-                                //           'MarkEntry\n Report ',
-                                //           textAlign: TextAlign.center,
-                                //           style: TextStyle(
-                                //               fontWeight: FontWeight.w400,
-                                //               fontSize: 11,
-                                //               color: Colors.black),
-                                //         )
-                                //       ],
-                                //     ),
-                                //   ),
-                                // ),
                                 module.timetable == true
                                     ? GestureDetector(
                                         onTap: () async {
@@ -1581,121 +1421,6 @@ class _StaffHomeScreenState extends State<StaffHomeScreen> {
                                           ),
                                         ),
                                       ),
-
-                                module.timetable == true
-                                    ? GestureDetector(
-                                        onTap: () async {
-                                          await Navigator.push(
-                                              context,
-                                              PageTransition(
-                                                type: PageTransitionType
-                                                    .rightToLeft,
-                                                child: ExamTimetableStaff(),
-                                                duration:
-                                                    Duration(milliseconds: 300),
-                                                // childCurrent:this
-                                              ));
-                                          // Navigator.push(
-                                          //   context,
-                                          //   MaterialPageRoute(
-                                          //       builder: (context) =>
-                                          //           const ExamTimetableStaff()),
-                                          // );
-                                        },
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 10, right: 10),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              Card(
-                                                elevation: 10,
-                                                color: Colors.white,
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          12.0),
-                                                ),
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: Container(
-                                                    height: 38,
-                                                    width: 38,
-                                                    decoration:
-                                                        const BoxDecoration(
-                                                      image: DecorationImage(
-                                                        image: AssetImage(
-                                                          'assets/diary.png',
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              kheight10,
-                                              const Text(
-                                                'Exam Timetable',
-                                                textAlign: TextAlign.end,
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w400,
-                                                    fontSize: 11,
-                                                    color: Colors.black),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      )
-                                    : GestureDetector(
-                                        onTap: () async {
-                                          _noAcess();
-                                        },
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 10, right: 10),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              Card(
-                                                elevation: 10,
-                                                color: Colors.white,
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          12.0),
-                                                ),
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: Container(
-                                                    height: 38,
-                                                    width: 38,
-                                                    decoration:
-                                                        const BoxDecoration(
-                                                      image: DecorationImage(
-                                                        image: AssetImage(
-                                                          'assets/diary.png',
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              kheight10,
-                                              const Text(
-                                                '    Exam\nTimetable',
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w400,
-                                                    fontSize: 11,
-                                                    color: Colors.black),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-
                                 module.attendenceEntry == true
                                     ? GestureDetector(
                                         onTap: () async {
@@ -1736,7 +1461,7 @@ class _StaffHomeScreenState extends State<StaffHomeScreen> {
                                                       image: DecorationImage(
                                                         opacity: 20,
                                                         image: AssetImage(
-                                                          'assets/Gallery.png',
+                                                          'assets/Attendance.png',
                                                         ),
                                                       ),
                                                     ),
@@ -1786,7 +1511,7 @@ class _StaffHomeScreenState extends State<StaffHomeScreen> {
                                                       image: DecorationImage(
                                                         opacity: 20,
                                                         image: AssetImage(
-                                                          'assets/Gallery.png',
+                                                          "assets/Attendance.png",
                                                         ),
                                                       ),
                                                     ),
@@ -1953,7 +1678,7 @@ class _StaffHomeScreenState extends State<StaffHomeScreen> {
                           ),
                           kheight20,
                           kheight10,
-                          kheight10,
+                          kheight10, kheight10,
                         ],
                       ),
                     ),
@@ -2098,9 +1823,10 @@ class StaffProfile extends StatelessWidget {
                                     decoration: BoxDecoration(
                                         color: Colors.white,
                                         image: DecorationImage(
+                                          fit: BoxFit.cover,
                                           image: NetworkImage(value.photo ==
                                                   null
-                                              ? 'https://plantbiology.ucr.edu/sites/default/files/styles/form_preview/public/blank-profile-pic.png?itok=rhVwP3MG'
+                                              ? 'https://gj-eschool-files-public.s3.ap-south-1.amazonaws.com/ess-connect/student/avathar-01.jpeg'
                                               : value.photo.toString()),
                                         ),
                                         shape: BoxShape.circle,

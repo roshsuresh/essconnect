@@ -403,15 +403,11 @@ class _PdfDownloaderState extends State<PdfDownloader> {
       setState(() {});
     });
 
-    FlutterDownloader.registerCallback(PdfDownloader.downloadCallback);
+    FlutterDownloader.registerCallback(downloadCallback);
   }
 
-  @pragma('vm:entry-point')
-  static void downloadCallback(
-      String id, DownloadTaskStatus status, int progress) {
-    final SendPort? send =
-        IsolateNameServer.lookupPortByName('downloader_send_port');
-    send!.send([id, status, progress]);
+  static void downloadCallback(String id, int status, int progress) {
+    print('Download task ($id) is in status ($status) and $progress% complete');
   }
 
   @override
@@ -507,15 +503,11 @@ class _PdfViewPagesState extends State<PdfViewPages> {
       setState(() {});
     });
 
-    FlutterDownloader.registerCallback(PdfViewPages.downloadCallback);
+    FlutterDownloader.registerCallback(downloadCallback);
   }
 
-  @pragma('vm:entry-point')
-  static void downloadCallback(
-      String id, DownloadTaskStatus status, int progress) {
-    final SendPort? send =
-        IsolateNameServer.lookupPortByName('downloader_send_port');
-    send!.send([id, status, progress]);
+  static void downloadCallback(String id, int status, int progress) {
+    print('Download task ($id) is in status ($status) and $progress% complete');
   }
 
   @override
@@ -659,15 +651,11 @@ class _ExamPdfViewState extends State<ExamPdfView> {
       setState(() {});
     });
 
-    FlutterDownloader.registerCallback(ExamPdfView.downloadCallback);
+    FlutterDownloader.registerCallback(downloadCallback);
   }
 
-  @pragma('vm:entry-point')
-  static void downloadCallback(
-      String id, DownloadTaskStatus status, int progress) {
-    final SendPort? send =
-        IsolateNameServer.lookupPortByName('downloader_send_port');
-    send!.send([id, status, progress]);
+  static void downloadCallback(String id, int status, int progress) {
+    print('Download task ($id) is in status ($status) and $progress% complete');
   }
 
   @override
@@ -767,15 +755,11 @@ class _ImageViewExamState extends State<ImageViewExam> {
       setState(() {});
     });
 
-    FlutterDownloader.registerCallback(ImageViewExam.downloadCallback);
+    FlutterDownloader.registerCallback(downloadCallback);
   }
 
-  @pragma('vm:entry-point')
-  static void downloadCallback(
-      String id, DownloadTaskStatus status, int progress) {
-    final SendPort? send =
-        IsolateNameServer.lookupPortByName('downloader_send_port');
-    send!.send([id, status, progress]);
+  static void downloadCallback(String id, int status, int progress) {
+    print('Download task ($id) is in status ($status) and $progress% complete');
   }
 
   @override

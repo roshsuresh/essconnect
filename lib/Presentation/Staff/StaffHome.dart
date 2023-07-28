@@ -6,7 +6,7 @@ import 'package:essconnect/Application/StudentProviders/InternetConnection.dart'
 import 'package:essconnect/Presentation/Admin/WebViewLogin.dart';
 import 'package:essconnect/Presentation/Staff/AbsenteesReport.dart';
 import 'package:essconnect/Presentation/Staff/ExamTT.dart/ExamTTScreen.dart';
-import 'package:essconnect/Presentation/Staff/MarkEntryReport/MarkEntryReport.dart';
+import 'package:essconnect/Presentation/Staff/MarkEntryNew.dart';
 import 'package:essconnect/Presentation/Staff/MissingReport.dart';
 import 'package:essconnect/Presentation/Staff/ScreenNotification.dart';
 import 'package:essconnect/Presentation/Staff/ToolMarkEntry.dart';
@@ -1609,7 +1609,7 @@ class _StaffHomeState extends State<StaffHome> {
                                       context,
                                       PageTransition(
                                         type: PageTransitionType.rightToLeft,
-                                        child: MarkEntryReport(),
+                                        child: MarkEntryNew(),
                                         duration:
                                             const Duration(milliseconds: 300),
                                       ));
@@ -1646,7 +1646,7 @@ class _StaffHomeState extends State<StaffHome> {
                                       ),
                                       kheight10,
                                       const Text(
-                                        'MarkEntry\n Report ',
+                                        'MarkEntry New',
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                             fontWeight: FontWeight.w400,
@@ -1977,9 +1977,10 @@ class StaffProfile extends StatelessWidget {
                                     decoration: BoxDecoration(
                                         color: Colors.white,
                                         image: DecorationImage(
+                                          fit: BoxFit.cover,
                                           image: NetworkImage(value.photo ==
                                                   null
-                                              ? 'https://plantbiology.ucr.edu/sites/default/files/styles/form_preview/public/blank-profile-pic.png?itok=rhVwP3MG'
+                                              ? 'https://gj-eschool-files-public.s3.ap-south-1.amazonaws.com/ess-connect/student/avathar-01.jpeg'
                                               : value.photo.toString()),
                                         ),
                                         shape: BoxShape.circle,

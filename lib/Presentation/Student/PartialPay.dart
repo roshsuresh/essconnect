@@ -37,18 +37,19 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       var p = Provider.of<FeesProvider>(context, listen: false);
       p.busFeeList.clear();
       p.feeList.clear();
-      p.feesData();
       totalPartial = 0;
       totallPartial = 0;
       totalFeeCollect = 0;
       partialBUS = 0;
       partialFee = 0;
       p.transactionList.clear();
-      p.gatewayName();
+      await p.gatewayName();
+      await p.feesData();
     });
   }
 
@@ -4861,43 +4862,30 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
 /////////////--------------- Show Alert WORLDLine
   void handleResponse(Map<dynamic, dynamic> response) async {
     print("------------correct-------------");
-    print("----------------------------$response");
-    await showAlertWORLDLine(context, txnId);
+    print("----------------------$response");
+    await showAlertWORLDLine(context, txnId, response.toString());
   }
 
   Future showAlertWORLDLine(
-    BuildContext contex,
-    String orderID,
-  ) async {
+      BuildContext contex, String orderID, String response) async {
     var size = MediaQuery.of(context).size;
-    String order = orderID;
-    String underScore = '_';
-    String cutStringAfterLet(String originalString, String letter) {
-      int index = originalString.indexOf(letter);
-      if (index != -1) {
-        // If the letter is found in the string
-        return originalString.substring(index + 1, originalString.length);
-      } else {
-        // If the letter is not found in the string
-        return originalString;
-      }
-    }
-
-    String cutString = await cutStringAfterLet(order, underScore);
-
-    print(cutString);
-
-    await Provider.of<FeesProvider>(contex, listen: false)
-        .payStatusButton(cutString);
+    List words = [];
+    words.clear();
+    words = response.split("|");
+    print(words);
+    print(words[5]);
+    String paymentGatewayTransactionId = words[5];
+    await Future.delayed(Duration(seconds: 5));
+    await Provider.of<FinalStatusProvider>(contex, listen: false)
+        .transactionStatusWorldLine(orderID, paymentGatewayTransactionId);
 
     await showDialog(
         context: contex,
         barrierDismissible: false,
-        builder: (context) => Consumer<FeesProvider>(
-              builder: (contex, trak, child) {
-                print(trak.statusss);
-                print('----------');
-                if (trak.statusss == 'Success') {
+        builder: (context) => Consumer<FinalStatusProvider>(
+              builder: (contex, trak, _) {
+                print('-------${trak.reponseCodeWorldLine}');
+                if (trak.reponseCodeWorldLine == '0300') {
                   return AlertDialog(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)),
@@ -4930,28 +4918,28 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     ElevatedButton(
-                                        style: ButtonStyle(
-                                          backgroundColor:
-                                              MaterialStateProperty.all(
-                                                  UIGuide.light_Purple),
-                                        ),
-                                        onPressed: () {
-                                          Navigator.of(context)
-                                              .pushAndRemoveUntil(
-                                                  MaterialPageRoute(
-                                                      builder:
-                                                          (context) =>
-                                                              StudentHome()),
-                                                  (Route<dynamic> route) =>
-                                                      false);
-                                        },
-                                        child: const Text(
-                                          'Back to Home',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w800,
-                                              fontSize: 18,
-                                              color: UIGuide.WHITE),
-                                        ))
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all(
+                                                UIGuide.light_Purple),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.of(context)
+                                            .pushAndRemoveUntil(
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        StudentHome()),
+                                                (Route<dynamic> route) =>
+                                                    false);
+                                      },
+                                      child: const Text(
+                                        'Back to Home',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w800,
+                                            fontSize: 18,
+                                            color: UIGuide.WHITE),
+                                      ),
+                                    ),
                                   ],
                                 ),
                               )
@@ -4970,7 +4958,7 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
                       ),
                     ),
                   );
-                } else if (trak.statusss == 'Failed') {
+                } else if (trak.reponseCodeWorldLine == '0399') {
                   return AlertDialog(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)),
@@ -5004,28 +4992,28 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     ElevatedButton(
-                                        style: ButtonStyle(
-                                          backgroundColor:
-                                              MaterialStateProperty.all(
-                                                  UIGuide.light_Purple),
-                                        ),
-                                        onPressed: () {
-                                          Navigator.of(context)
-                                              .pushAndRemoveUntil(
-                                                  MaterialPageRoute(
-                                                      builder:
-                                                          (context) =>
-                                                              StudentHome()),
-                                                  (Route<dynamic> route) =>
-                                                      false);
-                                        },
-                                        child: const Text(
-                                          'Back to Home',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w800,
-                                              fontSize: 18,
-                                              color: UIGuide.WHITE),
-                                        ))
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all(
+                                                UIGuide.light_Purple),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.of(context)
+                                            .pushAndRemoveUntil(
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        StudentHome()),
+                                                (Route<dynamic> route) =>
+                                                    false);
+                                      },
+                                      child: const Text(
+                                        'Back to Home',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w800,
+                                            fontSize: 18,
+                                            color: UIGuide.WHITE),
+                                      ),
+                                    ),
                                   ],
                                 ),
                               )
@@ -5042,7 +5030,8 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
                       ),
                     ),
                   );
-                } else if (trak.statusss == "Processing") {
+                } else if (trak.reponseCodeWorldLine == '0396' ||
+                    trak.reponseCodeWorldLine == '9999') {
                   return AlertDialog(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)),
@@ -5114,7 +5103,7 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
                       ),
                     ),
                   );
-                } else if (trak.statusss == "Pending") {
+                } else if (trak.reponseCodeWorldLine == '0398') {
                   return AlertDialog(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)),
@@ -5185,7 +5174,7 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
                       ),
                     ),
                   );
-                } else if (trak.statusss == null) {
+                } else if (trak.reponseCodeWorldLine == '0392') {
                   return AlertDialog(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)),
@@ -5205,10 +5194,11 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
                                 height: size.height / 10,
                               ),
                               const Text(
-                                "TRANSACTION PENDING",
+                                "TRANSACTION  CANCELLED",
+                                textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontWeight: FontWeight.w800,
-                                    fontSize: 20,
+                                    fontSize: 17,
                                     color: UIGuide.light_Purple),
                               ),
                               kheight20,

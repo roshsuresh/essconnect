@@ -235,6 +235,11 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                                       ),
                                       height: 40,
                                       child: TextField(
+                                        style: const TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w500,
+                                            color: UIGuide.BLACK,
+                                            overflow: TextOverflow.clip),
                                         textAlign: TextAlign.center,
                                         controller:
                                             toolInitialValuesController1,
@@ -401,6 +406,11 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                                       ),
                                       height: 40,
                                       child: TextField(
+                                        style: const TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w500,
+                                            color: UIGuide.BLACK,
+                                            overflow: TextOverflow.clip),
                                         textAlign: TextAlign.center,
                                         controller: toolDivisionListController1,
                                         decoration: const InputDecoration(
@@ -557,6 +567,11 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                                       ),
                                       height: 40,
                                       child: TextField(
+                                        style: const TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w500,
+                                            color: UIGuide.BLACK,
+                                            overflow: TextOverflow.clip),
                                         textAlign: TextAlign.center,
                                         controller: toolPartListController1,
                                         decoration: const InputDecoration(
@@ -713,6 +728,8 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                                       child: TextField(
                                         style: const TextStyle(
                                             fontSize: 14,
+                                            fontWeight: FontWeight.w500,
+                                            color: UIGuide.BLACK,
                                             overflow: TextOverflow.clip),
                                         textAlign: TextAlign.center,
                                         controller: toolSubjectListController1,
@@ -850,6 +867,8 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                                           child: TextField(
                                             style: const TextStyle(
                                                 fontSize: 14,
+                                                fontWeight: FontWeight.w500,
+                                                color: UIGuide.BLACK,
                                                 overflow: TextOverflow.clip),
                                             textAlign: TextAlign.center,
                                             controller:
@@ -976,6 +995,8 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                                       child: TextField(
                                         style: const TextStyle(
                                             fontSize: 14,
+                                            fontWeight: FontWeight.w500,
+                                            color: UIGuide.BLACK,
                                             overflow: TextOverflow.clip),
                                         textAlign: TextAlign.center,
                                         controller: toolExamListController,
@@ -1376,6 +1397,17 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                                                               height: 30,
                                                               width: 80,
                                                               child: TextField(
+                                                                style: const TextStyle(
+                                                                    fontSize:
+                                                                        14,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                    color: UIGuide
+                                                                        .BLACK,
+                                                                    overflow:
+                                                                        TextOverflow
+                                                                            .clip),
                                                                 focusNode:
                                                                     FocusNode(),
                                                                 controller:
@@ -1861,8 +1893,11 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                                                                           ),
                                                                           child:
                                                                               TextField(
-                                                                            style:
-                                                                                const TextStyle(fontSize: 14, overflow: TextOverflow.clip),
+                                                                            style: const TextStyle(
+                                                                                fontSize: 14,
+                                                                                fontWeight: FontWeight.w500,
+                                                                                color: UIGuide.BLACK,
+                                                                                overflow: TextOverflow.clip),
                                                                             textAlign:
                                                                                 TextAlign.center,
                                                                             controller:

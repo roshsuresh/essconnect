@@ -106,7 +106,7 @@ class StaffProfileView extends StatelessWidget {
                       Center(
                         child: CircleAvatar(
                           backgroundImage: NetworkImage(value.photo == null
-                              ? 'https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-default-avatar-profile-icon-vector-social-media-user-image-vector-illustration-227787227.jpg'
+                              ? 'https://gj-eschool-files-public.s3.ap-south-1.amazonaws.com/ess-connect/student/avathar-01.jpeg'
                               : value.photo.toString()),
                           radius: 65,
                           backgroundColor: Colors.white,

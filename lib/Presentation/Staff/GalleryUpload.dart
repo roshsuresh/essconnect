@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:essconnect/Application/Staff_Providers/GallerySendProviderStaff.dart';
 import 'package:essconnect/utils/spinkit.dart';
 import 'package:file_picker/file_picker.dart';
@@ -470,6 +469,11 @@ class _StaffGalleryUPloadState extends State<StaffGalleryUPload> {
                           ),
                           height: 40,
                           child: TextField(
+                            style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: UIGuide.BLACK,
+                                overflow: TextOverflow.clip),
                             textAlign: TextAlign.center,
                             controller: coursevalueController1,
                             decoration: const InputDecoration(
@@ -567,6 +571,11 @@ class _StaffGalleryUPloadState extends State<StaffGalleryUPload> {
                           ),
                           height: 40,
                           child: TextField(
+                            style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: UIGuide.BLACK,
+                                overflow: TextOverflow.clip),
                             textAlign: TextAlign.center,
                             controller: divisionvalueController1,
                             decoration: const InputDecoration(

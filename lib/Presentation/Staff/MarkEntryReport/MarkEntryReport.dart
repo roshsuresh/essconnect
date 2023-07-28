@@ -217,6 +217,11 @@ class _MarkEntryReportState extends State<MarkEntryReport> {
                               ),
                               height: 50,
                               child: TextField(
+                                style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    color: UIGuide.BLACK,
+                                    overflow: TextOverflow.clip),
                                 textAlign: TextAlign.center,
                                 controller: courseController1,
                                 decoration: InputDecoration(
@@ -412,6 +417,11 @@ class _MarkEntryReportState extends State<MarkEntryReport> {
                               ),
                               height: 50,
                               child: TextField(
+                                style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    color: UIGuide.BLACK,
+                                    overflow: TextOverflow.clip),
                                 textAlign: TextAlign.center,
                                 controller: partController1,
                                 decoration: InputDecoration(
@@ -528,6 +538,11 @@ class _MarkEntryReportState extends State<MarkEntryReport> {
                               ),
                               height: 50,
                               child: TextField(
+                                style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    color: UIGuide.BLACK,
+                                    overflow: TextOverflow.clip),
                                 textAlign: TextAlign.center,
                                 controller: examController1,
                                 decoration: InputDecoration(

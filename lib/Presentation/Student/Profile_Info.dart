@@ -161,11 +161,17 @@ class Profile_Info extends StatelessWidget {
                           child: Padding(
                             padding: const EdgeInsets.only(top: 8.0),
                             child: CircleAvatar(
+                              // child: FadeInImage.assetNetwork(
+                              //   placeholder: 'assets/male-student-icon.jpg',
+                              //   image:
+                              //       "https://png.pngtree.com/element_our/png/20181129/male-student-icon-png_251938.jpg",
+                              //   fit: BoxFit.cover,
+                              // ),
                               backgroundImage: NetworkImage(
-                                provider.studPhoto == null
-                                    ? 'https://png.pngtree.com/element_our/png/20181129/male-student-icon-png_251938.jpg'
-                                    : provider.studPhoto.toString(),
-                              ),
+                                  provider.studPhoto == null
+                                      ? 'https://gj-eschool-files-public.s3.ap-south-1.amazonaws.com/ess-connect/student/avathar-02.jpeg'
+                                      : provider.studPhoto.toString(),
+                                  scale: 1),
                               radius: 65,
                               backgroundColor: UIGuide.WHITE,
                             ),

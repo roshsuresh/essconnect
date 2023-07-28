@@ -325,7 +325,7 @@ class _SplashFuturePageState extends State<SplashFuturePage>
           roleList = await data['role'];
           print(roleList);
         }
-        if (data['role'] == "SystemAdmin") {
+        if (data['role'] == "SystemAdmin" || roleList.contains("SystemAdmin")) {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => AdminHome()),
@@ -353,7 +353,8 @@ class _SplashFuturePageState extends State<SplashFuturePage>
               context,
               MaterialPageRoute(
                   builder: (BuildContext context) => StaffHomeScreen()));
-        } else if (data['role'] == "SchoolSuperAdmin") {
+        } else if (data['role'] == "SchoolSuperAdmin" ||
+            roleList.contains("SchoolSuperAdmin")) {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => SuperAdminHome()),

@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'package:essconnect/Application/Staff_Providers/Attendencestaff.dart';
 import 'package:essconnect/utils/spinkit.dart';
 import 'package:flutter/material.dart';
@@ -193,6 +192,11 @@ class _AttendenceEntryState extends State<AttendenceEntry> {
                               ),
                               height: 40,
                               child: TextField(
+                                style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    color: UIGuide.BLACK,
+                                    overflow: TextOverflow.clip),
                                 textAlign: TextAlign.center,
                                 controller: markEntryInitialValuesController1,
                                 decoration: const InputDecoration(
@@ -302,6 +306,11 @@ class _AttendenceEntryState extends State<AttendenceEntry> {
                               ),
                               height: 40,
                               child: TextField(
+                                style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    color: UIGuide.BLACK,
+                                    overflow: TextOverflow.clip),
                                 textAlign: TextAlign.center,
                                 controller: markEntryDivisionListController1,
                                 decoration: const InputDecoration(
@@ -916,7 +925,6 @@ class _AttendenceEntryState extends State<AttendenceEntry> {
                           forecount = 0;
                           aftcount = 0;
                           obj.clear();
-                          List attendLen = [];
                           print(
                               "length:  ${value.studentsAttendenceView.length}");
                           for (int i = 0;

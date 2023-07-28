@@ -1,9 +1,6 @@
 import 'package:essconnect/Application/Staff_Providers/MarkEntryNewProvider.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
@@ -245,6 +242,11 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                     ),
                                     height: 40,
                                     child: TextField(
+                                      style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500,
+                                          color: UIGuide.BLACK,
+                                          overflow: TextOverflow.clip),
                                       textAlign: TextAlign.center,
                                       controller:
                                           markEntryInitialValuesController1,
@@ -406,6 +408,11 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                     ),
                                     height: 40,
                                     child: TextField(
+                                      style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500,
+                                          color: UIGuide.BLACK,
+                                          overflow: TextOverflow.clip),
                                       textAlign: TextAlign.center,
                                       controller:
                                           markEntryDivisionListController1,
@@ -565,6 +572,11 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                     ),
                                     height: 40,
                                     child: TextField(
+                                      style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500,
+                                          color: UIGuide.BLACK,
+                                          overflow: TextOverflow.clip),
                                       textAlign: TextAlign.center,
                                       controller: markEntryPartListController1,
                                       decoration: const InputDecoration(
@@ -658,6 +670,9 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                         .clear();
                                                     await snapshot
                                                         .removeAllExamClear();
+                                                    subsubject = null;
+                                                    optionSub = null;
+                                                    subDescription = null;
 
                                                     await snapshot
                                                         .getMarkEntryOptionSubject(
@@ -702,6 +717,8 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                     child: TextField(
                                       style: const TextStyle(
                                           fontSize: 14,
+                                          fontWeight: FontWeight.w500,
+                                          color: UIGuide.BLACK,
                                           overflow: TextOverflow.clip),
                                       textAlign: TextAlign.center,
                                       controller:
@@ -815,8 +832,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                   .toString()
                                                           : subsubject =
                                                               markEntryOptionSubListController1
-                                                                  .text
-                                                                  .toString();
+                                                                  .text;
 
                                                       print(optionSub);
                                                       print(subsubject);
@@ -854,6 +870,8 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                         child: TextField(
                                           style: const TextStyle(
                                               fontSize: 14,
+                                              fontWeight: FontWeight.w500,
+                                              color: UIGuide.BLACK,
                                               overflow: TextOverflow.clip),
                                           textAlign: TextAlign.center,
                                           controller:
@@ -983,6 +1001,8 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                     child: TextField(
                                       style: const TextStyle(
                                           fontSize: 14,
+                                          fontWeight: FontWeight.w500,
+                                          color: UIGuide.BLACK,
                                           overflow: TextOverflow.clip),
                                       textAlign: TextAlign.center,
                                       controller: markEntryExamListController,
@@ -1030,9 +1050,39 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
+                      GestureDetector(
+                          onTap: () => value.terminatedCheckbox(),
+                          child: SizedBox(
+                            //width: size.width / 2.5,
+                            // Change this value as per your requirements
+                            child: Row(
+                              children: [
+                                Checkbox(
+                                  activeColor: UIGuide.light_Purple,
+                                  value: value.isTerminated,
+                                  onChanged: (newValue) {
+                                    setState(() {
+                                      value.isTerminated = newValue!;
+                                    });
+                                  },
+                                ),
+                                SizedBox(
+                                  width: size.width * .35,
+                                  child: Text(
+                                    "Include Terminated Students",
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      color: UIGuide.PRIMARY,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          )),
                       value.loading
                           ? SizedBox(
-                              width: size.width / 2.5,
+                              width: size.width * .40,
                               child: MaterialButton(
                                 shape: const RoundedRectangleBorder(
                                     borderRadius: BorderRadius.all(
@@ -1046,7 +1096,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                               ),
                             )
                           : SizedBox(
-                              width: size.width / 2.5,
+                              width: size.width * .40,
                               child: MaterialButton(
                                 shape: const RoundedRectangleBorder(
                                     borderRadius: BorderRadius.all(
@@ -1092,17 +1142,17 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                   publicGradeController1.clear();
                                   // value.gradeList.clear();
 
-                                  await value.getMarkEntryView(
+                                  await value.getMarkEntryUASView(
                                       course,
-                                      date!,
                                       division,
                                       exam,
                                       part,
                                       subject,
                                       subsubject.toString(),
                                       optionSub.toString(),
-                                      value.typecode.toString(),
-                                      partItems);
+                                      value.typeCode.toString(),
+                                      partItems,
+                                      subDescription.toString());
 
                                   // await value.getMarkEntryView(course, date!,
                                   //     division, exam, part, subject);

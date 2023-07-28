@@ -48,10 +48,11 @@ class StaffInfo extends StatelessWidget {
                         decoration: BoxDecoration(
                             color: Colors.black,
                             image: DecorationImage(
+                                fit: BoxFit.cover,
                                 image: NetworkImage(value.staffReportList[index]
                                             .staffPhoto ==
                                         null
-                                    ? 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhwaLDKaK49tsHmdMGOrmTdns5qiw080F2Yw&usqp=CAU'
+                                    ? 'https://gj-eschool-files-public.s3.ap-south-1.amazonaws.com/ess-connect/student/avathar-01.jpeg'
                                     : value.staffReportList[index].staffPhoto
                                         .toString())),
                             borderRadius:

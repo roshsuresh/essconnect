@@ -81,6 +81,11 @@ class TeacherTimeTable extends StatelessWidget {
                         SizedBox(
                           height: 40,
                           child: TextField(
+                            style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: UIGuide.BLACK,
+                                overflow: TextOverflow.clip),
                             textAlign: TextAlign.center,
                             controller: sectionController1,
                             decoration: const InputDecoration(

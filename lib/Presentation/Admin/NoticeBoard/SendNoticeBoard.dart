@@ -99,7 +99,7 @@ class _SendNoticeBoardAdminState extends State<SendNoticeBoardAdmin> {
                 child: MaterialButton(
                     //  minWidth: size.width - 250,
                     color: Colors.white70,
-                    child: Text("🗓️  ${datee.toString()}"),
+                    child: Text(datee.toString()),
                     onPressed: () async {
                       return;
                     }),
@@ -159,6 +159,11 @@ class _SendNoticeBoardAdminState extends State<SendNoticeBoardAdmin> {
                             ),
                             height: 40,
                             child: TextField(
+                              style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: UIGuide.BLACK,
+                                  overflow: TextOverflow.clip),
                               textAlign: TextAlign.center,
                               controller: categoryvalueController1,
                               decoration: const InputDecoration(

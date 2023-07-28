@@ -1,14 +1,12 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:essconnect/Domain/Staff/MarkEntry/InitailModel.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:essconnect/Domain/Staff/MarkEntryModel.dart';
 
 class MarkEntryNewProvider with ChangeNotifier {
-  String? typecode;
   String? examStatus;
   bool? isLocked;
   courseClear() {
@@ -36,8 +34,6 @@ class MarkEntryNewProvider with ChangeNotifier {
           jsonDecode(await response.stream.bytesToString());
       MarkEntryViewModel view = MarkEntryViewModel.fromJson(data);
       isLocked = view.isLocked;
-      typecode = view.code;
-      print(typecode);
 
       log(data.toString());
 
@@ -59,6 +55,7 @@ class MarkEntryNewProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  String? typeCode;
   List<MarkEntryDivisionList> markEntryDivisionList = [];
   Future<bool> getMarkEntryDivisionValues(String id) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
@@ -77,6 +74,9 @@ class MarkEntryNewProvider with ChangeNotifier {
     if (response.statusCode == 200) {
       Map<String, dynamic> data =
           jsonDecode(await response.stream.bytesToString());
+      MarkEntryDivisionInitailModel inita =
+          MarkEntryDivisionInitailModel.fromJson(data);
+      typeCode = inita.typeCode;
 
       log(data.toString());
 
@@ -263,6 +263,15 @@ class MarkEntryNewProvider with ChangeNotifier {
     return true;
   }
 
+  //Checkbox
+
+  bool isTerminated = false;
+
+  terminatedCheckbox() {
+    isTerminated = !isTerminated;
+    notifyListeners();
+  }
+
   //markentry view
   bool _loading = false;
   bool get loading => _loading;
@@ -274,9 +283,8 @@ class MarkEntryNewProvider with ChangeNotifier {
   // List<StudentMEList> studentMEList = [];
   // List<MaxMarkList> maxmarkList = [];
   // List<GradeList> gradeList = [];
-  Future<bool> getMarkEntryView(
+  Future<bool> getMarkEntryUASView(
       String course,
-      String date,
       String division,
       String exam,
       String partID,
@@ -284,7 +292,8 @@ class MarkEntryNewProvider with ChangeNotifier {
       String subSubject,
       String optionSubject,
       String typeCodee,
-      var partItems) async {
+      var partItems,
+      String subjectCaption) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoading(true);
 
@@ -294,18 +303,19 @@ class MarkEntryNewProvider with ChangeNotifier {
     };
     setLoading(true);
     var request = http.Request(
-        'POST', Uri.parse('${UIGuide.baseURL}/markentry-latest/view'));
+        'POST', Uri.parse('${UIGuide.baseURL}/markentry-latest/view/'));
     request.body = json.encode({
-      "course": course,
-      "division": division,
-      "subject": subject,
+      "course": course == "null" ? null : course,
+      "division": division == "null" ? null : division,
+      "subject": subject == "null" ? null : subject,
       "subSubject": subSubject == "null" ? null : subSubject,
       "optionSubject": optionSubject == "null" ? null : optionSubject,
-      "exam": exam,
+      "exam": exam == "null" ? null : exam,
       "includeTerminatedStudents": false,
       "tabulationTypeCode": typeCodee,
-      "part": partID,
-      "partItem": partItems
+      "part": partID == "null" ? null : partID,
+      "partItem": partItems,
+      "subjectCaption": subjectCaption == "null" ? null : subjectCaption
     });
 
     request.headers.addAll(headers);
@@ -319,7 +329,7 @@ class MarkEntryNewProvider with ChangeNotifier {
       Map<String, dynamic> data =
           jsonDecode(await response.stream.bytesToString());
 
-      // log(data.toString());
+      log(data.toString());
       setLoading(true);
 
       // List<StudentMEList> templist = List<StudentMEList>.from(

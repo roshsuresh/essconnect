@@ -263,6 +263,11 @@ class _Notification_StaffToGuardainState
                             ),
                             height: 40,
                             child: TextField(
+                              style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: UIGuide.BLACK,
+                                  overflow: TextOverflow.clip),
                               textAlign: TextAlign.center,
                               controller: notificationCourseController1,
                               decoration: const InputDecoration(
@@ -369,6 +374,11 @@ class _Notification_StaffToGuardainState
                             ),
                             height: 40,
                             child: TextField(
+                              style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: UIGuide.BLACK,
+                                  overflow: TextOverflow.clip),
                               textAlign: TextAlign.center,
                               controller: notificationDivisionListController1,
                               decoration: const InputDecoration(

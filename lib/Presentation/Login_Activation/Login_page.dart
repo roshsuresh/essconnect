@@ -398,7 +398,8 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
             context,
             MaterialPageRoute(
                 builder: (BuildContext context) => StudentHome()));
-      } else if (parsedResponse['role'] == "SystemAdmin") {
+      } else if (parsedResponse['role'] == "SystemAdmin" ||
+          roleList.contains("SystemAdmin")) {
         if (isLoading) return;
         setState(() {
           isLoading = true;
@@ -444,7 +445,8 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                 builder: (BuildContext context) => StaffHomeScreen()));
       }
       //SchoolSuperAdmin
-      else if (parsedResponse['role'] == "SchoolSuperAdmin") {
+      else if (parsedResponse['role'] == "SchoolSuperAdmin" ||
+          roleList.contains("SchoolSuperAdmin")) {
         if (isLoading) return;
         setState(() {
           isLoading = true;

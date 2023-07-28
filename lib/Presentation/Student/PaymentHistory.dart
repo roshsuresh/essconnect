@@ -285,15 +285,11 @@ class _PdfDownloadFeeState extends State<PdfDownloadFee> {
       setState(() {});
     });
 
-    FlutterDownloader.registerCallback(PdfDownloadFee.downloadCallback);
+    FlutterDownloader.registerCallback(downloadCallback);
   }
 
-  @pragma('vm:entry-point')
-  static void downloadCallback(
-      String id, DownloadTaskStatus status, int progress) {
-    final SendPort? send =
-        IsolateNameServer.lookupPortByName('downloader_send_port');
-    send!.send([id, status, progress]);
+  static void downloadCallback(String id, int status, int progress) {
+    print('Download task ($id) is in status ($status) and $progress% complete');
   }
 
   @override

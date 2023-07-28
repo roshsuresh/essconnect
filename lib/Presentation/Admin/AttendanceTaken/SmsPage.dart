@@ -125,6 +125,11 @@ class _SMSFormatsState extends State<SMSFormats> {
                               ),
                               height: 40,
                               child: TextField(
+                                style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    color: UIGuide.BLACK,
+                                    overflow: TextOverflow.clip),
                                 textAlign: TextAlign.center,
                                 controller: formatController1,
                                 decoration: const InputDecoration(

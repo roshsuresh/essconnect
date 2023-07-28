@@ -1,8 +1,6 @@
-import 'package:collection/collection.dart';
 import 'package:essconnect/Application/Staff_Providers/MissingReportProviders.dart';
 import 'package:essconnect/Constants.dart';
 import 'package:essconnect/Domain/Staff/MissingModel.dart/InitialMissingReportModel.dart';
-import 'package:essconnect/Presentation/Login_Activation/Login_page.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:essconnect/utils/spinkit.dart';
 import 'package:flutter/material.dart';
@@ -174,6 +172,11 @@ class _MissingReportState extends State<MissingReport> {
                               ),
                               height: 50,
                               child: TextField(
+                                style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    color: UIGuide.BLACK,
+                                    overflow: TextOverflow.clip),
                                 textAlign: TextAlign.center,
                                 controller: missingInitialValuesController1,
                                 decoration: InputDecoration(
@@ -379,6 +382,11 @@ class _MissingReportState extends State<MissingReport> {
                               ),
                               height: 50,
                               child: TextField(
+                                style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    color: UIGuide.BLACK,
+                                    overflow: TextOverflow.clip),
                                 textAlign: TextAlign.center,
                                 controller: missingPartController1,
                                 decoration: InputDecoration(
@@ -478,6 +486,11 @@ class _MissingReportState extends State<MissingReport> {
                               ),
                               height: 50,
                               child: TextField(
+                                style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    color: UIGuide.BLACK,
+                                    overflow: TextOverflow.clip),
                                 textAlign: TextAlign.center,
                                 controller: missingExamController1,
                                 decoration: InputDecoration(

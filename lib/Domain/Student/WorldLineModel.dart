@@ -186,3 +186,42 @@ class CustomStyle {
     return data;
   }
 }
+
+//status response
+
+class WorldLineStatusModel {
+  String? orderId;
+  String? readableOrderId;
+  String? reponseCode;
+  String? reponseMsg;
+  String? txnId;
+  String? paymentMode;
+
+  WorldLineStatusModel(
+      {this.orderId,
+      this.readableOrderId,
+      this.reponseCode,
+      this.reponseMsg,
+      this.txnId,
+      this.paymentMode});
+
+  WorldLineStatusModel.fromJson(Map<String, dynamic> json) {
+    orderId = json['orderId'];
+    readableOrderId = json['readableOrderId'];
+    reponseCode = json['reponseCode'];
+    reponseMsg = json['reponseMsg'];
+    txnId = json['txnId'];
+    paymentMode = json['paymentMode'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['orderId'] = this.orderId;
+    data['readableOrderId'] = this.readableOrderId;
+    data['reponseCode'] = this.reponseCode;
+    data['reponseMsg'] = this.reponseMsg;
+    data['txnId'] = this.txnId;
+    data['paymentMode'] = this.paymentMode;
+    return data;
+  }
+}

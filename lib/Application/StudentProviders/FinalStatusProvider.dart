@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:essconnect/Domain/Student/RazorPayModel.dart';
 import 'package:essconnect/Domain/Student/TransactionModel.dart';
+import 'package:essconnect/Domain/Student/WorldLineModel.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -29,7 +30,7 @@ class FinalStatusProvider with ChangeNotifier {
 
     try {
       if (response.statusCode == 200) {
-        Map<String, dynamic> data = json.decode(response.body);
+        Map<String, dynamic> data = await json.decode(response.body);
         log(data.toString());
 
         PaytmFinalStatusModel att = PaytmFinalStatusModel.fromJson(data);
@@ -46,7 +47,6 @@ class FinalStatusProvider with ChangeNotifier {
   }
 
   String? reponseMsgRazor;
-
   Future transactionStatusRazorPay(String orderID) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
 
@@ -63,7 +63,7 @@ class FinalStatusProvider with ChangeNotifier {
         "${UIGuide.baseURL}/online-payment/razor-pay/verify-status-app?orderid=$orderID");
     try {
       if (response.statusCode == 200) {
-        Map<String, dynamic> data = json.decode(response.body);
+        Map<String, dynamic> data = await json.decode(response.body);
         log(data.toString());
 
         RazorpayFinalStatus raz = RazorpayFinalStatus.fromJson(data);
@@ -71,7 +71,41 @@ class FinalStatusProvider with ChangeNotifier {
 
         notifyListeners();
       } else {
-        print("Error in   Razor final transaction  response");
+        print("Error in   razor-pay final transaction  response");
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  String? reponseCodeWorldLine;
+  Future transactionStatusWorldLine(String orderID, String pgTraID) async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+    };
+    var response = await http.get(
+        Uri.parse(
+            "${UIGuide.baseURL}/online-payment/world-line/verify-status-app?orderid=$orderID&PaymentGatewayTransactionId=$pgTraID"),
+        headers: headers);
+
+    try {
+      if (response.statusCode == 200) {
+        Map<String, dynamic> data = await json.decode(response.body);
+
+        log(data.toString());
+
+        WorldLineStatusModel world = WorldLineStatusModel.fromJson(data);
+
+        reponseCodeWorldLine = world.reponseCode;
+
+        print(reponseCodeWorldLine);
+
+        notifyListeners();
+      } else {
+        print("Error in   WorldLine final transaction  response");
       }
     } catch (e) {
       print(e);

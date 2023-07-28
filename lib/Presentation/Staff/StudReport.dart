@@ -213,6 +213,11 @@ class _StudCurrentStudyingState extends State<StudCurrentStudying> {
                             ),
                             height: 40,
                             child: TextField(
+                              style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: UIGuide.BLACK,
+                                  overflow: TextOverflow.clip),
                               textAlign: TextAlign.center,
                               controller: studReportInitialValuesController1,
                               decoration: const InputDecoration(
@@ -340,6 +345,11 @@ class _StudCurrentStudyingState extends State<StudCurrentStudying> {
                             ),
                             height: 40,
                             child: TextField(
+                              style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: UIGuide.BLACK,
+                                  overflow: TextOverflow.clip),
                               textAlign: TextAlign.center,
                               controller: studReportcourseController1,
                               decoration: const InputDecoration(
@@ -446,6 +456,11 @@ class _StudCurrentStudyingState extends State<StudCurrentStudying> {
                             ),
                             height: 40,
                             child: TextField(
+                              style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: UIGuide.BLACK,
+                                  overflow: TextOverflow.clip),
                               textAlign: TextAlign.center,
                               controller: studReportDivisionController1,
                               decoration: const InputDecoration(
@@ -654,11 +669,12 @@ class _StudCurrentStudyingState extends State<StudCurrentStudying> {
                                                     color: const Color.fromARGB(
                                                         255, 236, 233, 233),
                                                     image: DecorationImage(
+                                                        fit: BoxFit.cover,
                                                         image: NetworkImage(provider
                                                                 .viewStudReportListt[
                                                                     index]
                                                                 .studentPhoto ??
-                                                            'https://c8.alamy.com/zooms/9/52c3ea49892f4e5789b31cadac8aa969/2gefnr1.jpg')),
+                                                            'https://gj-eschool-files-public.s3.ap-south-1.amazonaws.com/ess-connect/student/avathar-01.jpeg')),
                                                     borderRadius:
                                                         const BorderRadius.all(
                                                             Radius.circular(
@@ -1091,7 +1107,7 @@ class StudProfileView_Staff extends StatelessWidget {
                     foregroundColor: Colors.white,
                     foregroundImage: NetworkImage(
                       value.viewStudReportListt[indexx].studentPhoto ??
-                          'https://png.pngtree.com/element_our/png/20181129/male-student-icon-png_251938.jpg',
+                          'https://gj-eschool-files-public.s3.ap-south-1.amazonaws.com/ess-connect/student/avathar-02.jpeg',
                     ),
                     radius: 65,
                     backgroundColor: UIGuide.WHITE,
@@ -1357,6 +1373,11 @@ class _StudRelievedStaffState extends State<StudRelievedStaff> {
                             ),
                             height: 40,
                             child: TextField(
+                              style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: UIGuide.BLACK,
+                                  overflow: TextOverflow.clip),
                               textAlign: TextAlign.center,
                               controller: studReportInitialValuesController1,
                               decoration: const InputDecoration(
@@ -1484,6 +1505,11 @@ class _StudRelievedStaffState extends State<StudRelievedStaff> {
                             ),
                             height: 40,
                             child: TextField(
+                              style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: UIGuide.BLACK,
+                                  overflow: TextOverflow.clip),
                               textAlign: TextAlign.center,
                               controller: StudReportcourseController1,
                               decoration: const InputDecoration(
@@ -1585,6 +1611,11 @@ class _StudRelievedStaffState extends State<StudRelievedStaff> {
                             ),
                             height: 40,
                             child: TextField(
+                              style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: UIGuide.BLACK,
+                                  overflow: TextOverflow.clip),
                               textAlign: TextAlign.center,
                               controller: StudReportDivisionController1,
                               decoration: const InputDecoration(
@@ -1783,11 +1814,12 @@ class _StudRelievedStaffState extends State<StudRelievedStaff> {
                                                   color: const Color.fromARGB(
                                                       255, 236, 233, 233),
                                                   image: DecorationImage(
+                                                      fit: BoxFit.cover,
                                                       image: NetworkImage(provider
                                                               .viewStudReportListt[
                                                                   index]
                                                               .studentPhoto ??
-                                                          'https://c8.alamy.com/zooms/9/52c3ea49892f4e5789b31cadac8aa969/2gefnr1.jpg')),
+                                                          'https://gj-eschool-files-public.s3.ap-south-1.amazonaws.com/ess-connect/student/avathar-01.jpeg')),
                                                   borderRadius:
                                                       const BorderRadius.all(
                                                           Radius.circular(10))),
@@ -2191,6 +2223,11 @@ class _StudentReportBoth_StaffState extends State<StudentReportBoth_Staff> {
                             ),
                             height: 40,
                             child: TextField(
+                              style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: UIGuide.BLACK,
+                                  overflow: TextOverflow.clip),
                               textAlign: TextAlign.center,
                               controller: studReportInitialValuesController1,
                               decoration: const InputDecoration(
@@ -2318,6 +2355,11 @@ class _StudentReportBoth_StaffState extends State<StudentReportBoth_Staff> {
                             ),
                             height: 40,
                             child: TextField(
+                              style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: UIGuide.BLACK,
+                                  overflow: TextOverflow.clip),
                               textAlign: TextAlign.center,
                               controller: StudReportcourseController1,
                               decoration: const InputDecoration(
@@ -2424,6 +2466,11 @@ class _StudentReportBoth_StaffState extends State<StudentReportBoth_Staff> {
                             ),
                             height: 40,
                             child: TextField(
+                              style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: UIGuide.BLACK,
+                                  overflow: TextOverflow.clip),
                               textAlign: TextAlign.center,
                               controller: StudReportDivisionController1,
                               decoration: const InputDecoration(
@@ -2620,11 +2667,12 @@ class _StudentReportBoth_StaffState extends State<StudentReportBoth_Staff> {
                                                   color: const Color.fromARGB(
                                                       255, 236, 233, 233),
                                                   image: DecorationImage(
+                                                      fit: BoxFit.cover,
                                                       image: NetworkImage(provider
                                                               .viewStudReportListt[
                                                                   index]
                                                               .studentPhoto ??
-                                                          'https://c8.alamy.com/zooms/9/52c3ea49892f4e5789b31cadac8aa969/2gefnr1.jpg')),
+                                                          'https://gj-eschool-files-public.s3.ap-south-1.amazonaws.com/ess-connect/student/avathar-01.jpeg')),
                                                   borderRadius:
                                                       const BorderRadius.all(
                                                           Radius.circular(10))),

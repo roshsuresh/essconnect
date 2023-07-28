@@ -2,7 +2,6 @@ import 'dart:developer';
 import 'dart:io';
 import 'dart:isolate';
 import 'dart:ui';
-
 import 'package:essconnect/Application/Staff_Providers/GallerySendProviderStaff.dart';
 import 'package:essconnect/Constants.dart';
 import 'package:essconnect/utils/constants.dart';
@@ -265,15 +264,11 @@ class _ViewImageOntapStaffState extends State<ViewImageOntapStaff> {
       setState(() {});
     });
 
-    FlutterDownloader.registerCallback(ViewImageOntapStaff.downloadCallback);
+    FlutterDownloader.registerCallback(downloadCallback);
   }
 
-  @pragma('vm:entry-point')
-  static void downloadCallback(
-      String id, DownloadTaskStatus status, int progress) {
-    final SendPort? send =
-        IsolateNameServer.lookupPortByName('downloader_send_port');
-    send!.send([id, status, progress]);
+  static void downloadCallback(String id, int status, int progress) {
+    print('Download task ($id) is in status ($status) and $progress% complete');
   }
 
   @override

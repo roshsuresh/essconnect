@@ -106,6 +106,11 @@ class MarkentryReportByAdmin extends StatelessWidget {
                           SizedBox(
                             height: 40,
                             child: TextField(
+                              style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: UIGuide.BLACK,
+                                  overflow: TextOverflow.clip),
                               textAlign: TextAlign.center,
                               controller: coursecontroller1,
                               decoration: const InputDecoration(
@@ -202,6 +207,11 @@ class MarkentryReportByAdmin extends StatelessWidget {
                           SizedBox(
                             height: 40,
                             child: TextField(
+                              style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: UIGuide.BLACK,
+                                  overflow: TextOverflow.clip),
                               textAlign: TextAlign.center,
                               controller: divisionController1,
                               decoration: const InputDecoration(
@@ -299,6 +309,11 @@ class MarkentryReportByAdmin extends StatelessWidget {
                           SizedBox(
                             height: 40,
                             child: TextField(
+                              style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: UIGuide.BLACK,
+                                  overflow: TextOverflow.clip),
                               textAlign: TextAlign.center,
                               controller: partController1,
                               decoration: const InputDecoration(
@@ -392,6 +407,11 @@ class MarkentryReportByAdmin extends StatelessWidget {
                           SizedBox(
                             height: 40,
                             child: TextField(
+                              style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: UIGuide.BLACK,
+                                  overflow: TextOverflow.clip),
                               textAlign: TextAlign.center,
                               controller: divisionController1,
                               decoration: const InputDecoration(

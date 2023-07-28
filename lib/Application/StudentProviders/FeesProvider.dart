@@ -1406,6 +1406,7 @@ class FeesProvider with ChangeNotifier {
 
         gateway = att.gateway;
         print('gateway  $gateway');
+        setLoading(false);
 
         notifyListeners();
       } else {
