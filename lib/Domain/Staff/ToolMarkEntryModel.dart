@@ -51,18 +51,13 @@ class ToolCourseList {
 class ToolDivisionList {
   String? value;
   String? text;
-  Null? selected;
-  Null? active;
   int? order;
 
-  ToolDivisionList(
-      {this.value, this.text, this.selected, this.active, this.order});
+  ToolDivisionList({this.value, this.text, this.order});
 
   ToolDivisionList.fromJson(Map<String, dynamic> json) {
     value = json['value'];
     text = json['text'];
-    selected = json['selected'];
-    active = json['active'];
     order = json['order'];
   }
 
@@ -70,8 +65,6 @@ class ToolDivisionList {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['value'] = this.value;
     data['text'] = this.text;
-    data['selected'] = this.selected;
-    data['active'] = this.active;
     data['order'] = this.order;
     return data;
   }
@@ -80,17 +73,13 @@ class ToolDivisionList {
 class ToolParts {
   String? value;
   String? text;
-  Null? selected;
-  Null? active;
   int? order;
 
-  ToolParts({this.value, this.text, this.selected, this.active, this.order});
+  ToolParts({this.value, this.text, this.order});
 
   ToolParts.fromJson(Map<String, dynamic> json) {
     value = json['value'];
     text = json['text'];
-    selected = json['selected'];
-    active = json['active'];
     order = json['order'];
   }
 
@@ -98,8 +87,6 @@ class ToolParts {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['value'] = this.value;
     data['text'] = this.text;
-    data['selected'] = this.selected;
-    data['active'] = this.active;
     data['order'] = this.order;
     return data;
   }
@@ -108,28 +95,21 @@ class ToolParts {
 class ToolSubjectList {
   String? value;
   String? text;
-  Null? selected;
-  Null? active;
-  Null? order;
 
-  ToolSubjectList(
-      {this.value, this.text, this.selected, this.active, this.order});
+  ToolSubjectList({
+    this.value,
+    this.text,
+  });
 
   ToolSubjectList.fromJson(Map<String, dynamic> json) {
     value = json['value'];
     text = json['text'];
-    selected = json['selected'];
-    active = json['active'];
-    order = json['order'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['value'] = this.value;
     data['text'] = this.text;
-    data['selected'] = this.selected;
-    data['active'] = this.active;
-    data['order'] = this.order;
     return data;
   }
 }
@@ -159,28 +139,21 @@ class OptionalSubjectList {
 class ToolExamslist {
   String? value;
   String? text;
-  Null? selected;
-  Null? active;
-  Null? order;
 
-  ToolExamslist(
-      {this.value, this.text, this.selected, this.active, this.order});
+  ToolExamslist({
+    this.value,
+    this.text,
+  });
 
   ToolExamslist.fromJson(Map<String, dynamic> json) {
     value = json['value'];
     text = json['text'];
-    selected = json['selected'];
-    active = json['active'];
-    order = json['order'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['value'] = this.value;
     data['text'] = this.text;
-    data['selected'] = this.selected;
-    data['active'] = this.active;
-    data['order'] = this.order;
     return data;
   }
 }

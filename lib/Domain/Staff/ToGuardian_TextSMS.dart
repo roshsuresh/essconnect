@@ -171,17 +171,15 @@ class SmsFormatsCompleteview {
   String? id;
   String? name;
   String? smsBody;
-  Null? content;
+
   bool? isApproved;
 
-  SmsFormatsCompleteview(
-      {this.id, this.name, this.smsBody, this.content, this.isApproved});
+  SmsFormatsCompleteview({this.id, this.name, this.smsBody, this.isApproved});
 
   SmsFormatsCompleteview.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     smsBody = json['smsBody'];
-    content = json['content'];
     isApproved = json['isApproved'];
   }
 
@@ -190,7 +188,6 @@ class SmsFormatsCompleteview {
     data['id'] = id;
     data['name'] = name;
     data['smsBody'] = smsBody;
-    data['content'] = content;
     data['isApproved'] = isApproved;
     return data;
   }

@@ -51,28 +51,22 @@ class CourseExam {
 class DivisionsExam {
   String? value;
   String? text;
-  Null? selected;
-  Null? active;
-  Null? order;
 
-  DivisionsExam(
-      {this.value, this.text, this.selected, this.active, this.order});
+  DivisionsExam({
+    this.value,
+    this.text,
+  });
 
   DivisionsExam.fromJson(Map<String, dynamic> json) {
     value = json['value'];
     text = json['text'];
-    selected = json['selected'];
-    active = json['active'];
-    order = json['order'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['value'] = this.value;
     data['text'] = this.text;
-    data['selected'] = this.selected;
-    data['active'] = this.active;
-    data['order'] = this.order;
+
     return data;
   }
 }

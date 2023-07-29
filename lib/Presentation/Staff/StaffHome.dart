@@ -6,6 +6,7 @@ import 'package:essconnect/Application/StudentProviders/InternetConnection.dart'
 import 'package:essconnect/Presentation/Admin/WebViewLogin.dart';
 import 'package:essconnect/Presentation/Staff/AbsenteesReport.dart';
 import 'package:essconnect/Presentation/Staff/ExamTT.dart/ExamTTScreen.dart';
+import 'package:essconnect/Presentation/Staff/MarkEntry.dart';
 import 'package:essconnect/Presentation/Staff/MarkEntryNew.dart';
 import 'package:essconnect/Presentation/Staff/MissingReport.dart';
 import 'package:essconnect/Presentation/Staff/ScreenNotification.dart';
@@ -688,11 +689,12 @@ class _StaffHomeState extends State<StaffHome> {
                                                       PageTransition(
                                                         type: PageTransitionType
                                                             .rightToLeft,
-                                                        child: LoginScreenWeb(
-                                                          schdomain: schdomain,
-                                                        ),
+                                                        child:
+                                                            // LoginScreenWeb(
+                                                            //   schdomain: schdomain,
+                                                            // ),
 
-                                                        // MarkEntry(),
+                                                            MarkEntry(),
                                                         duration: Duration(
                                                             milliseconds: 300),
                                                         // childCurrent:this

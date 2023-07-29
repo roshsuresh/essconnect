@@ -56,8 +56,8 @@ class MeListStaff {
 class SubjectListStaff {
   String? id;
   String? subject;
-  Null? shortName;
-  Null? mainSubject;
+  String? shortName;
+  String? mainSubject;
   String? user;
   bool? isMainSub;
 

@@ -778,8 +778,7 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                         // Spacer(),
                         Consumer<ToolMarkEntryProviders>(
                           builder: (context, snapshot, child) {
-                            if (snapshot.toolOptionSubjectList.isEmpty ||
-                                snapshot.toolOptionSubjectList == null) {
+                            if (snapshot.toolOptionSubjectList.isEmpty) {
                               return Container(
                                 height: 0,
                                 width: 0,
@@ -2803,7 +2802,6 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                                                       criteria);
                                             }
 
-                                            style:
                                             ButtonStyle(
                                                 side: MaterialStateProperty.all(
                                                     BorderSide(

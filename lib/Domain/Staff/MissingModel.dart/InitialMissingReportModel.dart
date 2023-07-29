@@ -25,18 +25,13 @@ class CourseListMissingReport {
 class DivisionListReport {
   String? value;
   String? text;
-  Null? selected;
-  Null? active;
   int? order;
 
-  DivisionListReport(
-      {this.value, this.text, this.selected, this.active, this.order});
+  DivisionListReport({this.value, this.text, this.order});
 
   DivisionListReport.fromJson(Map<String, dynamic> json) {
     value = json['value'];
     text = json['text'];
-    selected = json['selected'];
-    active = json['active'];
     order = json['order'];
   }
 
@@ -44,8 +39,6 @@ class DivisionListReport {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['value'] = this.value;
     data['text'] = this.text;
-    data['selected'] = this.selected;
-    data['active'] = this.active;
     data['order'] = this.order;
     return data;
   }
@@ -56,18 +49,13 @@ class DivisionListReport {
 class PartListReport {
   String? value;
   String? text;
-  Null? selected;
-  Null? active;
   int? order;
 
-  PartListReport(
-      {this.value, this.text, this.selected, this.active, this.order});
+  PartListReport({this.value, this.text, this.order});
 
   PartListReport.fromJson(Map<String, dynamic> json) {
     value = json['value'];
     text = json['text'];
-    selected = json['selected'];
-    active = json['active'];
     order = json['order'];
   }
 
@@ -75,8 +63,6 @@ class PartListReport {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['value'] = this.value;
     data['text'] = this.text;
-    data['selected'] = this.selected;
-    data['active'] = this.active;
     data['order'] = this.order;
     return data;
   }
@@ -87,28 +73,22 @@ class PartListReport {
 class ExamsListReport {
   String? value;
   String? text;
-  Null? selected;
-  Null? active;
-  Null? order;
 
-  ExamsListReport(
-      {this.value, this.text, this.selected, this.active, this.order});
+  ExamsListReport({
+    this.value,
+    this.text,
+  });
 
   ExamsListReport.fromJson(Map<String, dynamic> json) {
     value = json['value'];
     text = json['text'];
-    selected = json['selected'];
-    active = json['active'];
-    order = json['order'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['value'] = this.value;
     data['text'] = this.text;
-    data['selected'] = this.selected;
-    data['active'] = this.active;
-    data['order'] = this.order;
+
     return data;
   }
 }
@@ -118,7 +98,7 @@ class ExamsListReport {
 class SubjectListModel {
   String? text;
   String? value;
-  Null? mainSubject;
+  String? mainSubject;
   int? id;
   String? divisionId;
   bool? isMainSub;
@@ -157,28 +137,22 @@ class SubjectListModel {
 class UsersListModel {
   String? value;
   String? text;
-  Null? selected;
-  Null? active;
-  Null? order;
 
-  UsersListModel(
-      {this.value, this.text, this.selected, this.active, this.order});
+  UsersListModel({
+    this.value,
+    this.text,
+  });
 
   UsersListModel.fromJson(Map<String, dynamic> json) {
     value = json['value'];
     text = json['text'];
-    selected = json['selected'];
-    active = json['active'];
-    order = json['order'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['value'] = this.value;
     data['text'] = this.text;
-    data['selected'] = this.selected;
-    data['active'] = this.active;
-    data['order'] = this.order;
+
     return data;
   }
 }

@@ -418,17 +418,14 @@ class MarkEntryDetails {
 class PartItem {
   String? value;
   String? text;
-  Null? selected;
-  Null? active;
+
   int? order;
 
-  PartItem({this.value, this.text, this.selected, this.active, this.order});
+  PartItem({this.value, this.text, this.order});
 
   PartItem.fromJson(Map<String, dynamic> json) {
     value = json['value'];
     text = json['text'];
-    selected = json['selected'];
-    active = json['active'];
     order = json['order'];
   }
 
@@ -436,8 +433,6 @@ class PartItem {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['value'] = value;
     data['text'] = text;
-    data['selected'] = selected;
-    data['active'] = active;
     data['order'] = order;
     return data;
   }
@@ -446,17 +441,13 @@ class PartItem {
 class GradeListNew {
   String? value;
   String? text;
-  Null? selected;
-  Null? active;
   int? order;
 
-  GradeListNew({this.value, this.text, this.selected, this.active, this.order});
+  GradeListNew({this.value, this.text, this.order});
 
   GradeListNew.fromJson(Map<String, dynamic> json) {
     value = json['value'];
     text = json['text'];
-    selected = json['selected'];
-    active = json['active'];
     order = json['order'];
   }
 
@@ -464,8 +455,6 @@ class GradeListNew {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['value'] = value;
     data['text'] = text;
-    data['selected'] = selected;
-    data['active'] = active;
     data['order'] = order;
     return data;
   }

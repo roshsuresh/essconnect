@@ -1,42 +1,41 @@
 class Results {
   String? id;
   String? createdStaffId;
-  Null? cancelledStaffId;
+  String? cancelledStaffId;
   String? createStaffName;
   String? entryDate;
   String? category;
-  Null? categoryId;
+  String? categoryId;
   String? displayTo;
   String? createdAt;
   String? title;
-  Null? role;
-  Null? matter;
-  Null? reason;
+  String? role;
+  String? matter;
+  String? reason;
   String? startDate;
   String? endDate;
   bool? approved;
   bool? cancelled;
-  Null? forClassTeachers;
 
-  Results(
-      {this.id,
-      this.createdStaffId,
-      this.cancelledStaffId,
-      this.createStaffName,
-      this.entryDate,
-      this.category,
-      this.categoryId,
-      this.displayTo,
-      this.createdAt,
-      this.title,
-      this.role,
-      this.matter,
-      this.reason,
-      this.startDate,
-      this.endDate,
-      this.approved,
-      this.cancelled,
-      this.forClassTeachers});
+  Results({
+    this.id,
+    this.createdStaffId,
+    this.cancelledStaffId,
+    this.createStaffName,
+    this.entryDate,
+    this.category,
+    this.categoryId,
+    this.displayTo,
+    this.createdAt,
+    this.title,
+    this.role,
+    this.matter,
+    this.reason,
+    this.startDate,
+    this.endDate,
+    this.approved,
+    this.cancelled,
+  });
 
   Results.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -56,7 +55,6 @@ class Results {
     endDate = json['endDate'];
     approved = json['approved'];
     cancelled = json['cancelled'];
-    forClassTeachers = json['forClassTeachers'];
   }
 
   Map<String, dynamic> toJson() {
@@ -78,7 +76,7 @@ class Results {
     data['endDate'] = this.endDate;
     data['approved'] = this.approved;
     data['cancelled'] = this.cancelled;
-    data['forClassTeachers'] = this.forClassTeachers;
+
     return data;
   }
 }
