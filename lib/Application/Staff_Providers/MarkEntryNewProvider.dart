@@ -274,7 +274,7 @@ class MarkEntryNewProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  //markentry view
+  //markentry view UAS
   bool _loading = false;
   bool get loading => _loading;
   setLoading(bool value) {
@@ -298,8 +298,8 @@ class MarkEntryNewProvider with ChangeNotifier {
   String? examUAS;
   bool includeTerminatedStudentsUAS = false;
   String? teMax;
-  String? peMaxUAS;
-  String? ceMaxUAS;
+  String? peMax;
+  String? ceMax;
   String? teCaptionUAS;
   String? peCaptionUAS;
   String? ceCaptionUAS;
@@ -378,8 +378,108 @@ class MarkEntryNewProvider with ChangeNotifier {
       examUAS = marku.exam;
       includeTerminatedStudentsUAS = marku.includeTerminatedStudents!;
       teMax = marku.teMax;
-      peMaxUAS = marku.peMax;
-      ceMaxUAS = marku.ceMax;
+      peMax = marku.peMax;
+      ceMax = marku.ceMax;
+      teCaptionUAS = marku.teCaption;
+      peCaptionUAS = marku.peCaption;
+      ceCaptionUAS = marku.ceCaption;
+      isBlockedUAS = marku.isBlocked;
+      examStatusUAS = marku.examStatus;
+      updatedAtUAS = marku.updatedAt;
+      setLoading(false);
+      List<MarkEntryDetailsUAS> templist = List<MarkEntryDetailsUAS>.from(
+          data['markEntry']["markEntryDetails"]
+              .map((x) => MarkEntryDetailsUAS.fromJson(x)));
+      studListUAS.addAll(templist);
+      if (data['markEntry']["gradeList"] != null) {
+        List<GradeListUAS> templist1 = List<GradeListUAS>.from(data['markEntry']
+                ["gradeList"]
+            .map((x) => GradeListUAS.fromJson(x)));
+        gradeListUAS.addAll(templist1);
+      }
+      partsUAS = data['markEntry']["partItem"];
+
+      setLoading(false);
+      notifyListeners();
+    } else {
+      setLoading(false);
+      print('Error in MarkEntryView UAS');
+    }
+    return true;
+  }
+
+  //markEntry State View
+
+  Future<bool> getMarkEntrySTATEView(
+      String course,
+      String division,
+      String exam,
+      String partID,
+      String subject,
+      String subSubject,
+      String optionSubject,
+      String typeCodee,
+      var partItems,
+      String subjectCaption,
+      bool terminated) async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    setLoading(true);
+
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+    };
+    setLoading(true);
+    var request = http.Request(
+        'POST', Uri.parse('${UIGuide.baseURL}/markentry-latest/state-view/'));
+    request.body = json.encode({
+      "course": course == "null" ? null : course,
+      "division": division == "null" ? null : division,
+      "subject": subject == "null" ? null : subject,
+      "subSubject": subSubject == "null" ? null : subSubject,
+      "optionSubject": optionSubject == "null" ? null : optionSubject,
+      "exam": exam == "null" ? null : exam,
+      "includeTerminatedStudents": terminated,
+      "tabulationTypeCode": typeCodee,
+      "part": partID == "null" ? null : partID,
+      "partItem": partItems,
+      "subjectCaption": subjectCaption == "null" ? null : subjectCaption
+    });
+
+    request.headers.addAll(headers);
+    setLoading(true);
+    http.StreamedResponse response = await request.send();
+    print(request.body);
+    if (response.statusCode == 200) {
+      setLoading(true);
+
+      print('---------------------correct-STATE-------------------------');
+      Map<String, dynamic> data =
+          jsonDecode(await response.stream.bytesToString());
+
+      // log(data.toString());
+      setLoading(true);
+
+      MarkEntryUASModel marku = MarkEntryUASModel.fromJson(data['markEntry']);
+
+      markEntryIdUAS = marku.markEntryId;
+      schoolIdUAS = marku.schoolId;
+      tabulationTypeCode = marku.tabulationTypeCode;
+      subjectCaptionUAS = marku.subjectCaption;
+      divisionUAS = marku.division;
+      courseUAS = marku.course;
+      partUAS = marku.part;
+      subjectUAS = marku.subject;
+      subSubjectUAS = marku.subSubject;
+      optionSubjectUAS = marku.optionSubject;
+      staffIdUAS = marku.staffId;
+      staffNameUAS = marku.staffName;
+      entryMethodUAS = marku.entryMethod;
+      examUAS = marku.exam;
+      includeTerminatedStudentsUAS = marku.includeTerminatedStudents!;
+      teMax = marku.teMax;
+      peMax = marku.peMax;
+      ceMax = marku.ceMax;
       teCaptionUAS = marku.teCaption;
       peCaptionUAS = marku.peCaption;
       ceCaptionUAS = marku.ceCaption;
@@ -454,6 +554,126 @@ class MarkEntryNewProvider with ChangeNotifier {
 
     var request = http.Request(
         'POST', Uri.parse('${UIGuide.baseURL}/markentry-latest/save'));
+
+    request.body = json.encode({
+      "markEntryId": markEntryId == "null" ? null : markEntryId,
+      "schoolId": schoolId == "null" ? null : schoolId,
+      "tabulationTypeCode":
+          tabulationTypeCode == "null" ? null : tabulationTypeCode,
+      "subjectCaption": subjectCaption == "null" ? null : subjectCaption,
+      "division": division == "null" ? null : division,
+      "course": course == "null" ? null : course,
+      "part": part == "null" ? null : part,
+      "subject": subject == "null" ? null : subject,
+      "subSubject": subSubject == "null" ? null : subSubject,
+      "optionSubject": optionSubject == "null" ? null : optionSubject,
+      "staffId": staffId == "null" ? null : staffId,
+      "staffName": staffName == "null" ? null : staffName,
+      "entryMethod": entryMethod == "null" ? null : entryMethod,
+      "exam": exam == "null" ? null : exam,
+      "includeTerminatedStudents": includeTerminatedStudents,
+      "teMax": teMax == "null" ? null : teMax,
+      "peMax": peMax == "null" ? null : peMax,
+      "ceMax": ceMax == "null" ? null : ceMax,
+      "teCaption": teCaption == "null" ? null : teCaption,
+      "peCaption": peCaption == "null" ? null : peCaption,
+      "ceCaption": ceCaption == "null" ? null : ceCaption,
+      "isBlocked": false,
+      "examStatus": examStatus == "null" ? null : examStatus,
+      "updatedAt": updatedAt == "null" ? null : updatedAt,
+      "markEntryDetails": studentListSave,
+      "gradeList": gradeListSave.isEmpty ? null : gradeListSave,
+      "partItem": partItemm
+    });
+    log(request.body);
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+    setLoadSave(true);
+
+    if (response.statusCode == 200) {
+      setLoadSave(true);
+
+      print('Correct........______________________________');
+      print(await response.stream.bytesToString());
+      await AwesomeDialog(
+              dismissOnTouchOutside: false,
+              dismissOnBackKeyPress: false,
+              context: context,
+              dialogType: DialogType.success,
+              animType: AnimType.rightSlide,
+              headerAnimationLoop: false,
+              title: 'Success',
+              desc: 'Successfully Saved',
+              btnOkOnPress: () async {
+                await clearStudentMEList();
+              },
+              btnOkColor: Colors.green)
+          .show();
+
+      setLoadSave(false);
+
+      notifyListeners();
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        elevation: 10,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+        ),
+        duration: Duration(seconds: 1),
+        margin: EdgeInsets.only(bottom: 80, left: 30, right: 30),
+        behavior: SnackBarBehavior.floating,
+        content: Text(
+          'Something Went Wrong....',
+          textAlign: TextAlign.center,
+        ),
+      ));
+      setLoadSave(false);
+      print('Error Response save');
+    }
+    setLoadSave(false);
+  }
+
+  //State save
+
+  Future markEntrySTATESave(
+      String markEntryId,
+      String schoolId,
+      String tabulationTypeCode,
+      String subjectCaption,
+      String division,
+      String course,
+      String part,
+      String subject,
+      String subSubject,
+      String optionSubject,
+      String staffId,
+      String staffName,
+      String entryMethod,
+      String exam,
+      bool includeTerminatedStudents,
+      String teMax,
+      String peMax,
+      String ceMax,
+      String teCaption,
+      String peCaption,
+      String ceCaption,
+      String examStatus,
+      BuildContext context,
+      String updatedAt,
+      List studentListSave,
+      List gradeListSave,
+      var partItemm) async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    setLoadSave(true);
+
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+    };
+
+    var request = http.Request(
+        'POST', Uri.parse('${UIGuide.baseURL}/markentry-latest/state-save/'));
 
     request.body = json.encode({
       "markEntryId": markEntryId == "null" ? null : markEntryId,
