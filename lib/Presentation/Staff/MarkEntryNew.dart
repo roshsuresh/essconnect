@@ -98,7 +98,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                     Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => MarkEntryNew()));
+                            builder: (context) => const MarkEntryNew()));
                   },
                   icon: const Icon(Icons.refresh))
             ],
@@ -221,6 +221,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                               await snapshot
                                                   .getMarkEntryDivisionValues(
                                                       courseId);
+                                              await value.clearStudentMEList();
                                               Navigator.of(context).pop();
                                             },
                                             title: Text(
@@ -381,6 +382,8 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                   await snapshot
                                                       .getMarkEntryPartValues(
                                                           courseId, divisionId);
+                                                  await value
+                                                      .clearStudentMEList();
 
                                                   Navigator.of(context).pop();
                                                 },
@@ -540,6 +543,8 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                   await snapshot
                                                       .getMarkEntrySubjectValues(
                                                           divisionId, partId);
+                                                  await value
+                                                      .clearStudentMEList();
 
                                                   Navigator.of(context).pop();
                                                 },
@@ -681,6 +686,8 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                           subjectId,
                                                           divisionId,
                                                           partId);
+                                                  await value
+                                                      .clearStudentMEList();
 
                                                   Navigator.of(context).pop();
                                                 },
@@ -797,7 +804,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                       Colors.blue.shade100,
                                                   selectedColor:
                                                       UIGuide.PRIMARY2,
-                                                  onTap: () {
+                                                  onTap: () async {
                                                     markEntryOptionSubListController
                                                         .text = snapshot
                                                             .markEntryOptionSubjectList[
@@ -830,6 +837,8 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
 
                                                     print(optionSub);
                                                     print(subsubject);
+                                                    await value
+                                                        .clearStudentMEList();
 
                                                     Navigator.of(context).pop();
                                                   },
@@ -1058,7 +1067,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                               ),
                               SizedBox(
                                 width: size.width * .35,
-                                child: Text(
+                                child: const Text(
                                   "Include Terminated Students",
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
@@ -1129,32 +1138,56 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
 
                                 value.studListUAS.clear();
                                 value.gradeListUAS.clear();
-                                if (value.tabulationTypeCode == "UAS") {
-                                  await value.getMarkEntryUASView(
-                                      course,
-                                      division,
-                                      exam,
-                                      part,
-                                      subject,
-                                      subsubject.toString(),
-                                      optionSub.toString(),
-                                      value.typeCode.toString(),
-                                      partItems,
-                                      subDescription.toString(),
-                                      value.isTerminated);
+
+                                if (course.isEmpty ||
+                                    division.isEmpty ||
+                                    part.isEmpty ||
+                                    subject.isEmpty ||
+                                    exam.isEmpty) {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(const SnackBar(
+                                    elevation: 10,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(10)),
+                                    ),
+                                    duration: Duration(seconds: 3),
+                                    margin: EdgeInsets.only(
+                                        bottom: 80, left: 30, right: 30),
+                                    behavior: SnackBarBehavior.floating,
+                                    content: Text(
+                                      "Select mandatory fields..!",
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ));
                                 } else {
-                                  await value.getMarkEntrySTATEView(
-                                      course,
-                                      division,
-                                      exam,
-                                      part,
-                                      subject,
-                                      subsubject.toString(),
-                                      optionSub.toString(),
-                                      value.typeCode.toString(),
-                                      partItems,
-                                      subDescription.toString(),
-                                      value.isTerminated);
+                                  if (value.typeCode == "UAS") {
+                                    await value.getMarkEntryUASView(
+                                        course,
+                                        division,
+                                        exam,
+                                        part,
+                                        subject,
+                                        subsubject.toString(),
+                                        optionSub.toString(),
+                                        value.typeCode.toString(),
+                                        partItems,
+                                        subDescription.toString(),
+                                        value.isTerminated);
+                                  } else {
+                                    await value.getMarkEntrySTATEView(
+                                        course,
+                                        division,
+                                        exam,
+                                        part,
+                                        subject,
+                                        subsubject.toString(),
+                                        optionSub.toString(),
+                                        value.typeCode.toString(),
+                                        partItems,
+                                        subDescription.toString(),
+                                        value.isTerminated);
+                                  }
                                 }
 
                                 print("Maxscore $maxScrore");
@@ -1170,6 +1203,20 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                           ),
                   ],
                 ),
+                value.examStatusUAS == "Verified"
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text("Verified By :",
+                              style: TextStyle(color: Colors.green)),
+                          Text(value.staffNameUAS ?? "--",
+                              style: const TextStyle(color: Colors.black))
+                        ],
+                      )
+                    : const SizedBox(
+                        height: 0,
+                        width: 0,
+                      ),
                 Consumer<MarkEntryNewProvider>(builder: (context, provider, _) {
                   if (provider.loading) {
                     return LimitedBox(
@@ -1314,7 +1361,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                           .attendance;
 
                                                       print(
-                                                          "attendace   $attendancee");
+                                                          "attendaceeeee   $attendancee");
                                                     });
                                                   },
                                                   child: Container(
@@ -1427,6 +1474,17 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                           .addListener(() {
                                                         value1;
                                                       });
+                                                      _controllers[index]
+                                                              .text
+                                                              .isEmpty
+                                                          ? provider
+                                                              .studListUAS[
+                                                                  index]
+                                                              .teMark = null
+                                                          : _controllers[index]
+                                                              .text;
+                                                      print(
+                                                          "***************${_controllers[index].text}");
 
                                                       _controllers[index]
                                                               .selection =
@@ -1445,6 +1503,14 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                         _controllers[index]
                                                             .clear();
                                                       }
+                                                      String resultt =
+                                                          _controllers[index]
+                                                              .text;
+                                                      provider
+                                                              .studListUAS[index]
+                                                              .teMark =
+                                                          double.tryParse(
+                                                              resultt);
                                                     },
                                                   ),
                                                 ),
@@ -2397,16 +2463,22 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                             109))),
                                                         onChanged: (value1) {
                                                           teMarkController[
+                                                                  index]
+                                                              .addListener(() {
+                                                            value1;
+                                                          });
+
+                                                          teMarkController[
                                                                       index]
-                                                                  .text =
-                                                              value
+                                                                  .text
+                                                                  .isEmpty
+                                                              ? value
                                                                   .studListUAS[
                                                                       index]
-                                                                  .teMark
-                                                                  .toString();
-                                                          teMarkController[
-                                                                  index]
-                                                              .text = value1;
+                                                                  .teMark = null
+                                                              : teMarkController[
+                                                                      index]
+                                                                  .text;
 
                                                           teMarkController[
                                                                       index]
@@ -2428,6 +2500,16 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                     index]
                                                                 .clear();
                                                           }
+                                                          String resultt =
+                                                              teMarkController[
+                                                                      index]
+                                                                  .text;
+                                                          value
+                                                                  .studListUAS[
+                                                                      index]
+                                                                  .teMark =
+                                                              double.tryParse(
+                                                                  resultt);
                                                         },
                                                       ),
                                                     ),
@@ -2550,16 +2632,23 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                             109))),
                                                         onChanged: (value1) {
                                                           practicalMarkController[
+                                                                  index]
+                                                              .addListener(() {
+                                                            value1;
+                                                          });
+
+                                                          practicalMarkController[
                                                                       index]
-                                                                  .text =
-                                                              value
+                                                                  .text
+                                                                  .isEmpty
+                                                              ? value
                                                                   .studListUAS[
                                                                       index]
-                                                                  .peMark
-                                                                  .toString();
-                                                          practicalMarkController[
-                                                                  index]
-                                                              .text = value1;
+                                                                  .peMark = null
+                                                              : practicalMarkController[
+                                                                      index]
+                                                                  .text;
+
                                                           practicalMarkController[
                                                                       index]
                                                                   .selection =
@@ -2580,6 +2669,16 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                     index]
                                                                 .clear();
                                                           }
+                                                          String resultt =
+                                                              practicalMarkController[
+                                                                      index]
+                                                                  .text;
+                                                          value
+                                                                  .studListUAS[
+                                                                      index]
+                                                                  .peMark =
+                                                              double.tryParse(
+                                                                  resultt);
                                                         },
                                                       ),
                                                     ),
@@ -2703,14 +2802,20 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                           109))),
                                                       onChanged: (value1) {
                                                         ceMarkController[index]
-                                                                .text =
-                                                            value
+                                                            .addListener(() {
+                                                          value1;
+                                                        });
+
+                                                        ceMarkController[index]
+                                                                .text
+                                                                .isEmpty
+                                                            ? value
                                                                 .studListUAS[
                                                                     index]
-                                                                .ceMark
-                                                                .toString();
-                                                        ceMarkController[index]
-                                                            .text = value1;
+                                                                .ceMark = null
+                                                            : ceMarkController[
+                                                                    index]
+                                                                .text;
                                                         ceMarkController[index]
                                                                 .selection =
                                                             TextSelection.collapsed(
@@ -2731,6 +2836,14 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                   index]
                                                               .clear();
                                                         }
+                                                        String resultt =
+                                                            ceMarkController[
+                                                                    index]
+                                                                .text;
+                                                        value.studListUAS[index]
+                                                                .ceMark =
+                                                            double.tryParse(
+                                                                resultt);
                                                       },
                                                     ),
                                                   ),
@@ -2781,7 +2894,8 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                   markfieldController.text = pre;
                                   teMarkController
                                       .add(new TextEditingController());
-
+                                  ceMarkController
+                                      .add(new TextEditingController());
                                   practicalMarkController
                                       .add(new TextEditingController());
                                   teMarkController[index].text.isEmpty
@@ -2869,8 +2983,10 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                           color: UIGuide
                                                               .light_Purple),
                                                       text: value
-                                                          .studListUAS[index]
-                                                          .studentName,
+                                                              .studListUAS[
+                                                                  index]
+                                                              .studentName ??
+                                                          '',
                                                     ),
                                                   ),
                                                 ),
@@ -3047,14 +3163,21 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                           109))),
                                                       onChanged: (value1) {
                                                         teMarkController[index]
-                                                                .text =
-                                                            value
+                                                            .addListener(() {
+                                                          value1;
+                                                        });
+
+                                                        teMarkController[index]
+                                                                .text
+                                                                .isEmpty
+                                                            ? value
                                                                 .studListUAS[
                                                                     index]
-                                                                .teMark
-                                                                .toString();
-                                                        teMarkController[index]
-                                                            .text = value1;
+                                                                .teMark = null
+                                                            : teMarkController[
+                                                                    index]
+                                                                .text;
+
                                                         teMarkController[index]
                                                                 .selection =
                                                             TextSelection.collapsed(
@@ -3075,6 +3198,14 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                   index]
                                                               .clear();
                                                         }
+                                                        String resultt =
+                                                            teMarkController[
+                                                                    index]
+                                                                .text;
+                                                        value.studListUAS[index]
+                                                                .teMark =
+                                                            double.tryParse(
+                                                                resultt);
                                                       },
                                                     ),
                                                   ),
@@ -3191,16 +3322,23 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                           109))),
                                                       onChanged: (value1) {
                                                         practicalMarkController[
+                                                                index]
+                                                            .addListener(() {
+                                                          value1;
+                                                        });
+
+                                                        practicalMarkController[
                                                                     index]
-                                                                .text =
-                                                            value
+                                                                .text
+                                                                .isEmpty
+                                                            ? value
                                                                 .studListUAS[
                                                                     index]
-                                                                .peMark
-                                                                .toString();
-                                                        practicalMarkController[
-                                                                index]
-                                                            .text = value1;
+                                                                .peMark = null
+                                                            : practicalMarkController[
+                                                                    index]
+                                                                .text;
+
                                                         practicalMarkController[
                                                                     index]
                                                                 .selection =
@@ -3222,6 +3360,15 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                   index]
                                                               .clear();
                                                         }
+
+                                                        String resultt =
+                                                            practicalMarkController[
+                                                                    index]
+                                                                .text;
+                                                        value.studListUAS[index]
+                                                                .peMark =
+                                                            double.tryParse(
+                                                                resultt);
                                                       },
                                                     ),
                                                   ),
@@ -3256,7 +3403,9 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
 //////////////--------------------------     TE MARK  --  CE MARK -------------------///////////////
 ///////////////----------------------------------------------------------------------///////////////
 
-                    else if (provider.teMax != null && provider.ceMax != null) {
+                    else if (provider.teMax != null &&
+                        provider.ceMax != null &&
+                        provider.peMax == null) {
                       return LimitedBox(
                           maxHeight: size.height / 1.85,
                           child: Padding(
@@ -3274,6 +3423,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                       .add(new TextEditingController());
                                   practicalMarkController
                                       .add(new TextEditingController());
+
                                   teMarkController[index].text.isEmpty
                                       ? teMarkController[index].text =
                                           value.studListUAS[index].teMark ==
@@ -3359,8 +3509,10 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                           color: UIGuide
                                                               .light_Purple),
                                                       text: value
-                                                          .studListUAS[index]
-                                                          .studentName,
+                                                              .studListUAS[
+                                                                  index]
+                                                              .studentName ??
+                                                          '',
                                                     ),
                                                   ),
                                                 ),
@@ -3538,14 +3690,21 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                           109))),
                                                       onChanged: (value1) {
                                                         teMarkController[index]
-                                                                .text =
-                                                            value
+                                                            .addListener(() {
+                                                          value1;
+                                                        });
+
+                                                        teMarkController[index]
+                                                                .text
+                                                                .isEmpty
+                                                            ? value
                                                                 .studListUAS[
                                                                     index]
-                                                                .teMark
-                                                                .toString();
-                                                        teMarkController[index]
-                                                            .text = value1;
+                                                                .teMark = null
+                                                            : teMarkController[
+                                                                    index]
+                                                                .text;
+
                                                         teMarkController[index]
                                                                 .selection =
                                                             TextSelection.collapsed(
@@ -3566,6 +3725,14 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                   index]
                                                               .clear();
                                                         }
+                                                        String resultt =
+                                                            teMarkController[
+                                                                    index]
+                                                                .text;
+                                                        value.studListUAS[index]
+                                                                .teMark =
+                                                            double.tryParse(
+                                                                resultt);
                                                       },
                                                     ),
                                                   ),
@@ -3579,7 +3746,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                       width: 50,
                                                       child: Center(
                                                           child: Text(
-                                                        "(${value.teMax})",
+                                                        "(${value.teMax ?? ""})",
                                                         style: const TextStyle(
                                                           fontSize: 15,
                                                         ),
@@ -3682,14 +3849,21 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                           109))),
                                                       onChanged: (value1) {
                                                         ceMarkController[index]
-                                                                .text =
-                                                            value
+                                                            .addListener(() {
+                                                          value1;
+                                                        });
+
+                                                        ceMarkController[index]
+                                                                .text
+                                                                .isEmpty
+                                                            ? value
                                                                 .studListUAS[
                                                                     index]
-                                                                .ceMark
-                                                                .toString();
-                                                        ceMarkController[index]
-                                                            .text = value1;
+                                                                .ceMark = null
+                                                            : ceMarkController[
+                                                                    index]
+                                                                .text;
+
                                                         ceMarkController[index]
                                                                 .selection =
                                                             TextSelection.collapsed(
@@ -3710,6 +3884,14 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                   index]
                                                               .clear();
                                                         }
+                                                        String resultt =
+                                                            ceMarkController[
+                                                                    index]
+                                                                .text;
+                                                        value.studListUAS[index]
+                                                                .ceMark =
+                                                            double.tryParse(
+                                                                resultt);
                                                       },
                                                     ),
                                                   ),
@@ -3723,7 +3905,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                       width: 50,
                                                       child: Center(
                                                           child: Text(
-                                                        "(${value.ceMax})",
+                                                        "(${value.ceMax ?? ""})",
                                                         style: const TextStyle(
                                                           fontSize: 15,
                                                         ),
@@ -3744,7 +3926,9 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
 //////////////--------------------------     PE MARK  --  CE MARK -------------------///////////////
 ///////////////----------------------------------------------------------------------///////////////
 
-                    else if (provider.ceMax != null && provider.peMax != null) {
+                    else if (provider.ceMax != null &&
+                        provider.peMax != null &&
+                        provider.teMax == null) {
                       return LimitedBox(
                           maxHeight: size.height / 1.85,
                           child: Padding(
@@ -3757,6 +3941,8 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                   String pre = 'P';
                                   markfieldController.text = pre;
 
+                                  teMarkController
+                                      .add(new TextEditingController());
                                   ceMarkController
                                       .add(new TextEditingController());
                                   practicalMarkController
@@ -3848,8 +4034,10 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                           color: UIGuide
                                                               .light_Purple),
                                                       text: value
-                                                          .studListUAS[index]
-                                                          .studentName,
+                                                              .studListUAS[
+                                                                  index]
+                                                              .studentName ??
+                                                          "",
                                                     ),
                                                   ),
                                                 ),
@@ -4026,16 +4214,23 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                           109))),
                                                       onChanged: (value1) {
                                                         practicalMarkController[
+                                                                index]
+                                                            .addListener(() {
+                                                          value1;
+                                                        });
+
+                                                        practicalMarkController[
                                                                     index]
-                                                                .text =
-                                                            value
+                                                                .text
+                                                                .isEmpty
+                                                            ? value
                                                                 .studListUAS[
                                                                     index]
-                                                                .peMark
-                                                                .toString();
-                                                        practicalMarkController[
-                                                                index]
-                                                            .text = value1;
+                                                                .peMark = null
+                                                            : practicalMarkController[
+                                                                    index]
+                                                                .text;
+
                                                         practicalMarkController[
                                                                     index]
                                                                 .selection =
@@ -4057,6 +4252,14 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                   index]
                                                               .clear();
                                                         }
+                                                        String resultt =
+                                                            practicalMarkController[
+                                                                    index]
+                                                                .text;
+                                                        value.studListUAS[index]
+                                                                .peMark =
+                                                            double.tryParse(
+                                                                resultt);
                                                       },
                                                     ),
                                                   ),
@@ -4070,7 +4273,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                       width: 50,
                                                       child: Center(
                                                           child: Text(
-                                                        "(${value.peMax})",
+                                                        "(${value.peMax ?? ''})",
                                                         style: const TextStyle(
                                                           fontSize: 15,
                                                         ),
@@ -4173,14 +4376,21 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                           109))),
                                                       onChanged: (value1) {
                                                         ceMarkController[index]
-                                                                .text =
-                                                            value
+                                                            .addListener(() {
+                                                          value1;
+                                                        });
+
+                                                        ceMarkController[index]
+                                                                .text
+                                                                .isEmpty
+                                                            ? value
                                                                 .studListUAS[
                                                                     index]
-                                                                .ceMark
-                                                                .toString();
-                                                        ceMarkController[index]
-                                                            .text = value1;
+                                                                .ceMark = null
+                                                            : ceMarkController[
+                                                                    index]
+                                                                .text;
+
                                                         ceMarkController[index]
                                                                 .selection =
                                                             TextSelection.collapsed(
@@ -4201,6 +4411,14 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                   index]
                                                               .clear();
                                                         }
+                                                        String resultt =
+                                                            ceMarkController[
+                                                                    index]
+                                                                .text;
+                                                        value.studListUAS[index]
+                                                                .ceMark =
+                                                            double.tryParse(
+                                                                resultt);
                                                       },
                                                     ),
                                                   ),
@@ -4214,7 +4432,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                       width: 50,
                                                       child: Center(
                                                           child: Text(
-                                                        "(${value.ceMax})",
+                                                        "(${value.ceMax ?? ""})",
                                                         style: const TextStyle(
                                                           fontSize: 15,
                                                         ),
@@ -4250,7 +4468,10 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                   markfieldController.text = pre;
                                   teMarkController
                                       .add(new TextEditingController());
-
+                                  ceMarkController
+                                      .add(new TextEditingController());
+                                  practicalMarkController
+                                      .add(new TextEditingController());
                                   teMarkController[index].text.isEmpty
                                       ? teMarkController[index].text =
                                           value.studListUAS[index].teMark ==
@@ -4327,8 +4548,10 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                           color: UIGuide
                                                               .light_Purple),
                                                       text: value
-                                                          .studListUAS[index]
-                                                          .studentName,
+                                                              .studListUAS[
+                                                                  index]
+                                                              .studentName ??
+                                                          "",
                                                     ),
                                                   ),
                                                 ),
@@ -4498,14 +4721,20 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                           109))),
                                                       onChanged: (value1) {
                                                         teMarkController[index]
-                                                                .text =
-                                                            value
+                                                            .addListener(() {
+                                                          value1;
+                                                        });
+
+                                                        teMarkController[index]
+                                                                .text
+                                                                .isEmpty
+                                                            ? value
                                                                 .studListUAS[
                                                                     index]
-                                                                .teMark
-                                                                .toString();
-                                                        teMarkController[index]
-                                                            .text = value1;
+                                                                .teMark = null
+                                                            : teMarkController[
+                                                                    index]
+                                                                .text;
                                                         teMarkController[index]
                                                                 .selection =
                                                             TextSelection.collapsed(
@@ -4526,6 +4755,14 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                   index]
                                                               .clear();
                                                         }
+                                                        String resultt =
+                                                            teMarkController[
+                                                                    index]
+                                                                .text;
+                                                        value.studListUAS[index]
+                                                                .teMark =
+                                                            double.tryParse(
+                                                                resultt);
                                                       },
                                                     ),
                                                   ),
@@ -4539,7 +4776,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                       width: 50,
                                                       child: Center(
                                                           child: Text(
-                                                        "(${value.teMax})",
+                                                        "(${value.teMax ?? ""})",
                                                         style: const TextStyle(
                                                           fontSize: 15,
                                                         ),
@@ -4574,9 +4811,12 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                   String pre = 'P';
                                   markfieldController.text = pre;
 
+                                  teMarkController
+                                      .add(new TextEditingController());
+                                  ceMarkController
+                                      .add(new TextEditingController());
                                   practicalMarkController
                                       .add(new TextEditingController());
-
                                   practicalMarkController[index].text.isEmpty
                                       ? practicalMarkController[index].text =
                                           value.studListUAS[index].peMark ==
@@ -4654,8 +4894,10 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                           color: UIGuide
                                                               .light_Purple),
                                                       text: value
-                                                          .studListUAS[index]
-                                                          .studentName,
+                                                              .studListUAS[
+                                                                  index]
+                                                              .studentName ??
+                                                          "",
                                                     ),
                                                   ),
                                                 ),
@@ -4825,16 +5067,23 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                           109))),
                                                       onChanged: (value1) {
                                                         practicalMarkController[
+                                                                index]
+                                                            .addListener(() {
+                                                          value1;
+                                                        });
+
+                                                        practicalMarkController[
                                                                     index]
-                                                                .text =
-                                                            value
+                                                                .text
+                                                                .isEmpty
+                                                            ? value
                                                                 .studListUAS[
                                                                     index]
-                                                                .peMark
-                                                                .toString();
-                                                        practicalMarkController[
-                                                                index]
-                                                            .text = value1;
+                                                                .peMark = null
+                                                            : practicalMarkController[
+                                                                    index]
+                                                                .text;
+
                                                         practicalMarkController[
                                                                     index]
                                                                 .selection =
@@ -4856,6 +5105,14 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                   index]
                                                               .clear();
                                                         }
+                                                        String resultt =
+                                                            practicalMarkController[
+                                                                    index]
+                                                                .text;
+                                                        value.studListUAS[index]
+                                                                .peMark =
+                                                            double.tryParse(
+                                                                resultt);
                                                       },
                                                     ),
                                                   ),
@@ -4869,7 +5126,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                       width: 50,
                                                       child: Center(
                                                           child: Text(
-                                                        "(${value.peMax})",
+                                                        "(${value.peMax ?? ""})",
                                                         style: const TextStyle(
                                                           fontSize: 15,
                                                         ),
@@ -4904,7 +5161,11 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                   String pre = 'P';
                                   markfieldController.text = pre;
 
+                                  teMarkController
+                                      .add(new TextEditingController());
                                   ceMarkController
+                                      .add(new TextEditingController());
+                                  practicalMarkController
                                       .add(new TextEditingController());
 
                                   ceMarkController[index].text.isEmpty
@@ -4983,8 +5244,10 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                           color: UIGuide
                                                               .light_Purple),
                                                       text: value
-                                                          .studListUAS[index]
-                                                          .studentName,
+                                                              .studListUAS[
+                                                                  index]
+                                                              .studentName ??
+                                                          "",
                                                     ),
                                                   ),
                                                 ),
@@ -5154,14 +5417,21 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                           109))),
                                                       onChanged: (value1) {
                                                         ceMarkController[index]
-                                                                .text =
-                                                            value
+                                                            .addListener(() {
+                                                          value1;
+                                                        });
+
+                                                        ceMarkController[index]
+                                                                .text
+                                                                .isEmpty
+                                                            ? value
                                                                 .studListUAS[
                                                                     index]
-                                                                .ceMark
-                                                                .toString();
-                                                        ceMarkController[index]
-                                                            .text = value1;
+                                                                .ceMark = null
+                                                            : ceMarkController[
+                                                                    index]
+                                                                .text;
+
                                                         ceMarkController[index]
                                                                 .selection =
                                                             TextSelection.collapsed(
@@ -5182,6 +5452,14 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                   index]
                                                               .clear();
                                                         }
+                                                        String resultt =
+                                                            ceMarkController[
+                                                                    index]
+                                                                .text;
+                                                        value.studListUAS[index]
+                                                                .ceMark =
+                                                            double.tryParse(
+                                                                resultt);
                                                       },
                                                     ),
                                                   ),
@@ -5195,7 +5473,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                       width: 50,
                                                       child: Center(
                                                           child: Text(
-                                                        "(${value.ceMax})",
+                                                        "(${value.ceMax ?? ""})",
                                                         style: const TextStyle(
                                                           fontSize: 15,
                                                         ),
@@ -5244,13 +5522,12 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                       .add(TextEditingController());
 
                                   teGradeController1[index].text.isEmpty
-                                      ? teGradeController1[index].text = value
-                                                  .studListUAS[index]
-                                                  .teGradeId ==
-                                              null
-                                          ? teGradeController1[index].text
-                                          : value.studListUAS[index].teGradeId
-                                              .toString()
+                                      ? teGradeController1[index].text =
+                                          value.studListUAS[index].teGrade ==
+                                                  null
+                                              ? teGradeController1[index].text
+                                              : value.studListUAS[index].teGrade
+                                                  .toString()
                                       : teGradeController1[index].text;
                                   teGradeController[index].text.isEmpty
                                       ? teGradeController[index].text =
@@ -5268,13 +5545,13 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                       .add(TextEditingController());
 
                                   praticalGradeController1[index].text.isEmpty
-                                      ? praticalGradeController1[index]
-                                          .text = value.studListUAS[index]
-                                                  .peGradeId ==
-                                              null
-                                          ? praticalGradeController1[index].text
-                                          : value.studListUAS[index].peGradeId
-                                              .toString()
+                                      ? praticalGradeController1[index].text =
+                                          value.studListUAS[index].peGrade ==
+                                                  null
+                                              ? praticalGradeController1[index]
+                                                  .text
+                                              : value.studListUAS[index].peGrade
+                                                  .toString()
                                       : praticalGradeController1[index].text;
                                   praticalGradeController[index].text.isEmpty
                                       ? praticalGradeController[index].text =
@@ -5293,13 +5570,12 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                       .add(TextEditingController());
 
                                   ceGradeController1[index].text.isEmpty
-                                      ? ceGradeController1[index].text = value
-                                                  .studListUAS[index]
-                                                  .ceGradeId ==
-                                              null
-                                          ? ceGradeController1[index].text
-                                          : value.studListUAS[index].ceGradeId
-                                              .toString()
+                                      ? ceGradeController1[index].text =
+                                          value.studListUAS[index].ceGrade ==
+                                                  null
+                                              ? ceGradeController1[index].text
+                                              : value.studListUAS[index].ceGrade
+                                                  .toString()
                                       : ceGradeController1[index].text;
                                   ceGradeController[index].text.isEmpty
                                       ? ceGradeController[index].text =
@@ -5466,8 +5742,10 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                           color: UIGuide
                                                               .light_Purple),
                                                       text: value
-                                                          .studListUAS[index]
-                                                          .studentName,
+                                                              .studListUAS[
+                                                                  index]
+                                                              .studentName ??
+                                                          "",
                                                     ),
                                                   ),
                                                 ),
@@ -5526,7 +5804,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                                 () {
                                                                               teGradeController[index].text = snapshot.gradeListUAS[indx].value ?? '--';
                                                                               teGradeController1[index].text = snapshot.gradeListUAS[indx].value ?? '--';
-                                                                              value.studListUAS[index].teGradeId = teGradeController1[index].text;
+                                                                              value.studListUAS[index].teGrade = teGradeController1[index].text;
                                                                               value.studListUAS[index].teGrade = teGradeController[index].text;
                                                                               value.studListUAS[index].teGrade = value.studListUAS[index].teGrade;
                                                                               Navigator.of(context).pop();
@@ -5571,6 +5849,11 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                     style: const TextStyle(
                                                                         fontSize:
                                                                             14,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w500,
+                                                                        color: UIGuide
+                                                                            .BLACK,
                                                                         overflow:
                                                                             TextOverflow.clip),
                                                                     textAlign:
@@ -5599,7 +5882,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                       border:
                                                                           OutlineInputBorder(),
                                                                       labelText:
-                                                                          "  Select grade",
+                                                                          "  Select ",
                                                                       hintText:
                                                                           "grade",
                                                                     ),
@@ -5608,7 +5891,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                       teGradeController1[index].text = value
                                                                           .studListUAS[
                                                                               index]
-                                                                          .teGradeId
+                                                                          .teGrade
                                                                           .toString();
                                                                       teGradeController1[index]
                                                                               .text =
@@ -5668,7 +5951,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                                 () {
                                                                               ceGradeController[index].text = snapshot.gradeListUAS[indx].value ?? '--';
                                                                               ceGradeController1[index].text = snapshot.gradeListUAS[indx].value ?? '--';
-                                                                              value.studListUAS[index].ceGradeId = ceGradeController1[index].text;
+                                                                              value.studListUAS[index].ceGrade = ceGradeController1[index].text;
                                                                               value.studListUAS[index].ceGrade = ceGradeController[index].text;
                                                                               value.studListUAS[index].ceGrade = value.studListUAS[index].ceGrade;
                                                                               Navigator.of(context).pop();
@@ -5707,6 +5990,11 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                     style: const TextStyle(
                                                                         fontSize:
                                                                             14,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w500,
+                                                                        color: UIGuide
+                                                                            .BLACK,
                                                                         overflow:
                                                                             TextOverflow.clip),
                                                                     textAlign:
@@ -5750,7 +6038,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                       ceGradeController1[index].text = value
                                                                           .studListUAS[
                                                                               index]
-                                                                          .ceGradeId
+                                                                          .ceGrade
                                                                           .toString();
                                                                       ceGradeController1[index]
                                                                               .text =
@@ -5810,7 +6098,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                                 () {
                                                                               praticalGradeController[index].text = snapshot.gradeListUAS[indx].value ?? '--';
                                                                               praticalGradeController1[index].text = snapshot.gradeListUAS[indx].value ?? '--';
-                                                                              value.studListUAS[index].peGradeId = praticalGradeController1[index].text;
+                                                                              value.studListUAS[index].peGrade = praticalGradeController1[index].text;
                                                                               value.studListUAS[index].peGrade = praticalGradeController[index].text;
                                                                               value.studListUAS[index].peGrade = value.studListUAS[index].peGrade;
                                                                               Navigator.of(context).pop();
@@ -5849,6 +6137,11 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                     style: const TextStyle(
                                                                         fontSize:
                                                                             14,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w500,
+                                                                        color: UIGuide
+                                                                            .BLACK,
                                                                         overflow:
                                                                             TextOverflow.clip),
                                                                     textAlign:
@@ -5892,7 +6185,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                       praticalGradeController1[index].text = value
                                                                           .studListUAS[
                                                                               index]
-                                                                          .peGradeId
+                                                                          .peGrade
                                                                           .toString();
                                                                       praticalGradeController1[index]
                                                                               .text =
@@ -5940,13 +6233,12 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                       .add(TextEditingController());
 
                                   teGradeController1[index].text.isEmpty
-                                      ? teGradeController1[index].text = value
-                                                  .studListUAS[index]
-                                                  .teGradeId ==
-                                              null
-                                          ? teGradeController1[index].text
-                                          : value.studListUAS[index].teGradeId
-                                              .toString()
+                                      ? teGradeController1[index].text =
+                                          value.studListUAS[index].teGrade ==
+                                                  null
+                                              ? teGradeController1[index].text
+                                              : value.studListUAS[index].teGrade
+                                                  .toString()
                                       : teGradeController1[index].text;
                                   teGradeController[index].text.isEmpty
                                       ? teGradeController[index].text =
@@ -5964,13 +6256,12 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                       .add(TextEditingController());
 
                                   ceGradeController1[index].text.isEmpty
-                                      ? ceGradeController1[index].text = value
-                                                  .studListUAS[index]
-                                                  .ceGradeId ==
-                                              null
-                                          ? ceGradeController1[index].text
-                                          : value.studListUAS[index].ceGradeId
-                                              .toString()
+                                      ? ceGradeController1[index].text =
+                                          value.studListUAS[index].ceGrade ==
+                                                  null
+                                              ? ceGradeController1[index].text
+                                              : value.studListUAS[index].ceGrade
+                                                  .toString()
                                       : ceGradeController1[index].text;
                                   ceGradeController[index].text.isEmpty
                                       ? ceGradeController[index].text =
@@ -6121,8 +6412,10 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                           color: UIGuide
                                                               .light_Purple),
                                                       text: value
-                                                          .studListUAS[index]
-                                                          .studentName,
+                                                              .studListUAS[
+                                                                  index]
+                                                              .studentName ??
+                                                          "",
                                                     ),
                                                   ),
                                                 ),
@@ -6181,8 +6474,8 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                                 () {
                                                                               teGradeController[index].text = snapshot.gradeListUAS[indx].value ?? '--';
                                                                               teGradeController1[index].text = snapshot.gradeListUAS[indx].value ?? '--';
-                                                                              value.studListUAS[index].teGradeId = teGradeController1[index].text;
-                                                                              value.studListUAS[index].teGrade = teGradeController[index].text;
+                                                                              value.studListUAS[index].teGrade = teGradeController1[index].text;
+                                                                              // value.studListUAS[index].teGrade = teGradeController[index].text;
                                                                               value.studListUAS[index].teGrade = value.studListUAS[index].teGrade;
                                                                               Navigator.of(context).pop();
                                                                             },
@@ -6226,6 +6519,11 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                     style: const TextStyle(
                                                                         fontSize:
                                                                             14,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w500,
+                                                                        color: UIGuide
+                                                                            .BLACK,
                                                                         overflow:
                                                                             TextOverflow.clip),
                                                                     textAlign:
@@ -6263,7 +6561,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                       teGradeController1[index].text = value
                                                                           .studListUAS[
                                                                               index]
-                                                                          .teGradeId
+                                                                          .teGrade
                                                                           .toString();
                                                                       teGradeController1[index]
                                                                               .text =
@@ -6323,9 +6621,10 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                                 () {
                                                                               ceGradeController[index].text = snapshot.gradeListUAS[indx].value ?? '--';
                                                                               ceGradeController1[index].text = snapshot.gradeListUAS[indx].value ?? '--';
-                                                                              value.studListUAS[index].ceGradeId = ceGradeController1[index].text;
-                                                                              value.studListUAS[index].ceGrade = ceGradeController[index].text;
+                                                                              value.studListUAS[index].ceGrade = ceGradeController1[index].text;
+                                                                              //   value.studListUAS[index].ceGrade = ceGradeController[index].text;
                                                                               value.studListUAS[index].ceGrade = value.studListUAS[index].ceGrade;
+                                                                              print(provider.studListUAS[index].peGrade);
                                                                               Navigator.of(context).pop();
                                                                             },
                                                                             title:
@@ -6362,6 +6661,11 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                     style: const TextStyle(
                                                                         fontSize:
                                                                             14,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w500,
+                                                                        color: UIGuide
+                                                                            .BLACK,
                                                                         overflow:
                                                                             TextOverflow.clip),
                                                                     textAlign:
@@ -6405,7 +6709,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                       ceGradeController1[index].text = value
                                                                           .studListUAS[
                                                                               index]
-                                                                          .ceGradeId
+                                                                          .ceGrade
                                                                           .toString();
                                                                       ceGradeController1[index]
                                                                               .text =
@@ -6453,13 +6757,12 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                       .add(TextEditingController());
 
                                   teGradeController1[index].text.isEmpty
-                                      ? teGradeController1[index].text = value
-                                                  .studListUAS[index]
-                                                  .teGradeId ==
-                                              null
-                                          ? teGradeController1[index].text
-                                          : value.studListUAS[index].teGradeId
-                                              .toString()
+                                      ? teGradeController1[index].text =
+                                          value.studListUAS[index].teGrade ==
+                                                  null
+                                              ? teGradeController1[index].text
+                                              : value.studListUAS[index].teGrade
+                                                  .toString()
                                       : teGradeController1[index].text;
                                   teGradeController[index].text.isEmpty
                                       ? teGradeController[index].text =
@@ -6477,13 +6780,13 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                       .add(TextEditingController());
 
                                   praticalGradeController1[index].text.isEmpty
-                                      ? praticalGradeController1[index]
-                                          .text = value.studListUAS[index]
-                                                  .peGradeId ==
-                                              null
-                                          ? praticalGradeController1[index].text
-                                          : value.studListUAS[index].peGrade
-                                              .toString()
+                                      ? praticalGradeController1[index].text =
+                                          value.studListUAS[index].peGrade ==
+                                                  null
+                                              ? praticalGradeController1[index]
+                                                  .text
+                                              : value.studListUAS[index].peGrade
+                                                  .toString()
                                       : praticalGradeController1[index].text;
                                   praticalGradeController[index].text.isEmpty
                                       ? praticalGradeController[index].text =
@@ -6635,8 +6938,10 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                           color: UIGuide
                                                               .light_Purple),
                                                       text: value
-                                                          .studListUAS[index]
-                                                          .studentName,
+                                                              .studListUAS[
+                                                                  index]
+                                                              .studentName ??
+                                                          "",
                                                     ),
                                                   ),
                                                 ),
@@ -6695,7 +7000,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                                 () {
                                                                               teGradeController[index].text = snapshot.gradeListUAS[indx].value ?? '--';
                                                                               teGradeController1[index].text = snapshot.gradeListUAS[indx].value ?? '--';
-                                                                              value.studListUAS[index].teGradeId = teGradeController1[index].text;
+                                                                              value.studListUAS[index].teGrade = teGradeController1[index].text;
                                                                               value.studListUAS[index].teGrade = teGradeController[index].text;
                                                                               value.studListUAS[index].teGrade = value.studListUAS[index].teGrade;
                                                                               Navigator.of(context).pop();
@@ -6740,6 +7045,11 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                     style: const TextStyle(
                                                                         fontSize:
                                                                             14,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w500,
+                                                                        color: UIGuide
+                                                                            .BLACK,
                                                                         overflow:
                                                                             TextOverflow.clip),
                                                                     textAlign:
@@ -6777,7 +7087,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                       teGradeController1[index].text = value
                                                                           .studListUAS[
                                                                               index]
-                                                                          .teGradeId
+                                                                          .teGrade
                                                                           .toString();
                                                                       teGradeController1[index]
                                                                               .text =
@@ -6837,7 +7147,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                                 () {
                                                                               praticalGradeController[index].text = snapshot.gradeListUAS[indx].value ?? '--';
                                                                               praticalGradeController1[index].text = snapshot.gradeListUAS[indx].value ?? '--';
-                                                                              value.studListUAS[index].peGradeId = praticalGradeController1[index].text;
+                                                                              value.studListUAS[index].peGrade = praticalGradeController1[index].text;
                                                                               value.studListUAS[index].peGrade = praticalGradeController[index].text;
                                                                               value.studListUAS[index].peGrade = value.studListUAS[index].peGrade;
                                                                               Navigator.of(context).pop();
@@ -6876,6 +7186,11 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                     style: const TextStyle(
                                                                         fontSize:
                                                                             14,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w500,
+                                                                        color: UIGuide
+                                                                            .BLACK,
                                                                         overflow:
                                                                             TextOverflow.clip),
                                                                     textAlign:
@@ -6919,7 +7234,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                       praticalGradeController1[index].text = value
                                                                           .studListUAS[
                                                                               index]
-                                                                          .peGradeId
+                                                                          .peGrade
                                                                           .toString();
                                                                       praticalGradeController1[index]
                                                                               .text =
@@ -6967,13 +7282,13 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                       .add(TextEditingController());
 
                                   praticalGradeController1[index].text.isEmpty
-                                      ? praticalGradeController1[index]
-                                          .text = value.studListUAS[index]
-                                                  .peGradeId ==
-                                              null
-                                          ? praticalGradeController1[index].text
-                                          : value.studListUAS[index].peGradeId
-                                              .toString()
+                                      ? praticalGradeController1[index].text =
+                                          value.studListUAS[index].peGrade ==
+                                                  null
+                                              ? praticalGradeController1[index]
+                                                  .text
+                                              : value.studListUAS[index].peGrade
+                                                  .toString()
                                       : praticalGradeController1[index].text;
                                   praticalGradeController[index].text.isEmpty
                                       ? praticalGradeController[index].text =
@@ -6992,13 +7307,12 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                       .add(TextEditingController());
 
                                   ceGradeController1[index].text.isEmpty
-                                      ? ceGradeController1[index].text = value
-                                                  .studListUAS[index]
-                                                  .ceGradeId ==
-                                              null
-                                          ? ceGradeController1[index].text
-                                          : value.studListUAS[index].ceGradeId
-                                              .toString()
+                                      ? ceGradeController1[index].text =
+                                          value.studListUAS[index].ceGrade ==
+                                                  null
+                                              ? ceGradeController1[index].text
+                                              : value.studListUAS[index].ceGrade
+                                                  .toString()
                                       : ceGradeController1[index].text;
                                   ceGradeController[index].text.isEmpty
                                       ? ceGradeController[index].text =
@@ -7149,8 +7463,10 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                           color: UIGuide
                                                               .light_Purple),
                                                       text: value
-                                                          .studListUAS[index]
-                                                          .studentName,
+                                                              .studListUAS[
+                                                                  index]
+                                                              .studentName ??
+                                                          "",
                                                     ),
                                                   ),
                                                 ),
@@ -7209,7 +7525,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                                 () {
                                                                               ceGradeController[index].text = snapshot.gradeListUAS[indx].value ?? '--';
                                                                               ceGradeController1[index].text = snapshot.gradeListUAS[indx].value ?? '--';
-                                                                              value.studListUAS[index].ceGradeId = ceGradeController1[index].text;
+                                                                              value.studListUAS[index].ceGrade = ceGradeController1[index].text;
                                                                               value.studListUAS[index].ceGrade = ceGradeController[index].text;
                                                                               value.studListUAS[index].ceGrade = value.studListUAS[index].ceGrade;
                                                                               Navigator.of(context).pop();
@@ -7248,6 +7564,11 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                     style: const TextStyle(
                                                                         fontSize:
                                                                             14,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w500,
+                                                                        color: UIGuide
+                                                                            .BLACK,
                                                                         overflow:
                                                                             TextOverflow.clip),
                                                                     textAlign:
@@ -7291,7 +7612,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                       ceGradeController1[index].text = value
                                                                           .studListUAS[
                                                                               index]
-                                                                          .ceGradeId
+                                                                          .ceGrade
                                                                           .toString();
                                                                       ceGradeController1[index]
                                                                               .text =
@@ -7351,7 +7672,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                                 () {
                                                                               praticalGradeController[index].text = snapshot.gradeListUAS[indx].value ?? '--';
                                                                               praticalGradeController1[index].text = snapshot.gradeListUAS[indx].value ?? '--';
-                                                                              value.studListUAS[index].peGradeId = praticalGradeController1[index].text;
+                                                                              value.studListUAS[index].peGrade = praticalGradeController1[index].text;
                                                                               value.studListUAS[index].peGrade = praticalGradeController[index].text;
                                                                               value.studListUAS[index].peGrade = value.studListUAS[index].peGrade;
                                                                               Navigator.of(context).pop();
@@ -7390,6 +7711,11 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                     style: const TextStyle(
                                                                         fontSize:
                                                                             14,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w500,
+                                                                        color: UIGuide
+                                                                            .BLACK,
                                                                         overflow:
                                                                             TextOverflow.clip),
                                                                     textAlign:
@@ -7433,7 +7759,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                       praticalGradeController1[index].text = value
                                                                           .studListUAS[
                                                                               index]
-                                                                          .peGradeId
+                                                                          .peGrade
                                                                           .toString();
                                                                       praticalGradeController1[index]
                                                                               .text =
@@ -7480,13 +7806,12 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                       .add(TextEditingController());
 
                                   teGradeController1[index].text.isEmpty
-                                      ? teGradeController1[index].text = value
-                                                  .studListUAS[index]
-                                                  .teGradeId ==
-                                              null
-                                          ? teGradeController1[index].text
-                                          : value.studListUAS[index].teGradeId
-                                              .toString()
+                                      ? teGradeController1[index].text =
+                                          value.studListUAS[index].teGrade ==
+                                                  null
+                                              ? teGradeController1[index].text
+                                              : value.studListUAS[index].teGrade
+                                                  .toString()
                                       : teGradeController1[index].text;
                                   teGradeController[index].text.isEmpty
                                       ? teGradeController[index].text =
@@ -7621,8 +7946,10 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                           color: UIGuide
                                                               .light_Purple),
                                                       text: value
-                                                          .studListUAS[index]
-                                                          .studentName,
+                                                              .studListUAS[
+                                                                  index]
+                                                              .studentName ??
+                                                          "",
                                                     ),
                                                   ),
                                                 ),
@@ -7681,7 +8008,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                                 () {
                                                                               teGradeController[index].text = snapshot.gradeListUAS[indx].value ?? '--';
                                                                               teGradeController1[index].text = snapshot.gradeListUAS[indx].value ?? '--';
-                                                                              value.studListUAS[index].teGradeId = teGradeController1[index].text;
+                                                                              value.studListUAS[index].teGrade = teGradeController1[index].text;
                                                                               value.studListUAS[index].teGrade = teGradeController[index].text;
                                                                               value.studListUAS[index].teGrade = value.studListUAS[index].teGrade;
                                                                               Navigator.of(context).pop();
@@ -7726,6 +8053,11 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                     style: const TextStyle(
                                                                         fontSize:
                                                                             14,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w500,
+                                                                        color: UIGuide
+                                                                            .BLACK,
                                                                         overflow:
                                                                             TextOverflow.clip),
                                                                     textAlign:
@@ -7763,7 +8095,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                       teGradeController1[index].text = value
                                                                           .studListUAS[
                                                                               index]
-                                                                          .teGradeId
+                                                                          .teGrade
                                                                           .toString();
                                                                       teGradeController1[index]
                                                                               .text =
@@ -7811,13 +8143,13 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                       .add(TextEditingController());
 
                                   praticalGradeController1[index].text.isEmpty
-                                      ? praticalGradeController1[index]
-                                          .text = value.studListUAS[index]
-                                                  .peGradeId ==
-                                              null
-                                          ? praticalGradeController1[index].text
-                                          : value.studListUAS[index].peGradeId
-                                              .toString()
+                                      ? praticalGradeController1[index].text =
+                                          value.studListUAS[index].peGrade ==
+                                                  null
+                                              ? praticalGradeController1[index]
+                                                  .text
+                                              : value.studListUAS[index].peGrade
+                                                  .toString()
                                       : praticalGradeController1[index].text;
                                   praticalGradeController[index].text.isEmpty
                                       ? praticalGradeController[index].text =
@@ -7953,8 +8285,10 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                           color: UIGuide
                                                               .light_Purple),
                                                       text: value
-                                                          .studListUAS[index]
-                                                          .studentName,
+                                                              .studListUAS[
+                                                                  index]
+                                                              .studentName ??
+                                                          "",
                                                     ),
                                                   ),
                                                 ),
@@ -8013,7 +8347,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                                 () {
                                                                               praticalGradeController[index].text = snapshot.gradeListUAS[indx].value ?? '--';
                                                                               praticalGradeController1[index].text = snapshot.gradeListUAS[indx].value ?? '--';
-                                                                              value.studListUAS[index].peGradeId = praticalGradeController1[index].text;
+                                                                              value.studListUAS[index].peGrade = praticalGradeController1[index].text;
                                                                               value.studListUAS[index].peGrade = praticalGradeController[index].text;
                                                                               value.studListUAS[index].peGrade = value.studListUAS[index].peGrade;
                                                                               Navigator.of(context).pop();
@@ -8052,6 +8386,11 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                     style: const TextStyle(
                                                                         fontSize:
                                                                             14,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w500,
+                                                                        color: UIGuide
+                                                                            .BLACK,
                                                                         overflow:
                                                                             TextOverflow.clip),
                                                                     textAlign:
@@ -8095,7 +8434,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                       praticalGradeController1[index].text = value
                                                                           .studListUAS[
                                                                               index]
-                                                                          .peGradeId
+                                                                          .peGrade
                                                                           .toString();
                                                                       praticalGradeController1[index]
                                                                               .text =
@@ -8143,13 +8482,12 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                       .add(TextEditingController());
 
                                   ceGradeController1[index].text.isEmpty
-                                      ? ceGradeController1[index].text = value
-                                                  .studListUAS[index]
-                                                  .ceGradeId ==
-                                              null
-                                          ? ceGradeController1[index].text
-                                          : value.studListUAS[index].ceGradeId
-                                              .toString()
+                                      ? ceGradeController1[index].text =
+                                          value.studListUAS[index].ceGrade ==
+                                                  null
+                                              ? ceGradeController1[index].text
+                                              : value.studListUAS[index].ceGrade
+                                                  .toString()
                                       : ceGradeController1[index].text;
                                   ceGradeController[index].text.isEmpty
                                       ? ceGradeController[index].text =
@@ -8284,8 +8622,10 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                           color: UIGuide
                                                               .light_Purple),
                                                       text: value
-                                                          .studListUAS[index]
-                                                          .studentName,
+                                                              .studListUAS[
+                                                                  index]
+                                                              .studentName ??
+                                                          "",
                                                     ),
                                                   ),
                                                 ),
@@ -8344,7 +8684,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                                 () {
                                                                               ceGradeController[index].text = snapshot.gradeListUAS[indx].value ?? '--';
                                                                               ceGradeController1[index].text = snapshot.gradeListUAS[indx].value ?? '--';
-                                                                              value.studListUAS[index].ceGradeId = ceGradeController1[index].text;
+                                                                              value.studListUAS[index].ceGrade = ceGradeController1[index].text;
                                                                               value.studListUAS[index].ceGrade = ceGradeController[index].text;
                                                                               value.studListUAS[index].ceGrade = value.studListUAS[index].ceGrade;
                                                                               Navigator.of(context).pop();
@@ -8383,6 +8723,11 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                     style: const TextStyle(
                                                                         fontSize:
                                                                             14,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w500,
+                                                                        color: UIGuide
+                                                                            .BLACK,
                                                                         overflow:
                                                                             TextOverflow.clip),
                                                                     textAlign:
@@ -8426,7 +8771,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                       ceGradeController1[index].text = value
                                                                           .studListUAS[
                                                                               index]
-                                                                          .ceGradeId
+                                                                          .ceGrade
                                                                           .toString();
                                                                       ceGradeController1[index]
                                                                               .text =
@@ -8458,7 +8803,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                       );
                     }
                   } else {
-                    return SizedBox(
+                    return const SizedBox(
                       height: 0,
                       width: 0,
                     );
@@ -8613,26 +8958,51 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                               },
                             );
                           }
+                        } else if ((value.tabulationTypeCode == "STATE") &&
+                            value.entryMethodUAS == "Grade") {
+                          for (int i = 0; i < value.studListUAS.length; i++) {
+                            obj.add(
+                              {
+                                "attendance": value.studListUAS[i].attendance,
+                                "studentName": value.studListUAS[i].studentName,
+                                "rollNo": value.studListUAS[i].rollNo,
+                                "studentId": value.studListUAS[i].studentId,
+                                "markEntryDetId":
+                                    value.studListUAS[i].markEntryDetId,
+                                "teMark": null,
+                                "peMark": null,
+                                "ceMark": null,
+                                "teGrade": value.studListUAS[i].teGrade,
+                                "peGrade": value.studListUAS[i].peGrade,
+                                "ceGrade": value.studListUAS[i].ceGrade,
+                                "total": null,
+                                "teGradeId": null,
+                                "peGradeId": null,
+                                "ceGradeId": null,
+                                "tabMarkEntryId": null,
+                                "isEdited": false,
+                                "isDisabled": false
+                              },
+                            );
+                          }
+                        } else {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            elevation: 10,
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10)),
+                            ),
+                            duration: Duration(seconds: 1),
+                            margin: EdgeInsets.only(
+                                bottom: 80, left: 30, right: 30),
+                            behavior: SnackBarBehavior.floating,
+                            content: Text(
+                              "Something went wrong...!",
+                              textAlign: TextAlign.center,
+                            ),
+                          ));
                         }
-
-                        // } else {
-                        //   ScaffoldMessenger.of(context)
-                        //       .showSnackBar(const SnackBar(
-                        //     elevation: 10,
-                        //     shape: RoundedRectangleBorder(
-                        //       borderRadius:
-                        //           BorderRadius.all(Radius.circular(10)),
-                        //     ),
-                        //     duration: Duration(seconds: 1),
-                        //     margin: EdgeInsets.only(
-                        //         bottom: 80, left: 30, right: 30),
-                        //     behavior: SnackBarBehavior.floating,
-                        //     content: Text(
-                        //       "Something went wrong...!",
-                        //       textAlign: TextAlign.center,
-                        //     ),
-                        //   ));
-                        // }
 
                         // //log("Litsssss   $obj");
 
@@ -8703,7 +9073,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                     obj,
                                     value.gradeListUAS,
                                     value.partsUAS);
-                            value.examStatus = "Entered";
+                            value.examStatusUAS = "Entered";
                           } else {
                             value.loadSave
                                 ? spinkitLoader()
@@ -8735,7 +9105,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                     obj,
                                     value.gradeListUAS,
                                     value.partsUAS);
-                            value.examStatus = "Entered";
+                            value.examStatusUAS = "Entered";
                           }
                         }
                       },
@@ -8747,11 +9117,14 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                     );
             }),
             kWidth,
+            //  Consumer<MarkEntryNewProvider>(builder: (context, value, child) {
+
+            kWidth,
             Consumer<MarkEntryNewProvider>(builder: (context, value, child) {
-              return value.loading
+              return value.loadVerify
                   ? MaterialButton(
                       onPressed: () {},
-                      color: Colors.green,
+                      color: UIGuide.light_Purple,
                       child: const Text(
                         'Verifying...',
                         style: TextStyle(color: Colors.white),
@@ -8759,8 +9132,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                     )
                   : MaterialButton(
                       onPressed: () {
-                        value.examStatus == "Pending" &&
-                                _controllers[0].text.isEmpty
+                        value.examStatusUAS == "Verified"
                             ? ScaffoldMessenger.of(context)
                                 .showSnackBar(const SnackBar(
                                 elevation: 10,
@@ -8824,148 +9196,60 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                               List obj = [];
                                               obj.clear();
 
-                                              if (value.tabulationTypeCode ==
-                                                      "UAS" &&
-                                                  value.teCaptionUAS ==
-                                                      "Mark") {
-                                                for (int i = 0;
-                                                    i <
-                                                        value
-                                                            .studListUAS.length;
-                                                    i++) {
-                                                  obj.add(
-                                                    {
-                                                      "attendance": value
-                                                          .studListUAS[i]
-                                                          .attendance
-                                                          .toString(),
-                                                      "studentName": value
-                                                          .studListUAS[i]
-                                                          .studentName
-                                                          .toString(),
-                                                      "rollNo": value
-                                                          .studListUAS[i]
-                                                          .rollNo,
-                                                      "studentId": value
-                                                          .studListUAS[i]
-                                                          .studentId
-                                                          .toString(),
-                                                      "markEntryDetId": value
-                                                          .studListUAS[i]
-                                                          .markEntryDetId
-                                                          .toString(),
-                                                      "teMark": value
-                                                          .studListUAS[i]
-                                                          .teMark,
-                                                      "peMark": value
-                                                          .studListUAS[i]
-                                                          .peMark,
-                                                      "ceMark": value
-                                                          .studListUAS[i]
-                                                          .ceMark,
-                                                      "teGrade": value
-                                                          .studListUAS[i]
-                                                          .teGrade
-                                                          .toString(),
-                                                      "peGrade": value
-                                                          .studListUAS[i]
-                                                          .peGrade
-                                                          .toString(),
-                                                      "ceGrade": value
-                                                          .studListUAS[i]
-                                                          .ceGrade
-                                                          .toString(),
-                                                      "total": value
-                                                          .studListUAS[i].total,
-                                                      "teGradeId": value
-                                                          .studListUAS[i]
-                                                          .teGradeId
-                                                          .toString(),
-                                                      "peGradeId": value
-                                                          .studListUAS[i]
-                                                          .peGradeId
-                                                          .toString(),
-                                                      "ceGradeId": value
-                                                          .studListUAS[i]
-                                                          .ceGradeId
-                                                          .toString(),
-                                                      "tabMarkEntryId": value
-                                                          .studListUAS[i]
-                                                          .tabMarkEntryId
-                                                          .toString(),
-                                                      "isEdited": false,
-                                                      "isDisabled": false
-                                                    },
-                                                  );
-                                                }
+                                              // if (value.tabulationTypeCode ==
+                                              //         "UAS" &&
+                                              //     value.teCaptionUAS ==
+                                              //         "Mark") {
+                                              for (int i = 0;
+                                                  i < value.studListUAS.length;
+                                                  i++) {
+                                                obj.add(
+                                                  {
+                                                    "attendance": value
+                                                        .studListUAS[i]
+                                                        .attendance,
+                                                    "studentName": value
+                                                        .studListUAS[i]
+                                                        .studentName,
+                                                    "rollNo": value
+                                                        .studListUAS[i].rollNo,
+                                                    "studentId": value
+                                                        .studListUAS[i]
+                                                        .studentId,
+                                                    "markEntryDetId": value
+                                                        .studListUAS[i]
+                                                        .markEntryDetId,
+                                                    "teMark": value
+                                                        .studListUAS[i].teMark,
+                                                    "peMark": value
+                                                        .studListUAS[i].peMark,
+                                                    "ceMark": value
+                                                        .studListUAS[i].ceMark,
+                                                    "teGrade": value
+                                                        .studListUAS[i].teGrade,
+                                                    "peGrade": value
+                                                        .studListUAS[i].peGrade,
+                                                    "ceGrade": value
+                                                        .studListUAS[i].ceGrade,
+                                                    "total": value
+                                                        .studListUAS[i].total,
+                                                    "teGradeId": value
+                                                        .studListUAS[i]
+                                                        .teGradeId,
+                                                    "peGradeId": value
+                                                        .studListUAS[i]
+                                                        .peGradeId,
+                                                    "ceGradeId": value
+                                                        .studListUAS[i]
+                                                        .ceGradeId,
+                                                    "tabMarkEntryId": value
+                                                        .studListUAS[i]
+                                                        .tabMarkEntryId,
+                                                    "isEdited": false,
+                                                    "isDisabled": false
+                                                  },
+                                                );
                                               }
-                                              // List obj = [];
-                                              // obj.clear();
-                                              // print(
-                                              //     "length:  ${value.studListUAS.length}");
-                                              // for (int i = 0;
-                                              //     i <
-                                              //         value
-                                              //             .studentMEList.length;
-                                              //     i++) {
-                                              //   obj.add(
-                                              //     {
-                                              //       "name": value
-                                              //           .studentMEList[i].name
-                                              //           .toString(),
-                                              //       "rollNo": value
-                                              //           .studentMEList[i].rollNo
-                                              //           .toString(),
-                                              //       "studentPresentDetailsId": value
-                                              //           .studentMEList[i]
-                                              //           .studentPresentDetailsId
-                                              //           .toString(),
-                                              //       "teMark": value
-                                              //           .studentMEList[i]
-                                              //           .teMark,
-                                              //       "peMark": value
-                                              //           .studentMEList[i]
-                                              //           .peMark,
-                                              //       "ceMark": value
-                                              //           .studentMEList[i]
-                                              //           .ceMark,
-                                              //       "teGrade": value
-                                              //           .studentMEList[i]
-                                              //           .teGrade,
-                                              //       "peGrade": value
-                                              //           .studentMEList[i]
-                                              //           .peGrade,
-                                              //       "ceGrade": value
-                                              //           .studentMEList[i]
-                                              //           .ceGrade,
-                                              //       "totalMark": value
-                                              //           .studentMEList[i]
-                                              //           .totalMark,
-                                              //       "markInPer": value
-                                              //           .studentMEList[i]
-                                              //           .markInPer,
-                                              //       "grade": value
-                                              //           .studentMEList[i].grade,
-                                              //       "gradeId": value
-                                              //           .studentMEList[i]
-                                              //           .gradeId,
-                                              //       "teGradeId": value
-                                              //           .studentMEList[i]
-                                              //           .teGradeId,
-                                              //       "peGradeId": value
-                                              //           .studentMEList[i]
-                                              //           .peGradeId,
-                                              //       "ceGradeId": value
-                                              //           .studentMEList[i]
-                                              //           .ceGradeId,
-                                              //       "attendance": value
-                                              //           .studentMEList[i]
-                                              //           .attendance
-                                              //           .toString(),
-                                              //       "description": null,
-                                              //       "disableAbsentRow": false
-                                              //     },
-                                              //   );
                                               // }
 
                                               if (markEntryDivisionListController
@@ -9007,7 +9291,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                 10)),
                                                   ),
                                                   duration:
-                                                      Duration(seconds: 1),
+                                                      Duration(seconds: 2),
                                                   margin: EdgeInsets.only(
                                                       bottom: 80,
                                                       left: 30,
@@ -9015,17 +9299,14 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                   behavior:
                                                       SnackBarBehavior.floating,
                                                   content: Text(
-                                                    "No data to Verify"
-                                                    "...",
+                                                    "No data to verify",
                                                     textAlign: TextAlign.center,
                                                   ),
                                                 ));
                                               } else {
-                                                value.loading
+                                                value.loadVerify
                                                     ? spinkitLoader()
-                                                    :
-                                                    //await value.markEntrySave(courseId,divisionId,partId,subjectId,date!,markEntryExamListController.text.toString(),context, obj);
-                                                    await value.markEntryVerify(
+                                                    : await value.markEntryVerify(
                                                         value.markEntryIdUAS
                                                             .toString(),
                                                         value.schoolIdUAS
@@ -9068,13 +9349,14 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                         value.examStatusUAS
                                                             .toString(),
                                                         context,
-                                                        value.updatedAtUAS
-                                                            .toString(),
+                                                        date!,
                                                         obj,
                                                         value.gradeListUAS,
                                                         value.partsUAS);
-                                                value.examStatus = "Verified";
+                                                value.examStatusUAS =
+                                                    "Verified";
                                               }
+                                              Navigator.pop(context);
                                             },
                                             style: ButtonStyle(
                                                 side: MaterialStateProperty.all(
@@ -9101,7 +9383,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                       },
                       color: Colors.green,
                       child: const Text(
-                        "Verify",
+                        'Verify',
                         style: TextStyle(color: Colors.white),
                       ),
                     );
@@ -9110,14 +9392,14 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
             Consumer<MarkEntryNewProvider>(builder: (context, value, child) {
               return MaterialButton(
                 onPressed: () {
-                  value.examStatus == "Pending"
+                  value.examStatusUAS == "Pending"
                       ? ScaffoldMessenger.of(context)
                           .showSnackBar(const SnackBar(
                           elevation: 10,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(Radius.circular(20)),
                           ),
-                          duration: Duration(seconds: 1),
+                          duration: Duration(seconds: 3),
                           margin:
                               EdgeInsets.only(bottom: 80, left: 30, right: 30),
                           behavior: SnackBarBehavior.floating,
@@ -9166,121 +9448,183 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                     ),
                                     OutlinedButton(
                                       onPressed: () async {
-                                        // List obj = [];
-                                        // obj.clear();
-                                        // print(
-                                        //     "length:  ${value.studentMEList.length}");
-                                        // for (int i = 0;
-                                        //     i < value.studentMEList.length;
-                                        //     i++) {
-                                        //   obj.add(
-                                        //     {
-                                        //       "name": value
-                                        //           .studentMEList[i].name
-                                        //           .toString(),
-                                        //       "rollNo": value
-                                        //           .studentMEList[i].rollNo
-                                        //           .toString(),
-                                        //       "studentPresentDetailsId": value
-                                        //           .studentMEList[i]
-                                        //           .studentPresentDetailsId
-                                        //           .toString(),
-                                        //       "teMark":
-                                        //           value.studentMEList[i].teMark,
-                                        //       "peMark":
-                                        //           value.studentMEList[i].peMark,
-                                        //       "ceMark":
-                                        //           value.studentMEList[i].ceMark,
-                                        //       "teGrade": value
-                                        //           .studentMEList[i].teGrade,
-                                        //       "peGrade": value
-                                        //           .studentMEList[i].peGrade,
-                                        //       "ceGrade": value
-                                        //           .studentMEList[i].ceGrade,
-                                        //       "totalMark": value
-                                        //           .studentMEList[i].totalMark,
-                                        //       "markInPer": value
-                                        //           .studentMEList[i].markInPer,
-                                        //       "grade":
-                                        //           value.studentMEList[i].grade,
-                                        //       "gradeId": value
-                                        //           .studentMEList[i].gradeId,
-                                        //       "teGradeId": value
-                                        //           .studentMEList[i].teGradeId,
-                                        //       "peGradeId": value
-                                        //           .studentMEList[i].peGradeId,
-                                        //       "ceGradeId": value
-                                        //           .studentMEList[i].ceGradeId,
-                                        //       "attendance": value
-                                        //           .studentMEList[i].attendance
-                                        //           .toString(),
-                                        //       "description": null,
-                                        //       "disableAbsentRow": false
-                                        //     },
-                                        //   );
-                                        // }
+                                        List obj = [];
+                                        obj.clear();
 
-                                        // if (markEntryDivisionListController
-                                        //         .text.isEmpty &&
-                                        //     markEntryInitialValuesController
-                                        //         .text.isEmpty) {
-                                        //   ScaffoldMessenger.of(context)
-                                        //       .showSnackBar(const SnackBar(
-                                        //     elevation: 10,
-                                        //     shape: RoundedRectangleBorder(
-                                        //       borderRadius: BorderRadius.all(
-                                        //           Radius.circular(10)),
-                                        //     ),
-                                        //     duration: Duration(seconds: 1),
-                                        //     margin: EdgeInsets.only(
-                                        //         bottom: 80,
-                                        //         left: 30,
-                                        //         right: 30),
-                                        //     behavior: SnackBarBehavior.floating,
-                                        //     content: Text(
-                                        //       "Select mandatory fields...!",
-                                        //       textAlign: TextAlign.center,
-                                        //     ),
-                                        //   ));
-                                        // } else if (obj.isEmpty) {
-                                        //   ScaffoldMessenger.of(context)
-                                        //       .showSnackBar(const SnackBar(
-                                        //     elevation: 10,
-                                        //     shape: RoundedRectangleBorder(
-                                        //       borderRadius: BorderRadius.all(
-                                        //           Radius.circular(10)),
-                                        //     ),
-                                        //     duration: Duration(seconds: 1),
-                                        //     margin: EdgeInsets.only(
-                                        //         bottom: 80,
-                                        //         left: 30,
-                                        //         right: 30),
-                                        //     behavior: SnackBarBehavior.floating,
-                                        //     content: Text(
-                                        //       "No data to Delete...",
-                                        //       textAlign: TextAlign.center,
-                                        //     ),
-                                        //   ));
-                                        // } else {
-                                        //   value.loading
-                                        //       ? spinkitLoader()
-                                        //       :
-                                        //       //await value.markEntrySave(courseId,divisionId,partId,subjectId,date!,markEntryExamListController.text.toString(),context, obj);
-                                        //       await value.markEntryDelete(
-                                        //           courseId,
-                                        //           divisionId,
-                                        //           partId,
-                                        //           markEntryOptionSubListController1
-                                        //               .text,
-                                        //           subjectId,
-                                        //           markEntryExamListController
-                                        //               .text
-                                        //               .toString(),
-                                        //           date!,
-                                        //           context,
-                                        //           obj);
-                                        //   value.examStatus = "Pending";
-                                        // }
+                                        for (int i = 0;
+                                            i < value.studListUAS.length;
+                                            i++) {
+                                          obj.add(
+                                            {
+                                              "attendance": value
+                                                  .studListUAS[i].attendance,
+                                              "studentName": value
+                                                  .studListUAS[i].studentName,
+                                              "rollNo":
+                                                  value.studListUAS[i].rollNo,
+                                              "studentId": value
+                                                  .studListUAS[i].studentId,
+                                              "markEntryDetId": value
+                                                  .studListUAS[i]
+                                                  .markEntryDetId,
+                                              "teMark":
+                                                  value.studListUAS[i].teMark,
+                                              "peMark": null,
+                                              "ceMark": null,
+                                              "teGrade": null,
+                                              "peGrade": null,
+                                              "ceGrade": null,
+                                              "total":
+                                                  value.studListUAS[i].total,
+                                              "teGradeId": null,
+                                              "peGradeId": null,
+                                              "ceGradeId": null,
+                                              "tabMarkEntryId": null,
+                                              "isEdited": false,
+                                              "isDisabled": false
+                                            },
+                                          );
+                                        }
+
+                                        if (markEntryDivisionListController
+                                                .text.isEmpty &&
+                                            markEntryInitialValuesController
+                                                .text.isEmpty) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(const SnackBar(
+                                            elevation: 10,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(10)),
+                                            ),
+                                            duration: Duration(seconds: 1),
+                                            margin: EdgeInsets.only(
+                                                bottom: 80,
+                                                left: 30,
+                                                right: 30),
+                                            behavior: SnackBarBehavior.floating,
+                                            content: Text(
+                                              "Select mandatory fields...!",
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ));
+                                        } else if (obj.isEmpty) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(const SnackBar(
+                                            elevation: 10,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(10)),
+                                            ),
+                                            duration: Duration(seconds: 2),
+                                            margin: EdgeInsets.only(
+                                                bottom: 80,
+                                                left: 30,
+                                                right: 30),
+                                            behavior: SnackBarBehavior.floating,
+                                            content: Text(
+                                              "No data to delete",
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ));
+                                        } else {
+                                          if (value.tabulationTypeCode ==
+                                              "UAS") {
+                                            value.loadDelete
+                                                ? spinkitLoader()
+                                                : await value.markEntryUASDelete(
+                                                    value.markEntryIdUAS
+                                                        .toString(),
+                                                    value.schoolIdUAS
+                                                        .toString(),
+                                                    value.tabulationTypeCode
+                                                        .toString(),
+                                                    value.subjectCaptionUAS
+                                                        .toString(),
+                                                    value.divisionUAS
+                                                        .toString(),
+                                                    value.courseUAS.toString(),
+                                                    value.partUAS.toString(),
+                                                    value.subjectUAS.toString(),
+                                                    value.subSubjectUAS
+                                                        .toString(),
+                                                    value.optionSubjectUAS
+                                                        .toString(),
+                                                    value.staffIdUAS.toString(),
+                                                    value.staffNameUAS
+                                                        .toString(),
+                                                    value.entryMethodUAS
+                                                        .toString(),
+                                                    value.examUAS.toString(),
+                                                    value
+                                                        .includeTerminatedStudentsUAS,
+                                                    value.teMax.toString(),
+                                                    value.peMax.toString(),
+                                                    value.ceMax.toString(),
+                                                    value.teCaptionUAS
+                                                        .toString(),
+                                                    value.peCaptionUAS
+                                                        .toString(),
+                                                    value.ceCaptionUAS
+                                                        .toString(),
+                                                    value.examStatusUAS
+                                                        .toString(),
+                                                    context,
+                                                    date!,
+                                                    obj,
+                                                    value.gradeListUAS,
+                                                    value.partsUAS);
+                                            value.examStatusUAS = "Pending";
+                                          } else {
+                                            value.loadDelete
+                                                ? spinkitLoader()
+                                                : await value.markEntrySTATEDelete(
+                                                    value.markEntryIdUAS
+                                                        .toString(),
+                                                    value.schoolIdUAS
+                                                        .toString(),
+                                                    value.tabulationTypeCode
+                                                        .toString(),
+                                                    value.subjectCaptionUAS
+                                                        .toString(),
+                                                    value.divisionUAS
+                                                        .toString(),
+                                                    value.courseUAS.toString(),
+                                                    value.partUAS.toString(),
+                                                    value.subjectUAS.toString(),
+                                                    value.subSubjectUAS
+                                                        .toString(),
+                                                    value.optionSubjectUAS
+                                                        .toString(),
+                                                    value.staffIdUAS.toString(),
+                                                    value.staffNameUAS
+                                                        .toString(),
+                                                    value.entryMethodUAS
+                                                        .toString(),
+                                                    value.examUAS.toString(),
+                                                    value
+                                                        .includeTerminatedStudentsUAS,
+                                                    value.teMax.toString(),
+                                                    value.peMax.toString(),
+                                                    value.ceMax.toString(),
+                                                    value.teCaptionUAS
+                                                        .toString(),
+                                                    value.peCaptionUAS
+                                                        .toString(),
+                                                    value.ceCaptionUAS
+                                                        .toString(),
+                                                    value.examStatusUAS
+                                                        .toString(),
+                                                    context,
+                                                    date!,
+                                                    obj,
+                                                    value.gradeListUAS,
+                                                    value.partsUAS);
+                                            value.examStatusUAS = "Pending";
+                                          }
+                                        }
+
+                                        Navigator.pop(context);
                                       },
                                       style: ButtonStyle(
                                           side: MaterialStateProperty.all(

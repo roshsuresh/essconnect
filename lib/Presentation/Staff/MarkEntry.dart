@@ -1277,7 +1277,7 @@ class _MarkEntryState extends State<MarkEntry> {
                                                               .attendance;
 
                                                           print(
-                                                              "attendace   $attendancee");
+                                                              "atte  $attendancee");
                                                         });
                                                       },
                                                       child: Container(
@@ -1312,7 +1312,7 @@ class _MarkEntryState extends State<MarkEntry> {
                                                       height: 30,
                                                       width: 80,
                                                       child: TextField(
-                                                        focusNode: FocusNode(),
+                                                        // focusNode: FocusNode(),
                                                         controller:
                                                             _controllers[index],
                                                         enabled: value

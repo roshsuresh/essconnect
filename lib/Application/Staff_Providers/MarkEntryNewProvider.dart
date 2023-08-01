@@ -9,7 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MarkEntryNewProvider with ChangeNotifier {
-  String? examStatus;
+  //String? examStatus;
   bool? isLocked;
   courseClear() {
     markEntryInitialValues.clear();
@@ -607,6 +607,18 @@ class MarkEntryNewProvider with ChangeNotifier {
               desc: 'Successfully Saved',
               btnOkOnPress: () async {
                 await clearStudentMEList();
+                await getMarkEntryUASView(
+                    course,
+                    division,
+                    exam,
+                    part,
+                    subject,
+                    subSubject,
+                    optionSubject,
+                    tabulationTypeCode,
+                    partItemm,
+                    subjectCaption,
+                    isTerminated);
               },
               btnOkColor: Colors.green)
           .show();
@@ -727,6 +739,18 @@ class MarkEntryNewProvider with ChangeNotifier {
               desc: 'Successfully Saved',
               btnOkOnPress: () async {
                 await clearStudentMEList();
+                await getMarkEntrySTATEView(
+                    course,
+                    division,
+                    exam,
+                    part,
+                    subject,
+                    subSubject,
+                    optionSubject,
+                    tabulationTypeCode,
+                    partItemm,
+                    subjectCaption,
+                    isTerminated);
               },
               btnOkColor: Colors.green)
           .show();
@@ -825,10 +849,8 @@ class MarkEntryNewProvider with ChangeNotifier {
       "peCaption": peCaption == "null" ? null : peCaption,
       "ceCaption": ceCaption == "null" ? null : ceCaption,
       "isBlocked": false,
-      "examStatus": "Entered",
-      //examStatus == "null" ? null : examStatus,
-      "updatedAt": "2023-07-29",
-      // updatedAt == "null" ? null : updatedAt,
+      "examStatus": examStatus == "null" ? null : examStatus,
+      "updatedAt": updatedAt == "null" ? null : updatedAt,
       "markEntryDetails": studentListSave,
       "gradeList": null,
       "partItem": partItemm
@@ -883,12 +905,262 @@ class MarkEntryNewProvider with ChangeNotifier {
     setLoadSave(false);
   }
 
+  //delete
+
+  bool _loadDelete = false;
+  bool get loadDelete => _loadDelete;
+  setLoadDelete(bool value) {
+    _loadDelete = value;
+    notifyListeners();
+  }
+
+  Future markEntryUASDelete(
+      String markEntryId,
+      String schoolId,
+      String tabulationTypeCode,
+      String subjectCaption,
+      String division,
+      String course,
+      String part,
+      String subject,
+      String subSubject,
+      String optionSubject,
+      String staffId,
+      String staffName,
+      String entryMethod,
+      String exam,
+      bool includeTerminatedStudents,
+      String teMax,
+      String peMax,
+      String ceMax,
+      String teCaption,
+      String peCaption,
+      String ceCaption,
+      String examStatus,
+      BuildContext context,
+      String updatedAt,
+      List studentListSave,
+      List gradeListSave,
+      var partItemm) async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    setLoadDelete(true);
+
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+    };
+
+    var request = http.Request(
+        'POST', Uri.parse('${UIGuide.baseURL}/markentry-latest/delete'));
+
+    request.body = json.encode({
+      "markEntryId": markEntryId == "null" ? null : markEntryId,
+      "schoolId": schoolId == "null" ? null : schoolId,
+      "tabulationTypeCode":
+          tabulationTypeCode == "null" ? null : tabulationTypeCode,
+      "subjectCaption": subjectCaption == "null" ? null : subjectCaption,
+      "division": division == "null" ? null : division,
+      "course": course == "null" ? null : course,
+      "part": part == "null" ? null : part,
+      "subject": subject == "null" ? null : subject,
+      "subSubject": subSubject == "null" ? null : subSubject,
+      "optionSubject": optionSubject == "null" ? null : optionSubject,
+      "staffId": staffId == "null" ? null : staffId,
+      "staffName": staffName == "null" ? null : staffName,
+      "entryMethod": entryMethod == "null" ? null : entryMethod,
+      "exam": exam == "null" ? null : exam,
+      "includeTerminatedStudents": includeTerminatedStudents,
+      "teMax": teMax == "null" ? null : teMax,
+      "peMax": peMax == "null" ? null : peMax,
+      "ceMax": ceMax == "null" ? null : ceMax,
+      "teCaption": teCaption == "null" ? null : teCaption,
+      "peCaption": peCaption == "null" ? null : peCaption,
+      "ceCaption": ceCaption == "null" ? null : ceCaption,
+      "isBlocked": false,
+      "examStatus": examStatus == "null" ? null : examStatus,
+      "updatedAt": updatedAt == "null" ? null : updatedAt,
+      "markEntryDetails": studentListSave,
+      "gradeList": null,
+      "partItem": partItemm
+    });
+    log(request.body);
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+    setLoadDelete(true);
+
+    if (response.statusCode == 200) {
+      setLoadDelete(true);
+
+      print('Correct........______________________________');
+      print(await response.stream.bytesToString());
+      await AwesomeDialog(
+              dismissOnTouchOutside: false,
+              dismissOnBackKeyPress: false,
+              context: context,
+              dialogType: DialogType.error,
+              animType: AnimType.rightSlide,
+              headerAnimationLoop: false,
+              title: 'Delete',
+              desc: 'Deleted Successfully',
+              btnOkOnPress: () async {
+                await clearStudentMEList();
+              },
+              btnOkColor: Colors.red)
+          .show();
+
+      setLoadDelete(false);
+
+      notifyListeners();
+    } else {
+      print(response.reasonPhrase);
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        elevation: 10,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+        ),
+        duration: Duration(seconds: 1),
+        margin: EdgeInsets.only(bottom: 80, left: 30, right: 30),
+        behavior: SnackBarBehavior.floating,
+        content: Text(
+          'Something Went Wrong ....',
+          textAlign: TextAlign.center,
+        ),
+      ));
+      setLoadDelete(false);
+      print('Error Response Verify');
+    }
+    setLoadDelete(false);
+  }
+
+  //State
+
+  Future markEntrySTATEDelete(
+      String markEntryId,
+      String schoolId,
+      String tabulationTypeCode,
+      String subjectCaption,
+      String division,
+      String course,
+      String part,
+      String subject,
+      String subSubject,
+      String optionSubject,
+      String staffId,
+      String staffName,
+      String entryMethod,
+      String exam,
+      bool includeTerminatedStudents,
+      String teMax,
+      String peMax,
+      String ceMax,
+      String teCaption,
+      String peCaption,
+      String ceCaption,
+      String examStatus,
+      BuildContext context,
+      String updatedAt,
+      List studentListSave,
+      List gradeListSave,
+      var partItemm) async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    setLoadDelete(true);
+
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+    };
+    print("/state-delete/All");
+
+    var request = http.Request('POST',
+        Uri.parse('${UIGuide.baseURL}/markentry-latest/state-delete/All'));
+
+    request.body = json.encode({
+      "markEntryId": markEntryId == "null" ? null : markEntryId,
+      "schoolId": schoolId == "null" ? null : schoolId,
+      "tabulationTypeCode":
+          tabulationTypeCode == "null" ? null : tabulationTypeCode,
+      "subjectCaption": subjectCaption == "null" ? null : subjectCaption,
+      "division": division == "null" ? null : division,
+      "course": course == "null" ? null : course,
+      "part": part == "null" ? null : part,
+      "subject": subject == "null" ? null : subject,
+      "subSubject": subSubject == "null" ? null : subSubject,
+      "optionSubject": optionSubject == "null" ? null : optionSubject,
+      "staffId": staffId == "null" ? null : staffId,
+      "staffName": staffName == "null" ? null : staffName,
+      "entryMethod": entryMethod == "null" ? null : entryMethod,
+      "exam": exam == "null" ? null : exam,
+      "includeTerminatedStudents": includeTerminatedStudents,
+      "teMax": teMax == "null" ? null : teMax,
+      "peMax": peMax == "null" ? null : peMax,
+      "ceMax": ceMax == "null" ? null : ceMax,
+      "teCaption": teCaption == "null" ? null : teCaption,
+      "peCaption": peCaption == "null" ? null : peCaption,
+      "ceCaption": ceCaption == "null" ? null : ceCaption,
+      "isBlocked": false,
+      "examStatus": examStatus == "null" ? null : examStatus,
+      "updatedAt": updatedAt == "null" ? null : updatedAt,
+      "markEntryDetails": studentListSave,
+      "gradeList": null,
+      "partItem": partItemm
+    });
+    log(request.body);
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+    setLoadDelete(true);
+
+    if (response.statusCode == 200) {
+      setLoadDelete(true);
+
+      print('Correct........______________________________');
+      print(await response.stream.bytesToString());
+      await AwesomeDialog(
+              dismissOnTouchOutside: false,
+              dismissOnBackKeyPress: false,
+              context: context,
+              dialogType: DialogType.error,
+              animType: AnimType.rightSlide,
+              headerAnimationLoop: false,
+              title: 'Delete',
+              desc: 'Deleted Successfully',
+              btnOkOnPress: () async {
+                await clearStudentMEList();
+              },
+              btnOkColor: Colors.red)
+          .show();
+
+      setLoadDelete(false);
+
+      notifyListeners();
+    } else {
+      print(response.reasonPhrase);
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        elevation: 10,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+        ),
+        duration: Duration(seconds: 1),
+        margin: EdgeInsets.only(bottom: 80, left: 30, right: 30),
+        behavior: SnackBarBehavior.floating,
+        content: Text(
+          'Something Went Wrong ....',
+          textAlign: TextAlign.center,
+        ),
+      ));
+      setLoadDelete(false);
+      print('Error Response Verify');
+    }
+    setLoadDelete(false);
+  }
+
   // clear
 
   clearStudentMEList() {
     studListUAS.clear();
     gradeListUAS.clear();
-    examStatus = '';
+    examStatusUAS = '';
     notifyListeners();
   }
 }
