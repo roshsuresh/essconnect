@@ -1060,14 +1060,24 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                   value.isTerminated = newValue!;
                                 },
                               ),
+<<<<<<< HEAD
                               Expanded(
                                 //   width: size.width * .35,
+=======
+                              SizedBox(
+                                width: size.width * .35,
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                 child: const Text(
                                   "Include Terminated Students",
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
+<<<<<<< HEAD
                                       color: UIGuide.BLACK, fontSize: 12),
+=======
+                                    color: UIGuide.BLACK,
+                                  ),
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                 ),
                               )
                             ],
@@ -1206,11 +1216,17 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           const Text("Verified By :",
+<<<<<<< HEAD
                               style:
                                   TextStyle(color: Colors.green, fontSize: 13)),
                           Text(value.staffNameUAS ?? "--",
                               style: const TextStyle(
                                   color: Colors.black, fontSize: 13))
+=======
+                              style: TextStyle(color: Colors.green)),
+                          Text(value.staffNameUAS ?? "--",
+                              style: const TextStyle(color: Colors.black))
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                         ],
                       )
                     : const SizedBox(
@@ -1563,7 +1579,11 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                   else if ((provider.tabulationTypeCode == "UAS") &&
                       provider.teCaptionUAS == "Grade") {
                     return LimitedBox(
+<<<<<<< HEAD
                         maxHeight: size.height / 1.81,
+=======
+                        maxHeight: size.height / 1.85,
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                         child: Padding(
                           padding: const EdgeInsets.all(4.0),
                           child: ListView.builder(
@@ -1648,7 +1668,11 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                           .rollNo ==
                                                       null
                                                   ? const Text(
+<<<<<<< HEAD
                                                       '',
+=======
+                                                      '0',
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                       style: TextStyle(
                                                           color: UIGuide
                                                               .light_Purple),
@@ -1739,9 +1763,12 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                     width: 1),
                                                               ),
                                                               child: TextField(
+<<<<<<< HEAD
                                                                 textInputAction:
                                                                     TextInputAction
                                                                         .next,
+=======
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                                 style: const TextStyle(
                                                                     fontSize:
                                                                         14,
@@ -1780,7 +1807,11 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                   border:
                                                                       OutlineInputBorder(),
                                                                   labelText:
+<<<<<<< HEAD
                                                                       " Select ",
+=======
+                                                                      " Select grade",
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                                   hintText:
                                                                       "grade",
                                                                 ),
@@ -1826,7 +1857,11 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                   else if (provider.tabulationTypeCode == "PBT" &&
                       provider.teCaptionUAS == "Grade") {
                     return LimitedBox(
+<<<<<<< HEAD
                         maxHeight: size.height / 1.81,
+=======
+                        maxHeight: size.height / 1.85,
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                         child: Padding(
                           padding: const EdgeInsets.all(4.0),
                           child: ListView.builder(
@@ -1882,7 +1917,11 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                               SizedBox(
                                                 width: 80,
                                                 child: Text(
+<<<<<<< HEAD
                                                   'Roll No: ${provider.studListUAS[index].rollNo == null ? '' : provider.studListUAS[index].rollNo.toString()}',
+=======
+                                                  'Roll No: ${provider.studListUAS[index].rollNo == null ? '0' : provider.studListUAS[index].rollNo.toString()}',
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                   overflow:
                                                       TextOverflow.ellipsis,
                                                 ),
@@ -2071,6 +2110,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                 ),
                                                                 child:
                                                                     TextField(
+<<<<<<< HEAD
                                                                   textInputAction:
                                                                       TextInputAction
                                                                           .next,
@@ -2078,6 +2118,12 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                               'A' ||
                                                                           value.examStatusUAS ==
                                                                               'Synchronized'
+=======
+                                                                  enabled: provider
+                                                                              .studListUAS[index]
+                                                                              .attendance ==
+                                                                          'A'
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                                       ? true
                                                                       : false,
                                                                   readOnly:
@@ -2121,7 +2167,11 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                     border:
                                                                         OutlineInputBorder(),
                                                                     labelText:
+<<<<<<< HEAD
                                                                         " Select ",
+=======
+                                                                        " Select grade",
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                                     hintText:
                                                                         "grade",
                                                                   ),
@@ -2172,7 +2222,11 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                         provider.peMax != null &&
                         provider.ceMax != null) {
                       return LimitedBox(
+<<<<<<< HEAD
                           maxHeight: size.height / 1.81,
+=======
+                          maxHeight: size.height / 1.85,
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                           child: Padding(
                             padding: const EdgeInsets.all(4.0),
                             child: Scrollbar(
@@ -2252,7 +2306,11 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                               .rollNo ==
                                                           null
                                                       ? const Text(
+<<<<<<< HEAD
                                                           '',
+=======
+                                                          '0',
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                           style: TextStyle(
                                                               color: UIGuide
                                                                   .light_Purple),
@@ -2393,6 +2451,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                       height: 30,
                                                       width: 80,
                                                       child: TextField(
+<<<<<<< HEAD
                                                         textInputAction:
                                                             TextInputAction
                                                                 .next,
@@ -2407,6 +2466,17 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                     'A' ||
                                                                 value.examStatusUAS ==
                                                                     'Synchronized'
+=======
+                                                        controller:
+                                                            teMarkController[
+                                                                index],
+                                                        focusNode: FocusNode(),
+                                                        enabled: value
+                                                                    .studListUAS[
+                                                                        index]
+                                                                    .attendance ==
+                                                                'A'
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                             ? false
                                                             : true,
                                                         cursorColor: UIGuide
@@ -2438,12 +2508,21 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                         ],
                                                         decoration:
                                                             InputDecoration(
+<<<<<<< HEAD
                                                                 focusColor: const Color
                                                                     .fromARGB(
                                                                     255,
                                                                     213,
                                                                     215,
                                                                     218),
+=======
+                                                                focusColor:
+                                                                    const Color.fromARGB(
+                                                                        255,
+                                                                        213,
+                                                                        215,
+                                                                        218),
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                                 border:
                                                                     OutlineInputBorder(
                                                                   borderRadius:
@@ -2567,6 +2646,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                       height: 30,
                                                       width: 80,
                                                       child: TextField(
+<<<<<<< HEAD
                                                         textInputAction:
                                                             TextInputAction
                                                                 .next,
@@ -2581,6 +2661,17 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                     'A' ||
                                                                 value.examStatusUAS ==
                                                                     'Synchronized'
+=======
+                                                        controller:
+                                                            practicalMarkController[
+                                                                index],
+                                                        focusNode: FocusNode(),
+                                                        enabled: value
+                                                                    .studListUAS[
+                                                                        index]
+                                                                    .attendance ==
+                                                                'A'
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                             ? false
                                                             : true,
                                                         cursorColor: UIGuide
@@ -2612,12 +2703,21 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                         ],
                                                         decoration:
                                                             InputDecoration(
+<<<<<<< HEAD
                                                                 focusColor: const Color
                                                                     .fromARGB(
                                                                     255,
                                                                     213,
                                                                     215,
                                                                     218),
+=======
+                                                                focusColor:
+                                                                    const Color.fromARGB(
+                                                                        255,
+                                                                        213,
+                                                                        215,
+                                                                        218),
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                                 border:
                                                                     OutlineInputBorder(
                                                                   borderRadius:
@@ -2746,6 +2846,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                     height: 30,
                                                     width: 80,
                                                     child: TextField(
+<<<<<<< HEAD
                                                       textInputAction:
                                                           TextInputAction.next,
                                                       controller:
@@ -2759,6 +2860,17 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                   'A' ||
                                                               value.examStatusUAS ==
                                                                   'Synchronized'
+=======
+                                                      controller:
+                                                          ceMarkController[
+                                                              index],
+                                                      focusNode: FocusNode(),
+                                                      enabled: value
+                                                                  .studListUAS[
+                                                                      index]
+                                                                  .attendance ==
+                                                              'A'
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                           ? false
                                                           : true,
                                                       cursorColor:
@@ -2918,7 +3030,11 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                         provider.peMax != null &&
                         provider.ceMax == null) {
                       return LimitedBox(
+<<<<<<< HEAD
                           maxHeight: size.height / 1.81,
+=======
+                          maxHeight: size.height / 1.85,
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                           child: Padding(
                             padding: const EdgeInsets.all(4.0),
                             child: ListView.builder(
@@ -2982,7 +3098,11 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                             .rollNo ==
                                                         null
                                                     ? const Text(
+<<<<<<< HEAD
                                                         '',
+=======
+                                                        '0',
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                         style: TextStyle(
                                                             color: UIGuide
                                                                 .light_Purple),
@@ -3111,6 +3231,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                     height: 30,
                                                     width: 80,
                                                     child: TextField(
+<<<<<<< HEAD
                                                       textInputAction:
                                                           TextInputAction.next,
                                                       controller:
@@ -3124,6 +3245,17 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                   'A' ||
                                                               value.examStatusUAS ==
                                                                   'Synchronized'
+=======
+                                                      controller:
+                                                          teMarkController[
+                                                              index],
+                                                      focusNode: FocusNode(),
+                                                      enabled: value
+                                                                  .studListUAS[
+                                                                      index]
+                                                                  .attendance ==
+                                                              'A'
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                           ? false
                                                           : true,
                                                       cursorColor:
@@ -3274,6 +3406,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                     height: 30,
                                                     width: 80,
                                                     child: TextField(
+<<<<<<< HEAD
                                                       textInputAction:
                                                           TextInputAction.next,
                                                       controller:
@@ -3287,6 +3420,17 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                   'A' ||
                                                               value.examStatusUAS ==
                                                                   'Synchronized'
+=======
+                                                      controller:
+                                                          practicalMarkController[
+                                                              index],
+                                                      focusNode: FocusNode(),
+                                                      enabled: value
+                                                                  .studListUAS[
+                                                                      index]
+                                                                  .attendance ==
+                                                              'A'
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                           ? false
                                                           : true,
                                                       cursorColor:
@@ -3451,7 +3595,11 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                         provider.ceMax != null &&
                         provider.peMax == null) {
                       return LimitedBox(
+<<<<<<< HEAD
                           maxHeight: size.height / 1.81,
+=======
+                          maxHeight: size.height / 1.85,
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                           child: Padding(
                             padding: const EdgeInsets.all(4.0),
                             child: ListView.builder(
@@ -3516,7 +3664,11 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                             .rollNo ==
                                                         null
                                                     ? const Text(
+<<<<<<< HEAD
                                                         '',
+=======
+                                                        '0',
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                         style: TextStyle(
                                                             color: UIGuide
                                                                 .light_Purple),
@@ -3646,6 +3798,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                     height: 30,
                                                     width: 80,
                                                     child: TextField(
+<<<<<<< HEAD
                                                       textInputAction:
                                                           TextInputAction.next,
                                                       controller:
@@ -3659,6 +3812,17 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                   'A' ||
                                                               value.examStatusUAS ==
                                                                   'Synchronized'
+=======
+                                                      controller:
+                                                          teMarkController[
+                                                              index],
+                                                      focusNode: FocusNode(),
+                                                      enabled: value
+                                                                  .studListUAS[
+                                                                      index]
+                                                                  .attendance ==
+                                                              'A'
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                           ? false
                                                           : true,
                                                       cursorColor:
@@ -3809,6 +3973,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                     height: 30,
                                                     width: 80,
                                                     child: TextField(
+<<<<<<< HEAD
                                                       textInputAction:
                                                           TextInputAction.next,
                                                       controller:
@@ -3822,6 +3987,17 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                   'A' ||
                                                               value.examStatusUAS ==
                                                                   'Synchronized'
+=======
+                                                      controller:
+                                                          ceMarkController[
+                                                              index],
+                                                      focusNode: FocusNode(),
+                                                      enabled: value
+                                                                  .studListUAS[
+                                                                      index]
+                                                                  .attendance ==
+                                                              'A'
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                           ? false
                                                           : true,
                                                       cursorColor:
@@ -3982,7 +4158,11 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                         provider.peMax != null &&
                         provider.teMax == null) {
                       return LimitedBox(
+<<<<<<< HEAD
                           maxHeight: size.height / 1.81,
+=======
+                          maxHeight: size.height / 1.85,
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                           child: Padding(
                             padding: const EdgeInsets.all(4.0),
                             child: ListView.builder(
@@ -4049,7 +4229,11 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                             .rollNo ==
                                                         null
                                                     ? const Text(
+<<<<<<< HEAD
                                                         '',
+=======
+                                                        '0',
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                         style: TextStyle(
                                                             color: UIGuide
                                                                 .light_Purple),
@@ -4178,6 +4362,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                     height: 30,
                                                     width: 80,
                                                     child: TextField(
+<<<<<<< HEAD
                                                       textInputAction:
                                                           TextInputAction.next,
                                                       controller:
@@ -4191,6 +4376,17 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                   'A' ||
                                                               value.examStatusUAS ==
                                                                   'Synchronized'
+=======
+                                                      controller:
+                                                          practicalMarkController[
+                                                              index],
+                                                      focusNode: FocusNode(),
+                                                      enabled: value
+                                                                  .studListUAS[
+                                                                      index]
+                                                                  .attendance ==
+                                                              'A'
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                           ? false
                                                           : true,
                                                       cursorColor:
@@ -4344,6 +4540,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                     height: 30,
                                                     width: 80,
                                                     child: TextField(
+<<<<<<< HEAD
                                                       textInputAction:
                                                           TextInputAction.next,
                                                       controller:
@@ -4357,6 +4554,17 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                   'A' ||
                                                               value.examStatusUAS ==
                                                                   'Synchronized'
+=======
+                                                      controller:
+                                                          ceMarkController[
+                                                              index],
+                                                      focusNode: FocusNode(),
+                                                      enabled: value
+                                                                  .studListUAS[
+                                                                      index]
+                                                                  .attendance ==
+                                                              'A'
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                           ? false
                                                           : true,
                                                       cursorColor:
@@ -4516,7 +4724,11 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                         provider.peMax == null &&
                         provider.ceMax == null) {
                       return LimitedBox(
+<<<<<<< HEAD
                           maxHeight: size.height / 1.81,
+=======
+                          maxHeight: size.height / 1.85,
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                           child: Padding(
                             padding: const EdgeInsets.all(4.0),
                             child: ListView.builder(
@@ -4571,7 +4783,11 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                             .rollNo ==
                                                         null
                                                     ? const Text(
+<<<<<<< HEAD
                                                         '',
+=======
+                                                        '0',
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                         style: TextStyle(
                                                             color: UIGuide
                                                                 .light_Purple),
@@ -4693,6 +4909,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                     height: 30,
                                                     width: 80,
                                                     child: TextField(
+<<<<<<< HEAD
                                                       textInputAction:
                                                           TextInputAction.next,
                                                       controller:
@@ -4706,6 +4923,17 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                   'A' ||
                                                               value.examStatusUAS ==
                                                                   'Synchronized'
+=======
+                                                      controller:
+                                                          teMarkController[
+                                                              index],
+                                                      focusNode: FocusNode(),
+                                                      enabled: value
+                                                                  .studListUAS[
+                                                                      index]
+                                                                  .attendance ==
+                                                              'A'
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                           ? false
                                                           : true,
                                                       cursorColor:
@@ -4864,7 +5092,11 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                         provider.peMax != null &&
                         provider.ceMax == null) {
                       return LimitedBox(
+<<<<<<< HEAD
                           maxHeight: size.height / 1.81,
+=======
+                          maxHeight: size.height / 1.85,
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                           child: Padding(
                             padding: const EdgeInsets.all(4.0),
                             child: ListView.builder(
@@ -4921,7 +5153,11 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                             .rollNo ==
                                                         null
                                                     ? const Text(
+<<<<<<< HEAD
                                                         '',
+=======
+                                                        '0',
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                         style: TextStyle(
                                                             color: UIGuide
                                                                 .light_Purple),
@@ -5043,6 +5279,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                     height: 30,
                                                     width: 80,
                                                     child: TextField(
+<<<<<<< HEAD
                                                       textInputAction:
                                                           TextInputAction.next,
                                                       controller:
@@ -5056,6 +5293,17 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                   'A' ||
                                                               value.examStatusUAS ==
                                                                   'Synchronized'
+=======
+                                                      controller:
+                                                          practicalMarkController[
+                                                              index],
+                                                      focusNode: FocusNode(),
+                                                      enabled: value
+                                                                  .studListUAS[
+                                                                      index]
+                                                                  .attendance ==
+                                                              'A'
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                           ? false
                                                           : true,
                                                       cursorColor:
@@ -5218,7 +5466,11 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                         provider.peMax == null &&
                         provider.ceMax != null) {
                       return LimitedBox(
+<<<<<<< HEAD
                           maxHeight: size.height / 1.81,
+=======
+                          maxHeight: size.height / 1.85,
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                           child: Padding(
                             padding: const EdgeInsets.all(4.0),
                             child: ListView.builder(
@@ -5275,7 +5527,11 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                             .rollNo ==
                                                         null
                                                     ? const Text(
+<<<<<<< HEAD
                                                         '',
+=======
+                                                        '0',
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                         style: TextStyle(
                                                             color: UIGuide
                                                                 .light_Purple),
@@ -5397,6 +5653,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                     height: 30,
                                                     width: 80,
                                                     child: TextField(
+<<<<<<< HEAD
                                                       textInputAction:
                                                           TextInputAction.next,
                                                       controller:
@@ -5410,6 +5667,17 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                   'A' ||
                                                               value.examStatusUAS ==
                                                                   'Synchronized'
+=======
+                                                      controller:
+                                                          ceMarkController[
+                                                              index],
+                                                      focusNode: FocusNode(),
+                                                      enabled: value
+                                                                  .studListUAS[
+                                                                      index]
+                                                                  .attendance ==
+                                                              'A'
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                           ? false
                                                           : true,
                                                       cursorColor:
@@ -5580,7 +5848,11 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                         provider.peCaptionUAS != null &&
                         provider.ceCaptionUAS != null) {
                       return LimitedBox(
+<<<<<<< HEAD
                           maxHeight: size.height / 1.81,
+=======
+                          maxHeight: size.height / 1.85,
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                           child: Padding(
                             padding: const EdgeInsets.all(4.0),
                             child: ListView.builder(
@@ -5682,7 +5954,11 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                 SizedBox(
                                                   width: 80,
                                                   child: Text(
+<<<<<<< HEAD
                                                     'Roll No: ${value.studListUAS[index].rollNo == null ? '' : value.studListUAS[index].rollNo.toString()}',
+=======
+                                                    'Roll No: ${value.studListUAS[index].rollNo == null ? '0' : value.studListUAS[index].rollNo.toString()}',
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                     overflow:
                                                         TextOverflow.ellipsis,
                                                   ),
@@ -5912,6 +6188,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                   ),
                                                                   child:
                                                                       TextField(
+<<<<<<< HEAD
                                                                     textInputAction:
                                                                         TextInputAction
                                                                             .next,
@@ -5919,6 +6196,10 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                                 'A' ||
                                                                             value.examStatusUAS ==
                                                                                 'Synchronized'
+=======
+                                                                    enabled: value.studListUAS[index].attendance ==
+                                                                            'A'
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                                         ? true
                                                                         : false,
                                                                     readOnly:
@@ -6064,9 +6345,12 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                   ),
                                                                   child:
                                                                       TextField(
+<<<<<<< HEAD
                                                                     textInputAction:
                                                                         TextInputAction
                                                                             .next,
+=======
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                                     style: const TextStyle(
                                                                         fontSize:
                                                                             14,
@@ -6103,14 +6387,22 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                       border:
                                                                           OutlineInputBorder(),
                                                                       labelText:
+<<<<<<< HEAD
                                                                           "  Select ",
+=======
+                                                                          "  Select grade",
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                                       hintText:
                                                                           "grade",
                                                                     ),
                                                                     enabled: value.studListUAS[index].attendance ==
+<<<<<<< HEAD
                                                                                 'A' ||
                                                                             value.examStatusUAS ==
                                                                                 'Synchronized'
+=======
+                                                                            'A'
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                                         ? true
                                                                         : false,
                                                                     readOnly:
@@ -6216,9 +6508,12 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                   ),
                                                                   child:
                                                                       TextField(
+<<<<<<< HEAD
                                                                     textInputAction:
                                                                         TextInputAction
                                                                             .next,
+=======
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                                     style: const TextStyle(
                                                                         fontSize:
                                                                             14,
@@ -6255,14 +6550,22 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                       border:
                                                                           OutlineInputBorder(),
                                                                       labelText:
+<<<<<<< HEAD
                                                                           "  Select ",
+=======
+                                                                          "  Select grade",
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                                       hintText:
                                                                           "grade",
                                                                     ),
                                                                     enabled: value.studListUAS[index].attendance ==
+<<<<<<< HEAD
                                                                                 'A' ||
                                                                             value.examStatusUAS ==
                                                                                 'Synchronized'
+=======
+                                                                            'A'
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                                         ? true
                                                                         : false,
                                                                     readOnly:
@@ -6306,7 +6609,11 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                         provider.peCaptionUAS == null &&
                         provider.ceCaptionUAS != null) {
                       return LimitedBox(
+<<<<<<< HEAD
                           maxHeight: size.height / 1.81,
+=======
+                          maxHeight: size.height / 1.85,
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                           child: Padding(
                             padding: const EdgeInsets.all(4.0),
                             child: ListView.builder(
@@ -6383,7 +6690,11 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                 SizedBox(
                                                   width: 80,
                                                   child: Text(
+<<<<<<< HEAD
                                                     'Roll No: ${value.studListUAS[index].rollNo == null ? '' : value.studListUAS[index].rollNo.toString()}',
+=======
+                                                    'Roll No: ${value.studListUAS[index].rollNo == null ? '0' : value.studListUAS[index].rollNo.toString()}',
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                     overflow:
                                                         TextOverflow.ellipsis,
                                                   ),
@@ -6597,6 +6908,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                   ),
                                                                   child:
                                                                       TextField(
+<<<<<<< HEAD
                                                                     textInputAction:
                                                                         TextInputAction
                                                                             .next,
@@ -6604,6 +6916,10 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                                 'A' ||
                                                                             value.examStatusUAS ==
                                                                                 'Synchronized'
+=======
+                                                                    enabled: value.studListUAS[index].attendance ==
+                                                                            'A'
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                                         ? true
                                                                         : false,
                                                                     readOnly:
@@ -6644,7 +6960,11 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                       border:
                                                                           OutlineInputBorder(),
                                                                       labelText:
+<<<<<<< HEAD
                                                                           "  Select ",
+=======
+                                                                          "  Select grade",
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                                       hintText:
                                                                           "grade",
                                                                     ),
@@ -6750,9 +7070,12 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                   ),
                                                                   child:
                                                                       TextField(
+<<<<<<< HEAD
                                                                     textInputAction:
                                                                         TextInputAction
                                                                             .next,
+=======
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                                     style: const TextStyle(
                                                                         fontSize:
                                                                             14,
@@ -6789,14 +7112,22 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                       border:
                                                                           OutlineInputBorder(),
                                                                       labelText:
+<<<<<<< HEAD
                                                                           "  Select ",
+=======
+                                                                          "  Select grade",
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                                       hintText:
                                                                           "grade",
                                                                     ),
                                                                     enabled: value.studListUAS[index].attendance ==
+<<<<<<< HEAD
                                                                                 'A' ||
                                                                             value.examStatusUAS ==
                                                                                 'Synchronized'
+=======
+                                                                            'A'
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                                         ? true
                                                                         : false,
                                                                     readOnly:
@@ -6840,7 +7171,11 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                         provider.peCaptionUAS != null &&
                         provider.ceCaptionUAS == null) {
                       return LimitedBox(
+<<<<<<< HEAD
                           maxHeight: size.height / 1.81,
+=======
+                          maxHeight: size.height / 1.85,
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                           child: Padding(
                             padding: const EdgeInsets.all(4.0),
                             child: ListView.builder(
@@ -6919,7 +7254,11 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                 SizedBox(
                                                   width: 80,
                                                   child: Text(
+<<<<<<< HEAD
                                                     'Roll No: ${value.studListUAS[index].rollNo == null ? '' : value.studListUAS[index].rollNo.toString()}',
+=======
+                                                    'Roll No: ${value.studListUAS[index].rollNo == null ? '0' : value.studListUAS[index].rollNo.toString()}',
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                     overflow:
                                                         TextOverflow.ellipsis,
                                                   ),
@@ -7133,6 +7472,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                   ),
                                                                   child:
                                                                       TextField(
+<<<<<<< HEAD
                                                                     textInputAction:
                                                                         TextInputAction
                                                                             .next,
@@ -7140,6 +7480,10 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                                 'A' ||
                                                                             value.examStatusUAS ==
                                                                                 'Synchronized'
+=======
+                                                                    enabled: value.studListUAS[index].attendance ==
+                                                                            'A'
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                                         ? true
                                                                         : false,
                                                                     readOnly:
@@ -7180,7 +7524,11 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                       border:
                                                                           OutlineInputBorder(),
                                                                       labelText:
+<<<<<<< HEAD
                                                                           "  Select ",
+=======
+                                                                          "  Select grade",
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                                       hintText:
                                                                           "grade",
                                                                     ),
@@ -7285,9 +7633,12 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                   ),
                                                                   child:
                                                                       TextField(
+<<<<<<< HEAD
                                                                     textInputAction:
                                                                         TextInputAction
                                                                             .next,
+=======
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                                     style: const TextStyle(
                                                                         fontSize:
                                                                             14,
@@ -7324,14 +7675,22 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                       border:
                                                                           OutlineInputBorder(),
                                                                       labelText:
+<<<<<<< HEAD
                                                                           "  Select ",
+=======
+                                                                          "  Select grade",
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                                       hintText:
                                                                           "grade",
                                                                     ),
                                                                     enabled: value.studListUAS[index].attendance ==
+<<<<<<< HEAD
                                                                                 'A' ||
                                                                             value.examStatusUAS ==
                                                                                 'Synchronized'
+=======
+                                                                            'A'
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                                         ? true
                                                                         : false,
                                                                     readOnly:
@@ -7375,7 +7734,11 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                         provider.peCaptionUAS != null &&
                         provider.ceCaptionUAS != null) {
                       return LimitedBox(
+<<<<<<< HEAD
                           maxHeight: size.height / 1.81,
+=======
+                          maxHeight: size.height / 1.85,
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                           child: Padding(
                             padding: const EdgeInsets.all(4.0),
                             child: ListView.builder(
@@ -7454,7 +7817,11 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                 SizedBox(
                                                   width: 80,
                                                   child: Text(
+<<<<<<< HEAD
                                                     'Roll No: ${value.studListUAS[index].rollNo == null ? '' : value.studListUAS[index].rollNo.toString()}',
+=======
+                                                    'Roll No: ${value.studListUAS[index].rollNo == null ? '0' : value.studListUAS[index].rollNo.toString()}',
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                     overflow:
                                                         TextOverflow.ellipsis,
                                                   ),
@@ -7668,9 +8035,12 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                   ),
                                                                   child:
                                                                       TextField(
+<<<<<<< HEAD
                                                                     textInputAction:
                                                                         TextInputAction
                                                                             .next,
+=======
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                                     style: const TextStyle(
                                                                         fontSize:
                                                                             14,
@@ -7707,14 +8077,22 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                       border:
                                                                           OutlineInputBorder(),
                                                                       labelText:
+<<<<<<< HEAD
                                                                           "  Select ",
+=======
+                                                                          "  Select grade",
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                                       hintText:
                                                                           "grade",
                                                                     ),
                                                                     enabled: value.studListUAS[index].attendance ==
+<<<<<<< HEAD
                                                                                 'A' ||
                                                                             value.examStatusUAS ==
                                                                                 'Synchronized'
+=======
+                                                                            'A'
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                                         ? true
                                                                         : false,
                                                                     readOnly:
@@ -7820,9 +8198,12 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                   ),
                                                                   child:
                                                                       TextField(
+<<<<<<< HEAD
                                                                     textInputAction:
                                                                         TextInputAction
                                                                             .next,
+=======
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                                     style: const TextStyle(
                                                                         fontSize:
                                                                             14,
@@ -7859,14 +8240,22 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                       border:
                                                                           OutlineInputBorder(),
                                                                       labelText:
+<<<<<<< HEAD
                                                                           "  Select ",
+=======
+                                                                          "  Select grade",
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                                       hintText:
                                                                           "grade",
                                                                     ),
                                                                     enabled: value.studListUAS[index].attendance ==
+<<<<<<< HEAD
                                                                                 'A' ||
                                                                             value.examStatusUAS ==
                                                                                 'Synchronized'
+=======
+                                                                            'A'
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                                         ? true
                                                                         : false,
                                                                     readOnly:
@@ -7909,7 +8298,11 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                         provider.peCaptionUAS == null &&
                         provider.ceCaptionUAS == null) {
                       return LimitedBox(
+<<<<<<< HEAD
                           maxHeight: size.height / 1.81,
+=======
+                          maxHeight: size.height / 1.85,
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                           child: Padding(
                             padding: const EdgeInsets.all(4.0),
                             child: ListView.builder(
@@ -7963,7 +8356,11 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                 SizedBox(
                                                   width: 80,
                                                   child: Text(
+<<<<<<< HEAD
                                                     'Roll No: ${value.studListUAS[index].rollNo == null ? '' : value.studListUAS[index].rollNo.toString()}',
+=======
+                                                    'Roll No: ${value.studListUAS[index].rollNo == null ? '0' : value.studListUAS[index].rollNo.toString()}',
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                     overflow:
                                                         TextOverflow.ellipsis,
                                                   ),
@@ -8161,6 +8558,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                   ),
                                                                   child:
                                                                       TextField(
+<<<<<<< HEAD
                                                                     textInputAction:
                                                                         TextInputAction
                                                                             .next,
@@ -8168,6 +8566,10 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                                 'A' ||
                                                                             value.examStatusUAS ==
                                                                                 'Synchronized'
+=======
+                                                                    enabled: value.studListUAS[index].attendance ==
+                                                                            'A'
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                                         ? true
                                                                         : false,
                                                                     readOnly:
@@ -8208,7 +8610,11 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                       border:
                                                                           OutlineInputBorder(),
                                                                       labelText:
+<<<<<<< HEAD
                                                                           "  Select ",
+=======
+                                                                          "  Select grade",
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                                       hintText:
                                                                           "grade",
                                                                     ),
@@ -8251,7 +8657,11 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                         provider.peCaptionUAS != null &&
                         provider.ceCaptionUAS == null) {
                       return LimitedBox(
+<<<<<<< HEAD
                           maxHeight: size.height / 1.81,
+=======
+                          maxHeight: size.height / 1.85,
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                           child: Padding(
                             padding: const EdgeInsets.all(4.0),
                             child: ListView.builder(
@@ -8307,7 +8717,11 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                 SizedBox(
                                                   width: 80,
                                                   child: Text(
+<<<<<<< HEAD
                                                     'Roll No: ${value.studListUAS[index].rollNo == null ? '' : value.studListUAS[index].rollNo.toString()}',
+=======
+                                                    'Roll No: ${value.studListUAS[index].rollNo == null ? '0' : value.studListUAS[index].rollNo.toString()}',
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                     overflow:
                                                         TextOverflow.ellipsis,
                                                   ),
@@ -8505,9 +8919,12 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                   ),
                                                                   child:
                                                                       TextField(
+<<<<<<< HEAD
                                                                     textInputAction:
                                                                         TextInputAction
                                                                             .next,
+=======
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                                     style: const TextStyle(
                                                                         fontSize:
                                                                             14,
@@ -8544,14 +8961,22 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                       border:
                                                                           OutlineInputBorder(),
                                                                       labelText:
+<<<<<<< HEAD
                                                                           "  Select ",
+=======
+                                                                          "  Select grade",
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                                       hintText:
                                                                           "grade",
                                                                     ),
                                                                     enabled: value.studListUAS[index].attendance ==
+<<<<<<< HEAD
                                                                                 'A' ||
                                                                             value.examStatusUAS ==
                                                                                 'Synchronized'
+=======
+                                                                            'A'
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                                         ? true
                                                                         : false,
                                                                     readOnly:
@@ -8595,7 +9020,11 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                         provider.peCaptionUAS == null &&
                         provider.ceCaptionUAS != null) {
                       return LimitedBox(
+<<<<<<< HEAD
                           maxHeight: size.height / 1.81,
+=======
+                          maxHeight: size.height / 1.85,
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                           child: Padding(
                             padding: const EdgeInsets.all(4.0),
                             child: ListView.builder(
@@ -8649,7 +9078,11 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                 SizedBox(
                                                   width: 80,
                                                   child: Text(
+<<<<<<< HEAD
                                                     'Roll No: ${value.studListUAS[index].rollNo == null ? '' : value.studListUAS[index].rollNo.toString()}',
+=======
+                                                    'Roll No: ${value.studListUAS[index].rollNo == null ? '0' : value.studListUAS[index].rollNo.toString()}',
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                     overflow:
                                                         TextOverflow.ellipsis,
                                                   ),
@@ -8847,9 +9280,12 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                   ),
                                                                   child:
                                                                       TextField(
+<<<<<<< HEAD
                                                                     textInputAction:
                                                                         TextInputAction
                                                                             .next,
+=======
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                                     style: const TextStyle(
                                                                         fontSize:
                                                                             14,
@@ -8886,14 +9322,22 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                       border:
                                                                           OutlineInputBorder(),
                                                                       labelText:
+<<<<<<< HEAD
                                                                           "  Select ",
+=======
+                                                                          "  Select grade",
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                                       hintText:
                                                                           "grade",
                                                                     ),
                                                                     enabled: value.studListUAS[index].attendance ==
+<<<<<<< HEAD
                                                                                 'A' ||
                                                                             value.examStatusUAS ==
                                                                                 'Synchronized'
+=======
+                                                                            'A'
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                                                         ? true
                                                                         : false,
                                                                     readOnly:
@@ -8944,6 +9388,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
               ]);
       }),
       bottomNavigationBar: BottomAppBar(
+<<<<<<< HEAD
         child: Consumer<MarkEntryNewProvider>(
           builder: (context, sync, _) => sync.examStatusUAS == "Synchronized"
               ? SizedBox(
@@ -9319,6 +9764,60 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                     value.examStatusUAS = "Entered";
                                   }
                                 }
+=======
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            kWidth,
+            const Spacer(),
+            Consumer<MarkEntryNewProvider>(builder: (context, value, child) {
+              return value.loadSave
+                  ? MaterialButton(
+                      onPressed: () {},
+                      color: UIGuide.light_Purple,
+                      child: const Text(
+                        'Saving...',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    )
+                  : MaterialButton(
+                      onPressed: () async {
+                        List obj = [];
+                        obj.clear();
+                        print("---------------${value.studListUAS.length}");
+                        print(obj.length);
+                        print(value.tabulationTypeCode);
+                        print(value.entryMethodUAS);
+
+                        if (value.tabulationTypeCode == "UAS" &&
+                            value.teCaptionUAS == "Mark") {
+                          for (int i = 0; i < value.studListUAS.length; i++) {
+                            obj.add(
+                              {
+                                "attendance": value.studListUAS[i].attendance,
+                                "studentName": value.studListUAS[i].studentName,
+                                "rollNo": value.studListUAS[i].rollNo,
+                                "studentId": value.studListUAS[i].studentId,
+                                "markEntryDetId":
+                                    value.studListUAS[i].markEntryDetId,
+                                "teMark": _controllers[i].text.isEmpty
+                                    ? null
+                                    : _controllers[i].text.toString(),
+                                "peMark": null,
+                                "ceMark": null,
+                                "teGrade": null,
+                                "peGrade": null,
+                                "ceGrade": null,
+                                "total": _controllers[i].text.isEmpty
+                                    ? null
+                                    : _controllers[i].text.toString(),
+                                "teGradeId": null,
+                                "peGradeId": null,
+                                "ceGradeId": null,
+                                "tabMarkEntryId": null,
+                                "isEdited": false,
+                                "isDisabled": false
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                               },
                               color: UIGuide.light_Purple,
                               child: const Text(
@@ -9326,6 +9825,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                 style: TextStyle(color: Colors.white),
                               ),
                             );
+<<<<<<< HEAD
                     }),
                     kWidth,
                     //  Consumer<MarkEntryNewProvider>(builder: (context, value, child) {
@@ -9679,6 +10179,300 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                           style: TextStyle(
                                             fontSize: 15,
                                           ),
+=======
+                          }
+                        } else if (value.tabulationTypeCode == "UAS" &&
+                            value.teCaptionUAS == "Grade") {
+                          for (int i = 0; i < value.studListUAS.length; i++) {
+                            obj.add(
+                              {
+                                "attendance": value.studListUAS[i].attendance,
+                                "studentName": value.studListUAS[i].studentName,
+                                "rollNo": value.studListUAS[i].rollNo,
+                                "studentId": value.studListUAS[i].studentId,
+                                "markEntryDetId":
+                                    value.studListUAS[i].markEntryDetId,
+                                "teMark": null,
+                                "peMark": null,
+                                "ceMark": null,
+                                "teGrade": value.studListUAS[i].teGrade,
+                                "peGrade": null,
+                                "ceGrade": null,
+                                "total": null,
+                                "teGradeId": null,
+                                "peGradeId": null,
+                                "ceGradeId": null,
+                                "tabMarkEntryId": null,
+                                "isEdited": false,
+                                "isDisabled": false
+                              },
+                            );
+                          }
+                        } else if (value.tabulationTypeCode == "PBT" &&
+                            value.teCaptionUAS == "Grade") {
+                          for (int i = 0; i < value.studListUAS.length; i++) {
+                            obj.add(
+                              {
+                                "attendance": value.studListUAS[i].attendance,
+                                "studentName": value.studListUAS[i].studentName,
+                                "rollNo": value.studListUAS[i].rollNo,
+                                "studentId": value.studListUAS[i].studentId,
+                                "markEntryDetId":
+                                    value.studListUAS[i].markEntryDetId,
+                                "teMark": null,
+                                "peMark": null,
+                                "ceMark": null,
+                                "teGrade": value.studListUAS[i].teGrade,
+                                "peGrade": null,
+                                "ceGrade": null,
+                                "total": null,
+                                "teGradeId": null,
+                                "peGradeId": null,
+                                "ceGradeId": null,
+                                "tabMarkEntryId": null,
+                                "isEdited": false,
+                                "isDisabled": false
+                              },
+                            );
+                          }
+                        } else if ((value.tabulationTypeCode == "PBT" ||
+                                value.tabulationTypeCode == "STATE") &&
+                            value.entryMethodUAS == "Mark") {
+                          for (int i = 0; i < value.studListUAS.length; i++) {
+                            obj.add(
+                              {
+                                "attendance": value.studListUAS[i].attendance,
+                                "studentName": value.studListUAS[i].studentName,
+                                "rollNo": value.studListUAS[i].rollNo,
+                                "studentId": value.studListUAS[i].studentId,
+                                "markEntryDetId":
+                                    value.studListUAS[i].markEntryDetId,
+                                "teMark": teMarkController[i].text.isEmpty
+                                    ? null
+                                    : teMarkController[i].text.toString(),
+                                "peMark":
+                                    practicalMarkController[i].text.isEmpty
+                                        ? null
+                                        : practicalMarkController[i]
+                                            .text
+                                            .toString(),
+                                "ceMark": ceMarkController[i].text.isEmpty
+                                    ? null
+                                    : ceMarkController[i].text.toString(),
+                                "teGrade": value.studListUAS[i].teGrade,
+                                "peGrade": null,
+                                "ceGrade": null,
+                                "total": "",
+                                "teGradeId": null,
+                                "peGradeId": null,
+                                "ceGradeId": null,
+                                "tabMarkEntryId": null,
+                                "isEdited": false,
+                                "isDisabled": false
+                              },
+                            );
+                          }
+                        } else if ((value.tabulationTypeCode == "STATE") &&
+                            value.entryMethodUAS == "Grade") {
+                          for (int i = 0; i < value.studListUAS.length; i++) {
+                            obj.add(
+                              {
+                                "attendance": value.studListUAS[i].attendance,
+                                "studentName": value.studListUAS[i].studentName,
+                                "rollNo": value.studListUAS[i].rollNo,
+                                "studentId": value.studListUAS[i].studentId,
+                                "markEntryDetId":
+                                    value.studListUAS[i].markEntryDetId,
+                                "teMark": null,
+                                "peMark": null,
+                                "ceMark": null,
+                                "teGrade": value.studListUAS[i].teGrade,
+                                "peGrade": value.studListUAS[i].peGrade,
+                                "ceGrade": value.studListUAS[i].ceGrade,
+                                "total": null,
+                                "teGradeId": null,
+                                "peGradeId": null,
+                                "ceGradeId": null,
+                                "tabMarkEntryId": null,
+                                "isEdited": false,
+                                "isDisabled": false
+                              },
+                            );
+                          }
+                        } else {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            elevation: 10,
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10)),
+                            ),
+                            duration: Duration(seconds: 1),
+                            margin: EdgeInsets.only(
+                                bottom: 80, left: 30, right: 30),
+                            behavior: SnackBarBehavior.floating,
+                            content: Text(
+                              "Something went wrong...!",
+                              textAlign: TextAlign.center,
+                            ),
+                          ));
+                        }
+
+                        // //log("Litsssss   $obj");
+
+                        if (markEntryDivisionListController.text.isEmpty &&
+                            markEntryInitialValuesController.text.isEmpty) {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            elevation: 10,
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10)),
+                            ),
+                            duration: Duration(seconds: 1),
+                            margin: EdgeInsets.only(
+                                bottom: 80, left: 30, right: 30),
+                            behavior: SnackBarBehavior.floating,
+                            content: Text(
+                              "Select mandatory fields...!",
+                              textAlign: TextAlign.center,
+                            ),
+                          ));
+                        } else if (obj.isEmpty) {
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(const SnackBar(
+                            elevation: 10,
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10)),
+                            ),
+                            duration: Duration(seconds: 2),
+                            margin: EdgeInsets.only(
+                                bottom: 80, left: 30, right: 30),
+                            behavior: SnackBarBehavior.floating,
+                            content: Text(
+                              "Please enter mark",
+                              textAlign: TextAlign.center,
+                            ),
+                          ));
+                        } else {
+                          if (value.tabulationTypeCode == "UAS") {
+                            value.loadSave
+                                ? spinkitLoader()
+                                : await value.markEntrySave(
+                                    value.markEntryIdUAS.toString(),
+                                    value.schoolIdUAS.toString(),
+                                    value.tabulationTypeCode.toString(),
+                                    value.subjectCaptionUAS.toString(),
+                                    value.divisionUAS.toString(),
+                                    value.courseUAS.toString(),
+                                    value.partUAS.toString(),
+                                    value.subjectUAS.toString(),
+                                    value.subSubjectUAS.toString(),
+                                    value.optionSubjectUAS.toString(),
+                                    value.staffIdUAS.toString(),
+                                    value.staffNameUAS.toString(),
+                                    value.entryMethodUAS.toString(),
+                                    value.examUAS.toString(),
+                                    value.includeTerminatedStudentsUAS,
+                                    value.teMax.toString(),
+                                    value.peMax.toString(),
+                                    value.ceMax.toString(),
+                                    value.teCaptionUAS.toString(),
+                                    value.peCaptionUAS.toString(),
+                                    value.ceCaptionUAS.toString(),
+                                    value.examStatusUAS.toString(),
+                                    context,
+                                    date!,
+                                    obj,
+                                    value.gradeListUAS,
+                                    value.partsUAS);
+                            value.examStatusUAS = "Entered";
+                          } else {
+                            value.loadSave
+                                ? spinkitLoader()
+                                : await value.markEntrySTATESave(
+                                    value.markEntryIdUAS.toString(),
+                                    value.schoolIdUAS.toString(),
+                                    value.tabulationTypeCode.toString(),
+                                    value.subjectCaptionUAS.toString(),
+                                    value.divisionUAS.toString(),
+                                    value.courseUAS.toString(),
+                                    value.partUAS.toString(),
+                                    value.subjectUAS.toString(),
+                                    value.subSubjectUAS.toString(),
+                                    value.optionSubjectUAS.toString(),
+                                    value.staffIdUAS.toString(),
+                                    value.staffNameUAS.toString(),
+                                    value.entryMethodUAS.toString(),
+                                    value.examUAS.toString(),
+                                    value.includeTerminatedStudentsUAS,
+                                    value.teMax.toString(),
+                                    value.peMax.toString(),
+                                    value.ceMax.toString(),
+                                    value.teCaptionUAS.toString(),
+                                    value.peCaptionUAS.toString(),
+                                    value.ceCaptionUAS.toString(),
+                                    value.examStatusUAS.toString(),
+                                    context,
+                                    date!,
+                                    obj,
+                                    value.gradeListUAS,
+                                    value.partsUAS);
+                            value.examStatusUAS = "Entered";
+                          }
+                        }
+                      },
+                      color: UIGuide.light_Purple,
+                      child: const Text(
+                        'Save',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    );
+            }),
+            kWidth,
+            //  Consumer<MarkEntryNewProvider>(builder: (context, value, child) {
+
+            kWidth,
+            Consumer<MarkEntryNewProvider>(builder: (context, value, child) {
+              return value.loadVerify
+                  ? MaterialButton(
+                      onPressed: () {},
+                      color: UIGuide.light_Purple,
+                      child: const Text(
+                        'Verifying...',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    )
+                  : MaterialButton(
+                      onPressed: () {
+                        value.examStatusUAS == "Verified"
+                            ? ScaffoldMessenger.of(context)
+                                .showSnackBar(const SnackBar(
+                                elevation: 10,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(20)),
+                                ),
+                                duration: Duration(seconds: 1),
+                                margin: EdgeInsets.only(
+                                    bottom: 80, left: 30, right: 30),
+                                behavior: SnackBarBehavior.floating,
+                                content: Text(
+                                  'No data to Verify....',
+                                  textAlign: TextAlign.center,
+                                ),
+                              ))
+                            : showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Center(
+                                      child: Text(
+                                        "Are You Sure Want To Verify",
+                                        style: TextStyle(
+                                          fontSize: 15,
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                                         ),
                                       ),
                                       actions: <Widget>[
@@ -9951,6 +10745,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                 ),
                                               ),
                                             ),
+<<<<<<< HEAD
                                           ],
                                         )
                                       ],
@@ -9967,6 +10762,469 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                     }),
                     kWidth
                   ],
+=======
+                                          ),
+                                          OutlinedButton(
+                                            onPressed: () async {
+                                              List obj = [];
+                                              obj.clear();
+
+                                              // if (value.tabulationTypeCode ==
+                                              //         "UAS" &&
+                                              //     value.teCaptionUAS ==
+                                              //         "Mark") {
+                                              for (int i = 0;
+                                                  i < value.studListUAS.length;
+                                                  i++) {
+                                                obj.add(
+                                                  {
+                                                    "attendance": value
+                                                        .studListUAS[i]
+                                                        .attendance,
+                                                    "studentName": value
+                                                        .studListUAS[i]
+                                                        .studentName,
+                                                    "rollNo": value
+                                                        .studListUAS[i].rollNo,
+                                                    "studentId": value
+                                                        .studListUAS[i]
+                                                        .studentId,
+                                                    "markEntryDetId": value
+                                                        .studListUAS[i]
+                                                        .markEntryDetId,
+                                                    "teMark": value
+                                                        .studListUAS[i].teMark,
+                                                    "peMark": value
+                                                        .studListUAS[i].peMark,
+                                                    "ceMark": value
+                                                        .studListUAS[i].ceMark,
+                                                    "teGrade": value
+                                                        .studListUAS[i].teGrade,
+                                                    "peGrade": value
+                                                        .studListUAS[i].peGrade,
+                                                    "ceGrade": value
+                                                        .studListUAS[i].ceGrade,
+                                                    "total": value
+                                                        .studListUAS[i].total,
+                                                    "teGradeId": value
+                                                        .studListUAS[i]
+                                                        .teGradeId,
+                                                    "peGradeId": value
+                                                        .studListUAS[i]
+                                                        .peGradeId,
+                                                    "ceGradeId": value
+                                                        .studListUAS[i]
+                                                        .ceGradeId,
+                                                    "tabMarkEntryId": value
+                                                        .studListUAS[i]
+                                                        .tabMarkEntryId,
+                                                    "isEdited": false,
+                                                    "isDisabled": false
+                                                  },
+                                                );
+                                              }
+                                              // }
+
+                                              if (markEntryDivisionListController
+                                                      .text.isEmpty &&
+                                                  markEntryInitialValuesController
+                                                      .text.isEmpty) {
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                        const SnackBar(
+                                                  elevation: 10,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                10)),
+                                                  ),
+                                                  duration:
+                                                      Duration(seconds: 1),
+                                                  margin: EdgeInsets.only(
+                                                      bottom: 80,
+                                                      left: 30,
+                                                      right: 30),
+                                                  behavior:
+                                                      SnackBarBehavior.floating,
+                                                  content: Text(
+                                                    "Select mandatory fields...!",
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ));
+                                              } else if (obj.isEmpty) {
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                        const SnackBar(
+                                                  elevation: 10,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                10)),
+                                                  ),
+                                                  duration:
+                                                      Duration(seconds: 2),
+                                                  margin: EdgeInsets.only(
+                                                      bottom: 80,
+                                                      left: 30,
+                                                      right: 30),
+                                                  behavior:
+                                                      SnackBarBehavior.floating,
+                                                  content: Text(
+                                                    "No data to verify",
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ));
+                                              } else {
+                                                value.loadVerify
+                                                    ? spinkitLoader()
+                                                    : await value.markEntryVerify(
+                                                        value.markEntryIdUAS
+                                                            .toString(),
+                                                        value.schoolIdUAS
+                                                            .toString(),
+                                                        value.tabulationTypeCode
+                                                            .toString(),
+                                                        value.subjectCaptionUAS
+                                                            .toString(),
+                                                        value.divisionUAS
+                                                            .toString(),
+                                                        value.courseUAS
+                                                            .toString(),
+                                                        value.partUAS
+                                                            .toString(),
+                                                        value.subjectUAS
+                                                            .toString(),
+                                                        value.subSubjectUAS
+                                                            .toString(),
+                                                        value.optionSubjectUAS
+                                                            .toString(),
+                                                        value.staffIdUAS
+                                                            .toString(),
+                                                        value.staffNameUAS
+                                                            .toString(),
+                                                        value.entryMethodUAS
+                                                            .toString(),
+                                                        value.examUAS
+                                                            .toString(),
+                                                        value
+                                                            .includeTerminatedStudentsUAS,
+                                                        value.teMax.toString(),
+                                                        value.peMax.toString(),
+                                                        value.ceMax.toString(),
+                                                        value.teCaptionUAS
+                                                            .toString(),
+                                                        value.peCaptionUAS
+                                                            .toString(),
+                                                        value.ceCaptionUAS
+                                                            .toString(),
+                                                        value.examStatusUAS
+                                                            .toString(),
+                                                        context,
+                                                        date!,
+                                                        obj,
+                                                        value.gradeListUAS,
+                                                        value.partsUAS);
+                                                value.examStatusUAS =
+                                                    "Verified";
+                                              }
+                                              Navigator.pop(context);
+                                            },
+                                            style: ButtonStyle(
+                                                side: MaterialStateProperty.all(
+                                                    const BorderSide(
+                                                        color: UIGuide
+                                                            .light_Purple,
+                                                        width: 1.0,
+                                                        style: BorderStyle
+                                                            .solid))),
+                                            child: const Text(
+                                              'Confirm',
+                                              style: TextStyle(
+                                                color: Color.fromARGB(
+                                                    255, 12, 162, 46),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  );
+                                },
+                              );
+                      },
+                      color: Colors.green,
+                      child: const Text(
+                        'Verify',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    );
+            }),
+            kWidth,
+            Consumer<MarkEntryNewProvider>(builder: (context, value, child) {
+              return MaterialButton(
+                onPressed: () {
+                  value.examStatusUAS == "Pending"
+                      ? ScaffoldMessenger.of(context)
+                          .showSnackBar(const SnackBar(
+                          elevation: 10,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                          ),
+                          duration: Duration(seconds: 3),
+                          margin:
+                              EdgeInsets.only(bottom: 80, left: 30, right: 30),
+                          behavior: SnackBarBehavior.floating,
+                          content: Text(
+                            'No data to Delete....',
+                            textAlign: TextAlign.center,
+                          ),
+                        ))
+                      : showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Center(
+                                child: Text(
+                                  "Are You Sure Want To Delete",
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                  ),
+                                ),
+                              ),
+                              actions: <Widget>[
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(left: 8.0),
+                                      child: OutlinedButton(
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        style: ButtonStyle(
+                                            side: MaterialStateProperty.all(
+                                                const BorderSide(
+                                                    color: UIGuide.light_Purple,
+                                                    width: 1.0,
+                                                    style: BorderStyle.solid))),
+                                        child: const Text(
+                                          '  Cancel  ',
+                                          style: TextStyle(
+                                            color: Color.fromARGB(
+                                                255, 201, 13, 13),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    OutlinedButton(
+                                      onPressed: () async {
+                                        List obj = [];
+                                        obj.clear();
+
+                                        for (int i = 0;
+                                            i < value.studListUAS.length;
+                                            i++) {
+                                          obj.add(
+                                            {
+                                              "attendance": value
+                                                  .studListUAS[i].attendance,
+                                              "studentName": value
+                                                  .studListUAS[i].studentName,
+                                              "rollNo":
+                                                  value.studListUAS[i].rollNo,
+                                              "studentId": value
+                                                  .studListUAS[i].studentId,
+                                              "markEntryDetId": value
+                                                  .studListUAS[i]
+                                                  .markEntryDetId,
+                                              "teMark":
+                                                  value.studListUAS[i].teMark,
+                                              "peMark": null,
+                                              "ceMark": null,
+                                              "teGrade": null,
+                                              "peGrade": null,
+                                              "ceGrade": null,
+                                              "total":
+                                                  value.studListUAS[i].total,
+                                              "teGradeId": null,
+                                              "peGradeId": null,
+                                              "ceGradeId": null,
+                                              "tabMarkEntryId": null,
+                                              "isEdited": false,
+                                              "isDisabled": false
+                                            },
+                                          );
+                                        }
+
+                                        if (markEntryDivisionListController
+                                                .text.isEmpty &&
+                                            markEntryInitialValuesController
+                                                .text.isEmpty) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(const SnackBar(
+                                            elevation: 10,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(10)),
+                                            ),
+                                            duration: Duration(seconds: 1),
+                                            margin: EdgeInsets.only(
+                                                bottom: 80,
+                                                left: 30,
+                                                right: 30),
+                                            behavior: SnackBarBehavior.floating,
+                                            content: Text(
+                                              "Select mandatory fields...!",
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ));
+                                        } else if (obj.isEmpty) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(const SnackBar(
+                                            elevation: 10,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(10)),
+                                            ),
+                                            duration: Duration(seconds: 2),
+                                            margin: EdgeInsets.only(
+                                                bottom: 80,
+                                                left: 30,
+                                                right: 30),
+                                            behavior: SnackBarBehavior.floating,
+                                            content: Text(
+                                              "No data to delete",
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ));
+                                        } else {
+                                          if (value.tabulationTypeCode ==
+                                              "UAS") {
+                                            value.loadDelete
+                                                ? spinkitLoader()
+                                                : await value.markEntryUASDelete(
+                                                    value.markEntryIdUAS
+                                                        .toString(),
+                                                    value.schoolIdUAS
+                                                        .toString(),
+                                                    value.tabulationTypeCode
+                                                        .toString(),
+                                                    value.subjectCaptionUAS
+                                                        .toString(),
+                                                    value.divisionUAS
+                                                        .toString(),
+                                                    value.courseUAS.toString(),
+                                                    value.partUAS.toString(),
+                                                    value.subjectUAS.toString(),
+                                                    value.subSubjectUAS
+                                                        .toString(),
+                                                    value.optionSubjectUAS
+                                                        .toString(),
+                                                    value.staffIdUAS.toString(),
+                                                    value.staffNameUAS
+                                                        .toString(),
+                                                    value.entryMethodUAS
+                                                        .toString(),
+                                                    value.examUAS.toString(),
+                                                    value
+                                                        .includeTerminatedStudentsUAS,
+                                                    value.teMax.toString(),
+                                                    value.peMax.toString(),
+                                                    value.ceMax.toString(),
+                                                    value.teCaptionUAS
+                                                        .toString(),
+                                                    value.peCaptionUAS
+                                                        .toString(),
+                                                    value.ceCaptionUAS
+                                                        .toString(),
+                                                    value.examStatusUAS
+                                                        .toString(),
+                                                    context,
+                                                    date!,
+                                                    obj,
+                                                    value.gradeListUAS,
+                                                    value.partsUAS);
+                                            value.examStatusUAS = "Pending";
+                                          } else {
+                                            value.loadDelete
+                                                ? spinkitLoader()
+                                                : await value.markEntrySTATEDelete(
+                                                    value.markEntryIdUAS
+                                                        .toString(),
+                                                    value.schoolIdUAS
+                                                        .toString(),
+                                                    value.tabulationTypeCode
+                                                        .toString(),
+                                                    value.subjectCaptionUAS
+                                                        .toString(),
+                                                    value.divisionUAS
+                                                        .toString(),
+                                                    value.courseUAS.toString(),
+                                                    value.partUAS.toString(),
+                                                    value.subjectUAS.toString(),
+                                                    value.subSubjectUAS
+                                                        .toString(),
+                                                    value.optionSubjectUAS
+                                                        .toString(),
+                                                    value.staffIdUAS.toString(),
+                                                    value.staffNameUAS
+                                                        .toString(),
+                                                    value.entryMethodUAS
+                                                        .toString(),
+                                                    value.examUAS.toString(),
+                                                    value
+                                                        .includeTerminatedStudentsUAS,
+                                                    value.teMax.toString(),
+                                                    value.peMax.toString(),
+                                                    value.ceMax.toString(),
+                                                    value.teCaptionUAS
+                                                        .toString(),
+                                                    value.peCaptionUAS
+                                                        .toString(),
+                                                    value.ceCaptionUAS
+                                                        .toString(),
+                                                    value.examStatusUAS
+                                                        .toString(),
+                                                    context,
+                                                    date!,
+                                                    obj,
+                                                    value.gradeListUAS,
+                                                    value.partsUAS);
+                                            value.examStatusUAS = "Pending";
+                                          }
+                                        }
+
+                                        Navigator.pop(context);
+                                      },
+                                      style: ButtonStyle(
+                                          side: MaterialStateProperty.all(
+                                              const BorderSide(
+                                                  color: UIGuide.light_Purple,
+                                                  width: 1.0,
+                                                  style: BorderStyle.solid))),
+                                      child: const Text(
+                                        'Confirm',
+                                        style: TextStyle(
+                                          color:
+                                              Color.fromARGB(255, 12, 162, 46),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            );
+                          },
+                        );
+                },
+                color: Colors.red,
+                child: const Text(
+                  'Delete',
+                  style: TextStyle(color: Colors.white),
+>>>>>>> 5872e73fddbd8f1c6a4bca392a2d613ed3c57989
                 ),
         ),
       ),

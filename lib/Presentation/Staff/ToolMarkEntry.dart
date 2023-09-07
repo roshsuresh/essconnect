@@ -1524,6 +1524,8 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                                                                               ind]
                                                                           .teMark = null
                                                                       : controller.text;
+                                                                  print(
+                                                                      "====${controller.text}");
 
                                                                   controller
                                                                           .selection =

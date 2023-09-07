@@ -291,7 +291,7 @@ class _GjInfoTechState extends State<GjInfoTech> {
             labelLarge: TextStyle(fontSize: 15.0),
           ),
           colorScheme: ColorScheme.fromSwatch(
-            accentColor: Color.fromARGB(
+            accentColor: const Color.fromARGB(
                 255, 219, 235, 250), // but now it should be declared like this
           ),
           primaryColor: UIGuide.light_Purple,
@@ -305,7 +305,6 @@ class _GjInfoTechState extends State<GjInfoTech> {
                   borderRadius: BorderRadius.circular(15),
                   borderSide: const BorderSide(color: Colors.black))),
         ),
-
         routes: routes,
         home: SplashFuturePage(),
         debugShowCheckedModeBanner: false,
