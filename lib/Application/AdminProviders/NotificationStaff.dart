@@ -10,6 +10,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:collection/collection.dart';
 
+import '../../Domain/Admin/AttendanceModel.dart';
+import '../../Presentation/Admin/Communication/SmsFormatToStaff.dart';
+
 class NotificationToStaffAdminProviders with ChangeNotifier {
   bool _loading = false;
   bool get loading => _loading;
@@ -64,7 +67,15 @@ class NotificationToStaffAdminProviders with ChangeNotifier {
     stafflist.clear();
     notifyListeners();
   }
+  //clearsmslist
+  clearSMSList() {
+    formatlists.clear();
+    balance="";
+    stafflist.clear();
+    notifyListeners();
+  }
 
+  List staffSmsList=[];
   bool isSelected(StaffReportNotification model) {
     StaffReportNotification selected =
         stafflist.firstWhere((element) => element.id == model.id);
@@ -76,19 +87,29 @@ class NotificationToStaffAdminProviders with ChangeNotifier {
     StaffReportNotification selected =
         stafflist.firstWhere((element) => element.id == model.id);
 
-    if (selected.selected == null) {
-      selected.selected = true;
-    } else {
-      selected.selected = !selected.selected!;
-    }
-    StaffReportNotification? selectedListItem =
-        selectedList.firstWhereOrNull((element) => element.id == model.id);
-
-    if (selectedListItem == null) {
-      selectedList.add(model);
-      print("adding to selected list");
-    }
+    selected.selected ??= false;
+    selected.selected = !selected.selected!;
+    print(selected.toJson());
+    print("stafflisttttttt");
+    staffSmsList.add(selected.toJson());
+    print(staffSmsList);
     notifyListeners();
+
+    // if (selected.selected == null) {
+    //   selected.selected = true;
+    // } else {
+    //   selected.selected = !selected.selected!;
+    //   print(selected.toJson());
+    // }
+    // StaffReportNotification? selectedListItem =
+    //     selectedList.firstWhereOrNull((element) => element.id == model.id);
+    //
+    // if (selectedListItem == null) {
+    //   selectedList.add(model);
+    //
+    //   print("adding to selected list");
+    // }
+    // notifyListeners();
   }
 
   bool isSelectAllStaff = false;
@@ -276,6 +297,258 @@ class NotificationToStaffAdminProviders with ChangeNotifier {
     } catch (e) {
       setLoading(false);
       print(e);
+    }
+  }
+  //provider details
+
+  String? smstype;
+  String? senderId;
+  String? providerName;
+  //String? providerId;
+
+  Future<bool> getProvider() async {
+    setLoading(true);
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    notifyListeners();
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+    };
+    var request = http.Request('GET',
+        Uri.parse('${UIGuide.baseURL}/mobileapp/staffdet/sms/currentprovider'));
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> data =
+      jsonDecode(await response.stream.bytesToString());
+
+      Map<String, dynamic> providerrrr = data['currentSmsProvider'];
+      print(data);
+      print(providerrrr);
+      CurrentSmsProvider prov =
+      CurrentSmsProvider.fromJson(data['currentSmsProvider']);
+      providerName = prov.providerName;
+      print("provid,$providerName".toString());
+
+      setLoading(false);
+      notifyListeners();
+    } else {
+      print('Error in attendance report');
+      setLoading(false);
+    }
+    return true;
+  }
+
+  //sms balance
+
+  String? balance;
+  Future<int> getSMSBalanceStaff() async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+    };
+    var response = await http.get(
+        Uri.parse(
+            "${UIGuide.baseURL}/sendsmstostaff/getbalance"),
+        headers: headers);
+    if (response.statusCode == 200) {
+      print('correct');
+      Map<String, dynamic> dashboard = json.decode(response.body);
+      SmsBalanceStaff ac = SmsBalanceStaff.fromJson(dashboard);
+      balance = ac.count.toString();
+
+      notifyListeners();
+    } else {
+      print('Error in dashboard');
+    }
+    return response.statusCode;
+  }
+
+
+//sms format
+
+  List<SmsFormatsAdminCompleteview> formatlists = [];
+  Future<bool> viewSMSFormat() async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+    };
+    var request = http.Request('GET',
+        Uri.parse('${UIGuide.baseURL}/sendsmstostaff/get-formats'));
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+    print('object');
+    if (response.statusCode == 200) {
+      var  data = jsonDecode(await response.stream.bytesToString());
+      print(data);
+
+      List<SmsFormatsAdminCompleteview> templist =
+      List<SmsFormatsAdminCompleteview>.from(data["smsFormats"].map((x) => SmsFormatsAdminCompleteview.fromJson(x)));
+      formatlists.addAll(templist);
+      print(formatlists);
+
+      notifyListeners();
+    } else {
+      print('Error in formatList stf');
+    }
+    return true;
+  }
+
+
+  //select format
+
+  String? smsBody;
+  Future<int> getStaffSMSContent(String idd) async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+    };
+    var response = await http.get(
+        Uri.parse(
+            "${UIGuide.baseURL}/sendsmstostaff/get-formats-by-id/$idd"),
+        headers: headers);
+    if (response.statusCode == 200) {
+      print('correct');
+      Map<String, dynamic> dashboard = json.decode(response.body);
+      SmsFormatsAdminCompleteview ac = SmsFormatsAdminCompleteview.fromJson(dashboard);
+      smsBody = ac.smsBody;
+
+      notifyListeners();
+    } else {
+      print('Error in dashboard');
+    }
+    return response.statusCode;
+  }
+
+//sendsms
+
+  String? issuccess;
+  String? isfailed;
+  String? types;
+  Future sendSmstoStaff(
+      BuildContext context,String formatId) async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+    };
+
+    var request = http.Request('POST',
+        Uri.parse('${UIGuide.baseURL}/sendsmstostaff/send-sms'));
+    print(Uri.parse('${UIGuide.baseURL}/sendsmstostaff/send-sms'));
+    request.body = json.encode({
+      "formatId": formatId,
+      "group": "guardianGeneralSMS",
+      "ExampleMessage": "",
+      "SendEmailorSMS": types=="sms"? "SMS":"Email",
+      "content": null,
+      "StaffEntry":staffSmsList ,
+      "Title": ""
+    });
+
+    print(json.encode({
+      "formatId": formatId,
+      "group": "guardianGeneralSMS",
+      "ExampleMessage": "",
+      "SendEmailorSMS": types=="sms"? "SMS":"Email",
+      "content": null,
+      "StaffEntry": staffSmsList,
+      "Title": ""
+    }));
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> data =
+      jsonDecode(await response.stream.bytesToString());
+      Map<String, dynamic> result =data["result"];
+      SmsResult smres =SmsResult.fromJson(result);
+      issuccess=smres.sendSuccess.toString();
+      isfailed=smres.sendFailed.toString();
+      print(result);
+
+      print(
+          ' _ _ _ _ _ _ _ _ _ _ _ _ _ Correct_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _');
+      await AwesomeDialog(
+          dismissOnTouchOutside: false,
+          dismissOnBackKeyPress: false,
+          context: context,
+          dialogType: DialogType.success,
+          animType: AnimType.rightSlide,
+          headerAnimationLoop: false,
+          title: 'Sent Successfully',
+          desc: 'Success: $issuccess \n Failed: $isfailed',
+          btnOkOnPress: () async {
+            stafflist.clear();
+            balance="";
+
+          },
+          btnOkColor: Colors.green)
+          .show();
+      //await getSMSBalance();
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        elevation: 10,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+        ),
+        duration: Duration(seconds: 1),
+        margin: EdgeInsets.only(bottom: 80, left: 30, right: 30),
+        behavior: SnackBarBehavior.floating,
+        content: Text(
+          'Something Went Wrong....',
+          textAlign: TextAlign.center,
+        ),
+      ));
+      print('Error Response in sms send');
+    }
+  }
+
+  List<StaffReportNotification> selectedSmsList = [];
+  submitSmsStaff(BuildContext context) {
+    selectedSmsList.clear();
+    selectedSmsList =
+        stafflist.where((element) => element.selected == true).toList();
+    print(selectedSmsList);
+    if (selectedSmsList.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        elevation: 10,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+        ),
+        duration: Duration(seconds: 1),
+        margin: EdgeInsets.only(bottom: 80, left: 30, right: 30),
+        behavior: SnackBarBehavior.floating,
+        content: Text(
+          'Select any Staff',
+          textAlign: TextAlign.center,
+        ),
+      ));
+    } else {
+      print('selected.....');
+      print(stafflist
+          .where((element) => element.selected == true)
+          .toList());
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => SmsFormatToStaff(
+            toList: selectedSmsList.map((e) => e.id!).toList(),
+            types: types.toString(),
+          ),
+        ),
+      );
     }
   }
 }

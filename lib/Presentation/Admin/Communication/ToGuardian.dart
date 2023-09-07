@@ -10,6 +10,7 @@ import 'package:lottie/lottie.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:provider/provider.dart';
 import '../../../Application/AdminProviders/SchoolPhotoProviders.dart';
+import '../../../Application/Staff_Providers/Notification_ToGuardianProvider.dart';
 import '../../../Domain/Staff/StudentReport_staff.dart';
 
 class AdminToGuardian extends StatelessWidget {
@@ -25,7 +26,7 @@ class AdminToGuardian extends StatelessWidget {
           children: [
             const Spacer(),
             const Text(
-              'Notification to Guardian',
+              'Communication to Guardian',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
             ),
             const Spacer(),
@@ -91,6 +92,8 @@ class _Notification_AdminToGuardainState
   int length = 0;
   String division = '';
 
+  String types="sms";
+
   divClearr() {
     diviData.clear();
   }
@@ -110,6 +113,9 @@ class _Notification_AdminToGuardainState
       p.courseCounter(0);
       p.divisionCounter(0);
       p.sectionCounter(0);
+
+
+
       await Provider.of<NotificationToGuardianAdmin>(context, listen: false)
           .clearStudentList();
     });
@@ -454,9 +460,61 @@ class _Notification_AdminToGuardainState
                           ),
                   ),
                 ),
-              )
+              ),
+
+
             ],
           ),
+       Row(
+         children: [
+           Radio(
+             activeColor: UIGuide.light_Purple,
+             value: 'sms',
+             groupValue: types,
+             onChanged: (value) {
+               setState(() {
+                 types = value.toString();
+               });
+               print(types);
+             },
+           ),
+           Text(
+             "SMS",
+           ),
+           Spacer(),
+           Radio(
+             activeColor: UIGuide.light_Purple,
+             value: 'email',
+             groupValue: types,
+             onChanged: (value) {
+               setState(() {
+                 types = value.toString();
+               });
+               print(types);
+             },
+           ),
+           Text(
+             "E-mail",
+           ),
+           Spacer(),
+           Radio(
+             activeColor: UIGuide.light_Purple,
+             value: 'notification',
+             groupValue: types,
+             onChanged: (value) {
+               setState(() {
+                 types = value.toString();
+               });
+               print(types);
+             },
+           ),
+           const Text(
+             "Notification",
+           ),
+           Spacer(),
+         ],
+       ),
+
           kheight20,
           Table(
             columnWidths: const {
@@ -530,17 +588,50 @@ class _Notification_AdminToGuardainState
         elevation: 3.0,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: MaterialButton(
-            color: UIGuide.light_Purple,
-            onPressed: () {
-              Provider.of<NotificationToGuardianAdmin>(context, listen: false)
-                  .submitStudent(context);
-            },
-            child: const Text('Proceed',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400)),
+          child: Consumer<NotificationToGuardianAdmin>(
+
+            builder: (context, value, child) =>MaterialButton(
+              color: UIGuide.light_Purple,
+              onPressed: () async {
+                if(types=='notification') {
+                  await Provider.of<NotificationToGuardianAdmin>(context,
+                      listen: false)
+                      .submitStudent(context);
+                }
+                else {
+                  await Provider.of<NotificationToGuardianAdmin>(context,
+                      listen: false).getProvider();
+                  value.types=types;
+                  if (value.providerName == null) {
+                    await ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        elevation: 10,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                        ),
+                        duration: Duration(seconds: 1),
+                        margin:
+                        EdgeInsets.only(bottom: 80, left: 30, right: 30),
+                        behavior: SnackBarBehavior.floating,
+                        content: Text(
+                          'Sms Provider Not Found.....!',
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    );
+                  } else {
+                    await Provider.of<NotificationToGuardianAdmin>(context,
+                        listen: false)
+                        .submitSmsStudent(context);
+                  }
+                }
+              },
+              child: const Text('Proceed',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400)),
+            ),
           ),
         ),
       ),
@@ -591,6 +682,8 @@ class Notification_StudListAdmin extends StatelessWidget {
 class Text_Matter_NotificationAdmin extends StatelessWidget {
   final List<String> toList;
   final String type;
+
+  String? provider;
   Text_Matter_NotificationAdmin(
       {Key? key, required this.toList, required this.type})
       : super(key: key);
@@ -703,11 +796,11 @@ class Text_Matter_NotificationAdmin extends StatelessWidget {
                         onPressed: () async {
                           if (titleController.text.trim().isNotEmpty &&
                               matterController.text.trim().isNotEmpty) {
-                            await value.sendNotification(
+                            await Provider.of<NotificationToGuardian_Providers>(
                                 context,
-                                titleController.text,
-                                matterController.text,
-                                toList,
+                                listen: false)
+                                .sendNotification(context, titleController.text,
+                                matterController.text, toList,
                                 sentTo: type);
                             titleController.clear();
                             matterController.clear();
@@ -717,7 +810,7 @@ class Text_Matter_NotificationAdmin extends StatelessWidget {
                                 elevation: 10,
                                 shape: RoundedRectangleBorder(
                                   borderRadius:
-                                      BorderRadius.all(Radius.circular(10)),
+                                  BorderRadius.all(Radius.circular(10)),
                                 ),
                                 duration: Duration(seconds: 1),
                                 margin: EdgeInsets.only(

@@ -292,6 +292,7 @@ class _MissingReportState extends State<MissingReport> {
                           await value.clearSubject();
                           subjectData.clear();
                           value.subjectLen = 0;
+                          value.getPartList(division);
 
                           missingPartController.clear();
                           missingPartController1.clear();

@@ -44,7 +44,7 @@ dependencies:
   flutter_downloader: ^1.10.1+2
   firebase_auth: ^4.7.2
   firebase_core: ^2.15.0
-  firebase_crashlytics: ^3.3.4
+  firebase_crashlytics:   ^3.3.4
   firebase_messaging: ^14.6.5
   firebase_performance_platform_interface: ^0.1.4+4
   flutter:
@@ -80,6 +80,7 @@ dependencies:
   url_launcher: ^6.1.12
   webview_flutter: ^3.0.4
   weipl_checkout_flutter: ^1.0.1
+  cool_alert: ^2.0.1
 dev_dependencies:
   flutter_lints: ^2.0.0
   flutter_test:

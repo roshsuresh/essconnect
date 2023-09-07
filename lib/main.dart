@@ -53,6 +53,7 @@ import 'Application/Staff_Providers/MarkEntryProvider.dart';
 import 'Application/Staff_Providers/MarkReportProvider.dart';
 import 'Application/Staff_Providers/NoticeboardSend.dart';
 import 'Application/Staff_Providers/Notification_ToGuardianProvider.dart';
+import 'Application/Staff_Providers/RemarksEntry.dart';
 import 'Application/Staff_Providers/SearchProvider.dart';
 import 'Application/Staff_Providers/StaffFlashnews.dart';
 import 'Application/Staff_Providers/StaffNotificationScreen.dart';
@@ -277,17 +278,34 @@ class _GjInfoTechState extends State<GjInfoTech> {
         ChangeNotifierProvider(create: (context) => ToolMarkEntryProviders()),
         ChangeNotifierProvider(create: (context) => MissingReportProviders()),
         ChangeNotifierProvider(create: (context) => MarkEntryNewProvider()),
+        ChangeNotifierProvider(create: (context) => RemarksEntryProvider()),
       ],
       child: MaterialApp(
         title: 'e-SS Connect',
         themeMode: ThemeMode.light,
         theme: ThemeData(
+          textTheme: const TextTheme(
+            displayLarge: TextStyle(fontSize: 15),
+            bodyLarge: TextStyle(fontSize: 15.0),
+            bodyMedium: TextStyle(fontSize: 14.0),
+            labelLarge: TextStyle(fontSize: 15.0),
+          ),
+          colorScheme: ColorScheme.fromSwatch(
+            accentColor: Color.fromARGB(
+                255, 219, 235, 250), // but now it should be declared like this
+          ),
           primaryColor: UIGuide.light_Purple,
+          textSelectionTheme: const TextSelectionThemeData(
+            cursorColor: UIGuide.light_Purple,
+            selectionColor: Color.fromARGB(255, 211, 225, 238),
+            selectionHandleColor: Colors.transparent,
+          ),
           inputDecorationTheme: InputDecorationTheme(
               border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15),
                   borderSide: const BorderSide(color: Colors.black))),
         ),
+
         routes: routes,
         home: SplashFuturePage(),
         debugShowCheckedModeBanner: false,

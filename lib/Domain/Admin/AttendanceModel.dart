@@ -133,6 +133,90 @@ class AttendanceSmsFormat {
       };
 }
 
+//get numbers
+
+class GetNumbers {
+  String? id;
+  String? studentId;
+  String? admNo;
+  String? classTeacher;
+  String? name;
+  String? course;
+  String? division;
+  int? rollNo;
+  String? guardianName;
+  String? fatherName;
+  String? motherName;
+  String? guardianMobile;
+  String? guardianEmail;
+  String? fatherMobile;
+  String? fatherEmail;
+  String? motherMobile;
+  String? motherEmail;
+
+  GetNumbers(
+      {this.id,
+        this.studentId,
+        this.admNo,
+        this.classTeacher,
+        this.name,
+        this.course,
+        this.division,
+        this.rollNo,
+        this.guardianName,
+        this.fatherName,
+        this.motherName,
+        this.guardianMobile,
+        this.guardianEmail,
+        this.fatherMobile,
+        this.fatherEmail,
+        this.motherMobile,
+        this.motherEmail});
+
+  GetNumbers.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    studentId = json['studentId'];
+    admNo = json['admNo'];
+    classTeacher = json['classTeacher'];
+    name = json['name'];
+    course = json['course'];
+    division = json['division'];
+    rollNo = json['rollNo'];
+    guardianName = json['guardianName'];
+    fatherName = json['fatherName'];
+    motherName = json['motherName'];
+    guardianMobile = json['guardianMobile'];
+    guardianEmail = json['guardianEmail'];
+    fatherMobile = json['fatherMobile'];
+    fatherEmail = json['fatherEmail'];
+    motherMobile = json['motherMobile'];
+    motherEmail = json['motherEmail'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['studentId'] = this.studentId;
+    data['admNo'] = this.admNo;
+    data['classTeacher'] = this.classTeacher;
+    data['name'] = this.name;
+    data['course'] = this.course;
+    data['division'] = this.division;
+    data['rollNo'] = this.rollNo;
+    data['guardianName'] = this.guardianName;
+    data['fatherName'] = this.fatherName;
+    data['motherName'] = this.motherName;
+    data['guardianMobile'] = this.guardianMobile;
+    data['guardianEmail'] = this.guardianEmail;
+    data['fatherMobile'] = this.fatherMobile;
+    data['fatherEmail'] = this.fatherEmail;
+    data['motherMobile'] = this.motherMobile;
+    data['motherEmail'] = this.motherEmail;
+    return data;
+  }
+}
+
+
 // SendSms
 
 class AttendanceSmsSave {

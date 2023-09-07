@@ -12,6 +12,8 @@ import 'package:lottie/lottie.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:provider/provider.dart';
 
+import '../../../Application/AdminProviders/NotificationToGuardian.dart';
+
 class AdminToStaff extends StatelessWidget {
   AdminToStaff({Key? key}) : super(key: key);
   String? valuee;
@@ -22,7 +24,7 @@ class AdminToStaff extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Notification to Staff',
+          'Communication to Staff',
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 21),
         ),
         titleSpacing: 00.0,
@@ -74,6 +76,8 @@ class _AdminToStaffNotificationState extends State<AdminToStaffNotification> {
   List subjectData = [];
 
   String section = '';
+
+  String types="sms";
 
   @override
   void initState() {
@@ -137,7 +141,7 @@ class _AdminToStaffNotificationState extends State<AdminToStaffNotification> {
                       ),
                       buttonIcon: const Icon(
                         Icons.arrow_drop_down_outlined,
-                        color: Colors.grey,
+                         color: Colors.grey,
                       ),
                       buttonText: value.sectionLen == 0
                           ? const Text(
@@ -224,6 +228,57 @@ class _AdminToStaffNotificationState extends State<AdminToStaffNotification> {
               )
             ],
           ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+
+              Radio(
+                activeColor: UIGuide.light_Purple,
+                value: 'sms',
+                groupValue: types,
+                onChanged: (value) {
+                  setState(() {
+                    types = value.toString();
+                  });
+                  print(types);
+                },
+              ),
+              Text(
+                "SMS",
+              ),
+              Spacer(),
+              Radio(
+                activeColor: UIGuide.light_Purple,
+                value: 'email',
+                groupValue: types,
+                onChanged: (value) {
+                  setState(() {
+                    types = value.toString();
+                  });
+                  print(types);
+                },
+              ),
+              Text(
+                "E-mail",
+              ),
+              Spacer(),
+              Radio(
+                activeColor: UIGuide.light_Purple,
+                value: 'notification',
+                groupValue: types,
+                onChanged: (value) {
+                  setState(() {
+                    types = value.toString();
+                  });
+                  print(types);
+                },
+              ),
+              const Text(
+                "Notification",
+              ),
+              Spacer(),
+            ],
+          ),
           kheight20,
           Table(
             columnWidths: const {
@@ -298,18 +353,52 @@ class _AdminToStaffNotificationState extends State<AdminToStaffNotification> {
         notchMargin: 8.0,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: MaterialButton(
-            color: UIGuide.light_Purple,
-            onPressed: () async {
-              await Provider.of<NotificationToStaffAdminProviders>(context,
+          child: Consumer<NotificationToStaffAdminProviders>(
+
+    builder: (context, value, child) =>
+        MaterialButton(
+              color: UIGuide.light_Purple,
+              onPressed: () async {
+                if (types == 'notification') {
+                  await Provider.of<NotificationToStaffAdminProviders>(context,
                       listen: false)
-                  .submitStaff(context);
-            },
-            child: const Text('Proceed',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400)),
+                      .submitStaff(context);
+                }
+                else {
+                  await Provider.of<NotificationToStaffAdminProviders>(context,
+                      listen: false).getProvider();
+                  value.types = types;
+                  if (value.providerName == null) {
+                    await ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        elevation: 10,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                        ),
+                        duration: Duration(seconds: 1),
+                        margin:
+                        EdgeInsets.only(bottom: 80, left: 30, right: 30),
+                        behavior: SnackBarBehavior.floating,
+                        content: Text(
+                          'Sms Provider Not Found.....!',
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    );
+                  } else {
+                    await Provider.of<NotificationToStaffAdminProviders>(context,
+                        listen: false)
+                        .submitSmsStaff(context);
+                  }
+                }
+              },
+              child:  Text('Proceed',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400)),
+            )
+
           ),
         ),
       ),

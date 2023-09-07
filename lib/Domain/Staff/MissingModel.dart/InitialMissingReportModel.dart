@@ -68,6 +68,37 @@ class PartListReport {
   }
 }
 
+
+//PART
+
+class PartList {
+  String? value;
+  String? text;
+  bool? selected;
+  bool? active;
+  int? order;
+
+  PartList({this.value, this.text, this.selected, this.active, this.order});
+
+  PartList.fromJson(Map<String, dynamic> json) {
+    value = json['value'];
+    text = json['text'];
+    selected = json['selected'];
+    active = json['active'];
+    order = json['order'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['value'] = this.value;
+    data['text'] = this.text;
+    data['selected'] = this.selected;
+    data['active'] = this.active;
+    data['order'] = this.order;
+    return data;
+  }
+}
+
 //Exam
 
 class ExamsListReport {

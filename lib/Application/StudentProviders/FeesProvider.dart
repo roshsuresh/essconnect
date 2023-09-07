@@ -1211,8 +1211,8 @@ class FeesProvider with ChangeNotifier {
         consumerEmailId1WL = con.consumerEmailId;
         txnId1WL = con.txnId;
 
-        items2WL = await data["consumerData"]["items"];
-        print(items2WL);
+        items1WL = await data["consumerData"]["items"];
+        print(items1WL);
 
         notifyListeners();
       } else {
@@ -1286,8 +1286,8 @@ class FeesProvider with ChangeNotifier {
         consumerEmailId1WLBus = con.consumerEmailId;
         txnId1WLBus = con.txnId;
 
-        items2WL = await data["consumerData"]["items"];
-        print(items2WL);
+        items1WLBus = await data["consumerData"]["items"];
+        print(items1WLBus);
 
         notifyListeners();
       } else {

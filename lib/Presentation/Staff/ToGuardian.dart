@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+
 import '../../Constants.dart';
 import '../../utils/constants.dart';
 
@@ -23,7 +24,7 @@ class Staff_ToGuardian extends StatelessWidget {
           children: [
             const Spacer(),
             const Text(
-              'Notification to Guardian',
+              'Communication to Guardian',
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 21),
             ),
             const Spacer(),
@@ -162,6 +163,8 @@ class _Notification_StaffToGuardainState
   final notificationDivisionListController = TextEditingController();
 
   final notificationDivisionListController1 = TextEditingController();
+
+  String type = 'sms';
 
   @override
   void initState() {
@@ -418,6 +421,57 @@ class _Notification_StaffToGuardainState
             ],
           ),
           Row(
+            children: [
+              Spacer(),
+              Radio(
+                activeColor: UIGuide.light_Purple,
+                value: 'sms',
+                groupValue: type,
+                onChanged: (value) {
+                  setState(() {
+                    type = value.toString();
+                  });
+                  print(type);
+                },
+              ),
+              Text(
+                "SMS",
+              ),
+              Spacer(),
+              Radio(
+                activeColor: UIGuide.light_Purple,
+                value: 'email',
+                groupValue: type,
+                onChanged: (value) {
+                  setState(() {
+                    type = value.toString();
+                  });
+                  print(type);
+                },
+              ),
+              Text(
+                "E-mail",
+              ),
+              Spacer(),
+              Radio(
+                activeColor: UIGuide.light_Purple,
+                value: 'notification',
+                groupValue: type,
+                onChanged: (value) {
+                  setState(() {
+                    type = value.toString();
+                  });
+                  print(type);
+                },
+              ),
+              const Text(
+                "Notification",
+              ),
+              Spacer(),
+
+            ],
+          ),
+          Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
@@ -560,21 +614,54 @@ class _Notification_StaffToGuardainState
         elevation: 3.0,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: MaterialButton(
-            color: UIGuide.light_Purple,
-            onPressed: () async {
-              await Provider.of<NotificationToGuardian_Providers>(context,
+          child: Consumer<NotificationToGuardian_Providers>(
+
+                builder: (context, value, child) =>MaterialButton(
+              color: UIGuide.light_Purple,
+              onPressed: () async {
+                if(type=='notification') {
+                  await Provider.of<NotificationToGuardian_Providers>(context,
                       listen: false)
-                  .submitStudent(context);
-            },
-            child: const Text('Proceed',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400)),
+                      .submitStudent(context);
+                }
+                else {
+                   await Provider.of<NotificationToGuardian_Providers>(context,
+                      listen: false).getProvider();
+                   value.type=type;
+                  if (value.providerName == null) {
+                    await ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        elevation: 10,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                        ),
+                        duration: Duration(seconds: 1),
+                        margin:
+                        EdgeInsets.only(bottom: 80, left: 30, right: 30),
+                        behavior: SnackBarBehavior.floating,
+                        content: Text(
+                          'Sms Provider Not Found.....!',
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    );
+                  } else {
+                    await Provider.of<NotificationToGuardian_Providers>(context,
+                        listen: false)
+                        .submitSmsStudent(context);
+                  }
+                }
+              },
+              child: const Text('Proceed',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400)),
+            ),
+          ),
           ),
         ),
-      ),
+
     );
   }
 }

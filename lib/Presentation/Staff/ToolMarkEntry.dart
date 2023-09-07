@@ -1396,7 +1396,9 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                                                               height: 30,
                                                               width: 80,
                                                               child: TextField(
+                                                                textInputAction: TextInputAction.next,
                                                                 style: const TextStyle(
+
                                                                     fontSize:
                                                                         14,
                                                                     fontWeight:
@@ -1407,8 +1409,8 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                                                                     overflow:
                                                                         TextOverflow
                                                                             .clip),
-                                                                focusNode:
-                                                                    FocusNode(),
+                                                                // focusNode:
+                                                                //     FocusNode(),
                                                                 controller:
                                                                     controller,
                                                                 enabled: value

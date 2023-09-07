@@ -49,7 +49,7 @@ class MissingReportProviders with ChangeNotifier {
 //--  Division --  Part
   List<DivisionListReport> divisionList = [];
   List<MultiSelectItem> divisionDrop = [];
-  List<PartListReport> partList = [];
+  List<PartList> partList = [];
 
   int divisionLen = 0;
   divisionCounter(int len) async {
@@ -100,9 +100,39 @@ class MissingReportProviders with ChangeNotifier {
         return MultiSelectItem(subjectdata, subjectdata.text!);
       }).toList();
 
-      List<PartListReport> templist1 = List<PartListReport>.from(
-          data["partList"].map((x) => PartListReport.fromJson(x)));
-      partList.addAll(templist1);
+
+      notifyListeners();
+    } else {
+      print('Error in division & Part stf');
+    }
+    return true;
+  }
+
+  //PART
+
+  Future<bool> getPartList(String divisionId) async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+    };
+
+    var request = http.Request('GET',
+        Uri.parse('${UIGuide.baseURL}/markentryMissingRpt/part/$divisionId'));
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> data =
+      jsonDecode(await response.stream.bytesToString());
+      log(data.toString());
+
+
+      List<PartList> templist = List<PartList>.from(
+          data["partList"].map((x) => PartList.fromJson(x)));
+      partList.addAll(templist);
       notifyListeners();
     } else {
       print('Error in division & Part stf');

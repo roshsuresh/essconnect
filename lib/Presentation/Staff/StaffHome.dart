@@ -31,6 +31,7 @@ import '../Login_Activation/Login_page.dart';
 import '../Student/PasswordChange.dart';
 import 'GalleryUpload.dart';
 import 'NoticeBoard.dart';
+import 'RemarksEntry.dart';
 import 'StaffProfile.dart';
 import 'StaffTimeTable.dart';
 import 'StudAttendenceEntry.dart';
@@ -694,7 +695,7 @@ class _StaffHomeState extends State<StaffHome> {
                                                             //   schdomain: schdomain,
                                                             // ),
 
-                                                            MarkEntry(),
+                                                        RemarksEntry(),
                                                         duration: Duration(
                                                             milliseconds: 300),
                                                         // childCurrent:this
@@ -744,7 +745,7 @@ class _StaffHomeState extends State<StaffHome> {
                                                                   DecorationImage(
                                                                 image:
                                                                     AssetImage(
-                                                                  'assets/Tabulation.png',
+                                                                  'assets/Remarks.png',
                                                                 ),
                                                               ),
                                                             ),
@@ -753,7 +754,7 @@ class _StaffHomeState extends State<StaffHome> {
                                                       ),
                                                       kheight10,
                                                       const Text(
-                                                        'Mark Entry',
+                                                        'Remarks Entry',
                                                         style: TextStyle(
                                                             fontWeight:
                                                                 FontWeight.w400,
@@ -801,7 +802,7 @@ class _StaffHomeState extends State<StaffHome> {
                                                                   DecorationImage(
                                                                 image:
                                                                     AssetImage(
-                                                                  'assets/Tabulation.png',
+                                                                  'assets/Remarks.png',
                                                                 ),
                                                               ),
                                                             ),
@@ -810,7 +811,7 @@ class _StaffHomeState extends State<StaffHome> {
                                                       ),
                                                       kheight10,
                                                       const Text(
-                                                        'Mark Entry',
+                                                        'Remarks Entry',
                                                         style: TextStyle(
                                                             fontWeight:
                                                                 FontWeight.w400,
@@ -874,7 +875,7 @@ class _StaffHomeState extends State<StaffHome> {
                                                                   DecorationImage(
                                                                 image:
                                                                     AssetImage(
-                                                                  'assets/Tabulation.png',
+                                                                  'assets/ToolMarkEntry.png',
                                                                 ),
                                                               ),
                                                             ),
@@ -933,7 +934,7 @@ class _StaffHomeState extends State<StaffHome> {
                                                                   DecorationImage(
                                                                 image:
                                                                     AssetImage(
-                                                                  'assets/Tabulation.png',
+                                                                  'assets/ToolMarkEntry.png',
                                                                 ),
                                                               ),
                                                             ),
@@ -1611,7 +1612,9 @@ class _StaffHomeState extends State<StaffHome> {
                                       context,
                                       PageTransition(
                                         type: PageTransitionType.rightToLeft,
-                                        child: MarkEntryNew(),
+                                        child:
+                                        //MarkEntry(),
+                                        MarkEntryNew(),
                                         duration:
                                             const Duration(milliseconds: 300),
                                       ));
@@ -1639,7 +1642,7 @@ class _StaffHomeState extends State<StaffHome> {
                                               image: DecorationImage(
                                                 opacity: 20,
                                                 image: AssetImage(
-                                                  'assets/Gallery.png',
+                                                  'assets/Tabulation.png',
                                                 ),
                                               ),
                                             ),
@@ -1693,7 +1696,7 @@ class _StaffHomeState extends State<StaffHome> {
                                               image: DecorationImage(
                                                 opacity: 20,
                                                 image: AssetImage(
-                                                  'assets/Gallery.png',
+                                                  'assets/Tabulation.png',
                                                 ),
                                               ),
                                             ),

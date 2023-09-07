@@ -117,32 +117,6 @@ class TextSMSToGuardianCourseDivision_notification_Stf {
 
 //SMS Format
 
-class SmsSettingsByStaff {
-  List<SmsFormatByStaff>? smsFormat;
-  String? applySMSFormatApproval;
-
-  SmsSettingsByStaff({this.smsFormat, this.applySMSFormatApproval});
-
-  SmsSettingsByStaff.fromJson(Map<String, dynamic> json) {
-    if (json['smsFormat'] != null) {
-      smsFormat = [];
-      json['smsFormat'].forEach((v) {
-        smsFormat!.add(SmsFormatByStaff.fromJson(v));
-      });
-    }
-    applySMSFormatApproval = json['applySMSFormatApproval'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    if (smsFormat != null) {
-      data['smsFormat'] = smsFormat!.map((v) => v.toJson()).toList();
-    }
-    data['applySMSFormatApproval'] = applySMSFormatApproval;
-    return data;
-  }
-}
-
 class SmsFormatByStaff {
   String? text;
   String? value;
