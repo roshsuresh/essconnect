@@ -972,7 +972,8 @@ class _RemarksEntryState extends State<RemarksEntry> {
             // crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               kWidth,
-              Expanded(
+              SizedBox(
+                width: size.width * 0.46,
                 child: InkWell(
                     onTap: () {
                       value.clearStuentList();
@@ -1004,10 +1005,10 @@ class _RemarksEntryState extends State<RemarksEntry> {
                       ],
                     )),
               ),
-              kWidth,
+              Spacer(),
               value.loading
                   ? SizedBox(
-                      width: size.width * .46,
+                      width: size.width * .45,
                       child: MaterialButton(
                         shape: const RoundedRectangleBorder(
                             borderRadius:
@@ -1020,8 +1021,8 @@ class _RemarksEntryState extends State<RemarksEntry> {
                         ),
                       ),
                     )
-                  : Expanded(
-                      //    width: size.width * .46,
+                  : SizedBox(
+                      width: size.width * .45,
                       child: MaterialButton(
                         shape: const RoundedRectangleBorder(
                             borderRadius:
@@ -1187,6 +1188,24 @@ class _RemarksEntryState extends State<RemarksEntry> {
                                   true,
                                   value.tabmethod.toString());
                               print("pub saveeeedddddd");
+                              if (value.studListRemarks.isEmpty) {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(const SnackBar(
+                                  elevation: 10,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10)),
+                                  ),
+                                  duration: Duration(seconds: 3),
+                                  margin: EdgeInsets.only(
+                                      bottom: 80, left: 30, right: 30),
+                                  behavior: SnackBarBehavior.floating,
+                                  content: Text(
+                                    "No data Found..!",
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ));
+                              }
                             }
                           }
                         }),
@@ -1217,7 +1236,9 @@ class _RemarksEntryState extends State<RemarksEntry> {
               );
             } else if (value.tabmethod == "UAS") {
               return LimitedBox(
-                  maxHeight: size.height / 1.75,
+                  maxHeight: remarkEntryCategoryController1.text != "Assessment"
+                      ? size.height / 1.60
+                      : size.height / 1.75,
                   child: Padding(
                     padding: const EdgeInsets.all(4.0),
                     child: ListView.builder(
@@ -1333,7 +1354,7 @@ class _RemarksEntryState extends State<RemarksEntry> {
                                         kWidth,
                                         SizedBox(
                                           // height: 20,
-                                          width: 150,
+                                          width: size.width / 2,
                                           child: Consumer<RemarksEntryProvider>(
                                               builder:
                                                   (context, snapshot, child) {
@@ -1477,7 +1498,7 @@ class _RemarksEntryState extends State<RemarksEntry> {
                                             );
                                           }),
                                         ),
-                                        kWidth20,
+                                        Spacer(),
                                         Consumer<RemarksEntryProvider>(
                                           builder: (context, snapshot, child) {
                                             return InkWell(
@@ -1561,6 +1582,7 @@ class _RemarksEntryState extends State<RemarksEntry> {
                                                 ));
                                           },
                                         ),
+                                        kWidth
                                       ],
                                     ),
                                   ),
@@ -1626,7 +1648,7 @@ class _RemarksEntryState extends State<RemarksEntry> {
 
             //Public Tabulation-- Remark Entry
             //--------------------------------
-            else {
+            else if (value.tabmethod == "PBT") {
               return LimitedBox(
                   maxHeight: size.height / 1.60,
                   child: Padding(
@@ -1920,6 +1942,11 @@ class _RemarksEntryState extends State<RemarksEntry> {
                           );
                         })),
                   ));
+            } else {
+              return SizedBox(
+                height: 0,
+                width: 0,
+              );
             }
           })
         ]);
@@ -2223,7 +2250,9 @@ class _RemarksEntryState extends State<RemarksEntry> {
                                                   .text
                                                   .toString(),
                                               value.isTerminated,
-                                              value.remarksEntryId.toString(),
+                                              value.studListRemarks[0]
+                                                  .remarksEntryId
+                                                  .toString(),
                                               value.tabmethod.toString(),
                                               context);
                                     }

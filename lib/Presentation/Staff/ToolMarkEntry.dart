@@ -1396,19 +1396,21 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                                                               height: 30,
                                                               width: 80,
                                                               child: TextField(
-                                                                textInputAction: TextInputAction.next,
-                                                                style: const TextStyle(
+                                                                textInputAction:
+                                                                    TextInputAction
+                                                                        .next,
+                                                                // style: const TextStyle(
 
-                                                                    fontSize:
-                                                                        14,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500,
-                                                                    color: UIGuide
-                                                                        .BLACK,
-                                                                    overflow:
-                                                                        TextOverflow
-                                                                            .clip),
+                                                                //     fontSize:
+                                                                //         14,
+                                                                //     fontWeight:
+                                                                //         FontWeight
+                                                                //             .w500,
+                                                                //     color: UIGuide
+                                                                //         .BLACK,
+                                                                //     overflow:
+                                                                //         TextOverflow
+                                                                //             .clip),
                                                                 // focusNode:
                                                                 //     FocusNode(),
                                                                 controller:
@@ -1450,7 +1452,8 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                                                                 ],
                                                                 decoration:
                                                                     InputDecoration(
-                                                                        focusColor: const Color.fromARGB(
+                                                                        focusColor: const Color
+                                                                            .fromARGB(
                                                                             255,
                                                                             213,
                                                                             215,
@@ -1878,7 +1881,8 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                                                                   child:
                                                                       Padding(
                                                                     padding:
-                                                                        const EdgeInsets.all(
+                                                                        const EdgeInsets
+                                                                            .all(
                                                                             5.0),
                                                                     child:
                                                                         Column(

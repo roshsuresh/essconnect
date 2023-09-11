@@ -508,6 +508,13 @@ class MarkEntryNewProvider with ChangeNotifier {
     return true;
   }
 
+  bool _loadCommon = false;
+  bool get loadCommon => _loadCommon;
+  setLoadCommon(bool value) {
+    _loadCommon = value;
+    notifyListeners();
+  }
+
   //SAVE
   bool _loadSave = false;
   bool get loadSave => _loadSave;
@@ -546,6 +553,7 @@ class MarkEntryNewProvider with ChangeNotifier {
       var partItemm) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoadSave(true);
+    setLoadCommon(true);
 
     var headers = {
       'Content-Type': 'application/json',
@@ -593,6 +601,7 @@ class MarkEntryNewProvider with ChangeNotifier {
 
     if (response.statusCode == 200) {
       setLoadSave(true);
+      setLoadCommon(true);
 
       print('Correct........______________________________');
       print(await response.stream.bytesToString());
@@ -624,6 +633,7 @@ class MarkEntryNewProvider with ChangeNotifier {
           .show();
 
       setLoadSave(false);
+      setLoadCommon(false);
 
       notifyListeners();
     } else {
@@ -641,9 +651,11 @@ class MarkEntryNewProvider with ChangeNotifier {
         ),
       ));
       setLoadSave(false);
+      setLoadCommon(false);
       print('Error Response save');
     }
     setLoadSave(false);
+    setLoadCommon(false);
   }
 
   //State save
@@ -678,6 +690,7 @@ class MarkEntryNewProvider with ChangeNotifier {
       var partItemm) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoadSave(true);
+    setLoadCommon(true);
 
     var headers = {
       'Content-Type': 'application/json',
@@ -725,6 +738,7 @@ class MarkEntryNewProvider with ChangeNotifier {
 
     if (response.statusCode == 200) {
       setLoadSave(true);
+      setLoadCommon(true);
 
       print('Correct........______________________________');
       print(await response.stream.bytesToString());
@@ -756,6 +770,7 @@ class MarkEntryNewProvider with ChangeNotifier {
           .show();
 
       setLoadSave(false);
+      setLoadCommon(false);
 
       notifyListeners();
     } else {
@@ -773,9 +788,11 @@ class MarkEntryNewProvider with ChangeNotifier {
         ),
       ));
       setLoadSave(false);
+      setLoadCommon(false);
       print('Error Response save');
     }
     setLoadSave(false);
+    setLoadCommon(false);
   }
 
   //Verify
@@ -815,7 +832,8 @@ class MarkEntryNewProvider with ChangeNotifier {
       List gradeListSave,
       var partItemm) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
-    setLoadSave(true);
+    setLoadVerify(true);
+    setLoadCommon(true);
 
     var headers = {
       'Content-Type': 'application/json',
@@ -859,10 +877,11 @@ class MarkEntryNewProvider with ChangeNotifier {
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
-    setLoadSave(true);
+    setLoadVerify(true);
 
     if (response.statusCode == 200) {
-      setLoadSave(true);
+      setLoadVerify(true);
+      setLoadCommon(true);
 
       print('Correct........______________________________');
       print(await response.stream.bytesToString());
@@ -877,36 +896,37 @@ class MarkEntryNewProvider with ChangeNotifier {
               desc: 'Verified Successfully',
               btnOkOnPress: () async {
                 await clearStudentMEList();
-               typeCode=='UAS'?
-                await getMarkEntryUASView(
-                    course,
-                    division,
-                    exam,
-                    part,
-                    subject,
-                    subSubject,
-                    optionSubject,
-                    tabulationTypeCode,
-                    partItemm,
-                    subjectCaption,
-                    isTerminated):
-               await getMarkEntrySTATEView(
-                   course,
-                   division,
-                   exam,
-                   part,
-                   subject,
-                   subSubject,
-                   optionSubject,
-                   tabulationTypeCode,
-                   partItemm,
-                   subjectCaption,
-                   isTerminated);
+                typeCode == 'UAS'
+                    ? await getMarkEntryUASView(
+                        course,
+                        division,
+                        exam,
+                        part,
+                        subject,
+                        subSubject,
+                        optionSubject,
+                        tabulationTypeCode,
+                        partItemm,
+                        subjectCaption,
+                        isTerminated)
+                    : await getMarkEntrySTATEView(
+                        course,
+                        division,
+                        exam,
+                        part,
+                        subject,
+                        subSubject,
+                        optionSubject,
+                        tabulationTypeCode,
+                        partItemm,
+                        subjectCaption,
+                        isTerminated);
               },
               btnOkColor: Colors.green)
           .show();
 
-      setLoadSave(false);
+      setLoadVerify(false);
+      setLoadCommon(false);
 
       notifyListeners();
     } else {
@@ -924,10 +944,12 @@ class MarkEntryNewProvider with ChangeNotifier {
           textAlign: TextAlign.center,
         ),
       ));
-      setLoadSave(false);
+      setLoadVerify(false);
+      setLoadCommon(false);
       print('Error Response Verify');
     }
-    setLoadSave(false);
+    setLoadVerify(false);
+    setLoadCommon(false);
   }
 
   //delete
@@ -969,6 +991,7 @@ class MarkEntryNewProvider with ChangeNotifier {
       var partItemm) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoadDelete(true);
+    setLoadCommon(true);
 
     var headers = {
       'Content-Type': 'application/json',
@@ -1016,6 +1039,7 @@ class MarkEntryNewProvider with ChangeNotifier {
 
     if (response.statusCode == 200) {
       setLoadDelete(true);
+      setLoadCommon(true);
 
       print('Correct........______________________________');
       print(await response.stream.bytesToString());
@@ -1035,6 +1059,7 @@ class MarkEntryNewProvider with ChangeNotifier {
           .show();
 
       setLoadDelete(false);
+      setLoadCommon(false);
 
       notifyListeners();
     } else {
@@ -1053,9 +1078,11 @@ class MarkEntryNewProvider with ChangeNotifier {
         ),
       ));
       setLoadDelete(false);
+      setLoadCommon(false);
       print('Error Response Verify');
     }
     setLoadDelete(false);
+    setLoadCommon(false);
   }
 
   //State
@@ -1090,6 +1117,7 @@ class MarkEntryNewProvider with ChangeNotifier {
       var partItemm) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoadDelete(true);
+    setLoadCommon(true);
 
     var headers = {
       'Content-Type': 'application/json',
@@ -1138,6 +1166,7 @@ class MarkEntryNewProvider with ChangeNotifier {
 
     if (response.statusCode == 200) {
       setLoadDelete(true);
+      setLoadCommon(true);
 
       print('Correct........______________________________');
       print(await response.stream.bytesToString());
@@ -1157,6 +1186,7 @@ class MarkEntryNewProvider with ChangeNotifier {
           .show();
 
       setLoadDelete(false);
+      setLoadCommon(false);
 
       notifyListeners();
     } else {
@@ -1175,9 +1205,11 @@ class MarkEntryNewProvider with ChangeNotifier {
         ),
       ));
       setLoadDelete(false);
+      setLoadCommon(false);
       print('Error Response Verify');
     }
     setLoadDelete(false);
+    setLoadCommon(false);
   }
 
   // clear

@@ -36,8 +36,7 @@ class RemarksEntryProvider with ChangeNotifier {
 
     if (response.statusCode == 200) {
       Map<String, dynamic> data =
-      jsonDecode(await response.stream.bytesToString());
-
+          jsonDecode(await response.stream.bytesToString());
 
       List<RemarksCourseList> templist = List<RemarksCourseList>.from(
           data["courseList"].map((x) => RemarksCourseList.fromJson(x)));
@@ -64,7 +63,7 @@ class RemarksEntryProvider with ChangeNotifier {
   List<RemarkDivisionList> remarkEntryDivisionList = [];
   List<RemarksCategoryList> remarkCategoryList = [];
   List<RemarksTermlist> remarkterm = [];
-  Future<bool> getRemarkEntryDivisionValues(String id,String instId) async {
+  Future<bool> getRemarkEntryDivisionValues(String id, String instId) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
 
     var headers = {
@@ -74,26 +73,26 @@ class RemarksEntryProvider with ChangeNotifier {
     var request = http.Request('GET',
         Uri.parse('${UIGuide.baseURL}/remarks-entry/division/$id/$instId'));
 
-
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
       Map<String, dynamic> data =
-      jsonDecode(await response.stream.bytesToString());
+          jsonDecode(await response.stream.bytesToString());
       RemarkDivisionInitialValues inita =
-      RemarkDivisionInitialValues.fromJson(data);
+          RemarkDivisionInitialValues.fromJson(data);
       tabmethod = inita.tabulationMethod;
       print("tabemthd: $tabmethod");
-     print("division and term");
+      print("division and term");
       log(data.toString());
 
       List<RemarkDivisionList> templist = List<RemarkDivisionList>.from(
           data["divisionList"].map((x) => RemarkDivisionList.fromJson(x)));
       remarkEntryDivisionList.addAll(templist);
       List<RemarksCategoryList> templist1 = List<RemarksCategoryList>.from(
-          data["remarksCategoryList"].map((x) => RemarksCategoryList.fromJson(x)));
+          data["remarksCategoryList"]
+              .map((x) => RemarksCategoryList.fromJson(x)));
       remarkCategoryList.addAll(templist1);
       List<RemarksTermlist> templist2 = List<RemarksTermlist>.from(
           data["termList"].map((x) => RemarksTermlist.fromJson(x)));
@@ -113,9 +112,9 @@ class RemarksEntryProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  List<RemarksTermlist>remarkTermList = [];
-  Future<bool> getRemarkEntryTermValues(
-       String divisionId,String assessmentId,String assessment,String instId) async {
+  List<RemarksTermlist> remarkTermList = [];
+  Future<bool> getRemarkEntryTermValues(String divisionId, String assessmentId,
+      String assessment, String instId) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
 
     var headers = {
@@ -126,29 +125,28 @@ class RemarksEntryProvider with ChangeNotifier {
         'GET',
         Uri.parse(
             '${UIGuide.baseURL}/remarks-entry/term/$divisionId/$assessmentId/$instId'));
-  print(request);
+    print(request);
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
       Map<String, dynamic> data =
-      jsonDecode(await response.stream.bytesToString());
+          jsonDecode(await response.stream.bytesToString());
 
       log(data.toString());
       print(assessment);
 
-        List<RemarksTermlist> templist = List<RemarksTermlist>.from(
-            data["termlist"].map((x) => RemarksTermlist.fromJson(x)));
-        print("termlisssss");
-        remarkTermList.addAll(templist);
+      List<RemarksTermlist> templist = List<RemarksTermlist>.from(
+          data["termlist"].map((x) => RemarksTermlist.fromJson(x)));
+      print("termlisssss");
+      remarkTermList.addAll(templist);
 
       // else{
       //   List<RemarksTermlist> templist1 = List<RemarksTermlist>.from(
       //       data["assessmentList"].map((x) => RemarksTermlist.fromJson(x)));
       //   remarkTermList.addAll(templist1);
       // }
-
 
       notifyListeners();
     } else {
@@ -165,7 +163,8 @@ class RemarksEntryProvider with ChangeNotifier {
   }
 
   List<RemarksAssessmentList> remarkEntryAssessmentList = [];
-  Future<bool> getRemarkEntryAssessmentValues(String divionId, String assessmentId,String termId,String instId) async {
+  Future<bool> getRemarkEntryAssessmentValues(String divionId,
+      String assessmentId, String termId, String instId) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     print('object');
     var headers = {
@@ -185,7 +184,7 @@ class RemarksEntryProvider with ChangeNotifier {
 
     if (response.statusCode == 200) {
       Map<String, dynamic> data =
-      jsonDecode(await response.stream.bytesToString());
+          jsonDecode(await response.stream.bytesToString());
 
       log(data.toString());
 
@@ -207,7 +206,6 @@ class RemarksEntryProvider with ChangeNotifier {
     notifyListeners();
   }
 
-
   //remarkentry view
   bool _loading = false;
   bool get loading => _loading;
@@ -215,13 +213,12 @@ class RemarksEntryProvider with ChangeNotifier {
     _loading = value;
     notifyListeners();
   }
-  clearStuentList(){
+
+  clearStuentList() {
     studListRemarks.clear();
     remarksMaster.clear();
     notifyListeners();
   }
-
-
 
 //VIEW
   String? course;
@@ -231,11 +228,9 @@ class RemarksEntryProvider with ChangeNotifier {
   String? assessment;
   bool? terminated;
 
-
-
   List<RemarksStudentList> studListRemarks = [];
   List<RemarkMasterList> remarksMaster = [];
-  String remarksEntryId='';
+  // String remarksEntryId='';
   Future<bool> getRemarksEntryView(
       String course,
       String division,
@@ -266,9 +261,7 @@ class RemarksEntryProvider with ChangeNotifier {
       "includeTerminatedStudents": terminated,
       "IsAssessment": isAssessment,
       "IsTerm": isTerm,
-      "TabulationType" :tabCode
-
-
+      "TabulationType": tabCode
     });
     print(request.body);
 
@@ -281,22 +274,19 @@ class RemarksEntryProvider with ChangeNotifier {
 
       print('---------------------correct--------------------------');
       Map<String, dynamic> data =
-      jsonDecode(await response.stream.bytesToString());
+          jsonDecode(await response.stream.bytesToString());
 
       // log(data.toString());
       setLoading(true);
 
       List<RemarksStudentList> templist = List<RemarksStudentList>.from(
-          data['studentList']
-              .map((x) => RemarksStudentList.fromJson(x)));
+          data['studentList'].map((x) => RemarksStudentList.fromJson(x)));
       studListRemarks.addAll(templist);
 
-        List<RemarkMasterList> templist1 = List<RemarkMasterList>.from(data['remarkMasterList']
-            .map((x) => RemarkMasterList.fromJson(x)));
-        remarksMaster.addAll(templist1);
-        remarksEntryId=studListRemarks[0].remarksEntryId.toString();
-
-
+      List<RemarkMasterList> templist1 = List<RemarkMasterList>.from(
+          data['remarkMasterList'].map((x) => RemarkMasterList.fromJson(x)));
+      remarksMaster.addAll(templist1);
+      // remarksEntryId=studListRemarks[0].remarksEntryId.toString();
 
       notifyListeners();
       setLoading(false);
@@ -308,9 +298,7 @@ class RemarksEntryProvider with ChangeNotifier {
     return true;
   }
 
-
 //ATTACHMENT
-
 
   //attachment
   String? name;
@@ -320,17 +308,23 @@ class RemarksEntryProvider with ChangeNotifier {
   String? id;
 
   Future markHistoryAttachment(
-      String rollNo, String studentId, String studName, String remarks,
-      String remarksMasterId, String fileId, String remarksEntryId,
-      String remarksEntryDetId
-      ) async {
+      String rollNo,
+      String studentId,
+      String studName,
+      String remarks,
+      String remarksMasterId,
+      String fileId,
+      String remarksEntryId,
+      String remarksEntryDetId) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
 
     var headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
-    var request = await  http.Request('GET', Uri.parse(
+    var request = await http.Request(
+        'GET',
+        Uri.parse(
             "${UIGuide.baseURL}/remarks-entry/preview/?rollNo=$rollNo&studentId=$studentId&name=$studName&remarks=$remarks&remarksMasterId=$remarksMasterId&fileId=$fileId&remarksEntryId=$remarksEntryId&remarksEntryDetId=$remarksEntryDetId"));
     request.headers.addAll(headers);
     print(request);
@@ -339,19 +333,17 @@ class RemarksEntryProvider with ChangeNotifier {
 
     print(response);
     if (response.statusCode == 200) {
-
       print('correct');
 
       Map<String, dynamic> data =
-      jsonDecode(await response.stream.bytesToString());
+          jsonDecode(await response.stream.bytesToString());
       MarkHistoryAttachment attach = MarkHistoryAttachment.fromJson(data);
-       name= attach.name.toString();
-       print(name);
-       extension =attach.extension.toString();
-       path =attach.path.toString();
-       url=attach.url.toString();
-       id= attach.id.toString();
-
+      name = attach.name.toString();
+      print(name);
+      extension = attach.extension.toString();
+      path = attach.path.toString();
+      url = attach.url.toString();
+      id = attach.id.toString();
 
       notifyListeners();
     } else {
@@ -361,21 +353,25 @@ class RemarksEntryProvider with ChangeNotifier {
     return response.statusCode;
   }
 
- // public -attachment
+  // public -attachment
 
   Future markHistoryPublicAttachment(
-      String rollNo, String studentId, String studName,
-      String fileId, String remarksEntryId,
-      String remarksEntryDetId
-      ) async {
+      String rollNo,
+      String studentId,
+      String studName,
+      String fileId,
+      String remarksEntryId,
+      String remarksEntryDetId) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoading(true);
     var headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
-    var request = await  http.Request('GET', Uri.parse(
-        "${UIGuide.baseURL}/remarks-entry/preview/?rollNo=$rollNo&studentId=$studentId&name=$studName&fileId=$fileId&remarksEntryId=$remarksEntryId&remarksEntryDetId=$remarksEntryDetId"));
+    var request = await http.Request(
+        'GET',
+        Uri.parse(
+            "${UIGuide.baseURL}/remarks-entry/preview/?rollNo=$rollNo&studentId=$studentId&name=$studName&fileId=$fileId&remarksEntryId=$remarksEntryId&remarksEntryDetId=$remarksEntryDetId"));
     request.headers.addAll(headers);
     print(request);
 
@@ -387,14 +383,14 @@ class RemarksEntryProvider with ChangeNotifier {
       print('correct');
 
       Map<String, dynamic> data =
-      jsonDecode(await response.stream.bytesToString());
+          jsonDecode(await response.stream.bytesToString());
       MarkHistoryAttachment attach = MarkHistoryAttachment.fromJson(data);
-      name= attach.name.toString();
+      name = attach.name.toString();
       print(name);
-      extension =attach.extension.toString();
-      path =attach.path.toString();
-      url=attach.url.toString();
-      id= attach.id.toString();
+      extension = attach.extension.toString();
+      path = attach.path.toString();
+      url = attach.url.toString();
+      id = attach.id.toString();
 
       setLoading(false);
       notifyListeners();
@@ -405,7 +401,6 @@ class RemarksEntryProvider with ChangeNotifier {
     return response.statusCode;
   }
 
-
   //SAVE
   bool _loadSave = false;
   bool get loadSave => _loadSave;
@@ -415,18 +410,18 @@ class RemarksEntryProvider with ChangeNotifier {
   }
 
   Future remarkEntrySave(
-      String course,
-      String division,
-      String category,
-      String term,
-      String assessment,
-      bool includeTerminatedStudents,
-      bool isAssessment,
-      bool isTerm,
-      String tabmethod,
-      BuildContext context,
-      List studentListSave,
-      ) async {
+    String course,
+    String division,
+    String category,
+    String term,
+    String assessment,
+    bool includeTerminatedStudents,
+    bool isAssessment,
+    bool isTerm,
+    String tabmethod,
+    BuildContext context,
+    List studentListSave,
+  ) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoadSave(true);
 
@@ -449,7 +444,6 @@ class RemarksEntryProvider with ChangeNotifier {
       "IsTerm": isTerm,
       "TabulationMethod": tabmethod == "null" ? null : tabmethod,
       "StudentList": studentListSave,
-
     });
     log(request.body);
 
@@ -464,29 +458,20 @@ class RemarksEntryProvider with ChangeNotifier {
       print('Correct........______________________________');
       print(await response.stream.bytesToString());
       await AwesomeDialog(
-          dismissOnTouchOutside: false,
-          dismissOnBackKeyPress: false,
-          context: context,
-          dialogType: DialogType.success,
-          animType: AnimType.rightSlide,
-          headerAnimationLoop: false,
-          title: 'Success',
-          desc: 'Successfully Saved',
-          btnOkOnPress: () async {
-            await clearStuentList();
-            await getRemarksEntryView(
-                 course,
-                 division,
-                 category,
-                 term,
-                 assessment,
-                 isTerminated,
-                isAssessment,
-                isTerm,
-              tabmethod
-            );
-          },
-          btnOkColor: Colors.green)
+              dismissOnTouchOutside: false,
+              dismissOnBackKeyPress: false,
+              context: context,
+              dialogType: DialogType.success,
+              animType: AnimType.rightSlide,
+              headerAnimationLoop: false,
+              title: 'Success',
+              desc: 'Successfully Saved',
+              btnOkOnPress: () async {
+                await clearStuentList();
+                await getRemarksEntryView(course, division, category, term,
+                    assessment, isTerminated, isAssessment, isTerm, tabmethod);
+              },
+              btnOkColor: Colors.green)
           .show();
 
       setLoadSave(false);
@@ -522,16 +507,16 @@ class RemarksEntryProvider with ChangeNotifier {
   }
 
   Future remarkEntryDelete(
-      String course,
-      String division,
-      String category,
-      String term,
-      String assessment,
-      bool includeTerminatedStudents,
-      String remarkEntryId,
-      String tabmethod,
-      BuildContext context,
-      ) async {
+    String course,
+    String division,
+    String category,
+    String term,
+    String assessment,
+    bool includeTerminatedStudents,
+    String remarkEntryId,
+    String tabmethod,
+    BuildContext context,
+  ) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoadDelete(true);
 
@@ -545,7 +530,7 @@ class RemarksEntryProvider with ChangeNotifier {
     print(request);
 
     request.body = json.encode({
-      "RemarkeDetails":{
+      "RemarkeDetails": {
         "course": course,
         "division": division,
         "category": category,
@@ -553,8 +538,8 @@ class RemarksEntryProvider with ChangeNotifier {
         "assessment": assessment,
         "includeTerminatedStudents": includeTerminatedStudents
       },
-      "RemarksEntryId":remarkEntryId,
-      "TabulationMethod":tabmethod
+      "RemarksEntryId": remarkEntryId,
+      "TabulationMethod": tabmethod
     });
     log(request.body);
     request.headers.addAll(headers);
@@ -568,18 +553,18 @@ class RemarksEntryProvider with ChangeNotifier {
       print('Correct........______________________________');
       print(await response.stream.bytesToString());
       await AwesomeDialog(
-          dismissOnTouchOutside: false,
-          dismissOnBackKeyPress: false,
-          context: context,
-          dialogType: DialogType.error,
-          animType: AnimType.rightSlide,
-          headerAnimationLoop: false,
-          title: 'Delete',
-          desc: 'Deleted Successfully',
-          btnOkOnPress: () async {
-            await clearStuentList();
-          },
-          btnOkColor: Colors.red)
+              dismissOnTouchOutside: false,
+              dismissOnBackKeyPress: false,
+              context: context,
+              dialogType: DialogType.error,
+              animType: AnimType.rightSlide,
+              headerAnimationLoop: false,
+              title: 'Delete',
+              desc: 'Deleted Successfully',
+              btnOkOnPress: () async {
+                await clearStuentList();
+              },
+              btnOkColor: Colors.red)
           .show();
 
       setLoadDelete(false);
@@ -605,6 +590,4 @@ class RemarksEntryProvider with ChangeNotifier {
     }
     setLoadDelete(false);
   }
-
-
- }
+}
