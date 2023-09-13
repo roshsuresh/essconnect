@@ -12,7 +12,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../Domain/Admin/AttendanceModel.dart';
 import '../../Domain/Staff/NotifcationSendModel.dart';
 import '../../Domain/Staff/ToGuardian_TextSMS.dart';
-import '../../Presentation/Admin/AttendanceTaken/SmsPage.dart';
 
 class NotificationToGuardian_Providers with ChangeNotifier {
   List<CommunicationToGuardian_course> selectedCourse = [];
@@ -20,22 +19,22 @@ class NotificationToGuardian_Providers with ChangeNotifier {
 
   String filtersDivision = "";
   String filterCourse = "";
-  String studId ="";
-  String admNo="";
-  String classTeacher="";
-  String name="";
-  String course="";
-  String division="";
-  String rollNo="";
-  String guardianName="";
-  String fatherName="";
-  String mothername ="";
-  String guardianMobile="";
-  String guardianEmail="";
-  String fatherMobile="";
-  String fatherEmail="";
-  String motherMobile="";
-  String motherEmail="";
+  String studId = "";
+  String admNo = "";
+  String classTeacher = "";
+  String name = "";
+  String course = "";
+  String division = "";
+  String rollNo = "";
+  String guardianName = "";
+  String fatherName = "";
+  String mothername = "";
+  String guardianMobile = "";
+  String guardianEmail = "";
+  String fatherMobile = "";
+  String fatherEmail = "";
+  String motherMobile = "";
+  String motherEmail = "";
 
   addFilterCourse(String course) {
     filterCourse = course;
@@ -347,21 +346,6 @@ class NotificationToGuardian_Providers with ChangeNotifier {
           .show();
       setLoad(false);
       notifyListeners();
-      // ScaffoldMessenger.of(context).showSnackBar(
-      //   const SnackBar(
-      //     elevation: 10,
-      //     shape: RoundedRectangleBorder(
-      //       borderRadius: BorderRadius.all(Radius.circular(10)),
-      //     ),
-      //     duration: Duration(seconds: 1),
-      //     margin: EdgeInsets.only(bottom: 80, left: 30, right: 30),
-      //     behavior: SnackBarBehavior.floating,
-      //     content: Text(
-      //       'Notification Sent Successfully',
-      //       textAlign: TextAlign.center,
-      //     ),
-      //   ),
-      // );
     } else {
       setLoad(false);
       ScaffoldMessenger.of(context).showSnackBar(
@@ -440,13 +424,13 @@ class NotificationToGuardian_Providers with ChangeNotifier {
 
     if (response.statusCode == 200) {
       Map<String, dynamic> data =
-      jsonDecode(await response.stream.bytesToString());
+          jsonDecode(await response.stream.bytesToString());
 
       Map<String, dynamic> providerrrr = data['currentSmsProvider'];
       print(data);
       print(providerrrr);
       CurrentSmsProvider prov =
-      CurrentSmsProvider.fromJson(data['currentSmsProvider']);
+          CurrentSmsProvider.fromJson(data['currentSmsProvider']);
       providerName = prov.providerName;
       print("provid,$providerName".toString());
 
@@ -476,11 +460,11 @@ class NotificationToGuardian_Providers with ChangeNotifier {
     http.StreamedResponse response = await request.send();
     print('object');
     if (response.statusCode == 200) {
-      var  data = jsonDecode(await response.stream.bytesToString());
+      var data = jsonDecode(await response.stream.bytesToString());
       print(data);
-      Map<String,dynamic> smsfor = data["smsSettings"];
-      List<SmsFormatByStaff> templist =
-      List<SmsFormatByStaff>.from(smsfor["smsFormat"].map((x) => SmsFormatByStaff.fromJson(x)));
+      Map<String, dynamic> smsfor = data["smsSettings"];
+      List<SmsFormatByStaff> templist = List<SmsFormatByStaff>.from(
+          smsfor["smsFormat"].map((x) => SmsFormatByStaff.fromJson(x)));
       formatlist.addAll(templist);
       print(formatlist);
 
@@ -491,10 +475,10 @@ class NotificationToGuardian_Providers with ChangeNotifier {
     return true;
   }
 
- //clearsmslist
+  //clearsmslist
   clearSMSList() {
     formatlist.clear();
-    balance="";
+    balance = "";
     numbList.clear();
     notifyListeners();
   }
@@ -509,8 +493,7 @@ class NotificationToGuardian_Providers with ChangeNotifier {
       'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
     var response = await http.get(
-        Uri.parse(
-            "${UIGuide.baseURL}/sms-to-guardian/get-formats-by-id/$idd"),
+        Uri.parse("${UIGuide.baseURL}/sms-to-guardian/get-formats-by-id/$idd"),
         headers: headers);
     if (response.statusCode == 200) {
       print('correct');
@@ -535,8 +518,7 @@ class NotificationToGuardian_Providers with ChangeNotifier {
       'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
     var response = await http.get(
-        Uri.parse(
-            "${UIGuide.baseURL}/sms-to-guardian/getbalance"),
+        Uri.parse("${UIGuide.baseURL}/sms-to-guardian/getbalance"),
         headers: headers);
     if (response.statusCode == 200) {
       print('correct');
@@ -552,35 +534,33 @@ class NotificationToGuardian_Providers with ChangeNotifier {
   }
 
   //getnumbers
-  List<GetNumbers> numbList=[];
-  Future<int> getNumbers(List toList,bool avoid) async {
+  List<GetNumbers> numbList = [];
+  Future<int> getNumbers(List toList, bool avoid) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     var headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
-    var request = http.Request('POST',
-        Uri.parse('${UIGuide.baseURL}/sms-to-guardian/sms/get-phone-numbers-to-send'));
-    print(Uri.parse('${UIGuide.baseURL}/sms-to-guardian/sms/get-phone-numbers-to-send'));
+    var request = http.Request(
+        'POST',
+        Uri.parse(
+            '${UIGuide.baseURL}/sms-to-guardian/sms/get-phone-numbers-to-send'));
+    print(Uri.parse(
+        '${UIGuide.baseURL}/sms-to-guardian/sms/get-phone-numbers-to-send'));
     request.body = json.encode({
-
       "userIds": toList,
       "avoidRepeatedSMS": avoid,
-
     });
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
       print('correct');
-      List numb =  jsonDecode(await response.stream.bytesToString());
-      List<GetNumbers> templist = List<GetNumbers>.from(
-          numb.map((x) => GetNumbers.fromJson(x)));
+      List numb = jsonDecode(await response.stream.bytesToString());
+      List<GetNumbers> templist =
+          List<GetNumbers>.from(numb.map((x) => GetNumbers.fromJson(x)));
       numbList.addAll(templist);
       print("NumbLst$numb");
-
-
-
 
       notifyListeners();
     } else {
@@ -590,27 +570,33 @@ class NotificationToGuardian_Providers with ChangeNotifier {
   }
 
   //sendsms
+  bool _loadsendSms = false;
+  bool get loadsendSms => _loadsendSms;
+  setLoadsendSms(bool value) {
+    _loadsendSms = value;
+    notifyListeners();
+  }
 
   String? issuccess;
   String? isfailed;
   String? type;
-  Future sendSms(
-      BuildContext context, List studList,String formatId) async {
+  Future sendSms(BuildContext context, List studList, String formatId) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
+    setLoadsendSms(true);
 
     var headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
 
-    var request = http.Request('POST',
-        Uri.parse('${UIGuide.baseURL}/sms-to-guardian/send-sms'));
+    var request = http.Request(
+        'POST', Uri.parse('${UIGuide.baseURL}/sms-to-guardian/send-sms'));
     print(Uri.parse('${UIGuide.baseURL}/sms-to-guardian/send-sms'));
     request.body = json.encode({
       "formatId": formatId,
       "group": "guardianGeneralSMS",
       "ExampleMessage": "",
-      "SendEmailorSMS": type=="sms"? "SMS":"Email",
+      "SendEmailorSMS": type == "sms" ? "SMS" : "Email",
       "content": null,
       "entries": studList,
       "sendTowhom": "Guardian"
@@ -620,7 +606,7 @@ class NotificationToGuardian_Providers with ChangeNotifier {
       "formatId": formatId,
       "group": "guardianGeneralSMS",
       "ExampleMessage": "",
-      "SendEmailorSMS": type=="sms"? "SMS":"Email",
+      "SendEmailorSMS": type == "sms" ? "SMS" : "Email",
       "content": null,
       "entries": studList,
       "sendTowhom": "Guardian"
@@ -631,33 +617,33 @@ class NotificationToGuardian_Providers with ChangeNotifier {
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
+      setLoadsendSms(true);
+
       Map<String, dynamic> data =
-      jsonDecode(await response.stream.bytesToString());
-      Map<String, dynamic> result =data["result"];
-      SmsResult smres =SmsResult.fromJson(result);
-      issuccess=smres.sendSuccess.toString();
-      isfailed=smres.sendFailed.toString();
+          jsonDecode(await response.stream.bytesToString());
+      Map<String, dynamic> result = data["result"];
+      SmsResult smres = SmsResult.fromJson(result);
+      issuccess = smres.sendSuccess.toString();
+      isfailed = smres.sendFailed.toString();
       print(result);
 
       print(
           ' _ _ _ _ _ _ _ _ _ _ _ _ _ Correct_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _');
       await AwesomeDialog(
-          dismissOnTouchOutside: false,
-          dismissOnBackKeyPress: false,
-          context: context,
-          dialogType: DialogType.success,
-          animType: AnimType.rightSlide,
-          headerAnimationLoop: false,
-          title: 'Sent Successfully',
-          desc: 'Success: $issuccess \n Failed: $isfailed',
-          btnOkOnPress: () async {
-            numbList.clear();
-            balance="";
-
-          },
-          btnOkColor: Colors.green)
+              dismissOnTouchOutside: false,
+              dismissOnBackKeyPress: false,
+              context: context,
+              dialogType: DialogType.success,
+              animType: AnimType.rightSlide,
+              headerAnimationLoop: false,
+              title: 'Sent Successfully',
+              desc: 'Success: $issuccess \n Failed: $isfailed',
+              btnOkOnPress: () async {
+                numbList.clear();
+                balance = "";
+              },
+              btnOkColor: Colors.green)
           .show();
-      //await getSMSBalance();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         elevation: 10,
@@ -672,8 +658,10 @@ class NotificationToGuardian_Providers with ChangeNotifier {
           textAlign: TextAlign.center,
         ),
       ));
+      setLoadsendSms(false);
       print('Error Response in sms send');
     }
+    setLoadsendSms(false);
   }
 
   List<StudentViewbyCourseDivision_notification_Stf> selectedSmsList = [];
@@ -702,17 +690,14 @@ class NotificationToGuardian_Providers with ChangeNotifier {
           .where((element) => element.selected == true)
           .toList());
       Navigator.push(
-          context,
-          MaterialPageRoute(
-                    builder: (context) => SmsFormatGuardian(
-                      toList: selectedSmsList.map((e) => e.studentId!).toList(),
-                      types: type.toString(),
-                    ),
+        context,
+        MaterialPageRoute(
+          builder: (context) => SmsFormatGuardian(
+            toList: selectedSmsList.map((e) => e.studentId).toList(),
+            types: type.toString(),
           ),
+        ),
       );
     }
   }
-
-
-
 }

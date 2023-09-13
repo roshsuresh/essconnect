@@ -19,7 +19,6 @@ class AdminToGuardian extends StatelessWidget {
   bool checked = true;
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -27,7 +26,7 @@ class AdminToGuardian extends StatelessWidget {
             const Spacer(),
             const Text(
               'Communication to Guardian',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
             ),
             const Spacer(),
             IconButton(
@@ -49,17 +48,6 @@ class AdminToGuardian extends StatelessWidget {
               bottomRight: Radius.circular(25),
               bottomLeft: Radius.circular(25)),
         ),
-        // bottom: const TabBar(
-        //   indicatorSize: TabBarIndicatorSize.label,
-        //   indicatorColor: Colors.white,
-        //   indicatorWeight: 5,
-        //   tabs: [
-        //     Tab(
-        //       text: "Notification",
-        //     ),
-        //     Tab(text: "Text SMS"),
-        //   ],
-        // ),
         backgroundColor: UIGuide.light_Purple,
       ),
       body: Notification_AdminToGuardain(),
@@ -92,7 +80,7 @@ class _Notification_AdminToGuardainState
   int length = 0;
   String division = '';
 
-  String types="sms";
+  String types = "sms";
 
   divClearr() {
     diviData.clear();
@@ -114,32 +102,30 @@ class _Notification_AdminToGuardainState
       p.divisionCounter(0);
       p.sectionCounter(0);
 
-
-
       await Provider.of<NotificationToGuardianAdmin>(context, listen: false)
           .clearStudentList();
     });
   }
 
+  final ScrollController _scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
-      body: ListView(
+      body: Column(
         children: [
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Consumer<SchoolPhotoProviders>(
                 builder: (context, value, child) => value.loadingSection
-                    ? SizedBox(
-                        width: size.width * .43,
-                        height: 50,
+                    ? Expanded(
+                        // width: size.width * .43,
+                        // height: 50,
                         child: const Center(child: Text('Loading...')))
-                    : Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: SizedBox(
-                          width: size.width * .43,
-                          height: 50,
+                    : Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
                           child: MultiSelectDialogField(
                             items: value.dropDown,
                             listType: MultiSelectListType.CHIP,
@@ -219,9 +205,7 @@ class _Notification_AdminToGuardainState
                               await Provider.of<SchoolPhotoProviders>(context,
                                       listen: false)
                                   .sectionCounter(results.length);
-                              // await Provider.of<SchoolPhotoProviders>(context,
-                              //         listen: false)
-                              //     .clearCourse();
+
                               await Provider.of<SchoolPhotoProviders>(context,
                                       listen: false)
                                   .getCourseList(section);
@@ -233,18 +217,16 @@ class _Notification_AdminToGuardainState
                         ),
                       ),
               ),
-              const Spacer(),
+              // kWidth,
               Consumer<SchoolPhotoProviders>(
                 builder: (context, value, child) => value.loadingCourse
-                    ? SizedBox(
-                        width: size.width * .43,
-                        height: 50,
+                    ? Expanded(
+                        // width: size.width * .43,
+                        // height: 50,
                         child: const Center(child: Text('Loading...')))
-                    : Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: SizedBox(
-                          width: size.width * .43,
-                          height: 50,
+                    : Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
                           child: MultiSelectDialogField(
                             items: value.courseDrop,
                             listType: MultiSelectListType.CHIP,
@@ -338,15 +320,10 @@ class _Notification_AdminToGuardainState
             children: [
               Consumer<SchoolPhotoProviders>(
                 builder: (context, value, child) => value.loadingDivision
-                    ? SizedBox(
-                        width: size.width * .43,
-                        height: 50,
-                        child: const Center(child: Text('Loading...')))
-                    : Padding(
-                        padding: const EdgeInsets.only(left: 10.0, right: 10),
-                        child: SizedBox(
-                          width: size.width * .43,
-                          height: 50,
+                    ? const Expanded(child: Center(child: Text('Loading...')))
+                    : Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 8.0, right: 8),
                           child: MultiSelectDialogField(
                             items: value.divisionDrop,
                             listType: MultiSelectListType.CHIP,
@@ -418,109 +395,166 @@ class _Notification_AdminToGuardainState
                         ),
                       ),
               ),
-              const Spacer(),
-              Padding(
-                padding: const EdgeInsets.only(left: 10.0, right: 10),
-                child: SizedBox(
-                  width: size.width * .43,
-                  height: 44,
-                  child: Consumer<NotificationToGuardianAdmin>(
-                    builder: (context, val, child) => val.loading
-                        ? const Center(
-                            child: Text(
-                            'Loading...',
-                            style: TextStyle(
-                                color: UIGuide.light_Purple, fontSize: 16),
-                          ))
-                        : MaterialButton(
-                            shape: const RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10.0))),
-                            onPressed: () async {
-                              // var p = await Provider.of<SchoolPhotoProviders>(context,
-                              //     listen: false);
-                              // p.courselist.clear();
-                              // p.divisionlist.clear();
-                              // Provider.of<NotificationToGuardianAdmin>(context,
-                              //         listen: false)
-                              //     .notificationView
-                              //     .clear();
-                              await Provider.of<NotificationToGuardianAdmin>(
-                                      context,
-                                      listen: false)
-                                  .clearStudentList();
-                              await Provider.of<NotificationToGuardianAdmin>(
-                                      context,
-                                      listen: false)
-                                  .getNotificationView(course.toLowerCase(),
-                                      division.toLowerCase());
-                            },
-                            color: UIGuide.THEME_LIGHT,
-                            child: const Text('View'),
-                          ),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 10.0, right: 10),
+                  child: SizedBox(
+                    height: 43,
+                    child: Consumer<NotificationToGuardianAdmin>(
+                      builder: (context, val, child) => val.loading
+                          ? const Center(
+                              child: Text(
+                              'Loading...',
+                              style: TextStyle(
+                                  color: UIGuide.light_Purple, fontSize: 16),
+                            ))
+                          : MaterialButton(
+                              shape: const RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10.0))),
+                              onPressed: () async {
+                                await val.clearStudentList();
+                                await val.getNotificationView(
+                                    course.toLowerCase(),
+                                    division.toLowerCase());
+                                if (val.notificationView.isEmpty) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      elevation: 10,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10)),
+                                      ),
+                                      duration: Duration(seconds: 1),
+                                      margin: EdgeInsets.only(
+                                          bottom: 80, left: 30, right: 30),
+                                      behavior: SnackBarBehavior.floating,
+                                      content: Text(
+                                        "No data for specified condition..!",
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  );
+                                }
+                              },
+                              color: UIGuide.THEME_LIGHT,
+                              child: const Text(
+                                'View',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 16),
+                              ),
+                            ),
+                    ),
                   ),
                 ),
               ),
-
-
             ],
           ),
-       Row(
-         children: [
-           Radio(
-             activeColor: UIGuide.light_Purple,
-             value: 'sms',
-             groupValue: types,
-             onChanged: (value) {
-               setState(() {
-                 types = value.toString();
-               });
-               print(types);
-             },
-           ),
-           Text(
-             "SMS",
-           ),
-           Spacer(),
-           Radio(
-             activeColor: UIGuide.light_Purple,
-             value: 'email',
-             groupValue: types,
-             onChanged: (value) {
-               setState(() {
-                 types = value.toString();
-               });
-               print(types);
-             },
-           ),
-           Text(
-             "E-mail",
-           ),
-           Spacer(),
-           Radio(
-             activeColor: UIGuide.light_Purple,
-             value: 'notification',
-             groupValue: types,
-             onChanged: (value) {
-               setState(() {
-                 types = value.toString();
-               });
-               print(types);
-             },
-           ),
-           const Text(
-             "Notification",
-           ),
-           Spacer(),
-         ],
-       ),
+          SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: UIGuide.light_black, width: 1)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    // Spacer(),
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          types = "sms";
+                        });
+                      },
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Radio(
+                            activeColor: UIGuide.light_Purple,
+                            value: 'sms',
+                            groupValue: types,
+                            onChanged: (value) {
+                              setState(() {
+                                types = value.toString();
+                              });
+                              print(types);
+                            },
+                          ),
+                          Text(
+                            "SMS",
+                          ),
+                        ],
+                      ),
+                    ),
 
-          kheight20,
+                    // Spacer(),
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          types = "email";
+                        });
+                      },
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Radio(
+                            activeColor: UIGuide.light_Purple,
+                            value: 'email',
+                            groupValue: types,
+                            onChanged: (value) {
+                              setState(() {
+                                types = value.toString();
+                              });
+                              print(types);
+                            },
+                          ),
+                          Text(
+                            "E-mail",
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    // Spacer(),
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          types = "notification";
+                        });
+                      },
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Radio(
+                            activeColor: UIGuide.light_Purple,
+                            value: 'notification',
+                            groupValue: types,
+                            onChanged: (value) {
+                              setState(() {
+                                types = value.toString();
+                              });
+                              print(types);
+                            },
+                          ),
+                          Text(
+                            "Notification",
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    // Spacer(),
+                  ],
+                ),
+              ),
+            ),
+          ),
           Table(
             columnWidths: const {
-              0: FlexColumnWidth(1.5),
+              0: FlexColumnWidth(1.3),
               1: FlexColumnWidth(4),
-              2: FlexColumnWidth(1.2),
+              2: FlexColumnWidth(1.4),
             },
             children: [
               TableRow(children: [
@@ -559,15 +593,15 @@ class _Notification_AdminToGuardainState
           Consumer<NotificationToGuardianAdmin>(
             builder: (context, value, child) {
               return value.loading
-                  ? LimitedBox(
-                      maxHeight: size.height - 300,
+                  ? Expanded(
                       child: Center(child: spinkitLoader()),
                     )
-                  : Scrollbar(
-                      child: LimitedBox(
-                        maxHeight: size.height - 330,
+                  : Expanded(
+                      child: Scrollbar(
+                        thickness: 5,
+                        controller: _scrollController,
                         child: ListView.builder(
-                          shrinkWrap: true,
+                          scrollDirection: Axis.vertical,
                           itemCount: value.notificationView.isEmpty
                               ? 0
                               : value.notificationView.length,
@@ -587,51 +621,59 @@ class _Notification_AdminToGuardainState
       bottomNavigationBar: BottomAppBar(
         elevation: 3.0,
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.only(left: 12, right: 12),
           child: Consumer<NotificationToGuardianAdmin>(
-
-            builder: (context, value, child) =>MaterialButton(
-              color: UIGuide.light_Purple,
-              onPressed: () async {
-                if(types=='notification') {
-                  await Provider.of<NotificationToGuardianAdmin>(context,
-                      listen: false)
-                      .submitStudent(context);
-                }
-                else {
-                  await Provider.of<NotificationToGuardianAdmin>(context,
-                      listen: false).getProvider();
-                  value.types=types;
-                  if (value.providerName == null) {
-                    await ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        elevation: 10,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                        ),
-                        duration: Duration(seconds: 1),
-                        margin:
-                        EdgeInsets.only(bottom: 80, left: 30, right: 30),
-                        behavior: SnackBarBehavior.floating,
-                        content: Text(
-                          'Sms Provider Not Found.....!',
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    );
-                  } else {
-                    await Provider.of<NotificationToGuardianAdmin>(context,
-                        listen: false)
-                        .submitSmsStudent(context);
-                  }
-                }
-              },
-              child: const Text('Proceed',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400)),
-            ),
+            builder: (context, value, child) => value.loading
+                ? MaterialButton(
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                    color: UIGuide.light_Purple,
+                    onPressed: () {},
+                    child: const Text('Please Wait...',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400)),
+                  )
+                : MaterialButton(
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                    color: UIGuide.light_Purple,
+                    onPressed: () async {
+                      if (types == 'notification') {
+                        await value.submitStudent(context);
+                      } else {
+                        await value.getProvider();
+                        value.types = types;
+                        if (value.providerName == null) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              elevation: 10,
+                              shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10)),
+                              ),
+                              duration: Duration(seconds: 1),
+                              margin: EdgeInsets.only(
+                                  bottom: 80, left: 30, right: 30),
+                              behavior: SnackBarBehavior.floating,
+                              content: Text(
+                                'Sms Provider Not Found..!',
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          );
+                        } else {
+                          await value.submitSmsStudent(context);
+                        }
+                      }
+                    },
+                    child: const Text('Proceed',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400)),
+                  ),
           ),
         ),
       ),
@@ -797,11 +839,11 @@ class Text_Matter_NotificationAdmin extends StatelessWidget {
                           if (titleController.text.trim().isNotEmpty &&
                               matterController.text.trim().isNotEmpty) {
                             await Provider.of<NotificationToGuardian_Providers>(
-                                context,
-                                listen: false)
+                                    context,
+                                    listen: false)
                                 .sendNotification(context, titleController.text,
-                                matterController.text, toList,
-                                sentTo: type);
+                                    matterController.text, toList,
+                                    sentTo: type);
                             titleController.clear();
                             matterController.clear();
                           } else {
@@ -810,7 +852,7 @@ class Text_Matter_NotificationAdmin extends StatelessWidget {
                                 elevation: 10,
                                 shape: RoundedRectangleBorder(
                                   borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
+                                      BorderRadius.all(Radius.circular(10)),
                                 ),
                                 duration: Duration(seconds: 1),
                                 margin: EdgeInsets.only(

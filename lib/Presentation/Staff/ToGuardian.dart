@@ -25,7 +25,7 @@ class Staff_ToGuardian extends StatelessWidget {
             const Spacer(),
             const Text(
               'Communication to Guardian',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 21),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 19),
             ),
             const Spacer(),
             IconButton(
@@ -47,88 +47,38 @@ class Staff_ToGuardian extends StatelessWidget {
               bottomRight: Radius.circular(25),
               bottomLeft: Radius.circular(25)),
         ),
-        // bottom: const TabBar(
-        //   indicatorSize: TabBarIndicatorSize.label,
-        //   indicatorColor: Colors.white,
-        //   indicatorWeight: 5,
-        //   tabs: [
-        //     Tab(
-        //       text: "Notification",
-        //     ),
-        //     Tab(text: "Text SMS"),
-        //   ],
-        // ),
         backgroundColor: UIGuide.light_Purple,
       ),
-      body:
-
-          // TabBarView(
-          //   children: [
-          Consumer<NotificationToGuardian_Providers>(
+      body: Consumer<NotificationToGuardian_Providers>(
         builder: (context, value, child) {
           if (value.isClassTeacher != false) {
             return Notification_StaffToGuardain(
                 size: size, valuee: valuee, checked: checked);
           } else {
-            return Container(
-              child: Center(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Icon(
-                      Icons.sentiment_dissatisfied_outlined,
-                      size: 60,
-                      color: Colors.grey,
-                    ),
-                    kheight10,
-                    Text(
-                      "Sorry you don't have access",
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.grey),
-                    ),
-                  ],
-                ),
+            return const Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.sentiment_dissatisfied_outlined,
+                    size: 60,
+                    color: Colors.grey,
+                  ),
+                  kheight10,
+                  Text(
+                    "Sorry you don't have access",
+                    style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.grey),
+                  ),
+                ],
               ),
             );
           }
         },
       ),
-      // Consumer<NotificationToGuardian_Providers>(
-      //   builder: (context, value, child) {
-      //     if (value.isClassTeacher != false) {
-      //       return const TextSMS_staff();
-      //     } else {
-      //       return Container(
-      //         child: Center(
-      //           child: Column(
-      //             crossAxisAlignment: CrossAxisAlignment.center,
-      //             mainAxisAlignment: MainAxisAlignment.center,
-      //             children: const [
-      //               Icon(
-      //                 Icons.sentiment_dissatisfied_outlined,
-      //                 size: 60,
-      //                 color: Colors.grey,
-      //               ),
-      //               kheight10,
-      //               Text(
-      //                 "Sorry you don't have access",
-      //                 style: TextStyle(
-      //                     fontSize: 20,
-      //                     fontWeight: FontWeight.w600,
-      //                     color: Colors.grey),
-      //               ),
-      //             ],
-      //           ),
-      //         ),
-      //       );
-      //     }
-      //   },
-      // ),
-      //   ],
-      // ),
     );
   }
 }
@@ -180,15 +130,17 @@ class _Notification_StaffToGuardainState
       p.removeDivisionAll();
       p.clearStudentList();
       p.selectedList.clear();
+      p.isselectAll = false;
     });
   }
 
+  final _scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
-      body: ListView(
-        physics: const BouncingScrollPhysics(),
+      body: Column(
+        //   physics: const BouncingScrollPhysics(),
         children: [
           const SizedBox(
             height: 3,
@@ -233,6 +185,11 @@ class _Notification_StaffToGuardainState
                                         courseId = notificationCourseController
                                             .text
                                             .toString();
+                                        notificationDivisionListController
+                                            .clear();
+                                        notificationDivisionListController1
+                                            .clear();
+                                        snapshot.divisionClear();
                                         await snapshot.clearStudentList();
                                         await Provider.of<
                                                     NotificationToGuardian_Providers>(
@@ -331,9 +288,7 @@ class _Notification_StaffToGuardainState
                                         .notificationDivisionList.length);
                                     return ListTile(
                                       onTap: () async {
-                                        print(snapshot
-                                            .notificationDivisionList[index]
-                                            .order);
+                                        await snapshot.clearStudentList();
                                         notificationDivisionListController
                                             .text = snapshot
                                                 .notificationDivisionList[index]
@@ -344,8 +299,7 @@ class _Notification_StaffToGuardainState
                                                 .notificationDivisionList[index]
                                                 .text ??
                                             '---';
-                                        print(notificationDivisionListController
-                                            .text);
+
                                         divisionId =
                                             notificationDivisionListController
                                                 .text
@@ -420,56 +374,105 @@ class _Notification_StaffToGuardainState
               ),
             ],
           ),
-          Row(
-            children: [
-              Spacer(),
-              Radio(
-                activeColor: UIGuide.light_Purple,
-                value: 'sms',
-                groupValue: type,
-                onChanged: (value) {
-                  setState(() {
-                    type = value.toString();
-                  });
-                  print(type);
-                },
-              ),
-              Text(
-                "SMS",
-              ),
-              Spacer(),
-              Radio(
-                activeColor: UIGuide.light_Purple,
-                value: 'email',
-                groupValue: type,
-                onChanged: (value) {
-                  setState(() {
-                    type = value.toString();
-                  });
-                  print(type);
-                },
-              ),
-              Text(
-                "E-mail",
-              ),
-              Spacer(),
-              Radio(
-                activeColor: UIGuide.light_Purple,
-                value: 'notification',
-                groupValue: type,
-                onChanged: (value) {
-                  setState(() {
-                    type = value.toString();
-                  });
-                  print(type);
-                },
-              ),
-              const Text(
-                "Notification",
-              ),
-              Spacer(),
+          SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: UIGuide.light_black, width: 1)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    // Spacer(),
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          type = "sms";
+                        });
+                      },
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Radio(
+                            activeColor: UIGuide.light_Purple,
+                            value: 'sms',
+                            groupValue: type,
+                            onChanged: (value) {
+                              setState(() {
+                                type = value.toString();
+                              });
+                              print(type);
+                            },
+                          ),
+                          const Text(
+                            "SMS",
+                          ),
+                        ],
+                      ),
+                    ),
 
-            ],
+                    // Spacer(),
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          type = "email";
+                        });
+                      },
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Radio(
+                            activeColor: UIGuide.light_Purple,
+                            value: 'email',
+                            groupValue: type,
+                            onChanged: (value) {
+                              setState(() {
+                                type = value.toString();
+                              });
+                              print(type);
+                            },
+                          ),
+                          const Text(
+                            "E-mail",
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    // Spacer(),
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          type = "notification";
+                        });
+                      },
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Radio(
+                            activeColor: UIGuide.light_Purple,
+                            value: 'notification',
+                            groupValue: type,
+                            onChanged: (value) {
+                              setState(() {
+                                type = value.toString();
+                              });
+                              print(type);
+                            },
+                          ),
+                          const Text(
+                            "Notification",
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    // Spacer(),
+                  ],
+                ),
+              ),
+            ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -516,16 +519,7 @@ class _Notification_StaffToGuardainState
                                       context,
                                       listen: false)
                                   .clearStudentList();
-                              await Provider.of<
-                                          NotificationToGuardian_Providers>(
-                                      context,
-                                      listen: false)
-                                  .divisionClear();
-                              await Provider.of<
-                                          NotificationToGuardian_Providers>(
-                                      context,
-                                      listen: false)
-                                  .removeDivisionAll();
+
                               divisionId = notificationDivisionListController
                                   .text
                                   .toString();
@@ -543,12 +537,12 @@ class _Notification_StaffToGuardainState
               ),
             ],
           ),
-          kheight20,
+          kheight10,
           Table(
             columnWidths: const {
-              0: FlexColumnWidth(1.5),
+              0: FlexColumnWidth(1.3),
               1: FlexColumnWidth(4),
-              2: FlexColumnWidth(1.2),
+              2: FlexColumnWidth(1.4),
             },
             children: [
               TableRow(children: [
@@ -587,23 +581,25 @@ class _Notification_StaffToGuardainState
           Consumer<NotificationToGuardian_Providers>(
             builder: (context, value, child) {
               return value.loading
-                  ? LimitedBox(
-                      maxHeight: widget.size.height - 330,
+                  ? Expanded(
                       child: Center(child: spinkitLoader()),
                     )
-                  : LimitedBox(
-                      maxHeight: widget.size.height - 305,
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: value.notificationView.isEmpty
-                            ? 0
-                            : value.notificationView.length,
-                        itemBuilder: ((context, index) {
-                          return Notification_StudList(
-                            viewStud: value.notificationView[index],
-                            indexx: index,
-                          );
-                        }),
+                  : Expanded(
+                      child: Scrollbar(
+                        thickness: 5,
+                        controller: _scrollController,
+                        child: ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          itemCount: value.notificationView.isEmpty
+                              ? 0
+                              : value.notificationView.length,
+                          itemBuilder: ((context, index) {
+                            return Notification_StudList(
+                              viewStud: value.notificationView[index],
+                              indexx: index,
+                            );
+                          }),
+                        ),
                       ),
                     );
             },
@@ -613,55 +609,71 @@ class _Notification_StaffToGuardainState
       bottomNavigationBar: BottomAppBar(
         elevation: 3.0,
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.only(left: 12, right: 12),
           child: Consumer<NotificationToGuardian_Providers>(
-
-                builder: (context, value, child) =>MaterialButton(
-              color: UIGuide.light_Purple,
-              onPressed: () async {
-                if(type=='notification') {
-                  await Provider.of<NotificationToGuardian_Providers>(context,
-                      listen: false)
-                      .submitStudent(context);
-                }
-                else {
-                   await Provider.of<NotificationToGuardian_Providers>(context,
-                      listen: false).getProvider();
-                   value.type=type;
-                  if (value.providerName == null) {
-                    await ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        elevation: 10,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                        ),
-                        duration: Duration(seconds: 1),
-                        margin:
-                        EdgeInsets.only(bottom: 80, left: 30, right: 30),
-                        behavior: SnackBarBehavior.floating,
-                        content: Text(
-                          'Sms Provider Not Found.....!',
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    );
-                  } else {
-                    await Provider.of<NotificationToGuardian_Providers>(context,
-                        listen: false)
-                        .submitSmsStudent(context);
-                  }
-                }
-              },
-              child: const Text('Proceed',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400)),
-            ),
-          ),
+            builder: (context, value, child) => value.loading
+                ? MaterialButton(
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                    color: UIGuide.light_Purple,
+                    onPressed: () {},
+                    child: const Text('Please Wait...',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400)),
+                  )
+                : MaterialButton(
+                    shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                    color: UIGuide.light_Purple,
+                    onPressed: () async {
+                      if (type == 'notification') {
+                        await Provider.of<NotificationToGuardian_Providers>(
+                                context,
+                                listen: false)
+                            .submitStudent(context);
+                      } else {
+                        await Provider.of<NotificationToGuardian_Providers>(
+                                context,
+                                listen: false)
+                            .getProvider();
+                        value.type = type;
+                        if (value.providerName == null) {
+                          await ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              elevation: 10,
+                              shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10)),
+                              ),
+                              duration: Duration(seconds: 1),
+                              margin: EdgeInsets.only(
+                                  bottom: 80, left: 30, right: 30),
+                              behavior: SnackBarBehavior.floating,
+                              content: Text(
+                                'Sms Provider Not Found.....!',
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          );
+                        } else {
+                          await Provider.of<NotificationToGuardian_Providers>(
+                                  context,
+                                  listen: false)
+                              .submitSmsStudent(context);
+                        }
+                      }
+                    },
+                    child: const Text('Proceed',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400)),
+                  ),
           ),
         ),
-
+      ),
     );
   }
 }

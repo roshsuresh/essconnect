@@ -100,7 +100,6 @@ class MissingReportProviders with ChangeNotifier {
         return MultiSelectItem(subjectdata, subjectdata.text!);
       }).toList();
 
-
       notifyListeners();
     } else {
       print('Error in division & Part stf');
@@ -126,9 +125,8 @@ class MissingReportProviders with ChangeNotifier {
 
     if (response.statusCode == 200) {
       Map<String, dynamic> data =
-      jsonDecode(await response.stream.bytesToString());
+          jsonDecode(await response.stream.bytesToString());
       log(data.toString());
-
 
       List<PartList> templist = List<PartList>.from(
           data["partList"].map((x) => PartList.fromJson(x)));
@@ -253,6 +251,14 @@ class MissingReportProviders with ChangeNotifier {
   //View  staff
   clearViewStaffList() async {
     viewStaffList.clear();
+    notifyListeners();
+  }
+  //Checkbox
+
+  bool isShown = false;
+
+  studentWiseCheckbox() {
+    isShown = !isShown;
     notifyListeners();
   }
 

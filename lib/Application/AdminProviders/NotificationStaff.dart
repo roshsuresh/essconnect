@@ -8,7 +8,6 @@ import 'package:essconnect/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-import 'package:collection/collection.dart';
 
 import '../../Domain/Admin/AttendanceModel.dart';
 import '../../Presentation/Admin/Communication/SmsFormatToStaff.dart';
@@ -49,9 +48,6 @@ class NotificationToStaffAdminProviders with ChangeNotifier {
           List<StaffReportNotification>.from(data["staffReport"]
               .map((x) => StaffReportNotification.fromJson(x)));
 
-      // List<StaffReportNotification> templist =
-      //     List<StaffReportNotification>.from(data["staffReport"]
-      //         .map((x) => StaffReportNotification.fromJson(x)));
       stafflist.addAll(templistt);
 
       print('correct');
@@ -67,22 +63,20 @@ class NotificationToStaffAdminProviders with ChangeNotifier {
     stafflist.clear();
     notifyListeners();
   }
+
   //clearsmslist
   clearSMSList() {
     formatlists.clear();
-    balance="";
-    stafflist.clear();
+    balance = "";
     notifyListeners();
   }
 
-  List staffSmsList=[];
   bool isSelected(StaffReportNotification model) {
     StaffReportNotification selected =
         stafflist.firstWhere((element) => element.id == model.id);
     return selected.selected ??= false;
   }
 
-  List<StaffReportNotification> selectedList = [];
   void selectItem(StaffReportNotification model) {
     StaffReportNotification selected =
         stafflist.firstWhere((element) => element.id == model.id);
@@ -90,39 +84,21 @@ class NotificationToStaffAdminProviders with ChangeNotifier {
     selected.selected ??= false;
     selected.selected = !selected.selected!;
     print(selected.toJson());
-    print("stafflisttttttt");
-    staffSmsList.add(selected.toJson());
-    print(staffSmsList);
-    notifyListeners();
 
-    // if (selected.selected == null) {
-    //   selected.selected = true;
-    // } else {
-    //   selected.selected = !selected.selected!;
-    //   print(selected.toJson());
-    // }
-    // StaffReportNotification? selectedListItem =
-    //     selectedList.firstWhereOrNull((element) => element.id == model.id);
-    //
-    // if (selectedListItem == null) {
-    //   selectedList.add(model);
-    //
-    //   print("adding to selected list");
-    // }
-    // notifyListeners();
+    notifyListeners();
   }
 
   bool isSelectAllStaff = false;
   void selectAllStaff() {
     if (stafflist.first.selected == true) {
-      stafflist.forEach((element) {
+      for (var element in stafflist) {
         element.selected = false;
-      });
+      }
       isSelectAllStaff = false;
     } else {
-      stafflist.forEach((element) {
+      for (var element in stafflist) {
         element.selected = true;
-      });
+      }
       isSelectAllStaff = true;
     }
     notifyListeners();
@@ -191,19 +167,6 @@ class NotificationToStaffAdminProviders with ChangeNotifier {
           .show();
       setLoad(false);
       notifyListeners();
-      // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-      //   elevation: 10,
-      //   shape: RoundedRectangleBorder(
-      //     borderRadius: BorderRadius.all(Radius.circular(20)),
-      //   ),
-      //   duration: Duration(seconds: 1),
-      //   margin: EdgeInsets.only(bottom: 80, left: 30, right: 30),
-      //   behavior: SnackBarBehavior.floating,
-      //   content: Text(
-      //     'Notification sent successfully',
-      //     textAlign: TextAlign.center,
-      //   ),
-      // ));
     } else {
       setLoad(false);
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -323,13 +286,13 @@ class NotificationToStaffAdminProviders with ChangeNotifier {
 
     if (response.statusCode == 200) {
       Map<String, dynamic> data =
-      jsonDecode(await response.stream.bytesToString());
+          jsonDecode(await response.stream.bytesToString());
 
       Map<String, dynamic> providerrrr = data['currentSmsProvider'];
       print(data);
       print(providerrrr);
       CurrentSmsProvider prov =
-      CurrentSmsProvider.fromJson(data['currentSmsProvider']);
+          CurrentSmsProvider.fromJson(data['currentSmsProvider']);
       providerName = prov.providerName;
       print("provid,$providerName".toString());
 
@@ -352,8 +315,7 @@ class NotificationToStaffAdminProviders with ChangeNotifier {
       'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
     var response = await http.get(
-        Uri.parse(
-            "${UIGuide.baseURL}/sendsmstostaff/getbalance"),
+        Uri.parse("${UIGuide.baseURL}/sendsmstostaff/getbalance"),
         headers: headers);
     if (response.statusCode == 200) {
       print('correct');
@@ -368,7 +330,6 @@ class NotificationToStaffAdminProviders with ChangeNotifier {
     return response.statusCode;
   }
 
-
 //sms format
 
   List<SmsFormatsAdminCompleteview> formatlists = [];
@@ -379,18 +340,19 @@ class NotificationToStaffAdminProviders with ChangeNotifier {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
-    var request = http.Request('GET',
-        Uri.parse('${UIGuide.baseURL}/sendsmstostaff/get-formats'));
+    var request = http.Request(
+        'GET', Uri.parse('${UIGuide.baseURL}/sendsmstostaff/get-formats'));
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
     print('object');
     if (response.statusCode == 200) {
-      var  data = jsonDecode(await response.stream.bytesToString());
+      var data = jsonDecode(await response.stream.bytesToString());
       print(data);
 
       List<SmsFormatsAdminCompleteview> templist =
-      List<SmsFormatsAdminCompleteview>.from(data["smsFormats"].map((x) => SmsFormatsAdminCompleteview.fromJson(x)));
+          List<SmsFormatsAdminCompleteview>.from(data["smsFormats"]
+              .map((x) => SmsFormatsAdminCompleteview.fromJson(x)));
       formatlists.addAll(templist);
       print(formatlists);
 
@@ -400,7 +362,6 @@ class NotificationToStaffAdminProviders with ChangeNotifier {
     }
     return true;
   }
-
 
   //select format
 
@@ -412,13 +373,13 @@ class NotificationToStaffAdminProviders with ChangeNotifier {
       'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
     var response = await http.get(
-        Uri.parse(
-            "${UIGuide.baseURL}/sendsmstostaff/get-formats-by-id/$idd"),
+        Uri.parse("${UIGuide.baseURL}/sendsmstostaff/get-formats-by-id/$idd"),
         headers: headers);
     if (response.statusCode == 200) {
       print('correct');
       Map<String, dynamic> dashboard = json.decode(response.body);
-      SmsFormatsAdminCompleteview ac = SmsFormatsAdminCompleteview.fromJson(dashboard);
+      SmsFormatsAdminCompleteview ac =
+          SmsFormatsAdminCompleteview.fromJson(dashboard);
       smsBody = ac.smsBody;
 
       notifyListeners();
@@ -429,29 +390,35 @@ class NotificationToStaffAdminProviders with ChangeNotifier {
   }
 
 //sendsms
+  bool _loadSMS = false;
+  bool get loadSMS => _loadSMS;
+  setLoadSMS(bool value) {
+    _loadSMS = value;
+    notifyListeners();
+  }
 
   String? issuccess;
   String? isfailed;
   String? types;
   Future sendSmstoStaff(
-      BuildContext context,String formatId) async {
+      BuildContext context, String formatId, List toStaffList) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
-
+    setLoadSMS(true);
     var headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
 
-    var request = http.Request('POST',
-        Uri.parse('${UIGuide.baseURL}/sendsmstostaff/send-sms'));
+    var request = http.Request(
+        'POST', Uri.parse('${UIGuide.baseURL}/sendsmstostaff/send-sms'));
     print(Uri.parse('${UIGuide.baseURL}/sendsmstostaff/send-sms'));
     request.body = json.encode({
       "formatId": formatId,
       "group": "guardianGeneralSMS",
       "ExampleMessage": "",
-      "SendEmailorSMS": types=="sms"? "SMS":"Email",
+      "SendEmailorSMS": types == "sms" ? "SMS" : "Email",
       "content": null,
-      "StaffEntry":staffSmsList ,
+      "StaffEntry": toStaffList,
       "Title": ""
     });
 
@@ -459,44 +426,45 @@ class NotificationToStaffAdminProviders with ChangeNotifier {
       "formatId": formatId,
       "group": "guardianGeneralSMS",
       "ExampleMessage": "",
-      "SendEmailorSMS": types=="sms"? "SMS":"Email",
+      "SendEmailorSMS": types == "sms" ? "SMS" : "Email",
       "content": null,
-      "StaffEntry": staffSmsList,
+      "StaffEntry": toStaffList,
       "Title": ""
     }));
 
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
+    setLoadSMS(true);
 
     if (response.statusCode == 200) {
+      setLoadSMS(true);
       Map<String, dynamic> data =
-      jsonDecode(await response.stream.bytesToString());
-      Map<String, dynamic> result =data["result"];
-      SmsResult smres =SmsResult.fromJson(result);
-      issuccess=smres.sendSuccess.toString();
-      isfailed=smres.sendFailed.toString();
+          jsonDecode(await response.stream.bytesToString());
+      Map<String, dynamic> result = data["result"];
+      SmsResult smres = SmsResult.fromJson(result);
+      issuccess = smres.sendSuccess.toString();
+      isfailed = smres.sendFailed.toString();
       print(result);
 
       print(
           ' _ _ _ _ _ _ _ _ _ _ _ _ _ Correct_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _');
       await AwesomeDialog(
-          dismissOnTouchOutside: false,
-          dismissOnBackKeyPress: false,
-          context: context,
-          dialogType: DialogType.success,
-          animType: AnimType.rightSlide,
-          headerAnimationLoop: false,
-          title: 'Sent Successfully',
-          desc: 'Success: $issuccess \n Failed: $isfailed',
-          btnOkOnPress: () async {
-            stafflist.clear();
-            balance="";
-
-          },
-          btnOkColor: Colors.green)
+              dismissOnTouchOutside: false,
+              dismissOnBackKeyPress: false,
+              context: context,
+              dialogType: DialogType.success,
+              animType: AnimType.rightSlide,
+              headerAnimationLoop: false,
+              title: 'Sent Successfully',
+              desc: 'Success: $issuccess \n Failed: $isfailed',
+              btnOkOnPress: () async {
+                //  stafflist.clear();
+                balance = "";
+              },
+              btnOkColor: Colors.green)
           .show();
-      //await getSMSBalance();
+      setLoadSMS(false);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         elevation: 10,
@@ -511,8 +479,10 @@ class NotificationToStaffAdminProviders with ChangeNotifier {
           textAlign: TextAlign.center,
         ),
       ));
+      setLoadSMS(false);
       print('Error Response in sms send');
     }
+    setLoadSMS(false);
   }
 
   List<StaffReportNotification> selectedSmsList = [];
@@ -537,14 +507,12 @@ class NotificationToStaffAdminProviders with ChangeNotifier {
       ));
     } else {
       print('selected.....');
-      print(stafflist
-          .where((element) => element.selected == true)
-          .toList());
+      print(stafflist.where((element) => element.selected == true).toList());
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => SmsFormatToStaff(
-            toList: selectedSmsList.map((e) => e.id!).toList(),
+            toList: selectedSmsList,
             types: types.toString(),
           ),
         ),

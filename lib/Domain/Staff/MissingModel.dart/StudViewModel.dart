@@ -4,7 +4,7 @@ class MeListModel {
   int? divisionWiseStudentsCount;
   int? divisionOrder;
   bool? isExisting;
-  Null? subjectList;
+  // Null? subjectList;
   List<StudentListModel>? studentList;
 
   MeListModel(
@@ -13,7 +13,7 @@ class MeListModel {
       this.divisionWiseStudentsCount,
       this.divisionOrder,
       this.isExisting,
-      this.subjectList,
+      // this.subjectList,
       this.studentList});
 
   MeListModel.fromJson(Map<String, dynamic> json) {
@@ -22,7 +22,7 @@ class MeListModel {
     divisionWiseStudentsCount = json['divisionWiseStudentsCount'];
     divisionOrder = json['divisionOrder'];
     isExisting = json['isExisting'];
-    subjectList = json['subjectList'];
+    //  subjectList = json['subjectList'];
     if (json['studentList'] != null) {
       studentList = <StudentListModel>[];
       json['studentList'].forEach((v) {
@@ -38,7 +38,7 @@ class MeListModel {
     data['divisionWiseStudentsCount'] = this.divisionWiseStudentsCount;
     data['divisionOrder'] = this.divisionOrder;
     data['isExisting'] = this.isExisting;
-    data['subjectList'] = this.subjectList;
+    //  data['subjectList'] = this.subjectList;
     if (this.studentList != null) {
       data['studentList'] = this.studentList!.map((v) => v.toJson()).toList();
     }
@@ -89,8 +89,8 @@ class StudentListModel {
 class SUbjectListModel {
   String? id;
   String? subject;
-  Null? shortName;
-  Null? mainSubject;
+  String? shortName;
+  String? mainSubject;
   String? user;
   bool? isMainSub;
 

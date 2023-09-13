@@ -73,6 +73,8 @@ class _RemarksEntryState extends State<RemarksEntry> {
   final remarkEntryAssessmentListController = TextEditingController();
   final remarkEntryAssessmentListController1 = TextEditingController();
 
+  final _scrollController = ScrollController();
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -104,196 +106,61 @@ class _RemarksEntryState extends State<RemarksEntry> {
           ),
           backgroundColor: UIGuide.light_Purple),
       body: Consumer<RemarksEntryProvider>(builder: (context, value, _) {
-        return ListView(physics: const BouncingScrollPhysics(), children: [
-          Row(
+        return Column(
+            //physics: const BouncingScrollPhysics(),
             children: [
-              kWidth,
-              SizedBox(
-                height: 50,
-                width: MediaQuery.of(context).size.width * 0.46,
-                child: Consumer<RemarksEntryProvider>(
-                    builder: (context, snapshot, child) {
-                  return InkWell(
-                    onTap: () async {
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return Dialog(
-                                child: LimitedBox(
-                              maxHeight: size.height - 300,
-                              child: ListView.builder(
-                                  shrinkWrap: true,
-                                  itemCount:
-                                      snapshot.remarksEntryInitialValues.length,
-                                  itemBuilder: (context, index) {
-                                    return ListTile(
-                                      onTap: () async {
-                                        remarkEntryInitialValuesController
-                                            .text = snapshot
-                                                .remarksEntryInitialValues[
-                                                    index]
-                                                .value ??
-                                            '--';
-                                        remarkEntryInitialValuesController1
-                                            .text = snapshot
-                                                .remarksEntryInitialValues[
-                                                    index]
-                                                .text ??
-                                            '--';
-                                        courseId =
-                                            remarkEntryInitialValuesController
-                                                .text
-                                                .toString();
-                                        instaId = snapshot
-                                            .remarksEntryInitialValues[index]
-                                            .installationId
-                                            .toString();
-
-                                        //div
-                                        remarkEntryDivisionListController
-                                            .clear();
-                                        remarkEntryDivisionListController1
-                                            .clear();
-                                        await snapshot.divisionClear();
-
-                                        //category
-
-                                        remarkEntryCategoryController.clear();
-                                        remarkEntryCategoryController1.clear();
-
-                                        // term
-
-                                        remarkEntryTermController.clear();
-                                        remarkEntryTermController1.clear();
-
-                                        await snapshot.removeAllTermClear();
-
-                                        await snapshot
-                                            .getRemarkEntryDivisionValues(
-                                                courseId, instaId);
-                                        await value.clearStuentList();
-                                        Navigator.of(context).pop();
-                                      },
-                                      title: Text(
-                                        snapshot
-                                                .remarksEntryInitialValues[
-                                                    index]
-                                                .text ??
-                                            '--',
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    );
-                                  }),
-                            ));
-                          });
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Column(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: UIGuide.light_Purple, width: 1),
-                            ),
-                            height: 40,
-                            child: TextField(
-                              style: const TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                  color: UIGuide.BLACK,
-                                  overflow: TextOverflow.clip),
-                              textAlign: TextAlign.center,
-                              controller: remarkEntryInitialValuesController1,
-                              decoration: const InputDecoration(
-                                filled: true,
-                                contentPadding:
-                                    EdgeInsets.only(left: 0, top: 0),
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.never,
-                                fillColor: Color.fromARGB(255, 238, 237, 237),
-                                border: OutlineInputBorder(),
-                                labelText: "  Select Course",
-                                hintText: "Course",
-                              ),
-                              enabled: false,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 0,
-                            child: TextField(
-                              textAlign: TextAlign.center,
-                              controller: remarkEntryInitialValuesController,
-                              decoration: const InputDecoration(
-                                filled: true,
-                                fillColor: Color.fromARGB(255, 238, 237, 237),
-                                border: OutlineInputBorder(),
-                                labelText: "",
-                                hintText: "",
-                              ),
-                              enabled: false,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                }),
-              ),
-              const Spacer(),
-              SizedBox(
-                height: 50,
-                width: MediaQuery.of(context).size.width * 0.46,
-                child: Consumer<RemarksEntryProvider>(
-                    builder: (context, snapshot, child) {
-                  return InkWell(
-                    onTap: () async {
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return Dialog(
-                                child: Container(
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  ListView.builder(
+              Row(
+                children: [
+                  kWidth,
+                  SizedBox(
+                    height: 50,
+                    width: MediaQuery.of(context).size.width * 0.46,
+                    child: Consumer<RemarksEntryProvider>(
+                        builder: (context, snapshot, child) {
+                      return InkWell(
+                        onTap: () async {
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return Dialog(
+                                    child: LimitedBox(
+                                  maxHeight: size.height - 300,
+                                  child: ListView.builder(
                                       shrinkWrap: true,
                                       itemCount: snapshot
-                                          .remarkEntryDivisionList.length,
+                                          .remarksEntryInitialValues.length,
                                       itemBuilder: (context, index) {
                                         return ListTile(
-                                          selectedTileColor:
-                                              Colors.blue.shade100,
-                                          selectedColor: UIGuide.PRIMARY2,
                                           onTap: () async {
-                                            snapshot.clearStuentList();
-
-                                            snapshot.remarkCategoryList;
-                                            remarkEntryDivisionListController
-                                                .clear();
-                                            remarkEntryCategoryController1
-                                                .clear();
-                                            remarkEntryDivisionListController
+                                            remarkEntryInitialValuesController
                                                 .text = snapshot
-                                                    .remarkEntryDivisionList[
+                                                    .remarksEntryInitialValues[
                                                         index]
                                                     .value ??
-                                                '---';
-                                            remarkEntryDivisionListController1
+                                                '--';
+                                            remarkEntryInitialValuesController1
                                                 .text = snapshot
-                                                    .remarkEntryDivisionList[
+                                                    .remarksEntryInitialValues[
                                                         index]
                                                     .text ??
-                                                '---';
-
-                                            divisionId =
-                                                remarkEntryDivisionListController
-                                                    .text
-                                                    .toString();
+                                                '--';
                                             courseId =
                                                 remarkEntryInitialValuesController
                                                     .text
                                                     .toString();
+                                            instaId = snapshot
+                                                .remarksEntryInitialValues[
+                                                    index]
+                                                .installationId
+                                                .toString();
+
+                                            //div
+                                            remarkEntryDivisionListController
+                                                .clear();
+                                            remarkEntryDivisionListController1
+                                                .clear();
+                                            await snapshot.divisionClear();
+
                                             //category
 
                                             remarkEntryCategoryController
@@ -301,622 +168,42 @@ class _RemarksEntryState extends State<RemarksEntry> {
                                             remarkEntryCategoryController1
                                                 .clear();
 
-                                            // sub
+                                            // term
 
                                             remarkEntryTermController.clear();
                                             remarkEntryTermController1.clear();
 
+                                            await snapshot.removeAllTermClear();
+
                                             await snapshot
-                                                .removeAllAssessmentClear();
-                                            tabmethod = snapshot.tabmethod;
-                                            print(
-                                                "tabulationnnnnnn:$tabmethod");
-
-                                            //option sub
-
-                                            //
-                                            // await snapshot
-                                            //     .getRemarkEntryDivisionValues(
-                                            //     courseId,instaId);
+                                                .getRemarkEntryDivisionValues(
+                                                    courseId, instaId);
+                                            await value.clearStuentList();
                                             Navigator.of(context).pop();
                                           },
                                           title: Text(
                                             snapshot
-                                                    .remarkEntryDivisionList[
+                                                    .remarksEntryInitialValues[
                                                         index]
                                                     .text ??
-                                                '---',
+                                                '--',
                                             textAlign: TextAlign.center,
                                           ),
                                         );
                                       }),
-                                ],
-                              ),
-                            ));
-                          });
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Column(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: UIGuide.light_Purple, width: 1),
-                            ),
-                            height: 40,
-                            child: TextField(
-                              style: const TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                  color: UIGuide.BLACK,
-                                  overflow: TextOverflow.clip),
-                              textAlign: TextAlign.center,
-                              controller: remarkEntryDivisionListController1,
-                              decoration: const InputDecoration(
-                                filled: true,
-                                contentPadding:
-                                    EdgeInsets.only(left: 0, top: 0),
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.never,
-                                fillColor: Color.fromARGB(255, 238, 237, 237),
-                                border: OutlineInputBorder(),
-                                labelText: "  Select Division",
-                                hintText: "Division",
-                              ),
-                              enabled: false,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 0,
-                            child: TextField(
-                              controller: remarkEntryDivisionListController,
-                              decoration: const InputDecoration(
-                                filled: true,
-                                fillColor: Color.fromARGB(255, 238, 237, 237),
-                                border: OutlineInputBorder(),
-                                labelText: "",
-                                hintText: "",
-                              ),
-                              enabled: false,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                }),
-              ),
-              kWidth,
-            ],
-          ),
-
-          value.tabmethod == "PBT"
-              ? Row(
-                  children: [
-                    kWidth,
-                    SizedBox(
-                      height: 50,
-                      width: MediaQuery.of(context).size.width * 0.46,
-                      child: Consumer<RemarksEntryProvider>(
-                          builder: (context, snapshot, child) {
-                        return InkWell(
-                          onTap: () {
-                            showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return Container(
-                                    child: Dialog(
-                                        child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        ListView.builder(
-                                            shrinkWrap: true,
-                                            itemCount:
-                                                snapshot.remarkterm.length,
-                                            itemBuilder: (context, index) {
-                                              print(snapshot.remarkterm.length);
-                                              return ListTile(
-                                                selectedTileColor:
-                                                    Colors.blue.shade100,
-                                                selectedColor: UIGuide.PRIMARY2,
-                                                onTap: () async {
-                                                  remarkEntryTermController
-                                                      .text = snapshot
-                                                          .remarkterm[index]
-                                                          .value ??
-                                                      '---';
-                                                  remarkEntryTermController1
-                                                      .text = snapshot
-                                                          .remarkterm[index]
-                                                          .text ??
-                                                      '---';
-
-                                                  termId =
-                                                      remarkEntryTermController
-                                                          .text;
-
-                                                  divisionId =
-                                                      remarkEntryDivisionListController
-                                                          .text
-                                                          .toString();
-                                                  categoryId =
-                                                      remarkEntryCategoryController
-                                                          .text
-                                                          .toString();
-                                                  category =
-                                                      remarkEntryCategoryController1
-                                                          .text
-                                                          .toString();
-
-                                                  //option sub
-
-                                                  // exam
-
-                                                  await snapshot
-                                                      .getRemarkEntryAssessmentValues(
-                                                          divisionId,
-                                                          categoryId,
-                                                          termId,
-                                                          instaId);
-
-                                                  await value.clearStuentList();
-
-                                                  Navigator.of(context).pop();
-                                                },
-                                                title: Text(
-                                                  snapshot
-                                                      .remarkterm[index].text
-                                                      .toString(),
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              );
-                                            }),
-                                      ],
-                                    )),
-                                  );
-                                });
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Container(
-                                  height: 40,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: UIGuide.light_Purple, width: 1),
-                                  ),
-                                  child: TextField(
-                                    style: const TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500,
-                                        color: UIGuide.BLACK,
-                                        overflow: TextOverflow.clip),
-                                    textAlign: TextAlign.center,
-                                    controller: remarkEntryTermController1,
-                                    decoration: const InputDecoration(
-                                      filled: true,
-                                      contentPadding:
-                                          EdgeInsets.only(left: 0, top: 0),
-                                      floatingLabelBehavior:
-                                          FloatingLabelBehavior.never,
-                                      fillColor:
-                                          Color.fromARGB(255, 238, 237, 237),
-                                      border: OutlineInputBorder(),
-                                      labelText: "  Select Term",
-                                      hintText: "Term",
-                                    ),
-                                    enabled: false,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      }),
-                    ),
-                    kWidth,
-                  ],
-                )
-              : Row(
-                  children: [
-                    kWidth,
-                    SizedBox(
-                      height: 50,
-                      width: MediaQuery.of(context).size.width * 0.46,
-                      child: Consumer<RemarksEntryProvider>(
-                          builder: (context, snapshot, child) {
-                        // if (snapshot.tabmethod=="UAS") {
-                        //   return Container(
-                        //     height: 0,
-                        //     width: 0,
-                        //   );
-                        // }
-
-                        return InkWell(
-                          onTap: () {
-                            showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return Dialog(
-                                      child: Container(
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        ListView.builder(
-                                            shrinkWrap: true,
-                                            itemCount: snapshot
-                                                .remarkCategoryList.length,
-                                            itemBuilder: (context, index) {
-                                              print(snapshot
-                                                  .remarkCategoryList.length);
-                                              return ListTile(
-                                                selectedTileColor:
-                                                    Colors.blue.shade100,
-                                                selectedColor: UIGuide.PRIMARY2,
-                                                onTap: () async {
-                                                  value.remarkTermList.clear();
-                                                  value.clearStuentList();
-                                                  termId = "";
-                                                  remarkEntryCategoryController
-                                                      .text = snapshot
-                                                          .remarkCategoryList[
-                                                              index]
-                                                          .value ??
-                                                      '--';
-                                                  remarkEntryCategoryController1
-                                                      .text = snapshot
-                                                          .remarkCategoryList[
-                                                              index]
-                                                          .text ??
-                                                      '--';
-                                                  //
-                                                  // categoryItems = snapshot
-                                                  //     .remarkCategoryList[index]
-                                                  //     .toJson();
-
-                                                  divisionId =
-                                                      remarkEntryDivisionListController
-                                                          .text
-                                                          .toString();
-                                                  categoryId =
-                                                      remarkEntryCategoryController
-                                                          .text
-                                                          .toString();
-                                                  category =
-                                                      remarkEntryCategoryController1
-                                                          .text
-                                                          .toString();
-
-                                                  remarkEntryTermController
-                                                      .clear();
-                                                  remarkEntryTermController1
-                                                      .clear();
-
-                                                  await snapshot
-                                                      .removeAllAssessmentClear();
-                                                  //option sub
-
-                                                  remarkEntryAssessmentListController
-                                                      .clear();
-                                                  remarkEntryAssessmentListController1
-                                                      .clear();
-
-                                                  // exam
-
-                                                  markEntryExamListController
-                                                      .clear();
-                                                  markEntryExamListController1
-                                                      .clear();
-                                                  print(category);
-
-                                                  await snapshot
-                                                      .getRemarkEntryTermValues(
-                                                          divisionId,
-                                                          categoryId,
-                                                          category,
-                                                          instaId);
-                                                  await value.clearStuentList();
-
-                                                  Navigator.of(context).pop();
-                                                },
-                                                title: Text(
-                                                  snapshot
-                                                          .remarkCategoryList[
-                                                              index]
-                                                          .text ??
-                                                      '---',
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              );
-                                            }),
-                                      ],
-                                    ),
-                                  ));
-                                });
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(5.0),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: UIGuide.light_Purple, width: 1),
-                                  ),
-                                  height: 40,
-                                  child: TextField(
-                                    style: const TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500,
-                                        color: UIGuide.BLACK,
-                                        overflow: TextOverflow.clip),
-                                    textAlign: TextAlign.center,
-                                    controller: remarkEntryCategoryController1,
-                                    decoration: const InputDecoration(
-                                      filled: true,
-                                      contentPadding:
-                                          EdgeInsets.only(left: 0, top: 0),
-                                      floatingLabelBehavior:
-                                          FloatingLabelBehavior.never,
-                                      fillColor:
-                                          Color.fromARGB(255, 238, 237, 237),
-                                      border: OutlineInputBorder(),
-                                      labelText: "  Remarks Category ",
-                                      hintText: "Remark",
-                                    ),
-                                    enabled: false,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      }),
-                    ),
-                    Spacer(),
-                    category == "Final"
-                        ? SizedBox(
-                            height: 0,
-                            width: 0,
-                          )
-                        : SizedBox(
-                            height: 50,
-                            width: MediaQuery.of(context).size.width * 0.46,
-                            child: Consumer<RemarksEntryProvider>(
-                                builder: (context, snapshot, child) {
-                              return InkWell(
-                                onTap: () {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return Container(
-                                          child: Dialog(
-                                              child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              ListView.builder(
-                                                  shrinkWrap: true,
-                                                  itemCount: snapshot
-                                                      .remarkTermList.length,
-                                                  itemBuilder:
-                                                      (context, index) {
-                                                    return ListTile(
-                                                      selectedTileColor:
-                                                          Colors.blue.shade100,
-                                                      selectedColor:
-                                                          UIGuide.PRIMARY2,
-                                                      onTap: () async {
-                                                        assessmentId = "";
-                                                        remarkEntryAssessmentListController1
-                                                            .clear();
-                                                        remarkEntryAssessmentListController
-                                                            .clear();
-                                                        await value
-                                                            .removeAllAssessmentClear();
-                                                        value.clearStuentList();
-
-                                                        remarkEntryTermController
-                                                            .text = snapshot
-                                                                .remarkTermList[
-                                                                    index]
-                                                                .value ??
-                                                            '---';
-                                                        remarkEntryTermController1
-                                                            .text = snapshot
-                                                                .remarkTermList[
-                                                                    index]
-                                                                .text ??
-                                                            '---';
-
-                                                        termId =
-                                                            remarkEntryTermController
-                                                                .text;
-
-                                                        divisionId =
-                                                            remarkEntryDivisionListController
-                                                                .text
-                                                                .toString();
-                                                        categoryId =
-                                                            remarkEntryCategoryController
-                                                                .text
-                                                                .toString();
-                                                        category =
-                                                            remarkEntryCategoryController1
-                                                                .text
-                                                                .toString();
-
-                                                        //option sub
-
-                                                        // exam
-
-                                                        await snapshot
-                                                            .getRemarkEntryAssessmentValues(
-                                                                divisionId,
-                                                                categoryId,
-                                                                termId,
-                                                                instaId);
-
-                                                        await value
-                                                            .clearStuentList();
-
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                      title: Text(
-                                                        snapshot
-                                                            .remarkTermList[
-                                                                index]
-                                                            .text
-                                                            .toString(),
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                      ),
-                                                    );
-                                                  }),
-                                            ],
-                                          )),
-                                        );
-                                      });
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.all(5.0),
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Container(
-                                        height: 40,
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                              color: UIGuide.light_Purple,
-                                              width: 1),
-                                        ),
-                                        child: TextField(
-                                          style: const TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w500,
-                                              color: UIGuide.BLACK,
-                                              overflow: TextOverflow.clip),
-                                          textAlign: TextAlign.center,
-                                          controller:
-                                              remarkEntryTermController1,
-                                          decoration: const InputDecoration(
-                                            filled: true,
-                                            contentPadding: EdgeInsets.only(
-                                                left: 0, top: 0),
-                                            floatingLabelBehavior:
-                                                FloatingLabelBehavior.never,
-                                            fillColor: Color.fromARGB(
-                                                255, 238, 237, 237),
-                                            border: OutlineInputBorder(),
-                                            labelText: "  Select Term",
-                                            hintText: "Term",
-                                          ),
-                                          enabled: false,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            }),
-                          ),
-                    kWidth,
-                  ],
-                ),
-          Row(
-            children: [
-              //  Spacer(),
-              kWidth,
-              Consumer<RemarksEntryProvider>(
-                builder: (context, snapshot, child) {
-                  if (remarkEntryCategoryController1.text != "Assessment") {
-                    return Container(
-                      height: 0,
-                      width: 0,
-                    );
-                  }
-                  return SizedBox(
-                      height: 50,
-                      width: MediaQuery.of(context).size.width * 0.46,
-                      child: InkWell(
-                        onTap: () {
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return Dialog(
-                                    child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    ListView.builder(
-                                        shrinkWrap: true,
-                                        itemCount: snapshot
-                                                .remarkEntryAssessmentList
-                                                .isEmpty
-                                            ? 0
-                                            : snapshot.remarkEntryAssessmentList
-                                                .length,
-                                        itemBuilder: (context, index) {
-                                          return ListTile(
-                                            selectedTileColor:
-                                                Colors.blue.shade100,
-                                            selectedColor: UIGuide.PRIMARY2,
-                                            onTap: () async {
-                                              print("Assessmentttt");
-                                              snapshot.clearStuentList();
-                                              remarkEntryAssessmentListController
-                                                  .text = snapshot
-                                                      .remarkEntryAssessmentList[
-                                                          index]
-                                                      .text ??
-                                                  '--';
-                                              remarkEntryAssessmentListController1
-                                                  .text = snapshot
-                                                      .remarkEntryAssessmentList[
-                                                          index]
-                                                      .value ??
-                                                  '--';
-                                              assessment = snapshot
-                                                  .remarkEntryAssessmentList[
-                                                      index]
-                                                  .text
-                                                  .toString();
-                                              assessmentId =
-                                                  remarkEntryAssessmentListController
-                                                      .text;
-
-                                              print("list clearrrrr");
-
-                                              Navigator.of(context).pop();
-                                            },
-                                            title: Text(
-                                              snapshot
-                                                      .remarkEntryAssessmentList[
-                                                          index]
-                                                      .text ??
-                                                  '--',
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          );
-                                        }),
-                                  ],
                                 ));
                               });
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(5.0),
                           child: Column(
-                            mainAxisSize: MainAxisSize.min,
                             children: [
                               Container(
-                                height: 40,
                                 decoration: BoxDecoration(
                                   border: Border.all(
                                       color: UIGuide.light_Purple, width: 1),
                                 ),
+                                height: 40,
                                 child: TextField(
                                   style: const TextStyle(
                                       fontSize: 14,
@@ -925,1031 +212,1801 @@ class _RemarksEntryState extends State<RemarksEntry> {
                                       overflow: TextOverflow.clip),
                                   textAlign: TextAlign.center,
                                   controller:
-                                      remarkEntryAssessmentListController,
-                                  decoration: InputDecoration(
+                                      remarkEntryInitialValuesController1,
+                                  decoration: const InputDecoration(
                                     filled: true,
                                     contentPadding:
-                                        const EdgeInsets.only(left: 0, top: 0),
+                                        EdgeInsets.only(left: 0, top: 0),
                                     floatingLabelBehavior:
                                         FloatingLabelBehavior.never,
-                                    fillColor: const Color.fromARGB(
-                                        255, 238, 237, 237),
-                                    border: const OutlineInputBorder(),
-                                    labelText: "  Select Assessment",
-                                    hintText: "Assessment",
+                                    fillColor:
+                                        Color.fromARGB(255, 238, 237, 237),
+                                    border: OutlineInputBorder(),
+                                    labelText: "  Select Course",
+                                    hintText: "Course",
                                   ),
                                   enabled: false,
                                 ),
                               ),
-                              // SizedBox(
-                              //   height: 0,
-                              //   child: TextField(
-                              //     textAlign: TextAlign.center,
-                              //     controller:
-                              //     remarkEntryAssessmentListController1,
-                              //     decoration: const InputDecoration(
-                              //       filled: true,
-                              //       fillColor: Color.fromARGB(
-                              //           255, 238, 237, 237),
-                              //       border: OutlineInputBorder(),
-                              //       labelText: "",
-                              //       hintText: "",
-                              //     ),
-                              //     enabled: false,
-                              //   ),
-                              // ),
+                              SizedBox(
+                                height: 0,
+                                child: TextField(
+                                  textAlign: TextAlign.center,
+                                  controller:
+                                      remarkEntryInitialValuesController,
+                                  decoration: const InputDecoration(
+                                    filled: true,
+                                    fillColor:
+                                        Color.fromARGB(255, 238, 237, 237),
+                                    border: OutlineInputBorder(),
+                                    labelText: "",
+                                    hintText: "",
+                                  ),
+                                  enabled: false,
+                                ),
+                              ),
                             ],
                           ),
                         ),
-                      ));
-                },
-              ),
-              //const Spacer(),
-            ],
-          ),
-          Row(
-            // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            // crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              kWidth,
-              SizedBox(
-                width: size.width * 0.46,
-                child: InkWell(
-                    onTap: () {
-                      value.clearStuentList();
+                      );
+                    }),
+                  ),
+                  const Spacer(),
+                  SizedBox(
+                    height: 50,
+                    width: MediaQuery.of(context).size.width * 0.46,
+                    child: Consumer<RemarksEntryProvider>(
+                        builder: (context, snapshot, child) {
+                      return InkWell(
+                        onTap: () async {
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return Dialog(
+                                    child: Container(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      ListView.builder(
+                                          shrinkWrap: true,
+                                          itemCount: snapshot
+                                              .remarkEntryDivisionList.length,
+                                          itemBuilder: (context, index) {
+                                            return ListTile(
+                                              selectedTileColor:
+                                                  Colors.blue.shade100,
+                                              selectedColor: UIGuide.PRIMARY2,
+                                              onTap: () async {
+                                                snapshot.clearStuentList();
 
-                      value.terminatedCheckbox();
-                    },
-                    child: Row(
-                      children: [
-                        Checkbox(
-                          activeColor: UIGuide.light_Purple,
-                          value: value.isTerminated,
-                          onChanged: (newValue) {
-                            setState(() {
-                              value.clearStuentList();
-                              value.isTerminated = newValue!;
-                            });
-                          },
-                        ),
-                        Expanded(
-                          //  width: size.width * .35,
-                          child: const Text(
-                            "Include Terminated Students",
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style:
-                                TextStyle(color: UIGuide.BLACK, fontSize: 12),
-                          ),
-                        )
-                      ],
-                    )),
-              ),
-              Spacer(),
-              value.loading
-                  ? SizedBox(
-                      width: size.width * .45,
-                      child: MaterialButton(
-                        shape: const RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10.0))),
-                        onPressed: () {},
-                        color: UIGuide.light_Purple,
-                        child: const Text(
-                          'Loading...',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    )
-                  : SizedBox(
-                      width: size.width * .45,
-                      child: MaterialButton(
-                        shape: const RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10.0))),
-                        color: UIGuide.light_Purple,
-                        onPressed: (() async {
-                          value.clearStuentList();
-                          value.id = "";
+                                                snapshot.remarkCategoryList;
+                                                remarkEntryDivisionListController
+                                                    .clear();
+                                                remarkEntryCategoryController1
+                                                    .clear();
+                                                remarkEntryDivisionListController
+                                                    .text = snapshot
+                                                        .remarkEntryDivisionList[
+                                                            index]
+                                                        .value ??
+                                                    '---';
+                                                remarkEntryDivisionListController1
+                                                    .text = snapshot
+                                                        .remarkEntryDivisionList[
+                                                            index]
+                                                        .text ??
+                                                    '---';
 
-                          String course = remarkEntryInitialValuesController
-                              .text
-                              .toString();
-                          String division =
-                              remarkEntryDivisionListController.text.toString();
-                          String category =
-                              remarkEntryCategoryController1.text.toString();
-                          print("Category: $category");
+                                                divisionId =
+                                                    remarkEntryDivisionListController
+                                                        .text
+                                                        .toString();
+                                                courseId =
+                                                    remarkEntryInitialValuesController
+                                                        .text
+                                                        .toString();
+                                                //category
 
-                          _controllers.clear();
-                          teacherremarkController.clear();
-                          principalremarkController.clear();
+                                                remarkEntryCategoryController
+                                                    .clear();
+                                                remarkEntryCategoryController1
+                                                    .clear();
 
-                          remarkListController1.clear();
-                          remarkListController.clear();
-                          // value.clearStuentList();
-                          if (value.tabmethod == "UAS") {
-                            if (category == "Assessment") {
-                              if (courseId.isEmpty ||
-                                  divisionId.isEmpty ||
-                                  categoryId.isEmpty ||
-                                  termId.isEmpty ||
-                                  assessmentId.isEmpty) {
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(const SnackBar(
-                                  elevation: 10,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(10)),
-                                  ),
-                                  duration: Duration(seconds: 3),
-                                  margin: EdgeInsets.only(
-                                      bottom: 80, left: 30, right: 30),
-                                  behavior: SnackBarBehavior.floating,
-                                  content: Text(
-                                    "Select mandatory fields..!",
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ));
-                              } else {
-                                await value.getRemarksEntryView(
-                                    courseId,
-                                    divisionId,
-                                    categoryId,
-                                    termId,
-                                    category == "Assessment"
-                                        ? assessmentId
-                                        : "",
-                                    value.isTerminated,
-                                    true,
-                                    true,
-                                    value.tabmethod.toString());
-                              }
-                            } else if (category == "Term") {
-                              if (courseId.isEmpty ||
-                                  divisionId.isEmpty ||
-                                  categoryId.isEmpty ||
-                                  termId.isEmpty) {
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(const SnackBar(
-                                  elevation: 10,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(10)),
-                                  ),
-                                  duration: Duration(seconds: 3),
-                                  margin: EdgeInsets.only(
-                                      bottom: 80, left: 30, right: 30),
-                                  behavior: SnackBarBehavior.floating,
-                                  content: Text(
-                                    "Select mandatory fields..!",
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ));
-                              } else {
-                                await value.getRemarksEntryView(
-                                    courseId,
-                                    divisionId,
-                                    categoryId,
-                                    termId,
-                                    category == "Assessment"
-                                        ? assessmentId
-                                        : "",
-                                    value.isTerminated,
-                                    false,
-                                    true,
-                                    value.tabmethod.toString());
-                              }
-                            } else {
-                              if (courseId.isEmpty ||
-                                  divisionId.isEmpty ||
-                                  categoryId.isEmpty) {
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(const SnackBar(
-                                  elevation: 10,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(10)),
-                                  ),
-                                  duration: Duration(seconds: 3),
-                                  margin: EdgeInsets.only(
-                                      bottom: 80, left: 30, right: 30),
-                                  behavior: SnackBarBehavior.floating,
-                                  content: Text(
-                                    "Select mandatory fields..!",
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ));
-                              } else {
-                                await value.getRemarksEntryView(
-                                    courseId,
-                                    divisionId,
-                                    categoryId,
-                                    category == "Final" ? "" : termId,
-                                    category == "Assessment"
-                                        ? assessmentId
-                                        : "",
-                                    value.isTerminated,
-                                    false,
-                                    false,
-                                    value.tabmethod.toString());
-                              }
-                            }
-                          } else {
-                            if (courseId.isEmpty ||
-                                divisionId.isEmpty ||
-                                termId.isEmpty) {
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(const SnackBar(
-                                elevation: 10,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10)),
-                                ),
-                                duration: Duration(seconds: 3),
-                                margin: EdgeInsets.only(
-                                    bottom: 80, left: 30, right: 30),
-                                behavior: SnackBarBehavior.floating,
-                                content: Text(
-                                  "Select mandatory fields..!",
-                                  textAlign: TextAlign.center,
-                                ),
-                              ));
-                            } else {
-                              print("pub saveeee");
-                              await value.getRemarksEntryView(
-                                  courseId,
-                                  divisionId,
-                                  categoryId,
-                                  termId,
-                                  category == "Assessment" ? assessmentId : "",
-                                  value.isTerminated,
-                                  false,
-                                  true,
-                                  value.tabmethod.toString());
-                              print("pub saveeeedddddd");
-                              if (value.studListRemarks.isEmpty) {
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(const SnackBar(
-                                  elevation: 10,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(10)),
-                                  ),
-                                  duration: Duration(seconds: 3),
-                                  margin: EdgeInsets.only(
-                                      bottom: 80, left: 30, right: 30),
-                                  behavior: SnackBarBehavior.floating,
-                                  content: Text(
-                                    "No data Found..!",
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ));
-                              }
-                            }
-                          }
-                        }),
-                        child: const Text(
-                          'View',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ),
-              kWidth
-            ],
-          ),
+                                                // sub
 
-          //UAS -- Remarks Entry
-          //---------------------
+                                                remarkEntryTermController
+                                                    .clear();
+                                                remarkEntryTermController1
+                                                    .clear();
 
-          Consumer<RemarksEntryProvider>(builder: (context, provider, _) {
-            if (provider.loading) {
-              return LimitedBox(
-                maxHeight: size.height / 1.85,
-                child: Container(
-                  height: size.height / 1.95,
-                  child: spinkitLoader(),
-                ),
-              );
-            } else if (value.tabmethod == "UAS") {
-              return LimitedBox(
-                  maxHeight: remarkEntryCategoryController1.text != "Assessment"
-                      ? size.height / 1.60
-                      : size.height / 1.75,
-                  child: Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: provider.studListRemarks.length,
-                        itemBuilder: ((context, index) {
-                          _controllers.add(TextEditingController());
+                                                await snapshot
+                                                    .removeAllAssessmentClear();
+                                                tabmethod = snapshot.tabmethod;
+                                                print(
+                                                    "tabulationnnnnnn:$tabmethod");
 
-                          _controllers[index].text.isEmpty
-                              ? _controllers[index].text =
-                                  provider.studListRemarks[index].remarks ==
-                                          null
-                                      ? _controllers[index].text
-                                      : provider.studListRemarks[index].remarks
-                                          .toString()
-                              : _controllers[index].text;
+                                                //option sub
 
-                          remarkListController.add(TextEditingController());
-                          remarkListController1.add(TextEditingController());
-
-                          remarkListController[index].text.isEmpty
-                              ? remarkListController[index].text = provider
-                                          .studListRemarks[index]
-                                          .remarksCaption ==
-                                      null
-                                  ? remarkListController[index].text
-                                  : provider
-                                      .studListRemarks[index].remarksCaption
-                                      .toString()
-                              : remarkListController[index].text;
-
-                          remarkListController1[index].text.isEmpty
-                              ? remarkListController1[index].text = provider
-                                          .studListRemarks[index]
-                                          .remarksMasterId ==
-                                      null
-                                  ? remarkListController1[index].text
-                                  : provider
-                                      .studListRemarks[index].remarksMasterId
-                                      .toString()
-                              : remarkListController1[index].text;
-
-                          return Padding(
-                            padding: const EdgeInsets.all(4.0),
-                            child: Container(
-                              width: size.width,
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: UIGuide.light_Purple,
-                                    width: 1,
-                                  ),
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: Row(
-                                      children: [
-                                        kWidth,
-                                        const Text(
-                                          'Roll No: ',
-                                          style: TextStyle(),
-                                        ),
-                                        provider.studListRemarks[index]
-                                                    .rollNo ==
-                                                null
-                                            ? const Text(
-                                                '',
-                                                style: TextStyle(
-                                                    color:
-                                                        UIGuide.light_Purple),
-                                              )
-                                            : Text(
-                                                provider.studListRemarks[index]
-                                                    .rollNo
-                                                    .toString(),
-                                                style: const TextStyle(
-                                                    color:
-                                                        UIGuide.light_Purple),
-                                              ),
-                                        kWidth,
-                                        kWidth,
-                                        kWidth,
-                                        const Text(
-                                          'Name: ',
-                                          style: TextStyle(),
-                                        ),
-                                        Flexible(
-                                          child: RichText(
-                                            overflow: TextOverflow.ellipsis,
-                                            strutStyle: const StrutStyle(
-                                                fontSize: 12.0),
-                                            text: TextSpan(
-                                              style: const TextStyle(
-                                                  color: UIGuide.light_Purple),
-                                              text: provider
-                                                  .studListRemarks[index].name,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: Row(
-                                      children: [
-                                        kWidth,
-                                        const Text(
-                                          'Remarks: ',
-                                          style: TextStyle(),
-                                        ),
-                                        kWidth,
-                                        SizedBox(
-                                          // height: 20,
-                                          width: size.width / 2,
-                                          child: Consumer<RemarksEntryProvider>(
-                                              builder:
-                                                  (context, snapshot, child) {
-                                            return InkWell(
-                                              onTap: () {
-                                                showDialog(
-                                                    context: context,
-                                                    builder: (context) {
-                                                      return Dialog(
-                                                          child: LimitedBox(
-                                                        maxHeight:
-                                                            size.height / 2,
-                                                        child: ListView.builder(
-                                                            shrinkWrap: true,
-                                                            itemCount: snapshot
-                                                                .remarksMaster
-                                                                .length,
-                                                            itemBuilder:
-                                                                (context,
-                                                                    indx) {
-                                                              return ListTile(
-                                                                selectedTileColor:
-                                                                    Colors.blue
-                                                                        .shade100,
-                                                                selectedColor:
-                                                                    UIGuide
-                                                                        .PRIMARY2,
-                                                                onTap: () {
-                                                                  remarkListController[
-                                                                          index]
-                                                                      .text = snapshot
-                                                                          .remarksMaster[
-                                                                              indx]
-                                                                          .text ??
-                                                                      '--';
-                                                                  remarkListController1[
-                                                                          index]
-                                                                      .text = snapshot
-                                                                          .remarksMaster[
-                                                                              indx]
-                                                                          .value ??
-                                                                      '--';
-                                                                  provider
-                                                                      .studListRemarks[
-                                                                          index]
-                                                                      .remarksMasterId = remarkListController1[
-                                                                          index]
-                                                                      .text;
-                                                                  //     provider.studListUAS[index].teGrade = gradeListController[index].text;
-                                                                  //provider.studListRemarks[index].remarksMasterId = provider.studListRemarks[index].remarksMasterId;
-                                                                  Navigator.of(
-                                                                          context)
-                                                                      .pop();
-                                                                },
-                                                                title: Text(
-                                                                  snapshot
-                                                                          .remarksMaster[
-                                                                              indx]
-                                                                          .text ??
-                                                                      '--',
-                                                                  textAlign:
-                                                                      TextAlign
-                                                                          .center,
-                                                                ),
-                                                              );
-                                                            }),
-                                                      ));
-                                                    });
+                                                //
+                                                // await snapshot
+                                                //     .getRemarkEntryDivisionValues(
+                                                //     courseId,instaId);
+                                                Navigator.of(context).pop();
                                               },
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(5.0),
-                                                child: Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: [
-                                                    Container(
-                                                      height: 30,
-                                                      decoration: BoxDecoration(
-                                                        border: Border.all(
-                                                            color: UIGuide
-                                                                .light_Purple,
-                                                            width: 1),
-                                                      ),
-                                                      child: TextField(
-                                                        style: const TextStyle(
-                                                            fontSize: 14,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            color:
-                                                                UIGuide.BLACK,
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .clip),
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                        controller:
-                                                            remarkListController[
-                                                                index],
-                                                        decoration:
-                                                            const InputDecoration(
-                                                          filled: true,
-                                                          contentPadding:
-                                                              EdgeInsets.only(
-                                                                  left: 0,
-                                                                  top: 0),
-                                                          floatingLabelBehavior:
-                                                              FloatingLabelBehavior
-                                                                  .never,
-                                                          fillColor:
-                                                              Color.fromARGB(
-                                                                  255,
-                                                                  255,
-                                                                  255,
-                                                                  255),
-                                                          border:
-                                                              OutlineInputBorder(),
-                                                          labelText:
-                                                              " Select Remark ",
-                                                          hintText: "Remarks",
-                                                        ),
-                                                        enabled: false,
-                                                        onChanged: (value1) {
-                                                          remarkListController1[
-                                                                      index]
-                                                                  .text =
-                                                              provider
-                                                                  .studListRemarks[
-                                                                      index]
-                                                                  .remarksMasterId
-                                                                  .toString();
-                                                          remarkListController1[
-                                                                  index]
-                                                              .text = value1;
-                                                        },
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
+                                              title: Text(
+                                                snapshot
+                                                        .remarkEntryDivisionList[
+                                                            index]
+                                                        .text ??
+                                                    '---',
+                                                textAlign: TextAlign.center,
                                               ),
                                             );
                                           }),
-                                        ),
-                                        Spacer(),
-                                        Consumer<RemarksEntryProvider>(
-                                          builder: (context, snapshot, child) {
-                                            return InkWell(
-                                                onTap: () async {
-                                                  print("viewwwwwwwww");
-
-                                                  await snapshot
-                                                      .markHistoryAttachment(
-                                                          value
-                                                              .studListRemarks[
-                                                                  index]
-                                                              .rollNo
-                                                              .toString(),
-                                                          value
-                                                              .studListRemarks[
-                                                                  index]
-                                                              .studentId
-                                                              .toString(),
-                                                          value
-                                                              .studListRemarks[
-                                                                  index]
-                                                              .name
-                                                              .toString(),
-                                                          value
-                                                              .studListRemarks[
-                                                                  index]
-                                                              .remarks
-                                                              .toString(),
-                                                          value
-                                                              .studListRemarks[
-                                                                  index]
-                                                              .remarksMasterId
-                                                              .toString(),
-                                                          value
-                                                              .studListRemarks[
-                                                                  index]
-                                                              .fileId
-                                                              .toString(),
-                                                          value
-                                                              .studListRemarks[
-                                                                  index]
-                                                              .remarksEntryId
-                                                              .toString(),
-                                                          value
-                                                              .studListRemarks[
-                                                                  index]
-                                                              .remarksEntryDetId
-                                                              .toString());
-                                                  if (value
-                                                          .studListRemarks[
-                                                              index]
-                                                          .fileId ==
-                                                      null) {
-                                                    await Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                NoMarkEntry()));
-                                                  } else {
-                                                    await Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                MarkView()));
-                                                  }
-                                                },
-                                                child: const Text(
-                                                  "View",
-                                                  style: TextStyle(
-                                                    color: UIGuide.light_Purple,
-                                                    fontWeight: FontWeight.w900,
-                                                    backgroundColor:
-                                                        UIGuide.light_black,
-                                                    // decoration: TextDecoration
-                                                    //     .underline,
-                                                    decorationThickness: 1.5,
-                                                    decorationStyle:
-                                                        TextDecorationStyle
-                                                            .solid,
-                                                  ),
-                                                ));
-                                          },
-                                        ),
-                                        kWidth
-                                      ],
-                                    ),
+                                    ],
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8),
-                                    child: SizedBox(
-                                      height: 50,
-                                      width: size.width,
+                                ));
+                              });
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: Column(
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: UIGuide.light_Purple, width: 1),
+                                ),
+                                height: 40,
+                                child: TextField(
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: UIGuide.BLACK,
+                                      overflow: TextOverflow.clip),
+                                  textAlign: TextAlign.center,
+                                  controller:
+                                      remarkEntryDivisionListController1,
+                                  decoration: const InputDecoration(
+                                    filled: true,
+                                    contentPadding:
+                                        EdgeInsets.only(left: 0, top: 0),
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.never,
+                                    fillColor:
+                                        Color.fromARGB(255, 238, 237, 237),
+                                    border: OutlineInputBorder(),
+                                    labelText: "  Select Division",
+                                    hintText: "Division",
+                                  ),
+                                  enabled: false,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 0,
+                                child: TextField(
+                                  controller: remarkEntryDivisionListController,
+                                  decoration: const InputDecoration(
+                                    filled: true,
+                                    fillColor:
+                                        Color.fromARGB(255, 238, 237, 237),
+                                    border: OutlineInputBorder(),
+                                    labelText: "",
+                                    hintText: "",
+                                  ),
+                                  enabled: false,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }),
+                  ),
+                  kWidth,
+                ],
+              ),
+
+              value.tabmethod == "PBT"
+                  ? Row(
+                      children: [
+                        kWidth,
+                        SizedBox(
+                          height: 50,
+                          width: MediaQuery.of(context).size.width * 0.46,
+                          child: Consumer<RemarksEntryProvider>(
+                              builder: (context, snapshot, child) {
+                            return InkWell(
+                              onTap: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return Container(
+                                        child: Dialog(
+                                            child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            ListView.builder(
+                                                shrinkWrap: true,
+                                                itemCount:
+                                                    snapshot.remarkterm.length,
+                                                itemBuilder: (context, index) {
+                                                  print(snapshot
+                                                      .remarkterm.length);
+                                                  return ListTile(
+                                                    selectedTileColor:
+                                                        Colors.blue.shade100,
+                                                    selectedColor:
+                                                        UIGuide.PRIMARY2,
+                                                    onTap: () async {
+                                                      remarkEntryTermController
+                                                          .text = snapshot
+                                                              .remarkterm[index]
+                                                              .value ??
+                                                          '---';
+                                                      remarkEntryTermController1
+                                                          .text = snapshot
+                                                              .remarkterm[index]
+                                                              .text ??
+                                                          '---';
+
+                                                      termId =
+                                                          remarkEntryTermController
+                                                              .text;
+
+                                                      divisionId =
+                                                          remarkEntryDivisionListController
+                                                              .text
+                                                              .toString();
+                                                      categoryId =
+                                                          remarkEntryCategoryController
+                                                              .text
+                                                              .toString();
+                                                      category =
+                                                          remarkEntryCategoryController1
+                                                              .text
+                                                              .toString();
+
+                                                      //option sub
+
+                                                      // exam
+
+                                                      await snapshot
+                                                          .getRemarkEntryAssessmentValues(
+                                                              divisionId,
+                                                              categoryId,
+                                                              termId,
+                                                              instaId);
+
+                                                      await value
+                                                          .clearStuentList();
+
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                    title: Text(
+                                                      snapshot.remarkterm[index]
+                                                          .text
+                                                          .toString(),
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                    ),
+                                                  );
+                                                }),
+                                          ],
+                                        )),
+                                      );
+                                    });
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Container(
+                                      height: 40,
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: UIGuide.light_Purple,
+                                            width: 1),
+                                      ),
                                       child: TextField(
-                                        // textAlign: TextAlign.center,
-                                        //  focusNode: FocusNode(),
-                                        controller: _controllers[index],
-                                        enabled: true,
-                                        cursorColor: UIGuide.light_Purple,
-                                        decoration: InputDecoration(
-                                            contentPadding:
-                                                EdgeInsets.only(left: 10),
-                                            focusColor: const Color.fromARGB(
-                                                255, 213, 215, 218),
-                                            border: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10.0),
-                                            ),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderSide: const BorderSide(
-                                                  color: UIGuide.light_Purple,
-                                                  width: 1.0),
-                                              borderRadius:
-                                                  BorderRadius.circular(10.0),
-                                            ),
-                                            fillColor: Colors.grey,
-                                            hintStyle: const TextStyle(
-                                              color: Colors.grey,
-                                              fontSize: 16,
-                                              fontFamily: "verdana_regular",
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                            labelText: 'Description',
-                                            labelStyle: const TextStyle(
-                                                color: Color.fromARGB(
-                                                    255, 106, 107, 109))),
-                                        onChanged: (value1) {
-                                          _controllers[index].addListener(() {
-                                            value1;
-                                          });
-                                          _controllers[index].text.isEmpty
-                                              ? provider.studListRemarks[index]
-                                                  .remarks = null
-                                              : _controllers[index].text;
-                                          print(
-                                              "***************${_controllers[index].text}");
-                                        },
+                                        style: const TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w500,
+                                            color: UIGuide.BLACK,
+                                            overflow: TextOverflow.clip),
+                                        textAlign: TextAlign.center,
+                                        controller: remarkEntryTermController1,
+                                        decoration: const InputDecoration(
+                                          filled: true,
+                                          contentPadding:
+                                              EdgeInsets.only(left: 0, top: 0),
+                                          floatingLabelBehavior:
+                                              FloatingLabelBehavior.never,
+                                          fillColor: Color.fromARGB(
+                                              255, 238, 237, 237),
+                                          border: OutlineInputBorder(),
+                                          labelText: "  Select Term",
+                                          hintText: "Term",
+                                        ),
+                                        enabled: false,
                                       ),
                                     ),
-                                  )
+                                  ],
+                                ),
+                              ),
+                            );
+                          }),
+                        ),
+                        kWidth,
+                      ],
+                    )
+                  : Row(
+                      children: [
+                        kWidth,
+                        SizedBox(
+                          height: 50,
+                          width: MediaQuery.of(context).size.width * 0.46,
+                          child: Consumer<RemarksEntryProvider>(
+                              builder: (context, snapshot, child) {
+                            // if (snapshot.tabmethod=="UAS") {
+                            //   return Container(
+                            //     height: 0,
+                            //     width: 0,
+                            //   );
+                            // }
+
+                            return InkWell(
+                              onTap: () {
+                                showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return Dialog(
+                                          child: Container(
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            ListView.builder(
+                                                shrinkWrap: true,
+                                                itemCount: snapshot
+                                                    .remarkCategoryList.length,
+                                                itemBuilder: (context, index) {
+                                                  print(snapshot
+                                                      .remarkCategoryList
+                                                      .length);
+                                                  return ListTile(
+                                                    selectedTileColor:
+                                                        Colors.blue.shade100,
+                                                    selectedColor:
+                                                        UIGuide.PRIMARY2,
+                                                    onTap: () async {
+                                                      value.remarkTermList
+                                                          .clear();
+                                                      value.clearStuentList();
+                                                      termId = "";
+                                                      remarkEntryCategoryController
+                                                          .text = snapshot
+                                                              .remarkCategoryList[
+                                                                  index]
+                                                              .value ??
+                                                          '--';
+                                                      remarkEntryCategoryController1
+                                                          .text = snapshot
+                                                              .remarkCategoryList[
+                                                                  index]
+                                                              .text ??
+                                                          '--';
+                                                      //
+                                                      // categoryItems = snapshot
+                                                      //     .remarkCategoryList[index]
+                                                      //     .toJson();
+
+                                                      divisionId =
+                                                          remarkEntryDivisionListController
+                                                              .text
+                                                              .toString();
+                                                      categoryId =
+                                                          remarkEntryCategoryController
+                                                              .text
+                                                              .toString();
+                                                      category =
+                                                          remarkEntryCategoryController1
+                                                              .text
+                                                              .toString();
+
+                                                      remarkEntryTermController
+                                                          .clear();
+                                                      remarkEntryTermController1
+                                                          .clear();
+
+                                                      await snapshot
+                                                          .removeAllAssessmentClear();
+                                                      //option sub
+
+                                                      remarkEntryAssessmentListController
+                                                          .clear();
+                                                      remarkEntryAssessmentListController1
+                                                          .clear();
+
+                                                      // exam
+
+                                                      markEntryExamListController
+                                                          .clear();
+                                                      markEntryExamListController1
+                                                          .clear();
+                                                      print(category);
+
+                                                      await snapshot
+                                                          .getRemarkEntryTermValues(
+                                                              divisionId,
+                                                              categoryId,
+                                                              category,
+                                                              instaId);
+                                                      await value
+                                                          .clearStuentList();
+
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                    title: Text(
+                                                      snapshot
+                                                              .remarkCategoryList[
+                                                                  index]
+                                                              .text ??
+                                                          '---',
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                    ),
+                                                  );
+                                                }),
+                                          ],
+                                        ),
+                                      ));
+                                    });
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: UIGuide.light_Purple,
+                                            width: 1),
+                                      ),
+                                      height: 40,
+                                      child: TextField(
+                                        style: const TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w500,
+                                            color: UIGuide.BLACK,
+                                            overflow: TextOverflow.clip),
+                                        textAlign: TextAlign.center,
+                                        controller:
+                                            remarkEntryCategoryController1,
+                                        decoration: const InputDecoration(
+                                          filled: true,
+                                          contentPadding:
+                                              EdgeInsets.only(left: 0, top: 0),
+                                          floatingLabelBehavior:
+                                              FloatingLabelBehavior.never,
+                                          fillColor: Color.fromARGB(
+                                              255, 238, 237, 237),
+                                          border: OutlineInputBorder(),
+                                          labelText: "  Remarks Category ",
+                                          hintText: "Remark",
+                                        ),
+                                        enabled: false,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          }),
+                        ),
+                        const Spacer(),
+                        category == "Final"
+                            ? const SizedBox(
+                                height: 0,
+                                width: 0,
+                              )
+                            : SizedBox(
+                                height: 50,
+                                width: MediaQuery.of(context).size.width * 0.46,
+                                child: Consumer<RemarksEntryProvider>(
+                                    builder: (context, snapshot, child) {
+                                  return InkWell(
+                                    onTap: () {
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return Container(
+                                              child: Dialog(
+                                                  child: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  ListView.builder(
+                                                      shrinkWrap: true,
+                                                      itemCount: snapshot
+                                                          .remarkTermList
+                                                          .length,
+                                                      itemBuilder:
+                                                          (context, index) {
+                                                        return ListTile(
+                                                          selectedTileColor:
+                                                              Colors.blue
+                                                                  .shade100,
+                                                          selectedColor:
+                                                              UIGuide.PRIMARY2,
+                                                          onTap: () async {
+                                                            assessmentId = "";
+                                                            remarkEntryAssessmentListController1
+                                                                .clear();
+                                                            remarkEntryAssessmentListController
+                                                                .clear();
+                                                            await value
+                                                                .removeAllAssessmentClear();
+                                                            value
+                                                                .clearStuentList();
+
+                                                            remarkEntryTermController
+                                                                .text = snapshot
+                                                                    .remarkTermList[
+                                                                        index]
+                                                                    .value ??
+                                                                '---';
+                                                            remarkEntryTermController1
+                                                                .text = snapshot
+                                                                    .remarkTermList[
+                                                                        index]
+                                                                    .text ??
+                                                                '---';
+
+                                                            termId =
+                                                                remarkEntryTermController
+                                                                    .text;
+
+                                                            divisionId =
+                                                                remarkEntryDivisionListController
+                                                                    .text
+                                                                    .toString();
+                                                            categoryId =
+                                                                remarkEntryCategoryController
+                                                                    .text
+                                                                    .toString();
+                                                            category =
+                                                                remarkEntryCategoryController1
+                                                                    .text
+                                                                    .toString();
+
+                                                            //option sub
+
+                                                            // exam
+
+                                                            await snapshot
+                                                                .getRemarkEntryAssessmentValues(
+                                                                    divisionId,
+                                                                    categoryId,
+                                                                    termId,
+                                                                    instaId);
+
+                                                            await value
+                                                                .clearStuentList();
+
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          },
+                                                          title: Text(
+                                                            snapshot
+                                                                .remarkTermList[
+                                                                    index]
+                                                                .text
+                                                                .toString(),
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                          ),
+                                                        );
+                                                      }),
+                                                ],
+                                              )),
+                                            );
+                                          });
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(5.0),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Container(
+                                            height: 40,
+                                            decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color: UIGuide.light_Purple,
+                                                  width: 1),
+                                            ),
+                                            child: TextField(
+                                              style: const TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: UIGuide.BLACK,
+                                                  overflow: TextOverflow.clip),
+                                              textAlign: TextAlign.center,
+                                              controller:
+                                                  remarkEntryTermController1,
+                                              decoration: const InputDecoration(
+                                                filled: true,
+                                                contentPadding: EdgeInsets.only(
+                                                    left: 0, top: 0),
+                                                floatingLabelBehavior:
+                                                    FloatingLabelBehavior.never,
+                                                fillColor: Color.fromARGB(
+                                                    255, 238, 237, 237),
+                                                border: OutlineInputBorder(),
+                                                labelText: "  Select Term",
+                                                hintText: "Term",
+                                              ),
+                                              enabled: false,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                }),
+                              ),
+                        kWidth,
+                      ],
+                    ),
+              Row(
+                children: [
+                  //  Spacer(),
+                  kWidth,
+                  Consumer<RemarksEntryProvider>(
+                    builder: (context, snapshot, child) {
+                      if (remarkEntryCategoryController1.text != "Assessment") {
+                        return Container(
+                          height: 0,
+                          width: 0,
+                        );
+                      }
+                      return SizedBox(
+                          height: 50,
+                          width: MediaQuery.of(context).size.width * 0.46,
+                          child: InkWell(
+                            onTap: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return Dialog(
+                                        child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        ListView.builder(
+                                            shrinkWrap: true,
+                                            itemCount: snapshot
+                                                    .remarkEntryAssessmentList
+                                                    .isEmpty
+                                                ? 0
+                                                : snapshot
+                                                    .remarkEntryAssessmentList
+                                                    .length,
+                                            itemBuilder: (context, index) {
+                                              return ListTile(
+                                                selectedTileColor:
+                                                    Colors.blue.shade100,
+                                                selectedColor: UIGuide.PRIMARY2,
+                                                onTap: () async {
+                                                  print("Assessmentttt");
+                                                  snapshot.clearStuentList();
+                                                  remarkEntryAssessmentListController
+                                                      .text = snapshot
+                                                          .remarkEntryAssessmentList[
+                                                              index]
+                                                          .text ??
+                                                      '--';
+                                                  remarkEntryAssessmentListController1
+                                                      .text = snapshot
+                                                          .remarkEntryAssessmentList[
+                                                              index]
+                                                          .value ??
+                                                      '--';
+                                                  assessment = snapshot
+                                                      .remarkEntryAssessmentList[
+                                                          index]
+                                                      .text
+                                                      .toString();
+                                                  assessmentId =
+                                                      remarkEntryAssessmentListController
+                                                          .text;
+
+                                                  print("list clearrrrr");
+
+                                                  Navigator.of(context).pop();
+                                                },
+                                                title: Text(
+                                                  snapshot
+                                                          .remarkEntryAssessmentList[
+                                                              index]
+                                                          .text ??
+                                                      '--',
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                              );
+                                            }),
+                                      ],
+                                    ));
+                                  });
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(5.0),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Container(
+                                    height: 40,
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color: UIGuide.light_Purple,
+                                          width: 1),
+                                    ),
+                                    child: TextField(
+                                      style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500,
+                                          color: UIGuide.BLACK,
+                                          overflow: TextOverflow.clip),
+                                      textAlign: TextAlign.center,
+                                      controller:
+                                          remarkEntryAssessmentListController,
+                                      decoration: const InputDecoration(
+                                        filled: true,
+                                        contentPadding:
+                                            EdgeInsets.only(left: 0, top: 0),
+                                        floatingLabelBehavior:
+                                            FloatingLabelBehavior.never,
+                                        fillColor:
+                                            Color.fromARGB(255, 238, 237, 237),
+                                        border: OutlineInputBorder(),
+                                        labelText: "  Select Assessment",
+                                        hintText: "Assessment",
+                                      ),
+                                      enabled: false,
+                                    ),
+                                  ),
+                                  // SizedBox(
+                                  //   height: 0,
+                                  //   child: TextField(
+                                  //     textAlign: TextAlign.center,
+                                  //     controller:
+                                  //     remarkEntryAssessmentListController1,
+                                  //     decoration: const InputDecoration(
+                                  //       filled: true,
+                                  //       fillColor: Color.fromARGB(
+                                  //           255, 238, 237, 237),
+                                  //       border: OutlineInputBorder(),
+                                  //       labelText: "",
+                                  //       hintText: "",
+                                  //     ),
+                                  //     enabled: false,
+                                  //   ),
+                                  // ),
                                 ],
                               ),
                             ),
-                          );
-                        })),
-                  ));
-            }
+                          ));
+                    },
+                  ),
+                  //const Spacer(),
+                ],
+              ),
+              Row(
+                // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                // crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  kWidth,
+                  SizedBox(
+                    width: size.width * 0.46,
+                    child: InkWell(
+                        onTap: () {
+                          value.clearStuentList();
 
-            //Public Tabulation-- Remark Entry
-            //--------------------------------
-            else if (value.tabmethod == "PBT") {
-              return LimitedBox(
-                  maxHeight: size.height / 1.60,
-                  child: Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: provider.studListRemarks.length,
-                        itemBuilder: ((context, index) {
-                          teacherremarkController.add(TextEditingController());
-                          principalremarkController
-                              .add(TextEditingController());
+                          value.terminatedCheckbox();
+                        },
+                        child: Row(
+                          children: [
+                            Checkbox(
+                              activeColor: UIGuide.light_Purple,
+                              value: value.isTerminated,
+                              onChanged: (newValue) {
+                                value.terminatedCheckbox();
+                                // setState(() {
+                                //   value.clearStuentList();
+                                //   value.isTerminated = newValue!;
+                                // });
+                              },
+                            ),
+                            const Expanded(
+                              //  width: size.width * .35,
+                              child: Text(
+                                "Include Terminated Students",
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    color: UIGuide.BLACK, fontSize: 12),
+                              ),
+                            )
+                          ],
+                        )),
+                  ),
+                  const Spacer(),
+                  value.loading
+                      ? SizedBox(
+                          width: size.width * .45,
+                          child: MaterialButton(
+                            shape: const RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10.0))),
+                            onPressed: () {},
+                            color: UIGuide.light_Purple,
+                            child: const Text(
+                              'Loading...',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        )
+                      : SizedBox(
+                          width: size.width * .45,
+                          child: MaterialButton(
+                            shape: const RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10.0))),
+                            color: UIGuide.light_Purple,
+                            onPressed: (() async {
+                              value.clearStuentList();
+                              value.id = "";
 
-                          teacherremarkController[index].text.isEmpty
-                              ? teacherremarkController[index].text =
-                                  value.studListRemarks[index].remarks == null
-                                      ? teacherremarkController[index].text
-                                      : value.studListRemarks[index].remarks
-                                          .toString()
-                              : teacherremarkController[index].text;
-                          print("***********");
+                              String course = remarkEntryInitialValuesController
+                                  .text
+                                  .toString();
+                              String division =
+                                  remarkEntryDivisionListController.text
+                                      .toString();
+                              String category = remarkEntryCategoryController1
+                                  .text
+                                  .toString();
+                              print("Category: $category");
 
-                          print(value.studListRemarks[index].principalRemarks);
+                              _controllers.clear();
+                              teacherremarkController.clear();
+                              principalremarkController.clear();
 
-                          principalremarkController[index].text.isEmpty
-                              ? principalremarkController[index].text = value
-                                          .studListRemarks[index]
-                                          .principalRemarks ==
-                                      null
-                                  ? principalremarkController[index].text
-                                  : value
-                                      .studListRemarks[index].principalRemarks
-                                      .toString()
-                              : principalremarkController[index].text;
+                              remarkListController1.clear();
+                              remarkListController.clear();
+                              // value.clearStuentList();
+                              if (value.tabmethod == "UAS") {
+                                if (category == "Assessment") {
+                                  if (courseId.isEmpty ||
+                                      divisionId.isEmpty ||
+                                      categoryId.isEmpty ||
+                                      termId.isEmpty ||
+                                      assessmentId.isEmpty) {
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(const SnackBar(
+                                      elevation: 10,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10)),
+                                      ),
+                                      duration: Duration(seconds: 3),
+                                      margin: EdgeInsets.only(
+                                          bottom: 80, left: 30, right: 30),
+                                      behavior: SnackBarBehavior.floating,
+                                      content: Text(
+                                        "Select mandatory fields..!",
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ));
+                                  } else {
+                                    await value.getRemarksEntryView(
+                                        courseId,
+                                        divisionId,
+                                        categoryId,
+                                        termId,
+                                        category == "Assessment"
+                                            ? assessmentId
+                                            : "",
+                                        value.isTerminated,
+                                        true,
+                                        true,
+                                        value.tabmethod.toString());
+                                  }
+                                } else if (category == "Term") {
+                                  if (courseId.isEmpty ||
+                                      divisionId.isEmpty ||
+                                      categoryId.isEmpty ||
+                                      termId.isEmpty) {
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(const SnackBar(
+                                      elevation: 10,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10)),
+                                      ),
+                                      duration: Duration(seconds: 3),
+                                      margin: EdgeInsets.only(
+                                          bottom: 80, left: 30, right: 30),
+                                      behavior: SnackBarBehavior.floating,
+                                      content: Text(
+                                        "Select mandatory fields..!",
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ));
+                                  } else {
+                                    await value.getRemarksEntryView(
+                                        courseId,
+                                        divisionId,
+                                        categoryId,
+                                        termId,
+                                        category == "Assessment"
+                                            ? assessmentId
+                                            : "",
+                                        value.isTerminated,
+                                        false,
+                                        true,
+                                        value.tabmethod.toString());
+                                  }
+                                } else {
+                                  if (courseId.isEmpty ||
+                                      divisionId.isEmpty ||
+                                      categoryId.isEmpty) {
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(const SnackBar(
+                                      elevation: 10,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10)),
+                                      ),
+                                      duration: Duration(seconds: 3),
+                                      margin: EdgeInsets.only(
+                                          bottom: 80, left: 30, right: 30),
+                                      behavior: SnackBarBehavior.floating,
+                                      content: Text(
+                                        "Select mandatory fields..!",
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ));
+                                  } else {
+                                    await value.getRemarksEntryView(
+                                        courseId,
+                                        divisionId,
+                                        categoryId,
+                                        category == "Final" ? "" : termId,
+                                        category == "Assessment"
+                                            ? assessmentId
+                                            : "",
+                                        value.isTerminated,
+                                        false,
+                                        false,
+                                        value.tabmethod.toString());
+                                  }
+                                }
+                              } else {
+                                if (courseId.isEmpty ||
+                                    divisionId.isEmpty ||
+                                    termId.isEmpty) {
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(const SnackBar(
+                                    elevation: 10,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(10)),
+                                    ),
+                                    duration: Duration(seconds: 3),
+                                    margin: EdgeInsets.only(
+                                        bottom: 80, left: 30, right: 30),
+                                    behavior: SnackBarBehavior.floating,
+                                    content: Text(
+                                      "Select mandatory fields..!",
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ));
+                                } else {
+                                  print("pub saveeee");
+                                  await value.getRemarksEntryView(
+                                      courseId,
+                                      divisionId,
+                                      categoryId,
+                                      termId,
+                                      category == "Assessment"
+                                          ? assessmentId
+                                          : "",
+                                      value.isTerminated,
+                                      false,
+                                      true,
+                                      value.tabmethod.toString());
+                                  print("pub saveeeedddddd");
+                                  if (value.studListRemarks.isEmpty) {
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(const SnackBar(
+                                      elevation: 10,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10)),
+                                      ),
+                                      duration: Duration(seconds: 3),
+                                      margin: EdgeInsets.only(
+                                          bottom: 80, left: 30, right: 30),
+                                      behavior: SnackBarBehavior.floating,
+                                      content: Text(
+                                        "No data Found..!",
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ));
+                                  }
+                                }
+                              }
+                            }),
+                            child: const Text(
+                              'View',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ),
+                  kWidth
+                ],
+              ),
 
-                          return Padding(
-                            padding: const EdgeInsets.all(4.0),
-                            child: Container(
-                              width: size.width,
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                    color: UIGuide.light_Purple,
-                                    width: 1,
-                                  ),
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: Row(
-                                      children: [
-                                        kWidth,
-                                        const Text(
-                                          'Roll No: ',
-                                          style: TextStyle(),
-                                        ),
-                                        provider.studListRemarks[index]
-                                                    .rollNo ==
-                                                null
-                                            ? const Text(
-                                                '',
-                                                style: TextStyle(
-                                                    color:
-                                                        UIGuide.light_Purple),
-                                              )
-                                            : Text(
-                                                provider.studListRemarks[index]
-                                                    .rollNo
-                                                    .toString(),
+              //UAS -- Remarks Entry
+              //---------------------
+
+              Consumer<RemarksEntryProvider>(builder: (context, provider, _) {
+                if (provider.loading) {
+                  return Expanded(
+                    // maxHeight: size.height / 1.85,
+                    child: spinkitLoader(),
+                  );
+                } else if (value.tabmethod == "UAS") {
+                  return Expanded(
+                      // maxHeight: remarkEntryCategoryController1.text != "Assessment"
+                      //     ? size.height / 1.60
+                      //     : size.height / 1.75,
+                      child: Scrollbar(
+                    thickness: 5,
+                    controller: _scrollController,
+                    child: Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: provider.studListRemarks.length,
+                          itemBuilder: ((context, index) {
+                            _controllers.add(TextEditingController());
+
+                            _controllers[index].text.isEmpty
+                                ? _controllers[index].text = provider
+                                            .studListRemarks[index].remarks ==
+                                        null
+                                    ? _controllers[index].text
+                                    : provider.studListRemarks[index].remarks
+                                        .toString()
+                                : _controllers[index].text;
+
+                            remarkListController.add(TextEditingController());
+                            remarkListController1.add(TextEditingController());
+
+                            remarkListController[index].text.isEmpty
+                                ? remarkListController[index].text = provider
+                                            .studListRemarks[index]
+                                            .remarksCaption ==
+                                        null
+                                    ? remarkListController[index].text
+                                    : provider
+                                        .studListRemarks[index].remarksCaption
+                                        .toString()
+                                : remarkListController[index].text;
+
+                            remarkListController1[index].text.isEmpty
+                                ? remarkListController1[index].text = provider
+                                            .studListRemarks[index]
+                                            .remarksMasterId ==
+                                        null
+                                    ? remarkListController1[index].text
+                                    : provider
+                                        .studListRemarks[index].remarksMasterId
+                                        .toString()
+                                : remarkListController1[index].text;
+
+                            return Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: Container(
+                                width: size.width,
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: UIGuide.light_Purple,
+                                      width: 1,
+                                    ),
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Row(
+                                        children: [
+                                          kWidth,
+                                          const Text(
+                                            'Roll No: ',
+                                            style: TextStyle(),
+                                          ),
+                                          provider.studListRemarks[index]
+                                                      .rollNo ==
+                                                  null
+                                              ? const Text(
+                                                  '',
+                                                  style: TextStyle(
+                                                      color:
+                                                          UIGuide.light_Purple),
+                                                )
+                                              : Text(
+                                                  provider
+                                                      .studListRemarks[index]
+                                                      .rollNo
+                                                      .toString(),
+                                                  style: const TextStyle(
+                                                      color:
+                                                          UIGuide.light_Purple),
+                                                ),
+                                          kWidth,
+                                          kWidth,
+                                          kWidth,
+                                          const Text(
+                                            'Name: ',
+                                            style: TextStyle(),
+                                          ),
+                                          Flexible(
+                                            child: RichText(
+                                              overflow: TextOverflow.ellipsis,
+                                              strutStyle: const StrutStyle(
+                                                  fontSize: 12.0),
+                                              text: TextSpan(
                                                 style: const TextStyle(
                                                     color:
                                                         UIGuide.light_Purple),
+                                                text: provider
+                                                    .studListRemarks[index]
+                                                    .name,
                                               ),
-                                        kWidth,
-                                        const Text(
-                                          'Name: ',
-                                          style: TextStyle(),
-                                        ),
-                                        Expanded(
-                                            //width: size.width * 0.5,
-                                            child: Text(
-                                          provider.studListRemarks[index]
-                                                  .name ??
-                                              "-",
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 1,
-                                          style: const TextStyle(
-                                              color: UIGuide.light_Purple),
-                                        )),
-                                        kWidth,
-                                        InkWell(
-                                            onTap: () async {
-                                              await provider
-                                                  .markHistoryAttachment(
-                                                      value
-                                                          .studListRemarks[
-                                                              index]
-                                                          .rollNo
-                                                          .toString(),
-                                                      value
-                                                          .studListRemarks[
-                                                              index]
-                                                          .studentId
-                                                          .toString(),
-                                                      value
-                                                          .studListRemarks[
-                                                              index]
-                                                          .name
-                                                          .toString(),
-                                                      value
-                                                          .studListRemarks[
-                                                              index]
-                                                          .remarks
-                                                          .toString(),
-                                                      value
-                                                          .studListRemarks[
-                                                              index]
-                                                          .remarksMasterId
-                                                          .toString(),
-                                                      value
-                                                          .studListRemarks[
-                                                              index]
-                                                          .fileId
-                                                          .toString(),
-                                                      value
-                                                          .studListRemarks[
-                                                              index]
-                                                          .remarksEntryId
-                                                          .toString(),
-                                                      value
-                                                          .studListRemarks[
-                                                              index]
-                                                          .remarksEntryDetId
-                                                          .toString());
-                                              if (value.studListRemarks[index]
-                                                      .fileId ==
-                                                  null) {
-                                                await Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            NoMarkEntry()));
-                                              } else {
-                                                await Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            MarkView()));
-                                              }
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Row(
+                                        children: [
+                                          kWidth,
+                                          const Text(
+                                            'Remarks: ',
+                                            style: TextStyle(),
+                                          ),
+                                          kWidth,
+                                          SizedBox(
+                                            // height: 20,
+                                            width: size.width / 2,
+                                            child:
+                                                Consumer<RemarksEntryProvider>(
+                                                    builder: (context, snapshot,
+                                                        child) {
+                                              return InkWell(
+                                                onTap: () {
+                                                  showDialog(
+                                                      context: context,
+                                                      builder: (context) {
+                                                        return Dialog(
+                                                            child: LimitedBox(
+                                                          maxHeight:
+                                                              size.height / 2,
+                                                          child:
+                                                              ListView.builder(
+                                                                  shrinkWrap:
+                                                                      true,
+                                                                  itemCount: snapshot
+                                                                      .remarksMaster
+                                                                      .length,
+                                                                  itemBuilder:
+                                                                      (context,
+                                                                          indx) {
+                                                                    return ListTile(
+                                                                      selectedTileColor: Colors
+                                                                          .blue
+                                                                          .shade100,
+                                                                      selectedColor:
+                                                                          UIGuide
+                                                                              .PRIMARY2,
+                                                                      onTap:
+                                                                          () {
+                                                                        remarkListController[index]
+                                                                            .text = snapshot
+                                                                                .remarksMaster[indx].text ??
+                                                                            '--';
+                                                                        remarkListController1[index]
+                                                                            .text = snapshot
+                                                                                .remarksMaster[indx].value ??
+                                                                            '--';
+                                                                        provider
+                                                                            .studListRemarks[
+                                                                                index]
+                                                                            .remarksMasterId = remarkListController1[
+                                                                                index]
+                                                                            .text;
+                                                                        //     provider.studListUAS[index].teGrade = gradeListController[index].text;
+                                                                        //provider.studListRemarks[index].remarksMasterId = provider.studListRemarks[index].remarksMasterId;
+                                                                        Navigator.of(context)
+                                                                            .pop();
+                                                                      },
+                                                                      title:
+                                                                          Text(
+                                                                        snapshot.remarksMaster[indx].text ??
+                                                                            '--',
+                                                                        textAlign:
+                                                                            TextAlign.center,
+                                                                      ),
+                                                                    );
+                                                                  }),
+                                                        ));
+                                                      });
+                                                },
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(5.0),
+                                                  child: Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      Container(
+                                                        height: 30,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          border: Border.all(
+                                                              color: UIGuide
+                                                                  .light_Purple,
+                                                              width: 1),
+                                                        ),
+                                                        child: TextField(
+                                                          style: const TextStyle(
+                                                              fontSize: 14,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                              color:
+                                                                  UIGuide.BLACK,
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .clip),
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          controller:
+                                                              remarkListController[
+                                                                  index],
+                                                          decoration:
+                                                              const InputDecoration(
+                                                            filled: true,
+                                                            contentPadding:
+                                                                EdgeInsets.only(
+                                                                    left: 0,
+                                                                    top: 0),
+                                                            floatingLabelBehavior:
+                                                                FloatingLabelBehavior
+                                                                    .never,
+                                                            fillColor:
+                                                                Color.fromARGB(
+                                                                    255,
+                                                                    255,
+                                                                    255,
+                                                                    255),
+                                                            border:
+                                                                OutlineInputBorder(),
+                                                            labelText:
+                                                                " Select Remark ",
+                                                            hintText: "Remarks",
+                                                          ),
+                                                          enabled: false,
+                                                          onChanged: (value1) {
+                                                            remarkListController1[
+                                                                        index]
+                                                                    .text =
+                                                                provider
+                                                                    .studListRemarks[
+                                                                        index]
+                                                                    .remarksMasterId
+                                                                    .toString();
+                                                            remarkListController1[
+                                                                    index]
+                                                                .text = value1;
+                                                          },
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                              );
+                                            }),
+                                          ),
+                                          const Spacer(),
+                                          Consumer<RemarksEntryProvider>(
+                                            builder:
+                                                (context, snapshot, child) {
+                                              return InkWell(
+                                                  onTap: () async {
+                                                    print("viewwwwwwwww");
+
+                                                    await snapshot.markHistoryAttachment(
+                                                        value
+                                                            .studListRemarks[
+                                                                index]
+                                                            .rollNo
+                                                            .toString(),
+                                                        value
+                                                            .studListRemarks[
+                                                                index]
+                                                            .studentId
+                                                            .toString(),
+                                                        value
+                                                            .studListRemarks[
+                                                                index]
+                                                            .name
+                                                            .toString(),
+                                                        value
+                                                            .studListRemarks[
+                                                                index]
+                                                            .remarks
+                                                            .toString(),
+                                                        value
+                                                            .studListRemarks[
+                                                                index]
+                                                            .remarksMasterId
+                                                            .toString(),
+                                                        value
+                                                            .studListRemarks[
+                                                                index]
+                                                            .fileId
+                                                            .toString(),
+                                                        value
+                                                            .studListRemarks[
+                                                                index]
+                                                            .remarksEntryId
+                                                            .toString(),
+                                                        value
+                                                            .studListRemarks[
+                                                                index]
+                                                            .remarksEntryDetId
+                                                            .toString());
+                                                    if (value
+                                                            .studListRemarks[
+                                                                index]
+                                                            .fileId ==
+                                                        null) {
+                                                      await Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  const NoMarkEntry()));
+                                                    } else {
+                                                      await Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  const MarkView()));
+                                                    }
+                                                  },
+                                                  child: const Text(
+                                                    "View",
+                                                    style: TextStyle(
+                                                      color:
+                                                          UIGuide.light_Purple,
+                                                      fontWeight:
+                                                          FontWeight.w900,
+                                                      backgroundColor:
+                                                          UIGuide.light_black,
+                                                      // decoration: TextDecoration
+                                                      //     .underline,
+                                                      decorationThickness: 1.5,
+                                                      decorationStyle:
+                                                          TextDecorationStyle
+                                                              .solid,
+                                                    ),
+                                                  ));
                                             },
-                                            child: Text(
-                                              "View",
-                                              style: TextStyle(
-                                                color: UIGuide.light_Purple,
-                                                fontWeight: FontWeight.w900,
-                                                // decoration:
-                                                //     TextDecoration.underline,
-                                                backgroundColor:
-                                                    UIGuide.light_black,
-                                                decorationThickness: 1.5,
-                                                decorationStyle:
-                                                    TextDecorationStyle.solid,
+                                          ),
+                                          kWidth
+                                        ],
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8),
+                                      child: SizedBox(
+                                        height: 50,
+                                        width: size.width,
+                                        child: TextField(
+                                          // textAlign: TextAlign.center,
+                                          //  focusNode: FocusNode(),
+                                          controller: _controllers[index],
+                                          enabled: true,
+                                          cursorColor: UIGuide.light_Purple,
+                                          decoration: InputDecoration(
+                                              contentPadding:
+                                                  const EdgeInsets.only(
+                                                      left: 10),
+                                              focusColor: const Color.fromARGB(
+                                                  255, 213, 215, 218),
+                                              border: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
                                               ),
-                                            )),
-                                        SizedBox(
-                                          width: 5,
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: SizedBox(
-                                      height: 50,
-                                      width: size.width,
-                                      child: TextField(
-                                        // textAlign: TextAlign.center,
-                                        //  focusNode: FocusNode(),
-
-                                        controller:
-                                            teacherremarkController[index],
-                                        enabled: true,
-                                        cursorColor: UIGuide.light_Purple,
-
-                                        decoration: InputDecoration(
-                                            contentPadding:
-                                                EdgeInsets.only(left: 10),
-                                            focusColor: const Color.fromARGB(
-                                                255, 213, 215, 218),
-                                            border: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10.0),
-                                            ),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderSide: const BorderSide(
-                                                  color: UIGuide.light_Purple,
-                                                  width: 1.0),
-                                              borderRadius:
-                                                  BorderRadius.circular(10.0),
-                                            ),
-                                            fillColor: Colors.grey,
-                                            hintStyle: const TextStyle(
-                                              color: Colors.grey,
-                                              fontSize: 16,
-                                              fontFamily: "verdana_regular",
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                            labelText: 'Teacher Remarks',
-                                            labelStyle: const TextStyle(
-                                                color: Color.fromARGB(
-                                                    255, 106, 107, 109))),
-                                        onChanged: (value1) {
-                                          teacherremarkController[index]
-                                              .addListener(() {
-                                            value1;
-                                          });
-                                          teacherremarkController[index]
-                                                  .text
-                                                  .isEmpty
-                                              ? provider.studListRemarks[index]
-                                                  .remarks = null
-                                              : teacherremarkController[index]
-                                                  .text;
-                                          print(
-                                              "***************${teacherremarkController[index].text}");
-                                        },
+                                              focusedBorder: OutlineInputBorder(
+                                                borderSide: const BorderSide(
+                                                    color: UIGuide.light_Purple,
+                                                    width: 1.0),
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
+                                              ),
+                                              fillColor: Colors.grey,
+                                              hintStyle: const TextStyle(
+                                                color: Colors.grey,
+                                                fontSize: 16,
+                                                fontFamily: "verdana_regular",
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                              labelText: 'Description',
+                                              labelStyle: const TextStyle(
+                                                  color: Color.fromARGB(
+                                                      255, 106, 107, 109))),
+                                          onChanged: (value1) {
+                                            _controllers[index].addListener(() {
+                                              value1;
+                                            });
+                                            _controllers[index].text.isEmpty
+                                                ? provider
+                                                    .studListRemarks[index]
+                                                    .remarks = null
+                                                : _controllers[index].text;
+                                            print(
+                                                "***************${_controllers[index].text}");
+                                          },
+                                        ),
                                       ),
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(4),
-                                    child: SizedBox(
-                                      height: 50,
-                                      width: size.width,
-                                      child: TextField(
-                                        // textAlign: TextAlign.center,
-                                        //  focusNode: FocusNode(),
-
-                                        controller:
-                                            principalremarkController[index],
-                                        enabled: true,
-                                        cursorColor: UIGuide.light_Purple,
-
-                                        decoration: InputDecoration(
-                                            contentPadding:
-                                                const EdgeInsets.only(left: 10),
-                                            focusColor: const Color.fromARGB(
-                                                255, 213, 215, 218),
-                                            border: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(10.0),
-                                            ),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderSide: const BorderSide(
-                                                  color: UIGuide.light_Purple,
-                                                  width: 1.0),
-                                              borderRadius:
-                                                  BorderRadius.circular(10.0),
-                                            ),
-                                            fillColor: Colors.grey,
-                                            hintStyle: const TextStyle(
-                                              color: Colors.grey,
-                                              fontSize: 16,
-                                              fontFamily: "verdana_regular",
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                            labelText: 'Principal Remarks',
-                                            labelStyle: const TextStyle(
-                                                color: Color.fromARGB(
-                                                    255, 106, 107, 109))),
-                                        onChanged: (value2) {
-                                          principalremarkController[index]
-                                              .addListener(() {
-                                            value2;
-                                          });
-                                          principalremarkController[index]
-                                                  .text
-                                                  .isEmpty
-                                              ? provider.studListRemarks[index]
-                                                  .principalRemarks = null
-                                              : principalremarkController[index]
-                                                  .text;
-                                          print(
-                                              "***************${principalremarkController[index].text}");
-                                        },
-                                      ),
-                                    ),
-                                  )
-                                ],
+                                    )
+                                  ],
+                                ),
                               ),
-                            ),
-                          );
-                        })),
+                            );
+                          })),
+                    ),
                   ));
-            } else {
-              return SizedBox(
-                height: 0,
-                width: 0,
-              );
-            }
-          })
-        ]);
+                }
+
+                //Public Tabulation-- Remark Entry
+                //--------------------------------
+                else if (value.tabmethod == "PBT") {
+                  return Expanded(
+                      //  maxHeight: size.height / 1.60,
+                      child: Scrollbar(
+                    thickness: 5,
+                    controller: _scrollController,
+                    child: Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: provider.studListRemarks.length,
+                          itemBuilder: ((context, index) {
+                            teacherremarkController
+                                .add(TextEditingController());
+                            principalremarkController
+                                .add(TextEditingController());
+
+                            teacherremarkController[index].text.isEmpty
+                                ? teacherremarkController[index].text =
+                                    value.studListRemarks[index].remarks == null
+                                        ? teacherremarkController[index].text
+                                        : value.studListRemarks[index].remarks
+                                            .toString()
+                                : teacherremarkController[index].text;
+                            print("***********");
+
+                            print(
+                                value.studListRemarks[index].principalRemarks);
+
+                            principalremarkController[index].text.isEmpty
+                                ? principalremarkController[index].text = value
+                                            .studListRemarks[index]
+                                            .principalRemarks ==
+                                        null
+                                    ? principalremarkController[index].text
+                                    : value
+                                        .studListRemarks[index].principalRemarks
+                                        .toString()
+                                : principalremarkController[index].text;
+
+                            return Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: Container(
+                                width: size.width,
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: UIGuide.light_Purple,
+                                      width: 1,
+                                    ),
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Row(
+                                        children: [
+                                          kWidth,
+                                          const Text(
+                                            'Roll No: ',
+                                            style: TextStyle(),
+                                          ),
+                                          provider.studListRemarks[index]
+                                                      .rollNo ==
+                                                  null
+                                              ? const Text(
+                                                  '',
+                                                  style: TextStyle(
+                                                      color:
+                                                          UIGuide.light_Purple),
+                                                )
+                                              : Text(
+                                                  provider
+                                                      .studListRemarks[index]
+                                                      .rollNo
+                                                      .toString(),
+                                                  style: const TextStyle(
+                                                      color:
+                                                          UIGuide.light_Purple),
+                                                ),
+                                          kWidth,
+                                          const Text(
+                                            'Name: ',
+                                            style: TextStyle(),
+                                          ),
+                                          Expanded(
+                                              //width: size.width * 0.5,
+                                              child: Text(
+                                            provider.studListRemarks[index]
+                                                    .name ??
+                                                "-",
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 1,
+                                            style: const TextStyle(
+                                                color: UIGuide.light_Purple),
+                                          )),
+                                          kWidth,
+                                          InkWell(
+                                              onTap: () async {
+                                                await provider
+                                                    .markHistoryAttachment(
+                                                        value
+                                                            .studListRemarks[
+                                                                index]
+                                                            .rollNo
+                                                            .toString(),
+                                                        value
+                                                            .studListRemarks[
+                                                                index]
+                                                            .studentId
+                                                            .toString(),
+                                                        value
+                                                            .studListRemarks[
+                                                                index]
+                                                            .name
+                                                            .toString(),
+                                                        value
+                                                            .studListRemarks[
+                                                                index]
+                                                            .remarks
+                                                            .toString(),
+                                                        value
+                                                            .studListRemarks[
+                                                                index]
+                                                            .remarksMasterId
+                                                            .toString(),
+                                                        value
+                                                            .studListRemarks[
+                                                                index]
+                                                            .fileId
+                                                            .toString(),
+                                                        value
+                                                            .studListRemarks[
+                                                                index]
+                                                            .remarksEntryId
+                                                            .toString(),
+                                                        value
+                                                            .studListRemarks[
+                                                                index]
+                                                            .remarksEntryDetId
+                                                            .toString());
+                                                if (value.studListRemarks[index]
+                                                        .fileId ==
+                                                    null) {
+                                                  await Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              const NoMarkEntry()));
+                                                } else {
+                                                  await Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              const MarkView()));
+                                                }
+                                              },
+                                              child: const Text(
+                                                "View",
+                                                style: TextStyle(
+                                                  color: UIGuide.light_Purple,
+                                                  fontWeight: FontWeight.w900,
+                                                  // decoration:
+                                                  //     TextDecoration.underline,
+                                                  backgroundColor:
+                                                      UIGuide.light_black,
+                                                  decorationThickness: 1.5,
+                                                  decorationStyle:
+                                                      TextDecorationStyle.solid,
+                                                ),
+                                              )),
+                                          const SizedBox(
+                                            width: 5,
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: SizedBox(
+                                        height: 50,
+                                        width: size.width,
+                                        child: TextField(
+                                          // textAlign: TextAlign.center,
+                                          //  focusNode: FocusNode(),
+
+                                          controller:
+                                              teacherremarkController[index],
+                                          enabled: true,
+                                          cursorColor: UIGuide.light_Purple,
+
+                                          decoration: InputDecoration(
+                                              contentPadding:
+                                                  const EdgeInsets.only(
+                                                      left: 10),
+                                              focusColor: const Color.fromARGB(
+                                                  255, 213, 215, 218),
+                                              border: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
+                                              ),
+                                              focusedBorder: OutlineInputBorder(
+                                                borderSide: const BorderSide(
+                                                    color: UIGuide.light_Purple,
+                                                    width: 1.0),
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
+                                              ),
+                                              fillColor: Colors.grey,
+                                              hintStyle: const TextStyle(
+                                                color: Colors.grey,
+                                                fontSize: 16,
+                                                fontFamily: "verdana_regular",
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                              labelText: 'Teacher Remarks',
+                                              labelStyle: const TextStyle(
+                                                  color: Color.fromARGB(
+                                                      255, 106, 107, 109))),
+                                          onChanged: (value1) {
+                                            teacherremarkController[index]
+                                                .addListener(() {
+                                              value1;
+                                            });
+                                            teacherremarkController[index]
+                                                    .text
+                                                    .isEmpty
+                                                ? provider
+                                                    .studListRemarks[index]
+                                                    .remarks = null
+                                                : teacherremarkController[index]
+                                                    .text;
+                                            print(
+                                                "***************${teacherremarkController[index].text}");
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(4),
+                                      child: SizedBox(
+                                        height: 50,
+                                        width: size.width,
+                                        child: TextField(
+                                          // textAlign: TextAlign.center,
+                                          //  focusNode: FocusNode(),
+
+                                          controller:
+                                              principalremarkController[index],
+                                          enabled: true,
+                                          cursorColor: UIGuide.light_Purple,
+
+                                          decoration: InputDecoration(
+                                              contentPadding:
+                                                  const EdgeInsets.only(
+                                                      left: 10),
+                                              focusColor: const Color.fromARGB(
+                                                  255, 213, 215, 218),
+                                              border: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
+                                              ),
+                                              focusedBorder: OutlineInputBorder(
+                                                borderSide: const BorderSide(
+                                                    color: UIGuide.light_Purple,
+                                                    width: 1.0),
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
+                                              ),
+                                              fillColor: Colors.grey,
+                                              hintStyle: const TextStyle(
+                                                color: Colors.grey,
+                                                fontSize: 16,
+                                                fontFamily: "verdana_regular",
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                              labelText: 'Principal Remarks',
+                                              labelStyle: const TextStyle(
+                                                  color: Color.fromARGB(
+                                                      255, 106, 107, 109))),
+                                          onChanged: (value2) {
+                                            principalremarkController[index]
+                                                .addListener(() {
+                                              value2;
+                                            });
+                                            principalremarkController[index]
+                                                    .text
+                                                    .isEmpty
+                                                ? provider
+                                                    .studListRemarks[index]
+                                                    .principalRemarks = null
+                                                : principalremarkController[
+                                                        index]
+                                                    .text;
+                                            print(
+                                                "***************${principalremarkController[index].text}");
+                                          },
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          })),
+                    ),
+                  ));
+                } else {
+                  return const SizedBox(
+                    height: 0,
+                    width: 0,
+                  );
+                }
+              })
+            ]);
       }),
       bottomNavigationBar: BottomAppBar(
         child: Consumer<MarkEntryNewProvider>(
