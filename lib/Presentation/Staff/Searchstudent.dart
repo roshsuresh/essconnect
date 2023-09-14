@@ -71,19 +71,6 @@ class _SearchStudent_stfState extends State<SearchStudent_stf> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            // IconButton(
-                            //   icon: const Icon(Icons.search),
-                            //   color: Colors.grey,
-                            //   onPressed: (() async {
-                            //     Provider.of<Screen_Search_Providers>(context,
-                            //             listen: false)
-                            //         .getSearch_View(clearValue.text.toString());
-                            //     Provider.of<Screen_Search_Providers>(context,
-                            //             listen: false)
-                            //         .clearStudentList();
-                            //   }),
-                            // ),
-
                             IconButton(
                               icon: const Icon(Icons.close),
                               color: Colors.grey,
@@ -511,8 +498,7 @@ class StudProfileViewBySearch_Staff extends StatelessWidget {
                             child: Table(
                               // defaultColumnWidth: FixedColumnWidth(120.0),
                               border: TableBorder.all(
-                                  color:
-                                      const Color.fromARGB(255, 213, 213, 243),
+                                  color: Color.fromARGB(255, 233, 233, 245),
                                   style: BorderStyle.solid,
                                   width: 2),
                               children: [
@@ -520,9 +506,7 @@ class StudProfileViewBySearch_Staff extends StatelessWidget {
                                   Column(
                                     children: [
                                       const Text('Roll No',
-                                          style: TextStyle(
-                                              fontSize: 14.0,
-                                              color: Colors.grey)),
+                                          style: TextStyle(color: Colors.grey)),
                                       Text(
                                           stud.rollNo == null
                                               ? '---'
@@ -534,12 +518,10 @@ class StudProfileViewBySearch_Staff extends StatelessWidget {
                                   Column(
                                     children: [
                                       const Text('Adm No',
-                                          style: TextStyle(
-                                              fontSize: 14.0,
-                                              color: Colors.grey)),
+                                          style: TextStyle(color: Colors.grey)),
                                       Text(stud.admnNo ?? '---',
                                           style:
-                                              const TextStyle(fontSize: 16.0)),
+                                              const TextStyle(fontSize: 14.0)),
                                     ],
                                   ),
                                 ])
@@ -554,17 +536,10 @@ class StudProfileViewBySearch_Staff extends StatelessWidget {
                     foregroundColor: Colors.white,
                     foregroundImage: NetworkImage(
                       stud.studentPhoto ??
-                          'https://png.pngtree.com/element_our/png/20181129/male-student-icon-png_251938.jpg',
+                          'https://gj-eschool-files-public.s3.ap-south-1.amazonaws.com/ess-connect/student/avathar-02.jpeg',
                     ),
                     radius: 65,
                     backgroundColor: UIGuide.WHITE,
-                    // child: Image(
-                    //   image: NetworkImage(
-                    //     value.viewStudReportListt[indexx].studentPhoto ??
-                    //         'https://png.pngtree.com/element_our/png/20181129/male-student-icon-png_251938.jpg',
-                    //   ),
-                    //   // fit: BoxFit.fill,
-                    // ),
                   ),
                 )
               ],
@@ -572,16 +547,16 @@ class StudProfileViewBySearch_Staff extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
-                height: 170,
+                padding: const EdgeInsets.all(10),
                 width: size.width,
                 decoration: BoxDecoration(
-                    color: const Color.fromARGB(255, 238, 234, 234),
+                    color: UIGuide.light_black,
                     borderRadius: BorderRadius.circular(10)),
                 child: Column(
                   children: [
                     Container(
                       decoration: const BoxDecoration(
-                        color: Color.fromARGB(255, 238, 234, 234),
+                        color: UIGuide.light_black,
                       ),
                       width: size.width,
                       height: 85,

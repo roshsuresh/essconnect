@@ -13,7 +13,7 @@ class Profile_Info extends StatelessWidget {
   Widget build(BuildContext context) {
     Provider.of<ProfileProvider>(context, listen: false).profileData();
     var size = MediaQuery.of(context).size;
-    var height = size.height;
+
     var width = size.width;
     const Color background = Colors.white;
     const Color fill1 = Color.fromARGB(255, 70, 151, 226);
@@ -53,17 +53,6 @@ class Profile_Info extends StatelessWidget {
                               begin: Alignment.topCenter,
                             ),
                           ),
-                        ),
-                        Positioned(
-                          top: 0,
-                          left: 5,
-                          child: IconButton(
-                              color: Colors.white,
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              icon:
-                                  const Icon(Icons.arrow_back_ios_new_rounded)),
                         ),
                         Positioned(
                           top: 70,

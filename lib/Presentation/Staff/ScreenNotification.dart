@@ -1,3 +1,4 @@
+import 'package:essconnect/Application/Staff_Providers/NotificationCount.dart';
 import 'package:essconnect/Application/Staff_Providers/StaffNotificationScreen.dart';
 import 'package:essconnect/Constants.dart';
 import 'package:essconnect/utils/spinkit.dart';
@@ -58,10 +59,13 @@ class StaffNotificationReceived extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       var p =
           Provider.of<StaffNotificationScreenProvider>(context, listen: false);
-
+      await Provider.of<StaffNotificationCountProviders>(context, listen: false)
+          .seeNotification();
+      await Provider.of<StaffNotificationCountProviders>(context, listen: false)
+          .getnotificationCount();
       p.notificationList.clear();
 
       p.getNotificationReceived();

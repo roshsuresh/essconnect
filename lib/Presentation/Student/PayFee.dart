@@ -189,13 +189,13 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                                 )
                               : Column(
                                   children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 20, bottom: 10),
+                                    const Padding(
+                                      padding:
+                                          EdgeInsets.only(left: 20, bottom: 10),
                                       child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
-                                        children: const [
+                                        children: [
                                           Text(
                                             'Installment',
                                             style: TextStyle(
@@ -237,7 +237,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                                                         return CheckboxListTile(
                                                           activeColor:
                                                               const Color
-                                                                      .fromARGB(
+                                                                  .fromARGB(
                                                                   255,
                                                                   243,
                                                                   243,
@@ -350,7 +350,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                                                         return CheckboxListTile(
                                                           activeColor:
                                                               const Color
-                                                                      .fromARGB(
+                                                                  .fromARGB(
                                                                   255,
                                                                   238,
                                                                   236,
@@ -385,7 +385,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                                                           title: Padding(
                                                             padding:
                                                                 const EdgeInsets
-                                                                        .only(
+                                                                    .only(
                                                                     left: 75),
                                                             child: Text(
                                                               value
@@ -777,7 +777,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
               child: Consumer<FeesProvider>(
                 builder: (_, trans, child) {
                   return trans.loading
-                      ? SizedBox(
+                      ? const SizedBox(
                           height: 0,
                           width: 0,
                         )
@@ -3632,7 +3632,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
     print(words);
     print(words[5]);
     String paymentGatewayTransactionId = words[5];
-    await Future.delayed(Duration(seconds: 5));
+    await Future.delayed(const Duration(seconds: 5));
     await Provider.of<FinalStatusProvider>(contex, listen: false)
         .transactionStatusWorldLine(orderID, paymentGatewayTransactionId);
     await showDialog(
