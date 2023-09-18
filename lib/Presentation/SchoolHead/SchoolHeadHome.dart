@@ -831,9 +831,9 @@ class SchoolHeadHomeScreenContents extends StatelessWidget {
                               'MarkEntry',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  fontWeight: FontWeight.w400,
+                                  fontWeight: FontWeight.bold,
                                   fontSize: 11,
-                                  color: Colors.black),
+                                  color: Colors.black87),
                             )
                           ],
                         ),
@@ -882,9 +882,9 @@ class SchoolHeadHomeScreenContents extends StatelessWidget {
                               'Tool Mark\nEntry',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  fontWeight: FontWeight.w400,
+                                  fontWeight: FontWeight.bold,
                                   fontSize: 11,
-                                  color: Colors.black),
+                                  color: Colors.black87),
                             )
                           ],
                         ),
@@ -932,9 +932,9 @@ class SchoolHeadHomeScreenContents extends StatelessWidget {
                             const Text(
                               'Remarks Entry',
                               style: TextStyle(
-                                  fontWeight: FontWeight.w400,
+                                  fontWeight: FontWeight.bold,
                                   fontSize: 11,
-                                  color: Colors.black),
+                                  color: Colors.black87),
                             )
                           ],
                         ),
@@ -1064,9 +1064,9 @@ class SchoolHeadHomeScreenContents extends StatelessWidget {
                               'MarkEntry\nMissing Report ',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  fontWeight: FontWeight.w400,
+                                  fontWeight: FontWeight.bold,
                                   fontSize: 11,
-                                  color: Colors.black),
+                                  color: Colors.black87),
                             )
                           ],
                         ),

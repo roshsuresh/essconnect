@@ -9,6 +9,7 @@ import 'package:essconnect/Presentation/Admin/AttendanceTaken/Takenornot.dart';
 import 'package:essconnect/Presentation/Admin/Communication/ToStaff.dart';
 import 'package:essconnect/Presentation/Admin/ExamTimetable/ExamScreen.dart';
 import 'package:essconnect/Presentation/Admin/History/NotificationHistoryStaff.dart';
+import 'package:essconnect/Presentation/Admin/MarkEntryMissingReportAdmin.dart';
 import 'package:essconnect/Presentation/Admin/StudentStatistiics.dart';
 import 'package:essconnect/Presentation/Staff/MarkEntryNew.dart';
 import 'package:essconnect/Presentation/Staff/MissingReport.dart';
@@ -1009,9 +1010,9 @@ class AdminHomeContent extends StatelessWidget {
                               'MarkEntry',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  fontWeight: FontWeight.w400,
+                                  fontWeight: FontWeight.bold,
                                   fontSize: 11,
-                                  color: Colors.black),
+                                  color: Colors.black87),
                             )
                           ],
                         ),
@@ -1060,9 +1061,9 @@ class AdminHomeContent extends StatelessWidget {
                               'Tool Mark\nEntry',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  fontWeight: FontWeight.w400,
+                                  fontWeight: FontWeight.bold,
                                   fontSize: 11,
-                                  color: Colors.black),
+                                  color: Colors.black87),
                             )
                           ],
                         ),
@@ -1110,9 +1111,9 @@ class AdminHomeContent extends StatelessWidget {
                             const Text(
                               'Remarks Entry',
                               style: TextStyle(
-                                  fontWeight: FontWeight.w400,
+                                  fontWeight: FontWeight.bold,
                                   fontSize: 11,
-                                  color: Colors.black),
+                                  color: Colors.black87),
                             )
                           ],
                         ),
@@ -1263,7 +1264,7 @@ class AdminHomeContent extends StatelessWidget {
                                 context,
                                 PageTransition(
                                   type: PageTransitionType.rightToLeft,
-                                  child: const MissingReport(),
+                                  child: const MissingReportAdmin(),
                                   duration: const Duration(milliseconds: 300),
                                 ))
                             : _noAcess(context);
@@ -1300,9 +1301,9 @@ class AdminHomeContent extends StatelessWidget {
                               'MarkEntry\nMissing Report ',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  fontWeight: FontWeight.w400,
+                                  fontWeight: FontWeight.bold,
                                   fontSize: 11,
-                                  color: Colors.black),
+                                  color: Colors.black87),
                             )
                           ],
                         ),

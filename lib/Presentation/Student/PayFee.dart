@@ -807,7 +807,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                                 if (trans.lastOrderStatus == 'Success' ||
                                     trans.lastOrderStatus == 'Failed' ||
                                     trans.lastOrderStatus == 'Cancelled' ||
-                                    trans.lastOrderStatus == 'Processing' ||
+                                    //  trans.lastOrderStatus == 'Processing' ||
                                     trans.lastOrderStatus == null) {
                                   if (trans.total != 0) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1076,7 +1076,8 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
 ///////////////////                                 WorldLine                               ////////////////////////
 //  -----------------------------------------------------------------------------------------------------------------  //
                                           else if (trans.gateway ==
-                                              'WorldLine') {
+                                                  'WorldLine' ||
+                                              trans.gateway == "SibWorldLine") {
                                             await Provider.of<FeesProvider>(
                                                     context,
                                                     listen: false)
@@ -1468,7 +1469,8 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
 ///////////////////                                 WorldLine                                    ////////////////////////
 //  -----------------------------------------------------------------------------------------------------------------  //
                                           else if (trans.gateway ==
-                                              'WorldLine') {
+                                                  'WorldLine' ||
+                                              trans.gateway == "SibWorldLine") {
                                             await Provider.of<FeesProvider>(
                                                     context,
                                                     listen: false)
@@ -1858,7 +1860,8 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
 ///////////////////                                 WorldLine                                    ////////////////////////
 //  -----------------------------------------------------------------------------------------------------------------  //
                                           else if (trans.gateway ==
-                                              'WorldLine') {
+                                                  'WorldLine' ||
+                                              trans.gateway == "SibWorldLine") {
                                             await Provider.of<FeesProvider>(
                                                     context,
                                                     listen: false)

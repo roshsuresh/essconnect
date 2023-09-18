@@ -199,8 +199,8 @@ class _SmsFormatAdminState extends State<SmsFormatAdmin> {
                                   padding: const EdgeInsets.all(8.0),
                                   child: Text(
                                     value.smsBody ?? '',
-                                    maxLines: 5,
                                     overflow: TextOverflow.ellipsis,
+                                    maxLines: 10,
                                   ),
                                 )),
                           ),
@@ -268,46 +268,107 @@ class _SmsFormatAdminState extends State<SmsFormatAdmin> {
 
                                         if (provcheck == true) {
                                           value.numbList.clear();
+
                                           await value.getNumbers(
                                               widget.toList, avoid);
 
-                                          for (int i = 0;
-                                              i < value.numbList.length;
-                                              i++) {
-                                            obj.add(
-                                              {
-                                                "phone": value
-                                                    .numbList[i].guardianMobile,
-                                                "email": value
-                                                    .numbList[i].guardianEmail,
-                                                "relation": "guardian",
-                                                "id":
-                                                    value.numbList[i].studentId,
-                                                "admNo":
-                                                    value.numbList[i].admNo,
-                                                "classTeacher": value
-                                                    .numbList[i].classTeacher,
-                                                "name": value.numbList[i].name,
-                                                "course":
-                                                    value.numbList[i].course,
-                                                "division":
-                                                    value.numbList[i].division,
-                                                "rollNo":
-                                                    value.numbList[i].rollNo,
-                                                "fatherName": value
-                                                    .numbList[i].fatherName,
-                                                "motherName": value
-                                                    .numbList[i].motherName,
-                                                "guardianName": value
-                                                    .numbList[i].guardianName
-                                              },
-                                            );
+                                          if (avoid == true) {
+                                            for (int i = 0;
+                                                i < value.numbList.length;
+                                                i++) {
+                                              bool isDuplicate = false;
+
+                                              for (int j = 0; j < i; j++) {
+                                                if (value.numbList[i]
+                                                        .guardianMobile ==
+                                                    value.numbList[j]
+                                                        .guardianMobile) {
+                                                  isDuplicate = true;
+                                                  break;
+                                                }
+                                              }
+
+                                              if (!isDuplicate) {
+                                                obj.add(
+                                                  {
+                                                    "phone": value.numbList[i]
+                                                        .guardianMobile,
+                                                    "email": value.numbList[i]
+                                                        .guardianEmail,
+                                                    "relation": "guardian",
+                                                    "id": value
+                                                        .numbList[i].studentId,
+                                                    "admNo":
+                                                        value.numbList[i].admNo,
+                                                    "classTeacher": value
+                                                        .numbList[i]
+                                                        .classTeacher,
+                                                    "name":
+                                                        value.numbList[i].name,
+                                                    "course": value
+                                                        .numbList[i].course,
+                                                    "division": value
+                                                        .numbList[i].division,
+                                                    "rollNo": value
+                                                        .numbList[i].rollNo,
+                                                    "fatherName": value
+                                                        .numbList[i].fatherName,
+                                                    "motherName": value
+                                                        .numbList[i].motherName,
+                                                    "guardianName": value
+                                                        .numbList[i]
+                                                        .guardianName
+                                                  },
+                                                );
+                                              }
+                                            }
+                                            print("--------$obj");
+                                            await value.sendSms(
+                                                context,
+                                                obj,
+                                                formatController.text
+                                                    .toString());
+                                          } else {
+                                            for (int i = 0;
+                                                i < value.numbList.length;
+                                                i++) {
+                                              obj.add(
+                                                {
+                                                  "phone": value.numbList[i]
+                                                      .guardianMobile,
+                                                  "email": value.numbList[i]
+                                                      .guardianEmail,
+                                                  "relation": "guardian",
+                                                  "id": value
+                                                      .numbList[i].studentId,
+                                                  "admNo":
+                                                      value.numbList[i].admNo,
+                                                  "classTeacher": value
+                                                      .numbList[i].classTeacher,
+                                                  "name":
+                                                      value.numbList[i].name,
+                                                  "course":
+                                                      value.numbList[i].course,
+                                                  "division": value
+                                                      .numbList[i].division,
+                                                  "rollNo":
+                                                      value.numbList[i].rollNo,
+                                                  "fatherName": value
+                                                      .numbList[i].fatherName,
+                                                  "motherName": value
+                                                      .numbList[i].motherName,
+                                                  "guardianName": value
+                                                      .numbList[i].guardianName
+                                                },
+                                              );
+                                            }
+                                            print("--------$obj");
+                                            await value.sendSms(
+                                                context,
+                                                obj,
+                                                formatController.text
+                                                    .toString());
                                           }
-                                          await value.sendSms(context, obj,
-                                              formatController.text.toString());
-                                          // formatController1.clear();
-                                          // formatController.clear();
-                                          //  value.smsBody="";
                                         } else {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(

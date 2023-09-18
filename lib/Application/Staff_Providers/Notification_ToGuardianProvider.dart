@@ -264,6 +264,9 @@ class NotificationToGuardian_Providers with ChangeNotifier {
         .firstWhere((element) => element.admnNo == model.admnNo);
     selected.selected ??= false;
     selected.selected = !selected.selected!;
+    if (selected.selected == false) {
+      isselectAll = false;
+    }
     print(selected.toJson());
     notifyListeners();
   }

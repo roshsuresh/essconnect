@@ -120,7 +120,7 @@ class MissingReportProviders with ChangeNotifier {
     var request = http.Request('GET',
         Uri.parse('${UIGuide.baseURL}/markentryMissingRpt/part/$divisionId'));
     request.headers.addAll(headers);
-
+    print('part/$divisionId');
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
@@ -146,7 +146,7 @@ class MissingReportProviders with ChangeNotifier {
   }
 
   List<ExamsListReport> examList = [];
-  Future<bool> getExamValues(String course, String part) async {
+  Future<bool> getExamValues(String course, String part, List divisi) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
 
     var headers = {
@@ -158,7 +158,7 @@ class MissingReportProviders with ChangeNotifier {
     request.body = json.encode({
       "courseId": course,
       "partId": part,
-      "divisionId": null,
+      "divisionId": divisi,
       "subjectId": null,
       "examId": null,
       "userId": null,
@@ -171,7 +171,7 @@ class MissingReportProviders with ChangeNotifier {
     if (response.statusCode == 200) {
       Map<String, dynamic> data =
           jsonDecode(await response.stream.bytesToString());
-
+      print("exam-----$data");
       List<ExamsListReport> templist = List<ExamsListReport>.from(
           data["exams"].map((x) => ExamsListReport.fromJson(x)));
       examList.addAll(templist);
@@ -186,6 +186,8 @@ class MissingReportProviders with ChangeNotifier {
   //--  Subject
   List<SubjectListModel> subjectList = [];
   List<MultiSelectItem> subjectDrop = [];
+  List<UsersListModel> userList = [];
+  List<MultiSelectItem> userDrop = [];
 
   int subjectLen = 0;
   subjectCounter(int len) async {
@@ -199,14 +201,27 @@ class MissingReportProviders with ChangeNotifier {
     notifyListeners();
   }
 
+  int userLen = 0;
+  userCounter(int len) async {
+    userLen = 0;
+    if (len == 0) {
+      userLen = 0;
+    } else {
+      userLen = len;
+    }
+    notifyListeners();
+  }
+
   clearSubject() {
     subjectDrop.clear();
     subjectList.clear();
+    userDrop.clear();
+    userList.clear();
     notifyListeners();
   }
 
   Future<bool> getSubjectList(
-      String courseId, String partID, String exam) async {
+      String courseId, String partID, String exam, List div) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
 
     var headers = {
@@ -219,12 +234,13 @@ class MissingReportProviders with ChangeNotifier {
     request.body = json.encode({
       "courseId": courseId,
       "partId": partID,
-      "divisionId": null,
+      "divisionId": div,
       "subjectId": null,
       "examId": exam,
       "userId": null,
       "showStudentwiseRpt": false
     });
+    log(request.body.toString());
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
@@ -238,6 +254,13 @@ class MissingReportProviders with ChangeNotifier {
           data["subjectList"].map((x) => SubjectListModel.fromJson(x)));
       subjectList.addAll(templist);
       subjectDrop = subjectList.map((subjectdata) {
+        return MultiSelectItem(subjectdata, subjectdata.text!);
+      }).toList();
+
+      List<UsersListModel> templist1 = List<UsersListModel>.from(
+          data["users"].map((x) => UsersListModel.fromJson(x)));
+      userList.addAll(templist1);
+      userDrop = userList.map((subjectdata) {
         return MultiSelectItem(subjectdata, subjectdata.text!);
       }).toList();
 
@@ -257,8 +280,10 @@ class MissingReportProviders with ChangeNotifier {
 
   bool isShown = false;
 
-  studentWiseCheckbox() {
+  studentWiseCheckbox() async {
     isShown = !isShown;
+    await clearViewStaffList();
+    await clearViewStudentList();
     notifyListeners();
   }
 
@@ -362,6 +387,133 @@ class MissingReportProviders with ChangeNotifier {
       "subjectId": subjectt,
       "examId": exam,
       "userId": null,
+      "showStudentwiseRpt": checked
+    });
+    print(request.body);
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      setLoad(true);
+      Map<String, dynamic> data =
+          jsonDecode(await response.stream.bytesToString());
+
+      List<MeListModel> templist = List<MeListModel>.from(
+          data["meList"].map((x) => MeListModel.fromJson(x)));
+      viewStudentList.addAll(templist);
+      if (viewStudentList.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          elevation: 10,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+          ),
+          duration: Duration(seconds: 3),
+          margin: EdgeInsets.only(bottom: 80, left: 30, right: 30),
+          behavior: SnackBarBehavior.floating,
+          content: Text(
+            'No data for specified condition...',
+            textAlign: TextAlign.center,
+          ),
+        ));
+      }
+      setLoad(false);
+      notifyListeners();
+    } else {
+      setLoad(false);
+      print('Error in view student');
+    }
+    return true;
+  }
+
+  //Admin
+
+  Future<bool> getViewAdmin(String courseId, String partID, String exam,
+      division, subject, bool checked, BuildContext context, List userL) async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    setLoad(true);
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+    };
+
+    var request = http.Request(
+        'POST', Uri.parse('${UIGuide.baseURL}/markentryMissingRpt/viewreport'));
+    request.body = json.encode({
+      "courseId": courseId,
+      "partId": partID,
+      "divisionId": division,
+      "subjectId": subject,
+      "examId": exam,
+      "userId": userL,
+      "showStudentwiseRpt": checked
+    });
+    setLoad(true);
+    print(request.body);
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      setLoad(true);
+      Map<String, dynamic> data =
+          jsonDecode(await response.stream.bytesToString());
+
+      List<MeListStaff> templist = List<MeListStaff>.from(
+          data["meList"].map((x) => MeListStaff.fromJson(x)));
+      viewStaffList.addAll(templist);
+      if (viewStaffList.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          elevation: 10,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+          ),
+          duration: Duration(seconds: 3),
+          margin: EdgeInsets.only(bottom: 80, left: 30, right: 30),
+          behavior: SnackBarBehavior.floating,
+          content: Text(
+            'No data for specified condition...',
+            textAlign: TextAlign.center,
+          ),
+        ));
+      }
+
+      setLoad(false);
+      notifyListeners();
+    } else {
+      setLoad(false);
+      print('Error in view stf');
+    }
+    return true;
+  }
+
+  //View  student
+
+  Future<bool> getViewStudentAdmin(
+      String courseId,
+      String partID,
+      String exam,
+      divisionn,
+      subjectt,
+      bool checked,
+      BuildContext context,
+      List userL) async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    setLoad(true);
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+    };
+
+    var request = http.Request(
+        'POST', Uri.parse('${UIGuide.baseURL}/markentryMissingRpt/viewreport'));
+    request.body = json.encode({
+      "courseId": courseId,
+      "partId": partID,
+      "divisionId": divisionn,
+      "subjectId": subjectt,
+      "examId": exam,
+      "userId": userL,
       "showStudentwiseRpt": checked
     });
     print(request.body);

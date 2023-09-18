@@ -197,7 +197,7 @@ class _SmsFormatToStaffState extends State<SmsFormatToStaff> {
                                   padding: const EdgeInsets.all(6.0),
                                   child: Text(
                                     value.smsBody ?? '',
-                                    maxLines: 5,
+                                    maxLines: 10,
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                 )),

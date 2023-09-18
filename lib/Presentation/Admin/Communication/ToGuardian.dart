@@ -645,7 +645,31 @@ class _Notification_AdminToGuardainState
                       } else {
                         await value.getProvider();
                         value.types = types;
-                        if (value.providerName == null) {
+                        if (types == "email") {
+                          await value.submitSmsStudent(context);
+                        } else if (types == "sms") {
+                          if (value.providerName == null) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                elevation: 10,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                ),
+                                duration: Duration(seconds: 1),
+                                margin: EdgeInsets.only(
+                                    bottom: 80, left: 30, right: 30),
+                                behavior: SnackBarBehavior.floating,
+                                content: Text(
+                                  'Sms Provider Not Found..!',
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            );
+                          } else {
+                            await value.submitSmsStudent(context);
+                          }
+                        } else {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               elevation: 10,
@@ -658,13 +682,11 @@ class _Notification_AdminToGuardainState
                                   bottom: 80, left: 30, right: 30),
                               behavior: SnackBarBehavior.floating,
                               content: Text(
-                                'Sms Provider Not Found..!',
+                                'Something went wrong..!',
                                 textAlign: TextAlign.center,
                               ),
                             ),
                           );
-                        } else {
-                          await value.submitSmsStudent(context);
                         }
                       }
                     },

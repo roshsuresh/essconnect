@@ -84,6 +84,9 @@ class NotificationToStaffAdminProviders with ChangeNotifier {
     selected.selected ??= false;
     selected.selected = !selected.selected!;
     print(selected.toJson());
+    if (selected.selected == false) {
+      isSelectAllStaff = false;
+    }
 
     notifyListeners();
   }

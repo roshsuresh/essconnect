@@ -81,7 +81,9 @@ class NotificationToGuardianAdmin with ChangeNotifier {
     selected.selected ??= false;
     selected.selected = !selected.selected!;
     print(selected.toJson());
-
+    if (selected.selected == false) {
+      isselectAll = false;
+    }
     notifyListeners();
   }
 

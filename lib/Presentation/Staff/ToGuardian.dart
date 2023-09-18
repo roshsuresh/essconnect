@@ -497,7 +497,7 @@ class _Notification_StaffToGuardainState
                                 fontWeight: FontWeight.bold),
                           ),
                           onPressed: () async {
-                            if (notificationCourseController.text.isEmpty &&
+                            if (notificationCourseController.text.isEmpty ||
                                 notificationDivisionListController
                                     .text.isEmpty) {
                               return AwesomeDialog(
@@ -639,7 +639,37 @@ class _Notification_StaffToGuardainState
                                 listen: false)
                             .getProvider();
                         value.type = type;
-                        if (value.providerName == null) {
+                        if (type == 'email') {
+                          await Provider.of<NotificationToGuardian_Providers>(
+                                  context,
+                                  listen: false)
+                              .submitSmsStudent(context);
+                        } else if (type == "sms") {
+                          if (value.providerName == null) {
+                            await ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                elevation: 10,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                ),
+                                duration: Duration(seconds: 1),
+                                margin: EdgeInsets.only(
+                                    bottom: 80, left: 30, right: 30),
+                                behavior: SnackBarBehavior.floating,
+                                content: Text(
+                                  'Sms Provider Not Found.....!',
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            );
+                          } else {
+                            await Provider.of<NotificationToGuardian_Providers>(
+                                    context,
+                                    listen: false)
+                                .submitSmsStudent(context);
+                          }
+                        } else {
                           await ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
                               elevation: 10,
@@ -652,16 +682,11 @@ class _Notification_StaffToGuardainState
                                   bottom: 80, left: 30, right: 30),
                               behavior: SnackBarBehavior.floating,
                               content: Text(
-                                'Sms Provider Not Found.....!',
+                                'Something went wrong.....!',
                                 textAlign: TextAlign.center,
                               ),
                             ),
                           );
-                        } else {
-                          await Provider.of<NotificationToGuardian_Providers>(
-                                  context,
-                                  listen: false)
-                              .submitSmsStudent(context);
                         }
                       }
                     },

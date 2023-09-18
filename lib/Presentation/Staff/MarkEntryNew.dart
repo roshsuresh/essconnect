@@ -2914,7 +2914,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                           index]
                                                                       .text) >
                                                               double.parse(provider
-                                                                  .peMax
+                                                                  .ceMax
                                                                   .toString())) {
                                                             ceMarkController[
                                                                     index]

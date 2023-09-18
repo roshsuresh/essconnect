@@ -212,8 +212,7 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
                                                   controller: _feeController,
                                                   cursorColor:
                                                       UIGuide.light_Purple,
-                                                  inputFormatters: <
-                                                      TextInputFormatter>[
+                                                  inputFormatters: <TextInputFormatter>[
                                                     FilteringTextInputFormatter
                                                         .digitsOnly
                                                   ],
@@ -383,8 +382,7 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
                                                   controller: _busController,
                                                   cursorColor:
                                                       UIGuide.light_Purple,
-                                                  inputFormatters: <
-                                                      TextInputFormatter>[
+                                                  inputFormatters: <TextInputFormatter>[
                                                     FilteringTextInputFormatter
                                                         .digitsOnly
                                                   ],
@@ -835,8 +833,8 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
                                             value.lastOrderStatus == 'Failed' ||
                                             value.lastOrderStatus ==
                                                 'Cancelled' ||
-                                            value.lastOrderStatus ==
-                                                'Processing' ||
+                                            // value.lastOrderStatus ==
+                                            //     'Processing' ||
                                             value.lastOrderStatus == null) {
                                           if (_busController.text.isEmpty &&
                                               _feeController.text.isEmpty) {
@@ -1193,7 +1191,9 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
 ///////////////////                                 WorldLine                               ////////////////////////
 //  -----------------------------------------------------------------------------------------------------------------  //
                                                   else if (trans.gateway ==
-                                                      'WorldLine') {
+                                                          'WorldLine' ||
+                                                      trans.gateway ==
+                                                          "SibWorldLine") {
                                                     await Provider.of<
                                                                 FeesProvider>(
                                                             context,
@@ -1651,7 +1651,9 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
 ///////////////////                                 WorldLine                                    ////////////////////////
 //  -----------------------------------------------------------------------------------------------------------------  //
                                                   else if (trans.gateway ==
-                                                      'WorldLine') {
+                                                          'WorldLine' ||
+                                                      trans.gateway ==
+                                                          "SibWorldLine") {
                                                     await Provider.of<
                                                                 FeesProvider>(
                                                             context,
@@ -2136,7 +2138,9 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
 ///////////////////                                 WorldLine                                    ////////////////////////
 //  -----------------------------------------------------------------------------------------------------------------  //
                                                     else if (trans.gateway ==
-                                                        'WorldLine') {
+                                                            'WorldLine' ||
+                                                        trans.gateway ==
+                                                            "SibWorldLine") {
                                                       await Provider.of<
                                                                   FeesProvider>(
                                                               context,
@@ -2594,7 +2598,9 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
 ///////////////////                                 WorldLine                                    ////////////////////////
 //  -----------------------------------------------------------------------------------------------------------------  //
                                                     else if (trans.gateway ==
-                                                        'WorldLine') {
+                                                            'WorldLine' ||
+                                                        trans.gateway ==
+                                                            "SibWorldLine") {
                                                       await Provider.of<
                                                                   FeesProvider>(
                                                               context,
@@ -3051,7 +3057,9 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
 ///////////////////                                 WorldLine                                    ////////////////////////
 //  -----------------------------------------------------------------------------------------------------------------  //
                                                     else if (trans.gateway ==
-                                                        'WorldLine') {
+                                                            'WorldLine' ||
+                                                        trans.gateway ==
+                                                            "SibWorldLine") {
                                                       await Provider.of<
                                                                   FeesProvider>(
                                                               context,
