@@ -49,6 +49,8 @@ class _StaffHomeState extends State<StaffHome> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       Provider.of<ConnectivityProvider>(context, listen: false);
+      await Provider.of<StaffProfileProvider>(context, listen: false)
+          .staff_profileData();
       await Provider.of<StaffNotificationCountProviders>(context, listen: false)
           .getnotificationCount();
       await Provider.of<ModuleProviders>(context, listen: false)
@@ -1415,10 +1417,10 @@ class StaffProfile extends StatelessWidget {
   // late AnimationController _controller;
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      var p = Provider.of<StaffProfileProvider>(context, listen: false);
-      p.staff_profileData();
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    //   var p = Provider.of<StaffProfileProvider>(context, listen: false);
+    //   p.staff_profileData();
+    // });
     var size = MediaQuery.of(context).size;
     const Color background = Colors.white;
     const Color fill1 = Color.fromARGB(255, 7, 110, 206);
@@ -1458,18 +1460,6 @@ class StaffProfile extends StatelessWidget {
                   )),
               child: Stack(
                 children: [
-                  // Row(
-                  //   children: [
-                  //     kWidth,
-                  //     LottieBuilder.network(
-                  //         "https://assets7.lottiefiles.com/packages/lf20_2m1smtya.json"),
-                  //     const Spacer(),
-                  //     LottieBuilder.network(
-                  //         "https://assets7.lottiefiles.com/packages/lf20_2m1smtya.json"),
-                  //     //"https://assets3.lottiefiles.com/packages/lf20_w6y7r1ap.json"),
-                  //     kWidth
-                  //   ],
-                  // ),
                   Consumer<StaffProfileProvider>(
                     builder: (context, value, child) => value.loading
                         ? spinkitLoader()

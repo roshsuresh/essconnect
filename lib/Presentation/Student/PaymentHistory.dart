@@ -174,13 +174,13 @@ class PaymentHistory extends StatelessWidget {
                                               )),
                                               Center(
                                                   child: Text(
-                                                '\n${value.historyList[index].paymentMode}',
+                                                '\n${value.historyList[index].paymentMode ?? ""}',
                                                 style: const TextStyle(
                                                     fontSize: 13),
                                               )),
                                               Center(
                                                   child: Text(
-                                                '\n${value.historyList[index].billAmount}',
+                                                '\n${value.historyList[index].billAmount ?? ''}',
                                                 style: const TextStyle(
                                                     fontSize: 13),
                                               )),
@@ -333,20 +333,27 @@ class _PdfDownloadFeeState extends State<PdfDownloadFee> {
             centerTitle: true,
             toolbarHeight: 50.2,
             toolbarOpacity: 0.8,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                  bottomRight: Radius.circular(25),
+                  bottomLeft: Radius.circular(25)),
+            ),
             backgroundColor: UIGuide.light_Purple,
             actions: [
               Padding(
-                  padding: const EdgeInsets.only(right: 15.0),
-                  child: IconButton(
-                      onPressed: () async {
-                        await requestDownload(
-                          value.url == null ? '--' : value.url.toString(),
-                          value.id == null
-                              ? '---'
-                              : value.name.toString() + value.id.toString(),
-                        );
-                      },
-                      icon: const Icon(Icons.download_outlined))),
+                padding: const EdgeInsets.only(right: 15.0),
+                child: IconButton(
+                  onPressed: () async {
+                    await requestDownload(
+                      value.url == null ? '--' : value.url.toString(),
+                      value.id == null
+                          ? '---'
+                          : value.name.toString() + value.id.toString(),
+                    );
+                  },
+                  icon: const Icon(Icons.download_outlined),
+                ),
+              ),
             ],
           ),
           body: SfPdfViewer.network(

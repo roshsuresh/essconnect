@@ -359,6 +359,7 @@ class ToolMarkEntryProviders with ChangeNotifier {
       Map criteria) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoad(true);
+    setLoadCommon(true);
 
     var headers = {
       'Content-Type': 'application/json',
@@ -387,6 +388,7 @@ class ToolMarkEntryProviders with ChangeNotifier {
 
     if (response.statusCode == 200) {
       setLoad(true);
+      setLoadCommon(true);
 
       print('Correct........______________________________');
       print(await response.stream.bytesToString());
@@ -408,6 +410,7 @@ class ToolMarkEntryProviders with ChangeNotifier {
       gradeList.clear();
 
       setLoad(false);
+      setLoadCommon(false);
 
       notifyListeners();
     } else {
@@ -425,9 +428,11 @@ class ToolMarkEntryProviders with ChangeNotifier {
         ),
       ));
       setLoad(false);
+      setLoadCommon(false);
       print('Error Response in attendance');
     }
     setLoad(false);
+    setLoadCommon(false);
   }
 
   //verify
@@ -439,10 +444,18 @@ class ToolMarkEntryProviders with ChangeNotifier {
     notifyListeners();
   }
 
+  bool _loadCommon = false;
+  bool get loadCommon => _loadCommon;
+  setLoadCommon(bool value) {
+    _loadCommon = value;
+    notifyListeners();
+  }
+
   Future markEntryVerify(BuildContext context, List toolLists, List studentList,
       Map criteria) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoadverify(true);
+    setLoadCommon(true);
 
     var headers = {
       'Content-Type': 'application/json',
@@ -471,7 +484,7 @@ class ToolMarkEntryProviders with ChangeNotifier {
 
     if (response.statusCode == 200) {
       setLoadverify(true);
-
+      setLoadCommon(true);
       print('Correct........______________________________');
       print(await response.stream.bytesToString());
       await AwesomeDialog(
@@ -491,7 +504,7 @@ class ToolMarkEntryProviders with ChangeNotifier {
           .show();
       gradeList.clear();
       setLoadverify(false);
-
+      setLoadCommon(false);
       notifyListeners();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -508,9 +521,11 @@ class ToolMarkEntryProviders with ChangeNotifier {
         ),
       ));
       setLoadverify(false);
+      setLoadCommon(false);
       print('Error Response in attendance');
     }
     setLoadverify(false);
+    setLoadCommon(false);
   }
 
   //delete
@@ -518,7 +533,7 @@ class ToolMarkEntryProviders with ChangeNotifier {
       Map criteria) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoad(true);
-
+    setLoadCommon(true);
     var headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
@@ -546,7 +561,7 @@ class ToolMarkEntryProviders with ChangeNotifier {
 
     if (response.statusCode == 200) {
       setLoad(true);
-
+      setLoadCommon(true);
       print('Correct........______________________________');
       print(await response.stream.bytesToString());
       await AwesomeDialog(
@@ -565,10 +580,10 @@ class ToolMarkEntryProviders with ChangeNotifier {
               },
               btnOkColor: Color.fromARGB(255, 217, 14, 14))
           .show();
-      ;
+
       gradeList.clear();
       setLoad(false);
-
+      setLoadCommon(false);
       notifyListeners();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -585,9 +600,11 @@ class ToolMarkEntryProviders with ChangeNotifier {
         ),
       ));
       setLoad(false);
+      setLoadCommon(false);
       print('Error Response in attendance');
     }
     setLoad(false);
+    setLoadCommon(false);
   }
 
   clearStudList() async {

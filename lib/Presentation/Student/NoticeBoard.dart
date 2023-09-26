@@ -24,11 +24,7 @@ class NoticeBoard extends StatelessWidget {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Provider.of<NoticeProvider>(context, listen: false).getnoticeList();
     });
-
     var size = MediaQuery.of(context).size;
-    var height = size.height;
-    var width = size.width;
-
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -92,8 +88,6 @@ class NoticeBoard extends StatelessWidget {
                                         decoration: const BoxDecoration(
                                             color: Color.fromARGB(
                                                 255, 255, 255, 255),
-                                            // border: Border.all(
-                                            //     color: UIGuide.light_Purple),
                                             borderRadius: BorderRadius.only(
                                                 topRight: Radius.circular(20),
                                                 bottomLeft:
@@ -118,23 +112,23 @@ class NoticeBoard extends StatelessWidget {
                                                             const StrutStyle(
                                                                 fontSize: 14.0),
                                                         text: TextSpan(
-                                                            style: const TextStyle(
-                                                                color: UIGuide
-                                                                    .light_Purple,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500),
-                                                            text: noticeresponse![
-                                                                            index]
-                                                                        [
-                                                                        'title'] ==
-                                                                    null
-                                                                ? '---'
-                                                                : noticeresponse![
-                                                                            index]
-                                                                        [
-                                                                        'title']
-                                                                    .toString()),
+                                                          style: const TextStyle(
+                                                              color: UIGuide
+                                                                  .light_Purple,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500),
+                                                          text: noticeresponse![
+                                                                          index]
+                                                                      [
+                                                                      'title'] ==
+                                                                  null
+                                                              ? '---'
+                                                              : noticeresponse![
+                                                                          index]
+                                                                      ['title']
+                                                                  .toString(),
+                                                        ),
                                                       ),
                                                     ),
                                                   ],

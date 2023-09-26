@@ -11,6 +11,7 @@ class ModuleProviders extends ChangeNotifier {
   bool offlineAttendence = false;
   bool offlineTab = false;
   bool attendenceEntry = false;
+  bool offlineFees = false;
   Future getModuleDetails() async {
     var parsedResponse = await parseJWT();
     final newParse = await parsedResponse['Modules'];
@@ -49,6 +50,10 @@ class ModuleProviders extends ChangeNotifier {
     }
     if (data.contains('FEE_ONLY')) {
       feesOnly = true;
+      notifyListeners();
+    }
+    if (data.contains('OFFLINE_FEES')) {
+      offlineFees = true;
       notifyListeners();
     }
 

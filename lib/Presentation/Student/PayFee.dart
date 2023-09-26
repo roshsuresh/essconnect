@@ -2202,7 +2202,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)),
                     content: Container(
-                      height: size.height / 4.5,
+                      height: size.height / 4,
                       width: size.width * 3,
                       child: Stack(
                         clipBehavior: Clip.none,
@@ -2218,6 +2218,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                               ),
                               const Text(
                                 "TRANSACTION SUCCESS",
+                                textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontWeight: FontWeight.w800,
                                     fontSize: 20,
@@ -2282,7 +2283,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)),
                     content: Container(
-                      height: size.height / 4.5,
+                      height: size.height / 4,
                       width: size.width * 3,
                       child: Stack(
                         clipBehavior: Clip.none,
@@ -2354,7 +2355,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)),
                     content: Container(
-                      height: size.height / 4.5,
+                      height: size.height / 4,
                       width: size.width * 3,
                       child: Stack(
                         clipBehavior: Clip.none,
@@ -2370,6 +2371,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                               ),
                               const Text(
                                 "TRANSACTION PENDING",
+                                textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontWeight: FontWeight.w800,
                                     fontSize: 20,
@@ -2425,7 +2427,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)),
                     content: Container(
-                      height: size.height / 4.5,
+                      height: size.height / 4,
                       width: size.width * 3,
                       child: Stack(
                         clipBehavior: Clip.none,
@@ -2501,7 +2503,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20)),
                   content: Container(
-                    height: size.height / 4.5,
+                    height: size.height / 4,
                     width: size.width * 3,
                     child: Stack(
                       clipBehavior: Clip.none,
@@ -2650,7 +2652,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)),
                     content: Container(
-                      height: size.height / 4.5,
+                      height: size.height / 4,
                       width: size.width * 3,
                       child: Stack(
                         clipBehavior: Clip.none,
@@ -2666,6 +2668,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                               ),
                               const Text(
                                 "TRANSACTION SUCCESS",
+                                textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontWeight: FontWeight.w800,
                                     fontSize: 20,
@@ -2723,7 +2726,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)),
                     content: Container(
-                      height: size.height / 4.5,
+                      height: size.height / 4,
                       width: size.width * 3,
                       child: Stack(
                         clipBehavior: Clip.none,
@@ -2794,7 +2797,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)),
                     content: Container(
-                      height: size.height / 4.5,
+                      height: size.height / 4,
                       width: size.width * 3,
                       child: Stack(
                         clipBehavior: Clip.none,
@@ -2810,6 +2813,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                               ),
                               const Text(
                                 "TRANSACTION PENDING",
+                                textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontWeight: FontWeight.w800,
                                     fontSize: 20,
@@ -2865,7 +2869,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)),
                     content: Container(
-                      height: size.height / 4.5,
+                      height: size.height / 4,
                       width: size.width * 3,
                       child: Stack(
                         clipBehavior: Clip.none,
@@ -2937,7 +2941,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20)),
                   content: Container(
-                    height: size.height / 4.5,
+                    height: size.height / 4,
                     width: size.width * 3,
                     child: Stack(
                       clipBehavior: Clip.none,
@@ -3124,7 +3128,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)),
                     content: Container(
-                      height: size.height / 4.5,
+                      height: size.height / 4,
                       width: size.width * 3,
                       child: Stack(
                         clipBehavior: Clip.none,
@@ -3198,7 +3202,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)),
                     content: Container(
-                      height: size.height / 4.5,
+                      height: size.height / 4,
                       width: size.width * 3,
                       child: Stack(
                         clipBehavior: Clip.none,
@@ -3270,7 +3274,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)),
                     content: Container(
-                      height: size.height / 4.5,
+                      height: size.height / 4,
                       width: size.width * 3,
                       child: Stack(
                         clipBehavior: Clip.none,
@@ -3342,7 +3346,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)),
                     content: Container(
-                      height: size.height / 4.5,
+                      height: size.height / 4,
                       width: size.width * 3,
                       child: Stack(
                         clipBehavior: Clip.none,
@@ -3358,6 +3362,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                               ),
                               const Text(
                                 "TRANSACTION PENDING",
+                                textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontWeight: FontWeight.w800,
                                     fontSize: 20,
@@ -3413,7 +3418,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)),
                     content: Container(
-                      height: size.height / 4.5,
+                      height: size.height / 4,
                       width: size.width * 3,
                       child: Stack(
                         clipBehavior: Clip.none,
@@ -3429,6 +3434,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                               ),
                               const Text(
                                 "TRANSACTION PENDING",
+                                textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontWeight: FontWeight.w800,
                                     fontSize: 20,
@@ -3484,7 +3490,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)),
                     content: Container(
-                      height: size.height / 4.5,
+                      height: size.height / 4,
                       width: size.width * 3,
                       child: Stack(
                         clipBehavior: Clip.none,
@@ -3648,7 +3654,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)),
                     content: Container(
-                      height: size.height / 4.5,
+                      height: size.height / 4,
                       width: size.width * 3,
                       child: Stack(
                         clipBehavior: Clip.none,
@@ -3664,6 +3670,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                               ),
                               const Text(
                                 "TRANSACTION SUCCESS",
+                                textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontWeight: FontWeight.w800,
                                     fontSize: 20,
@@ -3721,7 +3728,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)),
                     content: Container(
-                      height: size.height / 4.5,
+                      height: size.height / 4,
                       width: size.width * 3,
                       child: Stack(
                         clipBehavior: Clip.none,
@@ -3794,7 +3801,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)),
                     content: Container(
-                      height: size.height / 4.5,
+                      height: size.height / 4,
                       width: size.width * 3,
                       child: Stack(
                         clipBehavior: Clip.none,
@@ -3866,7 +3873,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)),
                     content: Container(
-                      height: size.height / 4.5,
+                      height: size.height / 4,
                       width: size.width * 3,
                       child: Stack(
                         clipBehavior: Clip.none,
@@ -3882,6 +3889,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                               ),
                               const Text(
                                 "TRANSACTION PENDING",
+                                textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontWeight: FontWeight.w800,
                                     fontSize: 20,
@@ -3937,7 +3945,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)),
                     content: Container(
-                      height: size.height / 4.5,
+                      height: size.height / 4,
                       width: size.width * 3,
                       child: Stack(
                         clipBehavior: Clip.none,
@@ -4009,7 +4017,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20)),
                     content: Container(
-                      height: size.height / 4.5,
+                      height: size.height / 4,
                       width: size.width * 3,
                       child: Stack(
                         clipBehavior: Clip.none,
