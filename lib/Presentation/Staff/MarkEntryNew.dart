@@ -680,11 +680,20 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                           subjectId,
                                                           divisionId,
                                                           partId);
-                                                  await snapshot
-                                                      .getMarkEntryExamValues(
-                                                          subjectId,
-                                                          divisionId,
-                                                          partId);
+                                                  if (snapshot
+                                                          .markEntryOptionSubjectList
+                                                          .isEmpty ||
+                                                      snapshot.markEntryOptionSubjectList ==
+                                                          null) {
+                                                    await snapshot
+                                                        .getMarkEntryExamValues(
+                                                            subjectId,
+                                                            divisionId,
+                                                            partId,
+                                                            markEntryOptionSubListController1
+                                                                .text);
+                                                  }
+
                                                   await value
                                                       .clearStudentMEList();
 
@@ -836,6 +845,30 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                   .text;
 
                                                       print(optionSub);
+                                                      markEntryExamListController
+                                                          .clear();
+                                                      markEntryExamListController1
+                                                          .clear();
+                                                      await snapshot
+                                                          .removeAllExamClear();
+                                                      String descr = '';
+                                                      descr = snapshot
+                                                              .markEntryOptionSubjectList
+                                                              .isEmpty
+                                                          ? ""
+                                                          : snapshot.markEntryOptionSubjectList[0]
+                                                                      .subjectDescription ==
+                                                                  "Sub Subject"
+                                                              ? "subSubject"
+                                                              : "optionSubject";
+                                                      await snapshot
+                                                          .getMarkEntryExamValuesOPtion(
+                                                              subjectId,
+                                                              divisionId,
+                                                              partId,
+                                                              markEntryOptionSubListController1
+                                                                  .text,
+                                                              descr);
                                                       print(subsubject);
                                                       await value
                                                           .clearStudentMEList();
@@ -911,23 +944,6 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                             enabled: false,
                                           ),
                                         ),
-                                        // SizedBox(
-                                        //   height: 0,
-                                        //   child: TextField(
-                                        //     textAlign: TextAlign.center,
-                                        //     controller:
-                                        //         markEntryOptionSubListController1,
-                                        //     decoration: const InputDecoration(
-                                        //       filled: true,
-                                        //       fillColor: Color.fromARGB(
-                                        //           255, 238, 237, 237),
-                                        //       border: OutlineInputBorder(),
-                                        //       labelText: "",
-                                        //       hintText: "",
-                                        //     ),
-                                        //     enabled: false,
-                                        //   ),
-                                        // ),
                                       ],
                                     ),
                                   ),
@@ -5910,110 +5926,106 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                   kWidth,
                                                   kWidth,
                                                   kWidth,
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 10.0),
-                                                    child: GestureDetector(
-                                                      onTap: () {
-                                                        setState(() {
-                                                          if (value
-                                                                  .studListUAS[
-                                                                      index]
-                                                                  .attendance ==
-                                                              'A') {
-                                                            value
-                                                                .studListUAS[
-                                                                    index]
-                                                                .attendance = 'P';
-                                                          } else {
-                                                            value
-                                                                .studListUAS[
-                                                                    index]
-                                                                .attendance = 'A';
+                                                  //  Padding(
+                                                  //           padding:
+                                                  //               const EdgeInsets
+                                                  //                   .only(
+                                                  //                   left: 10.0),
+                                                  //           child:
+                                                  //               GestureDetector(
+                                                  //             onTap: () {
+                                                  //               setState(() {
+                                                  //                 if (value
+                                                  //                         .studListUAS[
+                                                  //                             index]
+                                                  //                         .attendance ==
+                                                  //                     'A') {
+                                                  //                   value
+                                                  //                       .studListUAS[
+                                                  //                           index]
+                                                  //                       .attendance = 'P';
+                                                  //                 } else {
+                                                  //                   value
+                                                  //                       .studListUAS[
+                                                  //                           index]
+                                                  //                       .attendance = 'A';
 
-                                                            value
-                                                                .studListUAS[
-                                                                    index]
-                                                                .ceGrade = null;
-                                                            value
-                                                                    .studListUAS[
-                                                                        index]
-                                                                    .ceGradeId =
-                                                                null;
+                                                  //                   value
+                                                  //                       .studListUAS[
+                                                  //                           index]
+                                                  //                       .ceGrade = null;
+                                                  //                   value
+                                                  //                       .studListUAS[
+                                                  //                           index]
+                                                  //                       .ceGradeId = null;
 
-                                                            ceGradeController[
-                                                                    index]
-                                                                .clear();
-                                                            ceGradeController1[
-                                                                    index]
-                                                                .clear();
+                                                  //                   ceGradeController[
+                                                  //                           index]
+                                                  //                       .clear();
+                                                  //                   ceGradeController1[
+                                                  //                           index]
+                                                  //                       .clear();
 
-                                                            value
-                                                                .studListUAS[
-                                                                    index]
-                                                                .teGrade = null;
-                                                            value
-                                                                    .studListUAS[
-                                                                        index]
-                                                                    .teGradeId =
-                                                                null;
+                                                  //                   value
+                                                  //                       .studListUAS[
+                                                  //                           index]
+                                                  //                       .teGrade = null;
+                                                  //                   value
+                                                  //                       .studListUAS[
+                                                  //                           index]
+                                                  //                       .teGradeId = null;
 
-                                                            teGradeController[
-                                                                    index]
-                                                                .clear();
-                                                            teGradeController1[
-                                                                    index]
-                                                                .clear();
+                                                  //                   teGradeController[
+                                                  //                           index]
+                                                  //                       .clear();
+                                                  //                   teGradeController1[
+                                                  //                           index]
+                                                  //                       .clear();
 
-                                                            value
-                                                                .studListUAS[
-                                                                    index]
-                                                                .peGrade = null;
-                                                            value
-                                                                    .studListUAS[
-                                                                        index]
-                                                                    .peGradeId =
-                                                                null;
+                                                  //                   value
+                                                  //                       .studListUAS[
+                                                  //                           index]
+                                                  //                       .peGrade = null;
+                                                  //                   value
+                                                  //                       .studListUAS[
+                                                  //                           index]
+                                                  //                       .peGradeId = null;
 
-                                                            praticalGradeController[
-                                                                    index]
-                                                                .clear();
-                                                            praticalGradeController1[
-                                                                    index]
-                                                                .clear();
-                                                          }
-                                                          attendancee = value
-                                                              .studListUAS[
-                                                                  index]
-                                                              .attendance;
+                                                  //                   praticalGradeController[
+                                                  //                           index]
+                                                  //                       .clear();
+                                                  //                   praticalGradeController1[
+                                                  //                           index]
+                                                  //                       .clear();
+                                                  //                 }
+                                                  //                 attendancee = value
+                                                  //                     .studListUAS[
+                                                  //                         index]
+                                                  //                     .attendance;
 
-                                                          print(
-                                                              "attendace   $attendancee");
-                                                        });
-                                                      },
-                                                      child: Container(
-                                                        color:
-                                                            Colors.transparent,
-                                                        width: 28,
-                                                        height: 26,
-                                                        child: SizedBox(
-                                                            width: 28,
-                                                            height: 26,
-                                                            child: value
-                                                                        .studListUAS[
-                                                                            index]
-                                                                        .attendance ==
-                                                                    'A'
-                                                                ? SvgPicture
-                                                                    .asset(UIGuide
-                                                                        .absent)
-                                                                : SvgPicture
-                                                                    .asset(UIGuide
-                                                                        .present)),
-                                                      ),
-                                                    ),
-                                                  ),
+                                                  //                 print(
+                                                  //                     "attendace   $attendancee");
+                                                  //               });
+                                                  //             },
+                                                  //             child: Container(
+                                                  //               color: Colors
+                                                  //                   .transparent,
+                                                  //               width: 28,
+                                                  //               height: 26,
+                                                  //               child: SizedBox(
+                                                  //                   width: 28,
+                                                  //                   height: 26,
+                                                  //                   child: value.studListUAS[index].attendance ==
+                                                  //                           'A'
+                                                  //                       ? SvgPicture.asset(
+                                                  //                           UIGuide
+                                                  //                               .absent)
+                                                  //                       : SvgPicture.asset(
+                                                  //                           UIGuide
+                                                  //                               .present)),
+                                                  //             ),
+                                                  //           ),
+                                                  //         ),
                                                   kWidth,
                                                   kWidth,
                                                 ],
@@ -6603,93 +6615,97 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                   kWidth,
                                                   kWidth,
                                                   kWidth,
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 10.0),
-                                                    child: GestureDetector(
-                                                      onTap: () {
-                                                        setState(() {
-                                                          if (value
-                                                                  .studListUAS[
-                                                                      index]
-                                                                  .attendance ==
-                                                              'A') {
-                                                            value
-                                                                .studListUAS[
-                                                                    index]
-                                                                .attendance = 'P';
-                                                          } else {
-                                                            value
-                                                                .studListUAS[
-                                                                    index]
-                                                                .attendance = 'A';
+                                                  // value.studListUAS[index]
+                                                  //             .isAttendanceDisabled ==
+                                                  //         true
+                                                  //     ? SizedBox(
+                                                  //         height: 0,
+                                                  //         width: 0,
+                                                  //       )
+                                                  //     : Padding(
+                                                  //         padding:
+                                                  //             const EdgeInsets
+                                                  //                 .only(
+                                                  //                 left: 10.0),
+                                                  //         child:
+                                                  //             GestureDetector(
+                                                  //           onTap: () {
+                                                  //             setState(() {
+                                                  //               if (value
+                                                  //                       .studListUAS[
+                                                  //                           index]
+                                                  //                       .attendance ==
+                                                  //                   'A') {
+                                                  //                 value
+                                                  //                     .studListUAS[
+                                                  //                         index]
+                                                  //                     .attendance = 'P';
+                                                  //               } else {
+                                                  //                 value
+                                                  //                     .studListUAS[
+                                                  //                         index]
+                                                  //                     .attendance = 'A';
 
-                                                            value
-                                                                .studListUAS[
-                                                                    index]
-                                                                .ceGrade = null;
-                                                            value
-                                                                    .studListUAS[
-                                                                        index]
-                                                                    .ceGradeId =
-                                                                null;
+                                                  //                 value
+                                                  //                     .studListUAS[
+                                                  //                         index]
+                                                  //                     .ceGrade = null;
+                                                  //                 value
+                                                  //                     .studListUAS[
+                                                  //                         index]
+                                                  //                     .ceGradeId = null;
 
-                                                            ceGradeController[
-                                                                    index]
-                                                                .clear();
-                                                            ceGradeController1[
-                                                                    index]
-                                                                .clear();
+                                                  //                 ceGradeController[
+                                                  //                         index]
+                                                  //                     .clear();
+                                                  //                 ceGradeController1[
+                                                  //                         index]
+                                                  //                     .clear();
 
-                                                            value
-                                                                .studListUAS[
-                                                                    index]
-                                                                .teGrade = null;
-                                                            value
-                                                                    .studListUAS[
-                                                                        index]
-                                                                    .teGradeId =
-                                                                null;
+                                                  //                 value
+                                                  //                     .studListUAS[
+                                                  //                         index]
+                                                  //                     .teGrade = null;
+                                                  //                 value
+                                                  //                     .studListUAS[
+                                                  //                         index]
+                                                  //                     .teGradeId = null;
 
-                                                            teGradeController[
-                                                                    index]
-                                                                .clear();
-                                                            teGradeController1[
-                                                                    index]
-                                                                .clear();
-                                                          }
-                                                          attendancee = value
-                                                              .studListUAS[
-                                                                  index]
-                                                              .attendance;
+                                                  //                 teGradeController[
+                                                  //                         index]
+                                                  //                     .clear();
+                                                  //                 teGradeController1[
+                                                  //                         index]
+                                                  //                     .clear();
+                                                  //               }
+                                                  //               attendancee = value
+                                                  //                   .studListUAS[
+                                                  //                       index]
+                                                  //                   .attendance;
 
-                                                          print(
-                                                              "attendace   $attendancee");
-                                                        });
-                                                      },
-                                                      child: Container(
-                                                        color:
-                                                            Colors.transparent,
-                                                        width: 28,
-                                                        height: 26,
-                                                        child: SizedBox(
-                                                            width: 28,
-                                                            height: 26,
-                                                            child: value
-                                                                        .studListUAS[
-                                                                            index]
-                                                                        .attendance ==
-                                                                    'A'
-                                                                ? SvgPicture
-                                                                    .asset(UIGuide
-                                                                        .absent)
-                                                                : SvgPicture
-                                                                    .asset(UIGuide
-                                                                        .present)),
-                                                      ),
-                                                    ),
-                                                  ),
+                                                  //               print(
+                                                  //                   "attendace   $attendancee");
+                                                  //             });
+                                                  //           },
+                                                  //           child: Container(
+                                                  //             color: Colors
+                                                  //                 .transparent,
+                                                  //             width: 28,
+                                                  //             height: 26,
+                                                  //             child: SizedBox(
+                                                  //                 width: 28,
+                                                  //                 height: 26,
+                                                  //                 child: value.studListUAS[index].attendance ==
+                                                  //                         'A'
+                                                  //                     ? SvgPicture.asset(
+                                                  //                         UIGuide
+                                                  //                             .absent)
+                                                  //                     : SvgPicture.asset(
+                                                  //                         UIGuide
+                                                  //                             .present)),
+                                                  //           ),
+                                                  //         ),
+                                                  //       ),
                                                   kWidth,
                                                   kWidth,
                                                 ],
@@ -7137,93 +7153,97 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                   kWidth,
                                                   kWidth,
                                                   kWidth,
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 10.0),
-                                                    child: GestureDetector(
-                                                      onTap: () {
-                                                        setState(() {
-                                                          if (value
-                                                                  .studListUAS[
-                                                                      index]
-                                                                  .attendance ==
-                                                              'A') {
-                                                            value
-                                                                .studListUAS[
-                                                                    index]
-                                                                .attendance = 'P';
-                                                          } else {
-                                                            value
-                                                                .studListUAS[
-                                                                    index]
-                                                                .attendance = 'A';
+                                                  // value.studListUAS[index]
+                                                  //             .isAttendanceDisabled ==
+                                                  //         true
+                                                  //     ? SizedBox(
+                                                  //         height: 0,
+                                                  //         width: 0,
+                                                  //       )
+                                                  //     : Padding(
+                                                  //         padding:
+                                                  //             const EdgeInsets
+                                                  //                 .only(
+                                                  //                 left: 10.0),
+                                                  //         child:
+                                                  //             GestureDetector(
+                                                  //           onTap: () {
+                                                  //             setState(() {
+                                                  //               if (value
+                                                  //                       .studListUAS[
+                                                  //                           index]
+                                                  //                       .attendance ==
+                                                  //                   'A') {
+                                                  //                 value
+                                                  //                     .studListUAS[
+                                                  //                         index]
+                                                  //                     .attendance = 'P';
+                                                  //               } else {
+                                                  //                 value
+                                                  //                     .studListUAS[
+                                                  //                         index]
+                                                  //                     .attendance = 'A';
 
-                                                            value
-                                                                .studListUAS[
-                                                                    index]
-                                                                .teGrade = null;
-                                                            value
-                                                                    .studListUAS[
-                                                                        index]
-                                                                    .teGradeId =
-                                                                null;
+                                                  //                 value
+                                                  //                     .studListUAS[
+                                                  //                         index]
+                                                  //                     .teGrade = null;
+                                                  //                 value
+                                                  //                     .studListUAS[
+                                                  //                         index]
+                                                  //                     .teGradeId = null;
 
-                                                            teGradeController[
-                                                                    index]
-                                                                .clear();
-                                                            teGradeController1[
-                                                                    index]
-                                                                .clear();
+                                                  //                 teGradeController[
+                                                  //                         index]
+                                                  //                     .clear();
+                                                  //                 teGradeController1[
+                                                  //                         index]
+                                                  //                     .clear();
 
-                                                            value
-                                                                .studListUAS[
-                                                                    index]
-                                                                .peGrade = null;
-                                                            value
-                                                                    .studListUAS[
-                                                                        index]
-                                                                    .peGradeId =
-                                                                null;
+                                                  //                 value
+                                                  //                     .studListUAS[
+                                                  //                         index]
+                                                  //                     .peGrade = null;
+                                                  //                 value
+                                                  //                     .studListUAS[
+                                                  //                         index]
+                                                  //                     .peGradeId = null;
 
-                                                            praticalGradeController[
-                                                                    index]
-                                                                .clear();
-                                                            praticalGradeController1[
-                                                                    index]
-                                                                .clear();
-                                                          }
-                                                          attendancee = value
-                                                              .studListUAS[
-                                                                  index]
-                                                              .attendance;
+                                                  //                 praticalGradeController[
+                                                  //                         index]
+                                                  //                     .clear();
+                                                  //                 praticalGradeController1[
+                                                  //                         index]
+                                                  //                     .clear();
+                                                  //               }
+                                                  //               attendancee = value
+                                                  //                   .studListUAS[
+                                                  //                       index]
+                                                  //                   .attendance;
 
-                                                          print(
-                                                              "attendace   $attendancee");
-                                                        });
-                                                      },
-                                                      child: Container(
-                                                        color:
-                                                            Colors.transparent,
-                                                        width: 28,
-                                                        height: 26,
-                                                        child: SizedBox(
-                                                            width: 28,
-                                                            height: 26,
-                                                            child: value
-                                                                        .studListUAS[
-                                                                            index]
-                                                                        .attendance ==
-                                                                    'A'
-                                                                ? SvgPicture
-                                                                    .asset(UIGuide
-                                                                        .absent)
-                                                                : SvgPicture
-                                                                    .asset(UIGuide
-                                                                        .present)),
-                                                      ),
-                                                    ),
-                                                  ),
+                                                  //               print(
+                                                  //                   "attendace   $attendancee");
+                                                  //             });
+                                                  //           },
+                                                  //           child: Container(
+                                                  //             color: Colors
+                                                  //                 .transparent,
+                                                  //             width: 28,
+                                                  //             height: 26,
+                                                  //             child: SizedBox(
+                                                  //                 width: 28,
+                                                  //                 height: 26,
+                                                  //                 child: value.studListUAS[index].attendance ==
+                                                  //                         'A'
+                                                  //                     ? SvgPicture.asset(
+                                                  //                         UIGuide
+                                                  //                             .absent)
+                                                  //                     : SvgPicture.asset(
+                                                  //                         UIGuide
+                                                  //                             .present)),
+                                                  //           ),
+                                                  //         ),
+                                                  //       ),
                                                   kWidth,
                                                   kWidth,
                                                 ],
@@ -7670,93 +7690,97 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                   kWidth,
                                                   kWidth,
                                                   kWidth,
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 10.0),
-                                                    child: GestureDetector(
-                                                      onTap: () {
-                                                        setState(() {
-                                                          if (value
-                                                                  .studListUAS[
-                                                                      index]
-                                                                  .attendance ==
-                                                              'A') {
-                                                            value
-                                                                .studListUAS[
-                                                                    index]
-                                                                .attendance = 'P';
-                                                          } else {
-                                                            value
-                                                                .studListUAS[
-                                                                    index]
-                                                                .attendance = 'A';
+                                                  // value.studListUAS[index]
+                                                  //             .isAttendanceDisabled ==
+                                                  //         true
+                                                  //     ? SizedBox(
+                                                  //         height: 0,
+                                                  //         width: 0,
+                                                  //       )
+                                                  //     : Padding(
+                                                  //         padding:
+                                                  //             const EdgeInsets
+                                                  //                 .only(
+                                                  //                 left: 10.0),
+                                                  //         child:
+                                                  //             GestureDetector(
+                                                  //           onTap: () {
+                                                  //             setState(() {
+                                                  //               if (value
+                                                  //                       .studListUAS[
+                                                  //                           index]
+                                                  //                       .attendance ==
+                                                  //                   'A') {
+                                                  //                 value
+                                                  //                     .studListUAS[
+                                                  //                         index]
+                                                  //                     .attendance = 'P';
+                                                  //               } else {
+                                                  //                 value
+                                                  //                     .studListUAS[
+                                                  //                         index]
+                                                  //                     .attendance = 'A';
 
-                                                            value
-                                                                .studListUAS[
-                                                                    index]
-                                                                .ceGrade = null;
-                                                            value
-                                                                    .studListUAS[
-                                                                        index]
-                                                                    .ceGradeId =
-                                                                null;
+                                                  //                 value
+                                                  //                     .studListUAS[
+                                                  //                         index]
+                                                  //                     .ceGrade = null;
+                                                  //                 value
+                                                  //                     .studListUAS[
+                                                  //                         index]
+                                                  //                     .ceGradeId = null;
 
-                                                            ceGradeController[
-                                                                    index]
-                                                                .clear();
-                                                            ceGradeController1[
-                                                                    index]
-                                                                .clear();
+                                                  //                 ceGradeController[
+                                                  //                         index]
+                                                  //                     .clear();
+                                                  //                 ceGradeController1[
+                                                  //                         index]
+                                                  //                     .clear();
 
-                                                            value
-                                                                .studListUAS[
-                                                                    index]
-                                                                .peGrade = null;
-                                                            value
-                                                                    .studListUAS[
-                                                                        index]
-                                                                    .peGradeId =
-                                                                null;
+                                                  //                 value
+                                                  //                     .studListUAS[
+                                                  //                         index]
+                                                  //                     .peGrade = null;
+                                                  //                 value
+                                                  //                     .studListUAS[
+                                                  //                         index]
+                                                  //                     .peGradeId = null;
 
-                                                            praticalGradeController[
-                                                                    index]
-                                                                .clear();
-                                                            praticalGradeController1[
-                                                                    index]
-                                                                .clear();
-                                                          }
-                                                          attendancee = value
-                                                              .studListUAS[
-                                                                  index]
-                                                              .attendance;
+                                                  //                 praticalGradeController[
+                                                  //                         index]
+                                                  //                     .clear();
+                                                  //                 praticalGradeController1[
+                                                  //                         index]
+                                                  //                     .clear();
+                                                  //               }
+                                                  //               attendancee = value
+                                                  //                   .studListUAS[
+                                                  //                       index]
+                                                  //                   .attendance;
 
-                                                          print(
-                                                              "attendace   $attendancee");
-                                                        });
-                                                      },
-                                                      child: Container(
-                                                        color:
-                                                            Colors.transparent,
-                                                        width: 28,
-                                                        height: 26,
-                                                        child: SizedBox(
-                                                            width: 28,
-                                                            height: 26,
-                                                            child: value
-                                                                        .studListUAS[
-                                                                            index]
-                                                                        .attendance ==
-                                                                    'A'
-                                                                ? SvgPicture
-                                                                    .asset(UIGuide
-                                                                        .absent)
-                                                                : SvgPicture
-                                                                    .asset(UIGuide
-                                                                        .present)),
-                                                      ),
-                                                    ),
-                                                  ),
+                                                  //               print(
+                                                  //                   "attendace   $attendancee");
+                                                  //             });
+                                                  //           },
+                                                  //           child: Container(
+                                                  //             color: Colors
+                                                  //                 .transparent,
+                                                  //             width: 28,
+                                                  //             height: 26,
+                                                  //             child: SizedBox(
+                                                  //                 width: 28,
+                                                  //                 height: 26,
+                                                  //                 child: value.studListUAS[index].attendance ==
+                                                  //                         'A'
+                                                  //                     ? SvgPicture.asset(
+                                                  //                         UIGuide
+                                                  //                             .absent)
+                                                  //                     : SvgPicture.asset(
+                                                  //                         UIGuide
+                                                  //                             .present)),
+                                                  //           ),
+                                                  //         ),
+                                                  //       ),
                                                   kWidth,
                                                   kWidth,
                                                 ],
@@ -8175,76 +8199,81 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                   kWidth,
                                                   kWidth,
                                                   kWidth,
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 10.0),
-                                                    child: GestureDetector(
-                                                      onTap: () {
-                                                        setState(() {
-                                                          if (value
-                                                                  .studListUAS[
-                                                                      index]
-                                                                  .attendance ==
-                                                              'A') {
-                                                            value
-                                                                .studListUAS[
-                                                                    index]
-                                                                .attendance = 'P';
-                                                          } else {
-                                                            value
-                                                                .studListUAS[
-                                                                    index]
-                                                                .attendance = 'A';
+                                                  // value.studListUAS[index]
+                                                  //             .isAttendanceDisabled ==
+                                                  //         true
+                                                  //     ? SizedBox(
+                                                  //         height: 0,
+                                                  //         width: 0,
+                                                  //       )
+                                                  //     : Padding(
+                                                  //         padding:
+                                                  //             const EdgeInsets
+                                                  //                 .only(
+                                                  //                 left: 10.0),
+                                                  //         child:
+                                                  //             GestureDetector(
+                                                  //           onTap: () {
+                                                  //             setState(() {
+                                                  //               if (value
+                                                  //                       .studListUAS[
+                                                  //                           index]
+                                                  //                       .attendance ==
+                                                  //                   'A') {
+                                                  //                 value
+                                                  //                     .studListUAS[
+                                                  //                         index]
+                                                  //                     .attendance = 'P';
+                                                  //               } else {
+                                                  //                 value
+                                                  //                     .studListUAS[
+                                                  //                         index]
+                                                  //                     .attendance = 'A';
 
-                                                            value
-                                                                .studListUAS[
-                                                                    index]
-                                                                .teGrade = null;
-                                                            value
-                                                                    .studListUAS[
-                                                                        index]
-                                                                    .teGradeId =
-                                                                null;
+                                                  //                 value
+                                                  //                     .studListUAS[
+                                                  //                         index]
+                                                  //                     .teGrade = null;
+                                                  //                 value
+                                                  //                     .studListUAS[
+                                                  //                         index]
+                                                  //                     .teGradeId = null;
 
-                                                            teGradeController[
-                                                                    index]
-                                                                .clear();
-                                                            teGradeController1[
-                                                                    index]
-                                                                .clear();
-                                                          }
-                                                          attendancee = value
-                                                              .studListUAS[
-                                                                  index]
-                                                              .attendance;
+                                                  //                 teGradeController[
+                                                  //                         index]
+                                                  //                     .clear();
+                                                  //                 teGradeController1[
+                                                  //                         index]
+                                                  //                     .clear();
+                                                  //               }
+                                                  //               attendancee = value
+                                                  //                   .studListUAS[
+                                                  //                       index]
+                                                  //                   .attendance;
 
-                                                          print(
-                                                              "attendace   $attendancee");
-                                                        });
-                                                      },
-                                                      child: Container(
-                                                        color:
-                                                            Colors.transparent,
-                                                        width: 28,
-                                                        height: 26,
-                                                        child: SizedBox(
-                                                            width: 28,
-                                                            height: 26,
-                                                            child: value
-                                                                        .studListUAS[
-                                                                            index]
-                                                                        .attendance ==
-                                                                    'A'
-                                                                ? SvgPicture
-                                                                    .asset(UIGuide
-                                                                        .absent)
-                                                                : SvgPicture
-                                                                    .asset(UIGuide
-                                                                        .present)),
-                                                      ),
-                                                    ),
-                                                  ),
+                                                  //               print(
+                                                  //                   "attendace   $attendancee");
+                                                  //             });
+                                                  //           },
+                                                  //           child: Container(
+                                                  //             color: Colors
+                                                  //                 .transparent,
+                                                  //             width: 28,
+                                                  //             height: 26,
+                                                  //             child: SizedBox(
+                                                  //                 width: 28,
+                                                  //                 height: 26,
+                                                  //                 child: value.studListUAS[index].attendance ==
+                                                  //                         'A'
+                                                  //                     ? SvgPicture.asset(
+                                                  //                         UIGuide
+                                                  //                             .absent)
+                                                  //                     : SvgPicture.asset(
+                                                  //                         UIGuide
+                                                  //                             .present)),
+                                                  //           ),
+                                                  //         ),
+                                                  //       ),
                                                   kWidth,
                                                   kWidth,
                                                 ],
@@ -8523,76 +8552,81 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                   kWidth,
                                                   kWidth,
                                                   kWidth,
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 10.0),
-                                                    child: GestureDetector(
-                                                      onTap: () {
-                                                        setState(() {
-                                                          if (value
-                                                                  .studListUAS[
-                                                                      index]
-                                                                  .attendance ==
-                                                              'A') {
-                                                            value
-                                                                .studListUAS[
-                                                                    index]
-                                                                .attendance = 'P';
-                                                          } else {
-                                                            value
-                                                                .studListUAS[
-                                                                    index]
-                                                                .attendance = 'A';
+                                                  // value.studListUAS[index]
+                                                  //             .isAttendanceDisabled ==
+                                                  //         true
+                                                  //     ? SizedBox(
+                                                  //         height: 0,
+                                                  //         width: 0,
+                                                  //       )
+                                                  //     : Padding(
+                                                  //         padding:
+                                                  //             const EdgeInsets
+                                                  //                 .only(
+                                                  //                 left: 10.0),
+                                                  //         child:
+                                                  //             GestureDetector(
+                                                  //           onTap: () {
+                                                  //             setState(() {
+                                                  //               if (value
+                                                  //                       .studListUAS[
+                                                  //                           index]
+                                                  //                       .attendance ==
+                                                  //                   'A') {
+                                                  //                 value
+                                                  //                     .studListUAS[
+                                                  //                         index]
+                                                  //                     .attendance = 'P';
+                                                  //               } else {
+                                                  //                 value
+                                                  //                     .studListUAS[
+                                                  //                         index]
+                                                  //                     .attendance = 'A';
 
-                                                            value
-                                                                .studListUAS[
-                                                                    index]
-                                                                .peGrade = null;
-                                                            value
-                                                                    .studListUAS[
-                                                                        index]
-                                                                    .peGradeId =
-                                                                null;
+                                                  //                 value
+                                                  //                     .studListUAS[
+                                                  //                         index]
+                                                  //                     .peGrade = null;
+                                                  //                 value
+                                                  //                     .studListUAS[
+                                                  //                         index]
+                                                  //                     .peGradeId = null;
 
-                                                            praticalGradeController[
-                                                                    index]
-                                                                .clear();
-                                                            praticalGradeController1[
-                                                                    index]
-                                                                .clear();
-                                                          }
-                                                          attendancee = value
-                                                              .studListUAS[
-                                                                  index]
-                                                              .attendance;
+                                                  //                 praticalGradeController[
+                                                  //                         index]
+                                                  //                     .clear();
+                                                  //                 praticalGradeController1[
+                                                  //                         index]
+                                                  //                     .clear();
+                                                  //               }
+                                                  //               attendancee = value
+                                                  //                   .studListUAS[
+                                                  //                       index]
+                                                  //                   .attendance;
 
-                                                          print(
-                                                              "attendace   $attendancee");
-                                                        });
-                                                      },
-                                                      child: Container(
-                                                        color:
-                                                            Colors.transparent,
-                                                        width: 28,
-                                                        height: 26,
-                                                        child: SizedBox(
-                                                            width: 28,
-                                                            height: 26,
-                                                            child: value
-                                                                        .studListUAS[
-                                                                            index]
-                                                                        .attendance ==
-                                                                    'A'
-                                                                ? SvgPicture
-                                                                    .asset(UIGuide
-                                                                        .absent)
-                                                                : SvgPicture
-                                                                    .asset(UIGuide
-                                                                        .present)),
-                                                      ),
-                                                    ),
-                                                  ),
+                                                  //               print(
+                                                  //                   "attendace   $attendancee");
+                                                  //             });
+                                                  //           },
+                                                  //           child: Container(
+                                                  //             color: Colors
+                                                  //                 .transparent,
+                                                  //             width: 28,
+                                                  //             height: 26,
+                                                  //             child: SizedBox(
+                                                  //                 width: 28,
+                                                  //                 height: 26,
+                                                  //                 child: value.studListUAS[index].attendance ==
+                                                  //                         'A'
+                                                  //                     ? SvgPicture.asset(
+                                                  //                         UIGuide
+                                                  //                             .absent)
+                                                  //                     : SvgPicture.asset(
+                                                  //                         UIGuide
+                                                  //                             .present)),
+                                                  //           ),
+                                                  //         ),
+                                                  //       ),
                                                   kWidth,
                                                   kWidth,
                                                 ],
@@ -8869,76 +8903,81 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                   kWidth,
                                                   kWidth,
                                                   kWidth,
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            left: 10.0),
-                                                    child: GestureDetector(
-                                                      onTap: () {
-                                                        setState(() {
-                                                          if (value
-                                                                  .studListUAS[
-                                                                      index]
-                                                                  .attendance ==
-                                                              'A') {
-                                                            value
-                                                                .studListUAS[
-                                                                    index]
-                                                                .attendance = 'P';
-                                                          } else {
-                                                            value
-                                                                .studListUAS[
-                                                                    index]
-                                                                .attendance = 'A';
+                                                  // value.studListUAS[index]
+                                                  //             .isAttendanceDisabled ==
+                                                  //         true
+                                                  //     ? SizedBox(
+                                                  //         height: 0,
+                                                  //         width: 0,
+                                                  //       )
+                                                  //     : Padding(
+                                                  //         padding:
+                                                  //             const EdgeInsets
+                                                  //                 .only(
+                                                  //                 left: 10.0),
+                                                  //         child:
+                                                  //             GestureDetector(
+                                                  //           onTap: () {
+                                                  //             setState(() {
+                                                  //               if (value
+                                                  //                       .studListUAS[
+                                                  //                           index]
+                                                  //                       .attendance ==
+                                                  //                   'A') {
+                                                  //                 value
+                                                  //                     .studListUAS[
+                                                  //                         index]
+                                                  //                     .attendance = 'P';
+                                                  //               } else {
+                                                  //                 value
+                                                  //                     .studListUAS[
+                                                  //                         index]
+                                                  //                     .attendance = 'A';
 
-                                                            value
-                                                                .studListUAS[
-                                                                    index]
-                                                                .ceGrade = null;
-                                                            value
-                                                                    .studListUAS[
-                                                                        index]
-                                                                    .ceGradeId =
-                                                                null;
+                                                  //                 value
+                                                  //                     .studListUAS[
+                                                  //                         index]
+                                                  //                     .ceGrade = null;
+                                                  //                 value
+                                                  //                     .studListUAS[
+                                                  //                         index]
+                                                  //                     .ceGradeId = null;
 
-                                                            ceGradeController[
-                                                                    index]
-                                                                .clear();
-                                                            ceGradeController1[
-                                                                    index]
-                                                                .clear();
-                                                          }
-                                                          attendancee = value
-                                                              .studListUAS[
-                                                                  index]
-                                                              .attendance;
+                                                  //                 ceGradeController[
+                                                  //                         index]
+                                                  //                     .clear();
+                                                  //                 ceGradeController1[
+                                                  //                         index]
+                                                  //                     .clear();
+                                                  //               }
+                                                  //               attendancee = value
+                                                  //                   .studListUAS[
+                                                  //                       index]
+                                                  //                   .attendance;
 
-                                                          print(
-                                                              "attendace   $attendancee");
-                                                        });
-                                                      },
-                                                      child: Container(
-                                                        color:
-                                                            Colors.transparent,
-                                                        width: 28,
-                                                        height: 26,
-                                                        child: SizedBox(
-                                                            width: 28,
-                                                            height: 26,
-                                                            child: value
-                                                                        .studListUAS[
-                                                                            index]
-                                                                        .attendance ==
-                                                                    'A'
-                                                                ? SvgPicture
-                                                                    .asset(UIGuide
-                                                                        .absent)
-                                                                : SvgPicture
-                                                                    .asset(UIGuide
-                                                                        .present)),
-                                                      ),
-                                                    ),
-                                                  ),
+                                                  //               print(
+                                                  //                   "attendace   $attendancee");
+                                                  //             });
+                                                  //           },
+                                                  //           child: Container(
+                                                  //             color: Colors
+                                                  //                 .transparent,
+                                                  //             width: 28,
+                                                  //             height: 26,
+                                                  //             child: SizedBox(
+                                                  //                 width: 28,
+                                                  //                 height: 26,
+                                                  //                 child: value.studListUAS[index].attendance ==
+                                                  //                         'A'
+                                                  //                     ? SvgPicture.asset(
+                                                  //                         UIGuide
+                                                  //                             .absent)
+                                                  //                     : SvgPicture.asset(
+                                                  //                         UIGuide
+                                                  //                             .present)),
+                                                  //           ),
+                                                  //         ),
+                                                  //       ),
                                                   kWidth,
                                                   kWidth,
                                                 ],

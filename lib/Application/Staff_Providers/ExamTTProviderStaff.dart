@@ -1,11 +1,9 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:essconnect/Domain/Admin/Course&DivsionList.dart';
 import 'package:essconnect/Domain/Admin/ExamTTModel.dart';
 import 'package:essconnect/Domain/Staff/ExamTTModelStaff.dart';
 import 'package:essconnect/Domain/Staff/GallerySendStaff.dart';
-import 'package:essconnect/Domain/Staff/NoticeboardSendModel.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;

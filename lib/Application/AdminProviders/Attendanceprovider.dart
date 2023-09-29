@@ -21,11 +21,43 @@ class AttendanceReportProvider with ChangeNotifier {
     notifyListeners();
   }
 
+
+
+
+
   List lastList = [];
   List<AttendanceModel> attendanceList = [];
+  bool? isDualttendance;
+  Future<bool> attendanceInitial() async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
 
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+    };
+    var request = http.Request('GET',
+        Uri.parse('${UIGuide.baseURL}/studentAbsentPresentReport/initialvalues'));
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      final data = jsonDecode(await response.stream.bytesToString());
+      print(data);
+      AttendanceInitial dual= AttendanceInitial.fromJson(data);
+      isDualttendance= dual.isDualAttendance;
+      print("attttttt$isDualttendance");
+
+
+
+      notifyListeners();
+    } else {
+      print('erroorrrrrrrr');
+    }
+    return true;
+  }
   Future getAttReportView(
-      String section, String course, String division, String date) async {
+      String section, String course, String division, String date,String attType,String type) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoading(true);
     var headers = {
@@ -34,10 +66,10 @@ class AttendanceReportProvider with ChangeNotifier {
     };
     var response = await http.get(
         Uri.parse(
-            "${UIGuide.baseURL}/studentAbsentPresentReport?sectionId=$section&courseId=$course&divisionId=$division&attendanceDate=$date&attendance=1&absentType=both"),
+            "${UIGuide.baseURL}/studentAbsentPresentReport?sectionId=$section&courseId=$course&divisionId=$division&attendanceDate=$date&attendance=1&absentType=$attType&sendType=$type&"),
         headers: headers);
     print(
-        "${UIGuide.baseURL}/studentAbsentPresentReport?sectionId=$section&courseId=$course&divisionId=$division&attendanceDate=$date&attendance=1&absentType=both");
+        "${UIGuide.baseURL}/studentAbsentPresentReport?sectionId=$section&courseId=$course&divisionId=$division&attendanceDate=$date&attendance=1&absentType=$attType&sendType=$type&");
 
     if (response.statusCode == 200) {
       setLoading(true);
@@ -140,6 +172,7 @@ class AttendanceReportProvider with ChangeNotifier {
 
   clearList() {
     attendanceList.clear();
+    isselectAll=false;
     notifyListeners();
   }
 
@@ -153,6 +186,9 @@ class AttendanceReportProvider with ChangeNotifier {
         attendanceList.firstWhere((element) => element.admNo == model.admNo);
     selected.selected ??= false;
     selected.selected = !selected.selected!;
+    if (selected.selected == false) {
+      isselectAll = false;
+    }
 
     // selected.selected! ? lastList.add(selected.toJson()) : lastList.remove(selected);
     print("List   ${selected.toJson()}");

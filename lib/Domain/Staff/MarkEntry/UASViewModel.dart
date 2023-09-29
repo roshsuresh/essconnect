@@ -157,6 +157,7 @@ class MarkEntryDetailsUAS {
   String? tabMarkEntryId;
   bool? isEdited;
   bool? isDisabled;
+  bool? isAttendanceDisabled;
 
   MarkEntryDetailsUAS(
       {this.attendance,
@@ -176,7 +177,8 @@ class MarkEntryDetailsUAS {
       this.ceGradeId,
       this.tabMarkEntryId,
       this.isEdited,
-      this.isDisabled});
+      this.isDisabled,
+      this.isAttendanceDisabled});
 
   MarkEntryDetailsUAS.fromJson(Map<String, dynamic> json) {
     attendance = json['attendance'];
@@ -197,6 +199,7 @@ class MarkEntryDetailsUAS {
     tabMarkEntryId = json['tabMarkEntryId'];
     isEdited = json['isEdited'];
     isDisabled = json['isDisabled'];
+    isAttendanceDisabled = json['isAttendanceDisabled'];
   }
 
   Map<String, dynamic> toJson() {
@@ -219,6 +222,7 @@ class MarkEntryDetailsUAS {
     data['tabMarkEntryId'] = this.tabMarkEntryId;
     data['isEdited'] = this.isEdited;
     data['isDisabled'] = this.isDisabled;
+    data['isAttendanceDisabled'] = this.isAttendanceDisabled;
     return data;
   }
 }

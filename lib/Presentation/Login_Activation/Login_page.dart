@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:animate_gradient/animate_gradient.dart';
 import 'package:essconnect/Constants.dart';
-import 'package:essconnect/Domain/Student/activation_model.dart';
 import 'package:essconnect/Presentation/Admin/AdminHome.dart';
 import 'package:essconnect/Presentation/ChildLogin/ChildHomeScreen.dart';
 import 'package:essconnect/Presentation/Login_Activation/ForgotPassword.dart';

@@ -1,14 +1,11 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:essconnect/Domain/Staff/MarkEntry/InitailModel.dart';
-import 'package:essconnect/Domain/Staff/MarkEntry/UASViewModel.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../Domain/Admin/StudentListModel.dart';
 import '../../Domain/Staff/RemarkentryStaff.dart';
 
 class RemarksEntryProvider with ChangeNotifier {

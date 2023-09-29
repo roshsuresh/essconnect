@@ -893,7 +893,7 @@ class _MissingReportState extends State<MissingReport> {
                                                                               index1]
                                                                           .rollNo ==
                                                                       null
-                                                                  ? '0'
+                                                                  ? ''
                                                                   : value
                                                                       .viewStudentList[
                                                                           index]

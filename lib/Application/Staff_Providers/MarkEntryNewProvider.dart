@@ -231,7 +231,7 @@ class MarkEntryNewProvider with ChangeNotifier {
 
   List<MarkEntryExamList> markEntryExamList = [];
   Future<bool> getMarkEntryExamValues(
-      String subject, String division, String part) async {
+      String subject, String division, String part, String optionSub) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     print('object');
     var headers = {
@@ -243,6 +243,42 @@ class MarkEntryNewProvider with ChangeNotifier {
         'GET',
         Uri.parse(
             '${UIGuide.baseURL}/markentry-latest/examdetails/?subject=$subject&division=$division&part=$part'));
+
+    request.headers.addAll(headers);
+    print(request);
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      print('correct');
+      Map<String, dynamic> data =
+          jsonDecode(await response.stream.bytesToString());
+
+      log(data.toString());
+
+      List<MarkEntryExamList> templist = List<MarkEntryExamList>.from(
+          data["examslist"].map((x) => MarkEntryExamList.fromJson(x)));
+      markEntryExamList.addAll(templist);
+      notifyListeners();
+    } else {
+      print('Error in MarkEntryExamList stf');
+    }
+    return true;
+  }
+
+  //exam values with  option sub
+  Future<bool> getMarkEntryExamValuesOPtion(String subject, String division,
+      String part, String optionSub, String caption) async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    print('object');
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+    };
+
+    var request = http.Request(
+        'GET',
+        Uri.parse(
+            '${UIGuide.baseURL}/markentry-latest/examdetails/?subject=$subject&division=$division&part=$part&$caption=$optionSub'));
 
     request.headers.addAll(headers);
     print(request);

@@ -736,7 +736,7 @@ class _StudentHomeState extends State<StudentHome> {
                                                                 opacity: 20,
                                                                 image:
                                                                     AssetImage(
-                                                                  'assets/payNew.png',
+                                                                  'assets/offline fee.png',
                                                                 ),
                                                               ),
                                                             ),
@@ -804,7 +804,7 @@ class _StudentHomeState extends State<StudentHome> {
                                                                 opacity: 20,
                                                                 image:
                                                                     AssetImage(
-                                                                  'assets/Payment History.png',
+                                                                  'assets/offline bus fee.png',
                                                                 ),
                                                               ),
                                                               borderRadius:

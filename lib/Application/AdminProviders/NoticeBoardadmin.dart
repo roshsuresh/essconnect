@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:essconnect/Domain/Admin/NoticeBoardList.dart';
 import 'package:essconnect/Domain/Staff/StudentReport_staff.dart';
@@ -93,9 +92,6 @@ class NoticeBoardAdminProvider with ChangeNotifier {
       noticeboardInitialaAdmin = await data['initialValues'];
 
       noticeCategoryAdmin = await noticeboardInitialaAdmin!['category'];
-
-      NoticeboardInitialValues sd =
-          NoticeboardInitialValues.fromJson(data['initialValues']);
 
       notifyListeners();
     } else {

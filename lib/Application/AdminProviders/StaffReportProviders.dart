@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
-import 'package:essconnect/Application/StudentProviders/ProfileProvider.dart';
 import 'package:essconnect/Domain/Admin/StaffReportModel.dart';
 import 'package:essconnect/Domain/Staff/StudentReport_staff.dart';
 import 'package:essconnect/utils/constants.dart';
@@ -127,7 +125,6 @@ class StaffReportProviders with ChangeNotifier {
     try {
       if (response.statusCode == 200) {
         print("corect");
-        Map<String, dynamic> data = json.decode(response.body);
         notifyListeners();
       } else {
         print("Error in StdReportSection response");

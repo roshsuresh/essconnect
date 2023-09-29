@@ -22,7 +22,6 @@ class _MissingReportAdminState extends State<MissingReportAdmin> {
   String user = '';
 
   String division = '';
-  // bool checked = false;
   String courseId = '';
   String partID = '';
   final missingInitialValuesController = TextEditingController();
@@ -49,7 +48,7 @@ class _MissingReportAdminState extends State<MissingReportAdmin> {
       await p.subjectCounter(0);
       await p.getInitialValues();
       await p.clearSubject();
-      await p.subjectCounter(0);
+      await p.userCounter(0);
       await p.clearViewStaffList();
       await p.clearViewStudentList();
       p.isShown = false;
@@ -969,7 +968,7 @@ class _MissingReportAdminState extends State<MissingReportAdmin> {
                                                                               index1]
                                                                           .rollNo ==
                                                                       null
-                                                                  ? '0'
+                                                                  ? ''
                                                                   : value
                                                                       .viewStudentList[
                                                                           index]

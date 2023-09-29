@@ -1,7 +1,5 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'package:essconnect/Domain/Staff/NotifcationSendModel.dart';
-import 'package:essconnect/Domain/Staff/NotificationReceived.dart';
 import 'package:essconnect/Domain/Student/NotificationReceivedStud.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +16,6 @@ class StaffNotificationScreenProvider with ChangeNotifier {
 
   List<NotificationListModel> notificationList = [];
   Future getNotificationReceived() async {
-    Map<String, dynamic> parse = await parseJWT();
     SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoading(true);
     var headers = {

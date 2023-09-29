@@ -9,9 +9,8 @@ const String userName = "User Name";
 const String passWord = "Password";
 const String schoolCode = "School Code";
 const String activate = "Activate";
-const String baseUrl =
-    "https://api.esstestonline.in";
-    //"https://api.eschoolweb.org";
+const String baseUrl = "https://api.esstestonline.in";
+//"https://api.eschoolweb.org";
 ///constant assets
 const String buttonBackground = "assets/but_back.png";
 const String loginBackground = "assets/activation_page.png";
@@ -38,6 +37,24 @@ const kheight10 = SizedBox(
 const kheight20 = SizedBox(
   height: 20,
 );
+
+snackbarWidget(int second, content, BuildContext context) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      elevation: 10,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
+      duration: Duration(seconds: second),
+      margin: const EdgeInsets.only(bottom: 80, left: 30, right: 30),
+      behavior: SnackBarBehavior.floating,
+      content: Text(
+        content,
+        textAlign: TextAlign.center,
+      ),
+    ),
+  );
+}
 //     TEXT    overflow//
 
 //  Flexible(

@@ -31,7 +31,6 @@ class StaffProfileProvider with ChangeNotifier {
   }
 
   Future staff_profileData() async {
-    Map<String, dynamic> data = await parseJWT();
     setLoading(true);
     SharedPreferences _pref = await SharedPreferences.getInstance();
     var headers = {
@@ -45,7 +44,6 @@ class StaffProfileProvider with ChangeNotifier {
     try {
       if (response.statusCode == 200) {
         setLoading(true);
-        var jsonData = await json.decode(response.body);
         staffProfleRespo = await json.decode(response.body);
         staffResponse = await staffProfleRespo!['staffprofile'];
         Staffprofile stf =

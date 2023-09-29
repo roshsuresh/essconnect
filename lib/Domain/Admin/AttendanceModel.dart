@@ -1,3 +1,21 @@
+
+
+class AttendanceInitial {
+
+  bool? isDualAttendance;
+
+
+  AttendanceInitial(
+      {
+        this.isDualAttendance,
+
+      });
+
+  AttendanceInitial.fromJson(Map<String, dynamic> json) {
+    isDualAttendance = json['isDualAttendance'];
+  }
+}
+
 //Absentees Report
 
 class AttendanceModel {

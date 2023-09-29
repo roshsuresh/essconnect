@@ -21,7 +21,9 @@ class UIGuide {
   static const String checkk = "assets/red-x-line-icon.svg";
   static const String profile = "assets/Profile.png";
   static const String reportcard = "assets/Reportcard.png";
-  static const String baseURL = "https://api.esstestonline.in";
+  static const String baseURL =
+      // "https://api.essuatonline.in";
+      "https://api.esstestonline.in";
   //"https://api.eschoolweb.org";
   static const String absent = "assets/aa.svg";
   static const String present = "assets/ppp.svg";
@@ -44,7 +46,8 @@ class UIGuide {
   static const Color custom_blue = Color.fromARGB(255, 44, 127, 238);
   static const Color button1 = Color.fromARGB(255, 166, 232, 161);
   static const Color button2 = Color.fromARGB(255, 241, 135, 118);
-  static const Color LightBlue = Color.fromARGB(255, 236, 240, 255);
+  static const Color LightBlue = Color.fromARGB(255, 233, 233, 233);
+  //Color.fromARGB(255, 236, 240, 255);
   static const Color primary4 = Color(0xff17a2b8);
   Widget sizer20 = const SizedBox(
     height: 20,

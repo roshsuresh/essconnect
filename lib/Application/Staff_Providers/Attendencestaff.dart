@@ -235,7 +235,7 @@ class AttendenceStaffProvider with ChangeNotifier {
       int forecount, int aftcount) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoadingg(true);
-
+    setLoadinggNull(true);
     var headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
@@ -253,6 +253,7 @@ class AttendenceStaffProvider with ChangeNotifier {
     setLoadingg(true);
     if (response.statusCode == 200) {
       setLoadingg(true);
+      setLoadinggNull(true);
       print('Correct........______________________________');
       print(await response.stream.bytesToString());
       await AwesomeDialog(
@@ -273,6 +274,7 @@ class AttendenceStaffProvider with ChangeNotifier {
           .show();
 
       setLoadingg(false);
+      setLoadinggNull(false);
       notifyListeners();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -289,15 +291,31 @@ class AttendenceStaffProvider with ChangeNotifier {
         ),
       ));
       setLoadingg(false);
+      setLoadinggNull(false);
       print('Error Response in attendance');
     }
   }
   //delete
 
+  bool _loadinggDelete = false;
+  bool get loadinggDelete => _loadinggDelete;
+  setLoadinggDelete(bool value) {
+    _loadinggDelete = value;
+    notifyListeners();
+  }
+
+  bool _loadinggNull = false;
+  bool get loadinggNull => _loadinggNull;
+  setLoadinggNull(bool value) {
+    _loadinggNull = value;
+    notifyListeners();
+  }
+
   Future attendanceDelete(
       String divisionid, String date, BuildContext context) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
-
+    setLoadinggDelete(true);
+    setLoadinggNull(true);
     var headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
@@ -311,6 +329,8 @@ class AttendenceStaffProvider with ChangeNotifier {
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
+      setLoadinggDelete(true);
+      setLoadinggNull(true);
       print(await response.stream.bytesToString());
       print('correct');
       // await AwesomeDialog(
@@ -330,6 +350,8 @@ class AttendenceStaffProvider with ChangeNotifier {
       //     btnOkColor: Colors.red)
       // .show();
       await clearStudentList();
+      setLoadinggDelete(false);
+      setLoadinggNull(false);
       notifyListeners();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -345,6 +367,8 @@ class AttendenceStaffProvider with ChangeNotifier {
           textAlign: TextAlign.center,
         ),
       ));
+      setLoadinggDelete(false);
+      setLoadinggNull(false);
       print('Error in noticeDelete stf');
     }
   }

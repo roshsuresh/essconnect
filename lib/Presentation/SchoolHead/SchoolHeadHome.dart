@@ -1052,7 +1052,7 @@ class SchoolHeadHomeScreenContents extends StatelessWidget {
                                     image: DecorationImage(
                                       opacity: 20,
                                       image: AssetImage(
-                                        'assets/Gallery.png',
+                                        'assets/missing report.png',
                                       ),
                                     ),
                                   ),

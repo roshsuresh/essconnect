@@ -11,7 +11,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../Domain/Admin/AttendanceModel.dart';
 import '../../Domain/Staff/ToGuardian_TextSMS.dart';
 import '../../Presentation/Admin/Communication/SmsFormatAdmin.dart';
-import '../../Presentation/Staff/SmsFormatGuardian.dart';
 
 class NotificationToGuardianAdmin with ChangeNotifier {
   //view NotificationList

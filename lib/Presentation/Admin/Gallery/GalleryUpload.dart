@@ -118,7 +118,7 @@ class _AdminGalleryUploadState extends State<AdminGalleryUpload> {
         ),
         Center(
           child: SizedBox(
-            width: size.width / 2.4,
+            width: size.width / 2.1,
             child: Consumer<GalleryProviderAdmin>(
               builder: (context, value, child) => value.loading
                   ? spinkitLoader()

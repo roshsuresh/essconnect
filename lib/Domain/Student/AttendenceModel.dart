@@ -106,3 +106,58 @@ class MonthwiseAttendence {
     return data;
   }
 }
+
+///  Attendance detail Model
+///
+class AttendanceDetailModel {
+  List<Absenteeslists>? absenteeslists;
+  bool? dualAttendance;
+  String? monthName;
+
+  AttendanceDetailModel(
+      {this.absenteeslists, this.dualAttendance, this.monthName});
+
+  AttendanceDetailModel.fromJson(Map<String, dynamic> json) {
+    if (json['absenteeslists'] != null) {
+      absenteeslists = <Absenteeslists>[];
+      json['absenteeslists'].forEach((v) {
+        absenteeslists!.add(new Absenteeslists.fromJson(v));
+      });
+    }
+    dualAttendance = json['dualAttendance'];
+    monthName = json['monthName'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.absenteeslists != null) {
+      data['absenteeslists'] =
+          this.absenteeslists!.map((v) => v.toJson()).toList();
+    }
+    data['dualAttendance'] = this.dualAttendance;
+    data['monthName'] = this.monthName;
+    return data;
+  }
+}
+
+class Absenteeslists {
+  String? date;
+  String? foreNoon;
+  String? afterNoon;
+
+  Absenteeslists({this.date, this.foreNoon, this.afterNoon});
+
+  Absenteeslists.fromJson(Map<String, dynamic> json) {
+    date = json['date'];
+    foreNoon = json['foreNoon'];
+    afterNoon = json['afterNoon'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['date'] = this.date;
+    data['foreNoon'] = this.foreNoon;
+    data['afterNoon'] = this.afterNoon;
+    return data;
+  }
+}

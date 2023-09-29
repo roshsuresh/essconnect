@@ -5,6 +5,7 @@ import 'package:essconnect/Domain/Student/OfflineFee/FeesDetailModel.dart';
 import 'package:essconnect/Domain/Student/OfflineFee/FeesPaidModel.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -24,6 +25,8 @@ class OfflineFeeProviders with ChangeNotifier {
 
   String? busName;
   String? busStop;
+  String? busDateDetail;
+  String? finalBusDateDetail;
   bool? showConcessionColumn;
   List<FeesSummaryBusModel> busFeeDetailList = [];
   List<TotalListBus> totalListBus = [];
@@ -45,6 +48,7 @@ class OfflineFeeProviders with ChangeNotifier {
         BusFEEDetailModel mod = BusFEEDetailModel.fromJson(data);
         busName = mod.busName;
         busStop = mod.busStop;
+        busDateDetail = mod.uploadedDate;
         showConcessionColumn = mod.showConcessionColumn;
 
         List<FeesSummaryBusModel> templist = List<FeesSummaryBusModel>.from(
@@ -53,6 +57,11 @@ class OfflineFeeProviders with ChangeNotifier {
         List<TotalListBus> templist1 = List<TotalListBus>.from(
             data["totalList"].map((x) => TotalListBus.fromJson(x)));
         totalListBus.addAll(templist1);
+        String createddate = busDateDetail ?? '--';
+        DateFormat inputFormat = DateFormat("MM/dd/yyyy HH:mm:ss");
+        DateTime parsedDate = inputFormat.parse(createddate);
+        DateFormat outputFormat = DateFormat("dd-MM-yyyy");
+        finalBusDateDetail = outputFormat.format(parsedDate);
         setLoading(false);
         notifyListeners();
       } else {
@@ -81,6 +90,8 @@ class OfflineFeeProviders with ChangeNotifier {
   //Bus Fee Paid
 
   bool? showConcession;
+  String? busDatePaid;
+  String? finalBusDatePaid;
   List<DetailedFeesSummaryList> busPaidList = [];
   Future getBusPAIDList() async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
@@ -100,11 +111,17 @@ class OfflineFeeProviders with ChangeNotifier {
         print(data);
         BusFEEPAIDModel mod = BusFEEPAIDModel.fromJson(data);
         showConcession = mod.showConcession;
+        busDatePaid = mod.uploadedDate;
 
         List<DetailedFeesSummaryList> templist =
             List<DetailedFeesSummaryList>.from(data["detailedFeesSummary"]
                 .map((x) => DetailedFeesSummaryList.fromJson(x)));
         busPaidList.addAll(templist);
+        String createddate = busDatePaid ?? '--';
+        DateFormat inputFormat = DateFormat("MM/dd/yyyy HH:mm:ss");
+        DateTime parsedDate = inputFormat.parse(createddate);
+        DateFormat outputFormat = DateFormat("dd-MM-yyyy");
+        finalBusDatePaid = outputFormat.format(parsedDate);
 
         setLoadingBP(false);
         notifyListeners();
@@ -129,6 +146,8 @@ class OfflineFeeProviders with ChangeNotifier {
   bool? showConcessionColumnFees;
   List<FeesSummaryFEES> feesDetailList = [];
   List<TotalListFees> totalListFee = [];
+  String? feeDate;
+  String? finalFeeDateDetail;
   Future getFEEDetailList() async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoading(true);
@@ -147,6 +166,7 @@ class OfflineFeeProviders with ChangeNotifier {
         FeeDetailModel mod = FeeDetailModel.fromJson(data);
 
         showConcessionColumnFees = mod.showConcessionColumnFees;
+        feeDate = mod.uploadedDate;
 
         List<FeesSummaryFEES> templist = List<FeesSummaryFEES>.from(
             data["feesSummary"].map((x) => FeesSummaryFEES.fromJson(x)));
@@ -154,6 +174,11 @@ class OfflineFeeProviders with ChangeNotifier {
         List<TotalListFees> templist1 = List<TotalListFees>.from(
             data["totalList"].map((x) => TotalListFees.fromJson(x)));
         totalListFee.addAll(templist1);
+        String createddate = feeDate ?? '--';
+        DateFormat inputFormat = DateFormat("MM/dd/yyyy HH:mm:ss");
+        DateTime parsedDate = inputFormat.parse(createddate);
+        DateFormat outputFormat = DateFormat("dd-MM-yyyy");
+        finalFeeDateDetail = outputFormat.format(parsedDate);
         setLoading(false);
         notifyListeners();
       } else {
@@ -182,6 +207,8 @@ class OfflineFeeProviders with ChangeNotifier {
   // Fee Paid
 
   bool? showConcessionFEES;
+  String? feeDatePaid;
+  String? finalfeeDatePaid;
   List<DetailedFeesSummary> feePAIDList = [];
   Future getFEEsPAIDList() async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
@@ -200,11 +227,18 @@ class OfflineFeeProviders with ChangeNotifier {
         print(data);
         FeePaidModel mod = FeePaidModel.fromJson(data);
         showConcessionFEES = mod.showConcessionFEES;
+        feeDatePaid = mod.uploadedDate;
 
         List<DetailedFeesSummary> templist = List<DetailedFeesSummary>.from(
             data["detailedFeesSummary"]
                 .map((x) => DetailedFeesSummary.fromJson(x)));
         feePAIDList.addAll(templist);
+        String createddate = feeDatePaid ?? '--';
+        DateFormat inputFormat = DateFormat("MM/dd/yyyy HH:mm:ss");
+        DateTime parsedDate = inputFormat.parse(createddate);
+        DateFormat outputFormat = DateFormat("dd-MM-yyyy");
+
+        finalfeeDatePaid = outputFormat.format(parsedDate);
 
         setLoadingFees(false);
         notifyListeners();

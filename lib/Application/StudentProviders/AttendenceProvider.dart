@@ -71,4 +71,58 @@ class AttendenceProvider with ChangeNotifier {
       print(e);
     }
   }
+
+  bool? dualAttendance;
+  bool _loadingD = false;
+  bool get loadingD => _loadingD;
+  setLoadingD(bool value) {
+    _loadingD = value;
+    notifyListeners();
+  }
+
+  clearDetailList() {
+    attDetailList.clear();
+    notifyListeners();
+  }
+
+  String? monthName;
+  List<Absenteeslists> attDetailList = [];
+  Future detailList(String month) async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    setLoadingD(true);
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+    };
+    try {
+      var response = await http.get(
+          Uri.parse(
+              "${UIGuide.baseURL}/attendanceView/getattendancedetails/$month"),
+          headers: headers);
+      setLoadingD(true);
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final data = await json.decode(response.body);
+        print(data);
+        setLoadingD(true);
+
+        AttendanceDetailModel tot = AttendanceDetailModel.fromJson(data);
+        dualAttendance = tot.dualAttendance;
+        monthName = tot.monthName;
+
+        List<Absenteeslists> templist = List<Absenteeslists>.from(
+            data!["absenteeslists"].map((x) => Absenteeslists.fromJson(x)));
+        attDetailList.addAll(templist);
+
+        setLoadingD(false);
+        notifyListeners();
+      } else {
+        setLoadingD(false);
+        print("Error in response");
+      }
+    } catch (e) {
+      setLoadingD(false);
+      print(e);
+    }
+  }
 }
