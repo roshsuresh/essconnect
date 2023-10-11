@@ -833,8 +833,8 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
                                             value.lastOrderStatus == 'Failed' ||
                                             value.lastOrderStatus ==
                                                 'Cancelled' ||
-                                            value.lastOrderStatus ==
-                                                'Processing' ||
+                                            // value.lastOrderStatus ==
+                                            //     'Processing' ||
                                             value.lastOrderStatus == null) {
                                           if (_busController.text.isEmpty &&
                                               _feeController.text.isEmpty) {

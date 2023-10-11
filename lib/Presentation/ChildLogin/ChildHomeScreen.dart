@@ -5,12 +5,10 @@ import 'package:essconnect/Application/StudentProviders/NotificationCountProvide
 import 'package:essconnect/Constants.dart';
 import 'package:essconnect/Presentation/Student/Attendence.dart';
 import 'package:essconnect/Presentation/Student/CurriculamScreen.dart';
-import 'package:essconnect/Presentation/Student/Diary.dart';
 import 'package:essconnect/Presentation/Student/Gallery.dart';
 import 'package:essconnect/Presentation/Student/NoInternetScreen.dart';
 import 'package:essconnect/Presentation/Student/NoticeBoard.dart';
 import 'package:essconnect/Presentation/Student/PasswordChange.dart';
-import 'package:essconnect/Presentation/Student/Profile_Info.dart';
 import 'package:essconnect/Presentation/Student/Stud_Notification.dart';
 import 'package:essconnect/Presentation/Student/TimeTable.dart';
 import 'package:essconnect/utils/constants.dart';

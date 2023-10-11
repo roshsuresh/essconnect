@@ -331,7 +331,7 @@ class Attendence extends StatelessWidget {
                                                                               EdgeInsets.all(8.0),
                                                                           child:
                                                                               Text(
-                                                                            'AfterNoon',
+                                                                            'ForeNoon',
                                                                             style:
                                                                                 TextStyle(fontWeight: FontWeight.w700),
                                                                             textAlign:
@@ -343,7 +343,7 @@ class Attendence extends StatelessWidget {
                                                                               EdgeInsets.all(8.0),
                                                                           child:
                                                                               Text(
-                                                                            'ForeNoon',
+                                                                            'AfterNoon',
                                                                             style:
                                                                                 TextStyle(fontWeight: FontWeight.w700),
                                                                             textAlign:
@@ -404,8 +404,8 @@ class Attendence extends StatelessWidget {
                                                                                       textAlign: TextAlign.center,
                                                                                     ),
                                                                                   ),
-                                                                                  Padding(padding: const EdgeInsets.all(8.0), child: value.attDetailList[index].afterNoon == "P" ? SizedBox(height: 25, width: 25, child: SvgPicture.asset("assets/ppp.svg")) : SizedBox(height: 25, width: 25, child: SvgPicture.asset("assets/aa.svg"))),
                                                                                   Padding(padding: const EdgeInsets.all(8.0), child: value.attDetailList[index].foreNoon == "P" ? SizedBox(height: 25, width: 25, child: SvgPicture.asset("assets/ppp.svg")) : SizedBox(height: 25, width: 25, child: SvgPicture.asset("assets/aa.svg"))),
+                                                                                  Padding(padding: const EdgeInsets.all(8.0), child: value.attDetailList[index].afterNoon == "P" ? SizedBox(height: 25, width: 25, child: SvgPicture.asset("assets/ppp.svg")) : SizedBox(height: 25, width: 25, child: SvgPicture.asset("assets/aa.svg"))),
                                                                                 ])
                                                                               ],
                                                                             );
@@ -592,7 +592,7 @@ class Attendence extends StatelessWidget {
                                                                                       textAlign: TextAlign.center,
                                                                                     ),
                                                                                   ),
-                                                                                  Padding(padding: const EdgeInsets.all(8.0), child: value.attDetailList[index].afterNoon == "P" ? SizedBox(height: 25, width: 25, child: SvgPicture.asset("assets/ppp.svg")) : SizedBox(height: 25, width: 25, child: SvgPicture.asset("assets/aa.svg"))),
+                                                                                  Padding(padding: const EdgeInsets.all(8.0), child: value.attDetailList[index].foreNoon == "P" ? SizedBox(height: 25, width: 25, child: SvgPicture.asset("assets/ppp.svg")) : SizedBox(height: 25, width: 25, child: SvgPicture.asset("assets/aa.svg"))),
                                                                                 ])
                                                                               ],
                                                                             );

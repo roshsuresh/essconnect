@@ -3,6 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:essconnect/Application/AdminProviders/SchoolPhotoProviders.dart';
 import 'package:essconnect/Application/AdminProviders/dashboardProvider.dart';
 import 'package:essconnect/Application/Module%20Providers.dart/Module.dart';
+import 'package:essconnect/Application/Module%20Providers.dart/SchoolNameProvider.dart';
 import 'package:essconnect/Application/StudentProviders/CurriculamProviders.dart';
 import 'package:essconnect/Presentation/Admin/AttendanceTaken/Takenornot.dart';
 import 'package:essconnect/Presentation/Admin/Communication/ToGuardian.dart';
@@ -11,7 +12,6 @@ import 'package:essconnect/Presentation/Admin/ExamTimetable/ExamScreen.dart';
 import 'package:essconnect/Presentation/Admin/History/NotificationHistoryStaff.dart';
 import 'package:essconnect/Presentation/Admin/StaffReport.dart';
 import 'package:essconnect/Presentation/Admin/StudentStatistiics.dart';
-import 'package:essconnect/Presentation/Admin/WebViewLogin.dart';
 import 'package:essconnect/Presentation/SchoolSuperAdmin/GalleryReceived.dart';
 import 'package:essconnect/Presentation/SchoolSuperAdmin/NoticeBoardSA.dart';
 import 'package:essconnect/Presentation/Staff/MarkEntryNew.dart';
@@ -52,6 +52,8 @@ class _SchoolHeadHomeScreenState extends State<SchoolHeadHomeScreen> {
       await Provider.of<ConnectivityProvider>(context, listen: false);
       await Provider.of<ModuleProviders>(context, listen: false)
           .getModuleDetails();
+      await Provider.of<SchoolNameProvider>(context, listen: false)
+          .getSchoolname();
     });
   }
 
@@ -71,6 +73,42 @@ class _SchoolHeadHomeScreenState extends State<SchoolHeadHomeScreen> {
                 child: ListView(
                   physics: const BouncingScrollPhysics(),
                   children: [
+                    Consumer<SchoolNameProvider>(
+                      builder: (context, snap, child) => snap.schoolname == null
+                          ? const SizedBox(
+                              height: 0,
+                              width: 0,
+                            )
+                          : Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: Container(
+                                padding:
+                                    const EdgeInsets.only(top: 4, bottom: 4),
+                                decoration: const BoxDecoration(
+                                  // border: Border.all(color: UIGuide.THEME_LIGHT),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(5)),
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Color.fromARGB(255, 234, 237, 239),
+                                      Color.fromARGB(255, 206, 203, 203),
+                                      Color.fromARGB(255, 206, 203, 203),
+                                      Color.fromARGB(255, 234, 237, 239),
+                                    ],
+                                  ),
+                                ),
+                                child: Center(
+                                    child: Text(
+                                  "${snap.schoolname ?? ""}, ${snap.place ?? ""}",
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                      color: UIGuide.light_Purple,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700),
+                                )),
+                              ),
+                            ),
+                    ),
                     const SuperAdminProfileTop(),
                     const SizedBox(
                       height: 2,
@@ -1225,6 +1263,10 @@ class SchoolHeadHomeScreenContents extends StatelessWidget {
                       color: UIGuide.light_Purple),
                 ),
               ),
+              kheight20,
+              kheight20,
+              kheight20,
+              kheight20,
               kheight20,
               kheight20
             ],

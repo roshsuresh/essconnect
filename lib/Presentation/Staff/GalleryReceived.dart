@@ -278,7 +278,7 @@ class _ViewImageOntapStaffState extends State<ViewImageOntapStaff> {
   }
 
   Future<void> requestDownload(String _url, String _name) async {
-    final dir = await getExternalStorageDirectory();
+    final dir = await getApplicationDocumentsDirectory();
     var _localPath;
 
     //dir!.path;
@@ -289,7 +289,7 @@ class _ViewImageOntapStaffState extends State<ViewImageOntapStaff> {
     if (Platform.isAndroid) {
       _localPath = '/storage/emulated/0/Download';
     } else if (Platform.isIOS) {
-      final dir = await getExternalStorageDirectory();
+      final dir = await getApplicationDocumentsDirectory();
       _localPath = dir!.path;
     }
     print("pathhhh  $_localPath");

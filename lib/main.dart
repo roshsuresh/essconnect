@@ -6,6 +6,7 @@ import 'package:essconnect/Application/AdminProviders/ChatProviders.dart';
 import 'package:essconnect/Application/AdminProviders/ExamTTPtoviders.dart';
 
 import 'package:essconnect/Application/Module%20Providers.dart/MobileAppCheckin.dart';
+import 'package:essconnect/Application/Module%20Providers.dart/SchoolNameProvider.dart';
 import 'package:essconnect/Application/Staff_Providers/ExamTTProviderStaff.dart';
 import 'package:essconnect/Application/Staff_Providers/MarkEntryNewProvider.dart';
 import 'package:essconnect/Application/Staff_Providers/MissingReportProviders.dart';
@@ -93,22 +94,34 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     notification!.title,
     notification.body,
     NotificationDetails(
-      android: AndroidNotificationDetails(channel!.id, channel!.name,
-          icon: '@mipmap/ic_launcher', channelShowBadge: true),
-    ),
+        android: AndroidNotificationDetails(channel!.id, channel!.name,
+            icon: '@mipmap/ic_launcher', channelShowBadge: true),
+        iOS: const DarwinNotificationDetails(
+          presentAlert: true,
+          presentBadge: true,
+        )),
   );
 }
 
 AndroidNotificationChannel? channel;
-
+FirebaseMessaging? _messaging;
 FlutterLocalNotificationsPlugin? flutterLocalNotificationsPlugin;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  _messaging = FirebaseMessaging.instance;
   // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   await FlutterDownloader.initialize(debug: true, ignoreSsl: true);
+  NotificationSettings settings = await _messaging!.requestPermission(
+      alert: true, badge: true, provisional: true, sound: true);
+
+  if (Platform.isIOS) {
+    await FirebaseMessaging.instance
+        .setForegroundNotificationPresentationOptions(
+            alert: true, badge: true, sound: true);
+  }
   if (!kIsWeb) {
     channel = const AndroidNotificationChannel(
       'offer_notification_channel', // id
@@ -190,13 +203,19 @@ class _GjInfoTechState extends State<GjInfoTech> {
           notification.title,
           notification.body,
           NotificationDetails(
-            android: AndroidNotificationDetails(
-              channel!.id,
-              channel!.name,
-              icon: '@mipmap/ic_launcher',
-              playSound: true,
-            ),
-          ),
+              android: AndroidNotificationDetails(
+                channel!.id,
+                channel!.name,
+                icon: '@mipmap/ic_launcher',
+                playSound: true,
+              ),
+              iOS: DarwinNotificationDetails(
+                presentAlert: true,
+                badgeNumber: 1,
+                presentSound: true,
+                subtitle: notification.body,
+                threadIdentifier: notification.title,
+              )),
         );
       }
     });
@@ -281,6 +300,7 @@ class _GjInfoTechState extends State<GjInfoTech> {
         ChangeNotifierProvider(create: (context) => MarkEntryNewProvider()),
         ChangeNotifierProvider(create: (context) => RemarksEntryProvider()),
         ChangeNotifierProvider(create: (context) => OfflineFeeProviders()),
+        ChangeNotifierProvider(create: (context) => SchoolNameProvider()),
       ],
       child: MaterialApp(
         title: 'e-SS Connect',
@@ -347,7 +367,7 @@ class _SplashFuturePageState extends State<SplashFuturePage>
         if (data['role'] == "SystemAdmin" || roleList.contains("SystemAdmin")) {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => AdminHome()),
+            MaterialPageRoute(builder: (context) => const AdminHome()),
           );
         } else if (data['role'] == "Guardian") {
           Navigator.pushReplacement(
@@ -376,12 +396,13 @@ class _SplashFuturePageState extends State<SplashFuturePage>
             roleList.contains("SchoolSuperAdmin")) {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => SuperAdminHome()),
+            MaterialPageRoute(builder: (context) => const SuperAdminHome()),
           );
         } else if (data['role'] == "SchoolHead") {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => SchoolHeadHomeScreen()),
+            MaterialPageRoute(
+                builder: (context) => const SchoolHeadHomeScreen()),
           );
         } else if (data['role'] == "Student") {
           Navigator.pushReplacement(
@@ -403,7 +424,7 @@ class _SplashFuturePageState extends State<SplashFuturePage>
     } else {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => ActivatePage()),
+        MaterialPageRoute(builder: (context) => const ActivatePage()),
       );
     }
   }

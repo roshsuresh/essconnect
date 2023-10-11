@@ -3,7 +3,6 @@ import 'package:essconnect/Presentation/Staff/GalleryReceived.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:material_dialogs/material_dialogs.dart';
 import 'package:provider/provider.dart';
 import '../../Application/Staff_Providers/GallerySendProviderStaff.dart';
 import '../../utils/spinkit.dart';
@@ -104,7 +103,7 @@ class GalleryReceivedSAdmin extends StatelessWidget {
                                                     color: const Color.fromARGB(
                                                         255, 219, 215, 215)),
                                                 borderRadius: const BorderRadius
-                                                        .only(
+                                                    .only(
                                                     topRight:
                                                         Radius.circular(0),
                                                     bottomRight:

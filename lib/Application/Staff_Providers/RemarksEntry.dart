@@ -1,11 +1,14 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:essconnect/Domain/Staff/MarkEntry/InitailModel.dart';
+import 'package:essconnect/Domain/Staff/MarkEntry/UASViewModel.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../Domain/Admin/StudentListModel.dart';
 import '../../Domain/Staff/RemarkentryStaff.dart';
 
 class RemarksEntryProvider with ChangeNotifier {
@@ -58,7 +61,7 @@ class RemarksEntryProvider with ChangeNotifier {
   String? tabmethod;
 
   List<RemarkDivisionList> remarkEntryDivisionList = [];
-  List<RemarksCategoryList> remarkCategoryList = [];
+
   List<RemarksTermlist> remarkterm = [];
   Future<bool> getRemarkEntryDivisionValues(String id, String instId) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
@@ -87,10 +90,7 @@ class RemarksEntryProvider with ChangeNotifier {
       List<RemarkDivisionList> templist = List<RemarkDivisionList>.from(
           data["divisionList"].map((x) => RemarkDivisionList.fromJson(x)));
       remarkEntryDivisionList.addAll(templist);
-      List<RemarksCategoryList> templist1 = List<RemarksCategoryList>.from(
-          data["remarksCategoryList"]
-              .map((x) => RemarksCategoryList.fromJson(x)));
-      remarkCategoryList.addAll(templist1);
+
       List<RemarksTermlist> templist2 = List<RemarksTermlist>.from(
           data["termList"].map((x) => RemarksTermlist.fromJson(x)));
       remarkterm.addAll(templist2);
@@ -101,6 +101,39 @@ class RemarksEntryProvider with ChangeNotifier {
     }
     return true;
   }
+//Category
+  List<RemarksCategoryList> remarkCategoryList = [];
+  Future<bool> getRemarkEntryCategoryValues(String divid, String instId) async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+    };
+    var request = http.Request('GET',
+        Uri.parse('${UIGuide.baseURL}/remarks-entry/category/$divid/$instId'));
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> data =
+      jsonDecode(await response.stream.bytesToString());
+
+
+      List<RemarksCategoryList> templist1 = List<RemarksCategoryList>.from(
+          data["remarksCategoryList"]
+              .map((x) => RemarksCategoryList.fromJson(x)));
+      remarkCategoryList.addAll(templist1);
+
+      notifyListeners();
+    } else {
+      print('Error in MarkEntryDivisionList stf');
+    }
+    return true;
+  }
+
 
   //term
 
@@ -109,9 +142,11 @@ class RemarksEntryProvider with ChangeNotifier {
     notifyListeners();
   }
 
+
+
   List<RemarksTermlist> remarkTermList = [];
-  Future<bool> getRemarkEntryTermValues(String divisionId, String assessmentId,
-      String assessment, String instId) async {
+  Future<bool> getRemarkEntryTermValues(String divisionId, String? assessmentId,
+      String instId,String tabmthd) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
 
     var headers = {
@@ -121,7 +156,8 @@ class RemarksEntryProvider with ChangeNotifier {
     var request = http.Request(
         'GET',
         Uri.parse(
-            '${UIGuide.baseURL}/remarks-entry/term/$divisionId/$assessmentId/$instId'));
+            '${UIGuide.baseURL}/remarks-entry/term/$divisionId/$assessmentId/$instId/$tabmthd'));
+    print("demooooooo");
     print(request);
     request.headers.addAll(headers);
 
@@ -139,6 +175,7 @@ class RemarksEntryProvider with ChangeNotifier {
       print("termlisssss");
       remarkTermList.addAll(templist);
 
+
       // else{
       //   List<RemarksTermlist> templist1 = List<RemarksTermlist>.from(
       //       data["assessmentList"].map((x) => RemarksTermlist.fromJson(x)));
@@ -147,7 +184,7 @@ class RemarksEntryProvider with ChangeNotifier {
 
       notifyListeners();
     } else {
-      print('Error in MarkEntryPartList stf');
+      print('Error in category stf');
     }
     return true;
   }
@@ -405,6 +442,13 @@ class RemarksEntryProvider with ChangeNotifier {
     _loadSave = value;
     notifyListeners();
   }
+  //commonload
+  bool _commonload = false;
+  bool get commonload => _commonload;
+  setCommonLoad(bool value) {
+    _commonload = value;
+    notifyListeners();
+  }
 
   Future remarkEntrySave(
     String course,
@@ -452,6 +496,7 @@ class RemarksEntryProvider with ChangeNotifier {
     if (response.statusCode == 200) {
       setLoadSave(true);
 
+
       print('Correct........______________________________');
       print(await response.stream.bytesToString());
       await AwesomeDialog(
@@ -472,6 +517,7 @@ class RemarksEntryProvider with ChangeNotifier {
           .show();
 
       setLoadSave(false);
+      setCommonLoad(false);
 
       notifyListeners();
     } else {

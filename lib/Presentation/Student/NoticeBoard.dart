@@ -301,14 +301,14 @@ class _PDFDownloadState extends State<PDFDownload> {
   }
 
   Future<void> requestDownload(String _url, String _name) async {
-    final dir = await getExternalStorageDirectory();
+    final dir = await getApplicationDocumentsDirectory();
     var _localPath;
 
     if (Platform.isAndroid) {
       _localPath = '/storage/emulated/0/Download';
     } else if (Platform.isIOS) {
-      final dir = await getExternalStorageDirectory();
-      _localPath = dir!.path;
+      final dir = await getApplicationDocumentsDirectory();
+      _localPath = dir.path;
     }
     print("pathhhh  $_localPath");
     final savedDir = Directory(_localPath);
@@ -401,7 +401,7 @@ class _PdfViewPageState extends State<PdfViewPage> {
   }
 
   Future<void> requestDownload(String _url, String _name) async {
-    final dir = await getExternalStorageDirectory();
+    final dir = await getApplicationDocumentsDirectory();
     var _localPath;
 
     //dir!.path;
@@ -411,8 +411,8 @@ class _PdfViewPageState extends State<PdfViewPage> {
     if (Platform.isAndroid) {
       _localPath = '/storage/emulated/0/Download';
     } else if (Platform.isIOS) {
-      final dir = await getExternalStorageDirectory();
-      _localPath = dir!.path;
+      final dir = await getApplicationDocumentsDirectory();
+      _localPath = dir.path;
     }
     print("pathhhh  $_localPath");
     final savedDir = Directory(_localPath);

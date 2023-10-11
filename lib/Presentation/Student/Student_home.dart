@@ -1,4 +1,5 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:essconnect/Application/Module%20Providers.dart/SchoolNameProvider.dart';
 import 'package:essconnect/Application/StudentProviders/CurriculamProviders.dart';
 import 'package:essconnect/Application/StudentProviders/InternetConnection.dart';
 import 'package:essconnect/Application/StudentProviders/NotificationCountProviders.dart';
@@ -58,6 +59,8 @@ class _StudentHomeState extends State<StudentHome> {
           .getSiblingName();
       await Provider.of<ModuleProviders>(context, listen: false)
           .getModuleDetails();
+      await Provider.of<SchoolNameProvider>(context, listen: false)
+          .getSchoolname();
     });
   }
 
@@ -86,6 +89,42 @@ class _StudentHomeState extends State<StudentHome> {
                 child: ListView(
                   physics: const NeverScrollableScrollPhysics(),
                   children: [
+                    Consumer<SchoolNameProvider>(
+                      builder: (context, snap, child) => snap.schoolname == null
+                          ? const SizedBox(
+                              height: 0,
+                              width: 0,
+                            )
+                          : Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: Container(
+                                padding:
+                                    const EdgeInsets.only(top: 4, bottom: 4),
+                                decoration: const BoxDecoration(
+                                  // border: Border.all(color: UIGuide.THEME_LIGHT),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(5)),
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Color.fromARGB(255, 234, 237, 239),
+                                      Color.fromARGB(255, 206, 203, 203),
+                                      Color.fromARGB(255, 206, 203, 203),
+                                      Color.fromARGB(255, 234, 237, 239),
+                                    ],
+                                  ),
+                                ),
+                                child: Center(
+                                    child: Text(
+                                  "${snap.schoolname ?? ""}, ${snap.place ?? ""}",
+                                  textAlign: TextAlign.center,
+                                  style: const TextStyle(
+                                      color: UIGuide.light_Purple,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700),
+                                )),
+                              ),
+                            ),
+                    ),
                     ProfileHome(kheight20: kheight20, kheight: kheight),
                     const Flashnews(),
                     Container(
@@ -699,7 +738,7 @@ class _StudentHomeState extends State<StudentHome> {
                                                               type: PageTransitionType
                                                                   .rightToLeft,
                                                               child:
-                                                                  FeeInitialScreen(),
+                                                                  const FeeInitialScreen(),
                                                               duration:
                                                                   const Duration(
                                                                       milliseconds:
@@ -1337,6 +1376,9 @@ class _StudentHomeState extends State<StudentHome> {
                                   color: UIGuide.light_Purple),
                             ),
                           ),
+                          kheight20,
+                          kheight20,
+                          kheight20,
                           kheight20,
                           kheight20,
                           kheight20,

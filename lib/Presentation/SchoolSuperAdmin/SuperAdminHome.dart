@@ -3,6 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:essconnect/Application/AdminProviders/SchoolPhotoProviders.dart';
 import 'package:essconnect/Application/AdminProviders/dashboardProvider.dart';
 import 'package:essconnect/Application/Module%20Providers.dart/Module.dart';
+import 'package:essconnect/Application/Module%20Providers.dart/SchoolNameProvider.dart';
 import 'package:essconnect/Application/StudentProviders/CurriculamProviders.dart';
 import 'package:essconnect/Presentation/Admin/AttendanceTaken/Takenornot.dart';
 import 'package:essconnect/Presentation/Admin/Communication/ToGuardian.dart';
@@ -52,6 +53,8 @@ class _SuperAdminHomeState extends State<SuperAdminHome> {
       Provider.of<ConnectivityProvider>(context, listen: false);
       await Provider.of<ModuleProviders>(context, listen: false)
           .getModuleDetails();
+      await Provider.of<SchoolNameProvider>(context, listen: false)
+          .getSchoolname();
     });
   }
 
@@ -71,6 +74,41 @@ class _SuperAdminHomeState extends State<SuperAdminHome> {
                 child: ListView(
                   physics: const BouncingScrollPhysics(),
                   children: [
+                    Consumer<SchoolNameProvider>(
+                      builder: (context, snap, child) => snap.schoolname == null
+                          ? Container(
+                              height: 0,
+                              width: 0,
+                            )
+                          : Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: Container(
+                                padding: EdgeInsets.only(top: 4, bottom: 4),
+                                decoration: BoxDecoration(
+                                  // border: Border.all(color: UIGuide.THEME_LIGHT),
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(5)),
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Color.fromARGB(255, 234, 237, 239),
+                                      Color.fromARGB(255, 206, 203, 203),
+                                      Color.fromARGB(255, 206, 203, 203),
+                                      Color.fromARGB(255, 234, 237, 239),
+                                    ],
+                                  ),
+                                ),
+                                child: Center(
+                                    child: Text(
+                                  "${snap.schoolname ?? ""}, ${snap.place ?? ""}",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: UIGuide.light_Purple,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700),
+                                )),
+                              ),
+                            ),
+                    ),
                     const SuperAdminProfileTop(),
                     const SizedBox(
                       height: 2,
@@ -1226,6 +1264,10 @@ class SuperAdminHomeContents extends StatelessWidget {
                       color: UIGuide.light_Purple),
                 ),
               ),
+              kheight20,
+              kheight20,
+              kheight20,
+              kheight20,
               kheight20,
               kheight20
             ],

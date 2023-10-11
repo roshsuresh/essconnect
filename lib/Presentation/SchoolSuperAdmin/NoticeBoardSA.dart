@@ -10,7 +10,6 @@ import 'package:essconnect/utils/spinkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:lottie/lottie.dart';
-import 'package:material_dialogs/material_dialogs.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:provider/provider.dart';
@@ -276,7 +275,7 @@ class _PDFDownloadStaffState extends State<PDFDownloadStaff> {
   }
 
   Future<void> requestDownload(String _url, String _name) async {
-    final dir = await getExternalStorageDirectory();
+    final dir = await getApplicationDocumentsDirectory();
     var _localPath = dir!.path;
     print("pathhhh  $_localPath");
     final savedDir = Directory(_localPath);

@@ -9,8 +9,10 @@ const String userName = "User Name";
 const String passWord = "Password";
 const String schoolCode = "School Code";
 const String activate = "Activate";
-const String baseUrl = "https://api.esstestonline.in";
-//"https://api.eschoolweb.org";
+const String baseUrl =
+//"https://api.esstestonline.in";
+    "https://api.eschoolweb.org";
+
 ///constant assets
 const String buttonBackground = "assets/but_back.png";
 const String loginBackground = "assets/activation_page.png";

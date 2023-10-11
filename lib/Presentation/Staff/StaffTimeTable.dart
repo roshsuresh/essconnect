@@ -24,8 +24,6 @@ class Staff_Timetable extends StatelessWidget {
           .getTimeTable();
     });
 
-    var size = MediaQuery.of(context).size;
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('TimeTable'),
@@ -230,12 +228,12 @@ class _PdfViewStaffState extends State<PdfViewStaff> {
   }
 
   Future<void> requestDownload(String _url, String _name) async {
-    final dir = await getExternalStorageDirectory();
+    final dir = await getApplicationDocumentsDirectory();
     var _localPath;
     if (Platform.isAndroid) {
       _localPath = '/storage/emulated/0/Download';
     } else if (Platform.isIOS) {
-      final dir = await getExternalStorageDirectory();
+      final dir = await getApplicationDocumentsDirectory();
       _localPath = dir!.path;
     }
     print("pathhhh  $_localPath");
@@ -329,7 +327,7 @@ class _StaffTimetableimageState extends State<StaffTimetableimage> {
   }
 
   Future<void> requestDownload(String _url, String _name) async {
-    final dir = await getExternalStorageDirectory();
+    final dir = await getApplicationDocumentsDirectory();
     var _localPath;
 
     //dir!.path;
@@ -339,8 +337,8 @@ class _StaffTimetableimageState extends State<StaffTimetableimage> {
     if (Platform.isAndroid) {
       _localPath = '/storage/emulated/0/Download';
     } else if (Platform.isIOS) {
-      final dir = await getExternalStorageDirectory();
-      _localPath = dir!.path;
+      final dir = await getApplicationDocumentsDirectory();
+      _localPath = dir.path;
     }
     print("pathhhh  $_localPath");
     final savedDir = Directory(_localPath);

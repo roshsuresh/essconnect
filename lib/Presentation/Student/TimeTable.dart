@@ -417,12 +417,12 @@ class _PdfDownloaderState extends State<PdfDownloader> {
   }
 
   Future<void> requestDownload(String _url, String _name) async {
-    final dir = await getExternalStorageDirectory();
+    final dir = await getApplicationDocumentsDirectory();
     var _localPath;
     if (Platform.isAndroid) {
       _localPath = '/storage/emulated/0/Download';
     } else if (Platform.isIOS) {
-      final dir = await getExternalStorageDirectory();
+      final dir = await getApplicationDocumentsDirectory();
       _localPath = dir!.path;
     }
     print("pathhhh  $_localPath");
@@ -517,7 +517,7 @@ class _PdfViewPagesState extends State<PdfViewPages> {
   }
 
   Future<void> requestDownload(String _url, String _name) async {
-    final dir = await getExternalStorageDirectory();
+    final dir = await getApplicationDocumentsDirectory();
     var _localPath;
 
     //dir!.path;
@@ -527,8 +527,8 @@ class _PdfViewPagesState extends State<PdfViewPages> {
     if (Platform.isAndroid) {
       _localPath = '/storage/emulated/0/Download';
     } else if (Platform.isIOS) {
-      final dir = await getExternalStorageDirectory();
-      _localPath = dir!.path;
+      final dir = await getApplicationDocumentsDirectory();
+      _localPath = dir.path;
     }
     print("pathhhh  $_localPath");
     final savedDir = Directory(_localPath);
@@ -665,12 +665,12 @@ class _ExamPdfViewState extends State<ExamPdfView> {
   }
 
   Future<void> requestDownload(String _url, String _name) async {
-    final dir = await getExternalStorageDirectory();
+    final dir = await getApplicationDocumentsDirectory();
     var _localPath;
     if (Platform.isAndroid) {
       _localPath = '/storage/emulated/0/Download';
     } else if (Platform.isIOS) {
-      final dir = await getExternalStorageDirectory();
+      final dir = await getApplicationDocumentsDirectory();
       _localPath = dir!.path;
     }
     print("pathhhh  $_localPath");
@@ -769,7 +769,7 @@ class _ImageViewExamState extends State<ImageViewExam> {
   }
 
   Future<void> requestDownload(String _url, String _name) async {
-    final dir = await getExternalStorageDirectory();
+    final dir = await getApplicationDocumentsDirectory();
     var _localPath;
 
     //dir!.path;
@@ -779,7 +779,7 @@ class _ImageViewExamState extends State<ImageViewExam> {
     if (Platform.isAndroid) {
       _localPath = '/storage/emulated/0/Download';
     } else if (Platform.isIOS) {
-      final dir = await getExternalStorageDirectory();
+      final dir = await getApplicationDocumentsDirectory();
 
       _localPath = dir!.path;
     }

@@ -1,10 +1,10 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:essconnect/Application/Module%20Providers.dart/Module.dart';
+import 'package:essconnect/Application/Module%20Providers.dart/SchoolNameProvider.dart';
 import 'package:essconnect/Application/Staff_Providers/NotificationCount.dart';
 import 'package:essconnect/Application/StudentProviders/CurriculamProviders.dart';
 import 'package:essconnect/Application/StudentProviders/InternetConnection.dart';
 import 'package:essconnect/Application/StudentProviders/SiblingsProvider.dart';
-import 'package:essconnect/Presentation/Admin/WebViewLogin.dart';
 import 'package:essconnect/Presentation/Staff/AbsenteesReport.dart';
 import 'package:essconnect/Presentation/Staff/ExamTT.dart/ExamTTScreen.dart';
 import 'package:essconnect/Presentation/Staff/GalleryUpload.dart';
@@ -58,6 +58,8 @@ class _StaffHomeScreenState extends State<StaffHomeScreen> {
       Provider.of<SibingsProvider>(context, listen: false).siblingList.clear();
       await Provider.of<SibingsProvider>(context, listen: false)
           .getSiblingName();
+      await Provider.of<SchoolNameProvider>(context, listen: false)
+          .getSchoolname();
     });
   }
 
@@ -77,6 +79,41 @@ class _StaffHomeScreenState extends State<StaffHomeScreen> {
                 child: ListView(
                   physics: const NeverScrollableScrollPhysics(),
                   children: [
+                    Consumer<SchoolNameProvider>(
+                      builder: (context, snap, child) => snap.schoolname == null
+                          ? Container(
+                              height: 0,
+                              width: 0,
+                            )
+                          : Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: Container(
+                                padding: EdgeInsets.only(top: 4, bottom: 4),
+                                decoration: BoxDecoration(
+                                  // border: Border.all(color: UIGuide.THEME_LIGHT),
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(5)),
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Color.fromARGB(255, 234, 237, 239),
+                                      Color.fromARGB(255, 206, 203, 203),
+                                      Color.fromARGB(255, 206, 203, 203),
+                                      Color.fromARGB(255, 234, 237, 239),
+                                    ],
+                                  ),
+                                ),
+                                child: Center(
+                                    child: Text(
+                                  "${snap.schoolname ?? ""}, ${snap.place ?? ""}",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: UIGuide.light_Purple,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700),
+                                )),
+                              ),
+                            ),
+                    ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: StaffProfile(),
@@ -1372,8 +1409,9 @@ class _StaffHomeScreenState extends State<StaffHomeScreen> {
                                   color: UIGuide.light_Purple),
                             ),
                           ),
-                          kheight20,
+                          kheight20, kheight20, kheight20,
                           kheight10,
+                          kheight10, kheight10, kheight10,
                           kheight10, kheight10,
                         ],
                       ),

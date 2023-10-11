@@ -7,6 +7,7 @@ import 'package:essconnect/Constants.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:essconnect/utils/spinkit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
@@ -56,7 +57,7 @@ class _RemarksEntryState extends State<RemarksEntry> {
   String assessmentId = '';
   String? attendancee;
   String? assessment = '';
-  String? tabmethod = '';
+
 
   final remarkEntryInitialValuesController = TextEditingController();
   final remarkEntryInitialValuesController1 = TextEditingController();
@@ -278,8 +279,15 @@ class _RemarksEntryState extends State<RemarksEntry> {
                                               selectedColor: UIGuide.PRIMARY2,
                                               onTap: () async {
                                                 snapshot.clearStuentList();
+                                                remarkEntryTermController1.clear();
+                                                remarkEntryTermController.clear();
+                                                snapshot.remarkTermList.clear();
 
-                                                snapshot.remarkCategoryList;
+                                                snapshot.remarkCategoryList.clear();
+
+
+
+
                                                 remarkEntryDivisionListController
                                                     .clear();
                                                 remarkEntryCategoryController1
@@ -318,12 +326,28 @@ class _RemarksEntryState extends State<RemarksEntry> {
                                                     .clear();
                                                 remarkEntryTermController1
                                                     .clear();
-
                                                 await snapshot
                                                     .removeAllAssessmentClear();
-                                                tabmethod = snapshot.tabmethod;
-                                                print(
-                                                    "tabulationnnnnnn:$tabmethod");
+                                                if(snapshot.tabmethod=="PBT") {
+                                                  snapshot
+                                                      .getRemarkEntryTermValues(
+                                                      divisionId,
+                                                         null,
+
+                                                      instaId,
+                                                      snapshot.tabmethod
+                                                          .toString());
+
+                                                }else{
+                                                  snapshot.getRemarkEntryCategoryValues(
+                                                    divisionId,
+                                                    instaId
+                                                  );
+                                                }
+
+
+
+
 
                                                 //option sub
 
@@ -429,7 +453,7 @@ class _RemarksEntryState extends State<RemarksEntry> {
                                             ListView.builder(
                                                 shrinkWrap: true,
                                                 itemCount:
-                                                    snapshot.remarkterm.length,
+                                                    snapshot.remarkTermList.length,
                                                 itemBuilder: (context, index) {
                                                   print(snapshot
                                                       .remarkterm.length);
@@ -441,12 +465,12 @@ class _RemarksEntryState extends State<RemarksEntry> {
                                                     onTap: () async {
                                                       remarkEntryTermController
                                                           .text = snapshot
-                                                              .remarkterm[index]
+                                                              .remarkTermList[index]
                                                               .value ??
                                                           '---';
                                                       remarkEntryTermController1
                                                           .text = snapshot
-                                                              .remarkterm[index]
+                                                              .remarkTermList[index]
                                                               .text ??
                                                           '---';
 
@@ -471,12 +495,12 @@ class _RemarksEntryState extends State<RemarksEntry> {
 
                                                       // exam
 
-                                                      await snapshot
-                                                          .getRemarkEntryAssessmentValues(
-                                                              divisionId,
-                                                              categoryId,
-                                                              termId,
-                                                              instaId);
+                                                      // await snapshot
+                                                      //     .getRemarkEntryAssessmentValues(
+                                                      //         divisionId,
+                                                      //         categoryId,
+                                                      //         termId,
+                                                      //         instaId);
 
                                                       await value
                                                           .clearStuentList();
@@ -485,7 +509,7 @@ class _RemarksEntryState extends State<RemarksEntry> {
                                                           .pop();
                                                     },
                                                     title: Text(
-                                                      snapshot.remarkterm[index]
+                                                      snapshot.remarkTermList[index]
                                                           .text
                                                           .toString(),
                                                       textAlign:
@@ -641,8 +665,8 @@ class _RemarksEntryState extends State<RemarksEntry> {
                                                           .getRemarkEntryTermValues(
                                                               divisionId,
                                                               categoryId,
-                                                              category,
-                                                              instaId);
+                                                              instaId,
+                                                              value.tabmethod.toString());
                                                       await value
                                                           .clearStuentList();
 
@@ -1079,6 +1103,7 @@ class _RemarksEntryState extends State<RemarksEntry> {
                                   .text
                                   .toString();
                               print("Category: $category");
+                              print(value.tabmethod);
 
                               _controllers.clear();
                               teacherremarkController.clear();
@@ -1634,6 +1659,11 @@ class _RemarksEntryState extends State<RemarksEntry> {
                                         height: 50,
                                         width: size.width,
                                         child: TextField(
+                                          inputFormatters: [
+                                            LengthLimitingTextInputFormatter(
+                                                255)
+                                          ],
+
                                           // textAlign: TextAlign.center,
                                           //  focusNode: FocusNode(),
                                           controller: _controllers[index],
@@ -1875,6 +1905,11 @@ class _RemarksEntryState extends State<RemarksEntry> {
                                         height: 50,
                                         width: size.width,
                                         child: TextField(
+                                          inputFormatters: [
+                                            LengthLimitingTextInputFormatter(
+                                                255)
+                                          ],
+
                                           // textAlign: TextAlign.center,
                                           //  focusNode: FocusNode(),
 
@@ -1901,6 +1936,7 @@ class _RemarksEntryState extends State<RemarksEntry> {
                                                     BorderRadius.circular(10.0),
                                               ),
                                               fillColor: Colors.grey,
+
                                               hintStyle: const TextStyle(
                                                 color: Colors.grey,
                                                 fontSize: 16,
@@ -1936,6 +1972,11 @@ class _RemarksEntryState extends State<RemarksEntry> {
                                         height: 50,
                                         width: size.width,
                                         child: TextField(
+                                          inputFormatters: [
+                                            LengthLimitingTextInputFormatter(
+                                                255)
+                                          ],
+
                                           // textAlign: TextAlign.center,
                                           //  focusNode: FocusNode(),
 
@@ -2026,7 +2067,7 @@ class _RemarksEntryState extends State<RemarksEntry> {
                         ),
                       )
                     : MaterialButton(
-                        onPressed: () async {
+                        onPressed: value.loadDelete?null: () async {
                           List obj = [];
                           List remarrkk = [];
                           obj.clear();
@@ -2230,12 +2271,27 @@ class _RemarksEntryState extends State<RemarksEntry> {
               //  Consumer<MarkEntryNewProvider>(builder: (context, value, child) {
 
               Consumer<RemarksEntryProvider>(builder: (context, value, child) {
-                return MaterialButton(
-                  onPressed: () {
+                return
+                  value.loadDelete
+                      ? MaterialButton(
+                    onPressed: () {},
+                    color:  Colors.red,
+                    child: const Text(
+                      'Deleting...',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ):
+                  MaterialButton(
+                  onPressed:
+                      value.loadSave?null :()  {
+                    value.loadDelete;
+
                     showDialog(
+
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
+
                           title: const Center(
                             child: Text(
                               "Are You Sure Want To Delete",
@@ -2253,6 +2309,7 @@ class _RemarksEntryState extends State<RemarksEntry> {
                                   child: OutlinedButton(
                                     onPressed: () {
                                       Navigator.of(context).pop();
+                                      value.setLoadDelete(false);
                                     },
                                     style: ButtonStyle(
                                         side: MaterialStateProperty.all(
@@ -2312,9 +2369,11 @@ class _RemarksEntryState extends State<RemarksEntry> {
                                                   .toString(),
                                               value.tabmethod.toString(),
                                               context);
+
                                     }
 
                                     Navigator.pop(context);
+                                   // value.setLoadDelete(false);
                                   },
                                   style: ButtonStyle(
                                       side: MaterialStateProperty.all(

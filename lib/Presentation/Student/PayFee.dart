@@ -1102,8 +1102,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                                                     '7356642999';
                                             String consumerEmailId =
                                                 trans.consumerEmailId1WL ?? '';
-                                            txnId = trans.txnId1WL ??
-                                                'gjinfotech@gmail.com';
+                                            txnId = trans.txnId1WL ?? ' ';
                                             bool? enableExpressPay =
                                                 trans.enableExpressPay1WL ??
                                                     false;
@@ -4135,13 +4134,13 @@ class _PdfDownloadState extends State<PdfDownload> {
   }
 
   Future<void> requestDownload(String _url, String _name) async {
-    final dir = await getExternalStorageDirectory();
+    final dir = await getApplicationDocumentsDirectory();
     var _localPath;
     if (Platform.isAndroid) {
       _localPath = '/storage/emulated/0/Download';
     } else if (Platform.isIOS) {
-      final dir = await getExternalStorageDirectory();
-      _localPath = dir!.path;
+      final dir = await getApplicationDocumentsDirectory();
+      _localPath = dir.path;
     }
     print("pathhhh  $_localPath");
     final savedDir = Directory(_localPath);

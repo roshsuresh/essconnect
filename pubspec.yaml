@@ -39,7 +39,6 @@ dependencies:
   carousel_slider: ^4.2.1
   collection: ^1.17.0
   connectivity_plus: ^4.0.2
-  cool_alert: ^2.0.1
   cupertino_icons: ^1.0.2
   file_picker: ^5.3.3
   firebase_auth: ^4.7.2

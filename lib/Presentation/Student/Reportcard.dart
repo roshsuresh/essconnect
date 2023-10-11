@@ -85,8 +85,8 @@ class ReportCard extends StatelessWidget {
                             kheight20,
                             Table(
                               border: TableBorder.all(
-                                  color:
-                                      const Color.fromRGBO(245, 243, 243, 1)),
+                                color: const Color.fromRGBO(245, 243, 243, 1),
+                              ),
                               columnWidths: const {
                                 0: FlexColumnWidth(3),
                                 1: FlexColumnWidth(5),
@@ -94,39 +94,41 @@ class ReportCard extends StatelessWidget {
                               },
                               children: const [
                                 TableRow(
-                                    decoration: BoxDecoration(
-                                      color: UIGuide.light_black,
-                                    ),
-                                    children: [
-                                      SizedBox(
-                                        height: 30,
-                                        child: Center(
-                                            child: Text(
+                                  decoration: BoxDecoration(
+                                    color: UIGuide.light_black,
+                                  ),
+                                  children: [
+                                    SizedBox(
+                                      height: 30,
+                                      child: Center(
+                                        child: Text(
                                           'Date',
                                           style: TextStyle(
                                               fontWeight: FontWeight.w600),
-                                        )),
-                                      ),
-                                      SizedBox(
-                                        height: 30,
-                                        child: Center(
-                                          child: Text(
-                                            'Description',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w600),
-                                          ),
                                         ),
                                       ),
-                                      SizedBox(
-                                        height: 30,
-                                        child: Center(
-                                            child: Text(
-                                          'View',
+                                    ),
+                                    SizedBox(
+                                      height: 30,
+                                      child: Center(
+                                        child: Text(
+                                          'Description',
                                           style: TextStyle(
                                               fontWeight: FontWeight.w600),
-                                        )),
+                                        ),
                                       ),
-                                    ]),
+                                    ),
+                                    SizedBox(
+                                      height: 30,
+                                      child: Center(
+                                          child: Text(
+                                        'View',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w600),
+                                      )),
+                                    ),
+                                  ],
+                                ),
                               ],
                             ),
                             LimitedBox(
@@ -317,7 +319,7 @@ class _PdfDownloadState extends State<PdfDownload> {
   }
 
   Future<void> requestDownload(String _url, String _name) async {
-    final dir = await getExternalStorageDirectory();
+    final dir = await getApplicationDocumentsDirectory();
     var _localPath;
 
     //dir!.path;
@@ -328,8 +330,8 @@ class _PdfDownloadState extends State<PdfDownload> {
     if (Platform.isAndroid) {
       _localPath = '/storage/emulated/0/Download';
     } else if (Platform.isIOS) {
-      final dir = await getExternalStorageDirectory();
-      _localPath = dir!.path;
+      final dir = await getApplicationDocumentsDirectory();
+      _localPath = dir.path;
     }
     print("pathhhh  $_localPath");
     final savedDir = Directory(_localPath);

@@ -47,7 +47,7 @@ class PaymentHistory extends StatelessWidget {
                     child: LottieBuilder.network(
                         'https://assets2.lottiefiles.com/private_files/lf30_lkquf6qz.json'),
                   )
-                : ListView(
+                : Column(
                     children: [
                       kheight10,
                       Padding(
@@ -122,8 +122,8 @@ class PaymentHistory extends StatelessWidget {
                           ],
                         ),
                       ),
-                      LimitedBox(
-                        maxHeight: size.height - 150,
+                      Expanded(
+                        // maxHeight: size.height - 150,
                         child: Scrollbar(
                           child: ListView.builder(
                               physics: const BouncingScrollPhysics(),
@@ -299,13 +299,13 @@ class _PdfDownloadFeeState extends State<PdfDownloadFee> {
   }
 
   Future<void> requestDownload(String _url, String _name) async {
-    final dir = await getExternalStorageDirectory();
+    final dir = await getApplicationDocumentsDirectory();
     var _localPath;
     if (Platform.isAndroid) {
       _localPath = '/storage/emulated/0/Download';
     } else if (Platform.isIOS) {
-      final dir = await getExternalStorageDirectory();
-      _localPath = dir!.path;
+      final dir = await getApplicationDocumentsDirectory();
+      _localPath = dir.path;
     }
     print("pathhhh  $_localPath");
     final savedDir = Directory(_localPath);

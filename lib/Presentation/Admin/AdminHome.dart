@@ -3,6 +3,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:essconnect/Application/AdminProviders/SchoolPhotoProviders.dart';
 import 'package:essconnect/Application/AdminProviders/dashboardProvider.dart';
 import 'package:essconnect/Application/Module%20Providers.dart/Module.dart';
+import 'package:essconnect/Application/Module%20Providers.dart/SchoolNameProvider.dart';
 import 'package:essconnect/Application/StudentProviders/CurriculamProviders.dart';
 import 'package:essconnect/Presentation/Admin/AttendanceTaken/AbsentReport.dart';
 import 'package:essconnect/Presentation/Admin/AttendanceTaken/Takenornot.dart';
@@ -11,8 +12,8 @@ import 'package:essconnect/Presentation/Admin/ExamTimetable/ExamScreen.dart';
 import 'package:essconnect/Presentation/Admin/History/NotificationHistoryStaff.dart';
 import 'package:essconnect/Presentation/Admin/MarkEntryMissingReportAdmin.dart';
 import 'package:essconnect/Presentation/Admin/StudentStatistiics.dart';
+import 'package:essconnect/Presentation/Admin/WebViewLogin.dart';
 import 'package:essconnect/Presentation/Staff/MarkEntryNew.dart';
-import 'package:essconnect/Presentation/Staff/MissingReport.dart';
 import 'package:essconnect/Presentation/Staff/RemarksEntry.dart';
 import 'package:essconnect/Presentation/Staff/StudAttendenceEntry.dart';
 import 'package:essconnect/Presentation/Staff/StudReport.dart';
@@ -54,6 +55,8 @@ class _AdminHomeState extends State<AdminHome> {
       await Provider.of<ConnectivityProvider>(context, listen: false);
       await Provider.of<ModuleProviders>(context, listen: false)
           .getModuleDetails();
+      await Provider.of<SchoolNameProvider>(context, listen: false)
+          .getSchoolname();
     });
   }
 
@@ -73,6 +76,41 @@ class _AdminHomeState extends State<AdminHome> {
                 child: ListView(
                   physics: const BouncingScrollPhysics(),
                   children: [
+                    Consumer<SchoolNameProvider>(
+                      builder: (context, snap, child) => snap.schoolname == null
+                          ? Container(
+                              height: 0,
+                              width: 0,
+                            )
+                          : Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: Container(
+                                padding: EdgeInsets.only(top: 4, bottom: 4),
+                                decoration: BoxDecoration(
+                                  // border: Border.all(color: UIGuide.THEME_LIGHT),
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(5)),
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Color.fromARGB(255, 234, 237, 239),
+                                      Color.fromARGB(255, 206, 203, 203),
+                                      Color.fromARGB(255, 206, 203, 203),
+                                      Color.fromARGB(255, 234, 237, 239),
+                                    ],
+                                  ),
+                                ),
+                                child: Center(
+                                    child: Text(
+                                  "${snap.schoolname ?? ""}, ${snap.place ?? ""}",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: UIGuide.light_Purple,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700),
+                                )),
+                              ),
+                            ),
+                    ),
                     const AdminProfileTop(),
                     Container(
                       width: size.width,
@@ -1309,6 +1347,63 @@ class AdminHomeContent extends StatelessWidget {
                         ),
                       ),
                     ),
+                    GestureDetector(
+                      onTap: () async {
+                        SharedPreferences _pref =
+                            await SharedPreferences.getInstance();
+                        String schdomain =
+                            await _pref.getString("subDomain").toString();
+                        print(schdomain);
+                        await Navigator.push(
+                            context,
+                            PageTransition(
+                              type: PageTransitionType.rightToLeft,
+                              child: LoginScreenWeb(
+                                schdomain: schdomain,
+                              ),
+                              duration: const Duration(milliseconds: 300),
+                            ));
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10, right: 10),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Card(
+                              elevation: 10,
+                              color: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12.0),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  height: 38,
+                                  width: 38,
+                                  decoration: const BoxDecoration(
+                                    image: DecorationImage(
+                                      opacity: 20,
+                                      image: AssetImage(
+                                        'assets/Loginwebb.png',
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            kheight10,
+                            const Text(
+                              'Login-Web',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 11,
+                                  color: Colors.black87),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -1414,6 +1509,10 @@ class AdminHomeContent extends StatelessWidget {
                       color: UIGuide.light_Purple),
                 ),
               ),
+              kheight20,
+              kheight20,
+              kheight20,
+              kheight20,
               kheight20,
               kheight20
             ],
