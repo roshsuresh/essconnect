@@ -1233,6 +1233,9 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
                                                             false;
                                                     List? items =
                                                         trans.items1WL ?? [];
+                                                    String cartDescription =
+                                                        trans.cartDescription1WL ??
+                                                            "";
 
                                                     if (token.isEmpty ||
                                                         token == null) {
@@ -1277,7 +1280,8 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
                                                           consumerMobileNo,
                                                           consumerEmailId,
                                                           txnId,
-                                                          items);
+                                                          items,
+                                                          cartDescription);
                                                     }
                                                   } else {
                                                     ScaffoldMessenger.of(
@@ -1694,6 +1698,9 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
                                                             false;
                                                     List? items =
                                                         trans.items1WLBus ?? [];
+                                                    String cartDescription =
+                                                        trans.cartDescription1WLBus ??
+                                                            "";
 
                                                     if (token.isEmpty ||
                                                         token == null) {
@@ -1738,7 +1745,8 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
                                                           consumerMobileNo,
                                                           consumerEmailId,
                                                           txnId,
-                                                          items);
+                                                          items,
+                                                          cartDescription);
                                                     }
                                                   } else {
                                                     ScaffoldMessenger.of(
@@ -2185,6 +2193,9 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
                                                               false;
                                                       List? items =
                                                           trans.items2WL ?? [];
+                                                      String cartDescription =
+                                                          trans.cartDescription2WL ??
+                                                              "";
 
                                                       if (token.isEmpty ||
                                                           token == null) {
@@ -2229,7 +2240,8 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
                                                             consumerMobileNo,
                                                             consumerEmailId,
                                                             txnId,
-                                                            items);
+                                                            items,
+                                                            cartDescription);
                                                       }
                                                     } else {
                                                       ScaffoldMessenger.of(
@@ -2645,6 +2657,9 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
                                                               false;
                                                       List? items =
                                                           trans.items2WL ?? [];
+                                                      String cartDescription =
+                                                          trans.cartDescription2WL ??
+                                                              "";
 
                                                       if (token.isEmpty ||
                                                           token == null) {
@@ -2689,7 +2704,8 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
                                                             consumerMobileNo,
                                                             consumerEmailId,
                                                             txnId,
-                                                            items);
+                                                            items,
+                                                            cartDescription);
                                                       }
                                                     } else {
                                                       ScaffoldMessenger.of(
@@ -3105,6 +3121,9 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
                                                               false;
                                                       List? items =
                                                           trans.items2WL ?? [];
+                                                      String cartDescription =
+                                                          trans.cartDescription2WL ??
+                                                              "";
 
                                                       if (token.isEmpty ||
                                                           token == null) {
@@ -3149,7 +3168,8 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
                                                             consumerMobileNo,
                                                             consumerEmailId,
                                                             txnId,
-                                                            items);
+                                                            items,
+                                                            cartDescription);
                                                       }
                                                     } else {
                                                       ScaffoldMessenger.of(
@@ -4824,7 +4844,8 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
       String consumerMobileNo,
       String consumerEmailId,
       String txnIdd,
-      List items) {
+      List items,
+      String cartDescrip) {
     try {
       if (Platform.isAndroid) {
         deviceID =
@@ -4853,6 +4874,7 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
           "consumerMobileNo": consumerMobileNo,
           "consumerEmailId": consumerEmailId,
           "txnId": txnIdd, //Unique merchant transaction ID
+          "cartDescription": cartDescrip,
           "items": items,
           "customStyle": {
             "PRIMARY_COLOR_CODE": "#45beaa", //merchant primary color code

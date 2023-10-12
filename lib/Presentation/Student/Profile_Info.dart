@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:essconnect/Application/StudentProviders/ProfileProvider.dart';
 import 'package:essconnect/Constants.dart';
+import 'package:essconnect/Presentation/Student/ProfileEdit.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:essconnect/utils/spinkit.dart';
 import 'package:flutter/material.dart';
@@ -53,6 +54,29 @@ class Profile_Info extends StatelessWidget {
                               begin: Alignment.topCenter,
                             ),
                           ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: InkWell(
+                                splashColor: Colors.grey,
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ProfileEdit()),
+                                  );
+                                },
+                                child: Icon(
+                                  Icons.mode_edit_outline_outlined,
+                                  size: 25.0,
+                                  color: Color.fromARGB(255, 232, 232, 250),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                         Positioned(
                           top: 70,
@@ -165,7 +189,7 @@ class Profile_Info extends StatelessWidget {
                               backgroundColor: UIGuide.WHITE,
                             ),
                           ),
-                        )
+                        ),
                       ],
                     ),
                     Padding(

@@ -1159,6 +1159,7 @@ class FeesProvider with ChangeNotifier {
   String? txnId1WL;
   bool? enableExpressPay1WL;
   List? items1WL;
+  String? cartDescription1WL;
 
   Future getDataOneWORLDLINE(String fees, String idFee, String feeAmount,
       String amount, String gateName) async {
@@ -1209,6 +1210,7 @@ class FeesProvider with ChangeNotifier {
         consumerId1WL = con.consumerId;
         consumerMobileNo1WL = con.consumerMobileNo;
         consumerEmailId1WL = con.consumerEmailId;
+        cartDescription1WL = con.cartDescription;
         txnId1WL = con.txnId;
 
         items1WL = await data["consumerData"]["items"];
@@ -1237,6 +1239,8 @@ class FeesProvider with ChangeNotifier {
   String? txnId1WLBus;
   bool? enableExpressPay1WLBus;
   List? items1WLBus;
+  String? cartDescription1WLBus;
+
   Future getDataOneWORLDLINEBus(String fees, String idFee, String feeAmount,
       String amount, String gateName) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
@@ -1285,6 +1289,7 @@ class FeesProvider with ChangeNotifier {
         consumerMobileNo1WLBus = con.consumerMobileNo;
         consumerEmailId1WLBus = con.consumerEmailId;
         txnId1WLBus = con.txnId;
+        cartDescription1WLBus = con.cartDescription;
 
         items1WLBus = await data["consumerData"]["items"];
         print(items1WLBus);
@@ -1312,6 +1317,7 @@ class FeesProvider with ChangeNotifier {
   String? txnId2WL;
   bool? enableExpressPay2WL;
   List? items2WL;
+  String? cartDescription2WL;
   Future getDataTwoWORLDLINE(
       String fees,
       String idFee,
@@ -1369,6 +1375,7 @@ class FeesProvider with ChangeNotifier {
       consumerMobileNo2WL = con.consumerMobileNo;
       consumerEmailId2WL = con.consumerEmailId;
       txnId2WL = con.txnId;
+      cartDescription2WL = con.cartDescription;
 
       items2WL = await data["consumerData"]["items"];
       print(items2WL);

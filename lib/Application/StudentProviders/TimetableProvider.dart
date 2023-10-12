@@ -38,7 +38,7 @@ class Timetableprovider with ChangeNotifier {
       if (response.statusCode == 200) {
         print("corect");
         final data = json.decode(response.body);
-        Map<String, dynamic> initialVal = data['initialValues'];
+        // Map<String, dynamic> initialVal = data['initialValues'];
         DivisionIdModel divi = DivisionIdModel.fromJson(data['initialValues']);
         divIDD = divi.divisionId;
         print(divIDD);

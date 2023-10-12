@@ -1107,6 +1107,8 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                                                 trans.enableExpressPay1WL ??
                                                     false;
                                             List? items = trans.items1WL ?? [];
+                                            String cartDescription =
+                                                trans.cartDescription1WL ?? "";
 
                                             if (token.isEmpty ||
                                                 token == null) {
@@ -1145,7 +1147,8 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                                                   consumerMobileNo,
                                                   consumerEmailId,
                                                   txnId,
-                                                  items);
+                                                  items,
+                                                  cartDescription);
                                             }
                                           }
 
@@ -1503,6 +1506,9 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                                                     false;
                                             List? items =
                                                 trans.items1WLBus ?? [];
+                                            String cartDescription =
+                                                trans.cartDescription1WLBus ??
+                                                    "";
 
                                             if (token.isEmpty ||
                                                 token == null) {
@@ -1541,7 +1547,8 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                                                   consumerMobileNo,
                                                   consumerEmailId,
                                                   txnId,
-                                                  items);
+                                                  items,
+                                                  cartDescription);
                                             }
                                           } else {
                                             ScaffoldMessenger.of(context)
@@ -1895,6 +1902,8 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                                                 trans.enableExpressPay2WL ??
                                                     false;
                                             List? items = trans.items2WL ?? [];
+                                            String cartDescription =
+                                                trans.cartDescription2WL ?? "";
 
                                             if (token.isEmpty ||
                                                 token == null) {
@@ -1933,7 +1942,8 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                                                   consumerMobileNo,
                                                   consumerEmailId,
                                                   txnId,
-                                                  items);
+                                                  items,
+                                                  cartDescription);
                                             }
                                           } else {
                                             ScaffoldMessenger.of(context)
@@ -3575,7 +3585,8 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
       String consumerMobileNo,
       String consumerEmailId,
       String txnIdd,
-      List items) {
+      List items,
+      String cartDescription) {
     try {
       if (Platform.isAndroid) {
         deviceID =
@@ -3604,6 +3615,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
           "consumerMobileNo": consumerMobileNo,
           "consumerEmailId": consumerEmailId,
           "txnId": txnIdd, //Unique merchant transaction ID
+          "cartDescription": cartDescription,
           "items": items,
           "customStyle": {
             "PRIMARY_COLOR_CODE": "#45beaa", //merchant primary color code

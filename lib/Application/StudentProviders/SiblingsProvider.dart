@@ -25,7 +25,6 @@ class SibingsProvider with ChangeNotifier {
     var data = jsonDecode(response.body.toString());
     print('data...........$data');
     if (response.statusCode == 200) {
-      var jsonrespo = json.decode(response.body);
       List<SiblingsNameModel> templist = List<SiblingsNameModel>.from(
           data.map((x) => SiblingsNameModel.fromJson(x)));
       siblingList.addAll(templist);

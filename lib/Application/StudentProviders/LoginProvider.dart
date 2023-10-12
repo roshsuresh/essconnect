@@ -22,7 +22,7 @@ class LoginProvider with ChangeNotifier {
   }
 
   Future<int> getActivation(String key) async {
-    String res;
+    // String res;
     setLoading(true);
     var headers = {
       'Content-Type': 'application/json',
@@ -105,7 +105,7 @@ class LoginProvider with ChangeNotifier {
   //forgot pssword
   String? item2;
   Future forgotPassword(BuildContext context, String uname) async {
-    Map<String, dynamic> data = await parseJWT();
+    //  Map<String, dynamic> data = await parseJWT();
     SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoad(true);
     var headers = {

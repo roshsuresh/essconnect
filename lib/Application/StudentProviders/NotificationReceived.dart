@@ -22,7 +22,7 @@ class NotificationReceivedProviderStudent with ChangeNotifier {
 
   List<NotificationListModel> receivedList = [];
   Future getNotificationReceived() async {
-    Map<String, dynamic> parse = await parseJWT();
+    //  Map<String, dynamic> parse = await parseJWT();
     SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoading(true);
     var headers = {

@@ -1,4 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
+import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:essconnect/Domain/Staff/NoticeboardSendModel.dart';
+import 'package:essconnect/Domain/Student/ProfileEditModel.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -49,9 +53,8 @@ class ProfileProvider with ChangeNotifier {
   }
 
   Future profileData() async {
-    Map<String, dynamic> data = await parseJWT();
-    setLoading(true);
     SharedPreferences _pref = await SharedPreferences.getInstance();
+    setLoading(true);
     var headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
@@ -64,8 +67,6 @@ class ProfileProvider with ChangeNotifier {
     try {
       if (response.statusCode == 200) {
         setLoading(true);
-
-        var jsonData = await json.decode(response.body);
 
         mapResponse = await json.decode(response.body);
         dataResponse = await mapResponse!['studentDetails'];
@@ -152,6 +153,316 @@ class ProfileProvider with ChangeNotifier {
       notifyListeners();
     } else {
       throw ("Something went wrong in siblings Response");
+    }
+  }
+
+  String? studentIdEdit;
+  int? offlineIdEdit;
+  int? installationIdEdit;
+  String? studentNameEdit;
+  String? guardianNameEdit;
+  String? userNameEdit;
+  String? addressEdit;
+  String? emailIdEdit;
+  String? mobileNoEdit;
+  String? photoIdEdit;
+  StudentPhoto? studentPhotoEdit;
+
+  //Offline
+  String? idOffline;
+  String? studentIdOffline;
+  String? guardianNameOffline;
+  int? offlineIdOffline;
+  int? installationIdOffline;
+  String? addressOffline;
+  String? emailIdOffline;
+  String? mobileNoOffline;
+  String? studentPhotoIdOffline;
+  StudentPhoto? studentPhotoOffline;
+
+  Future getProfileEdit() async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+    };
+
+    final response = await http.get(
+        Uri.parse("${UIGuide.baseURL}/student-profile/profileview"),
+        headers: headers);
+
+    if (response.statusCode == 200) {
+      var data = await json.decode(response.body);
+      InitialValues ini = InitialValues.fromJson(data["initialValues"]);
+      studentIdEdit = ini.studentId;
+      guardianNameEdit = ini.guardianName;
+      emailIdEdit = ini.emailId;
+      mobileNoEdit = ini.mobileNo;
+      addressEdit = ini.address;
+      studentPhotoEdit = ini.studentPhoto;
+      offlineIdEdit = ini.offlineId;
+      installationIdEdit = ini.installationId;
+      print(studentIdEdit);
+
+      OfflineStudentValues off =
+          OfflineStudentValues.fromJson(data["offlineStudentValues"]);
+
+      idOffline = off.id;
+      studentIdOffline = off.studentId;
+      guardianNameOffline = off.guardianName;
+
+      installationIdOffline = off.installationId;
+      addressOffline = off.address;
+      emailIdOffline = off.emailId;
+      mobileNoOffline = off.mobileNo;
+      studentPhotoOffline = off.studentPhoto;
+      print(idOffline);
+
+      notifyListeners();
+    } else {
+      throw ("Error in profile edit");
+    }
+  }
+
+  //Add image
+  bool _loadingg = false;
+  bool get loadingg => _loadingg;
+  setLoadingg(bool value) {
+    _loadingg = value;
+    notifyListeners();
+  }
+
+  File? selectedImage;
+  String? attachmentid;
+  Future studentImageSave(BuildContext context, String path) async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    setLoadingg(true);
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+    };
+    var request = http.MultipartRequest(
+        'POST', Uri.parse('${UIGuide.baseURL}/files/single/Students'));
+    request.fields.addAll({'': ''});
+    request.files.add(await http.MultipartFile.fromPath('', path));
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+    setLoadingg(true);
+    if (response.statusCode == 200) {
+      setLoadingg(true);
+      Map<String, dynamic> data =
+          jsonDecode(await response.stream.bytesToString());
+
+      NoticeImageId idd = NoticeImageId.fromJson(data);
+      attachmentid = idd.id;
+      print('...............   $attachmentid');
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        elevation: 10,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+        ),
+        duration: Duration(seconds: 1),
+        margin: EdgeInsets.only(bottom: 80, left: 30, right: 30),
+        behavior: SnackBarBehavior.floating,
+        content: Text(
+          'File added...',
+          textAlign: TextAlign.center,
+        ),
+      ));
+      setLoadingg(false);
+    } else {
+      selectedImage = null;
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        elevation: 10,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+        ),
+        duration: Duration(seconds: 1),
+        margin: EdgeInsets.only(bottom: 80, left: 30, right: 30),
+        behavior: SnackBarBehavior.floating,
+        content: Text(
+          'Something went wrong',
+          textAlign: TextAlign.center,
+        ),
+      ));
+      print(response.reasonPhrase);
+
+      setLoadingg(false);
+      notifyListeners();
+    }
+  }
+
+  // save profile
+
+  Future getSaveProfile(
+    BuildContext context,
+    int offlineID,
+    int installationId,
+    String guardianNa,
+    String addressE,
+    String emailIDE,
+    String mobileNoE,
+    String studentPhoId,
+  ) async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+    };
+    var request = http.Request(
+        'POST', Uri.parse('${UIGuide.baseURL}/student-profile/saveprofile'));
+    request.body = json.encode({
+      {
+        "offlineId": offlineID,
+        "installationId": installationId,
+        "guardianName": guardianNa,
+        "address": addressE,
+        "emailId": emailIDE,
+        "mobileNo": mobileNoE,
+        "studentPhotoId": studentPhoId,
+        "isGuardianNameChanged": true,
+        "isAddressChanged": true,
+        "isEmailIdChanged": true,
+        "isMobileNoChanged": true,
+        "isPhotoChanged": true
+      }
+    });
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+    print(request.body);
+    if (response.statusCode == 200) {
+      print('Correct........______________________________');
+      print(await response.stream.bytesToString());
+      await AwesomeDialog(
+              context: context,
+              dialogType: DialogType.success,
+              animType: AnimType.rightSlide,
+              headerAnimationLoop: false,
+              title: 'Saved Successfully',
+              btnOkOnPress: () {
+                return;
+              },
+              btnOkIcon: Icons.cancel,
+              btnOkColor: Colors.green)
+          .show();
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        elevation: 10,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+        ),
+        duration: Duration(seconds: 1),
+        margin: EdgeInsets.only(bottom: 80, left: 30, right: 30),
+        behavior: SnackBarBehavior.floating,
+        content: Text(
+          'Something Went Wrong....',
+          textAlign: TextAlign.center,
+        ),
+      ));
+      print('Error Response save profile');
+    }
+  }
+
+  //Update profile
+
+  Future getUpdateProfile(
+      BuildContext context,
+      int offlineID,
+      int installationId,
+      String guardianNa,
+      String addressE,
+      String emailIDE,
+      String mobileNoE,
+      String studentPhoId,
+      String offID) async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    print({
+      "offlineId": offlineID,
+      "installationId": installationId,
+      "guardianName": guardianNa,
+      "address": addressE,
+      "emailId": emailIDE,
+      "mobileNo": mobileNoE,
+      "studentPhotoId": studentPhoId,
+      "isGuardianNameChanged": true,
+      "isAddressChanged": true,
+      "isEmailIdChanged": true,
+      "isMobileNoChanged": true,
+      "isPhotoChanged": true
+    });
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+    };
+    var request = http.Request('PATCH',
+        Uri.parse('${UIGuide.baseURL}/student-profile/updateprofile/$offID'));
+    request.body = json.encode({
+      "offlineId": offlineID,
+      "installationId": installationId,
+      "guardianName": guardianNa,
+      "address": addressE,
+      "emailId": emailIDE,
+      "mobileNo": mobileNoE,
+      "studentPhotoId": studentPhoId.isEmpty ? null : studentPhoId,
+      "isGuardianNameChanged": true,
+      "isAddressChanged": true,
+      "isEmailIdChanged": true,
+      "isMobileNoChanged": true,
+      "isPhotoChanged": true
+    });
+    // "offlineId": offlineID,
+    // "installationId": installationId,
+    // "guardianName": guardianNa,
+    // "address": addressE,
+    // "emailId": emailIDE,
+    // "mobileNo": mobileNoE,
+    // "studentPhotoId": studentPhoId,
+    // "isGuardianNameChanged": true,
+    // "isAddressChanged": true,
+    // "isEmailIdChanged": true,
+    // "isMobileNoChanged": true,
+    // "isPhotoChanged": true
+    //   }
+    // });
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+    print(request.body);
+    if (response.statusCode == 200) {
+      print('Correct........______   Update   ______________________');
+      print(await response.stream.bytesToString());
+      await AwesomeDialog(
+              context: context,
+              dialogType: DialogType.success,
+              animType: AnimType.rightSlide,
+              headerAnimationLoop: false,
+              title: 'Updated Successfully',
+              btnOkOnPress: () {
+                return;
+              },
+              btnOkIcon: Icons.cancel,
+              btnOkColor: Colors.green)
+          .show();
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        elevation: 10,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+        ),
+        duration: Duration(seconds: 1),
+        margin: EdgeInsets.only(bottom: 80, left: 30, right: 30),
+        behavior: SnackBarBehavior.floating,
+        content: Text(
+          'Something Went Wrong....',
+          textAlign: TextAlign.center,
+        ),
+      ));
+      print('Error Response Update profile');
     }
   }
 }
