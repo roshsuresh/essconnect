@@ -58,24 +58,31 @@ class Profile_Info extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.all(20.0),
-                              child: InkWell(
-                                splashColor: Colors.grey,
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => ProfileEdit()),
-                                  );
-                                },
-                                child: Icon(
-                                  Icons.mode_edit_outline_outlined,
-                                  size: 25.0,
-                                  color: Color.fromARGB(255, 232, 232, 250),
-                                ),
-                              ),
-                            ),
+                            provider.editProfile == true
+                                ? Padding(
+                                    padding: const EdgeInsets.all(20.0),
+                                    child: InkWell(
+                                      splashColor: Colors.grey,
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ProfileEdit()),
+                                        );
+                                      },
+                                      child: Icon(
+                                        Icons.mode_edit_outline_outlined,
+                                        size: 25.0,
+                                        color:
+                                            Color.fromARGB(255, 232, 232, 250),
+                                      ),
+                                    ),
+                                  )
+                                : SizedBox(
+                                    height: 0,
+                                    width: 0,
+                                  ),
                           ],
                         ),
                         Positioned(
@@ -114,7 +121,9 @@ class Profile_Info extends StatelessWidget {
                                         fontWeight: FontWeight.w500,
                                         fontSize: 14),
                                   ),
-                                  kheight10,
+                                  SizedBox(
+                                    height: 5,
+                                  ),
                                   Row(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
@@ -124,44 +133,57 @@ class Profile_Info extends StatelessWidget {
                                           provider.division == null
                                               ? '--'
                                               : provider.division.toString(),
-                                          style:
-                                              const TextStyle(fontSize: 16.0)),
+                                          style: const TextStyle(
+                                              fontSize: 14.0,
+                                              color: Color.fromARGB(
+                                                  255, 82, 82, 82))),
                                     ],
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Table(
+                                      border: TableBorder.all(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          color: const Color.fromARGB(
+                                              255, 219, 219, 219)),
                                       children: [
                                         TableRow(children: [
-                                          Column(
-                                            children: [
-                                              const Text('Roll No',
-                                                  style: TextStyle(
-                                                      fontSize: 14.0,
-                                                      color: Colors.grey)),
-                                              Text(
-                                                  provider.rollNo == null
-                                                      ? '--'
-                                                      : provider.rollNo
-                                                          .toString(),
-                                                  style: const TextStyle(
-                                                      fontSize: 16.0)),
-                                            ],
+                                          Padding(
+                                            padding: const EdgeInsets.all(4.0),
+                                            child: Column(
+                                              children: [
+                                                const Text('Roll No',
+                                                    style: TextStyle(
+                                                        fontSize: 12.0,
+                                                        color: Colors.grey)),
+                                                Text(
+                                                    provider.rollNo == null
+                                                        ? '--'
+                                                        : provider.rollNo
+                                                            .toString(),
+                                                    style: const TextStyle(
+                                                        fontSize: 16.0)),
+                                              ],
+                                            ),
                                           ),
-                                          Column(
-                                            children: [
-                                              const Text('Adm No',
-                                                  style: TextStyle(
-                                                      fontSize: 14.0,
-                                                      color: Colors.grey)),
-                                              Text(
-                                                  provider.admissionNo == null
-                                                      ? '--'
-                                                      : provider.admissionNo
-                                                          .toString(),
-                                                  style: const TextStyle(
-                                                      fontSize: 16.0)),
-                                            ],
+                                          Padding(
+                                            padding: const EdgeInsets.all(4.0),
+                                            child: Column(
+                                              children: [
+                                                const Text('Adm No',
+                                                    style: TextStyle(
+                                                        fontSize: 12.0,
+                                                        color: Colors.grey)),
+                                                Text(
+                                                    provider.admissionNo == null
+                                                        ? '--'
+                                                        : provider.admissionNo
+                                                            .toString(),
+                                                    style: const TextStyle(
+                                                        fontSize: 16.0)),
+                                              ],
+                                            ),
                                           ),
                                         ])
                                       ],
@@ -221,342 +243,353 @@ class Profile_Info extends StatelessWidget {
                                   child: const Divider(
                                     color: Colors.black,
                                   )),
-                              Table(
-                                defaultColumnWidth:
-                                    const FixedColumnWidth(200.0),
-                                children: [
-                                  TableRow(
-                                    children: [
-                                      Column(
-                                        children: [
-                                          Row(
-                                            children: [
-                                              const Icon(
-                                                Icons.cake_outlined,
-                                                size: 22,
-                                              ),
-                                              kWidth,
-                                              Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    provider.dob == null
-                                                        ? '--'
-                                                        : provider.dob
-                                                            .toString(),
-                                                    style: const TextStyle(
+                              Padding(
+                                padding: const EdgeInsets.only(left: 12.0),
+                                child: Table(
+                                  defaultColumnWidth:
+                                      const FixedColumnWidth(200.0),
+                                  children: [
+                                    TableRow(
+                                      children: [
+                                        Column(
+                                          children: [
+                                            Row(
+                                              children: [
+                                                const Icon(
+                                                  Icons.cake_outlined,
+                                                  size: 22,
+                                                ),
+                                                kWidth,
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      provider.dob == null
+                                                          ? '--'
+                                                          : provider.dob
+                                                              .toString(),
+                                                      style: const TextStyle(
+                                                          color: UIGuide
+                                                              .light_Purple),
+                                                    ),
+                                                    const Text(
+                                                      'Birthday',
+                                                      style: TextStyle(
+                                                          color: Colors.black38,
+                                                          fontSize: 12),
+                                                    )
+                                                  ],
+                                                )
+                                              ],
+                                            ),
+                                            kheight10,
+                                          ],
+                                        ),
+                                        Column(
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    const Icon(
+                                                      Icons.person_outlined,
+                                                      size: 22,
+                                                    ),
+                                                    kWidth,
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          provider.gender
+                                                              .toString(),
+                                                          style:
+                                                              const TextStyle(
+                                                            color: UIGuide
+                                                                .light_Purple,
+                                                          ),
+                                                        ),
+                                                        const Text(
+                                                          'Gender',
+                                                          style: TextStyle(
+                                                              color: Colors
+                                                                  .black38,
+                                                              fontSize: 12),
+                                                        ),
+                                                      ],
+                                                    )
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                            kheight10,
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    TableRow(
+                                      children: [
+                                        Column(
+                                          children: [
+                                            Row(
+                                              children: [
+                                                const Icon(
+                                                  Icons.bloodtype_outlined,
+                                                  size: 22,
+                                                ),
+                                                kWidth,
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      provider.bloodGroup ==
+                                                              null
+                                                          ? '--'
+                                                          : provider.bloodGroup
+                                                              .toString(),
+                                                      style: const TextStyle(
                                                         color: UIGuide
-                                                            .light_Purple),
-                                                  ),
-                                                  const Text(
-                                                    'Birthday',
-                                                    style: TextStyle(
-                                                        color: Colors.black38,
-                                                        fontSize: 12),
-                                                  )
-                                                ],
-                                              )
-                                            ],
-                                          ),
-                                          kheight10,
-                                        ],
-                                      ),
-                                      Column(
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  const Icon(
-                                                    Icons.person_outlined,
-                                                    size: 22,
-                                                  ),
-                                                  kWidth,
-                                                  Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                        provider.gender
-                                                            .toString(),
-                                                        style: const TextStyle(
-                                                          color: UIGuide
-                                                              .light_Purple,
-                                                        ),
+                                                            .light_Purple,
                                                       ),
-                                                      const Text(
-                                                        'Gender',
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.black38,
-                                                            fontSize: 12),
-                                                      ),
-                                                    ],
-                                                  )
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                          kheight10,
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                  TableRow(
-                                    children: [
-                                      Column(
-                                        children: [
-                                          Row(
-                                            children: [
-                                              const Icon(
-                                                Icons.bloodtype_outlined,
-                                                size: 22,
-                                              ),
-                                              kWidth,
-                                              Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    provider.bloodGroup == null
-                                                        ? '--'
-                                                        : provider.bloodGroup
-                                                            .toString(),
-                                                    style: const TextStyle(
-                                                      color:
-                                                          UIGuide.light_Purple,
                                                     ),
-                                                  ),
-                                                  const Text(
-                                                    'Blood Group',
-                                                    style: TextStyle(
-                                                        color: Colors.black38,
-                                                        fontSize: 12),
-                                                  )
-                                                ],
-                                              )
-                                            ],
-                                          ),
-                                          kheight10,
-                                        ],
-                                      ),
-                                      Column(
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  const Icon(
-                                                    Icons.flag_outlined,
-                                                    size: 22,
-                                                  ),
-                                                  kWidth,
-                                                  Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                        provider.houseGroup ==
-                                                                null
-                                                            ? '--'
-                                                            : provider
-                                                                .houseGroup
-                                                                .toString(),
-                                                        style: const TextStyle(
-                                                          color: UIGuide
-                                                              .light_Purple,
-                                                        ),
-                                                      ),
-                                                      const Text(
-                                                        'House Group',
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.black38,
-                                                            fontSize: 12),
-                                                      ),
-                                                    ],
-                                                  )
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                          kheight10,
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                  TableRow(
-                                    children: [
-                                      Column(
-                                        children: [
-                                          Row(
-                                            children: [
-                                              const Icon(
-                                                Icons.height_outlined,
-                                                size: 22,
-                                              ),
-                                              kWidth,
-                                              Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    provider.height == null
-                                                        ? '0.00'
-                                                        : provider.height
-                                                            .toString(),
-                                                    style: const TextStyle(
-                                                      color:
-                                                          UIGuide.light_Purple,
+                                                    const Text(
+                                                      'Blood Group',
+                                                      style: TextStyle(
+                                                          color: Colors.black38,
+                                                          fontSize: 12),
+                                                    )
+                                                  ],
+                                                )
+                                              ],
+                                            ),
+                                            kheight10,
+                                          ],
+                                        ),
+                                        Column(
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    const Icon(
+                                                      Icons.flag_outlined,
+                                                      size: 22,
                                                     ),
-                                                  ),
-                                                  const Text(
-                                                    'Height',
-                                                    style: TextStyle(
-                                                        color: Colors.black38,
-                                                        fontSize: 12),
-                                                  )
-                                                ],
-                                              )
-                                            ],
-                                          ),
-                                          kheight10,
-                                        ],
-                                      ),
-                                      Column(
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  const Icon(
-                                                    Icons.line_weight_outlined,
-                                                    size: 22,
-                                                  ),
-                                                  kWidth,
-                                                  Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                        provider.weight == null
-                                                            ? '0.00'
-                                                            : provider.weight
-                                                                .toString(),
-                                                        style: const TextStyle(
-                                                          color: UIGuide
-                                                              .light_Purple,
+                                                    kWidth,
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          provider.houseGroup ==
+                                                                  null
+                                                              ? '--'
+                                                              : provider
+                                                                  .houseGroup
+                                                                  .toString(),
+                                                          style:
+                                                              const TextStyle(
+                                                            color: UIGuide
+                                                                .light_Purple,
+                                                          ),
                                                         ),
+                                                        const Text(
+                                                          'House Group',
+                                                          style: TextStyle(
+                                                              color: Colors
+                                                                  .black38,
+                                                              fontSize: 12),
+                                                        ),
+                                                      ],
+                                                    )
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                            kheight10,
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    TableRow(
+                                      children: [
+                                        Column(
+                                          children: [
+                                            Row(
+                                              children: [
+                                                const Icon(
+                                                  Icons.height_outlined,
+                                                  size: 22,
+                                                ),
+                                                kWidth,
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      provider.height == null
+                                                          ? '0.00'
+                                                          : provider.height
+                                                              .toString(),
+                                                      style: const TextStyle(
+                                                        color: UIGuide
+                                                            .light_Purple,
                                                       ),
-                                                      const Text(
-                                                        'Weight',
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.black38,
-                                                            fontSize: 12),
-                                                      ),
-                                                    ],
-                                                  )
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                          kheight10,
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                  TableRow(
-                                    children: [
-                                      Column(
-                                        children: [
-                                          Row(
-                                            children: [
-                                              const Icon(
-                                                Icons.sticky_note_2_outlined,
-                                                size: 22,
-                                              ),
-                                              kWidth,
-                                              Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    provider.classTeacher ==
-                                                            null
-                                                        ? '--'
-                                                        : provider.classTeacher
-                                                            .toString(),
-                                                    style: const TextStyle(
-                                                      color:
-                                                          UIGuide.light_Purple,
                                                     ),
-                                                  ),
-                                                  const Text(
-                                                    'Class Teacher',
-                                                    style: TextStyle(
-                                                        color: Colors.black38,
-                                                        fontSize: 12),
-                                                  )
-                                                ],
-                                              )
-                                            ],
-                                          ),
-                                          kheight10,
-                                        ],
-                                      ),
-                                      Column(
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  const Icon(
-                                                    Icons.location_on,
-                                                    size: 22,
-                                                  ),
-                                                  kWidth,
-                                                  Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Text(
-                                                        provider.area ==
-                                                                    'NIL' ||
-                                                                provider.area ==
-                                                                    null
-                                                            ? '--'
-                                                            : provider.area
-                                                                .toString(),
-                                                        style: const TextStyle(
-                                                          color: UIGuide
-                                                              .light_Purple,
+                                                    const Text(
+                                                      'Height',
+                                                      style: TextStyle(
+                                                          color: Colors.black38,
+                                                          fontSize: 12),
+                                                    )
+                                                  ],
+                                                )
+                                              ],
+                                            ),
+                                            kheight10,
+                                          ],
+                                        ),
+                                        Column(
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    const Icon(
+                                                      Icons
+                                                          .line_weight_outlined,
+                                                      size: 22,
+                                                    ),
+                                                    kWidth,
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          provider.weight ==
+                                                                  null
+                                                              ? '0.00'
+                                                              : provider.weight
+                                                                  .toString(),
+                                                          style:
+                                                              const TextStyle(
+                                                            color: UIGuide
+                                                                .light_Purple,
+                                                          ),
                                                         ),
+                                                        const Text(
+                                                          'Weight',
+                                                          style: TextStyle(
+                                                              color: Colors
+                                                                  .black38,
+                                                              fontSize: 12),
+                                                        ),
+                                                      ],
+                                                    )
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                            kheight10,
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    TableRow(
+                                      children: [
+                                        Column(
+                                          children: [
+                                            Row(
+                                              children: [
+                                                const Icon(
+                                                  Icons.sticky_note_2_outlined,
+                                                  size: 22,
+                                                ),
+                                                kWidth,
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      provider.classTeacher ==
+                                                              null
+                                                          ? '--'
+                                                          : provider
+                                                              .classTeacher
+                                                              .toString(),
+                                                      style: const TextStyle(
+                                                        color: UIGuide
+                                                            .light_Purple,
                                                       ),
-                                                      const Text(
-                                                        'Area',
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.black38,
-                                                            fontSize: 12),
-                                                      ),
-                                                    ],
-                                                  )
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                          kheight10,
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                                                    ),
+                                                    const Text(
+                                                      'Class Teacher',
+                                                      style: TextStyle(
+                                                          color: Colors.black38,
+                                                          fontSize: 12),
+                                                    )
+                                                  ],
+                                                )
+                                              ],
+                                            ),
+                                            kheight10,
+                                          ],
+                                        ),
+                                        Column(
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    const Icon(
+                                                      Icons.location_on,
+                                                      size: 22,
+                                                    ),
+                                                    kWidth,
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          provider.area ==
+                                                                      'NIL' ||
+                                                                  provider.area ==
+                                                                      null
+                                                              ? '--'
+                                                              : provider.area
+                                                                  .toString(),
+                                                          style:
+                                                              const TextStyle(
+                                                            color: UIGuide
+                                                                .light_Purple,
+                                                          ),
+                                                        ),
+                                                        const Text(
+                                                          'Area',
+                                                          style: TextStyle(
+                                                              color: Colors
+                                                                  .black38,
+                                                              fontSize: 12),
+                                                        ),
+                                                      ],
+                                                    )
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                            kheight10,
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                               Padding(
                                 padding: const EdgeInsets.all(8.0),
@@ -621,54 +654,44 @@ class Profile_Info extends StatelessWidget {
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(5))),
                           child: Column(
+                            mainAxisSize: MainAxisSize.min,
                             children: [
-                              const Text(
-                                'Father (Guardian)',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(color: Colors.black),
-                              ),
-                              Center(
-                                  child: Text(
-                                provider.fatherName == null
-                                    ? '---'
-                                    : provider.fatherName.toString(),
-                                style: const TextStyle(
-                                    color: UIGuide.light_Purple,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 12),
-                              )),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Icon(
-                                    Icons.email_outlined,
-                                    size: 14,
-                                  ),
-                                  Flexible(
-                                    child: RichText(
-                                      overflow: TextOverflow.ellipsis,
-                                      strutStyle:
-                                          const StrutStyle(fontSize: 12.0),
-                                      text: TextSpan(
-                                          style: const TextStyle(
-                                            color: UIGuide.light_Purple,
-                                          ),
-                                          text: provider.fatherMail ?? '--'),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 8.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      provider.fatherName == null
+                                          ? '---'
+                                          : provider.fatherName.toString(),
+                                      style: const TextStyle(
+                                          color: UIGuide.light_Purple,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 12),
                                     ),
-                                  ),
-                                ],
+                                    const Text(
+                                      ' ( Father ) ',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                  ],
+                                ),
                               ),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.all(8.0),
+                                    padding: const EdgeInsets.only(
+                                        top: 14.0, bottom: 10, left: 10),
                                     child: Container(
                                       width: 60,
                                       height: 80,
                                       decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: const Color.fromARGB(
+                                                  255, 244, 246, 255)),
                                           color: Colors.white,
                                           image: DecorationImage(
                                               fit: BoxFit.fill,
@@ -682,29 +705,66 @@ class Profile_Info extends StatelessWidget {
                                               Radius.circular(10))),
                                     ),
                                   ),
-                                  kWidth,
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      kheight10,
-                                      kheight10,
-                                      Row(
-                                        children: [
-                                          const Icon(
-                                            Icons.phone_android_outlined,
-                                            size: 12,
+                                  // kWidth,
+                                  Padding(
+                                    padding: const EdgeInsets.all(14.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 4.0),
+                                          child: Row(
+                                            children: [
+                                              const Icon(
+                                                Icons.phone_android_outlined,
+                                                size: 12,
+                                                color: UIGuide.light_Purple,
+                                              ),
+                                              SizedBox(
+                                                width: 5,
+                                              ),
+                                              Text(provider.fatherMobileno ==
+                                                      null
+                                                  ? '+91 --'
+                                                  : '+91 ${provider.fatherMobileno.toString()}')
+                                            ],
                                           ),
-                                          Text(provider.fatherMobileno == null
-                                              ? '  +91----'
-                                              : '  +91 ${provider.fatherMobileno.toString()}')
-                                        ],
-                                      ),
-                                      kheight10,
-                                    ],
+                                        ),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 8.0),
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              const Icon(
+                                                Icons.email_outlined,
+                                                size: 14,
+                                                color: UIGuide.light_Purple,
+                                              ),
+                                              SizedBox(
+                                                width: 5,
+                                              ),
+                                              SizedBox(
+                                                width: size.width / 3,
+                                                child: Text(
+                                                    provider.fatherMail ??
+                                                        '--'),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+
+                                        // kheight10,
+                                      ],
+                                    ),
                                   )
                                 ],
-                              )
+                              ),
                             ],
                           ),
                         ),
@@ -714,64 +774,48 @@ class Profile_Info extends StatelessWidget {
                           decoration: BoxDecoration(
                               color: Colors.white,
                               border: Border.all(
-                                width: .5,
-                                color: UIGuide.light_Purple,
-                              ),
+                                  color: UIGuide.light_Purple, width: .5),
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(5))),
                           child: Column(
+                            mainAxisSize: MainAxisSize.min,
                             children: [
-                              const Text(
-                                'Mother',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(color: Colors.black),
-                              ),
-                              //kheight10,
-                              Center(
-                                  child: Text(
-                                provider.motherName == null
-                                    ? '---'
-                                    : provider.motherName.toString(),
-                                style: const TextStyle(
-                                    color: UIGuide.light_Purple,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 12),
-                              )),
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Icon(
-                                    Icons.email_outlined,
-                                    size: 14,
-                                  ),
-                                  Flexible(
-                                    child: RichText(
-                                      overflow: TextOverflow.ellipsis,
-                                      strutStyle:
-                                          const StrutStyle(fontSize: 12.0),
-                                      text: TextSpan(
-                                          style: const TextStyle(
-                                            color: UIGuide.light_Purple,
-                                          ),
-                                          text: provider.motherMailId == null
-                                              ? '---'
-                                              : provider.motherMailId
-                                                  .toString()),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 8.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      provider.motherName == null
+                                          ? '---'
+                                          : provider.motherName.toString(),
+                                      style: const TextStyle(
+                                          color: UIGuide.light_Purple,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 12),
                                     ),
-                                  ),
-                                ],
+                                    const Text(
+                                      ' ( Mother ) ',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                  ],
+                                ),
                               ),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.start,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.all(8.0),
+                                    padding: const EdgeInsets.only(
+                                        top: 14.0, bottom: 10, left: 10),
                                     child: Container(
                                       width: 60,
                                       height: 80,
                                       decoration: BoxDecoration(
+                                          border: Border.all(
+                                              color: const Color.fromARGB(
+                                                  255, 244, 246, 255)),
                                           color: Colors.white,
                                           image: DecorationImage(
                                               fit: BoxFit.fill,
@@ -785,32 +829,172 @@ class Profile_Info extends StatelessWidget {
                                               Radius.circular(10))),
                                     ),
                                   ),
-                                  kWidth,
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      kheight10,
-                                      kheight10,
-                                      Row(
-                                        children: [
-                                          const Icon(
-                                            Icons.phone_android_outlined,
-                                            size: 12,
+                                  // kWidth,
+                                  Padding(
+                                    padding: const EdgeInsets.all(14.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 4.0),
+                                          child: Row(
+                                            children: [
+                                              const Icon(
+                                                Icons.phone_android_outlined,
+                                                size: 12,
+                                                color: UIGuide.light_Purple,
+                                              ),
+                                              SizedBox(
+                                                width: 5,
+                                              ),
+                                              Text(provider.motherMobileno ==
+                                                      null
+                                                  ? '+91 --'
+                                                  : '+91 ${provider.motherMobileno.toString()}')
+                                            ],
                                           ),
-                                          Text(provider.motherMobileno == null
-                                              ? '  +91 ----'
-                                              : '  +91 ${provider.motherMobileno.toString()}')
-                                        ],
-                                      ),
-                                      kheight10,
-                                    ],
+                                        ),
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 8.0),
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              const Icon(
+                                                Icons.email_outlined,
+                                                size: 14,
+                                                color: UIGuide.light_Purple,
+                                              ),
+                                              SizedBox(
+                                                width: 5,
+                                              ),
+                                              SizedBox(
+                                                width: size.width / 3,
+                                                child: Text(
+                                                    provider.motherMailId ??
+                                                        '--'),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+
+                                        // kheight10,
+                                      ],
+                                    ),
                                   )
                                 ],
-                              )
+                              ),
                             ],
                           ),
                         ),
+                        // Container(
+                        //   width: width,
+                        //   margin: const EdgeInsets.all(6.0),
+                        //   decoration: BoxDecoration(
+                        //       color: Colors.white,
+                        //       border: Border.all(
+                        //         width: .5,
+                        //         color: UIGuide.light_Purple,
+                        //       ),
+                        //       borderRadius:
+                        //           const BorderRadius.all(Radius.circular(5))),
+                        //   child: Column(
+                        //     children: [
+                        //       const Text(
+                        //         'Mother',
+                        //         textAlign: TextAlign.center,
+                        //         style: TextStyle(color: Colors.black),
+                        //       ),
+                        //       //kheight10,
+                        //       Center(
+                        //           child: Text(
+                        //         provider.motherName == null
+                        //             ? '---'
+                        //             : provider.motherName.toString(),
+                        //         style: const TextStyle(
+                        //             color: UIGuide.light_Purple,
+                        //             fontWeight: FontWeight.w500,
+                        //             fontSize: 12),
+                        //       )),
+                        //       Row(
+                        //         crossAxisAlignment: CrossAxisAlignment.center,
+                        //         mainAxisAlignment: MainAxisAlignment.center,
+                        //         children: [
+                        //           const Icon(
+                        //             Icons.email_outlined,
+                        //             size: 14,
+                        //           ),
+                        //           Flexible(
+                        //             child: RichText(
+                        //               overflow: TextOverflow.ellipsis,
+                        //               strutStyle:
+                        //                   const StrutStyle(fontSize: 12.0),
+                        //               text: TextSpan(
+                        //                   style: const TextStyle(
+                        //                     color: UIGuide.light_Purple,
+                        //                   ),
+                        //                   text: provider.motherMailId == null
+                        //                       ? '---'
+                        //                       : provider.motherMailId
+                        //                           .toString()),
+                        //             ),
+                        //           ),
+                        //         ],
+                        //       ),
+                        //       Row(
+                        //         mainAxisAlignment: MainAxisAlignment.center,
+                        //         crossAxisAlignment: CrossAxisAlignment.start,
+                        //         children: [
+                        //           Padding(
+                        //             padding: const EdgeInsets.all(8.0),
+                        //             child: Container(
+                        //               width: 60,
+                        //               height: 80,
+                        //               decoration: BoxDecoration(
+                        //                   color: Colors.white,
+                        //                   image: DecorationImage(
+                        //                       fit: BoxFit.fill,
+                        //                       image: NetworkImage(
+                        //                         provider.motherPhoto == null
+                        //                             ? 'https://www.techniquehow.com/wp-content/uploads/2021/09/random-DP-image.png'
+                        //                             : provider.motherPhoto
+                        //                                 .toString(),
+                        //                       )),
+                        //                   borderRadius: const BorderRadius.all(
+                        //                       Radius.circular(10))),
+                        //             ),
+                        //           ),
+                        //           kWidth,
+                        //           Column(
+                        //             crossAxisAlignment:
+                        //                 CrossAxisAlignment.start,
+                        //             children: [
+                        //               kheight10,
+                        //               kheight10,
+                        //               Row(
+                        //                 children: [
+                        //                   const Icon(
+                        //                     Icons.phone_android_outlined,
+                        //                     size: 12,
+                        //                   ),
+                        //                   Text(provider.motherMobileno == null
+                        //                       ? '  +91 ----'
+                        //                       : '  +91 ${provider.motherMobileno.toString()}')
+                        //                 ],
+                        //               ),
+                        //               kheight10,
+                        //             ],
+                        //           )
+                        //         ],
+                        //       )
+                        //     ],
+                        //   ),
+                        // ),
                         // Container(
                         //   margin: const EdgeInsets.all(6.0),
                         //   decoration: BoxDecoration(
@@ -824,7 +1008,7 @@ class Profile_Info extends StatelessWidget {
                         // ),
                       ],
                       options: CarouselOptions(
-                        height: 180.0,
+                        height: 150.0,
                         enlargeCenterPage: false,
                         autoPlay: true,
                         aspectRatio: 16 / 9,

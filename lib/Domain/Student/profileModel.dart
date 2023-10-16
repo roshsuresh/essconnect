@@ -26,36 +26,37 @@ class StudentProfileModel {
   String? motherMailId;
   String? motherMobileno;
   String? area;
+  bool? editProfile;
 
-  StudentProfileModel({
-    this.studentName,
-    this.admissionNo,
-    this.rollNo,
-    this.classc,
-    this.divisionName,
-    this.divisionId,
-    this.bloodGroup,
-    this.houseGroup,
-    this.classTeacher,
-    this.dob,
-    this.studentPhoto,
-    this.studentPhotoId,
-    this.fatherPhoto,
-    this.fatherPhotoId,
-    this.motherPhoto,
-    this.motherPhotoId,
-    this.gender,
-    this.height,
-    this.weight,
-    this.address,
-    this.fatherName,
-    this.fatherMailId,
-    this.fatherMobileno,
-    this.motherName,
-    this.motherMailId,
-    this.motherMobileno,
-    this.area,
-  });
+  StudentProfileModel(
+      {this.studentName,
+      this.admissionNo,
+      this.rollNo,
+      this.classc,
+      this.divisionName,
+      this.divisionId,
+      this.bloodGroup,
+      this.houseGroup,
+      this.classTeacher,
+      this.dob,
+      this.studentPhoto,
+      this.studentPhotoId,
+      this.fatherPhoto,
+      this.fatherPhotoId,
+      this.motherPhoto,
+      this.motherPhotoId,
+      this.gender,
+      this.height,
+      this.weight,
+      this.address,
+      this.fatherName,
+      this.fatherMailId,
+      this.fatherMobileno,
+      this.motherName,
+      this.motherMailId,
+      this.motherMobileno,
+      this.area,
+      this.editProfile});
 
   StudentProfileModel.fromJson(Map<String, dynamic> json) {
     studentName = json['studentName'];
@@ -85,37 +86,39 @@ class StudentProfileModel {
     motherMailId = json['motherMailId'];
     motherMobileno = json['motherMobileno'];
     area = json['area'];
+    editProfile = json['editProfile'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['studentName'] = this.studentName;
-    data['admissionNo'] = this.admissionNo;
-    data['rollNo'] = this.rollNo;
-    data['class'] = this.classc;
-    data['divisionName'] = this.divisionName;
-    data['divisionId'] = this.divisionId;
-    data['bloodGroup'] = this.bloodGroup;
-    data['houseGroup'] = this.houseGroup;
-    data['classTeacher'] = this.classTeacher;
-    data['dob'] = this.dob;
-    data['studentPhoto'] = this.studentPhoto;
-    data['studentPhotoId'] = this.studentPhotoId;
-    data['fatherPhoto'] = this.fatherPhoto;
-    data['fatherPhotoId'] = this.fatherPhotoId;
-    data['motherPhoto'] = this.motherPhoto;
-    data['motherPhotoId'] = this.motherPhotoId;
-    data['gender'] = this.gender;
-    data['height'] = this.height;
-    data['weight'] = this.weight;
-    data['address'] = this.address;
-    data['fatherName'] = this.fatherName;
-    data['fatherMailId'] = this.fatherMailId;
-    data['fatherMobileno'] = this.fatherMobileno;
-    data['motherName'] = this.motherName;
-    data['motherMailId'] = this.motherMailId;
-    data['motherMobileno'] = this.motherMobileno;
-    data['area'] = this.area;
+    data['studentName'] = studentName;
+    data['admissionNo'] = admissionNo;
+    data['rollNo'] = rollNo;
+    data['class'] = classc;
+    data['divisionName'] = divisionName;
+    data['divisionId'] = divisionId;
+    data['bloodGroup'] = bloodGroup;
+    data['houseGroup'] = houseGroup;
+    data['classTeacher'] = classTeacher;
+    data['dob'] = dob;
+    data['studentPhoto'] = studentPhoto;
+    data['studentPhotoId'] = studentPhotoId;
+    data['fatherPhoto'] = fatherPhoto;
+    data['fatherPhotoId'] = fatherPhotoId;
+    data['motherPhoto'] = motherPhoto;
+    data['motherPhotoId'] = motherPhotoId;
+    data['gender'] = gender;
+    data['height'] = height;
+    data['weight'] = weight;
+    data['address'] = address;
+    data['fatherName'] = fatherName;
+    data['fatherMailId'] = fatherMailId;
+    data['fatherMobileno'] = fatherMobileno;
+    data['motherName'] = motherName;
+    data['motherMailId'] = motherMailId;
+    data['motherMobileno'] = motherMobileno;
+    data['area'] = area;
+    data['editProfile'] = editProfile;
     return data;
   }
 }

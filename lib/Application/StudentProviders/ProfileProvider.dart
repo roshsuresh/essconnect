@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:essconnect/Domain/Staff/NoticeboardSendModel.dart';
 import 'package:essconnect/Domain/Student/ProfileEditModel.dart';
+import 'package:essconnect/Presentation/Student/ProfileEdit.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -44,6 +45,7 @@ class ProfileProvider with ChangeNotifier {
   String? fatherPhoto;
   String? motherPhoto;
   String? area;
+  bool? editProfile;
 
   bool _loading = false;
   bool get loading => _loading;
@@ -100,6 +102,7 @@ class ProfileProvider with ChangeNotifier {
         houseGroup = std.houseGroup;
         classTeacher = std.classTeacher;
         area = std.area;
+        editProfile = std.editProfile;
         setLoading(false);
         notifyListeners();
       } else {
@@ -215,6 +218,7 @@ class ProfileProvider with ChangeNotifier {
       addressOffline = off.address;
       emailIdOffline = off.emailId;
       mobileNoOffline = off.mobileNo;
+      studentPhotoIdOffline = off.studentPhotoId;
       studentPhotoOffline = off.studentPhoto;
       print(idOffline);
 
@@ -270,6 +274,7 @@ class ProfileProvider with ChangeNotifier {
           textAlign: TextAlign.center,
         ),
       ));
+
       setLoadingg(false);
     } else {
       selectedImage = null;
@@ -314,20 +319,18 @@ class ProfileProvider with ChangeNotifier {
     var request = http.Request(
         'POST', Uri.parse('${UIGuide.baseURL}/student-profile/saveprofile'));
     request.body = json.encode({
-      {
-        "offlineId": offlineID,
-        "installationId": installationId,
-        "guardianName": guardianNa,
-        "address": addressE,
-        "emailId": emailIDE,
-        "mobileNo": mobileNoE,
-        "studentPhotoId": studentPhoId,
-        "isGuardianNameChanged": true,
-        "isAddressChanged": true,
-        "isEmailIdChanged": true,
-        "isMobileNoChanged": true,
-        "isPhotoChanged": true
-      }
+      "offlineId": offlineID,
+      "installationId": installationId,
+      "guardianName": guardianNa,
+      "address": addressE,
+      "emailId": emailIDE,
+      "mobileNo": mobileNoE,
+      "studentPhotoId": studentPhoId,
+      "isGuardianNameChanged": true,
+      "isAddressChanged": true,
+      "isEmailIdChanged": true,
+      "isMobileNoChanged": true,
+      "isPhotoChanged": true
     });
 
     request.headers.addAll(headers);
@@ -339,12 +342,14 @@ class ProfileProvider with ChangeNotifier {
       print(await response.stream.bytesToString());
       await AwesomeDialog(
               context: context,
+              dismissOnTouchOutside: false,
               dialogType: DialogType.success,
               animType: AnimType.rightSlide,
               headerAnimationLoop: false,
               title: 'Saved Successfully',
-              btnOkOnPress: () {
-                return;
+              btnOkOnPress: () async {
+                await Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => ProfileEdit()));
               },
               btnOkIcon: Icons.cancel,
               btnOkColor: Colors.green)
@@ -440,10 +445,12 @@ class ProfileProvider with ChangeNotifier {
               context: context,
               dialogType: DialogType.success,
               animType: AnimType.rightSlide,
+              dismissOnTouchOutside: false,
               headerAnimationLoop: false,
               title: 'Updated Successfully',
-              btnOkOnPress: () {
-                return;
+              btnOkOnPress: () async {
+                await Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => ProfileEdit()));
               },
               btnOkIcon: Icons.cancel,
               btnOkColor: Colors.green)
@@ -463,6 +470,73 @@ class ProfileProvider with ChangeNotifier {
         ),
       ));
       print('Error Response Update profile');
+    }
+  }
+
+  removeSelectedImage() {
+    studentPhotoOffline!.url =
+        'https://gj-eschool-files-public.s3.ap-south-1.amazonaws.com/ess-connect/student/avathar-02.jpeg';
+    studentPhotoIdOffline = null;
+    selectedImage = null;
+    notifyListeners();
+  }
+
+  //Delete image
+
+  Future deleteStudentImage(BuildContext context, String imgID) async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    setLoadingg(true);
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+    };
+    var request = http.Request(
+        'DELETE', Uri.parse('${UIGuide.baseURL}/files/$imgID/Students'));
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+    setLoadingg(true);
+    if (response.statusCode == 204) {
+      setLoadingg(true);
+      studentPhotoOffline!.url =
+          'https://gj-eschool-files-public.s3.ap-south-1.amazonaws.com/ess-connect/student/avathar-02.jpeg';
+      studentPhotoIdOffline = null;
+
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        elevation: 10,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+        ),
+        duration: Duration(seconds: 1),
+        margin: EdgeInsets.only(bottom: 80, left: 30, right: 30),
+        behavior: SnackBarBehavior.floating,
+        content: Text(
+          'Deleted Successfully',
+          textAlign: TextAlign.center,
+        ),
+      ));
+      setLoadingg(false);
+      notifyListeners();
+    } else {
+      selectedImage = null;
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        elevation: 10,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+        ),
+        duration: Duration(seconds: 1),
+        margin: EdgeInsets.only(bottom: 80, left: 30, right: 30),
+        behavior: SnackBarBehavior.floating,
+        content: Text(
+          'Something went wrong',
+          textAlign: TextAlign.center,
+        ),
+      ));
+      print(response.reasonPhrase);
+
+      setLoadingg(false);
+      notifyListeners();
     }
   }
 }

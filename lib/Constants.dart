@@ -57,6 +57,25 @@ snackbarWidget(int second, content, BuildContext context) {
     ),
   );
 }
+
+snackbarCenterWidget(int second, content, BuildContext context) {
+  var size = MediaQuery.of(context).size;
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      elevation: 10,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
+      duration: Duration(seconds: second),
+      margin: EdgeInsets.only(bottom: size.height / 2, left: 30, right: 30),
+      behavior: SnackBarBehavior.floating,
+      content: Text(
+        content,
+        textAlign: TextAlign.center,
+      ),
+    ),
+  );
+}
 //     TEXT    overflow//
 
 //  Flexible(

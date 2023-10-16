@@ -577,23 +577,25 @@ class _StudCurrentStudyingState extends State<StudCurrentStudying> {
                                                     width: 70,
                                                     height: 70,
                                                     decoration: BoxDecoration(
-                                                        color:
-                                                            const Color.fromARGB(
-                                                                255,
-                                                                236,
-                                                                233,
-                                                                233),
-                                                        image: DecorationImage(
-                                                            fit: BoxFit.cover,
-                                                            image: NetworkImage(provider
-                                                                    .viewStudReportListt[
-                                                                        index]
-                                                                    .studentPhoto ??
-                                                                'https://gj-eschool-files-public.s3.ap-south-1.amazonaws.com/ess-connect/student/avathar-01.jpeg')),
-                                                        borderRadius:
-                                                            const BorderRadius.all(
-                                                                Radius.circular(
-                                                                    10))),
+                                                      color:
+                                                          const Color.fromARGB(
+                                                              255,
+                                                              236,
+                                                              233,
+                                                              233),
+                                                      image: DecorationImage(
+                                                          fit: BoxFit.cover,
+                                                          image: NetworkImage(provider
+                                                                  .viewStudReportListt[
+                                                                      index]
+                                                                  .studentPhoto ??
+                                                              'https://gj-eschool-files-public.s3.ap-south-1.amazonaws.com/ess-connect/student/avathar-01.jpeg')),
+                                                      borderRadius:
+                                                          const BorderRadius
+                                                              .all(
+                                                        Radius.circular(10),
+                                                      ),
+                                                    ),
                                                   ),
                                                 ),
                                                 Expanded(
