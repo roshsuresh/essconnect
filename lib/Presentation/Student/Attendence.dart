@@ -180,7 +180,7 @@ class Attendence extends StatelessWidget {
                                               left: 4,
                                               right: 4),
                                           child: Text(
-                                            'Days \n absent',
+                                            'Days \n Absent',
                                             style: TextStyle(
                                                 fontWeight: FontWeight.w700),
                                             textAlign: TextAlign.center,
@@ -331,7 +331,7 @@ class Attendence extends StatelessWidget {
                                                                               EdgeInsets.all(8.0),
                                                                           child:
                                                                               Text(
-                                                                            'ForeNoon',
+                                                                            'Forenoon',
                                                                             style:
                                                                                 TextStyle(fontWeight: FontWeight.w700),
                                                                             textAlign:
@@ -343,7 +343,7 @@ class Attendence extends StatelessWidget {
                                                                               EdgeInsets.all(8.0),
                                                                           child:
                                                                               Text(
-                                                                            'AfterNoon',
+                                                                            'Afternoon',
                                                                             style:
                                                                                 TextStyle(fontWeight: FontWeight.w700),
                                                                             textAlign:

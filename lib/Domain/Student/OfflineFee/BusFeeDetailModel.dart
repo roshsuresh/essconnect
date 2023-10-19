@@ -18,7 +18,7 @@ class BusFEEDetailModel {
     if (json['feesSummary'] != null) {
       feesSummary = <FeesSummaryBusModel>[];
       json['feesSummary'].forEach((v) {
-        feesSummary!.add(new FeesSummaryBusModel.fromJson(v));
+        feesSummary!.add(FeesSummaryBusModel.fromJson(v));
       });
     }
     uploadedDate = json['uploadedDate'];

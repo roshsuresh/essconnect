@@ -24,7 +24,7 @@ class PaymentHistory extends StatelessWidget {
       p.getHistoryList();
       p.historyList.clear();
     });
-    var size = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Payment History'),

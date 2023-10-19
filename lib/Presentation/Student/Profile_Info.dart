@@ -68,10 +68,10 @@ class Profile_Info extends StatelessWidget {
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  ProfileEdit()),
+                                                  const ProfileEdit()),
                                         );
                                       },
-                                      child: Icon(
+                                      child: const Icon(
                                         Icons.mode_edit_outline_outlined,
                                         size: 25.0,
                                         color:
@@ -79,7 +79,7 @@ class Profile_Info extends StatelessWidget {
                                       ),
                                     ),
                                   )
-                                : SizedBox(
+                                : const SizedBox(
                                     height: 0,
                                     width: 0,
                                   ),
@@ -121,7 +121,7 @@ class Profile_Info extends StatelessWidget {
                                         fontWeight: FontWeight.w500,
                                         fontSize: 14),
                                   ),
-                                  SizedBox(
+                                  const SizedBox(
                                     height: 5,
                                   ),
                                   Row(
@@ -218,7 +218,7 @@ class Profile_Info extends StatelessWidget {
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
                         width: width,
-                        height: 332,
+                        // height: 332,
                         color: const Color.fromARGB(255, 240, 243, 247),
                         child: SingleChildScrollView(
                           physics: const NeverScrollableScrollPhysics(),
@@ -226,8 +226,8 @@ class Profile_Info extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               kheight10,
-                              Row(
-                                children: const [
+                              const Row(
+                                children: [
                                   kWidth,
                                   Icon(Icons.person_outline_outlined),
                                   kWidth,
@@ -588,6 +588,86 @@ class Profile_Info extends StatelessWidget {
                                         ),
                                       ],
                                     ),
+                                    TableRow(
+                                      children: [
+                                        Column(
+                                          children: [
+                                            Row(
+                                              children: [
+                                                const Icon(
+                                                  Icons.email_outlined,
+                                                  size: 22,
+                                                ),
+                                                kWidth,
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      provider.guardianEmail ??
+                                                          "--",
+                                                      style: const TextStyle(
+                                                        color: UIGuide
+                                                            .light_Purple,
+                                                      ),
+                                                    ),
+                                                    const Text(
+                                                      'Guardian E-mail',
+                                                      style: TextStyle(
+                                                          color: Colors.black38,
+                                                          fontSize: 12),
+                                                    )
+                                                  ],
+                                                )
+                                              ],
+                                            ),
+                                            kheight10,
+                                          ],
+                                        ),
+                                        Column(
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    const Icon(
+                                                      Icons
+                                                          .phone_android_outlined,
+                                                      size: 22,
+                                                    ),
+                                                    kWidth,
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Text(
+                                                          provider.guardianMobile ??
+                                                              "--",
+                                                          style:
+                                                              const TextStyle(
+                                                            color: UIGuide
+                                                                .light_Purple,
+                                                          ),
+                                                        ),
+                                                        const Text(
+                                                          'Guardian Phone',
+                                                          style: TextStyle(
+                                                              color: Colors
+                                                                  .black38,
+                                                              fontSize: 12),
+                                                        ),
+                                                      ],
+                                                    )
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                            kheight10,
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ],
                                 ),
                               ),
@@ -599,7 +679,7 @@ class Profile_Info extends StatelessWidget {
                                       borderRadius:
                                           BorderRadius.all(Radius.circular(5))),
                                   width: width,
-                                  height: 115,
+                                  // height: 100,
                                   child: Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Column(
@@ -615,21 +695,18 @@ class Profile_Info extends StatelessWidget {
                                         const SizedBox(
                                           height: 5,
                                         ),
-                                        Flexible(
-                                          child: RichText(
-                                            overflow: TextOverflow.ellipsis,
-                                            strutStyle:
-                                                const StrutStyle(fontSize: 13),
-                                            maxLines: 4,
-                                            text: TextSpan(
-                                                style: const TextStyle(
-                                                  fontSize: 15,
-                                                  color: UIGuide.light_Purple,
-                                                ),
-                                                text: provider.address == null
-                                                    ? '---'
-                                                    : provider.address
-                                                        .toString()),
+                                        LimitedBox(
+                                          maxHeight: 250,
+                                          child: Text(
+                                            provider.address == null
+                                                ? '---'
+                                                : provider.address.toString(),
+                                            maxLines: 6,
+                                            style: const TextStyle(
+                                                fontSize: 15,
+                                                color: UIGuide.light_Purple,
+                                                overflow:
+                                                    TextOverflow.ellipsis),
                                           ),
                                         ),
                                       ],
@@ -722,7 +799,7 @@ class Profile_Info extends StatelessWidget {
                                                 size: 12,
                                                 color: UIGuide.light_Purple,
                                               ),
-                                              SizedBox(
+                                              const SizedBox(
                                                 width: 5,
                                               ),
                                               Text(provider.fatherMobileno ==
@@ -746,7 +823,7 @@ class Profile_Info extends StatelessWidget {
                                                 size: 14,
                                                 color: UIGuide.light_Purple,
                                               ),
-                                              SizedBox(
+                                              const SizedBox(
                                                 width: 5,
                                               ),
                                               SizedBox(
@@ -846,7 +923,7 @@ class Profile_Info extends StatelessWidget {
                                                 size: 12,
                                                 color: UIGuide.light_Purple,
                                               ),
-                                              SizedBox(
+                                              const SizedBox(
                                                 width: 5,
                                               ),
                                               Text(provider.motherMobileno ==
@@ -870,7 +947,7 @@ class Profile_Info extends StatelessWidget {
                                                 size: 14,
                                                 color: UIGuide.light_Purple,
                                               ),
-                                              SizedBox(
+                                              const SizedBox(
                                                 width: 5,
                                               ),
                                               SizedBox(

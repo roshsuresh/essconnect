@@ -124,63 +124,58 @@ class _AttendenceEntryState extends State<AttendenceEntry> {
                             context: context,
                             builder: (context) {
                               return Dialog(
-                                  child: Container(
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    ListView.builder(
-                                        shrinkWrap: true,
-                                        itemCount: attendecourse!.length,
-                                        itemBuilder: (context, index) {
-                                          return ListTile(
-                                            onTap: () async {
-                                              //markEntryDivisionListController.clear();
-                                              markEntryDivisionListController1
-                                                  .clear();
-                                              markEntryDivisionListController
-                                                  .clear();
-                                              snapshot.clearStudentList();
+                                  child: LimitedBox(
+                                maxHeight: size.width / 1.3,
+                                child: ListView.builder(
+                                    shrinkWrap: true,
+                                    itemCount: attendecourse!.length,
+                                    itemBuilder: (context, index) {
+                                      return ListTile(
+                                        onTap: () async {
+                                          //markEntryDivisionListController.clear();
+                                          markEntryDivisionListController1
+                                              .clear();
+                                          markEntryDivisionListController
+                                              .clear();
+                                          snapshot.clearStudentList();
+                                          markEntryInitialValuesController
+                                                  .text =
+                                              await attendecourse![index]
+                                                      ['value'] ??
+                                                  '--';
+                                          markEntryInitialValuesController1
+                                                  .text =
+                                              await attendecourse![index]
+                                                      ['text'] ??
+                                                  '--';
+                                          courseId =
                                               markEntryInitialValuesController
-                                                      .text =
-                                                  await attendecourse![index]
-                                                          ['value'] ??
-                                                      '--';
-                                              markEntryInitialValuesController1
-                                                      .text =
-                                                  await attendecourse![index]
-                                                          ['text'] ??
-                                                      '--';
-                                              courseId =
-                                                  markEntryInitialValuesController
-                                                      .text
-                                                      .toString();
+                                                  .text
+                                                  .toString();
 
-                                              print(courseId);
+                                          print(courseId);
 
-                                              await Provider.of<
-                                                          AttendenceStaffProvider>(
-                                                      context,
-                                                      listen: false)
-                                                  .divisionClear();
+                                          await Provider.of<
+                                                      AttendenceStaffProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .divisionClear();
 
-                                              await Provider.of<
-                                                          AttendenceStaffProvider>(
-                                                      context,
-                                                      listen: false)
-                                                  .getAttendenceDivisionValues(
-                                                      courseId);
+                                          await Provider.of<
+                                                      AttendenceStaffProvider>(
+                                                  context,
+                                                  listen: false)
+                                              .getAttendenceDivisionValues(
+                                                  courseId);
 
-                                              Navigator.of(context).pop();
-                                            },
-                                            title: Text(
-                                              attendecourse![index]['text'] ??
-                                                  '--',
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          );
-                                        }),
-                                  ],
-                                ),
+                                          Navigator.of(context).pop();
+                                        },
+                                        title: Text(
+                                          attendecourse![index]['text'] ?? '--',
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      );
+                                    }),
                               ));
                             });
                       },
@@ -249,52 +244,43 @@ class _AttendenceEntryState extends State<AttendenceEntry> {
                             context: context,
                             builder: (context) {
                               return Dialog(
-                                  child: Container(
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    ListView.builder(
-                                        shrinkWrap: true,
-                                        itemCount: snapshot
-                                            .attendenceDivisionList.length,
-                                        itemBuilder: (context, index) {
-                                          return ListTile(
-                                            onTap: () async {
+                                  child: LimitedBox(
+                                child: ListView.builder(
+                                    shrinkWrap: true,
+                                    itemCount:
+                                        snapshot.attendenceDivisionList.length,
+                                    itemBuilder: (context, index) {
+                                      return ListTile(
+                                        onTap: () async {
+                                          markEntryDivisionListController
+                                              .text = snapshot
+                                                  .attendenceDivisionList[index]
+                                                  .value ??
+                                              '---';
+                                          markEntryDivisionListController1
+                                              .text = snapshot
+                                                  .attendenceDivisionList[index]
+                                                  .text ??
+                                              '---';
+                                          divisionId =
                                               markEntryDivisionListController
-                                                  .text = snapshot
-                                                      .attendenceDivisionList[
-                                                          index]
-                                                      .value ??
-                                                  '---';
-                                              markEntryDivisionListController1
-                                                  .text = snapshot
-                                                      .attendenceDivisionList[
-                                                          index]
-                                                      .text ??
-                                                  '---';
-                                              divisionId =
-                                                  markEntryDivisionListController
-                                                      .text
-                                                      .toString();
-                                              courseId =
-                                                  markEntryInitialValuesController
-                                                      .text
-                                                      .toString();
+                                                  .text
+                                                  .toString();
+                                          courseId =
+                                              markEntryInitialValuesController
+                                                  .text
+                                                  .toString();
 
-                                              Navigator.of(context).pop();
-                                            },
-                                            title: Text(
-                                              snapshot
-                                                      .attendenceDivisionList[
-                                                          index]
-                                                      .text ??
-                                                  '---',
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          );
-                                        }),
-                                  ],
-                                ),
+                                          Navigator.of(context).pop();
+                                        },
+                                        title: Text(
+                                          snapshot.attendenceDivisionList[index]
+                                                  .text ??
+                                              '---',
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      );
+                                    }),
                               ));
                             });
                       },

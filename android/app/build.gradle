@@ -64,6 +64,9 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+    packagingOptions {
+      exclude 'lib/**/librive_text.so'
+}
 }
 
 flutter {

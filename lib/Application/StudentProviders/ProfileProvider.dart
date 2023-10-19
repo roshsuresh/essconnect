@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:essconnect/Domain/Staff/NoticeboardSendModel.dart';
@@ -46,6 +47,9 @@ class ProfileProvider with ChangeNotifier {
   String? motherPhoto;
   String? area;
   bool? editProfile;
+  String? guardianName;
+  String? guardianMobile;
+  String? guardianEmail;
 
   bool _loading = false;
   bool get loading => _loading;
@@ -103,6 +107,8 @@ class ProfileProvider with ChangeNotifier {
         classTeacher = std.classTeacher;
         area = std.area;
         editProfile = std.editProfile;
+        guardianMobile = std.guardianMobile;
+        guardianEmail = std.guardianEmail;
         setLoading(false);
         notifyListeners();
       } else {
@@ -185,6 +191,7 @@ class ProfileProvider with ChangeNotifier {
 
   Future getProfileEdit() async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
+    setLoadingg(true);
     var headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
@@ -195,7 +202,9 @@ class ProfileProvider with ChangeNotifier {
         headers: headers);
 
     if (response.statusCode == 200) {
+      setLoadingg(true);
       var data = await json.decode(response.body);
+      log(data.toString());
       InitialValues ini = InitialValues.fromJson(data["initialValues"]);
       studentIdEdit = ini.studentId;
       guardianNameEdit = ini.guardianName;
@@ -221,9 +230,10 @@ class ProfileProvider with ChangeNotifier {
       studentPhotoIdOffline = off.studentPhotoId;
       studentPhotoOffline = off.studentPhoto;
       print(idOffline);
-
+      setLoadingg(false);
       notifyListeners();
     } else {
+      setLoadingg(false);
       throw ("Error in profile edit");
     }
   }
@@ -311,7 +321,7 @@ class ProfileProvider with ChangeNotifier {
     String studentPhoId,
   ) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
-
+    setLoadingg(true);
     var headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
@@ -338,8 +348,10 @@ class ProfileProvider with ChangeNotifier {
     http.StreamedResponse response = await request.send();
     print(request.body);
     if (response.statusCode == 200) {
+      setLoadingg(true);
       print('Correct........______________________________');
       print(await response.stream.bytesToString());
+      setLoadingg(false);
       await AwesomeDialog(
               context: context,
               dismissOnTouchOutside: false,
@@ -355,6 +367,7 @@ class ProfileProvider with ChangeNotifier {
               btnOkColor: Colors.green)
           .show();
     } else {
+      setLoadingg(false);
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         elevation: 10,
         shape: RoundedRectangleBorder(
@@ -385,6 +398,7 @@ class ProfileProvider with ChangeNotifier {
       String studentPhoId,
       String offID) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
+    setLoadingg(true);
     print({
       "offlineId": offlineID,
       "installationId": installationId,
@@ -439,8 +453,10 @@ class ProfileProvider with ChangeNotifier {
     http.StreamedResponse response = await request.send();
     print(request.body);
     if (response.statusCode == 200) {
+      setLoadingg(true);
       print('Correct........______   Update   ______________________');
       print(await response.stream.bytesToString());
+      setLoadingg(false);
       await AwesomeDialog(
               context: context,
               dialogType: DialogType.success,
@@ -456,6 +472,7 @@ class ProfileProvider with ChangeNotifier {
               btnOkColor: Colors.green)
           .show();
     } else {
+      setLoadingg(false);
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         elevation: 10,
         shape: RoundedRectangleBorder(
