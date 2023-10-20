@@ -73,14 +73,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.2"
-  basispaysdk:
-    dependency: "direct main"
-    description:
-      name: basispaysdk
-      sha256: "6d2954c26243c485e133d33194dece5f7a947d2089489c208b347f3151dcaf6f"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.1.2"
   boolean_selector:
     dependency: transitive
     description:

@@ -245,6 +245,7 @@ class _AttendenceEntryState extends State<AttendenceEntry> {
                             builder: (context) {
                               return Dialog(
                                   child: LimitedBox(
+                                maxHeight: size.width / 1.3,
                                 child: ListView.builder(
                                     shrinkWrap: true,
                                     itemCount:

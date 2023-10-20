@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:basispaysdk/basispaysdk.dart';
 import 'package:essconnect/Application/StudentProviders/FeesProvider.dart';
 import 'package:essconnect/Application/StudentProviders/FinalStatusProvider.dart';
 import 'package:essconnect/Constants.dart';
@@ -1064,7 +1063,7 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
 ///////////////////                                 TrakNPay                                    ////////////////////////
 //  -----------------------------------------------------------------------------------------------------------------  //
                                                   else if (trans.gateway ==
-                                                      'TrakNPay') {
+                                                      'TrakNPayy') {
                                                     await Provider.of<
                                                                 FeesProvider>(
                                                             context,
@@ -1526,7 +1525,7 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
 ///////////////////                                 TrakNPay                                    ////////////////////////
 //  -----------------------------------------------------------------------------------------------------------------  //
                                                   else if (trans.gateway ==
-                                                      'TrakNPay') {
+                                                      'TrakNPayy') {
                                                     await Provider.of<
                                                                 FeesProvider>(
                                                             context,
@@ -2010,7 +2009,7 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
 ///////////////////                                 TrakNPay                                    ////////////////////////
 //  -----------------------------------------------------------------------------------------------------------------  //
                                                     else if (trans.gateway ==
-                                                        'TrakNPay') {
+                                                        'TrakNPayy') {
                                                       await Provider.of<
                                                                   FeesProvider>(
                                                               context,
@@ -2474,7 +2473,7 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
 ///////////////////                                 TrakNPay                                    ////////////////////////
 //  -----------------------------------------------------------------------------------------------------------------  //
                                                     else if (trans.gateway ==
-                                                        'TrakNPay') {
+                                                        'TrakNPayy') {
                                                       await Provider.of<
                                                                   FeesProvider>(
                                                               context,
@@ -2936,7 +2935,7 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
 ///////////////////                                 TrakNPay                                    ////////////////////////
 //  -----------------------------------------------------------------------------------------------------------------  //
                                                     else if (trans.gateway ==
-                                                        'TrakNPay') {
+                                                        'TrakNPayy') {
                                                       await Provider.of<
                                                                   FeesProvider>(
                                                               context,
@@ -4325,32 +4324,32 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
     print(
         "******************            $paymentRequestDictionary        ***********************");
     try {
-      var response = Basispaysdk.startTransaction(
-          apiKey, //[API-KEY From Basispay team]
-          saltKey, //[SALT-KEY From Basispay team]
-          returnUrl, //[YOUR- RETURN URL to get the response]
-          true,
-          paymentRequestDictionary);
-      response.then((value) {
-        print(value);
-        print("=======================================================");
-        setState(() {});
-        showAlertTrakNPay(context, orderId);
-      }).catchError((onError) {
-        if (onError is PlatformException) {
-          print('-------------------Failed-----------------');
-          showAlertTrakNPay(context, orderId);
-          setState(() {
-            print(onError.message! + " \n  " + onError.details.toString());
-          });
-        } else {
-          setState(() {
-            showAlertTrakNPay(context, orderId);
-            print('-------------------Pending-----------------');
-            print(onError.toString());
-          });
-        }
-      });
+      // var response = Basispaysdk.startTransaction(
+      //     apiKey, //[API-KEY From Basispay team]
+      //     saltKey, //[SALT-KEY From Basispay team]
+      //     returnUrl, //[YOUR- RETURN URL to get the response]
+      //     true,
+      //     paymentRequestDictionary);
+      // response.then((value) {
+      //   print(value);
+      //   print("=======================================================");
+      //   setState(() {});
+      //   showAlertTrakNPay(context, orderId);
+      // }).catchError((onError) {
+      //   if (onError is PlatformException) {
+      //     print('-------------------Failed-----------------');
+      //     showAlertTrakNPay(context, orderId);
+      //     setState(() {
+      //       print(onError.message! + " \n  " + onError.details.toString());
+      //     });
+      //   } else {
+      //     setState(() {
+      //       showAlertTrakNPay(context, orderId);
+      //       print('-------------------Pending-----------------');
+      //       print(onError.toString());
+      //     });
+      //   }
+      // });
     } catch (err) {
       showAlertTrakNPay(context, orderId);
       print('-------------------ERROR-----------------');
@@ -4363,10 +4362,8 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
   String cutStringAfterLetter(String originalString, String letter) {
     int index = originalString.indexOf(letter);
     if (index != -1) {
-      // If the letter is found in the string
       return originalString.substring(index + 1, originalString.length);
     } else {
-      // If the letter is not found in the string
       return originalString;
     }
   }

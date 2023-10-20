@@ -294,105 +294,97 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                                     context: context,
                                     builder: (context) {
                                       return Dialog(
-                                          child: Container(
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            ListView.builder(
-                                                shrinkWrap: true,
-                                                itemCount: snapshot
-                                                    .toolDivisionList.length,
-                                                itemBuilder: (context, index) {
-                                                  return ListTile(
-                                                    selectedTileColor:
-                                                        Colors.blue.shade100,
-                                                    selectedColor:
-                                                        UIGuide.PRIMARY2,
-                                                    onTap: () async {
-                                                      // snapshot
-                                                      //     .clearStudentMEList();
+                                          child: LimitedBox(
+                                        maxHeight: size.height - 300,
+                                        child: ListView.builder(
+                                            shrinkWrap: true,
+                                            itemCount: snapshot
+                                                .toolDivisionList.length,
+                                            itemBuilder: (context, index) {
+                                              return ListTile(
+                                                selectedTileColor:
+                                                    Colors.blue.shade100,
+                                                selectedColor: UIGuide.PRIMARY2,
+                                                onTap: () async {
+                                                  // snapshot
+                                                  //     .clearStudentMEList();
+                                                  toolDivisionListController
+                                                      .text = snapshot
+                                                          .toolDivisionList[
+                                                              index]
+                                                          .value ??
+                                                      '---';
+                                                  toolDivisionListController1
+                                                      .text = snapshot
+                                                          .toolDivisionList[
+                                                              index]
+                                                          .text ??
+                                                      '---';
+
+                                                  divisionId =
                                                       toolDivisionListController
-                                                          .text = snapshot
-                                                              .toolDivisionList[
-                                                                  index]
-                                                              .value ??
-                                                          '---';
-                                                      toolDivisionListController1
-                                                          .text = snapshot
-                                                              .toolDivisionList[
-                                                                  index]
-                                                              .text ??
-                                                          '---';
+                                                          .text
+                                                          .toString();
+                                                  courseId =
+                                                      toolInitialValuesController
+                                                          .text
+                                                          .toString();
+                                                  //part
 
-                                                      divisionId =
-                                                          toolDivisionListController
-                                                              .text
-                                                              .toString();
-                                                      courseId =
-                                                          toolInitialValuesController
-                                                              .text
-                                                              .toString();
-                                                      //part
+                                                  toolPartListController
+                                                      .clear();
+                                                  toolPartListController1
+                                                      .clear();
 
-                                                      toolPartListController
-                                                          .clear();
-                                                      toolPartListController1
-                                                          .clear();
+                                                  await snapshot
+                                                      .removeAllpartClear();
 
-                                                      await snapshot
-                                                          .removeAllpartClear();
+                                                  // sub
 
-                                                      // sub
+                                                  toolSubjectListController
+                                                      .clear();
+                                                  toolSubjectListController1
+                                                      .clear();
 
-                                                      toolSubjectListController
-                                                          .clear();
-                                                      toolSubjectListController1
-                                                          .clear();
+                                                  await snapshot
+                                                      .removeAllSubjectClear();
 
-                                                      await snapshot
-                                                          .removeAllSubjectClear();
+                                                  //option sub
 
-                                                      //option sub
+                                                  toolOptionSubListController
+                                                      .clear();
+                                                  toolOptionSubListController1
+                                                      .clear();
+                                                  await snapshot
+                                                      .removeAllOptionSubjectListClear();
 
-                                                      toolOptionSubListController
-                                                          .clear();
-                                                      toolOptionSubListController1
-                                                          .clear();
-                                                      await snapshot
-                                                          .removeAllOptionSubjectListClear();
+                                                  // exam
 
-                                                      // exam
+                                                  toolExamListController
+                                                      .clear();
+                                                  toolExamListController1
+                                                      .clear();
+                                                  await snapshot
+                                                      .removeAllExamClear();
+                                                  await snapshot
+                                                      .clearStudList();
 
-                                                      toolExamListController
-                                                          .clear();
-                                                      toolExamListController1
-                                                          .clear();
-                                                      await snapshot
-                                                          .removeAllExamClear();
-                                                      await snapshot
-                                                          .clearStudList();
+                                                  await snapshot
+                                                      .getToolPartValues(
+                                                          courseId, divisionId);
 
-                                                      await snapshot
-                                                          .getToolPartValues(
-                                                              courseId,
-                                                              divisionId);
-
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                    },
-                                                    title: Text(
-                                                      snapshot
-                                                              .toolDivisionList[
-                                                                  index]
-                                                              .text ??
-                                                          '---',
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    ),
-                                                  );
-                                                }),
-                                          ],
-                                        ),
+                                                  Navigator.of(context).pop();
+                                                },
+                                                title: Text(
+                                                  snapshot
+                                                          .toolDivisionList[
+                                                              index]
+                                                          .text ??
+                                                      '---',
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                              );
+                                            }),
                                       ));
                                     });
                               },
@@ -468,91 +460,79 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                                     context: context,
                                     builder: (context) {
                                       return Dialog(
-                                          child: Container(
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            ListView.builder(
-                                                shrinkWrap: true,
-                                                itemCount: snapshot
-                                                    .toolPartList.length,
-                                                itemBuilder: (context, index) {
-                                                  return ListTile(
-                                                    selectedTileColor:
-                                                        Colors.blue.shade100,
-                                                    selectedColor:
-                                                        UIGuide.PRIMARY2,
-                                                    onTap: () async {
+                                          child: LimitedBox(
+                                        maxHeight: size.height - 300,
+                                        child: ListView.builder(
+                                            shrinkWrap: true,
+                                            itemCount:
+                                                snapshot.toolPartList.length,
+                                            itemBuilder: (context, index) {
+                                              return ListTile(
+                                                selectedTileColor:
+                                                    Colors.blue.shade100,
+                                                selectedColor: UIGuide.PRIMARY2,
+                                                onTap: () async {
+                                                  toolPartListController
+                                                      .text = snapshot
+                                                          .toolPartList[index]
+                                                          .value ??
+                                                      '--';
+                                                  toolPartListController1
+                                                      .text = snapshot
+                                                          .toolPartList[index]
+                                                          .text ??
+                                                      '--';
+
+                                                  divisionId =
+                                                      toolDivisionListController
+                                                          .text
+                                                          .toString();
+                                                  partId =
                                                       toolPartListController
-                                                          .text = snapshot
-                                                              .toolPartList[
-                                                                  index]
-                                                              .value ??
-                                                          '--';
-                                                      toolPartListController1
-                                                          .text = snapshot
-                                                              .toolPartList[
-                                                                  index]
-                                                              .text ??
-                                                          '--';
+                                                          .text
+                                                          .toString();
 
-                                                      divisionId =
-                                                          toolDivisionListController
-                                                              .text
-                                                              .toString();
-                                                      partId =
-                                                          toolPartListController
-                                                              .text
-                                                              .toString();
+                                                  toolSubjectListController
+                                                      .clear();
+                                                  toolSubjectListController1
+                                                      .clear();
 
-                                                      toolSubjectListController
-                                                          .clear();
-                                                      toolSubjectListController1
-                                                          .clear();
+                                                  await snapshot
+                                                      .removeAllSubjectClear();
+                                                  //option sub
 
-                                                      await snapshot
-                                                          .removeAllSubjectClear();
-                                                      //option sub
+                                                  toolOptionSubListController
+                                                      .clear();
+                                                  toolOptionSubListController1
+                                                      .clear();
+                                                  await snapshot
+                                                      .removeAllOptionSubjectListClear();
 
-                                                      toolOptionSubListController
-                                                          .clear();
-                                                      toolOptionSubListController1
-                                                          .clear();
-                                                      await snapshot
-                                                          .removeAllOptionSubjectListClear();
+                                                  // exam
 
-                                                      // exam
+                                                  toolExamListController
+                                                      .clear();
+                                                  toolExamListController1
+                                                      .clear();
+                                                  await snapshot
+                                                      .removeAllExamClear();
+                                                  await snapshot
+                                                      .clearStudList();
 
-                                                      toolExamListController
-                                                          .clear();
-                                                      toolExamListController1
-                                                          .clear();
-                                                      await snapshot
-                                                          .removeAllExamClear();
-                                                      await snapshot
-                                                          .clearStudList();
+                                                  await snapshot
+                                                      .getToolSubjectValues(
+                                                          divisionId, partId);
 
-                                                      await snapshot
-                                                          .getToolSubjectValues(
-                                                              divisionId,
-                                                              partId);
-
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                    },
-                                                    title: Text(
-                                                      snapshot
-                                                              .toolPartList[
-                                                                  index]
-                                                              .text ??
-                                                          '---',
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    ),
-                                                  );
-                                                }),
-                                          ],
-                                        ),
+                                                  Navigator.of(context).pop();
+                                                },
+                                                title: Text(
+                                                  snapshot.toolPartList[index]
+                                                          .text ??
+                                                      '---',
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                              );
+                                            }),
                                       ));
                                     });
                               },
@@ -624,9 +604,9 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                                 showDialog(
                                     context: context,
                                     builder: (context) {
-                                      return Container(
-                                        child: Dialog(
-                                            child: Column(
+                                      return LimitedBox(
+                                        maxHeight: size.height - 300,
+                                        child: Column(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
                                             ListView.builder(
@@ -711,7 +691,7 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                                                   );
                                                 }),
                                           ],
-                                        )),
+                                        ),
                                       );
                                     });
                               },
@@ -796,60 +776,57 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                                         context: context,
                                         builder: (context) {
                                           return Dialog(
-                                              child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              ListView.builder(
-                                                  shrinkWrap: true,
-                                                  itemCount: snapshot
-                                                          .toolOptionSubjectList
-                                                          .isEmpty
-                                                      ? 0
-                                                      : snapshot
-                                                          .toolOptionSubjectList
-                                                          .length,
-                                                  itemBuilder:
-                                                      (context, index) {
-                                                    return ListTile(
-                                                      selectedTileColor:
-                                                          Colors.blue.shade100,
-                                                      selectedColor:
-                                                          UIGuide.PRIMARY2,
-                                                      onTap: () async {
-                                                        toolOptionSubListController
-                                                            .text = snapshot
-                                                                .toolOptionSubjectList[
-                                                                    index]
-                                                                .subjectName ??
-                                                            '--';
-                                                        toolOptionSubListController1
-                                                            .text = snapshot
-                                                                .toolOptionSubjectList[
-                                                                    index]
-                                                                .id ??
-                                                            '--';
-                                                        toolExamListController
-                                                            .clear();
-                                                        toolExamListController1
-                                                            .clear();
-                                                        await snapshot
-                                                            .clearStudList();
+                                              child: LimitedBox(
+                                            maxHeight: size.height - 300,
+                                            child: ListView.builder(
+                                                shrinkWrap: true,
+                                                itemCount: snapshot
+                                                        .toolOptionSubjectList
+                                                        .isEmpty
+                                                    ? 0
+                                                    : snapshot
+                                                        .toolOptionSubjectList
+                                                        .length,
+                                                itemBuilder: (context, index) {
+                                                  return ListTile(
+                                                    selectedTileColor:
+                                                        Colors.blue.shade100,
+                                                    selectedColor:
+                                                        UIGuide.PRIMARY2,
+                                                    onTap: () async {
+                                                      toolOptionSubListController
+                                                          .text = snapshot
+                                                              .toolOptionSubjectList[
+                                                                  index]
+                                                              .subjectName ??
+                                                          '--';
+                                                      toolOptionSubListController1
+                                                          .text = snapshot
+                                                              .toolOptionSubjectList[
+                                                                  index]
+                                                              .id ??
+                                                          '--';
+                                                      toolExamListController
+                                                          .clear();
+                                                      toolExamListController1
+                                                          .clear();
+                                                      await snapshot
+                                                          .clearStudList();
 
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                      title: Text(
-                                                        snapshot
-                                                                .toolOptionSubjectList[
-                                                                    index]
-                                                                .subjectName ??
-                                                            '--',
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                      ),
-                                                    );
-                                                  }),
-                                            ],
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                    title: Text(
+                                                      snapshot
+                                                              .toolOptionSubjectList[
+                                                                  index]
+                                                              .subjectName ??
+                                                          '--',
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                    ),
+                                                  );
+                                                }),
                                           ));
                                         });
                                   },
@@ -942,42 +919,39 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                                     context: context,
                                     builder: (context) {
                                       return Dialog(
-                                          child: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          ListView.builder(
-                                              shrinkWrap: true,
-                                              itemCount:
-                                                  snapshot.toolExamList.length,
-                                              itemBuilder: (context, index) {
-                                                return ListTile(
-                                                  selectedTileColor:
-                                                      Colors.blue.shade100,
-                                                  selectedColor:
-                                                      UIGuide.PRIMARY2,
-                                                  onTap: () {
-                                                    toolExamListController
-                                                        .text = snapshot
-                                                            .toolExamList[index]
-                                                            .text ??
-                                                        '--';
-                                                    toolExamListController1
-                                                        .text = snapshot
-                                                            .toolExamList[index]
-                                                            .value ??
-                                                        '--';
+                                          child: LimitedBox(
+                                        maxHeight: size.height - 300,
+                                        child: ListView.builder(
+                                            shrinkWrap: true,
+                                            itemCount:
+                                                snapshot.toolExamList.length,
+                                            itemBuilder: (context, index) {
+                                              return ListTile(
+                                                selectedTileColor:
+                                                    Colors.blue.shade100,
+                                                selectedColor: UIGuide.PRIMARY2,
+                                                onTap: () {
+                                                  toolExamListController
+                                                      .text = snapshot
+                                                          .toolExamList[index]
+                                                          .text ??
+                                                      '--';
+                                                  toolExamListController1
+                                                      .text = snapshot
+                                                          .toolExamList[index]
+                                                          .value ??
+                                                      '--';
 
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                  title: Text(
-                                                    snapshot.toolExamList[index]
-                                                            .text ??
-                                                        '--',
-                                                    textAlign: TextAlign.center,
-                                                  ),
-                                                );
-                                              }),
-                                        ],
+                                                  Navigator.of(context).pop();
+                                                },
+                                                title: Text(
+                                                  snapshot.toolExamList[index]
+                                                          .text ??
+                                                      '--',
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                              );
+                                            }),
                                       ));
                                     });
                               },

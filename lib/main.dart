@@ -460,8 +460,8 @@ class _SplashFuturePageState extends State<SplashFuturePage>
     });
 
     Timer(const Duration(seconds: 3), () async {
-      // await Provider.of<TokenExpiryCheckProviders>(context, listen: false)
-      //     .checkTokenExpired();
+      await Provider.of<TokenExpiryCheckProviders>(context, listen: false)
+          .checkTokenExpired();
       await _checkSession();
     });
   }

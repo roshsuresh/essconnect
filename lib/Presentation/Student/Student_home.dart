@@ -61,8 +61,67 @@ class _StudentHomeState extends State<StudentHome> {
           .getModuleDetails();
       await Provider.of<SchoolNameProvider>(context, listen: false)
           .getSchoolname();
+      //  showNotificationPermissionDialog();
     });
   }
+
+  // void showNotificationPermissionDialog() {
+  //   Future.delayed(const Duration(seconds: 0), () {
+  //     showModalBottomSheet(
+  //         shape: const RoundedRectangleBorder(
+  //           borderRadius: BorderRadius.only(
+  //               topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+  //         ),
+  //         context: context,
+  //         builder: (context) => Column(
+  //               mainAxisSize: MainAxisSize.min,
+  //               children: [
+  //                 Container(
+  //                   width: size.width / 1.2,
+  //                   height: size.height / 2.5,
+  //                   decoration: const BoxDecoration(
+  //                       image: DecorationImage(
+  //                           image: AssetImage("assets/notification-Icon.png"))),
+  //                 ),
+  //                 SizedBox(
+  //                     width: size.width / 1.2,
+  //                     height: 60,
+  //                     child: ElevatedButton(
+  //                         style: ElevatedButton.styleFrom(
+  //                           backgroundColor: UIGuide.light_Purple,
+  //                           foregroundColor: UIGuide.WHITE,
+  //                           textStyle: const TextStyle(fontSize: 16.0),
+  //                           padding: const EdgeInsets.all(10),
+  //                           elevation: 10.0,
+  //                           shape: RoundedRectangleBorder(
+  //                             borderRadius: BorderRadius.circular(8.0),
+  //                           ),
+  //                         ),
+  //                         onPressed: () {},
+  //                         child: Text("Allow Notification"))),
+  //                 SizedBox(
+  //                   width: size.width / 1.2,
+  //                   height: 60,
+  //                   child: ElevatedButton(
+  //                       style: ElevatedButton.styleFrom(
+  //                         backgroundColor:
+  //                             const Color.fromARGB(255, 239, 241, 250),
+  //                         foregroundColor:
+  //                             const Color.fromARGB(255, 156, 156, 156),
+  //                         textStyle: const TextStyle(fontSize: 16.0),
+  //                         padding: const EdgeInsets.all(10),
+  //                         elevation: 10.0,
+  //                         shape: RoundedRectangleBorder(
+  //                           borderRadius: BorderRadius.circular(8.0),
+  //                         ),
+  //                       ),
+  //                       onPressed: () {},
+  //                       child: Text("Remind me later")),
+  //                 )
+  //               ],
+  //             ));
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -75,6 +134,7 @@ class _StudentHomeState extends State<StudentHome> {
     kheight20 = const SizedBox(
       height: 20,
     );
+
     return Scaffold(
       body: Consumer<ConnectivityProvider>(
         builder: (context, connection, child) => connection.isOnline == false
