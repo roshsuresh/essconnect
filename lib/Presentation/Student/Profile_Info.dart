@@ -603,12 +603,15 @@ class Profile_Info extends StatelessWidget {
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
                                                   children: [
-                                                    Text(
-                                                      provider.guardianEmail ??
-                                                          "--",
-                                                      style: const TextStyle(
-                                                        color: UIGuide
-                                                            .light_Purple,
+                                                    SizedBox(
+                                                      width: size.width * 0.35,
+                                                      child: Text(
+                                                        provider.guardianEmail ??
+                                                            "--",
+                                                        style: const TextStyle(
+                                                          color: UIGuide
+                                                              .light_Purple,
+                                                        ),
                                                       ),
                                                     ),
                                                     const Text(

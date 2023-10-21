@@ -43,13 +43,13 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDl3Xr3J_z7GkeerSZkGLIORVlPKPJpTw8',
-    appId: '1:462880464068:ios:ce24e5c1aab7ea76e93cec',
+    apiKey: 'AIzaSyBMAToNblYQIp8lXuMVxQkl_oZGgF4o3NE',
+    appId: '1:462880464068:ios:4c9103e24dea314261fd91',
     messagingSenderId: '462880464068',
     projectId: 'e-schoolsolutionconnect',
     storageBucket: 'e-schoolsolutionconnect.appspot.com',
     iosClientId:
-        '462880464068-5h89e9qotinq46dnc4eqesl3a3sps8kr.apps.googleusercontent.com',
+        '462880464068-c71rdlgr51skua6nkl0i1t7vip2v6prl.apps.googleusercontent.com',
     iosBundleId: 'com.gjinfotech.essconnect',
   );
 }
