@@ -72,8 +72,16 @@ class AttendenceStaffProvider with ChangeNotifier {
   bool? isClassTeacher;
   bool? isDualAttendance;
 
+  bool _load = false;
+  bool get load => _load;
+  setLoad(bool value) {
+    _load = value;
+    notifyListeners();
+  }
+
   Future attendenceCourseStaff() async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
+    setLoad(true);
     var headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
@@ -83,6 +91,7 @@ class AttendenceStaffProvider with ChangeNotifier {
         headers: headers);
     try {
       if (response.statusCode == 200) {
+        setLoad(true);
         //  print("corect");
         final data = json.decode(response.body);
 
@@ -95,11 +104,14 @@ class AttendenceStaffProvider with ChangeNotifier {
         attendecourse = staffAttendeceRespo!['course'];
         print(attendecourse);
         print(isClassTeacher);
+        setLoad(false);
         notifyListeners();
       } else {
+        setLoad(false);
         print("Error in attendencecourse response");
       }
     } catch (e) {
+      setLoad(false);
       print(e);
     }
   }
@@ -141,9 +153,17 @@ class AttendenceStaffProvider with ChangeNotifier {
     attendenceDivisionList.clear();
   }
 
+  bool _loadDivision = false;
+  bool get loadDivision => _loadDivision;
+  setLoadDivision(bool value) {
+    _loadDivision = value;
+    notifyListeners();
+  }
+
   List<AttendenceDivisions> attendenceDivisionList = [];
   Future<bool> getAttendenceDivisionValues(String id) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
+    setLoadDivision(true);
 
     var headers = {
       'Content-Type': 'application/json',
@@ -157,6 +177,7 @@ class AttendenceStaffProvider with ChangeNotifier {
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
+      setLoadDivision(true);
       Map<String, dynamic> data =
           jsonDecode(await response.stream.bytesToString());
 
@@ -166,10 +187,13 @@ class AttendenceStaffProvider with ChangeNotifier {
           data["divisions"].map((x) => AttendenceDivisions.fromJson(x)));
       attendenceDivisionList.addAll(templist);
       print('correct');
+      setLoadDivision(false);
       notifyListeners();
     } else {
+      setLoadDivision(false);
       print('Error in AttendenceDivisionList stf');
     }
+    setLoadDivision(false);
     return true;
   }
 

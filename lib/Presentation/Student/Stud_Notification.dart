@@ -110,8 +110,8 @@ class Stud_Notification extends StatelessWidget {
                                                   child: LottieBuilder.network(
                                                       'https://assets7.lottiefiles.com/packages/lf20_0skurerf.json'),
                                                 ),
-                                                SizedBox(
-                                                  width: size.width - 90,
+                                                Expanded(
+                                                  // width: size.width - 90,
                                                   child: Text(
                                                     value.receivedList[index]
                                                                 .title ==
@@ -121,6 +121,7 @@ class Stud_Notification extends StatelessWidget {
                                                             .receivedList[index]
                                                             .title
                                                             .toString(),
+                                                    maxLines: 2,
                                                     style: const TextStyle(
                                                         color: UIGuide
                                                             .light_Purple,

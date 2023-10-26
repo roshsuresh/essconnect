@@ -237,11 +237,9 @@ class _CurriculamPageState extends State<CurriculamPage> {
                                   "about"
                                 ].contains(uri.scheme)) {
                                   if (await canLaunch(url)) {
-                                    // Launch the App
                                     await launch(
                                       url,
                                     );
-                                    // and cancel the request
                                     return NavigationActionPolicy.CANCEL;
                                   }
                                 }

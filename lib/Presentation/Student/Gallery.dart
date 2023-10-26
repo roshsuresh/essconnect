@@ -140,48 +140,44 @@ class _GalleryState extends State<Gallery> {
                                               )),
                                               kWidth,
                                               Expanded(
-                                                child: Container(
-                                                    height: 110,
+                                                child: SizedBox(
+                                                    // height: 110,
                                                     child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Text(
-                                                          galleryResponse![
-                                                                      index]
-                                                                  ['title'] ??
-                                                              '---',
-                                                          style:
-                                                              const TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                  fontSize: 12),
-                                                          maxLines: 2,
-                                                        ),
-                                                        kheight10,
-                                                        Text(
-                                                          galleryResponse![index]
-                                                                          [
-                                                                          'caption'] ==
-                                                                      null ||
-                                                                  galleryResponse![
-                                                                              index]
-                                                                          [
-                                                                          'caption'] ==
-                                                                      "null"
-                                                              ? ''
-                                                              : galleryResponse![
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Text(
+                                                      galleryResponse![index]
+                                                              ['title'] ??
+                                                          '---',
+                                                      style: const TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          fontSize: 12),
+                                                      maxLines: 4,
+                                                    ),
+                                                    kheight10,
+                                                    Text(
+                                                      galleryResponse![index][
+                                                                      'caption'] ==
+                                                                  null ||
+                                                              galleryResponse![
                                                                           index]
                                                                       [
-                                                                      'caption']
-                                                                  .toString(),
-                                                          maxLines: 3,
-                                                        ),
-                                                        kheight10,
-                                                      ],
-                                                    )),
+                                                                      'caption'] ==
+                                                                  "null"
+                                                          ? ''
+                                                          : galleryResponse![
+                                                                      index]
+                                                                  ['caption']
+                                                              .toString(),
+                                                      maxLines: 2,
+                                                    ),
+                                                    kheight10,
+                                                  ],
+                                                )),
                                               )
                                             ],
                                           ),
@@ -321,12 +317,7 @@ class _ViewImageOntapState extends State<ViewImageOntap> {
   }
 
   Future<void> requestDownload(String _url, String _name) async {
-    final dir = await getApplicationDocumentsDirectory();
     var _localPath;
-
-    //dir!.path;
-
-    // Directory downloadsDir;
 
     // Check platform
     if (Platform.isAndroid) {

@@ -12,6 +12,12 @@ import '../../utils/constants.dart';
 
 class SibingsProvider with ChangeNotifier {
   bool isLoading = false;
+
+  clearSiblingsList() {
+    siblingList.clear();
+    notifyListeners();
+  }
+
   List<SiblingsNameModel> siblingList = [];
   Future getSiblingName() async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
@@ -30,7 +36,7 @@ class SibingsProvider with ChangeNotifier {
       siblingList.addAll(templist);
       notifyListeners();
     } else {
-      print('Error');
+      print('Error  sibling list');
     }
   }
 

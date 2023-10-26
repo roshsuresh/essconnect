@@ -1,9 +1,19 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:essconnect/Application/StudentProviders/SiblingsProvider.dart';
+import 'package:essconnect/Domain/Student/LoginModel.dart';
+import 'package:essconnect/Presentation/Admin/AdminHome.dart';
+import 'package:essconnect/Presentation/ChildLogin/ChildHomeScreen.dart';
+import 'package:essconnect/Presentation/SchoolHead/SchoolHeadHome.dart';
+import 'package:essconnect/Presentation/SchoolSuperAdmin/SuperAdminHome.dart';
+import 'package:essconnect/Presentation/Staff/StaffHome.dart';
+import 'package:essconnect/Presentation/StaffAsGuardian.dart/StaffHomeScreen.dart';
+import 'package:essconnect/Presentation/Student/Student_home.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../Domain/Student/activation_model.dart';
 import '../../utils/constants.dart';
@@ -41,7 +51,6 @@ class LoginProvider with ChangeNotifier {
       var jsonData = json.decode(response.body);
 
       ActivationModel ac = ActivationModel.fromJson(jsonData);
-
       schoolName = ac.schoolName!;
       subDomain = ac.subDomain!;
       schoolid = ac.schoolId!;
@@ -59,6 +68,151 @@ class LoginProvider with ChangeNotifier {
     }
 
     return response.statusCode;
+  }
+
+  bool _loadingLogin = false;
+  bool get loadingLogin => _loadingLogin;
+  setLoadingLogin(bool value) {
+    _loadingLogin = value;
+    notifyListeners();
+  }
+
+  // -----------  LOGIN  -----------
+
+  checkLogin(String username, String password, BuildContext context) async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    setLoadingLogin(true);
+    var headers = {'Content-Type': 'application/json'};
+    var request = http.Request(
+        'POST',
+        Uri.parse(
+            '${UIGuide.baseURL}/login?id=${_pref.getString('schoolId')}'));
+    request.body = json.encode({"email": username, "password": password});
+    print(request.body);
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      setLoadingLogin(true);
+      var data = jsonDecode(await response.stream.bytesToString());
+      LoginModel res = LoginModel.fromJson(data);
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('accesstoken', res.accessToken);
+      SharedPreferences user = await SharedPreferences.getInstance();
+      await user.setString('username', username);
+      SharedPreferences pass = await SharedPreferences.getInstance();
+      await pass.setString('password', password);
+
+      await getToken(context);
+      var parsedResponse = await parseJWT();
+      List<dynamic> roleList = [];
+      print(parsedResponse['role'] is List);
+      if (parsedResponse['role'] is List) {
+        roleList = await parsedResponse['role'];
+        print(roleList);
+      }
+
+      if (parsedResponse['role'] == "Guardian") {
+        setLoadingLogin(true);
+        var p = Provider.of<SibingsProvider>(context, listen: false);
+        await p.clearSiblingsList();
+        await p.getSiblingName();
+        print("------------${p.siblingList.length}");
+
+        if (p.siblingList.length != 0) {
+          for (int i = 1; i < p.siblingList.length; i++) {
+            print(p.siblingList[i].name);
+            print('------------$i');
+            await p.getToken(p.siblingList[i].id.toString());
+          }
+
+          setLoadingLogin(false);
+          return await Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => StudentHome()));
+        } else {
+          setLoadingLogin(false);
+
+          await Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => StudentHome()));
+        }
+      } else if (parsedResponse['role'] == "SystemAdmin" ||
+          roleList.contains("SystemAdmin")) {
+        setLoadingLogin(false);
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) => const AdminHome()));
+      } else if (parsedResponse['role'] == "Teacher" ||
+          parsedResponse['role'] == "NonTeachingStaff") {
+        setLoadingLogin(false);
+
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (BuildContext context) => StaffHome()));
+      } else if ((roleList.contains("Guardian") &&
+              roleList.contains("Teacher")) ||
+          (roleList.contains("NonTeachingStaff") &&
+              roleList.contains("Guardian"))) {
+        setLoadingLogin(false);
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) => StaffHomeScreen()));
+      }
+      //SchoolSuperAdmin
+      else if (parsedResponse['role'] == "SchoolSuperAdmin" ||
+          roleList.contains("SchoolSuperAdmin")) {
+        setLoadingLogin(false);
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) => SuperAdminHome()));
+      } else if (parsedResponse['role'] == "SchoolHead") {
+        setLoadingLogin(false);
+
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) => SchoolHeadHomeScreen()));
+      } else if (parsedResponse['role'] == "Student") {
+        setLoadingLogin(false);
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (BuildContext context) => ChildHome()));
+      } else {
+        setLoadingLogin(false);
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            elevation: 10,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+            ),
+            duration: Duration(seconds: 3),
+            margin: EdgeInsets.only(bottom: 45, left: 30, right: 30),
+            behavior: SnackBarBehavior.floating,
+            content: Text(
+              "Login credentials mismatch \n Please contact your School Admin... ",
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 16),
+            )));
+      }
+    } else {
+      setLoadingLogin(false);
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          elevation: 10,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+          ),
+          duration: Duration(seconds: 1),
+          margin: EdgeInsets.only(bottom: 45, left: 30, right: 30),
+          behavior: SnackBarBehavior.floating,
+          content: Text(
+            "Invalid Username or Password...!",
+            textAlign: TextAlign.center,
+          )));
+    }
   }
 
   Future getToken(BuildContext context) async {

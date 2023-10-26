@@ -65,23 +65,19 @@ class Classtimetable extends StatefulWidget {
 }
 
 class _ClasstimetableState extends State<Classtimetable> {
+  @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      await Provider.of<Timetableprovider>(context, listen: false)
-          .getDivisionId();
-      var dividd =
-          await Provider.of<Timetableprovider>(context, listen: false).divIDD ??
-              '--';
-      await Provider.of<Timetableprovider>(context, listen: false)
-          .getTimeTable(dividd);
+      var p = Provider.of<Timetableprovider>(context, listen: false);
+      await p.getDivisionId();
+      var dividd = p.divIDD ?? '--';
+      await p.getTimeTable(dividd);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -104,8 +100,10 @@ class _ClasstimetableState extends State<Classtimetable> {
                           children: const [
                             TableRow(
                                 decoration: BoxDecoration(
-                                  color: UIGuide.light_black,
-                                ),
+                                    color: UIGuide.light_black,
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(12),
+                                        topRight: Radius.circular(12))),
                                 children: [
                                   SizedBox(
                                     height: 30,
@@ -144,7 +142,11 @@ class _ClasstimetableState extends State<Classtimetable> {
                                   TableRow(
                                       decoration: const BoxDecoration(
                                         color:
-                                            Color.fromARGB(255, 245, 242, 242),
+                                            Color.fromARGB(255, 243, 243, 243),
+                                        borderRadius: BorderRadius.only(
+                                          bottomLeft: Radius.circular(12),
+                                          bottomRight: Radius.circular(12),
+                                        ),
                                       ),
                                       children: [
                                         Padding(
@@ -210,24 +212,20 @@ class Examtimetable extends StatefulWidget {
 }
 
 class _ExamtimetableState extends State<Examtimetable> {
+  @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      Provider.of<Timetableprovider>(context, listen: false).examList.clear();
-      await Provider.of<Timetableprovider>(context, listen: false)
-          .getDivisionId();
-      var dividd =
-          await Provider.of<Timetableprovider>(context, listen: false).divIDD ??
-              '--';
-      await Provider.of<Timetableprovider>(context, listen: false)
-          .getExamTimeTable(dividd);
+      var p = Provider.of<Timetableprovider>(context, listen: false);
+      await p.clearExamList();
+      await p.getDivisionId();
+      var dividd = p.divIDD ?? '--';
+      await p.getExamTimeTable(dividd);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -242,37 +240,41 @@ class _ExamtimetableState extends State<Examtimetable> {
                         kheight20,
                         Table(
                           border: TableBorder.all(
-                              color: Color.fromARGB(255, 255, 255, 255)),
+                              color: const Color.fromARGB(255, 255, 255, 255)),
                           columnWidths: const {
                             0: FlexColumnWidth(4),
                             1: FlexColumnWidth(2),
                           },
                           children: const [
                             TableRow(
-                                decoration: BoxDecoration(
+                              decoration: BoxDecoration(
                                   color: UIGuide.light_black,
-                                ),
-                                children: [
-                                  SizedBox(
-                                    height: 30,
-                                    child: Center(
-                                      child: Text(
-                                        'Exam TimeTable',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w700),
-                                      ),
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(12),
+                                      topRight: Radius.circular(12))),
+                              children: [
+                                SizedBox(
+                                  height: 30,
+                                  child: Center(
+                                    child: Text(
+                                      'Exam TimeTable',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w700),
                                     ),
                                   ),
-                                  SizedBox(
-                                    height: 30,
-                                    child: Center(
-                                        child: Text(
+                                ),
+                                SizedBox(
+                                  height: 30,
+                                  child: Center(
+                                    child: Text(
                                       'View',
                                       style: TextStyle(
                                           fontWeight: FontWeight.w700),
-                                    )),
+                                    ),
                                   ),
-                                ]),
+                                ),
+                              ],
+                            ),
                           ],
                         ),
                         Consumer<Timetableprovider>(
@@ -286,8 +288,9 @@ class _ExamtimetableState extends State<Examtimetable> {
                                   return GestureDetector(
                                     child: Table(
                                       border: TableBorder.all(
-                                          color: Color.fromARGB(
-                                              255, 255, 255, 255)),
+                                        color: const Color.fromARGB(
+                                            255, 243, 243, 243),
+                                      ),
                                       columnWidths: const {
                                         0: FlexColumnWidth(4),
                                         1: FlexColumnWidth(2),
@@ -296,7 +299,7 @@ class _ExamtimetableState extends State<Examtimetable> {
                                         TableRow(
                                             decoration: const BoxDecoration(
                                               color: Color.fromARGB(
-                                                  255, 245, 242, 242),
+                                                  255, 243, 243, 243),
                                             ),
                                             children: [
                                               Padding(
@@ -319,11 +322,9 @@ class _ExamtimetableState extends State<Examtimetable> {
                                               Padding(
                                                 padding:
                                                     const EdgeInsets.all(8.0),
-                                                child: Container(
+                                                child: SizedBox(
                                                   height: 25,
                                                   width: 25,
-                                                  // color: Color.fromARGB(
-                                                  //     255, 241, 241, 241),
                                                   child: LottieBuilder.network(
                                                               "https://assets2.lottiefiles.com/temp/lf20_D0nz3r.json") ==
                                                           null
@@ -338,8 +339,7 @@ class _ExamtimetableState extends State<Examtimetable> {
                                     ),
                                     onTap: () async {
                                       String att =
-                                          await value.examList[index].id ??
-                                              '--';
+                                          value.examList[index].id ?? '--';
                                       await value.viewAttachment(att);
                                       if (value.examList[index].extension ==
                                           '.pdf') {
@@ -417,13 +417,12 @@ class _PdfDownloaderState extends State<PdfDownloader> {
   }
 
   Future<void> requestDownload(String _url, String _name) async {
-    final dir = await getApplicationDocumentsDirectory();
     var _localPath;
     if (Platform.isAndroid) {
       _localPath = '/storage/emulated/0/Download';
     } else if (Platform.isIOS) {
       final dir = await getApplicationDocumentsDirectory();
-      _localPath = dir!.path;
+      _localPath = dir.path;
     }
     print("pathhhh  $_localPath");
     final savedDir = Directory(_localPath);
@@ -517,7 +516,6 @@ class _PdfViewPagesState extends State<PdfViewPages> {
   }
 
   Future<void> requestDownload(String _url, String _name) async {
-    final dir = await getApplicationDocumentsDirectory();
     var _localPath;
 
     //dir!.path;
@@ -575,7 +573,7 @@ class _PdfViewPagesState extends State<PdfViewPages> {
           ? spinkitLoader()
           : Center(
               child: PhotoView(
-                backgroundDecoration: BoxDecoration(color: UIGuide.WHITE),
+                backgroundDecoration: const BoxDecoration(color: UIGuide.WHITE),
                 loadingBuilder: (context, event) {
                   return spinkitLoader();
                 },
@@ -665,13 +663,12 @@ class _ExamPdfViewState extends State<ExamPdfView> {
   }
 
   Future<void> requestDownload(String _url, String _name) async {
-    final dir = await getApplicationDocumentsDirectory();
     var _localPath;
     if (Platform.isAndroid) {
       _localPath = '/storage/emulated/0/Download';
     } else if (Platform.isIOS) {
       final dir = await getApplicationDocumentsDirectory();
-      _localPath = dir!.path;
+      _localPath = dir.path;
     }
     print("pathhhh  $_localPath");
     final savedDir = Directory(_localPath);
@@ -769,19 +766,14 @@ class _ImageViewExamState extends State<ImageViewExam> {
   }
 
   Future<void> requestDownload(String _url, String _name) async {
-    final dir = await getApplicationDocumentsDirectory();
     var _localPath;
-
-    //dir!.path;
-
-    // Directory downloadsDir;
 
     if (Platform.isAndroid) {
       _localPath = '/storage/emulated/0/Download';
     } else if (Platform.isIOS) {
       final dir = await getApplicationDocumentsDirectory();
 
-      _localPath = dir!.path;
+      _localPath = dir.path;
     }
 
     print("pathhhh  $_localPath");
@@ -829,7 +821,7 @@ class _ImageViewExamState extends State<ImageViewExam> {
           ? spinkitLoader()
           : Center(
               child: PhotoView(
-                backgroundDecoration: BoxDecoration(color: UIGuide.WHITE),
+                backgroundDecoration: const BoxDecoration(color: UIGuide.WHITE),
                 loadingBuilder: (context, event) {
                   return spinkitLoader();
                 },

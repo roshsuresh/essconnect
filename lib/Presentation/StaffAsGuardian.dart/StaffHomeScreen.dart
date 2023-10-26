@@ -88,11 +88,12 @@ class _StaffHomeScreenState extends State<StaffHomeScreen> {
                           : Padding(
                               padding: const EdgeInsets.only(top: 8.0),
                               child: Container(
-                                padding: EdgeInsets.only(top: 4, bottom: 4),
-                                decoration: BoxDecoration(
+                                padding:
+                                    const EdgeInsets.only(top: 4, bottom: 4),
+                                decoration: const BoxDecoration(
                                   // border: Border.all(color: UIGuide.THEME_LIGHT),
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(5)),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(5)),
                                   gradient: LinearGradient(
                                     colors: [
                                       Color.fromARGB(255, 234, 237, 239),
@@ -365,7 +366,7 @@ class _StaffHomeScreenState extends State<StaffHomeScreen> {
                                             badges.BadgePosition.topEnd(end: 9),
                                         badgeContent: Text(
                                           count.count == null
-                                              ? '0'
+                                              ? ''
                                               : count.count.toString(),
                                           style: const TextStyle(
                                               color: Colors.white,

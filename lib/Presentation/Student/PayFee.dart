@@ -695,19 +695,19 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                                                                           .extension ??
                                                                       '--';
 
-                                                              SchedulerBinding
-                                                                  .instance
-                                                                  .addPostFrameCallback(
-                                                                      (_) {
-                                                                Navigator
-                                                                    .pushReplacement(
-                                                                  context,
-                                                                  MaterialPageRoute(
-                                                                      builder:
-                                                                          (context) =>
-                                                                              PdfDownload()),
-                                                                );
-                                                              });
+                                                              // SchedulerBinding
+                                                              //     .instance
+                                                              //     .addPostFrameCallback(
+                                                              //         (_) {
+                                                              Navigator
+                                                                  .pushReplacement(
+                                                                context,
+                                                                MaterialPageRoute(
+                                                                    builder:
+                                                                        (context) =>
+                                                                            PdfDownload()),
+                                                              );
+                                                              // });
                                                             },
                                                             child: const Icon(
                                                                 Icons.download,
@@ -4145,7 +4145,6 @@ class _PdfDownloadState extends State<PdfDownload> {
   }
 
   Future<void> requestDownload(String _url, String _name) async {
-    final dir = await getApplicationDocumentsDirectory();
     var _localPath;
     if (Platform.isAndroid) {
       _localPath = '/storage/emulated/0/Download';
@@ -4171,60 +4170,39 @@ class _PdfDownloadState extends State<PdfDownload> {
   @override
   Widget build(BuildContext context) {
     return Consumer<FeesProvider>(
-      builder: (context, value, child) => WillPopScope(
-        onWillPop: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => StudentHome()),
-          );
-          throw (e);
-        },
-        child: Scaffold(
-            appBar: AppBar(
-              automaticallyImplyLeading: false,
-              title: Row(
-                children: [
-                  kWidth,
-                  GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).pushAndRemoveUntil(
-                            MaterialPageRoute(
-                                builder: (context) => StudentHome()),
-                            (Route<dynamic> route) => false);
-                      },
-                      child: const Icon(Icons.arrow_back_ios)),
-                  kWidth,
-                  kWidth,
-                  kWidth,
-                  const Text('Payment'),
-                ],
-              ),
-              titleSpacing: 00.0,
-              centerTitle: true,
-              toolbarHeight: 50.2,
-              toolbarOpacity: 0.8,
-              backgroundColor: UIGuide.light_Purple,
-              actions: [
-                Padding(
-                    padding: const EdgeInsets.only(right: 15.0),
-                    child: IconButton(
-                        onPressed: () async {
-                          await requestDownload(
-                            value.url.toString() == null
-                                ? '--'
-                                : value.url.toString(),
-                            value.idd.toString() == null
-                                ? '---'
-                                : value.idd.toString() + value.name.toString(),
-                          );
-                        },
-                        icon: const Icon(Icons.download_outlined))),
-              ],
+      builder: (context, value, child) => Scaffold(
+          appBar: AppBar(
+            title: const Text('Payment Reciept'),
+            titleSpacing: 00.0,
+            centerTitle: true,
+            toolbarHeight: 60.2,
+            toolbarOpacity: 0.8,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                  bottomRight: Radius.circular(25),
+                  bottomLeft: Radius.circular(25)),
             ),
-            body: SfPdfViewer.network(
-              value.url.toString() == null ? '--' : value.url.toString(),
-            )),
-      ),
+            backgroundColor: UIGuide.light_Purple,
+            actions: [
+              Padding(
+                  padding: const EdgeInsets.only(right: 15.0),
+                  child: IconButton(
+                      onPressed: () async {
+                        await requestDownload(
+                          value.url.toString() == null
+                              ? '--'
+                              : value.url.toString(),
+                          value.idd.toString() == null
+                              ? '---'
+                              : value.idd.toString() + value.name.toString(),
+                        );
+                      },
+                      icon: const Icon(Icons.download_outlined))),
+            ],
+          ),
+          body: SfPdfViewer.network(
+            value.url.toString() == null ? '--' : value.url.toString(),
+          )),
     );
   }
 }

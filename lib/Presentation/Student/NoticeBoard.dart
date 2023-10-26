@@ -108,6 +108,7 @@ class NoticeBoard extends StatelessWidget {
                                                       child: RichText(
                                                         overflow: TextOverflow
                                                             .ellipsis,
+                                                        maxLines: 2,
                                                         strutStyle:
                                                             const StrutStyle(
                                                                 fontSize: 14.0),
@@ -301,7 +302,6 @@ class _PDFDownloadState extends State<PDFDownload> {
   }
 
   Future<void> requestDownload(String _url, String _name) async {
-    final dir = await getApplicationDocumentsDirectory();
     var _localPath;
 
     if (Platform.isAndroid) {
@@ -401,12 +401,7 @@ class _PdfViewPageState extends State<PdfViewPage> {
   }
 
   Future<void> requestDownload(String _url, String _name) async {
-    final dir = await getApplicationDocumentsDirectory();
     var _localPath;
-
-    //dir!.path;
-
-    // Directory downloadsDir;
 
     if (Platform.isAndroid) {
       _localPath = '/storage/emulated/0/Download';

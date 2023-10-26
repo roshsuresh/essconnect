@@ -17,24 +17,6 @@ import '../../utils/constants.dart';
 class ReportCard extends StatelessWidget {
   const ReportCard({Key? key}) : super(key: key);
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-  //     var p = Provider.of<FeesProvider>(context, listen: false);
-  //     p.busFeeList.clear();
-  //     p.feeList.clear();
-  //     p.feesData();
-  //     totalPartial = 0;
-  //     totallPartial = 0;
-  //     totalFeeCollect = 0;
-  //     partialBUS = 0;
-  //     partialFee = 0;
-  //     p.transactionList.clear();
-  //     p.gatewayName();
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
@@ -42,8 +24,6 @@ class ReportCard extends StatelessWidget {
       await _provider.clearReportCard();
       await _provider.getReportCard();
     });
-    var size = MediaQuery.of(context).size;
-    var height = size.height;
 
     return Scaffold(
       appBar: AppBar(
@@ -78,15 +58,15 @@ class ReportCard extends StatelessWidget {
                   : value.reportcardList.isEmpty || value.reportcardList == null
                       ? LottieBuilder.network(
                           'https://assets2.lottiefiles.com/private_files/lf30_lkquf6qz.json')
-                      : ListView(
-                          physics: const BouncingScrollPhysics(
-                              parent: AlwaysScrollableScrollPhysics()),
+                      : Column(
+                          // physics: const BouncingScrollPhysics(
+                          //     parent: AlwaysScrollableScrollPhysics()),
                           children: [
                             kheight20,
                             Table(
                               border: TableBorder.all(
-                                color: const Color.fromRGBO(245, 243, 243, 1),
-                              ),
+                                  color:
+                                      const Color.fromARGB(255, 255, 255, 255)),
                               columnWidths: const {
                                 0: FlexColumnWidth(3),
                                 1: FlexColumnWidth(5),
@@ -96,6 +76,10 @@ class ReportCard extends StatelessWidget {
                                 TableRow(
                                   decoration: BoxDecoration(
                                     color: UIGuide.light_black,
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(12),
+                                      topRight: Radius.circular(12),
+                                    ),
                                   ),
                                   children: [
                                     SizedBox(
@@ -131,8 +115,8 @@ class ReportCard extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            LimitedBox(
-                              maxHeight: size.height - 30,
+                            Expanded(
+                              //maxHeight: size.height - 30,
                               child: Consumer<ReportCardProvider>(
                                 builder: (context, provider, child) {
                                   return ListView.builder(
@@ -185,8 +169,8 @@ class ReportCard extends StatelessWidget {
                                           },
                                           child: Table(
                                             border: TableBorder.all(
-                                                color: const Color.fromARGB(
-                                                    255, 245, 243, 243)),
+                                                color: Color.fromARGB(
+                                                    255, 255, 255, 255)),
                                             columnWidths: const {
                                               0: FlexColumnWidth(3),
                                               1: FlexColumnWidth(5),
@@ -194,8 +178,13 @@ class ReportCard extends StatelessWidget {
                                             },
                                             children: [
                                               TableRow(
-                                                  decoration:
-                                                      const BoxDecoration(),
+                                                  decoration: BoxDecoration(
+                                                      color:
+                                                          const Color.fromARGB(
+                                                              255,
+                                                              246,
+                                                              247,
+                                                              248)),
                                                   children: [
                                                     Padding(
                                                       padding:
@@ -319,14 +308,8 @@ class _PdfDownloadState extends State<PdfDownload> {
   }
 
   Future<void> requestDownload(String _url, String _name) async {
-    final dir = await getApplicationDocumentsDirectory();
     var _localPath;
 
-    //dir!.path;
-
-    // Directory downloadsDir;
-
-    // Check platform
     if (Platform.isAndroid) {
       _localPath = '/storage/emulated/0/Download';
     } else if (Platform.isIOS) {
@@ -360,6 +343,11 @@ class _PdfDownloadState extends State<PdfDownload> {
             toolbarHeight: 50.2,
             toolbarOpacity: 0.8,
             backgroundColor: UIGuide.light_Purple,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                  bottomRight: Radius.circular(25),
+                  bottomLeft: Radius.circular(25)),
+            ),
             actions: [
               Padding(
                   padding: const EdgeInsets.only(right: 15.0),

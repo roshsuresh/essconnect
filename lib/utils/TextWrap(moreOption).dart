@@ -26,7 +26,7 @@ class _TextWrapperState extends State<TextWrapper>
           child: Text(
             widget.text,
             style: TextStyle(fontSize: widget.fSize),
-            maxLines: isExpanded ? 11 : 2,
+            maxLines: isExpanded ? 20 : 2,
             softWrap: true,
             overflow: TextOverflow.ellipsis,
           ),

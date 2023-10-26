@@ -159,14 +159,15 @@ class _ActivatePageState extends State<ActivatePage>
   Future<void> _goToNextPage() async {
     //-->function for navigation
 
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+    // SharedPreferences _pref = await SharedPreferences.getInstance();
 
     // Navigator.of(context)
     //     .push(FadeRouteBuilder(page: LoginPageWeb()))
     Navigator.of(context)
         .pushReplacement(MaterialPageRoute(builder: (BuildContext context) {
       return LoginPage();
-    })).then((_) => setState(() => rect = null));
+    }));
+    // .then((_) => setState(() => rect = null));
   }
 
   @override

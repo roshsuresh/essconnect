@@ -124,7 +124,12 @@ class Timetableprovider with ChangeNotifier {
       print(e);
     }
   }
+
   //Exam tt
+  clearExamList() {
+    examList.clear();
+    notifyListeners();
+  }
 
   List<ExamTTModel> examList = [];
   Future getExamTimeTable(String id) async {

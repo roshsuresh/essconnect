@@ -266,7 +266,7 @@ class FeesProvider with ChangeNotifier {
 
   Future pdfDownload(String orderID) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
-    setLoading(true);
+
     var headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
@@ -290,7 +290,6 @@ class FeesProvider with ChangeNotifier {
 
         notifyListeners();
       } else {
-        setLoading(false);
         print("Error in   pdf download  response");
       }
     } catch (e) {

@@ -12,6 +12,7 @@ import 'package:essconnect/Presentation/Student/Offline/FeeInitialScreen.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:essconnect/utils/spinkit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:lottie/lottie.dart';
 import 'package:marquee/marquee.dart';
@@ -54,9 +55,9 @@ class _StudentHomeState extends State<StudentHome> {
       await Provider.of<ProfileProvider>(context, listen: false).profileData();
       await Provider.of<StudNotificationCountProviders>(context, listen: false)
           .getnotificationCount();
-      Provider.of<SibingsProvider>(context, listen: false).siblingList.clear();
-      await Provider.of<SibingsProvider>(context, listen: false)
-          .getSiblingName();
+      // Provider.of<SibingsProvider>(context, listen: false).siblingList.clear();
+      // await Provider.of<SibingsProvider>(context, listen: false)
+      //     .getSiblingName();
       await Provider.of<ModuleProviders>(context, listen: false)
           .getModuleDetails();
       await Provider.of<SchoolNameProvider>(context, listen: false)
@@ -455,7 +456,7 @@ class _StudentHomeState extends State<StudentHome> {
                                             badges.BadgePosition.topEnd(end: 9),
                                         badgeContent: Text(
                                           count.count == null
-                                              ? '0'
+                                              ? ''
                                               : count.count.toString(),
                                           style: const TextStyle(
                                               color: Colors.white,
@@ -1407,26 +1408,26 @@ class _StudentHomeState extends State<StudentHome> {
                           ),
                           kheight20,
                           kheight20,
-                          Consumer<SibingsProvider>(
-                            builder: (context, value, child) {
-                              return ListView.builder(
-                                  shrinkWrap: true,
-                                  itemCount: value.siblingList.isEmpty
-                                      ? 0
-                                      : value.siblingList.length,
-                                  itemBuilder: (context, index) {
-                                    var idd =
-                                        value.siblingList[index].id ?? '--';
-                                    Provider.of<SibingsProvider>(context,
-                                            listen: false)
-                                        .getToken(idd);
-                                    return Container(
-                                      height: 0,
-                                      width: 0,
-                                    );
-                                  });
-                            },
-                          ),
+                          // Consumer<SibingsProvider>(
+                          //   builder: (context, value, child) {
+                          //     return ListView.builder(
+                          //         shrinkWrap: true,
+                          //         itemCount: value.siblingList.isEmpty
+                          //             ? 0
+                          //             : value.siblingList.length,
+                          //         itemBuilder: (context, index) {
+                          //           var idd =
+                          //               value.siblingList[index].id ?? '--';
+                          //           Provider.of<SibingsProvider>(context,
+                          //                   listen: false)
+                          //               .getToken(idd);
+                          //           return Container(
+                          //             height: 0,
+                          //             width: 0,
+                          //           );
+                          //         });
+                          //   },
+                          // ),
                           const Center(
                             child: Text(
                               "Powered By GJ Infotech (P) Ltd.",
@@ -1682,6 +1683,7 @@ class ProfileHome extends StatelessWidget {
                                         children: [
                                           IconButton(
                                               onPressed: (() {
+                                                HapticFeedback.selectionClick();
                                                 var currentname =
                                                     value.studName;
                                                 _displayNameOfSiblings(
@@ -1830,20 +1832,19 @@ class _FlashnewsState extends State<Flashnews> {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
     return Consumer<ProfileProvider>(
       builder: (context, value, child) {
         if (value.flashnews == null || value.flashnews == '') {
           return Container(
-            height: 25,
+            height: 0,
           );
         } else {
           return LimitedBox(
             maxHeight: 30,
-            child: value.loading
+            child: value.loading || value.flashnews!.isEmpty
                 ? Container(
-                    height: 30,
-                    width: 30,
+                    height: 0,
+                    width: 0,
                   )
                 : LimitedBox(
                     maxHeight: 30,

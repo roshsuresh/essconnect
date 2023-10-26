@@ -336,7 +336,7 @@ class _StudentHomeByStaffState extends State<StudentHomeByStaff> {
                                           badges.BadgePosition.topEnd(end: 9),
                                       badgeContent: Text(
                                         count.count == null
-                                            ? '0'
+                                            ? ''
                                             : count.count.toString(),
                                         style: const TextStyle(
                                             color: Colors.white,

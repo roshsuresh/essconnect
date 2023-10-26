@@ -89,11 +89,12 @@ class _StaffHomeState extends State<StaffHome> {
                           : Padding(
                               padding: const EdgeInsets.only(top: 8.0),
                               child: Container(
-                                padding: EdgeInsets.only(top: 4, bottom: 4),
-                                decoration: BoxDecoration(
+                                padding:
+                                    const EdgeInsets.only(top: 4, bottom: 4),
+                                decoration: const BoxDecoration(
                                   // border: Border.all(color: UIGuide.THEME_LIGHT),
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(5)),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(5)),
                                   gradient: LinearGradient(
                                     colors: [
                                       Color.fromARGB(255, 234, 237, 239),
@@ -107,7 +108,7 @@ class _StaffHomeState extends State<StaffHome> {
                                     child: Text(
                                   "${snap.schoolname ?? ""}, ${snap.place ?? ""}",
                                   textAlign: TextAlign.center,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       color: UIGuide.light_Purple,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w700),
@@ -261,7 +262,7 @@ class _StaffHomeState extends State<StaffHome> {
                                             badges.BadgePosition.topEnd(end: 9),
                                         badgeContent: Text(
                                           count.count == null
-                                              ? '0'
+                                              ? ''
                                               : count.count.toString(),
                                           style: const TextStyle(
                                               color: Colors.white,
@@ -1304,7 +1305,6 @@ class _StaffHomeState extends State<StaffHome> {
                                           child: PasswordChange(),
                                           duration:
                                               const Duration(milliseconds: 300),
-                                          // childCurrent:this
                                         ));
                                   },
                                   child: const Icon(
@@ -1382,8 +1382,6 @@ class _StaffHomeState extends State<StaffHome> {
                           kheight10,
                           kheight20,
                           kheight20,
-                          kheight20,
-                          kheight20
                         ],
                       ),
                     ),
@@ -1587,15 +1585,15 @@ class StaffFlashNews extends StatelessWidget {
       builder: (context, value, child) {
         if (value.flashnews == null || value.flashnews == '') {
           return Container(
-            height: 25,
+            height: 0,
           );
         } else {
           return LimitedBox(
             maxHeight: 30,
-            child: value.loading
-                ? Container(
-                    height: 30,
-                    width: 30,
+            child: value.loading || value.flashnews!.isEmpty
+                ? const SizedBox(
+                    height: 0,
+                    width: 0,
                   )
                 : LimitedBox(
                     maxHeight: 30,

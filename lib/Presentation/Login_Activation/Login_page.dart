@@ -1,24 +1,12 @@
 import 'dart:async';
-import 'dart:convert';
 import 'package:animate_gradient/animate_gradient.dart';
 import 'package:essconnect/Constants.dart';
-import 'package:essconnect/Presentation/Admin/AdminHome.dart';
-import 'package:essconnect/Presentation/ChildLogin/ChildHomeScreen.dart';
 import 'package:essconnect/Presentation/Login_Activation/ForgotPassword.dart';
-import 'package:essconnect/Presentation/SchoolHead/SchoolHeadHome.dart';
-import 'package:essconnect/Presentation/SchoolSuperAdmin/SuperAdminHome.dart';
-import 'package:essconnect/Presentation/StaffAsGuardian.dart/StaffHomeScreen.dart';
-import 'package:essconnect/Presentation/Student/Student_home.dart';
 import 'package:essconnect/utils/LoadingIndication.dart';
 import 'package:essconnect/utils/constants.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../Application/StudentProviders/LoginProvider.dart';
-import '../../Domain/Student/LoginModel.dart';
-import '../Staff/StaffHome.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key? key}) : super(key: key);
@@ -288,59 +276,92 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
                                   },
                                 ),
                               ),
-
                               kheight20,
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SizedBox(
-                                    height: 40,
-                                    width: size.width / 2.5,
-                                    child: MaterialButton(
-                                        shape: const RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(15.0))),
-                                        color: UIGuide.light_Purple,
-                                        onPressed: () async {
-                                          if (_formKey.currentState!
-                                              .validate()) {
-                                            checkLogin(_username.text.trim(),
-                                                _password.text.trim());
+                              Consumer<LoginProvider>(
+                                builder: (context, val, _) => Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SizedBox(
+                                      height: 45,
+                                      width: size.width / 2.5,
+                                      child: val.loadingLogin
+                                          ? const Center(
+                                              child: CircularProgressIndicator(
+                                                color: UIGuide.light_Purple,
+                                                strokeWidth: 2,
+                                              ),
+                                            )
+                                          : Container(
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(
+                                                              15.0)),
+                                                  border: Border.all(
+                                                      color:
+                                                          UIGuide.light_Purple,
+                                                      width: 2)),
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(1.0),
+                                                child: MaterialButton(
+                                                    shape: const RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                                Radius.circular(
+                                                                    12.0))),
+                                                    color: UIGuide.light_Purple,
+                                                    onPressed: () async {
+                                                      if (_formKey.currentState!
+                                                          .validate()) {
+                                                        val.checkLogin(
+                                                            _username.text
+                                                                .trim(),
+                                                            _password.text
+                                                                .trim(),
+                                                            context);
 
-                                            print(_username);
-                                            print(_password);
-                                          } else {
-                                            print("Enter some value");
-                                          }
-                                        },
-                                        child: const Text(
-                                          'LOGIN',
-                                          style: TextStyle(color: Colors.white),
-                                        )),
-                                  ),
-                                ],
+                                                        print(_username);
+                                                        print(_password);
+                                                      } else {
+                                                        print(
+                                                            "Enter some value");
+                                                      }
+                                                    },
+                                                    child: const Text(
+                                                      'LOGIN',
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    )),
+                                              ),
+                                            ),
+                                    ),
+                                  ],
+                                ),
                               ),
                               kheight10,
-                              InkWell(
-                                splashColor: UIGuide.THEME_LIGHT,
-                                onTap: () async {
-                                  await Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              ForgotPasswordScreen()));
-                                },
-                                child: Text(
-                                  "Forgot Password",
-                                  style: TextStyle(
-                                      color: UIGuide.light_Purple, fontSize: 15
-                                      //fontWeight: FontWeight.w400
-                                      ),
+                              Consumer<LoginProvider>(
+                                builder: (context, valu, _) => InkWell(
+                                  splashColor: UIGuide.THEME_LIGHT,
+                                  onTap: valu.loadingLogin
+                                      ? null
+                                      : () async {
+                                          await Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ForgotPasswordScreen()));
+                                        },
+                                  child: const Text(
+                                    "Forgot Password ? ",
+                                    style: TextStyle(
+                                        color: UIGuide.light_Purple,
+                                        fontSize: 15),
+                                  ),
                                 ),
                               )
-
-                              //   ],
-                              // ),
                             ],
                           ),
                         ),
@@ -353,166 +374,166 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
     );
   }
 
-  void checkLogin(String username, String password) async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
-    var headers = {'Content-Type': 'application/json'};
-    var request = http.Request(
-        'POST',
-        Uri.parse(
-            '${UIGuide.baseURL}/login?id=${_pref.getString('schoolId')}'));
-    request.body = json.encode({"email": username, "password": password});
-    print(request.body);
-    request.headers.addAll(headers);
+  // void checkLogin(String username, String password) async {
+  //   SharedPreferences _pref = await SharedPreferences.getInstance();
+  //   var headers = {'Content-Type': 'application/json'};
+  //   var request = http.Request(
+  //       'POST',
+  //       Uri.parse(
+  //           '${UIGuide.baseURL}/login?id=${_pref.getString('schoolId')}'));
+  //   request.body = json.encode({"email": username, "password": password});
+  //   print(request.body);
+  //   request.headers.addAll(headers);
 
-    http.StreamedResponse response = await request.send();
+  //   http.StreamedResponse response = await request.send();
 
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      var data = jsonDecode(await response.stream.bytesToString());
-      LoginModel res = LoginModel.fromJson(data);
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString('accesstoken', res.accessToken);
-      SharedPreferences user = await SharedPreferences.getInstance();
-      await user.setString('username', username);
-      SharedPreferences pass = await SharedPreferences.getInstance();
-      await pass.setString('password', password);
+  //   if (response.statusCode == 200 || response.statusCode == 201) {
+  //     var data = jsonDecode(await response.stream.bytesToString());
+  //     LoginModel res = LoginModel.fromJson(data);
+  //     SharedPreferences prefs = await SharedPreferences.getInstance();
+  //     await prefs.setString('accesstoken', res.accessToken);
+  //     SharedPreferences user = await SharedPreferences.getInstance();
+  //     await user.setString('username', username);
+  //     SharedPreferences pass = await SharedPreferences.getInstance();
+  //     await pass.setString('password', password);
 
-      await Provider.of<LoginProvider>(context, listen: false)
-          .getToken(context);
-      var parsedResponse = await parseJWT();
-      List<dynamic> roleList = [];
-      print(parsedResponse['role'] is List);
-      if (parsedResponse['role'] is List) {
-        roleList = await parsedResponse['role'];
-        print(roleList);
-      }
+  //     await Provider.of<LoginProvider>(context, listen: false)
+  //         .getToken(context);
+  //     var parsedResponse = await parseJWT();
+  //     List<dynamic> roleList = [];
+  //     print(parsedResponse['role'] is List);
+  //     if (parsedResponse['role'] is List) {
+  //       roleList = await parsedResponse['role'];
+  //       print(roleList);
+  //     }
 
-      if (parsedResponse['role'] == "Guardian") {
-        if (isLoading) return;
-        setState(() {
-          isLoading = true;
-        });
-        await Future.delayed(const Duration(seconds: 3));
+  //     if (parsedResponse['role'] == "Guardian") {
+  //       if (isLoading) return;
+  //       setState(() {
+  //         isLoading = true;
+  //       });
+  //       await Future.delayed(const Duration(seconds: 3));
 
-        await Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (BuildContext context) => StudentHome()));
-      } else if (parsedResponse['role'] == "SystemAdmin" ||
-          roleList.contains("SystemAdmin")) {
-        if (isLoading) return;
-        setState(() {
-          isLoading = true;
-        });
-        await Permission.videos.request();
+  //       await Navigator.pushReplacement(
+  //           context,
+  //           MaterialPageRoute(
+  //               builder: (BuildContext context) => StudentHome()));
+  //     } else if (parsedResponse['role'] == "SystemAdmin" ||
+  //         roleList.contains("SystemAdmin")) {
+  //       if (isLoading) return;
+  //       setState(() {
+  //         isLoading = true;
+  //       });
+  //       await Permission.videos.request();
 
-        await Permission.photos.request();
-        await Future.delayed(const Duration(seconds: 3));
+  //       await Permission.photos.request();
+  //       await Future.delayed(const Duration(seconds: 3));
 
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (BuildContext context) => const AdminHome()));
-      } else if (parsedResponse['role'] == "Teacher" ||
-          parsedResponse['role'] == "NonTeachingStaff") {
-        if (isLoading) return;
-        setState(() {
-          isLoading = true;
-        });
-        await Permission.videos.request();
+  //       Navigator.pushReplacement(
+  //           context,
+  //           MaterialPageRoute(
+  //               builder: (BuildContext context) => const AdminHome()));
+  //     } else if (parsedResponse['role'] == "Teacher" ||
+  //         parsedResponse['role'] == "NonTeachingStaff") {
+  //       if (isLoading) return;
+  //       setState(() {
+  //         isLoading = true;
+  //       });
+  //       await Permission.videos.request();
 
-        await Permission.photos.request();
-        await Future.delayed(const Duration(seconds: 3));
+  //       await Permission.photos.request();
+  //       await Future.delayed(const Duration(seconds: 3));
 
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (BuildContext context) => StaffHome()));
-      } else if ((roleList.contains("Guardian") &&
-              roleList.contains("Teacher")) ||
-          (roleList.contains("NonTeachingStaff") &&
-              roleList.contains("Guardian"))) {
-        if (isLoading) return;
-        setState(() {
-          isLoading = true;
-        });
-        await Permission.videos.request();
+  //       Navigator.pushReplacement(context,
+  //           MaterialPageRoute(builder: (BuildContext context) => StaffHome()));
+  //     } else if ((roleList.contains("Guardian") &&
+  //             roleList.contains("Teacher")) ||
+  //         (roleList.contains("NonTeachingStaff") &&
+  //             roleList.contains("Guardian"))) {
+  //       if (isLoading) return;
+  //       setState(() {
+  //         isLoading = true;
+  //       });
+  //       await Permission.videos.request();
 
-        await Permission.photos.request();
-        await Future.delayed(const Duration(seconds: 3));
+  //       await Permission.photos.request();
+  //       await Future.delayed(const Duration(seconds: 3));
 
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (BuildContext context) => StaffHomeScreen()));
-      }
-      //SchoolSuperAdmin
-      else if (parsedResponse['role'] == "SchoolSuperAdmin" ||
-          roleList.contains("SchoolSuperAdmin")) {
-        if (isLoading) return;
-        setState(() {
-          isLoading = true;
-        });
-        await Permission.videos.request();
+  //       Navigator.pushReplacement(
+  //           context,
+  //           MaterialPageRoute(
+  //               builder: (BuildContext context) => StaffHomeScreen()));
+  //     }
+  //     //SchoolSuperAdmin
+  //     else if (parsedResponse['role'] == "SchoolSuperAdmin" ||
+  //         roleList.contains("SchoolSuperAdmin")) {
+  //       if (isLoading) return;
+  //       setState(() {
+  //         isLoading = true;
+  //       });
+  //       await Permission.videos.request();
 
-        await Permission.photos.request();
-        await Future.delayed(const Duration(seconds: 3));
+  //       await Permission.photos.request();
+  //       await Future.delayed(const Duration(seconds: 3));
 
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (BuildContext context) => SuperAdminHome()));
-      } else if (parsedResponse['role'] == "SchoolHead") {
-        if (isLoading) return;
-        setState(() {
-          isLoading = true;
-        });
-        await Permission.videos.request();
+  //       Navigator.pushReplacement(
+  //           context,
+  //           MaterialPageRoute(
+  //               builder: (BuildContext context) => SuperAdminHome()));
+  //     } else if (parsedResponse['role'] == "SchoolHead") {
+  //       if (isLoading) return;
+  //       setState(() {
+  //         isLoading = true;
+  //       });
+  //       await Permission.videos.request();
 
-        await Permission.photos.request();
-        await Future.delayed(const Duration(seconds: 3));
+  //       await Permission.photos.request();
+  //       await Future.delayed(const Duration(seconds: 3));
 
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (BuildContext context) => SchoolHeadHomeScreen()));
-      } else if (parsedResponse['role'] == "Student") {
-        if (isLoading) return;
-        setState(() {
-          isLoading = true;
-        });
-        await Permission.videos.request();
-        await Permission.photos.request();
-        await Future.delayed(const Duration(seconds: 3));
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (BuildContext context) => ChildHome()));
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            elevation: 10,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(10)),
-            ),
-            duration: Duration(seconds: 3),
-            margin: EdgeInsets.only(bottom: 45, left: 30, right: 30),
-            behavior: SnackBarBehavior.floating,
-            content: Text(
-              "Login credentials mismatch \n Please contact your School Admin... ",
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 16),
-            )));
-      }
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          elevation: 10,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(10)),
-          ),
-          duration: Duration(seconds: 1),
-          margin: EdgeInsets.only(bottom: 45, left: 30, right: 30),
-          behavior: SnackBarBehavior.floating,
-          content: Text(
-            "Invalid Username or Password...!",
-            textAlign: TextAlign.center,
-          )));
-    }
-  }
+  //       Navigator.pushReplacement(
+  //           context,
+  //           MaterialPageRoute(
+  //               builder: (BuildContext context) => SchoolHeadHomeScreen()));
+  //     } else if (parsedResponse['role'] == "Student") {
+  //       if (isLoading) return;
+  //       setState(() {
+  //         isLoading = true;
+  //       });
+  //       await Permission.videos.request();
+  //       await Permission.photos.request();
+  //       await Future.delayed(const Duration(seconds: 3));
+  //       Navigator.pushReplacement(context,
+  //           MaterialPageRoute(builder: (BuildContext context) => ChildHome()));
+  //     } else {
+  //       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+  //           elevation: 10,
+  //           shape: RoundedRectangleBorder(
+  //             borderRadius: BorderRadius.all(Radius.circular(10)),
+  //           ),
+  //           duration: Duration(seconds: 3),
+  //           margin: EdgeInsets.only(bottom: 45, left: 30, right: 30),
+  //           behavior: SnackBarBehavior.floating,
+  //           content: Text(
+  //             "Login credentials mismatch \n Please contact your School Admin... ",
+  //             textAlign: TextAlign.center,
+  //             style: TextStyle(fontSize: 16),
+  //           )));
+  //     }
+  //   } else {
+  //     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+  //         elevation: 10,
+  //         shape: RoundedRectangleBorder(
+  //           borderRadius: BorderRadius.all(Radius.circular(10)),
+  //         ),
+  //         duration: Duration(seconds: 1),
+  //         margin: EdgeInsets.only(bottom: 45, left: 30, right: 30),
+  //         behavior: SnackBarBehavior.floating,
+  //         content: Text(
+  //           "Invalid Username or Password...!",
+  //           textAlign: TextAlign.center,
+  //         )));
+  //   }
+  // }
 }
 
 class MyPainter extends CustomPainter {
