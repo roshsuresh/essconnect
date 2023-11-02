@@ -71,11 +71,11 @@ class _SMSFormatsState extends State<SMSFormats> {
                             context: context,
                             builder: (context) {
                               return Dialog(
-                                  child: Container(
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    ListView.builder(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15)),
+                                  child: LimitedBox(
+                                    maxHeight: size.height - 300,
+                                    child: ListView.builder(
                                         shrinkWrap: true,
                                         itemCount: snapshot.formatlist.isEmpty
                                             ? 0
@@ -109,9 +109,7 @@ class _SMSFormatsState extends State<SMSFormats> {
                                             ),
                                           );
                                         }),
-                                  ],
-                                ),
-                              ));
+                                  ));
                             });
                       },
                       child: Padding(

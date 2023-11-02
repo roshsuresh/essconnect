@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:essconnect/Constants.dart';
 import 'package:essconnect/Domain/Staff/StaffAttandenceModel.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -11,6 +13,48 @@ Map? staffAttendeceRespo;
 List? attendecourse;
 
 class AttendenceStaffProvider with ChangeNotifier {
+  DateTime? dateselect;
+  String dateDisplay = '';
+  String dateSend = '';
+  DateTime? currentDate;
+
+  getDateNow() async {
+    currentDate = DateTime.now();
+    dateDisplay = DateFormat('dd-MMM-yyyy').format(currentDate!);
+    dateSend = DateFormat('yyyy-MM-dd').format(currentDate!);
+    print("dateDis:  $dateDisplay");
+    print("dateS:  $dateSend");
+    notifyListeners();
+  }
+
+  //get date
+
+  getDate(BuildContext context) async {
+    dateselect = await showDatePicker(
+      context: context,
+      initialDate: dateselect ?? DateTime.now(),
+      firstDate: DateTime(2022),
+      lastDate: DateTime(2030),
+      builder: (context, child) {
+        return Theme(
+            data: ThemeData.light().copyWith(
+              primaryColor: UIGuide.light_Purple,
+              colorScheme: const ColorScheme.light(
+                primary: UIGuide.light_Purple,
+              ),
+              buttonTheme:
+                  const ButtonThemeData(textTheme: ButtonTextTheme.primary),
+            ),
+            child: child!);
+      },
+    );
+    dateDisplay = DateFormat('dd-MMM-yyyy').format(dateselect!);
+    dateSend = DateFormat('yyyy-MM-dd').format(dateselect!);
+    print("dateDisplay:  $dateDisplay");
+    print("dateSend:  $dateSend");
+    notifyListeners();
+  }
+
   List<AttendenceCourse> selectedCourse = [];
 
   String filtersDivision = "";
@@ -229,6 +273,7 @@ class AttendenceStaffProvider with ChangeNotifier {
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
+    print(request);
 
     if (response.statusCode == 200) {
       setLoading(true);
@@ -267,7 +312,7 @@ class AttendenceStaffProvider with ChangeNotifier {
 
     var request = http.Request('POST',
         Uri.parse('${UIGuide.baseURL}/mobileapp/staff/saveattendance/$date'));
-
+    print(request);
     request.body = json.encode(finallList);
 
     log("finalelist      $finallList".toString());
@@ -357,22 +402,7 @@ class AttendenceStaffProvider with ChangeNotifier {
       setLoadinggNull(true);
       print(await response.stream.bytesToString());
       print('correct');
-      // await AwesomeDialog(
-      //     dismissOnTouchOutside: false,
-      //     dismissOnBackKeyPress: false,
-      //     context: context,
-      //     dialogType: DialogType.error,
-      //     animType: AnimType.rightSlide,
-      //     headerAnimationLoop: false,
-      //     title: 'Delete',
-      //     desc: 'Deleted Successfully',
-      //     btnOkOnPress: () async {
-      //       await clearStudentList();
-      //
-      //     },
-      //
-      //     btnOkColor: Colors.red)
-      // .show();
+      snackbarWidget(2, "Deleted Successfully", context);
       await clearStudentList();
       setLoadinggDelete(false);
       setLoadinggNull(false);

@@ -135,934 +135,893 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
             : Column(
                 // physics: const BouncingScrollPhysics(),
                 children: [
-                    Row(
-                      children: [
-                        const Spacer(),
-                        SizedBox(
-                          height: 50,
-                          width: MediaQuery.of(context).size.width * 0.49,
-                          child: Consumer<MarkEntryNewProvider>(
-                              builder: (context, snapshot, child) {
-                            return InkWell(
-                              onTap: () async {
-                                showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return Dialog(
-                                          child: LimitedBox(
-                                        maxHeight: size.height - 300,
-                                        child: ListView.builder(
-                                            shrinkWrap: true,
-                                            itemCount: snapshot
-                                                .markEntryInitialValues.length,
-                                            itemBuilder: (context, index) {
-                                              return ListTile(
-                                                onTap: () async {
-                                                  markEntryInitialValuesController
-                                                      .text = snapshot
-                                                          .markEntryInitialValues[
-                                                              index]
-                                                          .id ??
-                                                      '--';
-                                                  markEntryInitialValuesController1
-                                                      .text = snapshot
-                                                          .markEntryInitialValues[
-                                                              index]
-                                                          .courseName ??
-                                                      '--';
-                                                  courseId =
-                                                      markEntryInitialValuesController
-                                                          .text
-                                                          .toString();
-
-                                                  //div
-                                                  markEntryDivisionListController
-                                                      .clear();
-                                                  markEntryDivisionListController1
-                                                      .clear();
-                                                  await snapshot
-                                                      .divisionClear();
-
-                                                  //part
-
-                                                  markEntryPartListController
-                                                      .clear();
-                                                  markEntryPartListController1
-                                                      .clear();
-
-                                                  await snapshot
-                                                      .removeAllpartClear();
-
-                                                  // sub
-
-                                                  markEntrySubjectListController
-                                                      .clear();
-                                                  markEntrySubjectListController1
-                                                      .clear();
-
-                                                  await snapshot
-                                                      .removeAllSubjectClear();
-
-                                                  //option sub
-
-                                                  markEntryOptionSubListController
-                                                      .clear();
-                                                  markEntryOptionSubListController1
-                                                      .clear();
-                                                  await snapshot
-                                                      .removeAllOptionSubjectListClear();
-
-                                                  // exam
-
-                                                  markEntryExamListController
-                                                      .clear();
-                                                  markEntryExamListController1
-                                                      .clear();
-                                                  await snapshot
-                                                      .removeAllExamClear();
-
-                                                  await snapshot
-                                                      .getMarkEntryDivisionValues(
-                                                          courseId);
-                                                  await value
-                                                      .clearStudentMEList();
-                                                  Navigator.of(context).pop();
-                                                },
-                                                title: Text(
-                                                  snapshot
-                                                          .markEntryInitialValues[
-                                                              index]
-                                                          .courseName ??
-                                                      '--',
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              );
-                                            }),
-                                      ));
-                                    });
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: UIGuide.light_Purple,
-                                            width: 1),
-                                      ),
-                                      height: 40,
-                                      child: TextField(
-                                        style: const TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w500,
-                                            color: UIGuide.BLACK,
-                                            overflow: TextOverflow.clip),
-                                        textAlign: TextAlign.center,
-                                        controller:
-                                            markEntryInitialValuesController1,
-                                        decoration: const InputDecoration(
-                                          filled: true,
-                                          contentPadding:
-                                              EdgeInsets.only(left: 0, top: 0),
-                                          floatingLabelBehavior:
-                                              FloatingLabelBehavior.never,
-                                          fillColor: Color.fromARGB(
-                                              255, 238, 237, 237),
-                                          border: OutlineInputBorder(),
-                                          labelText: "  Select Course",
-                                          hintText: "Course",
-                                        ),
-                                        enabled: false,
-                                      ),
-                                    ),
-                                    // SizedBox(
-                                    //   height: 0,
-                                    //   child: TextField(
-                                    //     textAlign: TextAlign.center,
-                                    //     controller:
-                                    //         markEntryInitialValuesController,
-                                    //     decoration: const InputDecoration(
-                                    //       filled: true,
-                                    //       fillColor: Color.fromARGB(
-                                    //           255, 238, 237, 237),
-                                    //       border: OutlineInputBorder(),
-                                    //       labelText: "",
-                                    //       hintText: "",
-                                    //     ),
-                                    //     enabled: false,
-                                    //   ),
-                                    // ),
-                                  ],
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Row(
+                        children: [
+                          const Spacer(),
+                          SizedBox(
+                            height: 40,
+                            width: MediaQuery.of(context).size.width * 0.48,
+                            child: Consumer<MarkEntryNewProvider>(
+                                builder: (context, snapshot, child) {
+                              return ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  elevation: 3,
+                                  foregroundColor: UIGuide.light_Purple,
+                                  backgroundColor: UIGuide.ButtonBlue,
+                                  padding: const EdgeInsets.all(0),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      side: const BorderSide(
+                                        color: UIGuide.light_black,
+                                      )),
                                 ),
-                              ),
-                            );
-                          }),
-                        ),
-                        const Spacer(),
-                        SizedBox(
-                          height: 50,
-                          width: MediaQuery.of(context).size.width * 0.49,
-                          child: Consumer<MarkEntryNewProvider>(
-                              builder: (context, snapshot, child) {
-                            return InkWell(
-                              onTap: () async {
-                                showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return Dialog(
-                                          child: LimitedBox(
-                                        maxHeight: size.height - 300,
-                                        child: ListView.builder(
-                                            shrinkWrap: true,
-                                            itemCount: snapshot
-                                                .markEntryDivisionList.length,
-                                            itemBuilder: (context, index) {
-                                              return ListTile(
-                                                selectedTileColor:
-                                                    Colors.blue.shade100,
-                                                selectedColor: UIGuide.PRIMARY2,
-                                                onTap: () async {
-                                                  markEntryDivisionListController
-                                                      .text = snapshot
-                                                          .markEntryDivisionList[
-                                                              index]
-                                                          .value ??
-                                                      '---';
-                                                  markEntryDivisionListController1
-                                                      .text = snapshot
-                                                          .markEntryDivisionList[
-                                                              index]
-                                                          .text ??
-                                                      '---';
+                                onPressed: () async {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return Dialog(
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(15)),
+                                            child: LimitedBox(
+                                              maxHeight: size.height - 300,
+                                              child: ListView.builder(
+                                                  shrinkWrap: true,
+                                                  itemCount: snapshot
+                                                      .markEntryInitialValues
+                                                      .length,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    return ListTile(
+                                                      onTap: () async {
+                                                        markEntryInitialValuesController
+                                                            .text = snapshot
+                                                                .markEntryInitialValues[
+                                                                    index]
+                                                                .id ??
+                                                            '--';
+                                                        markEntryInitialValuesController1
+                                                            .text = snapshot
+                                                                .markEntryInitialValues[
+                                                                    index]
+                                                                .courseName ??
+                                                            '--';
+                                                        courseId =
+                                                            markEntryInitialValuesController
+                                                                .text
+                                                                .toString();
 
-                                                  divisionId =
-                                                      markEntryDivisionListController
-                                                          .text
-                                                          .toString();
-                                                  courseId =
-                                                      markEntryInitialValuesController
-                                                          .text
-                                                          .toString();
-                                                  //part
+                                                        //div
+                                                        markEntryDivisionListController
+                                                            .clear();
+                                                        markEntryDivisionListController1
+                                                            .clear();
+                                                        await snapshot
+                                                            .divisionClear();
 
-                                                  markEntryPartListController
-                                                      .clear();
-                                                  markEntryPartListController1
-                                                      .clear();
+                                                        //part
 
-                                                  await snapshot
-                                                      .removeAllpartClear();
+                                                        markEntryPartListController
+                                                            .clear();
+                                                        markEntryPartListController1
+                                                            .clear();
 
-                                                  // sub
+                                                        await snapshot
+                                                            .removeAllpartClear();
 
-                                                  markEntrySubjectListController
-                                                      .clear();
-                                                  markEntrySubjectListController1
-                                                      .clear();
+                                                        // sub
 
-                                                  await snapshot
-                                                      .removeAllSubjectClear();
+                                                        markEntrySubjectListController
+                                                            .clear();
+                                                        markEntrySubjectListController1
+                                                            .clear();
 
-                                                  //option sub
+                                                        await snapshot
+                                                            .removeAllSubjectClear();
 
-                                                  markEntryOptionSubListController
-                                                      .clear();
-                                                  markEntryOptionSubListController1
-                                                      .clear();
-                                                  await snapshot
-                                                      .removeAllOptionSubjectListClear();
+                                                        //option sub
 
-                                                  // exam
+                                                        markEntryOptionSubListController
+                                                            .clear();
+                                                        markEntryOptionSubListController1
+                                                            .clear();
+                                                        await snapshot
+                                                            .removeAllOptionSubjectListClear();
 
-                                                  markEntryExamListController
-                                                      .clear();
-                                                  markEntryExamListController1
-                                                      .clear();
-                                                  await snapshot
-                                                      .removeAllExamClear();
+                                                        // exam
 
-                                                  await snapshot
-                                                      .getMarkEntryPartValues(
-                                                          courseId, divisionId);
-                                                  await value
-                                                      .clearStudentMEList();
+                                                        markEntryExamListController
+                                                            .clear();
+                                                        markEntryExamListController1
+                                                            .clear();
+                                                        await snapshot
+                                                            .removeAllExamClear();
 
-                                                  Navigator.of(context).pop();
-                                                },
-                                                title: Text(
-                                                  snapshot
-                                                          .markEntryDivisionList[
-                                                              index]
-                                                          .text ??
-                                                      '---',
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              );
-                                            }),
-                                      ));
-                                    });
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: UIGuide.light_Purple,
-                                            width: 1),
-                                      ),
-                                      height: 40,
-                                      child: TextField(
-                                        style: const TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w500,
-                                            color: UIGuide.BLACK,
-                                            overflow: TextOverflow.clip),
-                                        textAlign: TextAlign.center,
-                                        controller:
-                                            markEntryDivisionListController1,
-                                        decoration: const InputDecoration(
-                                          filled: true,
-                                          contentPadding:
-                                              EdgeInsets.only(left: 0, top: 0),
-                                          floatingLabelBehavior:
-                                              FloatingLabelBehavior.never,
-                                          fillColor: Color.fromARGB(
-                                              255, 238, 237, 237),
-                                          border: OutlineInputBorder(),
-                                          labelText: "  Select Division",
-                                          hintText: "Division",
-                                        ),
-                                        enabled: false,
-                                      ),
+                                                        await snapshot
+                                                            .getMarkEntryDivisionValues(
+                                                                courseId);
+                                                        await value
+                                                            .clearStudentMEList();
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                      title: Text(
+                                                        snapshot
+                                                                .markEntryInitialValues[
+                                                                    index]
+                                                                .courseName ??
+                                                            '--',
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      ),
+                                                    );
+                                                  }),
+                                            ));
+                                      });
+                                },
+                                child: TextField(
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: UIGuide.BLACK,
+                                      overflow: TextOverflow.clip),
+                                  textAlign: TextAlign.center,
+                                  controller: markEntryInitialValuesController1,
+                                  decoration: const InputDecoration(
+                                    filled: true,
+                                    contentPadding:
+                                        EdgeInsets.only(left: 0, top: 0),
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.never,
+                                    fillColor: Colors.transparent,
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          style: BorderStyle.none, width: 0),
                                     ),
-                                    // SizedBox(
-                                    //   height: 0,
-                                    //   child: TextField(
-                                    //     controller:
-                                    //         markEntryDivisionListController,
-                                    //     decoration: const InputDecoration(
-                                    //       filled: true,
-                                    //       fillColor: Color.fromARGB(
-                                    //           255, 238, 237, 237),
-                                    //       border: OutlineInputBorder(),
-                                    //       labelText: "",
-                                    //       hintText: "",
-                                    //     ),
-                                    //     enabled: false,
-                                    //   ),
-                                    // ),
-                                  ],
+                                    labelText: "  Select Course",
+                                    hintText: "Course",
+                                  ),
+                                  enabled: false,
                                 ),
-                              ),
-                            );
-                          }),
-                        ),
-                        const Spacer(),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        const Spacer(),
-                        SizedBox(
-                          height: 50,
-                          width: MediaQuery.of(context).size.width * 0.49,
-                          child: Consumer<MarkEntryNewProvider>(
-                              builder: (context, snapshot, child) {
-                            return InkWell(
-                              onTap: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return Dialog(
-                                          child: LimitedBox(
-                                        maxHeight: size.height - 300,
-                                        child: ListView.builder(
-                                            shrinkWrap: true,
-                                            itemCount: snapshot
-                                                .markEntryPartList.length,
-                                            itemBuilder: (context, index) {
-                                              return ListTile(
-                                                selectedTileColor:
-                                                    Colors.blue.shade100,
-                                                selectedColor: UIGuide.PRIMARY2,
-                                                onTap: () async {
-                                                  markEntryPartListController
-                                                      .text = snapshot
-                                                          .markEntryPartList[
-                                                              index]
-                                                          .value ??
-                                                      '--';
-                                                  markEntryPartListController1
-                                                      .text = snapshot
-                                                          .markEntryPartList[
-                                                              index]
-                                                          .text ??
-                                                      '--';
-
-                                                  partItems = snapshot
-                                                      .markEntryPartList[index]
-                                                      .toJson();
-                                                  print(partItems);
-
-                                                  divisionId =
-                                                      markEntryDivisionListController
-                                                          .text
-                                                          .toString();
-                                                  partId =
-                                                      markEntryPartListController
-                                                          .text
-                                                          .toString();
-
-                                                  markEntrySubjectListController
-                                                      .clear();
-                                                  markEntrySubjectListController1
-                                                      .clear();
-
-                                                  await snapshot
-                                                      .removeAllSubjectClear();
-                                                  //option sub
-
-                                                  markEntryOptionSubListController
-                                                      .clear();
-                                                  markEntryOptionSubListController1
-                                                      .clear();
-                                                  await snapshot
-                                                      .removeAllOptionSubjectListClear();
-
-                                                  // exam
-
-                                                  markEntryExamListController
-                                                      .clear();
-                                                  markEntryExamListController1
-                                                      .clear();
-                                                  await snapshot
-                                                      .removeAllExamClear();
-
-                                                  await snapshot
-                                                      .getMarkEntrySubjectValues(
-                                                          divisionId, partId);
-                                                  await value
-                                                      .clearStudentMEList();
-
-                                                  Navigator.of(context).pop();
-                                                },
-                                                title: Text(
-                                                  snapshot
-                                                          .markEntryPartList[
-                                                              index]
-                                                          .text ??
-                                                      '---',
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              );
-                                            }),
-                                      ));
-                                    });
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: UIGuide.light_Purple,
-                                            width: 1),
-                                      ),
-                                      height: 40,
-                                      child: TextField(
-                                        style: const TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w500,
-                                            color: UIGuide.BLACK,
-                                            overflow: TextOverflow.clip),
-                                        textAlign: TextAlign.center,
-                                        controller:
-                                            markEntryPartListController1,
-                                        decoration: const InputDecoration(
-                                          filled: true,
-                                          contentPadding:
-                                              EdgeInsets.only(left: 0, top: 0),
-                                          floatingLabelBehavior:
-                                              FloatingLabelBehavior.never,
-                                          fillColor: Color.fromARGB(
-                                              255, 238, 237, 237),
-                                          border: OutlineInputBorder(),
-                                          labelText: "  Select Part",
-                                          hintText: "Part",
-                                        ),
-                                        enabled: false,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          }),
-                        ),
-                        const Spacer(),
-                        SizedBox(
-                          height: 50,
-                          width: MediaQuery.of(context).size.width * 0.49,
-                          child: Consumer<MarkEntryNewProvider>(
-                              builder: (context, snapshot, child) {
-                            return InkWell(
-                              onTap: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return Dialog(
-                                          child: LimitedBox(
-                                        maxHeight: size.height - 300,
-                                        child: ListView.builder(
-                                            shrinkWrap: true,
-                                            itemCount: snapshot
-                                                .markEntrySubjectList.length,
-                                            itemBuilder: (context, index) {
-                                              return ListTile(
-                                                selectedTileColor:
-                                                    Colors.blue.shade100,
-                                                selectedColor: UIGuide.PRIMARY2,
-                                                onTap: () async {
-                                                  markEntrySubjectListController
-                                                      .text = snapshot
-                                                          .markEntrySubjectList[
-                                                              index]
-                                                          .value ??
-                                                      '---';
-                                                  markEntrySubjectListController1
-                                                      .text = snapshot
-                                                          .markEntrySubjectList[
-                                                              index]
-                                                          .text ??
-                                                      '---';
-
-                                                  divisionId =
-                                                      markEntryDivisionListController
-                                                          .text
-                                                          .toString();
-                                                  partId =
-                                                      markEntryPartListController
-                                                          .text
-                                                          .toString();
-                                                  subjectId =
-                                                      markEntrySubjectListController
-                                                          .text
-                                                          .toString();
-
-                                                  //option sub
-
-                                                  markEntryOptionSubListController
-                                                      .clear();
-                                                  markEntryOptionSubListController1
-                                                      .clear();
-                                                  await snapshot
-                                                      .removeAllOptionSubjectListClear();
-
-                                                  // exam
-
-                                                  markEntryExamListController
-                                                      .clear();
-                                                  markEntryExamListController1
-                                                      .clear();
-                                                  await snapshot
-                                                      .removeAllExamClear();
-                                                  subsubject = null;
-                                                  optionSub = null;
-                                                  subDescription = null;
-
-                                                  await snapshot
-                                                      .getMarkEntryOptionSubject(
-                                                          subjectId,
-                                                          divisionId,
-                                                          partId);
-                                                  if (snapshot
-                                                          .markEntryOptionSubjectList
-                                                          .isEmpty ||
-                                                      snapshot.markEntryOptionSubjectList ==
-                                                          null) {
-                                                    await snapshot
-                                                        .getMarkEntryExamValues(
-                                                            subjectId,
-                                                            divisionId,
-                                                            partId,
-                                                            markEntryOptionSubListController1
-                                                                .text);
-                                                  }
-
-                                                  await value
-                                                      .clearStudentMEList();
-
-                                                  Navigator.of(context).pop();
-                                                },
-                                                title: Text(
-                                                  snapshot
-                                                      .markEntrySubjectList[
-                                                          index]
-                                                      .text
-                                                      .toString(),
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              );
-                                            }),
-                                      ));
-                                    });
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Container(
-                                      height: 40,
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: UIGuide.light_Purple,
-                                            width: 1),
-                                      ),
-                                      child: TextField(
-                                        style: const TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w500,
-                                            color: UIGuide.BLACK,
-                                            overflow: TextOverflow.clip),
-                                        textAlign: TextAlign.center,
-                                        controller:
-                                            markEntrySubjectListController1,
-                                        decoration: const InputDecoration(
-                                          filled: true,
-                                          contentPadding:
-                                              EdgeInsets.only(left: 0, top: 0),
-                                          floatingLabelBehavior:
-                                              FloatingLabelBehavior.never,
-                                          fillColor: Color.fromARGB(
-                                              255, 238, 237, 237),
-                                          border: OutlineInputBorder(),
-                                          labelText: "  Select Subject",
-                                          hintText: "Subject",
-                                        ),
-                                        enabled: false,
-                                      ),
-                                    ),
-                                    // SizedBox(
-                                    //   height: 0,
-                                    //   child: TextField(
-                                    //     textAlign: TextAlign.center,
-                                    //     controller:
-                                    //         markEntrySubjectListController,
-                                    //     decoration: const InputDecoration(
-                                    //       filled: true,
-                                    //       fillColor: Color.fromARGB(
-                                    //           255, 238, 237, 237),
-                                    //       border: OutlineInputBorder(),
-                                    //       labelText: "",
-                                    //       hintText: "",
-                                    //     ),
-                                    //     enabled: false,
-                                    //   ),
-                                    // ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          }),
-                        ),
-                        const Spacer(),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        //  Spacer(),
-                        Consumer<MarkEntryNewProvider>(
-                          builder: (context, snapshot, child) {
-                            if (snapshot.markEntryOptionSubjectList.isEmpty ||
-                                snapshot.markEntryOptionSubjectList == null) {
-                              return Container(
-                                height: 0,
-                                width: 0,
                               );
-                            }
-                            return SizedBox(
-                                height: 50,
-                                width:
-                                    MediaQuery.of(context).size.width * 0.499,
-                                child: InkWell(
-                                  onTap: () {
-                                    showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return Dialog(
-                                              child: LimitedBox(
-                                            maxHeight: size.height - 300,
-                                            child: ListView.builder(
-                                                shrinkWrap: true,
-                                                itemCount: snapshot
-                                                        .markEntryOptionSubjectList
-                                                        .isEmpty
-                                                    ? 0
-                                                    : snapshot
-                                                        .markEntryOptionSubjectList
-                                                        .length,
-                                                itemBuilder: (context, index) {
-                                                  return ListTile(
-                                                    selectedTileColor:
-                                                        Colors.blue.shade100,
-                                                    selectedColor:
-                                                        UIGuide.PRIMARY2,
-                                                    onTap: () async {
-                                                      markEntryOptionSubListController
-                                                          .text = snapshot
-                                                              .markEntryOptionSubjectList[
-                                                                  index]
-                                                              .subjectName ??
-                                                          '--';
-                                                      markEntryOptionSubListController1
-                                                          .text = snapshot
-                                                              .markEntryOptionSubjectList[
-                                                                  index]
-                                                              .id ??
-                                                          '--';
-                                                      subDescription = snapshot
-                                                          .markEntryOptionSubjectList[
-                                                              index]
-                                                          .subjectDescription
-                                                          .toString();
-                                                      snapshot
-                                                                  .markEntryOptionSubjectList[
-                                                                      index]
-                                                                  .subjectDescription ==
-                                                              'Option Subject'
-                                                          ? optionSub =
-                                                              markEntryOptionSubListController1
-                                                                  .text
-                                                                  .toString()
-                                                          : subsubject =
-                                                              markEntryOptionSubListController1
-                                                                  .text;
+                            }),
+                          ),
+                          const Spacer(),
+                          SizedBox(
+                            height: 40,
+                            width: MediaQuery.of(context).size.width * 0.48,
+                            child: Consumer<MarkEntryNewProvider>(
+                                builder: (context, snapshot, child) {
+                              return ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  elevation: 3,
+                                  foregroundColor: UIGuide.light_Purple,
+                                  backgroundColor: UIGuide.ButtonBlue,
+                                  padding: const EdgeInsets.all(0),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      side: const BorderSide(
+                                        color: UIGuide.light_black,
+                                      )),
+                                ),
+                                onPressed: () async {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return Dialog(
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(15)),
+                                            child: LimitedBox(
+                                              maxHeight: size.height - 300,
+                                              child: ListView.builder(
+                                                  shrinkWrap: true,
+                                                  itemCount: snapshot
+                                                      .markEntryDivisionList
+                                                      .length,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    return ListTile(
+                                                      selectedTileColor:
+                                                          Colors.blue.shade100,
+                                                      onTap: () async {
+                                                        markEntryDivisionListController
+                                                            .text = snapshot
+                                                                .markEntryDivisionList[
+                                                                    index]
+                                                                .value ??
+                                                            '---';
+                                                        markEntryDivisionListController1
+                                                            .text = snapshot
+                                                                .markEntryDivisionList[
+                                                                    index]
+                                                                .text ??
+                                                            '---';
 
-                                                      print(optionSub);
-                                                      markEntryExamListController
-                                                          .clear();
-                                                      markEntryExamListController1
-                                                          .clear();
-                                                      await snapshot
-                                                          .removeAllExamClear();
-                                                      String descr = '';
-                                                      descr = snapshot
+                                                        divisionId =
+                                                            markEntryDivisionListController
+                                                                .text
+                                                                .toString();
+                                                        courseId =
+                                                            markEntryInitialValuesController
+                                                                .text
+                                                                .toString();
+                                                        //part
+
+                                                        markEntryPartListController
+                                                            .clear();
+                                                        markEntryPartListController1
+                                                            .clear();
+
+                                                        await snapshot
+                                                            .removeAllpartClear();
+
+                                                        // sub
+
+                                                        markEntrySubjectListController
+                                                            .clear();
+                                                        markEntrySubjectListController1
+                                                            .clear();
+
+                                                        await snapshot
+                                                            .removeAllSubjectClear();
+
+                                                        //option sub
+
+                                                        markEntryOptionSubListController
+                                                            .clear();
+                                                        markEntryOptionSubListController1
+                                                            .clear();
+                                                        await snapshot
+                                                            .removeAllOptionSubjectListClear();
+
+                                                        // exam
+
+                                                        markEntryExamListController
+                                                            .clear();
+                                                        markEntryExamListController1
+                                                            .clear();
+                                                        await snapshot
+                                                            .removeAllExamClear();
+
+                                                        await snapshot
+                                                            .getMarkEntryPartValues(
+                                                                courseId,
+                                                                divisionId);
+                                                        await value
+                                                            .clearStudentMEList();
+
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                      title: Text(
+                                                        snapshot
+                                                                .markEntryDivisionList[
+                                                                    index]
+                                                                .text ??
+                                                            '---',
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      ),
+                                                    );
+                                                  }),
+                                            ));
+                                      });
+                                },
+                                child: TextField(
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: UIGuide.BLACK,
+                                      overflow: TextOverflow.clip),
+                                  textAlign: TextAlign.center,
+                                  controller: markEntryDivisionListController1,
+                                  decoration: const InputDecoration(
+                                    filled: true,
+                                    contentPadding:
+                                        EdgeInsets.only(left: 0, top: 0),
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.never,
+                                    fillColor: Colors.transparent,
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          style: BorderStyle.none, width: 0),
+                                    ),
+                                    labelText: "  Select Division",
+                                    hintText: "Division",
+                                  ),
+                                  enabled: false,
+                                ),
+                              );
+                            }),
+                          ),
+                          const Spacer(),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Row(
+                        children: [
+                          const Spacer(),
+                          SizedBox(
+                            height: 40,
+                            width: MediaQuery.of(context).size.width * 0.48,
+                            child: Consumer<MarkEntryNewProvider>(
+                                builder: (context, snapshot, child) {
+                              return ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  elevation: 3,
+                                  foregroundColor: UIGuide.light_Purple,
+                                  backgroundColor: UIGuide.ButtonBlue,
+                                  padding: const EdgeInsets.all(0),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      side: const BorderSide(
+                                        color: UIGuide.light_black,
+                                      )),
+                                ),
+                                onPressed: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return Dialog(
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(15)),
+                                            child: LimitedBox(
+                                              maxHeight: size.height - 300,
+                                              child: ListView.builder(
+                                                  shrinkWrap: true,
+                                                  itemCount: snapshot
+                                                      .markEntryPartList.length,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    return ListTile(
+                                                      selectedTileColor:
+                                                          Colors.blue.shade100,
+                                                      onTap: () async {
+                                                        markEntryPartListController
+                                                            .text = snapshot
+                                                                .markEntryPartList[
+                                                                    index]
+                                                                .value ??
+                                                            '--';
+                                                        markEntryPartListController1
+                                                            .text = snapshot
+                                                                .markEntryPartList[
+                                                                    index]
+                                                                .text ??
+                                                            '--';
+
+                                                        partItems = snapshot
+                                                            .markEntryPartList[
+                                                                index]
+                                                            .toJson();
+                                                        print(partItems);
+
+                                                        divisionId =
+                                                            markEntryDivisionListController
+                                                                .text
+                                                                .toString();
+                                                        partId =
+                                                            markEntryPartListController
+                                                                .text
+                                                                .toString();
+
+                                                        markEntrySubjectListController
+                                                            .clear();
+                                                        markEntrySubjectListController1
+                                                            .clear();
+
+                                                        await snapshot
+                                                            .removeAllSubjectClear();
+                                                        //option sub
+
+                                                        markEntryOptionSubListController
+                                                            .clear();
+                                                        markEntryOptionSubListController1
+                                                            .clear();
+                                                        await snapshot
+                                                            .removeAllOptionSubjectListClear();
+
+                                                        // exam
+
+                                                        markEntryExamListController
+                                                            .clear();
+                                                        markEntryExamListController1
+                                                            .clear();
+                                                        await snapshot
+                                                            .removeAllExamClear();
+
+                                                        await snapshot
+                                                            .getMarkEntrySubjectValues(
+                                                                divisionId,
+                                                                partId);
+                                                        await value
+                                                            .clearStudentMEList();
+
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                      title: Text(
+                                                        snapshot
+                                                                .markEntryPartList[
+                                                                    index]
+                                                                .text ??
+                                                            '---',
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      ),
+                                                    );
+                                                  }),
+                                            ));
+                                      });
+                                },
+                                child: TextField(
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: UIGuide.BLACK,
+                                      overflow: TextOverflow.clip),
+                                  textAlign: TextAlign.center,
+                                  controller: markEntryPartListController1,
+                                  decoration: const InputDecoration(
+                                    filled: true,
+                                    contentPadding:
+                                        EdgeInsets.only(left: 0, top: 0),
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.never,
+                                    fillColor: Colors.transparent,
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          style: BorderStyle.none, width: 0),
+                                    ),
+                                    labelText: "  Select Part",
+                                    hintText: "Part",
+                                  ),
+                                  enabled: false,
+                                ),
+                              );
+                            }),
+                          ),
+                          const Spacer(),
+                          SizedBox(
+                            height: 40,
+                            width: MediaQuery.of(context).size.width * 0.48,
+                            child: Consumer<MarkEntryNewProvider>(
+                                builder: (context, snapshot, child) {
+                              return ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  elevation: 3,
+                                  foregroundColor: UIGuide.light_Purple,
+                                  backgroundColor: UIGuide.ButtonBlue,
+                                  padding: const EdgeInsets.all(0),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      side: const BorderSide(
+                                        color: UIGuide.light_black,
+                                      )),
+                                ),
+                                onPressed: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return Dialog(
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(15)),
+                                            child: LimitedBox(
+                                              maxHeight: size.height - 300,
+                                              child: ListView.builder(
+                                                  shrinkWrap: true,
+                                                  itemCount: snapshot
+                                                      .markEntrySubjectList
+                                                      .length,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    return ListTile(
+                                                      selectedTileColor:
+                                                          Colors.blue.shade100,
+                                                      onTap: () async {
+                                                        markEntrySubjectListController
+                                                            .text = snapshot
+                                                                .markEntrySubjectList[
+                                                                    index]
+                                                                .value ??
+                                                            '---';
+                                                        markEntrySubjectListController1
+                                                            .text = snapshot
+                                                                .markEntrySubjectList[
+                                                                    index]
+                                                                .text ??
+                                                            '---';
+
+                                                        divisionId =
+                                                            markEntryDivisionListController
+                                                                .text
+                                                                .toString();
+                                                        partId =
+                                                            markEntryPartListController
+                                                                .text
+                                                                .toString();
+                                                        subjectId =
+                                                            markEntrySubjectListController
+                                                                .text
+                                                                .toString();
+
+                                                        //option sub
+
+                                                        markEntryOptionSubListController
+                                                            .clear();
+                                                        markEntryOptionSubListController1
+                                                            .clear();
+                                                        await snapshot
+                                                            .removeAllOptionSubjectListClear();
+
+                                                        // exam
+
+                                                        markEntryExamListController
+                                                            .clear();
+                                                        markEntryExamListController1
+                                                            .clear();
+                                                        await snapshot
+                                                            .removeAllExamClear();
+                                                        subsubject = null;
+                                                        optionSub = null;
+                                                        subDescription = null;
+
+                                                        await snapshot
+                                                            .getMarkEntryOptionSubject(
+                                                                subjectId,
+                                                                divisionId,
+                                                                partId);
+                                                        if (snapshot
+                                                                .markEntryOptionSubjectList
+                                                                .isEmpty ||
+                                                            snapshot.markEntryOptionSubjectList ==
+                                                                null) {
+                                                          await snapshot
+                                                              .getMarkEntryExamValues(
+                                                                  subjectId,
+                                                                  divisionId,
+                                                                  partId,
+                                                                  markEntryOptionSubListController1
+                                                                      .text);
+                                                        }
+
+                                                        await value
+                                                            .clearStudentMEList();
+
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                      title: Text(
+                                                        snapshot
+                                                            .markEntrySubjectList[
+                                                                index]
+                                                            .text
+                                                            .toString(),
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      ),
+                                                    );
+                                                  }),
+                                            ));
+                                      });
+                                },
+                                child: TextField(
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: UIGuide.BLACK,
+                                      overflow: TextOverflow.clip),
+                                  textAlign: TextAlign.center,
+                                  controller: markEntrySubjectListController1,
+                                  decoration: const InputDecoration(
+                                    filled: true,
+                                    contentPadding:
+                                        EdgeInsets.only(left: 0, top: 0),
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.never,
+                                    fillColor: Colors.transparent,
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          style: BorderStyle.none, width: 0),
+                                    ),
+                                    labelText: "  Select Subject",
+                                    hintText: "Subject",
+                                  ),
+                                  enabled: false,
+                                ),
+                              );
+                            }),
+                          ),
+                          const Spacer(),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Row(
+                        children: [
+                          //  Spacer(),
+                          Consumer<MarkEntryNewProvider>(
+                            builder: (context, snapshot, child) {
+                              if (snapshot.markEntryOptionSubjectList.isEmpty ||
+                                  snapshot.markEntryOptionSubjectList == null) {
+                                return SizedBox(
+                                  height: 0,
+                                  width: 0,
+                                );
+                              }
+                              return SizedBox(
+                                  height: 40,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.488,
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      elevation: 3,
+                                      foregroundColor: UIGuide.light_Purple,
+                                      backgroundColor: UIGuide.ButtonBlue,
+                                      padding: const EdgeInsets.all(0),
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          side: const BorderSide(
+                                            color: UIGuide.light_black,
+                                          )),
+                                    ),
+                                    onPressed: () {
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return Dialog(
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15)),
+                                                child: LimitedBox(
+                                                  maxHeight: size.height - 300,
+                                                  child: ListView.builder(
+                                                      shrinkWrap: true,
+                                                      itemCount: snapshot
                                                               .markEntryOptionSubjectList
                                                               .isEmpty
-                                                          ? ""
-                                                          : snapshot.markEntryOptionSubjectList[0]
-                                                                      .subjectDescription ==
-                                                                  "Sub Subject"
-                                                              ? "subSubject"
-                                                              : "optionSubject";
-                                                      await snapshot
-                                                          .getMarkEntryExamValuesOPtion(
-                                                              subjectId,
-                                                              divisionId,
-                                                              partId,
-                                                              markEntryOptionSubListController1
-                                                                  .text,
-                                                              descr);
-                                                      print(subsubject);
-                                                      await value
-                                                          .clearStudentMEList();
+                                                          ? 0
+                                                          : snapshot
+                                                              .markEntryOptionSubjectList
+                                                              .length,
+                                                      itemBuilder:
+                                                          (context, index) {
+                                                        return ListTile(
+                                                          selectedTileColor:
+                                                              Colors.blue
+                                                                  .shade100,
+                                                          onTap: () async {
+                                                            markEntryOptionSubListController
+                                                                .text = snapshot
+                                                                    .markEntryOptionSubjectList[
+                                                                        index]
+                                                                    .subjectName ??
+                                                                '--';
+                                                            markEntryOptionSubListController1
+                                                                .text = snapshot
+                                                                    .markEntryOptionSubjectList[
+                                                                        index]
+                                                                    .id ??
+                                                                '--';
+                                                            subDescription = snapshot
+                                                                .markEntryOptionSubjectList[
+                                                                    index]
+                                                                .subjectDescription
+                                                                .toString();
+                                                            snapshot
+                                                                        .markEntryOptionSubjectList[
+                                                                            index]
+                                                                        .subjectDescription ==
+                                                                    'Option Subject'
+                                                                ? optionSub =
+                                                                    markEntryOptionSubListController1
+                                                                        .text
+                                                                        .toString()
+                                                                : subsubject =
+                                                                    markEntryOptionSubListController1
+                                                                        .text;
 
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                    },
-                                                    title: Text(
-                                                      snapshot
-                                                              .markEntryOptionSubjectList[
-                                                                  index]
-                                                              .subjectName ??
-                                                          '--',
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    ),
-                                                  );
-                                                }),
-                                          ));
-                                        });
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(5.0),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Container(
-                                          height: 40,
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: UIGuide.light_Purple,
-                                                width: 1),
-                                          ),
-                                          child: TextField(
-                                            style: const TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w500,
-                                                color: UIGuide.BLACK,
-                                                overflow: TextOverflow.clip),
-                                            textAlign: TextAlign.center,
-                                            controller:
-                                                markEntryOptionSubListController,
-                                            decoration: InputDecoration(
-                                              filled: true,
-                                              contentPadding:
-                                                  const EdgeInsets.only(
-                                                      left: 0, top: 0),
-                                              floatingLabelBehavior:
-                                                  FloatingLabelBehavior.never,
-                                              fillColor: const Color.fromARGB(
-                                                  255, 238, 237, 237),
-                                              border:
-                                                  const OutlineInputBorder(),
-                                              labelText: snapshot
-                                                      .markEntryOptionSubjectList
-                                                      .isEmpty
-                                                  ? ""
-                                                  : snapshot.markEntryOptionSubjectList[0]
-                                                              .subjectDescription ==
-                                                          "Sub Subject"
-                                                      ? "Select Sub Subject"
-                                                      : "Select Option Subject",
-                                              hintText: snapshot
-                                                      .markEntryOptionSubjectList
-                                                      .isEmpty
-                                                  ? ""
-                                                  : snapshot.markEntryOptionSubjectList[0]
-                                                              .subjectDescription ==
-                                                          "Sub Subject"
-                                                      ? "Sub Subject"
-                                                      : "Option Subject",
-                                            ),
-                                            enabled: false,
-                                          ),
+                                                            print(optionSub);
+                                                            markEntryExamListController
+                                                                .clear();
+                                                            markEntryExamListController1
+                                                                .clear();
+                                                            await snapshot
+                                                                .removeAllExamClear();
+                                                            String descr = '';
+                                                            descr = snapshot
+                                                                    .markEntryOptionSubjectList
+                                                                    .isEmpty
+                                                                ? ""
+                                                                : snapshot.markEntryOptionSubjectList[0]
+                                                                            .subjectDescription ==
+                                                                        "Sub Subject"
+                                                                    ? "subSubject"
+                                                                    : "optionSubject";
+                                                            await snapshot
+                                                                .getMarkEntryExamValuesOPtion(
+                                                                    subjectId,
+                                                                    divisionId,
+                                                                    partId,
+                                                                    markEntryOptionSubListController1
+                                                                        .text,
+                                                                    descr);
+                                                            print(subsubject);
+                                                            await value
+                                                                .clearStudentMEList();
+
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          },
+                                                          title: Text(
+                                                            snapshot
+                                                                    .markEntryOptionSubjectList[
+                                                                        index]
+                                                                    .subjectName ??
+                                                                '--',
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                          ),
+                                                        );
+                                                      }),
+                                                ));
+                                          });
+                                    },
+                                    child: TextField(
+                                      style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500,
+                                          color: UIGuide.BLACK,
+                                          overflow: TextOverflow.clip),
+                                      textAlign: TextAlign.center,
+                                      controller:
+                                          markEntryOptionSubListController,
+                                      decoration: InputDecoration(
+                                        filled: true,
+                                        contentPadding: const EdgeInsets.only(
+                                            left: 0, top: 0),
+                                        floatingLabelBehavior:
+                                            FloatingLabelBehavior.never,
+                                        fillColor: Colors.transparent,
+                                        border: OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              style: BorderStyle.none,
+                                              width: 0),
                                         ),
-                                      ],
-                                    ),
-                                  ),
-                                ));
-                          },
-                        ),
-                        const Spacer(),
-                        SizedBox(
-                          height: 50,
-                          width: MediaQuery.of(context).size.width * 0.49,
-                          child: Consumer<MarkEntryNewProvider>(
-                              builder: (context, snapshot, child) {
-                            return InkWell(
-                              onTap: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return Dialog(
-                                          child: LimitedBox(
-                                        maxHeight: size.height - 300,
-                                        child: ListView.builder(
-                                            shrinkWrap: true,
-                                            itemCount: snapshot
-                                                .markEntryExamList.length,
-                                            itemBuilder: (context, index) {
-                                              return ListTile(
-                                                selectedTileColor:
-                                                    Colors.blue.shade100,
-                                                selectedColor: UIGuide.PRIMARY2,
-                                                onTap: () {
-                                                  markEntryExamListController
-                                                      .text = snapshot
-                                                          .markEntryExamList[
-                                                              index]
-                                                          .text ??
-                                                      '--';
-
-                                                  markEntryExamListController1
-                                                      .text = snapshot
-                                                          .markEntryExamList[
-                                                              index]
-                                                          .value ??
-                                                      '--';
-
-                                                  Navigator.of(context).pop();
-                                                },
-                                                title: Text(
-                                                  snapshot
-                                                          .markEntryExamList[
-                                                              index]
-                                                          .text ??
-                                                      '--',
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              );
-                                            }),
-                                      ));
-                                    });
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Container(
-                                      height: 40,
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: UIGuide.light_Purple,
-                                            width: 1),
+                                        labelText: snapshot
+                                                .markEntryOptionSubjectList
+                                                .isEmpty
+                                            ? ""
+                                            : snapshot.markEntryOptionSubjectList[0]
+                                                        .subjectDescription ==
+                                                    "Sub Subject"
+                                                ? "  Select Sub Subject"
+                                                : "  Select Option Subject",
+                                        hintText: snapshot
+                                                .markEntryOptionSubjectList
+                                                .isEmpty
+                                            ? ""
+                                            : snapshot.markEntryOptionSubjectList[0]
+                                                        .subjectDescription ==
+                                                    "Sub Subject"
+                                                ? "Sub Subject"
+                                                : "Option Subject",
                                       ),
-                                      child: TextField(
-                                        style: const TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w500,
-                                            color: UIGuide.BLACK,
-                                            overflow: TextOverflow.clip),
-                                        textAlign: TextAlign.center,
-                                        controller: markEntryExamListController,
-                                        decoration: const InputDecoration(
-                                          filled: true,
-                                          contentPadding:
-                                              EdgeInsets.only(left: 0, top: 0),
-                                          floatingLabelBehavior:
-                                              FloatingLabelBehavior.never,
-                                          fillColor: Color.fromARGB(
-                                              255, 238, 237, 237),
-                                          border: OutlineInputBorder(),
-                                          labelText: "  Select Exam",
-                                          hintText: "Exam",
-                                        ),
-                                        enabled: false,
-                                      ),
+                                      enabled: false,
                                     ),
-                                    // SizedBox(
-                                    //   height: 0,
-                                    //   child: TextField(
-                                    //     textAlign: TextAlign.center,
-                                    //     controller:
-                                    //         markEntryExamListController1,
-                                    //     decoration: const InputDecoration(
-                                    //       filled: true,
-                                    //       fillColor: Color.fromARGB(
-                                    //           255, 238, 237, 237),
-                                    //       border: OutlineInputBorder(),
-                                    //       labelText: "",
-                                    //       hintText: "",
-                                    //     ),
-                                    //     enabled: false,
-                                    //   ),
-                                    // ),
-                                  ],
+                                  ));
+                            },
+                          ),
+                          const Spacer(),
+                          SizedBox(
+                            height: 40,
+                            width: MediaQuery.of(context).size.width * 0.48,
+                            child: Consumer<MarkEntryNewProvider>(
+                                builder: (context, snapshot, child) {
+                              return ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  elevation: 3,
+                                  foregroundColor: UIGuide.light_Purple,
+                                  backgroundColor: UIGuide.ButtonBlue,
+                                  padding: const EdgeInsets.all(0),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      side: const BorderSide(
+                                        color: UIGuide.light_black,
+                                      )),
                                 ),
-                              ),
-                            );
-                          }),
-                        ),
-                        const Spacer(),
-                      ],
+                                onPressed: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return Dialog(
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(15)),
+                                            child: LimitedBox(
+                                              maxHeight: size.height - 300,
+                                              child: ListView.builder(
+                                                  shrinkWrap: true,
+                                                  itemCount: snapshot
+                                                      .markEntryExamList.length,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    return ListTile(
+                                                      selectedTileColor:
+                                                          Colors.blue.shade100,
+                                                      onTap: () {
+                                                        markEntryExamListController
+                                                            .text = snapshot
+                                                                .markEntryExamList[
+                                                                    index]
+                                                                .text ??
+                                                            '--';
+
+                                                        markEntryExamListController1
+                                                            .text = snapshot
+                                                                .markEntryExamList[
+                                                                    index]
+                                                                .value ??
+                                                            '--';
+
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                      title: Text(
+                                                        snapshot
+                                                                .markEntryExamList[
+                                                                    index]
+                                                                .text ??
+                                                            '--',
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      ),
+                                                    );
+                                                  }),
+                                            ));
+                                      });
+                                },
+                                child: TextField(
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: UIGuide.BLACK,
+                                      overflow: TextOverflow.clip),
+                                  textAlign: TextAlign.center,
+                                  controller: markEntryExamListController,
+                                  decoration: const InputDecoration(
+                                    filled: true,
+                                    contentPadding:
+                                        EdgeInsets.only(left: 0, top: 0),
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.never,
+                                    fillColor: Colors.transparent,
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          style: BorderStyle.none, width: 0),
+                                    ),
+                                    labelText: "  Select Exam",
+                                    hintText: "Exam",
+                                  ),
+                                  enabled: false,
+                                ),
+                              );
+                            }),
+                          ),
+                          const Spacer(),
+                        ],
+                      ),
                     ),
                     Row(
                       // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -1113,7 +1072,6 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                 ),
                               )
                             : Expanded(
-                                // width: size.width * .46,
                                 child: MaterialButton(
                                   shape: const RoundedRectangleBorder(
                                       borderRadius: BorderRadius.all(
@@ -1728,23 +1686,21 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                               builder:
                                                                   (context) {
                                                                 return Dialog(
+                                                                    shape: RoundedRectangleBorder(
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(
+                                                                                15)),
                                                                     child:
                                                                         LimitedBox(
-                                                                  maxHeight:
-                                                                      size.height /
-                                                                          2,
-                                                                  child: ListView
-                                                                      .builder(
-                                                                          shrinkWrap:
-                                                                              true,
-                                                                          itemCount: snapshot
-                                                                              .gradeListUAS
-                                                                              .length,
-                                                                          itemBuilder:
-                                                                              (context, indx) {
+                                                                      maxHeight:
+                                                                          size.height /
+                                                                              2,
+                                                                      child: ListView.builder(
+                                                                          shrinkWrap: true,
+                                                                          itemCount: snapshot.gradeListUAS.length,
+                                                                          itemBuilder: (context, indx) {
                                                                             return ListTile(
                                                                               selectedTileColor: Colors.blue.shade100,
-                                                                              selectedColor: UIGuide.PRIMARY2,
                                                                               onTap: () {
                                                                                 gradeListController[index].text = snapshot.gradeListUAS[indx].text ?? '--';
                                                                                 gradeListController1[index].text = snapshot.gradeListUAS[indx].value ?? '--';
@@ -1759,7 +1715,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                               ),
                                                                             );
                                                                           }),
-                                                                ));
+                                                                    ));
                                                               });
                                                         },
                                                         child: Padding(
@@ -2068,37 +2024,35 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                 builder:
                                                                     (context) {
                                                                   return Dialog(
+                                                                      shape: RoundedRectangleBorder(
+                                                                          borderRadius: BorderRadius.circular(
+                                                                              15)),
                                                                       child:
                                                                           LimitedBox(
-                                                                    maxHeight:
-                                                                        size.height /
-                                                                            2,
-                                                                    child: ListView.builder(
-                                                                        shrinkWrap: true,
-                                                                        itemCount: snapshot.gradeListUAS.length,
-                                                                        itemBuilder: (context, indx) {
-                                                                          return ListTile(
-                                                                            selectedTileColor:
-                                                                                Colors.blue.shade100,
-                                                                            selectedColor:
-                                                                                UIGuide.PRIMARY2,
-                                                                            onTap:
-                                                                                () {
-                                                                              publicGradeController[index].text = snapshot.gradeListUAS[indx].text ?? '--';
-                                                                              publicGradeController1[index].text = snapshot.gradeListUAS[indx].value ?? '--';
-                                                                              provider.studListUAS[index].teGrade = publicGradeController1[index].text;
-                                                                              //     provider.studListUAS[index].teGrade = publicGradeController[index].text;
-                                                                              provider.studListUAS[index].teGrade = provider.studListUAS[index].teGrade;
-                                                                              Navigator.of(context).pop();
-                                                                            },
-                                                                            title:
-                                                                                Text(
-                                                                              snapshot.gradeListUAS[indx].text ?? '--',
-                                                                              textAlign: TextAlign.center,
-                                                                            ),
-                                                                          );
-                                                                        }),
-                                                                  ));
+                                                                        maxHeight:
+                                                                            size.height /
+                                                                                2,
+                                                                        child: ListView.builder(
+                                                                            shrinkWrap: true,
+                                                                            itemCount: snapshot.gradeListUAS.length,
+                                                                            itemBuilder: (context, indx) {
+                                                                              return ListTile(
+                                                                                selectedTileColor: Colors.blue.shade100,
+                                                                                onTap: () {
+                                                                                  publicGradeController[index].text = snapshot.gradeListUAS[indx].text ?? '--';
+                                                                                  publicGradeController1[index].text = snapshot.gradeListUAS[indx].value ?? '--';
+                                                                                  provider.studListUAS[index].teGrade = publicGradeController1[index].text;
+                                                                                  //     provider.studListUAS[index].teGrade = publicGradeController[index].text;
+                                                                                  provider.studListUAS[index].teGrade = provider.studListUAS[index].teGrade;
+                                                                                  Navigator.of(context).pop();
+                                                                                },
+                                                                                title: Text(
+                                                                                  snapshot.gradeListUAS[indx].text ?? '--',
+                                                                                  textAlign: TextAlign.center,
+                                                                                ),
+                                                                              );
+                                                                            }),
+                                                                      ));
                                                                 });
                                                           },
                                                           child: Padding(
@@ -6101,33 +6055,34 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                   builder:
                                                                       (context) {
                                                                     return Dialog(
+                                                                        shape: RoundedRectangleBorder(
+                                                                            borderRadius: BorderRadius.circular(
+                                                                                15)),
                                                                         child:
                                                                             LimitedBox(
-                                                                      maxHeight:
-                                                                          size.height /
-                                                                              2,
-                                                                      child: ListView.builder(
-                                                                          shrinkWrap: true,
-                                                                          itemCount: snapshot.gradeListUAS.length,
-                                                                          itemBuilder: (context, indx) {
-                                                                            return ListTile(
-                                                                              selectedTileColor: Colors.blue.shade100,
-                                                                              selectedColor: UIGuide.PRIMARY2,
-                                                                              onTap: () {
-                                                                                teGradeController[index].text = snapshot.gradeListUAS[indx].value ?? '--';
-                                                                                teGradeController1[index].text = snapshot.gradeListUAS[indx].value ?? '--';
-                                                                                value.studListUAS[index].teGrade = teGradeController1[index].text;
-                                                                                value.studListUAS[index].teGrade = teGradeController[index].text;
-                                                                                value.studListUAS[index].teGrade = value.studListUAS[index].teGrade;
-                                                                                Navigator.of(context).pop();
-                                                                              },
-                                                                              title: Text(
-                                                                                snapshot.gradeListUAS[indx].text ?? '--',
-                                                                                textAlign: TextAlign.center,
-                                                                              ),
-                                                                            );
-                                                                          }),
-                                                                    ));
+                                                                          maxHeight:
+                                                                              size.height / 2,
+                                                                          child: ListView.builder(
+                                                                              shrinkWrap: true,
+                                                                              itemCount: snapshot.gradeListUAS.length,
+                                                                              itemBuilder: (context, indx) {
+                                                                                return ListTile(
+                                                                                  selectedTileColor: Colors.blue.shade100,
+                                                                                  onTap: () {
+                                                                                    teGradeController[index].text = snapshot.gradeListUAS[indx].value ?? '--';
+                                                                                    teGradeController1[index].text = snapshot.gradeListUAS[indx].value ?? '--';
+                                                                                    value.studListUAS[index].teGrade = teGradeController1[index].text;
+                                                                                    value.studListUAS[index].teGrade = teGradeController[index].text;
+                                                                                    value.studListUAS[index].teGrade = value.studListUAS[index].teGrade;
+                                                                                    Navigator.of(context).pop();
+                                                                                  },
+                                                                                  title: Text(
+                                                                                    snapshot.gradeListUAS[indx].text ?? '--',
+                                                                                    textAlign: TextAlign.center,
+                                                                                  ),
+                                                                                );
+                                                                              }),
+                                                                        ));
                                                                   });
                                                             },
                                                             child: Padding(
@@ -6244,33 +6199,34 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                   builder:
                                                                       (context) {
                                                                     return Dialog(
+                                                                        shape: RoundedRectangleBorder(
+                                                                            borderRadius: BorderRadius.circular(
+                                                                                15)),
                                                                         child:
                                                                             LimitedBox(
-                                                                      maxHeight:
-                                                                          size.height /
-                                                                              2,
-                                                                      child: ListView.builder(
-                                                                          shrinkWrap: true,
-                                                                          itemCount: snapshot.gradeListUAS.length,
-                                                                          itemBuilder: (context, indx) {
-                                                                            return ListTile(
-                                                                              selectedTileColor: Colors.blue.shade100,
-                                                                              selectedColor: UIGuide.PRIMARY2,
-                                                                              onTap: () {
-                                                                                ceGradeController[index].text = snapshot.gradeListUAS[indx].value ?? '--';
-                                                                                ceGradeController1[index].text = snapshot.gradeListUAS[indx].value ?? '--';
-                                                                                value.studListUAS[index].ceGrade = ceGradeController1[index].text;
-                                                                                value.studListUAS[index].ceGrade = ceGradeController[index].text;
-                                                                                value.studListUAS[index].ceGrade = value.studListUAS[index].ceGrade;
-                                                                                Navigator.of(context).pop();
-                                                                              },
-                                                                              title: Text(
-                                                                                snapshot.gradeListUAS[indx].text ?? '--',
-                                                                                textAlign: TextAlign.center,
-                                                                              ),
-                                                                            );
-                                                                          }),
-                                                                    ));
+                                                                          maxHeight:
+                                                                              size.height / 2,
+                                                                          child: ListView.builder(
+                                                                              shrinkWrap: true,
+                                                                              itemCount: snapshot.gradeListUAS.length,
+                                                                              itemBuilder: (context, indx) {
+                                                                                return ListTile(
+                                                                                  selectedTileColor: Colors.blue.shade100,
+                                                                                  onTap: () {
+                                                                                    ceGradeController[index].text = snapshot.gradeListUAS[indx].value ?? '--';
+                                                                                    ceGradeController1[index].text = snapshot.gradeListUAS[indx].value ?? '--';
+                                                                                    value.studListUAS[index].ceGrade = ceGradeController1[index].text;
+                                                                                    value.studListUAS[index].ceGrade = ceGradeController[index].text;
+                                                                                    value.studListUAS[index].ceGrade = value.studListUAS[index].ceGrade;
+                                                                                    Navigator.of(context).pop();
+                                                                                  },
+                                                                                  title: Text(
+                                                                                    snapshot.gradeListUAS[indx].text ?? '--',
+                                                                                    textAlign: TextAlign.center,
+                                                                                  ),
+                                                                                );
+                                                                              }),
+                                                                        ));
                                                                   });
                                                             },
                                                             child: Padding(
@@ -6387,33 +6343,34 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                   builder:
                                                                       (context) {
                                                                     return Dialog(
+                                                                        shape: RoundedRectangleBorder(
+                                                                            borderRadius: BorderRadius.circular(
+                                                                                15)),
                                                                         child:
                                                                             LimitedBox(
-                                                                      maxHeight:
-                                                                          size.height /
-                                                                              2,
-                                                                      child: ListView.builder(
-                                                                          shrinkWrap: true,
-                                                                          itemCount: snapshot.gradeListUAS.length,
-                                                                          itemBuilder: (context, indx) {
-                                                                            return ListTile(
-                                                                              selectedTileColor: Colors.blue.shade100,
-                                                                              selectedColor: UIGuide.PRIMARY2,
-                                                                              onTap: () {
-                                                                                praticalGradeController[index].text = snapshot.gradeListUAS[indx].value ?? '--';
-                                                                                praticalGradeController1[index].text = snapshot.gradeListUAS[indx].value ?? '--';
-                                                                                value.studListUAS[index].peGrade = praticalGradeController1[index].text;
-                                                                                value.studListUAS[index].peGrade = praticalGradeController[index].text;
-                                                                                value.studListUAS[index].peGrade = value.studListUAS[index].peGrade;
-                                                                                Navigator.of(context).pop();
-                                                                              },
-                                                                              title: Text(
-                                                                                snapshot.gradeListUAS[indx].text ?? '--',
-                                                                                textAlign: TextAlign.center,
-                                                                              ),
-                                                                            );
-                                                                          }),
-                                                                    ));
+                                                                          maxHeight:
+                                                                              size.height / 2,
+                                                                          child: ListView.builder(
+                                                                              shrinkWrap: true,
+                                                                              itemCount: snapshot.gradeListUAS.length,
+                                                                              itemBuilder: (context, indx) {
+                                                                                return ListTile(
+                                                                                  selectedTileColor: Colors.blue.shade100,
+                                                                                  onTap: () {
+                                                                                    praticalGradeController[index].text = snapshot.gradeListUAS[indx].value ?? '--';
+                                                                                    praticalGradeController1[index].text = snapshot.gradeListUAS[indx].value ?? '--';
+                                                                                    value.studListUAS[index].peGrade = praticalGradeController1[index].text;
+                                                                                    value.studListUAS[index].peGrade = praticalGradeController[index].text;
+                                                                                    value.studListUAS[index].peGrade = value.studListUAS[index].peGrade;
+                                                                                    Navigator.of(context).pop();
+                                                                                  },
+                                                                                  title: Text(
+                                                                                    snapshot.gradeListUAS[indx].text ?? '--',
+                                                                                    textAlign: TextAlign.center,
+                                                                                  ),
+                                                                                );
+                                                                              }),
+                                                                        ));
                                                                   });
                                                             },
                                                             child: Padding(
@@ -6779,33 +6736,34 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                   builder:
                                                                       (context) {
                                                                     return Dialog(
+                                                                        shape: RoundedRectangleBorder(
+                                                                            borderRadius: BorderRadius.circular(
+                                                                                15)),
                                                                         child:
                                                                             LimitedBox(
-                                                                      maxHeight:
-                                                                          size.height /
-                                                                              2,
-                                                                      child: ListView.builder(
-                                                                          shrinkWrap: true,
-                                                                          itemCount: snapshot.gradeListUAS.length,
-                                                                          itemBuilder: (context, indx) {
-                                                                            return ListTile(
-                                                                              selectedTileColor: Colors.blue.shade100,
-                                                                              selectedColor: UIGuide.PRIMARY2,
-                                                                              onTap: () {
-                                                                                teGradeController[index].text = snapshot.gradeListUAS[indx].value ?? '--';
-                                                                                teGradeController1[index].text = snapshot.gradeListUAS[indx].value ?? '--';
-                                                                                value.studListUAS[index].teGrade = teGradeController1[index].text;
-                                                                                // value.studListUAS[index].teGrade = teGradeController[index].text;
-                                                                                value.studListUAS[index].teGrade = value.studListUAS[index].teGrade;
-                                                                                Navigator.of(context).pop();
-                                                                              },
-                                                                              title: Text(
-                                                                                snapshot.gradeListUAS[indx].text ?? '--',
-                                                                                textAlign: TextAlign.center,
-                                                                              ),
-                                                                            );
-                                                                          }),
-                                                                    ));
+                                                                          maxHeight:
+                                                                              size.height / 2,
+                                                                          child: ListView.builder(
+                                                                              shrinkWrap: true,
+                                                                              itemCount: snapshot.gradeListUAS.length,
+                                                                              itemBuilder: (context, indx) {
+                                                                                return ListTile(
+                                                                                  selectedTileColor: Colors.blue.shade100,
+                                                                                  onTap: () {
+                                                                                    teGradeController[index].text = snapshot.gradeListUAS[indx].value ?? '--';
+                                                                                    teGradeController1[index].text = snapshot.gradeListUAS[indx].value ?? '--';
+                                                                                    value.studListUAS[index].teGrade = teGradeController1[index].text;
+                                                                                    // value.studListUAS[index].teGrade = teGradeController[index].text;
+                                                                                    value.studListUAS[index].teGrade = value.studListUAS[index].teGrade;
+                                                                                    Navigator.of(context).pop();
+                                                                                  },
+                                                                                  title: Text(
+                                                                                    snapshot.gradeListUAS[indx].text ?? '--',
+                                                                                    textAlign: TextAlign.center,
+                                                                                  ),
+                                                                                );
+                                                                              }),
+                                                                        ));
                                                                   });
                                                             },
                                                             child: Padding(
@@ -6922,34 +6880,35 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                   builder:
                                                                       (context) {
                                                                     return Dialog(
+                                                                        shape: RoundedRectangleBorder(
+                                                                            borderRadius: BorderRadius.circular(
+                                                                                15)),
                                                                         child:
                                                                             LimitedBox(
-                                                                      maxHeight:
-                                                                          size.height /
-                                                                              2,
-                                                                      child: ListView.builder(
-                                                                          shrinkWrap: true,
-                                                                          itemCount: snapshot.gradeListUAS.length,
-                                                                          itemBuilder: (context, indx) {
-                                                                            return ListTile(
-                                                                              selectedTileColor: Colors.blue.shade100,
-                                                                              selectedColor: UIGuide.PRIMARY2,
-                                                                              onTap: () {
-                                                                                ceGradeController[index].text = snapshot.gradeListUAS[indx].value ?? '--';
-                                                                                ceGradeController1[index].text = snapshot.gradeListUAS[indx].value ?? '--';
-                                                                                value.studListUAS[index].ceGrade = ceGradeController1[index].text;
-                                                                                //   value.studListUAS[index].ceGrade = ceGradeController[index].text;
-                                                                                value.studListUAS[index].ceGrade = value.studListUAS[index].ceGrade;
-                                                                                print(provider.studListUAS[index].peGrade);
-                                                                                Navigator.of(context).pop();
-                                                                              },
-                                                                              title: Text(
-                                                                                snapshot.gradeListUAS[indx].text ?? '--',
-                                                                                textAlign: TextAlign.center,
-                                                                              ),
-                                                                            );
-                                                                          }),
-                                                                    ));
+                                                                          maxHeight:
+                                                                              size.height / 2,
+                                                                          child: ListView.builder(
+                                                                              shrinkWrap: true,
+                                                                              itemCount: snapshot.gradeListUAS.length,
+                                                                              itemBuilder: (context, indx) {
+                                                                                return ListTile(
+                                                                                  selectedTileColor: Colors.blue.shade100,
+                                                                                  onTap: () {
+                                                                                    ceGradeController[index].text = snapshot.gradeListUAS[indx].value ?? '--';
+                                                                                    ceGradeController1[index].text = snapshot.gradeListUAS[indx].value ?? '--';
+                                                                                    value.studListUAS[index].ceGrade = ceGradeController1[index].text;
+                                                                                    //   value.studListUAS[index].ceGrade = ceGradeController[index].text;
+                                                                                    value.studListUAS[index].ceGrade = value.studListUAS[index].ceGrade;
+                                                                                    print(provider.studListUAS[index].peGrade);
+                                                                                    Navigator.of(context).pop();
+                                                                                  },
+                                                                                  title: Text(
+                                                                                    snapshot.gradeListUAS[indx].text ?? '--',
+                                                                                    textAlign: TextAlign.center,
+                                                                                  ),
+                                                                                );
+                                                                              }),
+                                                                        ));
                                                                   });
                                                             },
                                                             child: Padding(
@@ -7317,33 +7276,34 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                   builder:
                                                                       (context) {
                                                                     return Dialog(
+                                                                        shape: RoundedRectangleBorder(
+                                                                            borderRadius: BorderRadius.circular(
+                                                                                15)),
                                                                         child:
                                                                             LimitedBox(
-                                                                      maxHeight:
-                                                                          size.height /
-                                                                              2,
-                                                                      child: ListView.builder(
-                                                                          shrinkWrap: true,
-                                                                          itemCount: snapshot.gradeListUAS.length,
-                                                                          itemBuilder: (context, indx) {
-                                                                            return ListTile(
-                                                                              selectedTileColor: Colors.blue.shade100,
-                                                                              selectedColor: UIGuide.PRIMARY2,
-                                                                              onTap: () {
-                                                                                teGradeController[index].text = snapshot.gradeListUAS[indx].value ?? '--';
-                                                                                teGradeController1[index].text = snapshot.gradeListUAS[indx].value ?? '--';
-                                                                                value.studListUAS[index].teGrade = teGradeController1[index].text;
-                                                                                value.studListUAS[index].teGrade = teGradeController[index].text;
-                                                                                value.studListUAS[index].teGrade = value.studListUAS[index].teGrade;
-                                                                                Navigator.of(context).pop();
-                                                                              },
-                                                                              title: Text(
-                                                                                snapshot.gradeListUAS[indx].text ?? '--',
-                                                                                textAlign: TextAlign.center,
-                                                                              ),
-                                                                            );
-                                                                          }),
-                                                                    ));
+                                                                          maxHeight:
+                                                                              size.height / 2,
+                                                                          child: ListView.builder(
+                                                                              shrinkWrap: true,
+                                                                              itemCount: snapshot.gradeListUAS.length,
+                                                                              itemBuilder: (context, indx) {
+                                                                                return ListTile(
+                                                                                  selectedTileColor: Colors.blue.shade100,
+                                                                                  onTap: () {
+                                                                                    teGradeController[index].text = snapshot.gradeListUAS[indx].value ?? '--';
+                                                                                    teGradeController1[index].text = snapshot.gradeListUAS[indx].value ?? '--';
+                                                                                    value.studListUAS[index].teGrade = teGradeController1[index].text;
+                                                                                    value.studListUAS[index].teGrade = teGradeController[index].text;
+                                                                                    value.studListUAS[index].teGrade = value.studListUAS[index].teGrade;
+                                                                                    Navigator.of(context).pop();
+                                                                                  },
+                                                                                  title: Text(
+                                                                                    snapshot.gradeListUAS[indx].text ?? '--',
+                                                                                    textAlign: TextAlign.center,
+                                                                                  ),
+                                                                                );
+                                                                              }),
+                                                                        ));
                                                                   });
                                                             },
                                                             child: Padding(
@@ -7460,33 +7420,34 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                   builder:
                                                                       (context) {
                                                                     return Dialog(
+                                                                        shape: RoundedRectangleBorder(
+                                                                            borderRadius: BorderRadius.circular(
+                                                                                15)),
                                                                         child:
                                                                             LimitedBox(
-                                                                      maxHeight:
-                                                                          size.height /
-                                                                              2,
-                                                                      child: ListView.builder(
-                                                                          shrinkWrap: true,
-                                                                          itemCount: snapshot.gradeListUAS.length,
-                                                                          itemBuilder: (context, indx) {
-                                                                            return ListTile(
-                                                                              selectedTileColor: Colors.blue.shade100,
-                                                                              selectedColor: UIGuide.PRIMARY2,
-                                                                              onTap: () {
-                                                                                praticalGradeController[index].text = snapshot.gradeListUAS[indx].value ?? '--';
-                                                                                praticalGradeController1[index].text = snapshot.gradeListUAS[indx].value ?? '--';
-                                                                                value.studListUAS[index].peGrade = praticalGradeController1[index].text;
-                                                                                value.studListUAS[index].peGrade = praticalGradeController[index].text;
-                                                                                value.studListUAS[index].peGrade = value.studListUAS[index].peGrade;
-                                                                                Navigator.of(context).pop();
-                                                                              },
-                                                                              title: Text(
-                                                                                snapshot.gradeListUAS[indx].text ?? '--',
-                                                                                textAlign: TextAlign.center,
-                                                                              ),
-                                                                            );
-                                                                          }),
-                                                                    ));
+                                                                          maxHeight:
+                                                                              size.height / 2,
+                                                                          child: ListView.builder(
+                                                                              shrinkWrap: true,
+                                                                              itemCount: snapshot.gradeListUAS.length,
+                                                                              itemBuilder: (context, indx) {
+                                                                                return ListTile(
+                                                                                  selectedTileColor: Colors.blue.shade100,
+                                                                                  onTap: () {
+                                                                                    praticalGradeController[index].text = snapshot.gradeListUAS[indx].value ?? '--';
+                                                                                    praticalGradeController1[index].text = snapshot.gradeListUAS[indx].value ?? '--';
+                                                                                    value.studListUAS[index].peGrade = praticalGradeController1[index].text;
+                                                                                    value.studListUAS[index].peGrade = praticalGradeController[index].text;
+                                                                                    value.studListUAS[index].peGrade = value.studListUAS[index].peGrade;
+                                                                                    Navigator.of(context).pop();
+                                                                                  },
+                                                                                  title: Text(
+                                                                                    snapshot.gradeListUAS[indx].text ?? '--',
+                                                                                    textAlign: TextAlign.center,
+                                                                                  ),
+                                                                                );
+                                                                              }),
+                                                                        ));
                                                                   });
                                                             },
                                                             child: Padding(
@@ -7854,33 +7815,34 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                   builder:
                                                                       (context) {
                                                                     return Dialog(
+                                                                        shape: RoundedRectangleBorder(
+                                                                            borderRadius: BorderRadius.circular(
+                                                                                15)),
                                                                         child:
                                                                             LimitedBox(
-                                                                      maxHeight:
-                                                                          size.height /
-                                                                              2,
-                                                                      child: ListView.builder(
-                                                                          shrinkWrap: true,
-                                                                          itemCount: snapshot.gradeListUAS.length,
-                                                                          itemBuilder: (context, indx) {
-                                                                            return ListTile(
-                                                                              selectedTileColor: Colors.blue.shade100,
-                                                                              selectedColor: UIGuide.PRIMARY2,
-                                                                              onTap: () {
-                                                                                ceGradeController[index].text = snapshot.gradeListUAS[indx].value ?? '--';
-                                                                                ceGradeController1[index].text = snapshot.gradeListUAS[indx].value ?? '--';
-                                                                                value.studListUAS[index].ceGrade = ceGradeController1[index].text;
-                                                                                value.studListUAS[index].ceGrade = ceGradeController[index].text;
-                                                                                value.studListUAS[index].ceGrade = value.studListUAS[index].ceGrade;
-                                                                                Navigator.of(context).pop();
-                                                                              },
-                                                                              title: Text(
-                                                                                snapshot.gradeListUAS[indx].text ?? '--',
-                                                                                textAlign: TextAlign.center,
-                                                                              ),
-                                                                            );
-                                                                          }),
-                                                                    ));
+                                                                          maxHeight:
+                                                                              size.height / 2,
+                                                                          child: ListView.builder(
+                                                                              shrinkWrap: true,
+                                                                              itemCount: snapshot.gradeListUAS.length,
+                                                                              itemBuilder: (context, indx) {
+                                                                                return ListTile(
+                                                                                  selectedTileColor: Colors.blue.shade100,
+                                                                                  onTap: () {
+                                                                                    ceGradeController[index].text = snapshot.gradeListUAS[indx].value ?? '--';
+                                                                                    ceGradeController1[index].text = snapshot.gradeListUAS[indx].value ?? '--';
+                                                                                    value.studListUAS[index].ceGrade = ceGradeController1[index].text;
+                                                                                    value.studListUAS[index].ceGrade = ceGradeController[index].text;
+                                                                                    value.studListUAS[index].ceGrade = value.studListUAS[index].ceGrade;
+                                                                                    Navigator.of(context).pop();
+                                                                                  },
+                                                                                  title: Text(
+                                                                                    snapshot.gradeListUAS[indx].text ?? '--',
+                                                                                    textAlign: TextAlign.center,
+                                                                                  ),
+                                                                                );
+                                                                              }),
+                                                                        ));
                                                                   });
                                                             },
                                                             child: Padding(
@@ -7997,33 +7959,34 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                   builder:
                                                                       (context) {
                                                                     return Dialog(
+                                                                        shape: RoundedRectangleBorder(
+                                                                            borderRadius: BorderRadius.circular(
+                                                                                15)),
                                                                         child:
                                                                             LimitedBox(
-                                                                      maxHeight:
-                                                                          size.height /
-                                                                              2,
-                                                                      child: ListView.builder(
-                                                                          shrinkWrap: true,
-                                                                          itemCount: snapshot.gradeListUAS.length,
-                                                                          itemBuilder: (context, indx) {
-                                                                            return ListTile(
-                                                                              selectedTileColor: Colors.blue.shade100,
-                                                                              selectedColor: UIGuide.PRIMARY2,
-                                                                              onTap: () {
-                                                                                praticalGradeController[index].text = snapshot.gradeListUAS[indx].value ?? '--';
-                                                                                praticalGradeController1[index].text = snapshot.gradeListUAS[indx].value ?? '--';
-                                                                                value.studListUAS[index].peGrade = praticalGradeController1[index].text;
-                                                                                value.studListUAS[index].peGrade = praticalGradeController[index].text;
-                                                                                value.studListUAS[index].peGrade = value.studListUAS[index].peGrade;
-                                                                                Navigator.of(context).pop();
-                                                                              },
-                                                                              title: Text(
-                                                                                snapshot.gradeListUAS[indx].text ?? '--',
-                                                                                textAlign: TextAlign.center,
-                                                                              ),
-                                                                            );
-                                                                          }),
-                                                                    ));
+                                                                          maxHeight:
+                                                                              size.height / 2,
+                                                                          child: ListView.builder(
+                                                                              shrinkWrap: true,
+                                                                              itemCount: snapshot.gradeListUAS.length,
+                                                                              itemBuilder: (context, indx) {
+                                                                                return ListTile(
+                                                                                  selectedTileColor: Colors.blue.shade100,
+                                                                                  onTap: () {
+                                                                                    praticalGradeController[index].text = snapshot.gradeListUAS[indx].value ?? '--';
+                                                                                    praticalGradeController1[index].text = snapshot.gradeListUAS[indx].value ?? '--';
+                                                                                    value.studListUAS[index].peGrade = praticalGradeController1[index].text;
+                                                                                    value.studListUAS[index].peGrade = praticalGradeController[index].text;
+                                                                                    value.studListUAS[index].peGrade = value.studListUAS[index].peGrade;
+                                                                                    Navigator.of(context).pop();
+                                                                                  },
+                                                                                  title: Text(
+                                                                                    snapshot.gradeListUAS[indx].text ?? '--',
+                                                                                    textAlign: TextAlign.center,
+                                                                                  ),
+                                                                                );
+                                                                              }),
+                                                                        ));
                                                                   });
                                                             },
                                                             child: Padding(
@@ -8347,33 +8310,34 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                   builder:
                                                                       (context) {
                                                                     return Dialog(
+                                                                        shape: RoundedRectangleBorder(
+                                                                            borderRadius: BorderRadius.circular(
+                                                                                15)),
                                                                         child:
                                                                             LimitedBox(
-                                                                      maxHeight:
-                                                                          size.height /
-                                                                              2,
-                                                                      child: ListView.builder(
-                                                                          shrinkWrap: true,
-                                                                          itemCount: snapshot.gradeListUAS.length,
-                                                                          itemBuilder: (context, indx) {
-                                                                            return ListTile(
-                                                                              selectedTileColor: Colors.blue.shade100,
-                                                                              selectedColor: UIGuide.PRIMARY2,
-                                                                              onTap: () {
-                                                                                teGradeController[index].text = snapshot.gradeListUAS[indx].value ?? '--';
-                                                                                teGradeController1[index].text = snapshot.gradeListUAS[indx].value ?? '--';
-                                                                                value.studListUAS[index].teGrade = teGradeController1[index].text;
-                                                                                value.studListUAS[index].teGrade = teGradeController[index].text;
-                                                                                value.studListUAS[index].teGrade = value.studListUAS[index].teGrade;
-                                                                                Navigator.of(context).pop();
-                                                                              },
-                                                                              title: Text(
-                                                                                snapshot.gradeListUAS[indx].value ?? '--',
-                                                                                textAlign: TextAlign.center,
-                                                                              ),
-                                                                            );
-                                                                          }),
-                                                                    ));
+                                                                          maxHeight:
+                                                                              size.height / 2,
+                                                                          child: ListView.builder(
+                                                                              shrinkWrap: true,
+                                                                              itemCount: snapshot.gradeListUAS.length,
+                                                                              itemBuilder: (context, indx) {
+                                                                                return ListTile(
+                                                                                  selectedTileColor: Colors.blue.shade100,
+                                                                                  onTap: () {
+                                                                                    teGradeController[index].text = snapshot.gradeListUAS[indx].value ?? '--';
+                                                                                    teGradeController1[index].text = snapshot.gradeListUAS[indx].value ?? '--';
+                                                                                    value.studListUAS[index].teGrade = teGradeController1[index].text;
+                                                                                    value.studListUAS[index].teGrade = teGradeController[index].text;
+                                                                                    value.studListUAS[index].teGrade = value.studListUAS[index].teGrade;
+                                                                                    Navigator.of(context).pop();
+                                                                                  },
+                                                                                  title: Text(
+                                                                                    snapshot.gradeListUAS[indx].value ?? '--',
+                                                                                    textAlign: TextAlign.center,
+                                                                                  ),
+                                                                                );
+                                                                              }),
+                                                                        ));
                                                                   });
                                                             },
                                                             child: Padding(
@@ -8700,33 +8664,34 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                   builder:
                                                                       (context) {
                                                                     return Dialog(
+                                                                        shape: RoundedRectangleBorder(
+                                                                            borderRadius: BorderRadius.circular(
+                                                                                15)),
                                                                         child:
                                                                             LimitedBox(
-                                                                      maxHeight:
-                                                                          size.height /
-                                                                              2,
-                                                                      child: ListView.builder(
-                                                                          shrinkWrap: true,
-                                                                          itemCount: snapshot.gradeListUAS.length,
-                                                                          itemBuilder: (context, indx) {
-                                                                            return ListTile(
-                                                                              selectedTileColor: Colors.blue.shade100,
-                                                                              selectedColor: UIGuide.PRIMARY2,
-                                                                              onTap: () {
-                                                                                praticalGradeController[index].text = snapshot.gradeListUAS[indx].value ?? '--';
-                                                                                praticalGradeController1[index].text = snapshot.gradeListUAS[indx].value ?? '--';
-                                                                                value.studListUAS[index].peGrade = praticalGradeController1[index].text;
-                                                                                value.studListUAS[index].peGrade = praticalGradeController[index].text;
-                                                                                value.studListUAS[index].peGrade = value.studListUAS[index].peGrade;
-                                                                                Navigator.of(context).pop();
-                                                                              },
-                                                                              title: Text(
-                                                                                snapshot.gradeListUAS[indx].text ?? '--',
-                                                                                textAlign: TextAlign.center,
-                                                                              ),
-                                                                            );
-                                                                          }),
-                                                                    ));
+                                                                          maxHeight:
+                                                                              size.height / 2,
+                                                                          child: ListView.builder(
+                                                                              shrinkWrap: true,
+                                                                              itemCount: snapshot.gradeListUAS.length,
+                                                                              itemBuilder: (context, indx) {
+                                                                                return ListTile(
+                                                                                  selectedTileColor: Colors.blue.shade100,
+                                                                                  onTap: () {
+                                                                                    praticalGradeController[index].text = snapshot.gradeListUAS[indx].value ?? '--';
+                                                                                    praticalGradeController1[index].text = snapshot.gradeListUAS[indx].value ?? '--';
+                                                                                    value.studListUAS[index].peGrade = praticalGradeController1[index].text;
+                                                                                    value.studListUAS[index].peGrade = praticalGradeController[index].text;
+                                                                                    value.studListUAS[index].peGrade = value.studListUAS[index].peGrade;
+                                                                                    Navigator.of(context).pop();
+                                                                                  },
+                                                                                  title: Text(
+                                                                                    snapshot.gradeListUAS[indx].text ?? '--',
+                                                                                    textAlign: TextAlign.center,
+                                                                                  ),
+                                                                                );
+                                                                              }),
+                                                                        ));
                                                                   });
                                                             },
                                                             child: Padding(
@@ -9051,33 +9016,34 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                   builder:
                                                                       (context) {
                                                                     return Dialog(
+                                                                        shape: RoundedRectangleBorder(
+                                                                            borderRadius: BorderRadius.circular(
+                                                                                15)),
                                                                         child:
                                                                             LimitedBox(
-                                                                      maxHeight:
-                                                                          size.height /
-                                                                              2,
-                                                                      child: ListView.builder(
-                                                                          shrinkWrap: true,
-                                                                          itemCount: snapshot.gradeListUAS.length,
-                                                                          itemBuilder: (context, indx) {
-                                                                            return ListTile(
-                                                                              selectedTileColor: Colors.blue.shade100,
-                                                                              selectedColor: UIGuide.PRIMARY2,
-                                                                              onTap: () {
-                                                                                ceGradeController[index].text = snapshot.gradeListUAS[indx].value ?? '--';
-                                                                                ceGradeController1[index].text = snapshot.gradeListUAS[indx].value ?? '--';
-                                                                                value.studListUAS[index].ceGrade = ceGradeController1[index].text;
-                                                                                value.studListUAS[index].ceGrade = ceGradeController[index].text;
-                                                                                value.studListUAS[index].ceGrade = value.studListUAS[index].ceGrade;
-                                                                                Navigator.of(context).pop();
-                                                                              },
-                                                                              title: Text(
-                                                                                snapshot.gradeListUAS[indx].text ?? '--',
-                                                                                textAlign: TextAlign.center,
-                                                                              ),
-                                                                            );
-                                                                          }),
-                                                                    ));
+                                                                          maxHeight:
+                                                                              size.height / 2,
+                                                                          child: ListView.builder(
+                                                                              shrinkWrap: true,
+                                                                              itemCount: snapshot.gradeListUAS.length,
+                                                                              itemBuilder: (context, indx) {
+                                                                                return ListTile(
+                                                                                  selectedTileColor: Colors.blue.shade100,
+                                                                                  onTap: () {
+                                                                                    ceGradeController[index].text = snapshot.gradeListUAS[indx].value ?? '--';
+                                                                                    ceGradeController1[index].text = snapshot.gradeListUAS[indx].value ?? '--';
+                                                                                    value.studListUAS[index].ceGrade = ceGradeController1[index].text;
+                                                                                    value.studListUAS[index].ceGrade = ceGradeController[index].text;
+                                                                                    value.studListUAS[index].ceGrade = value.studListUAS[index].ceGrade;
+                                                                                    Navigator.of(context).pop();
+                                                                                  },
+                                                                                  title: Text(
+                                                                                    snapshot.gradeListUAS[indx].text ?? '--',
+                                                                                    textAlign: TextAlign.center,
+                                                                                  ),
+                                                                                );
+                                                                              }),
+                                                                        ));
                                                                   });
                                                             },
                                                             child: Padding(
@@ -9219,6 +9185,9 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                             builder: (context, value, child) {
                           return value.loadSave
                               ? MaterialButton(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
                                   onPressed: () {},
                                   color: UIGuide.light_Purple,
                                   child: const Text(
@@ -9227,6 +9196,9 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                   ),
                                 )
                               : MaterialButton(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
                                   onPressed: value.loadCommon
                                       ? null
                                       : () async {
@@ -9687,6 +9659,9 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                             builder: (context, value, child) {
                           return value.loadVerify
                               ? MaterialButton(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
                                   onPressed: () {},
                                   color: Colors.green,
                                   child: const Text(
@@ -9695,6 +9670,9 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                   ),
                                 )
                               : MaterialButton(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
                                   //disabledColor: UIGuide.THEME_LIGHT,
                                   onPressed: value.loadCommon
                                       ? null
@@ -10047,6 +10025,9 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                             builder: (context, value, child) {
                           return value.loadDelete
                               ? MaterialButton(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
                                   onPressed: () {},
                                   color: Colors.red,
                                   child: const Text(
@@ -10055,6 +10036,9 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                   ),
                                 )
                               : MaterialButton(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
                                   onPressed: value.loadCommon
                                       ? null
                                       : () {

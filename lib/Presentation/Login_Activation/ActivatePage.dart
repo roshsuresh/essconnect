@@ -227,8 +227,9 @@ class _ActivatePageState extends State<ActivatePage>
                                 controller: secretKeyController,
                                 validator: (value) {
                                   if (value!.isEmpty) {
-                                    return activationError;
+                                    return 'Please enter your Activation Key';
                                   }
+                                  return null;
                                 },
                                 style: const TextStyle(color: Colors.black),
                                 decoration: InputDecoration(

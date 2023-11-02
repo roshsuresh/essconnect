@@ -216,7 +216,7 @@ class GalleryonTap extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(''),
+        title: const Text('Gallery'),
         titleSpacing: 00.0,
         centerTitle: true,
         toolbarHeight: 50.2,

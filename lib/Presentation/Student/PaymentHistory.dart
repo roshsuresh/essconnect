@@ -57,7 +57,8 @@ class PaymentHistory extends StatelessWidget {
                           padding: const EdgeInsets.all(2.0),
                           child: Table(
                             border: TableBorder.all(
-                                color: Color.fromARGB(255, 248, 248, 248)),
+                                color:
+                                    const Color.fromARGB(255, 248, 248, 248)),
                             columnWidths: const {
                               0: FlexColumnWidth(.6),
                               1: FlexColumnWidth(2.1),
@@ -75,53 +76,73 @@ class PaymentHistory extends StatelessWidget {
                                     ),
                                   ),
                                   children: [
-                                    Padding(
-                                      padding: EdgeInsets.all(3.0),
-                                      child: Center(
-                                          child: Text(
-                                        'Sl.',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w700),
-                                      )),
+                                    TableCell(
+                                      verticalAlignment:
+                                          TableCellVerticalAlignment.middle,
+                                      child: Padding(
+                                        padding: EdgeInsets.all(3.0),
+                                        child: Center(
+                                            child: Text(
+                                          'Sl.',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w700),
+                                        )),
+                                      ),
                                     ),
-                                    Padding(
-                                      padding: EdgeInsets.all(3.0),
-                                      child: Center(
-                                          child: Text(
-                                        'Bill Date',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w700),
-                                      )),
+                                    TableCell(
+                                      verticalAlignment:
+                                          TableCellVerticalAlignment.middle,
+                                      child: Padding(
+                                        padding: EdgeInsets.all(3.0),
+                                        child: Center(
+                                            child: Text(
+                                          'Bill Date',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w700),
+                                        )),
+                                      ),
                                     ),
-                                    Padding(
-                                      padding: EdgeInsets.all(3.0),
-                                      child: Center(
-                                          child: Text(
-                                        'Payment\nMode',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w700),
-                                      )),
+                                    TableCell(
+                                      verticalAlignment:
+                                          TableCellVerticalAlignment.middle,
+                                      child: Padding(
+                                        padding: EdgeInsets.all(3.0),
+                                        child: Center(
+                                            child: Text(
+                                          'Payment\nMode',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w700),
+                                        )),
+                                      ),
                                     ),
-                                    Padding(
-                                      padding: EdgeInsets.all(3.0),
-                                      child: Center(
-                                          child: Text(
-                                        'Amount\npaid',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w700),
-                                      )),
+                                    TableCell(
+                                      verticalAlignment:
+                                          TableCellVerticalAlignment.middle,
+                                      child: Padding(
+                                        padding: EdgeInsets.all(3.0),
+                                        child: Center(
+                                            child: Text(
+                                          'Amount\npaid',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w700),
+                                        )),
+                                      ),
                                     ),
-                                    Padding(
-                                      padding: EdgeInsets.all(3.0),
-                                      child: Center(
-                                          child: Text(
-                                        'Receipt',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w700),
-                                      )),
+                                    TableCell(
+                                      verticalAlignment:
+                                          TableCellVerticalAlignment.middle,
+                                      child: Padding(
+                                        padding: EdgeInsets.all(3.0),
+                                        child: Center(
+                                            child: Text(
+                                          'Receipt',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w700),
+                                        )),
+                                      ),
                                     )
                                   ]),
                             ],
@@ -138,15 +159,19 @@ class PaymentHistory extends StatelessWidget {
                                       : value.historyList.length,
                                   shrinkWrap: true,
                                   itemBuilder: (context, index) {
-                                    String newtime = value
-                                        .historyList[index].billDate
-                                        .toString();
+                                    String finalCreatedDate = '';
 
-                                    var updatedDate =
-                                        DateFormat('yyyy-MM-dd').parse(newtime);
-                                    String newDate = updatedDate.toString();
-                                    String finalCreatedDate =
-                                        newDate.replaceRange(10, 23, '');
+                                    if (value.historyList[index].billDate !=
+                                        null) {
+                                      String createddate =
+                                          value.historyList[index].billDate ??
+                                              '--';
+                                      DateTime parsedDateTime =
+                                          DateTime.parse(createddate);
+                                      finalCreatedDate =
+                                          DateFormat('dd-MMM-yyyy')
+                                              .format(parsedDateTime);
+                                    }
 
                                     return AnimationConfiguration.staggeredList(
                                       position: index,
@@ -165,7 +190,7 @@ class PaymentHistory extends StatelessWidget {
                                                   const EdgeInsets.all(2.0),
                                               child: Table(
                                                 border: TableBorder.all(
-                                                    color: Color.fromARGB(
+                                                    color: const Color.fromARGB(
                                                         255, 248, 248, 248)),
                                                 columnWidths: const {
                                                   0: FlexColumnWidth(.6),
@@ -176,79 +201,117 @@ class PaymentHistory extends StatelessWidget {
                                                 },
                                                 children: [
                                                   TableRow(
-                                                      decoration:
-                                                          const BoxDecoration(
-                                                        color: Color.fromARGB(
-                                                            255, 241, 241, 241),
+                                                      decoration: BoxDecoration(
+                                                        color: index.isEven
+                                                            ? Colors.white
+                                                            : const Color
+                                                                .fromARGB(255,
+                                                                241, 241, 241),
                                                       ),
                                                       children: [
-                                                        Text(
-                                                          "\n${(index + 1).toString()}",
-                                                          textAlign:
-                                                              TextAlign.center,
-                                                          style:
-                                                              const TextStyle(
-                                                                  fontSize: 13),
-                                                        ),
-                                                        Center(
-                                                            child: Text(
-                                                          '\n${finalCreatedDate.toString()}',
-                                                          style:
-                                                              const TextStyle(
-                                                                  fontSize: 13),
-                                                        )),
-                                                        Center(
-                                                            child: Text(
-                                                          '\n${value.historyList[index].paymentMode ?? ""}',
-                                                          style:
-                                                              const TextStyle(
-                                                                  fontSize: 13),
-                                                        )),
-                                                        Center(
-                                                            child: Text(
-                                                          '\n${value.historyList[index].billAmount ?? ''}',
-                                                          style:
-                                                              const TextStyle(
-                                                                  fontSize: 13),
-                                                        )),
-                                                        IconButton(
-                                                          icon: const Icon(
-                                                            Icons
-                                                                .remove_red_eye,
-                                                            size: 20,
+                                                        TableCell(
+                                                          verticalAlignment:
+                                                              TableCellVerticalAlignment
+                                                                  .middle,
+                                                          child: Text(
+                                                            (index + 1)
+                                                                .toString(),
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                            style:
+                                                                const TextStyle(
+                                                                    fontSize:
+                                                                        13),
                                                           ),
-                                                          onPressed: () async {
-                                                            String reAttach =
-                                                                value
+                                                        ),
+                                                        TableCell(
+                                                          verticalAlignment:
+                                                              TableCellVerticalAlignment
+                                                                  .middle,
+                                                          child: Center(
+                                                              child: Text(
+                                                            finalCreatedDate
+                                                                .toString(),
+                                                            style:
+                                                                const TextStyle(
+                                                                    fontSize:
+                                                                        13),
+                                                          )),
+                                                        ),
+                                                        TableCell(
+                                                          verticalAlignment:
+                                                              TableCellVerticalAlignment
+                                                                  .middle,
+                                                          child: Center(
+                                                              child: Text(
+                                                            value
                                                                     .historyList[
                                                                         index]
-                                                                    .orderId
-                                                                    .toString();
-                                                            await Provider.of<
-                                                                        PaymentHistoryProvider>(
+                                                                    .paymentMode ??
+                                                                "",
+                                                            style:
+                                                                const TextStyle(
+                                                                    fontSize:
+                                                                        13),
+                                                          )),
+                                                        ),
+                                                        TableCell(
+                                                          verticalAlignment:
+                                                              TableCellVerticalAlignment
+                                                                  .middle,
+                                                          child: Center(
+                                                              child: Text(
+                                                            '${value.historyList[index].billAmount ?? ''}',
+                                                            style:
+                                                                const TextStyle(
+                                                                    fontSize:
+                                                                        13),
+                                                          )),
+                                                        ),
+                                                        TableCell(
+                                                          verticalAlignment:
+                                                              TableCellVerticalAlignment
+                                                                  .middle,
+                                                          child: IconButton(
+                                                            icon: const Icon(
+                                                              Icons
+                                                                  .remove_red_eye,
+                                                              size: 20,
+                                                            ),
+                                                            onPressed:
+                                                                () async {
+                                                              String reAttach = value
+                                                                  .historyList[
+                                                                      index]
+                                                                  .orderId
+                                                                  .toString();
+                                                              await Provider.of<
+                                                                          PaymentHistoryProvider>(
+                                                                      context,
+                                                                      listen:
+                                                                          false)
+                                                                  .feeHistoryAttachment(
+                                                                      reAttach);
+                                                              if (value
+                                                                      .extension
+                                                                      .toString() ==
+                                                                  '.pdf') {
+                                                                Navigator.push(
                                                                     context,
-                                                                    listen:
-                                                                        false)
-                                                                .feeHistoryAttachment(
-                                                                    reAttach);
-                                                            if (value.extension
-                                                                    .toString() ==
-                                                                '.pdf') {
-                                                              Navigator.push(
-                                                                  context,
-                                                                  MaterialPageRoute(
-                                                                      builder:
-                                                                          (context) =>
-                                                                              PdfDownloadFee()));
-                                                            } else {
-                                                              Navigator.push(
-                                                                  context,
-                                                                  MaterialPageRoute(
-                                                                      builder:
-                                                                          (context) =>
-                                                                              const NoAttachmentScreenFee()));
-                                                            }
-                                                          },
+                                                                    MaterialPageRoute(
+                                                                        builder:
+                                                                            (context) =>
+                                                                                PdfDownloadFee()));
+                                                              } else {
+                                                                Navigator.push(
+                                                                    context,
+                                                                    MaterialPageRoute(
+                                                                        builder:
+                                                                            (context) =>
+                                                                                const NoAttachmentScreenFee()));
+                                                              }
+                                                            },
+                                                          ),
                                                         )
                                                       ]),
                                                 ],

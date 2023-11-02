@@ -6,64 +6,85 @@ import 'package:essconnect/Domain/Staff/GallerySendStaff.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class GallerySendProvider_Stf with ChangeNotifier {
+  DateTime? fromexam;
+  String fromDateDis = '';
+  late DateTime fromDateCheck;
+
+  getVariables() {
+    fromDateDis = '';
+    toDateDis = '';
+    imageIDList.clear();
+    notifyListeners();
+  }
+
+  //Get From date
+
+  getFromDate(BuildContext context) async {
+    fromexam = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now().subtract(const Duration(days: 0)),
+      lastDate: DateTime(2100),
+      builder: (context, child) {
+        return Theme(
+            data: ThemeData.light().copyWith(
+              primaryColor: UIGuide.light_Purple,
+              colorScheme: const ColorScheme.light(
+                primary: UIGuide.light_Purple,
+              ),
+              buttonTheme:
+                  const ButtonThemeData(textTheme: ButtonTextTheme.primary),
+            ),
+            child: child!);
+      },
+    );
+
+    fromDateDis = DateFormat('dd/MMM/yyyy').format(fromexam!);
+    fromDateCheck = DateTime(fromexam!.year, fromexam!.month, fromexam!.day);
+    print(fromDateDis);
+    notifyListeners();
+  }
+
+  // Get To date
+
+  DateTime? toexam;
+  String toDateDis = '';
+  late DateTime toDateCheck;
+
+  getToDate(BuildContext context) async {
+    toexam = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now().subtract(const Duration(days: 0)),
+      lastDate: DateTime(2100),
+      builder: (context, child) {
+        return Theme(
+            data: ThemeData.light().copyWith(
+              primaryColor: UIGuide.light_Purple,
+              colorScheme: const ColorScheme.light(
+                primary: UIGuide.light_Purple,
+              ),
+              buttonTheme:
+                  const ButtonThemeData(textTheme: ButtonTextTheme.primary),
+            ),
+            child: child!);
+      },
+    );
+    toDateDis = DateFormat('dd/MMM/yyyy').format(toexam!);
+    toDateCheck = DateTime(toexam!.year, toexam!.month, toexam!.day);
+    print(toDateDis);
+    notifyListeners();
+  }
+
   bool? isClassTeacher;
 
-  String filtersDivision = "";
-  String filterCourse = "";
-
-  addFilterCourse(String course) {
-    filterCourse = course;
-    notifyListeners();
-  }
-
-  addFilters(String f) {
-    filtersDivision = f;
-  }
-
-  clearAllFilters() {
-    filtersDivision = "";
-    filterCourse = "";
-
-    notifyListeners();
-  }
-
   List<GalleryCourseListStaff> galleryCourse = [];
-  addSelectedCourse(GalleryCourseListStaff item) {
-    if (galleryCourse.contains(item)) {
-      print("removing");
-      galleryCourse.remove(item);
-      notifyListeners();
-    } else {
-      print("adding");
-      galleryCourse.add(item);
-      notifyListeners();
-    }
-  }
-
-  removeCourse(GalleryCourseListStaff item) {
-    galleryCourse.remove(item);
-    notifyListeners();
-  }
 
   removeCourseAll() {
-    galleryCourse.clear();
-    notifyListeners();
-  }
-
-  isCourseSelected(
-    GalleryCourseListStaff item,
-  ) {
-    if (galleryCourse.contains(item)) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  courseClear() {
     courselistt.clear();
     notifyListeners();
   }
@@ -104,38 +125,8 @@ class GallerySendProvider_Stf with ChangeNotifier {
   //Division List
 
   List<GalleryDivisionListStaff> galleryDivision = [];
-  addSelectedDivision(GalleryDivisionListStaff item) {
-    if (galleryDivision.contains(item)) {
-      print("removing");
-      galleryDivision.remove(item);
-      notifyListeners();
-    } else {
-      print("adding");
-      galleryDivision.add(item);
-      notifyListeners();
-    }
-  }
-
-  removeDivision(GalleryDivisionListStaff item) {
-    galleryDivision.remove(item);
-    notifyListeners();
-  }
 
   removeDivisionAll() {
-    galleryDivision.clear();
-  }
-
-  isDivisionSelected(
-    GalleryDivisionListStaff item,
-  ) {
-    if (galleryDivision.contains(item)) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  divisionClear() {
     divisionlistt.clear();
     notifyListeners();
   }
@@ -285,7 +276,7 @@ class GallerySendProvider_Stf with ChangeNotifier {
     if (response.statusCode == 200 || response.statusCode == 204) {
       print('Correct...______________________________');
 
-      return AwesomeDialog(
+      AwesomeDialog(
               context: context,
               dialogType: DialogType.success,
               animType: AnimType.rightSlide,
@@ -296,6 +287,7 @@ class GallerySendProvider_Stf with ChangeNotifier {
               btnOkIcon: Icons.cancel,
               btnOkColor: Colors.green)
           .show();
+      getVariables();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         elevation: 10,

@@ -51,10 +51,6 @@ class Student_statistics_admin extends StatelessWidget {
                             child: this,
                             duration: const Duration(milliseconds: 400),
                             childCurrent: this));
-                    // Navigator.pushReplacement(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (context) => Student_statistics_admin()));
                   },
                   icon: const Icon(Icons.refresh_outlined)),
               kWidth
@@ -71,16 +67,16 @@ class Student_statistics_admin extends StatelessWidget {
           ),
           backgroundColor: UIGuide.light_Purple,
         ),
-        body: ListView(
-          physics: const BouncingScrollPhysics(),
-          children: [
-            Row(
-              children: [
-                Consumer<SchoolPhotoProviders>(
-                  builder: (context, value, child) => Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: SizedBox(
-                      width: size.width * .42,
+        body: Consumer<StudStatiticsProvider>(
+          builder: (context, val, _) => Column(
+            children: [
+              kheight10,
+              Row(
+                children: [
+                  const Spacer(),
+                  Consumer<SchoolPhotoProviders>(
+                    builder: (context, value, child) => SizedBox(
+                      width: size.width * .43,
                       height: 50,
                       child: MultiSelectDialogField(
                         items: value.dropDown,
@@ -101,14 +97,17 @@ class Student_statistics_admin extends StatelessWidget {
                           style: TextStyle(color: UIGuide.light_Purple),
                         ),
                         separateSelectedItems: true,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(10)),
-                          border: Border.all(
-                            color: Colors.grey,
-                            width: 2,
-                          ),
+                        decoration: const BoxDecoration(
+                          color: UIGuide.ButtonBlue,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey,
+                              offset: Offset(0, 2),
+                              blurRadius: 4,
+                              spreadRadius: 0,
+                            ),
+                          ],
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
                         ),
                         buttonIcon: const Icon(
                           Icons.arrow_drop_down_outlined,
@@ -173,13 +172,10 @@ class Student_statistics_admin extends StatelessWidget {
                       ),
                     ),
                   ),
-                ),
-                const Spacer(),
-                Consumer<SchoolPhotoProviders>(
-                  builder: (context, value, child) => Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: SizedBox(
-                      width: size.width * .42,
+                  const Spacer(),
+                  Consumer<SchoolPhotoProviders>(
+                    builder: (context, value, child) => SizedBox(
+                      width: size.width * .43,
                       height: 50,
                       child: MultiSelectDialogField(
                         // height: 200,
@@ -202,14 +198,17 @@ class Student_statistics_admin extends StatelessWidget {
                           style: TextStyle(color: UIGuide.light_Purple),
                         ),
                         separateSelectedItems: true,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(10)),
-                          border: Border.all(
-                            color: Colors.grey,
-                            width: 2,
-                          ),
+                        decoration: const BoxDecoration(
+                          color: UIGuide.ButtonBlue,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey,
+                              offset: Offset(0, 2),
+                              blurRadius: 4,
+                              spreadRadius: 0,
+                            ),
+                          ],
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
                         ),
                         buttonIcon: const Icon(
                           Icons.arrow_drop_down_outlined,
@@ -260,135 +259,149 @@ class Student_statistics_admin extends StatelessWidget {
                       ),
                     ),
                   ),
-                )
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Consumer<StudStatiticsProvider>(
-                  builder: (context, value, child) => value.loading
-                      ? const SizedBox(
-                          height: 40,
-                          width: 100,
-                          child: Center(
-                              child: Text(
-                            'Loading...',
-                            style: TextStyle(
-                                color: UIGuide.light_Purple, fontSize: 16),
-                          )))
-                      : MaterialButton(
-                          height: 40,
-                          minWidth: 100, color: UIGuide.light_Purple,
-                          // shape: ButtonStyle(shape:RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),),
-                          onPressed: () async {
-                            Provider.of<StudStatiticsProvider>(context,
-                                    listen: false)
-                                .statiticsList
-                                .clear();
-                            Provider.of<StudStatiticsProvider>(context,
-                                    listen: false)
-                                .totalList
-                                .clear();
-                            await Provider.of<StudStatiticsProvider>(context,
-                                    listen: false)
-                                .getstatitics(section, course);
-                          },
-                          child: const Text(
-                            'View',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 15,
-                                fontWeight: FontWeight.w700),
-                          ),
-                        ),
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: Table(
-                border: TableBorder.all(
-                    color: const Color.fromARGB(255, 236, 236, 236)),
-                columnWidths: const {
-                  0: FlexColumnWidth(1),
-                  1: FlexColumnWidth(2),
-                  2: FlexColumnWidth(1),
-                  3: FlexColumnWidth(1),
-                  4: FlexColumnWidth(1),
-                },
-                children: const [
-                  TableRow(
-                      decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 228, 224, 224),
-                      ),
-                      children: [
-                        SizedBox(
-                          height: 30,
-                          child: Center(
-                              child: Text(
-                            'Sl No.',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500, fontSize: 12),
-                          )),
-                        ),
-                        SizedBox(
-                          height: 30,
-                          child: Center(
-                              child: Text(
-                            'Course',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500, fontSize: 12),
-                          )),
-                        ),
-                        SizedBox(
-                          height: 30,
-                          child: Center(
-                            child: Text(
-                              'Male',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w500, fontSize: 12),
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 30,
-                          child: Center(
-                              child: Text(
-                            'Female',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500, fontSize: 12),
-                          )),
-                        ),
-                        SizedBox(
-                          height: 30,
-                          child: Center(
-                              child: Text(
-                            'Total',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500, fontSize: 12),
-                          )),
-                        ),
-                      ]),
+                  const Spacer()
                 ],
               ),
-            ),
-            Consumer<StudStatiticsProvider>(builder: (context, value, child) {
-              return LimitedBox(
-                  maxHeight: size.height - 200,
-                  child: value.loading
-                      ? spinkitLoader()
-                      : ListView.builder(
-                          physics: const BouncingScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: value.statiticsList.isEmpty
-                              ? 0
-                              : value.statiticsList.length,
-                          itemBuilder: ((context, index) {
-                            return Column(
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Consumer<StudStatiticsProvider>(
+                      builder: (context, value, child) => value.loading
+                          ? const SizedBox(
+                              height: 40,
+                              width: 100,
+                              child: Center(
+                                  child: Text(
+                                'Loading...',
+                                style: TextStyle(
+                                    color: UIGuide.light_Purple, fontSize: 16),
+                              )))
+                          : SizedBox(
+                              height: 40,
+                              width: 130,
+                              child: MaterialButton(
+                                color: UIGuide.light_Purple,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15.0),
+                                ),
+                                onPressed: () async {
+                                  value.statiticsList.clear();
+                                  value.totalList.clear();
+                                  await value.getstatitics(section, course);
+                                },
+                                child: const Text(
+                                  'View',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                              ),
+                            ),
+                    ),
+                  ],
+                ),
+              ),
+              val.statiticsList.isEmpty
+                  ? const SizedBox(
+                      height: 0,
+                      width: 0,
+                    )
+                  : Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Table(
+                        border: TableBorder.all(
+                            color: const Color.fromARGB(255, 255, 255, 255)),
+                        columnWidths: const {
+                          0: FlexColumnWidth(1),
+                          1: FlexColumnWidth(2),
+                          2: FlexColumnWidth(1),
+                          3: FlexColumnWidth(1),
+                          4: FlexColumnWidth(1),
+                        },
+                        children: const [
+                          TableRow(
+                              decoration: BoxDecoration(
+                                  color: Color.fromARGB(255, 211, 211, 211),
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(12),
+                                      topRight: Radius.circular(12))),
                               children: [
-                                Table(
-                                  //border: TableBorder.all(color: Color.fromARGB(255, 245, 245, 245)),
+                                SizedBox(
+                                  height: 30,
+                                  child: Center(
+                                      child: Text(
+                                    'Sl No.',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 12),
+                                  )),
+                                ),
+                                SizedBox(
+                                  height: 30,
+                                  child: Center(
+                                      child: Text(
+                                    'Course',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 12),
+                                  )),
+                                ),
+                                SizedBox(
+                                  height: 30,
+                                  child: Center(
+                                    child: Text(
+                                      'Male',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 12),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 30,
+                                  child: Center(
+                                      child: Text(
+                                    'Female',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 12),
+                                  )),
+                                ),
+                                SizedBox(
+                                  height: 30,
+                                  child: Center(
+                                      child: Text(
+                                    'Total',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 12),
+                                  )),
+                                ),
+                              ]),
+                        ],
+                      ),
+                    ),
+              Consumer<StudStatiticsProvider>(builder: (context, value, child) {
+                return value.loading
+                    ? Expanded(child: spinkitLoader())
+                    : Expanded(
+                        //flex: 8,
+                        child: Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: ListView.builder(
+                              physics: const BouncingScrollPhysics(),
+                              shrinkWrap: true,
+                              itemCount: value.statiticsList.isEmpty
+                                  ? 0
+                                  : value.statiticsList.length,
+                              itemBuilder: ((context, index) {
+                                return Table(
+                                  border: TableBorder.all(
+                                      color: const Color.fromARGB(
+                                          255, 247, 244, 244)),
                                   columnWidths: const {
                                     0: FlexColumnWidth(1),
                                     1: FlexColumnWidth(2),
@@ -398,156 +411,214 @@ class Student_statistics_admin extends StatelessWidget {
                                   },
                                   children: [
                                     TableRow(
-                                        decoration: const BoxDecoration(
-                                            //  border: Border.all(color: UIGuide.THEME_LIGHT)
-                                            ),
+                                        decoration: BoxDecoration(
+                                          color: index.isEven
+                                              ? const Color.fromARGB(
+                                                  255, 255, 255, 255)
+                                              : const Color.fromARGB(
+                                                  255, 231, 231, 231),
+                                        ),
                                         children: [
-                                          Text(
-                                            (index + 1).toString(),
-                                            textAlign: TextAlign.center,
-                                            style:
-                                                const TextStyle(fontSize: 12),
+                                          TableCell(
+                                            verticalAlignment:
+                                                TableCellVerticalAlignment
+                                                    .middle,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(4.0),
+                                              child: Text(
+                                                (index + 1).toString(),
+                                                textAlign: TextAlign.center,
+                                                style: const TextStyle(
+                                                    fontSize: 12),
+                                              ),
+                                            ),
                                           ),
-                                          Text(
-                                            value.statiticsList[index].course ??
-                                                '--',
-                                            textAlign: TextAlign.center,
-                                            style:
-                                                const TextStyle(fontSize: 12),
+                                          TableCell(
+                                            verticalAlignment:
+                                                TableCellVerticalAlignment
+                                                    .middle,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(4.0),
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 5),
+                                                child: Text(
+                                                  value.statiticsList[index]
+                                                          .course ??
+                                                      '--',
+                                                  textAlign: TextAlign.start,
+                                                  style: const TextStyle(
+                                                      fontSize: 12),
+                                                ),
+                                              ),
+                                            ),
                                           ),
-                                          Text(
-                                            value.statiticsList[index].male ==
-                                                    null
-                                                ? '--'
-                                                : value
-                                                    .statiticsList[index].male
-                                                    .toString(),
-                                            textAlign: TextAlign.center,
-                                            style:
-                                                const TextStyle(fontSize: 14),
+                                          TableCell(
+                                            verticalAlignment:
+                                                TableCellVerticalAlignment
+                                                    .middle,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(4.0),
+                                              child: Text(
+                                                value.statiticsList[index]
+                                                            .male ==
+                                                        null
+                                                    ? '--'
+                                                    : value.statiticsList[index]
+                                                        .male
+                                                        .toString(),
+                                                textAlign: TextAlign.center,
+                                                style: const TextStyle(
+                                                    fontSize: 14),
+                                              ),
+                                            ),
                                           ),
-                                          Text(
-                                            value.statiticsList[index].feMale ==
-                                                    null
-                                                ? '--'
-                                                : value
-                                                    .statiticsList[index].feMale
-                                                    .toString(),
-                                            textAlign: TextAlign.center,
+                                          TableCell(
+                                            verticalAlignment:
+                                                TableCellVerticalAlignment
+                                                    .middle,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(4.0),
+                                              child: Text(
+                                                value.statiticsList[index]
+                                                            .feMale ==
+                                                        null
+                                                    ? '--'
+                                                    : value.statiticsList[index]
+                                                        .feMale
+                                                        .toString(),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ),
                                           ),
-                                          Text(
-                                            value.statiticsList[index]
-                                                        .totalCount ==
-                                                    null
-                                                ? '--'
-                                                : value.statiticsList[index]
-                                                    .totalCount
-                                                    .toString(),
-                                            textAlign: TextAlign.center,
+                                          TableCell(
+                                            verticalAlignment:
+                                                TableCellVerticalAlignment
+                                                    .middle,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.all(4.0),
+                                              child: Text(
+                                                value.statiticsList[index]
+                                                            .totalCount ==
+                                                        null
+                                                    ? '--'
+                                                    : value.statiticsList[index]
+                                                        .totalCount
+                                                        .toString(),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ),
                                           )
                                         ]),
                                   ],
+                                );
+                              })),
+                        ),
+                      );
+              }),
+              Consumer<StudStatiticsProvider>(
+                builder: (context, value, child) => Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: ListView.builder(
+                    physics: const BouncingScrollPhysics(),
+                    itemCount:
+                        value.totalList.isEmpty ? 0 : value.totalList.length,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      return Table(
+                        columnWidths: const {
+                          0: FlexColumnWidth(1),
+                          1: FlexColumnWidth(2),
+                          2: FlexColumnWidth(1),
+                          3: FlexColumnWidth(1),
+                          4: FlexColumnWidth(1),
+                        },
+                        children: [
+                          TableRow(
+                              decoration: const BoxDecoration(
+                                color: Color.fromARGB(255, 255, 255, 255),
+                              ),
+                              children: [
+                                const SizedBox(
+                                  height: 30,
+                                  child: Center(
+                                      child: Text(
+                                    '    ',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 12),
+                                  )),
                                 ),
-                                kheight20,
-                              ],
-                            );
-                          })));
-            }),
-            Consumer<StudStatiticsProvider>(
-              builder: (context, value, child) => Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: ListView.builder(
-                  physics: const BouncingScrollPhysics(),
-                  itemCount:
-                      value.totalList.isEmpty ? 0 : value.totalList.length,
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    return Table(
-                      columnWidths: const {
-                        0: FlexColumnWidth(1),
-                        1: FlexColumnWidth(2),
-                        2: FlexColumnWidth(1),
-                        3: FlexColumnWidth(1),
-                        4: FlexColumnWidth(1),
-                      },
-                      children: [
-                        TableRow(
-                            decoration: const BoxDecoration(
-                              color: Color.fromARGB(255, 255, 255, 255),
-                            ),
-                            children: [
-                              const SizedBox(
-                                height: 30,
-                                child: Center(
+                                const SizedBox(
+                                  height: 30,
+                                  child: Center(
+                                      child: Text(
+                                    '   Total:     ',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w900,
+                                        color: UIGuide.light_Purple,
+                                        fontSize: 12),
+                                  )),
+                                ),
+                                SizedBox(
+                                  height: 30,
+                                  child: Center(
                                     child: Text(
-                                  '    ',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 12),
-                                )),
-                              ),
-                              const SizedBox(
-                                height: 30,
-                                child: Center(
-                                    child: Text(
-                                  '   Total:     ',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w900,
-                                      color: UIGuide.light_Purple,
-                                      fontSize: 12),
-                                )),
-                              ),
-                              SizedBox(
-                                height: 30,
-                                child: Center(
-                                  child: Text(
-                                    value.totalList[index].netMaleCount == null
+                                      value.totalList[index].netMaleCount ==
+                                              null
+                                          ? '--'
+                                          : value.totalList[index].netMaleCount
+                                              .toString(),
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.w900,
+                                          color: UIGuide.light_Purple,
+                                          fontSize: 12),
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 30,
+                                  child: Center(
+                                      child: Text(
+                                    value.totalList[index].netFemaleCount ==
+                                            null
                                         ? '--'
-                                        : value.totalList[index].netMaleCount
+                                        : value.totalList[index].netFemaleCount
                                             .toString(),
                                     style: const TextStyle(
                                         fontWeight: FontWeight.w900,
                                         color: UIGuide.light_Purple,
                                         fontSize: 12),
-                                  ),
+                                  )),
                                 ),
-                              ),
-                              SizedBox(
-                                height: 30,
-                                child: Center(
-                                    child: Text(
-                                  value.totalList[index].netFemaleCount == null
-                                      ? '--'
-                                      : value.totalList[index].netFemaleCount
-                                          .toString(),
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.w900,
-                                      color: UIGuide.light_Purple,
-                                      fontSize: 12),
-                                )),
-                              ),
-                              SizedBox(
-                                height: 30,
-                                child: Center(
-                                    child: Text(
-                                  value.totalList[index].netTotal == null
-                                      ? '--'
-                                      : value.totalList[index].netTotal
-                                          .toString(),
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.w900,
-                                      color: UIGuide.light_Purple,
-                                      fontSize: 12),
-                                )),
-                              ),
-                            ]),
-                      ],
-                    );
-                  },
+                                SizedBox(
+                                  height: 30,
+                                  child: Center(
+                                      child: Text(
+                                    value.totalList[index].netTotal == null
+                                        ? '--'
+                                        : value.totalList[index].netTotal
+                                            .toString(),
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.w900,
+                                        color: UIGuide.light_Purple,
+                                        fontSize: 12),
+                                  )),
+                                ),
+                              ]),
+                        ],
+                      );
+                    },
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ));
   }
 }

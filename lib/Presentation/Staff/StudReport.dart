@@ -13,7 +13,6 @@ class StudReport extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
     return DefaultTabController(
         length: 3,
         child: Scaffold(
@@ -116,318 +115,343 @@ class _StudCurrentStudyingState extends State<StudCurrentStudying> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Consumer<StudReportListProvider_stf>(
-      builder: (context, value, child) => ListView(
+      builder: (context, value, child) => Column(
         children: [
           kheight10,
           Row(
             children: [
-              const Spacer(),
-              SizedBox(
-                height: 50,
-                width: MediaQuery.of(context).size.width * 0.46,
-                child: Consumer<StudReportListProvider_stf>(
-                    builder: (context, snapshot, child) {
-                  return InkWell(
-                    onTap: () async {
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return Dialog(
-                                child: LimitedBox(
-                              maxHeight: size.height - 300,
-                              child: ListView.builder(
-                                  shrinkWrap: true,
-                                  itemCount: studReportinitvalues_stf!.length,
-                                  itemBuilder: (context, index) {
-                                    //  value.removeSectionAll();
-                                    return ListTile(
-                                      selectedTileColor: Colors.blue.shade100,
-                                      selectedColor: UIGuide.PRIMARY2,
-                                      onTap: () async {
-                                        await value.removeDivisionAll();
-
-                                        studReportDivisionController1.clear();
-
-                                        value.divisionClear();
-                                        await value.removeCourseAll();
-                                        await value.removeDivisionAll();
-                                        await value.clearViewList();
-                                        studReportcourseController1.clear();
-                                        studReportDivisionController1.clear();
-
-                                        studReportInitialValuesController.text =
-                                            await studReportinitvalues_stf![
-                                                    index]['value'] ??
-                                                '--';
-                                        studReportInitialValuesController1
-                                                .text =
-                                            await studReportinitvalues_stf![
-                                                    index]['text'] ??
-                                                '--';
-                                        sectionId =
-                                            studReportInitialValuesController
-                                                .text
-                                                .toString();
-                                        await value.clearViewList();
-
-                                        await value.courseClear();
-                                        await value.getCourseList(sectionId);
-                                        Navigator.of(context).pop();
-                                      },
-                                      title: Text(
-                                        studReportinitvalues_stf![index]
-                                                ['text'] ??
-                                            '--',
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    );
-                                  }),
-                            ));
-                          });
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Column(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: UIGuide.light_Purple, width: 1),
-                            ),
-                            height: 40,
-                            child: TextField(
-                              style: const TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                  color: UIGuide.BLACK,
-                                  overflow: TextOverflow.clip),
-                              textAlign: TextAlign.center,
-                              controller: studReportInitialValuesController1,
-                              decoration: const InputDecoration(
-                                contentPadding:
-                                    EdgeInsets.only(left: 1, top: 0),
-                                filled: true,
-                                fillColor: UIGuide.light_black,
-                                border: OutlineInputBorder(),
-                                labelText: "  Select Section",
-                                hintText: "Section",
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.never,
-                              ),
-                              enabled: false,
-                            ),
-                          ),
-                        ],
+              kWidth,
+              Expanded(
+                child: SizedBox(
+                  height: 45,
+                  child: Consumer<StudReportListProvider_stf>(
+                      builder: (context, snapshot, child) {
+                    return ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        elevation: 3,
+                        foregroundColor: UIGuide.light_Purple,
+                        backgroundColor: UIGuide.ButtonBlue,
+                        padding: const EdgeInsets.all(0),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            side: const BorderSide(
+                              color: UIGuide.light_black,
+                            )),
                       ),
-                    ),
-                  );
-                }),
-              ),
-              const Spacer(),
-              SizedBox(
-                height: 50,
-                width: MediaQuery.of(context).size.width * 0.46,
-                child: Consumer<StudReportListProvider_stf>(
-                    builder: (context, snapshot, child) {
-                  return InkWell(
-                    onTap: () async {
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return Dialog(
-                                child: LimitedBox(
-                              maxHeight: size.height - 300,
-                              child: ListView.builder(
-                                  shrinkWrap: true,
-                                  itemCount: snapshot.courselist.length,
-                                  itemBuilder: (context, index) {
-                                    return ListTile(
-                                      onTap: () async {
-                                        await value.removeDivisionAll();
-                                        await value.clearViewList();
-                                        studReportDivisionController1.clear();
-                                        print(snapshot.courselist.length);
-                                        studReportcourseController.text =
-                                            snapshot.courselist[index].value ??
-                                                '---';
-                                        studReportcourseController1.text =
-                                            snapshot.courselist[index].text ==
-                                                    null
-                                                ? '---'
-                                                : snapshot
-                                                    .courselist[index].text;
-                                        snapshot.addSelectedCourse(
-                                            snapshot.courselist[index]);
-                                        courseId = studReportcourseController
-                                            .text
-                                            .toString();
-                                        print(studReportcourseController.text);
-                                        sectionId =
-                                            studReportInitialValuesController
-                                                .text
-                                                .toString();
-                                        await value.divisionClear();
+                      onPressed: () async {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return Dialog(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15)),
+                                  child: LimitedBox(
+                                    maxHeight: size.height - 300,
+                                    child: ListView.builder(
+                                        shrinkWrap: true,
+                                        itemCount:
+                                            studReportinitvalues_stf!.length,
+                                        itemBuilder: (context, index) {
+                                          //  value.removeSectionAll();
+                                          return ListTile(
+                                            selectedTileColor:
+                                                Colors.blue.shade100,
+                                            onTap: () async {
+                                              await value.removeDivisionAll();
 
-                                        await value.getDivisionList(courseId);
+                                              studReportDivisionController1
+                                                  .clear();
 
-                                        Navigator.of(context).pop();
-                                      },
-                                      title: Text(
-                                        snapshot.courselist[index].text == null
-                                            ? '---'
-                                            : snapshot.courselist[index].text,
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    );
-                                  }),
-                            ));
-                          });
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Column(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: UIGuide.light_Purple, width: 1),
-                            ),
-                            height: 40,
-                            child: TextField(
-                              style: const TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                  color: UIGuide.BLACK,
-                                  overflow: TextOverflow.clip),
-                              textAlign: TextAlign.center,
-                              controller: studReportcourseController1,
-                              decoration: const InputDecoration(
-                                filled: true,
-                                contentPadding:
-                                    EdgeInsets.only(left: 1, top: 0),
-                                fillColor: UIGuide.light_black,
-                                border: OutlineInputBorder(),
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.never,
-                                labelText: "   Select Course",
-                                hintText: "Course",
-                              ),
-                              enabled: false,
-                            ),
+                                              value.divisionClear();
+                                              await value.removeCourseAll();
+                                              await value.removeDivisionAll();
+                                              await value.clearViewList();
+                                              studReportcourseController1
+                                                  .clear();
+                                              studReportDivisionController1
+                                                  .clear();
+
+                                              studReportInitialValuesController
+                                                      .text =
+                                                  await studReportinitvalues_stf![
+                                                          index]['value'] ??
+                                                      '--';
+                                              studReportInitialValuesController1
+                                                      .text =
+                                                  await studReportinitvalues_stf![
+                                                          index]['text'] ??
+                                                      '--';
+                                              sectionId =
+                                                  studReportInitialValuesController
+                                                      .text
+                                                      .toString();
+                                              await value.clearViewList();
+
+                                              await value.courseClear();
+                                              await value
+                                                  .getCourseList(sectionId);
+                                              Navigator.of(context).pop();
+                                            },
+                                            title: Text(
+                                              studReportinitvalues_stf![index]
+                                                      ['text'] ??
+                                                  '--',
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          );
+                                        }),
+                                  ));
+                            });
+                      },
+                      child: TextField(
+                        style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: UIGuide.BLACK,
+                            overflow: TextOverflow.clip),
+                        textAlign: TextAlign.center,
+                        controller: studReportInitialValuesController1,
+                        decoration: const InputDecoration(
+                          contentPadding: EdgeInsets.only(left: 1, top: 0),
+                          filled: true,
+                          fillColor: Colors.transparent,
+                          border: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(style: BorderStyle.none, width: 0),
                           ),
-                        ],
+                          labelText: "  Select Section",
+                          hintText: "Section",
+                          floatingLabelBehavior: FloatingLabelBehavior.never,
+                        ),
+                        enabled: false,
                       ),
-                    ),
-                  );
-                }),
+                    );
+                  }),
+                ),
               ),
-              const Spacer(),
+              kWidth,
+              Expanded(
+                child: SizedBox(
+                  height: 45,
+                  child: Consumer<StudReportListProvider_stf>(
+                      builder: (context, snapshot, child) {
+                    return ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        elevation: 3,
+                        foregroundColor: UIGuide.light_Purple,
+                        backgroundColor: UIGuide.ButtonBlue,
+                        padding: const EdgeInsets.all(0),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            side: const BorderSide(
+                              color: UIGuide.light_black,
+                            )),
+                      ),
+                      onPressed: () async {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return Dialog(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15)),
+                                  child: LimitedBox(
+                                    maxHeight: size.height - 300,
+                                    child: ListView.builder(
+                                        shrinkWrap: true,
+                                        itemCount: snapshot.courselist.length,
+                                        itemBuilder: (context, index) {
+                                          return ListTile(
+                                            onTap: () async {
+                                              await value.removeDivisionAll();
+                                              await value.clearViewList();
+                                              studReportDivisionController1
+                                                  .clear();
+                                              print(snapshot.courselist.length);
+                                              studReportcourseController.text =
+                                                  snapshot.courselist[index]
+                                                          .value ??
+                                                      '---';
+                                              studReportcourseController1.text =
+                                                  snapshot.courselist[index]
+                                                              .text ==
+                                                          null
+                                                      ? '---'
+                                                      : snapshot
+                                                          .courselist[index]
+                                                          .text;
+                                              snapshot.addSelectedCourse(
+                                                  snapshot.courselist[index]);
+                                              courseId =
+                                                  studReportcourseController
+                                                      .text
+                                                      .toString();
+                                              print(studReportcourseController
+                                                  .text);
+                                              sectionId =
+                                                  studReportInitialValuesController
+                                                      .text
+                                                      .toString();
+                                              await value.divisionClear();
+
+                                              await value
+                                                  .getDivisionList(courseId);
+
+                                              Navigator.of(context).pop();
+                                            },
+                                            title: Text(
+                                              snapshot.courselist[index].text ==
+                                                      null
+                                                  ? '---'
+                                                  : snapshot
+                                                      .courselist[index].text,
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          );
+                                        }),
+                                  ));
+                            });
+                      },
+                      child: TextField(
+                        style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: UIGuide.BLACK,
+                            overflow: TextOverflow.clip),
+                        textAlign: TextAlign.center,
+                        controller: studReportcourseController1,
+                        decoration: const InputDecoration(
+                          filled: true,
+                          contentPadding: EdgeInsets.only(left: 1, top: 0),
+                          fillColor: Colors.transparent,
+                          border: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(style: BorderStyle.none, width: 0),
+                          ),
+                          floatingLabelBehavior: FloatingLabelBehavior.never,
+                          labelText: "   Select Course",
+                          hintText: "Course",
+                        ),
+                        enabled: false,
+                      ),
+                    );
+                  }),
+                ),
+              ),
+              kWidth,
             ],
           ),
+          kheight10,
           Row(
             children: [
-              const Spacer(),
-              SizedBox(
-                height: 50,
-                width: MediaQuery.of(context).size.width * 0.46,
-                child: Consumer<StudReportListProvider_stf>(
-                    builder: (context, snapshot, child) {
-                  return InkWell(
-                    onTap: () async {
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return Dialog(
-                                child: LimitedBox(
-                              maxHeight: size.height - 300,
-                              child: ListView.builder(
-                                  shrinkWrap: true,
-                                  itemCount: snapshot.divisionlist.length,
-                                  itemBuilder: (context, index) {
-                                    return Column(
-                                      children: [
-                                        ListTile(
-                                          selected: snapshot.isDivisionSelected(
-                                              snapshot.divisionlist[index]),
-                                          onTap: () async {
-                                            print(snapshot.divisionlist.length);
-                                            studReportDivisionController.text =
-                                                snapshot.divisionlist[index]
-                                                        .value ??
-                                                    '---';
-                                            studReportDivisionController1.text =
-                                                snapshot.divisionlist[index]
-                                                        .text ??
-                                                    '---';
-                                            snapshot.addSelectedDivision(
-                                                snapshot.divisionlist[index]);
-
-                                            print(studReportDivisionController
-                                                .text);
-                                            divisionId =
-                                                studReportDivisionController
-                                                    .text
-                                                    .toString();
-                                            Navigator.of(context).pop();
-                                          },
-                                          title: Text(
-                                            snapshot.divisionlist[index].text ??
-                                                '---',
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        ),
-                                      ],
-                                    );
-                                  }),
-                            ));
-                          });
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Column(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: UIGuide.light_Purple, width: 1),
-                            ),
-                            height: 40,
-                            child: TextField(
-                              style: const TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                  color: UIGuide.BLACK,
-                                  overflow: TextOverflow.clip),
-                              textAlign: TextAlign.center,
-                              controller: studReportDivisionController1,
-                              decoration: const InputDecoration(
-                                contentPadding:
-                                    EdgeInsets.only(left: 1, top: 0),
-                                filled: true,
-                                fillColor: UIGuide.light_black,
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.never,
-                                border: OutlineInputBorder(),
-                                labelText: "  Select Division",
-                                hintText: "Division",
-                              ),
-                              enabled: false,
-                            ),
-                          ),
-                        ],
+              kWidth,
+              Expanded(
+                child: SizedBox(
+                  height: 45,
+                  child: Consumer<StudReportListProvider_stf>(
+                      builder: (context, snapshot, child) {
+                    return ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        elevation: 3,
+                        foregroundColor: UIGuide.light_Purple,
+                        backgroundColor: UIGuide.ButtonBlue,
+                        padding: const EdgeInsets.all(0),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            side: const BorderSide(
+                              color: UIGuide.light_black,
+                            )),
                       ),
-                    ),
-                  );
-                }),
+                      onPressed: () async {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return Dialog(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15)),
+                                  child: LimitedBox(
+                                    maxHeight: size.height - 300,
+                                    child: ListView.builder(
+                                        shrinkWrap: true,
+                                        itemCount: snapshot.divisionlist.length,
+                                        itemBuilder: (context, index) {
+                                          return Column(
+                                            children: [
+                                              ListTile(
+                                                selected: snapshot
+                                                    .isDivisionSelected(snapshot
+                                                        .divisionlist[index]),
+                                                onTap: () async {
+                                                  print(snapshot
+                                                      .divisionlist.length);
+                                                  studReportDivisionController
+                                                      .text = snapshot
+                                                          .divisionlist[index]
+                                                          .value ??
+                                                      '---';
+                                                  studReportDivisionController1
+                                                      .text = snapshot
+                                                          .divisionlist[index]
+                                                          .text ??
+                                                      '---';
+                                                  snapshot.addSelectedDivision(
+                                                      snapshot
+                                                          .divisionlist[index]);
+
+                                                  print(
+                                                      studReportDivisionController
+                                                          .text);
+                                                  divisionId =
+                                                      studReportDivisionController
+                                                          .text
+                                                          .toString();
+                                                  Navigator.of(context).pop();
+                                                },
+                                                title: Text(
+                                                  snapshot.divisionlist[index]
+                                                          .text ??
+                                                      '---',
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                              ),
+                                            ],
+                                          );
+                                        }),
+                                  ));
+                            });
+                      },
+                      child: TextField(
+                        style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: UIGuide.BLACK,
+                            overflow: TextOverflow.clip),
+                        textAlign: TextAlign.center,
+                        controller: studReportDivisionController1,
+                        decoration: const InputDecoration(
+                          contentPadding: EdgeInsets.only(left: 1, top: 0),
+                          floatingLabelBehavior: FloatingLabelBehavior.never,
+                          filled: true,
+                          fillColor: Colors.transparent,
+                          border: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(style: BorderStyle.none, width: 0),
+                          ),
+                          labelText: "  Select Division",
+                          hintText: "Division",
+                        ),
+                        enabled: false,
+                      ),
+                    );
+                  }),
+                ),
               ),
-              const Spacer(),
+              kWidth,
               Consumer<StudReportListProvider_stf>(
                 builder: (context, value, child) => value.loading
-                    ? Padding(
-                        padding: const EdgeInsets.all(5.0),
+                    ? const Expanded(
                         child: SizedBox(
-                          width: size.width * 0.44,
-                          child: const Center(
+                          height: 45,
+                          child: Center(
                             child: Text(
                               'Loading...',
                               style: TextStyle(color: UIGuide.light_Purple),
@@ -435,31 +459,39 @@ class _StudCurrentStudyingState extends State<StudCurrentStudying> {
                           ),
                         ),
                       )
-                    : Padding(
-                        padding: const EdgeInsets.all(5.0),
+                    : Expanded(
                         child: SizedBox(
-                          width: size.width * 0.44,
-                          // height: 41,
-                          child: MaterialButton(
-                            color: UIGuide.THEME_LIGHT,
+                          height: 45,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              elevation: 3,
+                              foregroundColor: UIGuide.WHITE,
+                              backgroundColor: UIGuide.light_Purple,
+                              padding: const EdgeInsets.all(0),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  side: const BorderSide(
+                                    color: UIGuide.light_black,
+                                  )),
+                            ),
                             onPressed: (() async {
-                              if (studReportDivisionController.text.isEmpty &&
-                                  studReportInitialValuesController
-                                      .text.isEmpty &&
-                                  studReportDivisionController.text.isEmpty) {
-                                return AwesomeDialog(
-                                        context: context,
-                                        dialogType: DialogType.warning,
-                                        animType: AnimType.rightSlide,
-                                        headerAnimationLoop: false,
-                                        title: 'Warning',
-                                        desc: 'Select mandatory fields',
-                                        btnOkOnPress: () {
-                                          return;
-                                        },
-                                        btnOkIcon: Icons.cancel,
-                                        btnOkColor: Colors.red)
-                                    .show();
+                              if (studReportInitialValuesController
+                                  .text.isEmpty) {
+                                snackbarWidget(
+                                    2, "Select Section to continue..", context);
+                                // return AwesomeDialog(
+                                //         context: context,
+                                //         dialogType: DialogType.warning,
+                                //         animType: AnimType.rightSlide,
+                                //         headerAnimationLoop: false,
+                                //         title: 'Warning',
+                                //         desc: 'Select mandatory fields',
+                                //         btnOkOnPress: () {
+                                //           return;
+                                //         },
+                                //         btnOkIcon: Icons.cancel,
+                                //         btnOkColor: Colors.red)
+                                //     .show();
                               } else {
                                 courseId =
                                     studReportcourseController.text.toString();
@@ -506,11 +538,11 @@ class _StudCurrentStudyingState extends State<StudCurrentStudying> {
                         ),
                       ),
               ),
-              const Spacer()
+              kWidth
             ],
           ),
-          LimitedBox(
-            maxHeight: size.height - 260,
+          kheight10,
+          Expanded(
             child: Consumer<StudReportListProvider_stf>(
               builder: (context, provider, child) => provider.loading
                   ? spinkitLoader()
@@ -554,9 +586,15 @@ class _StudCurrentStudyingState extends State<StudCurrentStudying> {
                                               context,
                                               MaterialPageRoute(
                                                   builder: (context) =>
-                                                      StudProfileView_Staff(
-                                                        indexx: index,
-                                                      )),
+                                                      StudProfileViewBySearch_Staff(
+                                                        stud: provider
+                                                                .viewStudReportListt[
+                                                            index],
+                                                      )
+                                                  // StudProfileView_Staff(
+                                                  //   indexx: index,
+                                                  // )
+                                                  ),
                                             );
                                           },
                                           child: Container(
@@ -856,273 +894,274 @@ class _StudCurrentStudyingState extends State<StudCurrentStudying> {
   }
 }
 
-class StudProfileView_Staff extends StatelessWidget {
-  StudProfileView_Staff({Key? key, required this.indexx}) : super(key: key);
-  final int indexx;
-  String? phn;
-  @override
-  Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+// class StudProfileView_Staff extends StatelessWidget {
+//   StudProfileView_Staff({Key? key, required this.indexx}) : super(key: key);
+//   final int indexx;
+//   String? phn;
+//   @override
+//   Widget build(BuildContext context) {
+//     final size = MediaQuery.of(context).size;
 
-    const Color background = Colors.white;
-    const Color fill1 = UIGuide.light_Purple;
-    const Color fill2 = UIGuide.custom_blue;
-    final List<Color> gradient = [
-      fill1,
-      fill2,
-      background,
-      background,
-    ];
-    const double fillPercent = 35;
-    const double fillStop = (100 - fillPercent) / 100;
-    final List<double> stops = [0.0, fillStop, fillStop, 1.0];
+//     const Color background = Colors.white;
+//     const Color fill1 = UIGuide.light_Purple;
+//     const Color fill2 = UIGuide.custom_blue;
+//     final List<Color> gradient = [
+//       fill1,
+//       fill2,
+//       background,
+//       background,
+//     ];
+//     const double fillPercent = 35;
+//     const double fillStop = (100 - fillPercent) / 100;
+//     final List<double> stops = [0.0, fillStop, fillStop, 1.0];
 
-    return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 0,
-        backgroundColor: UIGuide.light_Purple,
-      ),
-      body: Consumer<StudReportListProvider_stf>(
-        builder: (context, value, child) => ListView(
-          physics: const BouncingScrollPhysics(),
-          children: [
-            Stack(
-              children: [
-                Container(
-                  height: 260,
-                  width: size.width,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: gradient,
-                      stops: stops,
-                      end: Alignment.bottomCenter,
-                      begin: Alignment.topCenter,
-                    ),
-                  ),
-                ),
-                Positioned(
-                  top: 70,
-                  left: 30,
-                  right: 30,
-                  child: Container(
-                      decoration: const BoxDecoration(
-                          color: UIGuide.WHITE,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Color.fromARGB(255, 128, 125, 125),
-                              offset: Offset(
-                                2,
-                                5.0,
-                              ),
-                              blurRadius: 5.0,
-                              spreadRadius: 2.0,
-                            ),
-                          ],
-                          borderRadius: BorderRadius.all(Radius.circular(10))),
-                      width: size.width - 50,
-                      height: 170,
-                      child: Column(
-                        children: [
-                          kheight20,
-                          kheight20,
-                          kheight20,
-                          kheight10,
-                          Text(
-                            value.viewStudReportListt[indexx].name ?? '---',
-                            style: const TextStyle(
-                                fontWeight: FontWeight.w500, fontSize: 13),
-                          ),
-                          const SizedBox(
-                            height: 4,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Text('Division : ',
-                                  style: TextStyle(
-                                      fontSize: 14.0, color: Colors.grey)),
-                              Text(
-                                  value.viewStudReportListt[indexx].division ??
-                                      '---',
-                                  style: const TextStyle(fontSize: 14.0)),
-                            ],
-                          ),
-                          kheight10,
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Table(
-                              border: TableBorder.all(
-                                  color: Color.fromARGB(255, 233, 233, 245),
-                                  style: BorderStyle.solid,
-                                  width: 2),
-                              children: [
-                                TableRow(children: [
-                                  Column(
-                                    children: [
-                                      const Text('Roll No',
-                                          style: TextStyle(color: Colors.grey)),
-                                      Text(
-                                          value.viewStudReportListt[indexx]
-                                                      .rollNo ==
-                                                  null
-                                              ? '---'
-                                              : value
-                                                  .viewStudReportListt[indexx]
-                                                  .rollNo
-                                                  .toString(),
-                                          style:
-                                              const TextStyle(fontSize: 14.0)),
-                                    ],
-                                  ),
-                                  Column(
-                                    children: [
-                                      const Text('Adm No',
-                                          style: TextStyle(color: Colors.grey)),
-                                      Text(
-                                          value.viewStudReportListt[indexx]
-                                                  .admnNo ??
-                                              '---',
-                                          style:
-                                              const TextStyle(fontSize: 14.0)),
-                                    ],
-                                  ),
-                                ])
-                              ],
-                            ),
-                          )
-                        ],
-                      )),
-                ),
-                Center(
-                  child: CircleAvatar(
-                    foregroundColor: Colors.white,
-                    foregroundImage: NetworkImage(
-                      value.viewStudReportListt[indexx].studentPhoto ??
-                          'https://gj-eschool-files-public.s3.ap-south-1.amazonaws.com/ess-connect/student/avathar-02.jpeg',
-                    ),
-                    radius: 65,
-                    backgroundColor: UIGuide.WHITE,
-                  ),
-                )
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                padding: const EdgeInsets.all(10),
-                width: size.width,
-                decoration: BoxDecoration(
-                    color: UIGuide.light_black,
-                    borderRadius: BorderRadius.circular(10)),
-                child: Column(
-                  children: [
-                    Container(
-                      decoration: const BoxDecoration(
-                        color: UIGuide.light_black,
-                      ),
-                      width: size.width,
-                      height: 85,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Permanent Address',
-                            style: TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.w700),
-                          ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Flexible(
-                            child: RichText(
-                              overflow: TextOverflow.ellipsis,
-                              strutStyle: const StrutStyle(fontSize: 13),
-                              maxLines: 3,
-                              text: TextSpan(
-                                style: const TextStyle(
-                                    fontSize: 15,
-                                    color: Color.fromARGB(255, 44, 43, 43)),
-                                text:
-                                    value.viewStudReportListt[indexx].address ??
-                                        '---',
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        const Text(
-                          'Bus Name : ',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500, fontSize: 13),
-                        ),
-                        Flexible(
-                          child: Text(
-                            value.viewStudReportListt[indexx].bus ?? '---',
-                            overflow: TextOverflow.clip,
-                            style: const TextStyle(fontSize: 12),
-                          ),
-                        )
-                      ],
-                    ),
-                    kheight10,
-                    Row(
-                      children: [
-                        const Text(
-                          'Bus Stop : ',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500, fontSize: 13),
-                        ),
-                        Flexible(
-                          child: Text(
-                            value.viewStudReportListt[indexx].stop ?? '---',
-                            overflow: TextOverflow.clip,
-                            style: const TextStyle(fontSize: 12),
-                          ),
-                        )
-                      ],
-                    ),
-                    kheight10,
-                    GestureDetector(
-                      onTap: () {
-                        _makingPhoneCall(phn.toString());
-                      },
-                      child: Row(
-                        children: [
-                          const Text(
-                            'Phone No : ',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500, fontSize: 13),
-                          ),
-                          Flexible(
-                            child: Text(
-                              phn = value.viewStudReportListt[indexx].mobNo ??
-                                  '---',
-                              overflow: TextOverflow.clip,
-                              style: const TextStyle(fontSize: 12),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
+//     return Scaffold(
+//       appBar: AppBar(
+//         toolbarHeight: 0,
+//         backgroundColor: UIGuide.light_Purple,
+//       ),
+//       body: Consumer<StudReportListProvider_stf>(
+//         builder: (context, value, child) => ListView(
+//           physics: const BouncingScrollPhysics(),
+//           children: [
+//             Stack(
+//               children: [
+//                 Container(
+//                   height: 260,
+//                   width: size.width,
+//                   decoration: BoxDecoration(
+//                     gradient: LinearGradient(
+//                       colors: gradient,
+//                       stops: stops,
+//                       end: Alignment.bottomCenter,
+//                       begin: Alignment.topCenter,
+//                     ),
+//                   ),
+//                 ),
+//                 Positioned(
+//                   top: 70,
+//                   left: 30,
+//                   right: 30,
+//                   child: Container(
+//                       decoration: const BoxDecoration(
+//                           color: UIGuide.WHITE,
+//                           boxShadow: [
+//                             BoxShadow(
+//                               color: Color.fromARGB(255, 128, 125, 125),
+//                               offset: Offset(
+//                                 2,
+//                                 5.0,
+//                               ),
+//                               blurRadius: 5.0,
+//                               spreadRadius: 2.0,
+//                             ),
+//                           ],
+//                           borderRadius: BorderRadius.all(Radius.circular(10))),
+//                       width: size.width - 50,
+//                       height: 170,
+//                       child: Column(
+//                         children: [
+//                           kheight20,
+//                           kheight20,
+//                           kheight20,
+//                           kheight10,
+//                           Text(
+//                             value.viewStudReportListt[indexx].name ?? '---',
+//                             style: const TextStyle(
+//                                 fontWeight: FontWeight.w500, fontSize: 13),
+//                           ),
+//                           const SizedBox(
+//                             height: 4,
+//                           ),
+//                           Row(
+//                             mainAxisAlignment: MainAxisAlignment.center,
+//                             children: [
+//                               const Text('Division : ',
+//                                   style: TextStyle(
+//                                       fontSize: 14.0, color: Colors.grey)),
+//                               Text(
+//                                   value.viewStudReportListt[indexx].division ??
+//                                       '---',
+//                                   style: const TextStyle(fontSize: 14.0)),
+//                             ],
+//                           ),
+//                           kheight10,
+//                           Padding(
+//                             padding: const EdgeInsets.all(8.0),
+//                             child: Table(
+//                               border: TableBorder.all(
+//                                   color:
+//                                       const Color.fromARGB(255, 233, 233, 245),
+//                                   style: BorderStyle.solid,
+//                                   width: 2),
+//                               children: [
+//                                 TableRow(children: [
+//                                   Column(
+//                                     children: [
+//                                       const Text('Roll No',
+//                                           style: TextStyle(color: Colors.grey)),
+//                                       Text(
+//                                           value.viewStudReportListt[indexx]
+//                                                       .rollNo ==
+//                                                   null
+//                                               ? '---'
+//                                               : value
+//                                                   .viewStudReportListt[indexx]
+//                                                   .rollNo
+//                                                   .toString(),
+//                                           style:
+//                                               const TextStyle(fontSize: 14.0)),
+//                                     ],
+//                                   ),
+//                                   Column(
+//                                     children: [
+//                                       const Text('Adm No',
+//                                           style: TextStyle(color: Colors.grey)),
+//                                       Text(
+//                                           value.viewStudReportListt[indexx]
+//                                                   .admnNo ??
+//                                               '---',
+//                                           style:
+//                                               const TextStyle(fontSize: 14.0)),
+//                                     ],
+//                                   ),
+//                                 ])
+//                               ],
+//                             ),
+//                           )
+//                         ],
+//                       )),
+//                 ),
+//                 Center(
+//                   child: CircleAvatar(
+//                     foregroundColor: Colors.white,
+//                     foregroundImage: NetworkImage(
+//                       value.viewStudReportListt[indexx].studentPhoto ??
+//                           'https://gj-eschool-files-public.s3.ap-south-1.amazonaws.com/ess-connect/student/avathar-02.jpeg',
+//                     ),
+//                     radius: 65,
+//                     backgroundColor: UIGuide.WHITE,
+//                   ),
+//                 )
+//               ],
+//             ),
+//             Padding(
+//               padding: const EdgeInsets.all(8.0),
+//               child: Container(
+//                 padding: const EdgeInsets.all(10),
+//                 width: size.width,
+//                 decoration: BoxDecoration(
+//                     color: UIGuide.light_black,
+//                     borderRadius: BorderRadius.circular(10)),
+//                 child: Column(
+//                   children: [
+//                     Container(
+//                       decoration: const BoxDecoration(
+//                         color: UIGuide.light_black,
+//                       ),
+//                       width: size.width,
+//                       height: 85,
+//                       child: Column(
+//                         crossAxisAlignment: CrossAxisAlignment.start,
+//                         children: [
+//                           const Text(
+//                             'Permanent Address',
+//                             style: TextStyle(
+//                                 fontSize: 14, fontWeight: FontWeight.w700),
+//                           ),
+//                           const SizedBox(
+//                             height: 5,
+//                           ),
+//                           Flexible(
+//                             child: RichText(
+//                               overflow: TextOverflow.ellipsis,
+//                               strutStyle: const StrutStyle(fontSize: 13),
+//                               maxLines: 3,
+//                               text: TextSpan(
+//                                 style: const TextStyle(
+//                                     fontSize: 15,
+//                                     color: Color.fromARGB(255, 44, 43, 43)),
+//                                 text:
+//                                     value.viewStudReportListt[indexx].address ??
+//                                         '---',
+//                               ),
+//                             ),
+//                           ),
+//                         ],
+//                       ),
+//                     ),
+//                     Row(
+//                       children: [
+//                         const Text(
+//                           'Bus Name : ',
+//                           style: TextStyle(
+//                               fontWeight: FontWeight.w500, fontSize: 13),
+//                         ),
+//                         Flexible(
+//                           child: Text(
+//                             value.viewStudReportListt[indexx].bus ?? '---',
+//                             overflow: TextOverflow.clip,
+//                             style: const TextStyle(fontSize: 12),
+//                           ),
+//                         )
+//                       ],
+//                     ),
+//                     kheight10,
+//                     Row(
+//                       children: [
+//                         const Text(
+//                           'Bus Stop : ',
+//                           style: TextStyle(
+//                               fontWeight: FontWeight.w500, fontSize: 13),
+//                         ),
+//                         Flexible(
+//                           child: Text(
+//                             value.viewStudReportListt[indexx].stop ?? '---',
+//                             overflow: TextOverflow.clip,
+//                             style: const TextStyle(fontSize: 12),
+//                           ),
+//                         )
+//                       ],
+//                     ),
+//                     kheight10,
+//                     GestureDetector(
+//                       onTap: () {
+//                         _makingPhoneCall(phn.toString());
+//                       },
+//                       child: Row(
+//                         children: [
+//                           const Text(
+//                             'Phone No : ',
+//                             style: TextStyle(
+//                                 fontWeight: FontWeight.w500, fontSize: 13),
+//                           ),
+//                           Flexible(
+//                             child: Text(
+//                               phn = value.viewStudReportListt[indexx].mobNo ??
+//                                   '---',
+//                               overflow: TextOverflow.clip,
+//                               style: const TextStyle(fontSize: 12),
+//                             ),
+//                           )
+//                         ],
+//                       ),
+//                     ),
+//                   ],
+//                 ),
+//               ),
+//             )
+//           ],
+//         ),
+//       ),
+//     );
+//   }
 
-  _makingPhoneCall(String phn) async {
-    var url = Uri.parse("tel:$phn");
-    if (await canLaunchUrl(url)) {
-      await launchUrl(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
-}
+//   _makingPhoneCall(String phn) async {
+//     var url = Uri.parse("tel:$phn");
+//     if (await canLaunchUrl(url)) {
+//       await launchUrl(url);
+//     } else {
+//       throw 'Could not launch $url';
+//     }
+//   }
+// }

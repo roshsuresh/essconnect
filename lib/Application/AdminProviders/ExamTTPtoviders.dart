@@ -7,10 +7,118 @@ import 'package:essconnect/Domain/Staff/GallerySendStaff.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:multi_select_flutter/util/multi_select_item.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ExamTTAdmProviders with ChangeNotifier {
+  getVariables() {
+    startDateD = '';
+    startDate = '';
+    fromDateDis = '';
+    fromDate = '';
+    toDateDis = '';
+    toDate = '';
+    imageid = '';
+    notifyListeners();
+  }
+
+  DateTime? examStart;
+  String startDateD = '';
+  String startDate = '';
+
+  getExamStartDate(BuildContext context) async {
+    examStart = (await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now().subtract(const Duration(days: 0)),
+      lastDate: DateTime(2100),
+      builder: (context, child) {
+        return Theme(
+            data: ThemeData.light().copyWith(
+              primaryColor: UIGuide.light_Purple,
+              colorScheme: const ColorScheme.light(
+                primary: UIGuide.light_Purple,
+              ),
+              buttonTheme:
+                  const ButtonThemeData(textTheme: ButtonTextTheme.primary),
+            ),
+            child: child!);
+      },
+    ));
+
+    startDateD = DateFormat('dd-MM-yyyy').format(examStart!);
+    startDate = DateFormat('yyyy-MM-dd').format(examStart!);
+    print(startDateD);
+    notifyListeners();
+  }
+
+  // Get From date
+
+  DateTime? fromexam;
+  String fromDateDis = '';
+  String fromDate = '';
+  late DateTime fromDateCheck;
+
+  getFromDate(BuildContext context) async {
+    fromexam = await showDatePicker(
+      context: context,
+      initialDate: fromexam ?? DateTime.now(),
+      firstDate: DateTime.now().subtract(const Duration(days: 0)),
+      lastDate: DateTime(2030),
+      builder: (context, child) {
+        return Theme(
+            data: ThemeData.light().copyWith(
+              primaryColor: UIGuide.light_Purple,
+              colorScheme: const ColorScheme.light(
+                primary: UIGuide.light_Purple,
+              ),
+              buttonTheme:
+                  const ButtonThemeData(textTheme: ButtonTextTheme.primary),
+            ),
+            child: child!);
+      },
+    );
+    fromDateDis = DateFormat('dd-MM-yyyy').format(fromexam!);
+    fromDate = DateFormat('yyyy-MM-dd').format(fromexam!);
+    fromDateCheck = DateTime(fromexam!.year, fromexam!.month, fromexam!.day);
+    print(fromDateDis);
+    notifyListeners();
+  }
+
+  // Get To date
+
+  DateTime? toexam;
+  String toDateDis = '';
+  String toDate = '';
+  late DateTime toDateCheck;
+
+  getToDate(BuildContext context) async {
+    toexam = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now().subtract(const Duration(days: 0)),
+      lastDate: DateTime(2100),
+      builder: (context, child) {
+        return Theme(
+            data: ThemeData.light().copyWith(
+              primaryColor: UIGuide.light_Purple,
+              colorScheme: const ColorScheme.light(
+                primary: UIGuide.light_Purple,
+              ),
+              buttonTheme:
+                  const ButtonThemeData(textTheme: ButtonTextTheme.primary),
+            ),
+            child: child!);
+      },
+    );
+    toDateDis = DateFormat('dd-MM-yyyy').format(toexam!);
+    toDate = DateFormat('yyyy-MM-dd').format(toexam!);
+    toDateCheck = DateTime(toexam!.year, toexam!.month, toexam!.day);
+    print(toDateDis);
+    notifyListeners();
+  }
+
   List<CourseListModel> courseList = [];
   //List<MultiSelectItem> courseDropDown = [];
   Future getCourseList() async {
@@ -108,7 +216,7 @@ class ExamTTAdmProviders with ChangeNotifier {
     notifyListeners();
   }
 
-  String? id;
+  String? imageid;
   Future examImageSave(BuildContext context, String path) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     setLoadddd(true);
@@ -131,9 +239,9 @@ class ExamTTAdmProviders with ChangeNotifier {
           jsonDecode(await response.stream.bytesToString());
 
       GalleryImageId idd = GalleryImageId.fromJson(data);
-      id = idd.id;
+      imageid = idd.id;
       print(path);
-      print('...............   $id');
+      print('...............   $imageid');
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         elevation: 10,
         shape: RoundedRectangleBorder(
@@ -229,6 +337,7 @@ class ExamTTAdmProviders with ChangeNotifier {
               btnOkIcon: Icons.cancel,
               btnOkColor: Colors.green)
           .show();
+      getVariables();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         elevation: 10,

@@ -80,44 +80,50 @@ class _SmsFormatAdminState extends State<SmsFormatAdmin> {
                                   context: context,
                                   builder: (context) {
                                     return Dialog(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(15)),
                                         child: LimitedBox(
-                                      maxHeight: size.height / 1.5,
-                                      child: ListView.builder(
-                                          shrinkWrap: true,
-                                          itemCount: snapshot.formatlist.isEmpty
-                                              ? 0
-                                              : snapshot.formatlist.length,
-                                          itemBuilder: (context, index) {
-                                            return ListTile(
-                                              onTap: () async {
-                                                provcheck = snapshot
-                                                    .formatlist[index]
-                                                    .isApproved!;
-                                                formatController1.clear();
-                                                formatController.text =
-                                                    await snapshot
+                                          maxHeight: size.height / 1.5,
+                                          child: ListView.builder(
+                                              shrinkWrap: true,
+                                              itemCount: snapshot
+                                                      .formatlist.isEmpty
+                                                  ? 0
+                                                  : snapshot.formatlist.length,
+                                              itemBuilder: (context, index) {
+                                                return ListTile(
+                                                  onTap: () async {
+                                                    provcheck = snapshot
+                                                        .formatlist[index]
+                                                        .isApproved!;
+                                                    formatController1.clear();
+                                                    formatController
+                                                        .text = await snapshot
                                                             .formatlist[index]
                                                             .value ??
                                                         '--';
-                                                formatController1.text =
-                                                    await snapshot
+                                                    formatController1
+                                                        .text = await snapshot
                                                             .formatlist[index]
                                                             .text ??
                                                         '--';
-                                                await snapshot.getSMSContent(
-                                                    formatController.text);
+                                                    await snapshot
+                                                        .getSMSContent(
+                                                            formatController
+                                                                .text);
 
-                                                Navigator.of(context).pop();
-                                              },
-                                              title: Text(
-                                                snapshot.formatlist[index]
-                                                        .text ??
-                                                    '--',
-                                                textAlign: TextAlign.center,
-                                              ),
-                                            );
-                                          }),
-                                    ));
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  title: Text(
+                                                    snapshot.formatlist[index]
+                                                            .text ??
+                                                        '--',
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                );
+                                              }),
+                                        ));
                                   });
                             },
                             child: Padding(

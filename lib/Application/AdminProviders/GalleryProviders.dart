@@ -8,6 +8,7 @@ import 'package:essconnect/Presentation/Admin/Gallery/GalleryScreen.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:multi_select_flutter/util/multi_select_item.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../Domain/Admin/Course&DivsionList.dart';
@@ -17,11 +18,81 @@ List? galleryAdm;
 Map? editGallery;
 
 class GalleryProviderAdmin with ChangeNotifier {
-  String toggleVal = 'All';
+  DateTime? fromexam;
+  String fromDateDis = '';
+  late DateTime fromDateCheck;
+
+  getVariables() {
+    fromDateDis = '';
+    toDateDis = '';
+    imageIDList.clear();
+    notifyListeners();
+  }
+
+  //Get From date
+
+  getFromDate(BuildContext context) async {
+    fromexam = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now().subtract(const Duration(days: 0)),
+      lastDate: DateTime(2100),
+      builder: (context, child) {
+        return Theme(
+            data: ThemeData.light().copyWith(
+              primaryColor: UIGuide.light_Purple,
+              colorScheme: const ColorScheme.light(
+                primary: UIGuide.light_Purple,
+              ),
+              buttonTheme:
+                  const ButtonThemeData(textTheme: ButtonTextTheme.primary),
+            ),
+            child: child!);
+      },
+    );
+
+    fromDateDis = DateFormat('dd/MMM/yyyy').format(fromexam!);
+    fromDateCheck = DateTime(fromexam!.year, fromexam!.month, fromexam!.day);
+    print(fromDateDis);
+    notifyListeners();
+  }
+
+  // Get To date
+
+  DateTime? toexam;
+  String toDateDis = '';
+  late DateTime toDateCheck;
+
+  getToDate(BuildContext context) async {
+    toexam = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now().subtract(const Duration(days: 0)),
+      lastDate: DateTime(2100),
+      builder: (context, child) {
+        return Theme(
+            data: ThemeData.light().copyWith(
+              primaryColor: UIGuide.light_Purple,
+              colorScheme: const ColorScheme.light(
+                primary: UIGuide.light_Purple,
+              ),
+              buttonTheme:
+                  const ButtonThemeData(textTheme: ButtonTextTheme.primary),
+            ),
+            child: child!);
+      },
+    );
+    toDateDis = DateFormat('dd/MMM/yyyy').format(toexam!);
+    toDateCheck = DateTime(toexam!.year, toexam!.month, toexam!.day);
+    print(toDateDis);
+    notifyListeners();
+  }
+
+  String toggleVal = 'all';
   int indval = 0;
   onToggleChanged(int ind) {
     if (ind == 0) {
-      toggleVal = 'All';
+      toggleVal = 'all';
       indval = ind;
       print(toggleVal);
       notifyListeners();

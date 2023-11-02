@@ -2,6 +2,7 @@ import 'package:essconnect/Application/Staff_Providers/NoticeboardSend.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:essconnect/utils/spinkit.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
@@ -52,30 +53,39 @@ class _NoticeBoardListstaffState extends State<NoticeBoardListstaff> {
                           ),
                         );
                       } else {
+                        //created date
+                        String finalCreatedDate = "";
+
+                        if (provider.noticeList[index].createdAt != null) {
+                          String createddate =
+                              provider.noticeList[index].createdAt ?? '--';
+                          DateTime parsedDateTime = DateTime.parse(createddate);
+                          finalCreatedDate =
+                              DateFormat('dd/MMM/yyyy').format(parsedDateTime);
+                        }
                         return Padding(
-                          padding: const EdgeInsets.all(8.0),
+                          padding: const EdgeInsets.all(6.0),
                           child: Container(
                             width: size.width,
                             decoration: BoxDecoration(
                                 border: Border.all(
                                     color: UIGuide.light_Purple, width: 1),
                                 borderRadius: BorderRadius.circular(10)),
-                            child: Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: Column(
-                                children: [
-                                  Row(
+                            child: Column(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 5.0),
+                                  child: Row(
                                     children: [
                                       const Text('Created Date: '),
                                       Text(
-                                        provider.noticeList[index].createdAt ??
-                                            '--',
+                                        finalCreatedDate,
                                         style: const TextStyle(
                                             fontWeight: FontWeight.w600,
                                             fontSize: 13),
                                       ),
                                       const Spacer(),
-                                      GestureDetector(
+                                      InkWell(
                                         onTap: () async {
                                           String event = provider
                                               .noticeList[index].id
@@ -83,14 +93,38 @@ class _NoticeBoardListstaffState extends State<NoticeBoardListstaff> {
                                           await provider.noticeDeleteStaff(
                                               context, event, index);
                                         },
-                                        child: const Icon(
-                                          Icons.delete_forever_outlined,
-                                          color: Colors.red,
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              color: const Color.fromARGB(
+                                                  255, 236, 239, 253),
+                                              border: Border.all(
+                                                  color: UIGuide.THEME_LIGHT),
+                                              borderRadius:
+                                                  const BorderRadius.only(
+                                                      topRight:
+                                                          Radius.circular(10),
+                                                      bottomLeft:
+                                                          Radius.circular(10))),
+                                          child: const Padding(
+                                            padding: EdgeInsets.only(
+                                                left: 8,
+                                                right: 8,
+                                                top: 3,
+                                                bottom: 2),
+                                            child: Icon(
+                                              Icons.delete_forever_outlined,
+                                              color: Colors.red,
+                                              size: 22,
+                                            ),
+                                          ),
                                         ),
                                       )
                                     ],
                                   ),
-                                  Row(
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 5),
+                                  child: Row(
                                     children: [
                                       const Text('Title: '),
                                       Flexible(
@@ -105,7 +139,11 @@ class _NoticeBoardListstaffState extends State<NoticeBoardListstaff> {
                                       )
                                     ],
                                   ),
-                                  Row(
+                                ),
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.only(left: 5, top: 5),
+                                  child: Row(
                                     children: [
                                       const Text('Created By: '),
                                       Flexible(
@@ -121,14 +159,18 @@ class _NoticeBoardListstaffState extends State<NoticeBoardListstaff> {
                                       )
                                     ],
                                   ),
-                                  Consumer<StaffNoticeboardSendProviders>(
-                                    builder: (context, value, child) {
-                                      if (value.noticeList[index].approved ==
-                                              true &&
-                                          value.noticeList[index].cancelled ==
-                                              false) {
-                                        return Row(
-                                          children: const [
+                                ),
+                                Consumer<StaffNoticeboardSendProviders>(
+                                  builder: (context, value, child) {
+                                    if (value.noticeList[index].approved ==
+                                            true &&
+                                        value.noticeList[index].cancelled ==
+                                            false) {
+                                      return const Padding(
+                                        padding: EdgeInsets.only(
+                                            left: 5, top: 5, bottom: 5),
+                                        child: Row(
+                                          children: [
                                             Text('Status : '),
                                             Text(
                                               'Approved',
@@ -139,14 +181,18 @@ class _NoticeBoardListstaffState extends State<NoticeBoardListstaff> {
                                                   color: Colors.green),
                                             ),
                                           ],
-                                        );
-                                      } else if (value
-                                                  .noticeList[index].approved ==
-                                              false &&
-                                          value.noticeList[index].cancelled ==
-                                              true) {
-                                        return Row(
-                                          children: const [
+                                        ),
+                                      );
+                                    } else if (value
+                                                .noticeList[index].approved ==
+                                            false &&
+                                        value.noticeList[index].cancelled ==
+                                            true) {
+                                      return const Padding(
+                                        padding: EdgeInsets.only(
+                                            left: 5, top: 5, bottom: 5),
+                                        child: Row(
+                                          children: [
                                             Text('Status : '),
                                             Text(
                                               'Cancelled',
@@ -157,10 +203,14 @@ class _NoticeBoardListstaffState extends State<NoticeBoardListstaff> {
                                                   color: Colors.red),
                                             ),
                                           ],
-                                        );
-                                      } else {
-                                        return Row(
-                                          children: const [
+                                        ),
+                                      );
+                                    } else {
+                                      return const Padding(
+                                        padding: EdgeInsets.only(
+                                            left: 5, top: 5, bottom: 5),
+                                        child: Row(
+                                          children: [
                                             Text('Status : '),
                                             Text(
                                               'Pending',
@@ -171,11 +221,15 @@ class _NoticeBoardListstaffState extends State<NoticeBoardListstaff> {
                                                   color: Colors.orange),
                                             ),
                                           ],
-                                        );
-                                      }
-                                    },
+                                        ),
+                                      );
+                                    }
+                                  },
+                                  child: const Padding(
+                                    padding: EdgeInsets.only(
+                                        left: 5, top: 5, bottom: 5),
                                     child: Row(
-                                      children: const [
+                                      children: [
                                         Text('Status : '),
                                         Text(
                                           'Approved',
@@ -188,8 +242,8 @@ class _NoticeBoardListstaffState extends State<NoticeBoardListstaff> {
                                       ],
                                     ),
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ),
                         );

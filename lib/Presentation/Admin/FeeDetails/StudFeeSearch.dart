@@ -42,13 +42,13 @@ class _StudentFeeSearchState extends State<StudentFeeSearch> {
         ),
         backgroundColor: UIGuide.light_Purple,
       ),
-      body: ListView(
-        physics: const BouncingScrollPhysics(),
+      body: Column(
+        // physics: const BouncingScrollPhysics(),
         children: [
           Padding(
             padding: const EdgeInsets.only(left: 8.0, right: 8),
             child: AnimSearchBar(
-              width: 400,
+              width: size.width,
               textController: textControllerr,
               helpText: 'Enter student name...',
               color: UIGuide.THEME_LIGHT,
@@ -79,15 +79,15 @@ class _StudentFeeSearchState extends State<StudentFeeSearch> {
               },
             ),
           ),
-          LimitedBox(
-            maxHeight: size.height - 210,
+          Expanded(
+            //   maxHeight: size.height - 210,
             child: Consumer<FeeDetailsProvider>(
                 builder: (context, provider, child) {
               return provider.loading
                   ? Center(child: spinkitLoader())
                   : Scrollbar(
                       child: ListView.builder(
-                        physics: const BouncingScrollPhysics(),
+                        // physics: const BouncingScrollPhysics(),
                         shrinkWrap: true,
                         itemCount: provider.searchStudent.isEmpty
                             ? 0
@@ -123,22 +123,25 @@ class _StudentFeeSearchState extends State<StudentFeeSearch> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => StudFeeDetails(
-                                              studid: id, name: name,
-                                              roll: rollno, division: division,
-                                              //  stud: provider.searchStudent[index],
+                                              studid: id,
+                                              name: name,
+                                              roll: rollno,
+                                              division: division,
                                             )),
                                   );
                                 },
                                 child: Container(
                                   width: size.width - 15,
-                                  height: 62,
-                                  decoration: const BoxDecoration(
-                                      color: Color.fromARGB(255, 219, 227, 243),
+                                  decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color: UIGuide.light_black),
+                                      color: Color.fromARGB(255, 248, 248, 248),
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(10))),
                                   child: Row(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       kWidth,
                                       Center(

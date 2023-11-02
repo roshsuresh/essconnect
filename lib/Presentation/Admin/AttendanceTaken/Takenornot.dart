@@ -85,8 +85,7 @@ class _AttendanceTakenReportState extends State<AttendanceTakenReport> {
         ),
         backgroundColor: UIGuide.light_Purple,
       ),
-      body: ListView(
-        //crossAxisAlignment: CrossAxisAlignment.start,
+      body: Column(
         children: [
           Row(
             children: [
@@ -95,13 +94,13 @@ class _AttendanceTakenReportState extends State<AttendanceTakenReport> {
                 builder: (context, value, child) => value.loadingSection
                     ? SizedBox(
                         width: size.width * .43,
-                        height: 50,
+                        height: 45,
                         child: const Center(child: Text('Loading...')))
                     : Padding(
                         padding: const EdgeInsets.all(10.0),
                         child: SizedBox(
                           width: size.width * .42,
-                          height: 50,
+                          height: 45,
                           child: MultiSelectDialogField(
                             items: value.dropDown,
                             listType: MultiSelectListType.CHIP,
@@ -121,14 +120,18 @@ class _AttendanceTakenReportState extends State<AttendanceTakenReport> {
                               style: TextStyle(color: UIGuide.light_Purple),
                             ),
                             separateSelectedItems: true,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
+                            decoration: const BoxDecoration(
+                              color: UIGuide.ButtonBlue,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey,
+                                  offset: Offset(0, 2),
+                                  blurRadius: 4,
+                                  spreadRadius: 0,
+                                ),
+                              ],
                               borderRadius:
-                                  const BorderRadius.all(Radius.circular(10)),
-                              border: Border.all(
-                                color: Colors.grey,
-                                width: 2,
-                              ),
+                                  BorderRadius.all(Radius.circular(10)),
                             ),
                             buttonIcon: const Icon(
                               Icons.arrow_drop_down_outlined,
@@ -139,14 +142,14 @@ class _AttendanceTakenReportState extends State<AttendanceTakenReport> {
                                     "Select Section",
                                     style: TextStyle(
                                       color: Colors.black,
-                                      fontSize: 16,
+                                      fontSize: 15,
                                     ),
                                   )
                                 : Text(
                                     "   ${value.sectionLen.toString()} Selected",
                                     style: const TextStyle(
                                       color: Colors.black,
-                                      fontSize: 16,
+                                      fontSize: 15,
                                     ),
                                   ),
                             chipDisplay: MultiSelectChipDisplay.none(),
@@ -188,13 +191,13 @@ class _AttendanceTakenReportState extends State<AttendanceTakenReport> {
                 builder: (context, value, child) => value.loadingCourse
                     ? SizedBox(
                         width: size.width * .43,
-                        height: 50,
+                        height: 45,
                         child: const Center(child: Text('Loading...')))
                     : Padding(
                         padding: const EdgeInsets.all(10.0),
                         child: SizedBox(
                           width: size.width * .42,
-                          height: 50,
+                          height: 45,
                           child: MultiSelectDialogField(
                             // height: 200,
                             items: value.courseDrop,
@@ -216,14 +219,18 @@ class _AttendanceTakenReportState extends State<AttendanceTakenReport> {
                               style: TextStyle(color: UIGuide.light_Purple),
                             ),
                             separateSelectedItems: true,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
+                            decoration: const BoxDecoration(
+                              color: UIGuide.ButtonBlue,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey,
+                                  offset: Offset(0, 2),
+                                  blurRadius: 4,
+                                  spreadRadius: 0,
+                                ),
+                              ],
                               borderRadius:
-                                  const BorderRadius.all(Radius.circular(10)),
-                              border: Border.all(
-                                color: Colors.grey,
-                                width: 2,
-                              ),
+                                  BorderRadius.all(Radius.circular(10)),
                             ),
                             buttonIcon: const Icon(
                               Icons.arrow_drop_down_outlined,
@@ -234,14 +241,14 @@ class _AttendanceTakenReportState extends State<AttendanceTakenReport> {
                                     "Select Course",
                                     style: TextStyle(
                                       color: Colors.black,
-                                      fontSize: 16,
+                                      fontSize: 15,
                                     ),
                                   )
                                 : Text(
                                     "   ${value.courseLen.toString()} Selected",
                                     style: const TextStyle(
                                       color: Colors.black,
-                                      fontSize: 16,
+                                      fontSize: 15,
                                     ),
                                   ),
                             chipDisplay: MultiSelectChipDisplay.none(),
@@ -279,52 +286,7 @@ class _AttendanceTakenReportState extends State<AttendanceTakenReport> {
               const Spacer()
             ],
           ),
-          Row(
-            children: [
-              const Spacer(),
-              SizedBox(
-                width: size.width * .42,
-                child: MaterialButton(
-                  // minWidth: size.width - 250,
-                  color: Colors.white, elevation: 5,
-                  onPressed: (() async {
-                    _mydatetime = await showDatePicker(
-                      context: context,
-                      initialDate: _mydatetime ?? DateTime.now(),
-                      firstDate: DateTime(2022),
-                      lastDate: DateTime(2030),
-                      builder: (context, child) {
-                        return Theme(
-                            data: ThemeData.light().copyWith(
-                              primaryColor: UIGuide.light_Purple,
-                              colorScheme: const ColorScheme.light(
-                                primary: UIGuide.light_Purple,
-                              ),
-                              buttonTheme: const ButtonThemeData(
-                                  textTheme: ButtonTextTheme.primary),
-                            ),
-                            child: child!);
-                      },
-                    );
-                    setState(() {
-                      timeNow = DateFormat('dd-MMM-yyyy').format(_mydatetime!);
-                      print(timeNow);
-                    });
-                  }),
-                  // minWidth: size.width - 250,
-                  child: Center(
-                      child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text('🗓️  '),
-                      Text(timeNow == '--' ? newdate.toString() : timeNow),
-                    ],
-                  )),
-                ),
-              ),
-              const Spacer()
-            ],
-          ),
+
           Row(
             children: [
               const Spacer(),
@@ -363,9 +325,63 @@ class _AttendanceTakenReportState extends State<AttendanceTakenReport> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Spacer(),
+              SizedBox(
+                height: 42,
+                width: size.width * .42,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    elevation: 3,
+                    foregroundColor: UIGuide.light_Purple,
+                    backgroundColor: UIGuide.ButtonBlue,
+                    padding: const EdgeInsets.all(0),
+                    shape: RoundedRectangleBorder(
+                      side: const BorderSide(
+                        color: UIGuide.light_black,
+                      ),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  onPressed: (() async {
+                    _mydatetime = await showDatePicker(
+                      context: context,
+                      initialDate: _mydatetime ?? DateTime.now(),
+                      firstDate: DateTime(2022),
+                      lastDate: DateTime(2030),
+                      builder: (context, child) {
+                        return Theme(
+                            data: ThemeData.light().copyWith(
+                              primaryColor: UIGuide.light_Purple,
+                              colorScheme: const ColorScheme.light(
+                                primary: UIGuide.light_Purple,
+                              ),
+                              buttonTheme: const ButtonThemeData(
+                                  textTheme: ButtonTextTheme.primary),
+                            ),
+                            child: child!);
+                      },
+                    );
+                    setState(() {
+                      timeNow = DateFormat('dd-MMM-yyyy').format(_mydatetime!);
+                      print(timeNow);
+                    });
+                  }),
+                  // minWidth: size.width - 250,
+                  child: Center(
+                      child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('🗓️  '),
+                      Text(timeNow == '--' ? newdate.toString() : timeNow),
+                    ],
+                  )),
+                ),
+              ),
+              Spacer(),
               Consumer<AttendanceReportProvider>(
                 builder: (context, loadd, child) => SizedBox(
-                  width: 120,
+                  width: size.width * 0.42,
+                  height: 42,
                   child: loadd.loading
                       ? Center(
                           child: Container(
@@ -375,12 +391,19 @@ class _AttendanceTakenReportState extends State<AttendanceTakenReport> {
                               color: UIGuide.light_Purple,
                               fontWeight: FontWeight.bold),
                         )))
-                      : TextButton(
-                          style: TextButton.styleFrom(
-                              shape: const RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10.0))),
-                              backgroundColor: UIGuide.light_Purple),
+                      : ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            elevation: 3,
+                            foregroundColor: UIGuide.WHITE,
+                            backgroundColor: UIGuide.light_Purple,
+                            padding: const EdgeInsets.all(0),
+                            shape: RoundedRectangleBorder(
+                              side: const BorderSide(
+                                color: UIGuide.light_black,
+                              ),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
                           onPressed: (() async {
                             await Provider.of<AttendanceReportProvider>(context,
                                     listen: false)
@@ -419,21 +442,14 @@ class _AttendanceTakenReportState extends State<AttendanceTakenReport> {
                         ),
                 ),
               ),
+              Spacer()
             ],
           ),
           kheight20,
           Consumer<AttendanceReportProvider>(
             builder: (context, value, child) => value.loading
-                ? Column(
-                    children: [
-                      kheight20,
-                      kheight20,
-                      kheight20,
-                      Center(child: spinkitLoader()),
-                    ],
-                  )
-                : LimitedBox(
-                    maxHeight: size.height / 1.8,
+                ? Expanded(child: spinkitLoader())
+                : Expanded(
                     child: Scrollbar(
                       child: ListView.builder(
                         physics: const BouncingScrollPhysics(),
@@ -467,12 +483,14 @@ class _AttendanceTakenReportState extends State<AttendanceTakenReport> {
                                       child: Row(
                                         children: [
                                           const Text(
-                                            'SL. :',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: UIGuide.light_Purple),
+                                            'Sl No : ',
                                           ),
-                                          Text((index + 1).toString())
+                                          Text(
+                                            (index + 1).toString(),
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                                color: UIGuide.BLACK),
+                                          )
                                         ],
                                       ),
                                     ),
@@ -482,16 +500,18 @@ class _AttendanceTakenReportState extends State<AttendanceTakenReport> {
                                       child: Row(
                                         children: [
                                           const Text(
-                                            'Division :',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: UIGuide.light_Purple),
+                                            'Division : ',
                                           ),
-                                          Text(
-                                            value.takenList[index].division ==
-                                                    null
-                                                ? '--'
-                                                : "  ${value.takenList[index].division}",
+                                          Expanded(
+                                            child: Text(
+                                              value.takenList[index].division ==
+                                                      null
+                                                  ? '--'
+                                                  : "  ${value.takenList[index].division}",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: UIGuide.BLACK),
+                                            ),
                                           )
                                         ],
                                       ),
@@ -503,18 +523,20 @@ class _AttendanceTakenReportState extends State<AttendanceTakenReport> {
                                         children: [
                                           const Text(
                                             'Class Teacher :',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: UIGuide.light_Purple),
                                           ),
-                                          Text(
-                                            value.takenList[index]
-                                                        .classTeacher ==
-                                                    null
-                                                ? '---'
-                                                : value.takenList[index]
-                                                    .classTeacher
-                                                    .toString(),
+                                          Expanded(
+                                            child: Text(
+                                              value.takenList[index]
+                                                          .classTeacher ==
+                                                      null
+                                                  ? '---'
+                                                  : value.takenList[index]
+                                                      .classTeacher
+                                                      .toString(),
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  color: UIGuide.BLACK),
+                                            ),
                                           )
                                         ],
                                       ),
@@ -526,9 +548,6 @@ class _AttendanceTakenReportState extends State<AttendanceTakenReport> {
                                         children: [
                                           const Text(
                                             'Alotted Staff :',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: UIGuide.light_Purple),
                                           ),
                                           Flexible(
                                             child: RichText(
@@ -537,7 +556,9 @@ class _AttendanceTakenReportState extends State<AttendanceTakenReport> {
                                                   fontSize: 12.0),
                                               text: TextSpan(
                                                 style: const TextStyle(
-                                                    color: Colors.black),
+                                                    color: Colors.black,
+                                                    fontWeight:
+                                                        FontWeight.w600),
                                                 text: optedstaff == null
                                                     ? "--"
                                                     : optedstaff,

@@ -13,6 +13,7 @@ import 'package:essconnect/Presentation/Student/Stud_Notification.dart';
 import 'package:essconnect/Presentation/Student/TimeTable.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:essconnect/utils/spinkit.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:marquee/marquee.dart';
@@ -897,48 +898,65 @@ class _ChildHomeState extends State<ChildHome> {
                                       borderRadius:
                                           BorderRadius.circular(30.0)),
                                   onPressed: () async {
-                                    AwesomeDialog(
-                                            context: context,
-                                            dialogType: DialogType.info,
-                                            borderSide: const BorderSide(
-                                                color: UIGuide.light_Purple,
-                                                width: 2),
-                                            buttonsBorderRadius:
-                                                const BorderRadius.all(
-                                                    Radius.circular(2)),
-                                            headerAnimationLoop: false,
-                                            animType: AnimType.bottomSlide,
-                                            title: 'SignOut',
-                                            desc:
-                                                'Are you sure want to sign out',
-                                            showCloseIcon: true,
-                                            btnCancelColor: UIGuide.button2,
-                                            btnOkColor: UIGuide.button1,
-                                            btnCancelOnPress: () {
-                                              return;
-                                            },
-                                            btnOkOnPress: () async {
-                                              SharedPreferences prefs =
-                                                  await SharedPreferences
-                                                      .getInstance();
-                                              print("accesstoken  $prefs");
-                                              prefs.remove("accesstoken");
-                                              print("username  $prefs");
-                                              await prefs.remove("username");
-                                              print("password  $prefs");
-                                              await prefs.remove("password");
+                                    showCupertinoDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return Container(
+                                          color: Colors.black.withOpacity(0.5),
+                                          child: CupertinoAlertDialog(
+                                            title: const Text("Logout"),
+                                            content: const Text(
+                                                "Are you sure you want to log out?"),
+                                            actions: <Widget>[
+                                              CupertinoDialogAction(
+                                                child: const Text(
+                                                  "Cancel",
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      color:
+                                                          UIGuide.light_Purple),
+                                                ),
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                              ),
+                                              CupertinoDialogAction(
+                                                child: const Text("Logout",
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        color: UIGuide
+                                                            .light_Purple)),
+                                                onPressed: () async {
+                                                  SharedPreferences prefs =
+                                                      await SharedPreferences
+                                                          .getInstance();
+                                                  print("accesstoken  $prefs");
+                                                  await prefs
+                                                      .remove("accesstoken");
+                                                  print("username  $prefs");
+                                                  await prefs
+                                                      .remove("username");
+                                                  print("password  $prefs");
+                                                  await prefs
+                                                      .remove("password");
 
-                                              Navigator.of(context)
-                                                  .pushAndRemoveUntil(
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              LoginPage()),
-                                                      (Route<dynamic> route) =>
-                                                          false);
-                                            },
-                                            buttonsTextStyle: const TextStyle(
-                                                color: Colors.white))
-                                        .show();
+                                                  Navigator.of(context)
+                                                      .pushAndRemoveUntil(
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  LoginPage()),
+                                                          (Route<dynamic>
+                                                                  route) =>
+                                                              false);
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    );
                                   },
                                   child: const Icon(
                                     Icons.logout_outlined,

@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:essconnect/Application/Staff_Providers/ToolMarkProvider.dart';
 import 'package:essconnect/Constants.dart';
 import 'package:essconnect/utils/constants.dart';
@@ -9,7 +8,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
-
 import '../../utils/spinkit.dart';
 
 class ToolMarkEntry extends StatefulWidget {
@@ -27,7 +25,6 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
 
   double? result;
 
-  List<List<List<int>>> dataList = [];
   var date;
   double? maxscore;
   @override
@@ -119,497 +116,481 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                 )
               : Column(
                   children: [
-                    Row(
-                      children: [
-                        const Spacer(),
-                        SizedBox(
-                          height: 50,
-                          width: MediaQuery.of(context).size.width * 0.49,
-                          child: Consumer<ToolMarkEntryProviders>(
-                              builder: (context, snapshot, child) {
-                            return InkWell(
-                              onTap: () async {
-                                showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return Dialog(
-                                          child: LimitedBox(
-                                        maxHeight: size.height - 300,
-                                        child: ListView.builder(
-                                            shrinkWrap: true,
-                                            itemCount: snapshot
-                                                .toolInitialValues.length,
-                                            itemBuilder: (context, index) {
-                                              return ListTile(
-                                                onTap: () async {
-                                                  toolInitialValuesController
-                                                      .text = snapshot
-                                                          .toolInitialValues[
-                                                              index]
-                                                          .id ??
-                                                      '--';
-                                                  toolInitialValuesController1
-                                                      .text = snapshot
-                                                          .toolInitialValues[
-                                                              index]
-                                                          .courseName ??
-                                                      '--';
-                                                  courseId =
-                                                      toolInitialValuesController
-                                                          .text
-                                                          .toString();
-
-                                                  //div
-                                                  toolDivisionListController
-                                                      .clear();
-                                                  toolDivisionListController1
-                                                      .clear();
-                                                  await snapshot
-                                                      .divisionClear();
-
-                                                  //part
-
-                                                  toolPartListController
-                                                      .clear();
-                                                  toolPartListController1
-                                                      .clear();
-
-                                                  await snapshot
-                                                      .removeAllpartClear();
-
-                                                  // sub
-
-                                                  toolSubjectListController
-                                                      .clear();
-                                                  toolSubjectListController1
-                                                      .clear();
-
-                                                  await snapshot
-                                                      .removeAllSubjectClear();
-
-                                                  //option sub
-
-                                                  toolOptionSubListController
-                                                      .clear();
-                                                  toolOptionSubListController1
-                                                      .clear();
-                                                  await snapshot
-                                                      .removeAllOptionSubjectListClear();
-
-                                                  // exam
-
-                                                  toolExamListController
-                                                      .clear();
-                                                  toolExamListController1
-                                                      .clear();
-                                                  await snapshot
-                                                      .removeAllExamClear();
-                                                  await snapshot
-                                                      .clearStudList();
-
-                                                  await snapshot
-                                                      .getToolDivisionValues(
-                                                          courseId);
-                                                  Navigator.of(context).pop();
-                                                },
-                                                title: Text(
-                                                  snapshot
-                                                          .toolInitialValues[
-                                                              index]
-                                                          .courseName ??
-                                                      '--',
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              );
-                                            }),
-                                      ));
-                                    });
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: UIGuide.light_Purple,
-                                            width: 1),
-                                      ),
-                                      height: 40,
-                                      child: TextField(
-                                        style: const TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w500,
-                                            color: UIGuide.BLACK,
-                                            overflow: TextOverflow.clip),
-                                        textAlign: TextAlign.center,
-                                        controller:
-                                            toolInitialValuesController1,
-                                        decoration: const InputDecoration(
-                                          filled: true,
-                                          contentPadding:
-                                              EdgeInsets.only(left: 0, top: 0),
-                                          floatingLabelBehavior:
-                                              FloatingLabelBehavior.never,
-                                          fillColor: Color.fromARGB(
-                                              255, 238, 237, 237),
-                                          border: OutlineInputBorder(),
-                                          labelText: "  Select Course",
-                                          hintText: "Course",
-                                        ),
-                                        enabled: false,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 0,
-                                      child: TextField(
-                                        textAlign: TextAlign.center,
-                                        controller: toolInitialValuesController,
-                                        decoration: const InputDecoration(
-                                          filled: true,
-                                          fillColor: Color.fromARGB(
-                                              255, 238, 237, 237),
-                                          border: OutlineInputBorder(),
-                                          labelText: "",
-                                          hintText: "",
-                                        ),
-                                        enabled: false,
-                                      ),
-                                    ),
-                                  ],
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Row(
+                        children: [
+                          const Spacer(),
+                          SizedBox(
+                            height: 40,
+                            width: MediaQuery.of(context).size.width * 0.48,
+                            child: Consumer<ToolMarkEntryProviders>(
+                                builder: (context, snapshot, child) {
+                              return ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  elevation: 3,
+                                  foregroundColor: UIGuide.light_Purple,
+                                  backgroundColor: UIGuide.ButtonBlue,
+                                  padding: const EdgeInsets.all(0),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      side: const BorderSide(
+                                        color: UIGuide.light_black,
+                                      )),
                                 ),
-                              ),
-                            );
-                          }),
-                        ),
-                        const Spacer(),
-                        SizedBox(
-                          height: 50,
-                          width: MediaQuery.of(context).size.width * 0.49,
-                          child: Consumer<ToolMarkEntryProviders>(
-                              builder: (context, snapshot, child) {
-                            return InkWell(
-                              onTap: () async {
-                                showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return Dialog(
-                                          child: LimitedBox(
-                                        maxHeight: size.height - 300,
-                                        child: ListView.builder(
-                                            shrinkWrap: true,
-                                            itemCount: snapshot
-                                                .toolDivisionList.length,
-                                            itemBuilder: (context, index) {
-                                              return ListTile(
-                                                selectedTileColor:
-                                                    Colors.blue.shade100,
-                                                selectedColor: UIGuide.PRIMARY2,
-                                                onTap: () async {
-                                                  // snapshot
-                                                  //     .clearStudentMEList();
-                                                  toolDivisionListController
-                                                      .text = snapshot
-                                                          .toolDivisionList[
-                                                              index]
-                                                          .value ??
-                                                      '---';
-                                                  toolDivisionListController1
-                                                      .text = snapshot
-                                                          .toolDivisionList[
-                                                              index]
-                                                          .text ??
-                                                      '---';
+                                onPressed: () async {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return Dialog(
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(15)),
+                                            child: LimitedBox(
+                                              maxHeight: size.height - 300,
+                                              child: ListView.builder(
+                                                  shrinkWrap: true,
+                                                  itemCount: snapshot
+                                                      .toolInitialValues.length,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    return ListTile(
+                                                      onTap: () async {
+                                                        toolInitialValuesController
+                                                            .text = snapshot
+                                                                .toolInitialValues[
+                                                                    index]
+                                                                .id ??
+                                                            '--';
+                                                        toolInitialValuesController1
+                                                            .text = snapshot
+                                                                .toolInitialValues[
+                                                                    index]
+                                                                .courseName ??
+                                                            '--';
+                                                        courseId =
+                                                            toolInitialValuesController
+                                                                .text
+                                                                .toString();
 
-                                                  divisionId =
-                                                      toolDivisionListController
-                                                          .text
-                                                          .toString();
-                                                  courseId =
-                                                      toolInitialValuesController
-                                                          .text
-                                                          .toString();
-                                                  //part
+                                                        //div
+                                                        toolDivisionListController
+                                                            .clear();
+                                                        toolDivisionListController1
+                                                            .clear();
+                                                        await snapshot
+                                                            .divisionClear();
 
-                                                  toolPartListController
-                                                      .clear();
-                                                  toolPartListController1
-                                                      .clear();
+                                                        //part
 
-                                                  await snapshot
-                                                      .removeAllpartClear();
+                                                        toolPartListController
+                                                            .clear();
+                                                        toolPartListController1
+                                                            .clear();
 
-                                                  // sub
+                                                        await snapshot
+                                                            .removeAllpartClear();
 
-                                                  toolSubjectListController
-                                                      .clear();
-                                                  toolSubjectListController1
-                                                      .clear();
+                                                        // sub
 
-                                                  await snapshot
-                                                      .removeAllSubjectClear();
+                                                        toolSubjectListController
+                                                            .clear();
+                                                        toolSubjectListController1
+                                                            .clear();
 
-                                                  //option sub
+                                                        await snapshot
+                                                            .removeAllSubjectClear();
 
-                                                  toolOptionSubListController
-                                                      .clear();
-                                                  toolOptionSubListController1
-                                                      .clear();
-                                                  await snapshot
-                                                      .removeAllOptionSubjectListClear();
+                                                        //option sub
 
-                                                  // exam
+                                                        toolOptionSubListController
+                                                            .clear();
+                                                        toolOptionSubListController1
+                                                            .clear();
+                                                        await snapshot
+                                                            .removeAllOptionSubjectListClear();
 
-                                                  toolExamListController
-                                                      .clear();
-                                                  toolExamListController1
-                                                      .clear();
-                                                  await snapshot
-                                                      .removeAllExamClear();
-                                                  await snapshot
-                                                      .clearStudList();
+                                                        // exam
 
-                                                  await snapshot
-                                                      .getToolPartValues(
-                                                          courseId, divisionId);
+                                                        toolExamListController
+                                                            .clear();
+                                                        toolExamListController1
+                                                            .clear();
+                                                        await snapshot
+                                                            .removeAllExamClear();
+                                                        await snapshot
+                                                            .clearStudList();
 
-                                                  Navigator.of(context).pop();
-                                                },
-                                                title: Text(
-                                                  snapshot
-                                                          .toolDivisionList[
-                                                              index]
-                                                          .text ??
-                                                      '---',
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              );
-                                            }),
-                                      ));
-                                    });
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: UIGuide.light_Purple,
-                                            width: 1),
-                                      ),
-                                      height: 40,
-                                      child: TextField(
-                                        style: const TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w500,
-                                            color: UIGuide.BLACK,
-                                            overflow: TextOverflow.clip),
-                                        textAlign: TextAlign.center,
-                                        controller: toolDivisionListController1,
-                                        decoration: const InputDecoration(
-                                          filled: true,
-                                          contentPadding:
-                                              EdgeInsets.only(left: 0, top: 0),
-                                          floatingLabelBehavior:
-                                              FloatingLabelBehavior.never,
-                                          fillColor: Color.fromARGB(
-                                              255, 238, 237, 237),
-                                          border: OutlineInputBorder(),
-                                          labelText: "  Select Division",
-                                          hintText: "Division",
-                                        ),
-                                        enabled: false,
-                                      ),
+                                                        await snapshot
+                                                            .getToolDivisionValues(
+                                                                courseId);
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                      title: Text(
+                                                        snapshot
+                                                                .toolInitialValues[
+                                                                    index]
+                                                                .courseName ??
+                                                            '--',
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      ),
+                                                    );
+                                                  }),
+                                            ));
+                                      });
+                                },
+                                child: TextField(
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: UIGuide.BLACK,
+                                      overflow: TextOverflow.clip),
+                                  textAlign: TextAlign.center,
+                                  controller: toolInitialValuesController1,
+                                  decoration: const InputDecoration(
+                                    filled: true,
+                                    contentPadding:
+                                        EdgeInsets.only(left: 0, top: 0),
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.never,
+                                    fillColor: Colors.transparent,
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          style: BorderStyle.none, width: 0),
                                     ),
-                                    SizedBox(
-                                      height: 0,
-                                      child: TextField(
-                                        controller: toolDivisionListController,
-                                        decoration: const InputDecoration(
-                                          filled: true,
-                                          fillColor: Color.fromARGB(
-                                              255, 238, 237, 237),
-                                          border: OutlineInputBorder(),
-                                          labelText: "",
-                                          hintText: "",
-                                        ),
-                                        enabled: false,
-                                      ),
-                                    ),
-                                  ],
+                                    labelText: "  Select Course",
+                                    hintText: "Course",
+                                  ),
+                                  enabled: false,
                                 ),
-                              ),
-                            );
-                          }),
-                        ),
-                        const Spacer(),
-                      ],
+                              );
+                            }),
+                          ),
+                          const Spacer(),
+                          SizedBox(
+                            height: 40,
+                            width: MediaQuery.of(context).size.width * 0.48,
+                            child: Consumer<ToolMarkEntryProviders>(
+                                builder: (context, snapshot, child) {
+                              return ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  elevation: 3,
+                                  foregroundColor: UIGuide.light_Purple,
+                                  backgroundColor: UIGuide.ButtonBlue,
+                                  padding: const EdgeInsets.all(0),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      side: const BorderSide(
+                                        color: UIGuide.light_black,
+                                      )),
+                                ),
+                                onPressed: () async {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return Dialog(
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(15)),
+                                            child: LimitedBox(
+                                              maxHeight: size.height - 300,
+                                              child: ListView.builder(
+                                                  shrinkWrap: true,
+                                                  itemCount: snapshot
+                                                      .toolDivisionList.length,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    return ListTile(
+                                                      selectedTileColor:
+                                                          Colors.blue.shade100,
+                                                      onTap: () async {
+                                                        // snapshot
+                                                        //     .clearStudentMEList();
+                                                        toolDivisionListController
+                                                            .text = snapshot
+                                                                .toolDivisionList[
+                                                                    index]
+                                                                .value ??
+                                                            '---';
+                                                        toolDivisionListController1
+                                                            .text = snapshot
+                                                                .toolDivisionList[
+                                                                    index]
+                                                                .text ??
+                                                            '---';
+
+                                                        divisionId =
+                                                            toolDivisionListController
+                                                                .text
+                                                                .toString();
+                                                        courseId =
+                                                            toolInitialValuesController
+                                                                .text
+                                                                .toString();
+                                                        //part
+
+                                                        toolPartListController
+                                                            .clear();
+                                                        toolPartListController1
+                                                            .clear();
+
+                                                        await snapshot
+                                                            .removeAllpartClear();
+
+                                                        // sub
+
+                                                        toolSubjectListController
+                                                            .clear();
+                                                        toolSubjectListController1
+                                                            .clear();
+
+                                                        await snapshot
+                                                            .removeAllSubjectClear();
+
+                                                        //option sub
+
+                                                        toolOptionSubListController
+                                                            .clear();
+                                                        toolOptionSubListController1
+                                                            .clear();
+                                                        await snapshot
+                                                            .removeAllOptionSubjectListClear();
+
+                                                        // exam
+
+                                                        toolExamListController
+                                                            .clear();
+                                                        toolExamListController1
+                                                            .clear();
+                                                        await snapshot
+                                                            .removeAllExamClear();
+                                                        await snapshot
+                                                            .clearStudList();
+
+                                                        await snapshot
+                                                            .getToolPartValues(
+                                                                courseId,
+                                                                divisionId);
+
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                      title: Text(
+                                                        snapshot
+                                                                .toolDivisionList[
+                                                                    index]
+                                                                .text ??
+                                                            '---',
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      ),
+                                                    );
+                                                  }),
+                                            ));
+                                      });
+                                },
+                                child: TextField(
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: UIGuide.BLACK,
+                                      overflow: TextOverflow.clip),
+                                  textAlign: TextAlign.center,
+                                  controller: toolDivisionListController1,
+                                  decoration: const InputDecoration(
+                                    filled: true,
+                                    contentPadding:
+                                        EdgeInsets.only(left: 0, top: 0),
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.never,
+                                    fillColor: Colors.transparent,
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          style: BorderStyle.none, width: 0),
+                                    ),
+                                    labelText: "  Select Division",
+                                    hintText: "Division",
+                                  ),
+                                  enabled: false,
+                                ),
+                              );
+                            }),
+                          ),
+                          const Spacer(),
+                        ],
+                      ),
                     ),
-                    Row(
-                      children: [
-                        const Spacer(),
-                        SizedBox(
-                          height: 50,
-                          width: MediaQuery.of(context).size.width * 0.49,
-                          child: Consumer<ToolMarkEntryProviders>(
-                              builder: (context, snapshot, child) {
-                            return InkWell(
-                              onTap: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return Dialog(
-                                          child: LimitedBox(
-                                        maxHeight: size.height - 300,
-                                        child: ListView.builder(
-                                            shrinkWrap: true,
-                                            itemCount:
-                                                snapshot.toolPartList.length,
-                                            itemBuilder: (context, index) {
-                                              return ListTile(
-                                                selectedTileColor:
-                                                    Colors.blue.shade100,
-                                                selectedColor: UIGuide.PRIMARY2,
-                                                onTap: () async {
-                                                  toolPartListController
-                                                      .text = snapshot
-                                                          .toolPartList[index]
-                                                          .value ??
-                                                      '--';
-                                                  toolPartListController1
-                                                      .text = snapshot
-                                                          .toolPartList[index]
-                                                          .text ??
-                                                      '--';
-
-                                                  divisionId =
-                                                      toolDivisionListController
-                                                          .text
-                                                          .toString();
-                                                  partId =
-                                                      toolPartListController
-                                                          .text
-                                                          .toString();
-
-                                                  toolSubjectListController
-                                                      .clear();
-                                                  toolSubjectListController1
-                                                      .clear();
-
-                                                  await snapshot
-                                                      .removeAllSubjectClear();
-                                                  //option sub
-
-                                                  toolOptionSubListController
-                                                      .clear();
-                                                  toolOptionSubListController1
-                                                      .clear();
-                                                  await snapshot
-                                                      .removeAllOptionSubjectListClear();
-
-                                                  // exam
-
-                                                  toolExamListController
-                                                      .clear();
-                                                  toolExamListController1
-                                                      .clear();
-                                                  await snapshot
-                                                      .removeAllExamClear();
-                                                  await snapshot
-                                                      .clearStudList();
-
-                                                  await snapshot
-                                                      .getToolSubjectValues(
-                                                          divisionId, partId);
-
-                                                  Navigator.of(context).pop();
-                                                },
-                                                title: Text(
-                                                  snapshot.toolPartList[index]
-                                                          .text ??
-                                                      '---',
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              );
-                                            }),
-                                      ));
-                                    });
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: UIGuide.light_Purple,
-                                            width: 1),
-                                      ),
-                                      height: 40,
-                                      child: TextField(
-                                        style: const TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w500,
-                                            color: UIGuide.BLACK,
-                                            overflow: TextOverflow.clip),
-                                        textAlign: TextAlign.center,
-                                        controller: toolPartListController1,
-                                        decoration: const InputDecoration(
-                                          filled: true,
-                                          contentPadding:
-                                              EdgeInsets.only(left: 0, top: 0),
-                                          floatingLabelBehavior:
-                                              FloatingLabelBehavior.never,
-                                          fillColor: Color.fromARGB(
-                                              255, 238, 237, 237),
-                                          border: OutlineInputBorder(),
-                                          labelText: "  Select Part",
-                                          hintText: "Part",
-                                        ),
-                                        enabled: false,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 0,
-                                      height: 0,
-                                      child: TextField(
-                                        controller: toolPartListController,
-                                        decoration: const InputDecoration(
-                                          filled: true,
-                                          fillColor: Color.fromARGB(
-                                              255, 238, 237, 237),
-                                          border: OutlineInputBorder(),
-                                          labelText: "",
-                                          hintText: "",
-                                        ),
-                                        enabled: false,
-                                      ),
-                                    ),
-                                  ],
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Row(
+                        children: [
+                          const Spacer(),
+                          SizedBox(
+                            height: 40,
+                            width: MediaQuery.of(context).size.width * 0.48,
+                            child: Consumer<ToolMarkEntryProviders>(
+                                builder: (context, snapshot, child) {
+                              return ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  elevation: 3,
+                                  foregroundColor: UIGuide.light_Purple,
+                                  backgroundColor: UIGuide.ButtonBlue,
+                                  padding: const EdgeInsets.all(0),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      side: const BorderSide(
+                                        color: UIGuide.light_black,
+                                      )),
                                 ),
-                              ),
-                            );
-                          }),
-                        ),
-                        const Spacer(),
-                        SizedBox(
-                          height: 50,
-                          width: MediaQuery.of(context).size.width * 0.49,
-                          child: Consumer<ToolMarkEntryProviders>(
-                              builder: (context, snapshot, child) {
-                            return InkWell(
-                              onTap: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return LimitedBox(
-                                        maxHeight: size.height - 300,
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            ListView.builder(
+                                onPressed: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return Dialog(
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(15)),
+                                            child: LimitedBox(
+                                              maxHeight: size.height - 300,
+                                              child: ListView.builder(
+                                                  shrinkWrap: true,
+                                                  itemCount: snapshot
+                                                      .toolPartList.length,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    return ListTile(
+                                                      selectedTileColor:
+                                                          Colors.blue.shade100,
+                                                      onTap: () async {
+                                                        toolPartListController
+                                                            .text = snapshot
+                                                                .toolPartList[
+                                                                    index]
+                                                                .value ??
+                                                            '--';
+                                                        toolPartListController1
+                                                            .text = snapshot
+                                                                .toolPartList[
+                                                                    index]
+                                                                .text ??
+                                                            '--';
+
+                                                        divisionId =
+                                                            toolDivisionListController
+                                                                .text
+                                                                .toString();
+                                                        partId =
+                                                            toolPartListController
+                                                                .text
+                                                                .toString();
+
+                                                        toolSubjectListController
+                                                            .clear();
+                                                        toolSubjectListController1
+                                                            .clear();
+
+                                                        await snapshot
+                                                            .removeAllSubjectClear();
+                                                        //option sub
+
+                                                        toolOptionSubListController
+                                                            .clear();
+                                                        toolOptionSubListController1
+                                                            .clear();
+                                                        await snapshot
+                                                            .removeAllOptionSubjectListClear();
+
+                                                        // exam
+
+                                                        toolExamListController
+                                                            .clear();
+                                                        toolExamListController1
+                                                            .clear();
+                                                        await snapshot
+                                                            .removeAllExamClear();
+                                                        await snapshot
+                                                            .clearStudList();
+
+                                                        await snapshot
+                                                            .getToolSubjectValues(
+                                                                divisionId,
+                                                                partId);
+
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                      title: Text(
+                                                        snapshot
+                                                                .toolPartList[
+                                                                    index]
+                                                                .text ??
+                                                            '---',
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      ),
+                                                    );
+                                                  }),
+                                            ));
+                                      });
+                                },
+                                child: TextField(
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: UIGuide.BLACK,
+                                      overflow: TextOverflow.clip),
+                                  textAlign: TextAlign.center,
+                                  controller: toolPartListController1,
+                                  decoration: const InputDecoration(
+                                    filled: true,
+                                    contentPadding:
+                                        EdgeInsets.only(left: 0, top: 0),
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.never,
+                                    fillColor: Colors.transparent,
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          style: BorderStyle.none, width: 0),
+                                    ),
+                                    labelText: "  Select Part",
+                                    hintText: "Part",
+                                  ),
+                                  enabled: false,
+                                ),
+                              );
+                            }),
+                          ),
+                          const Spacer(),
+                          SizedBox(
+                            height: 40,
+                            width: MediaQuery.of(context).size.width * 0.48,
+                            child: Consumer<ToolMarkEntryProviders>(
+                                builder: (context, snapshot, child) {
+                              return ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  elevation: 3,
+                                  foregroundColor: UIGuide.light_Purple,
+                                  backgroundColor: UIGuide.ButtonBlue,
+                                  padding: const EdgeInsets.all(0),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      side: const BorderSide(
+                                        color: UIGuide.light_black,
+                                      )),
+                                ),
+                                onPressed: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return Dialog(
+                                          shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(15)),
+                                          child: LimitedBox(
+                                            maxHeight: size.height - 300,
+                                            child: ListView.builder(
                                                 shrinkWrap: true,
                                                 itemCount: snapshot
                                                     .toolSubjectList.length,
@@ -617,8 +598,6 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                                                   return ListTile(
                                                     selectedTileColor:
                                                         Colors.blue.shade100,
-                                                    selectedColor:
-                                                        UIGuide.PRIMARY2,
                                                     onTap: () async {
                                                       toolSubjectListController
                                                           .text = snapshot
@@ -690,330 +669,275 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                                                     ),
                                                   );
                                                 }),
-                                          ],
-                                        ),
-                                      );
-                                    });
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Container(
-                                      height: 40,
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: UIGuide.light_Purple,
-                                            width: 1),
-                                      ),
-                                      child: TextField(
-                                        style: const TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w500,
-                                            color: UIGuide.BLACK,
-                                            overflow: TextOverflow.clip),
-                                        textAlign: TextAlign.center,
-                                        controller: toolSubjectListController1,
-                                        decoration: const InputDecoration(
-                                          filled: true,
-                                          contentPadding:
-                                              EdgeInsets.only(left: 0, top: 0),
-                                          floatingLabelBehavior:
-                                              FloatingLabelBehavior.never,
-                                          fillColor: Color.fromARGB(
-                                              255, 238, 237, 237),
-                                          border: OutlineInputBorder(),
-                                          labelText: "  Select Subject",
-                                          hintText: "Subject",
-                                        ),
-                                        enabled: false,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 0,
-                                      child: TextField(
-                                        textAlign: TextAlign.center,
-                                        controller: toolSubjectListController,
-                                        decoration: const InputDecoration(
-                                          filled: true,
-                                          fillColor: Color.fromARGB(
-                                              255, 238, 237, 237),
-                                          border: OutlineInputBorder(),
-                                          labelText: "",
-                                          hintText: "",
-                                        ),
-                                        enabled: false,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          }),
-                        ),
-                        const Spacer(),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        // Spacer(),
-                        Consumer<ToolMarkEntryProviders>(
-                          builder: (context, snapshot, child) {
-                            if (snapshot.toolOptionSubjectList.isEmpty) {
-                              return Container(
-                                height: 0,
-                                width: 0,
-                              );
-                            }
-                            return SizedBox(
-                                height: 50,
-                                width:
-                                    MediaQuery.of(context).size.width * 0.499,
-                                child: InkWell(
-                                  onTap: () {
-                                    showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return Dialog(
-                                              child: LimitedBox(
-                                            maxHeight: size.height - 300,
-                                            child: ListView.builder(
-                                                shrinkWrap: true,
-                                                itemCount: snapshot
-                                                        .toolOptionSubjectList
-                                                        .isEmpty
-                                                    ? 0
-                                                    : snapshot
-                                                        .toolOptionSubjectList
-                                                        .length,
-                                                itemBuilder: (context, index) {
-                                                  return ListTile(
-                                                    selectedTileColor:
-                                                        Colors.blue.shade100,
-                                                    selectedColor:
-                                                        UIGuide.PRIMARY2,
-                                                    onTap: () async {
-                                                      toolOptionSubListController
-                                                          .text = snapshot
-                                                              .toolOptionSubjectList[
-                                                                  index]
-                                                              .subjectName ??
-                                                          '--';
-                                                      toolOptionSubListController1
-                                                          .text = snapshot
-                                                              .toolOptionSubjectList[
-                                                                  index]
-                                                              .id ??
-                                                          '--';
-                                                      toolExamListController
-                                                          .clear();
-                                                      toolExamListController1
-                                                          .clear();
-                                                      await snapshot
-                                                          .clearStudList();
-
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                    },
-                                                    title: Text(
-                                                      snapshot
-                                                              .toolOptionSubjectList[
-                                                                  index]
-                                                              .subjectName ??
-                                                          '--',
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    ),
-                                                  );
-                                                }),
-                                          ));
-                                        });
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(5.0),
-                                    child: Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      children: [
-                                        Container(
-                                          height: 40,
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: UIGuide.light_Purple,
-                                                width: 1),
                                           ),
-                                          child: TextField(
-                                            style: const TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w500,
-                                                color: UIGuide.BLACK,
-                                                overflow: TextOverflow.clip),
-                                            textAlign: TextAlign.center,
-                                            controller:
-                                                toolOptionSubListController,
-                                            decoration: InputDecoration(
-                                              filled: true,
-                                              contentPadding:
-                                                  const EdgeInsets.only(
-                                                      left: 0, top: 0),
-                                              floatingLabelBehavior:
-                                                  FloatingLabelBehavior.never,
-                                              fillColor: const Color.fromARGB(
-                                                  255, 238, 237, 237),
-                                              border:
-                                                  const OutlineInputBorder(),
-                                              labelText: snapshot
-                                                      .toolOptionSubjectList
-                                                      .isEmpty
-                                                  ? ""
-                                                  : snapshot.toolOptionSubjectList[0]
-                                                              .subjectDescription ==
-                                                          "Sub Subject"
-                                                      ? "Select Sub Subject"
-                                                      : "Select Option Subject",
-                                              hintText: snapshot
-                                                      .toolOptionSubjectList
-                                                      .isEmpty
-                                                  ? ""
-                                                  : snapshot.toolOptionSubjectList[0]
-                                                              .subjectDescription ==
-                                                          "Sub Subject"
-                                                      ? "Sub Subject"
-                                                      : "Option Subject",
-                                            ),
-                                            enabled: false,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          height: 0,
-                                          child: TextField(
-                                            textAlign: TextAlign.center,
-                                            controller:
-                                                toolOptionSubListController1,
-                                            decoration: const InputDecoration(
-                                              filled: true,
-                                              fillColor: Color.fromARGB(
-                                                  255, 238, 237, 237),
-                                              border: OutlineInputBorder(),
-                                              labelText: "",
-                                              hintText: "",
-                                            ),
-                                            enabled: false,
-                                          ),
-                                        ),
-                                      ],
+                                        );
+                                      });
+                                },
+                                child: TextField(
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: UIGuide.BLACK,
+                                      overflow: TextOverflow.clip),
+                                  textAlign: TextAlign.center,
+                                  controller: toolSubjectListController1,
+                                  decoration: const InputDecoration(
+                                    filled: true,
+                                    contentPadding:
+                                        EdgeInsets.only(left: 0, top: 0),
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.never,
+                                    fillColor: Colors.transparent,
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          style: BorderStyle.none, width: 0),
                                     ),
+                                    labelText: "  Select Subject",
+                                    hintText: "Subject",
                                   ),
-                                ));
-                          },
-                        ),
-                        const Spacer(),
-                        SizedBox(
-                          height: 50,
-                          width: MediaQuery.of(context).size.width * 0.49,
-                          child: Consumer<ToolMarkEntryProviders>(
-                              builder: (context, snapshot, child) {
-                            return InkWell(
-                              onTap: () {
-                                showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return Dialog(
-                                          child: LimitedBox(
-                                        maxHeight: size.height - 300,
-                                        child: ListView.builder(
-                                            shrinkWrap: true,
-                                            itemCount:
-                                                snapshot.toolExamList.length,
-                                            itemBuilder: (context, index) {
-                                              return ListTile(
-                                                selectedTileColor:
-                                                    Colors.blue.shade100,
-                                                selectedColor: UIGuide.PRIMARY2,
-                                                onTap: () {
-                                                  toolExamListController
-                                                      .text = snapshot
-                                                          .toolExamList[index]
-                                                          .text ??
-                                                      '--';
-                                                  toolExamListController1
-                                                      .text = snapshot
-                                                          .toolExamList[index]
-                                                          .value ??
-                                                      '--';
-
-                                                  Navigator.of(context).pop();
-                                                },
-                                                title: Text(
-                                                  snapshot.toolExamList[index]
-                                                          .text ??
-                                                      '--',
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              );
-                                            }),
-                                      ));
-                                    });
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.all(5.0),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Container(
-                                      height: 40,
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: UIGuide.light_Purple,
-                                            width: 1),
-                                      ),
-                                      child: TextField(
-                                        style: const TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w500,
-                                            color: UIGuide.BLACK,
-                                            overflow: TextOverflow.clip),
-                                        textAlign: TextAlign.center,
-                                        controller: toolExamListController,
-                                        decoration: const InputDecoration(
-                                          filled: true,
-                                          contentPadding:
-                                              EdgeInsets.only(left: 0, top: 0),
-                                          floatingLabelBehavior:
-                                              FloatingLabelBehavior.never,
-                                          fillColor: Color.fromARGB(
-                                              255, 238, 237, 237),
-                                          border: OutlineInputBorder(),
-                                          labelText: "  Select Exam",
-                                          hintText: "Exam",
-                                        ),
-                                        enabled: false,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 0,
-                                      child: TextField(
-                                        textAlign: TextAlign.center,
-                                        controller: toolExamListController1,
-                                        decoration: const InputDecoration(
-                                          filled: true,
-                                          fillColor: Color.fromARGB(
-                                              255, 238, 237, 237),
-                                          border: OutlineInputBorder(),
-                                          labelText: "",
-                                          hintText: "",
-                                        ),
-                                        enabled: false,
-                                      ),
-                                    ),
-                                  ],
+                                  enabled: false,
                                 ),
-                              ),
-                            );
-                          }),
-                        ),
-                        const Spacer(),
-                      ],
+                              );
+                            }),
+                          ),
+                          const Spacer(),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Row(
+                        children: [
+                          // Spacer(),
+                          Consumer<ToolMarkEntryProviders>(
+                            builder: (context, snapshot, child) {
+                              if (snapshot.toolOptionSubjectList.isEmpty) {
+                                return Container(
+                                  height: 0,
+                                  width: 0,
+                                );
+                              }
+                              return SizedBox(
+                                  height: 40,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.489,
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      elevation: 3,
+                                      foregroundColor: UIGuide.light_Purple,
+                                      backgroundColor: UIGuide.ButtonBlue,
+                                      padding: const EdgeInsets.all(0),
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          side: const BorderSide(
+                                            color: UIGuide.light_black,
+                                          )),
+                                    ),
+                                    onPressed: () {
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return Dialog(
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15)),
+                                                child: LimitedBox(
+                                                  maxHeight: size.height - 300,
+                                                  child: ListView.builder(
+                                                      shrinkWrap: true,
+                                                      itemCount: snapshot
+                                                              .toolOptionSubjectList
+                                                              .isEmpty
+                                                          ? 0
+                                                          : snapshot
+                                                              .toolOptionSubjectList
+                                                              .length,
+                                                      itemBuilder:
+                                                          (context, index) {
+                                                        return ListTile(
+                                                          selectedTileColor:
+                                                              Colors.blue
+                                                                  .shade100,
+                                                          onTap: () async {
+                                                            toolOptionSubListController
+                                                                .text = snapshot
+                                                                    .toolOptionSubjectList[
+                                                                        index]
+                                                                    .subjectName ??
+                                                                '--';
+                                                            toolOptionSubListController1
+                                                                .text = snapshot
+                                                                    .toolOptionSubjectList[
+                                                                        index]
+                                                                    .id ??
+                                                                '--';
+                                                            toolExamListController
+                                                                .clear();
+                                                            toolExamListController1
+                                                                .clear();
+                                                            await snapshot
+                                                                .clearStudList();
+
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          },
+                                                          title: Text(
+                                                            snapshot
+                                                                    .toolOptionSubjectList[
+                                                                        index]
+                                                                    .subjectName ??
+                                                                '--',
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                          ),
+                                                        );
+                                                      }),
+                                                ));
+                                          });
+                                    },
+                                    child: TextField(
+                                      style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500,
+                                          color: UIGuide.BLACK,
+                                          overflow: TextOverflow.clip),
+                                      textAlign: TextAlign.center,
+                                      controller: toolOptionSubListController,
+                                      decoration: InputDecoration(
+                                        filled: true,
+                                        contentPadding: const EdgeInsets.only(
+                                            left: 0, top: 0),
+                                        floatingLabelBehavior:
+                                            FloatingLabelBehavior.never,
+                                        fillColor: Colors.transparent,
+                                        border: const OutlineInputBorder(
+                                          borderSide: BorderSide(
+                                              style: BorderStyle.none,
+                                              width: 0),
+                                        ),
+                                        labelText: snapshot
+                                                .toolOptionSubjectList.isEmpty
+                                            ? ""
+                                            : snapshot.toolOptionSubjectList[0]
+                                                        .subjectDescription ==
+                                                    "Sub Subject"
+                                                ? "  Select Sub Subject"
+                                                : "  Select Option Subject",
+                                        hintText: snapshot
+                                                .toolOptionSubjectList.isEmpty
+                                            ? ""
+                                            : snapshot.toolOptionSubjectList[0]
+                                                        .subjectDescription ==
+                                                    "Sub Subject"
+                                                ? "Sub Subject"
+                                                : "Option Subject",
+                                      ),
+                                      enabled: false,
+                                    ),
+                                  ));
+                            },
+                          ),
+                          const Spacer(),
+                          SizedBox(
+                            height: 40,
+                            width: MediaQuery.of(context).size.width * 0.48,
+                            child: Consumer<ToolMarkEntryProviders>(
+                                builder: (context, snapshot, child) {
+                              return ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  elevation: 3,
+                                  foregroundColor: UIGuide.light_Purple,
+                                  backgroundColor: UIGuide.ButtonBlue,
+                                  padding: const EdgeInsets.all(0),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      side: const BorderSide(
+                                        color: UIGuide.light_black,
+                                      )),
+                                ),
+                                onPressed: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return Dialog(
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(15)),
+                                            child: LimitedBox(
+                                              maxHeight: size.height - 300,
+                                              child: ListView.builder(
+                                                  shrinkWrap: true,
+                                                  itemCount: snapshot
+                                                      .toolExamList.length,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    return ListTile(
+                                                      selectedTileColor:
+                                                          Colors.blue.shade100,
+                                                      onTap: () {
+                                                        toolExamListController
+                                                            .text = snapshot
+                                                                .toolExamList[
+                                                                    index]
+                                                                .text ??
+                                                            '--';
+                                                        toolExamListController1
+                                                            .text = snapshot
+                                                                .toolExamList[
+                                                                    index]
+                                                                .value ??
+                                                            '--';
+
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                      title: Text(
+                                                        snapshot
+                                                                .toolExamList[
+                                                                    index]
+                                                                .text ??
+                                                            '--',
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      ),
+                                                    );
+                                                  }),
+                                            ));
+                                      });
+                                },
+                                child: TextField(
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: UIGuide.BLACK,
+                                      overflow: TextOverflow.clip),
+                                  textAlign: TextAlign.center,
+                                  controller: toolExamListController,
+                                  decoration: const InputDecoration(
+                                    filled: true,
+                                    contentPadding:
+                                        EdgeInsets.only(left: 0, top: 0),
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.never,
+                                    fillColor: Colors.transparent,
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          style: BorderStyle.none, width: 0),
+                                    ),
+                                    labelText: "  Select Exam",
+                                    hintText: "Exam",
+                                  ),
+                                  enabled: false,
+                                ),
+                              );
+                            }),
+                          ),
+                          const Spacer(),
+                        ],
+                      ),
                     ),
                     //kheight10,
                     Row(
@@ -1150,7 +1074,7 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                         : Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text(
+                              const Text(
                                 "✔ Verified By: ",
                                 style: TextStyle(
                                   color: Colors.green,
@@ -1159,7 +1083,7 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                               ),
                               Text(
                                 value.enteredBy ?? "",
-                                style: TextStyle(
+                                style: const TextStyle(
                                     color: UIGuide.light_Purple,
                                     fontSize: 13,
                                     fontWeight: FontWeight.w500),
@@ -1179,7 +1103,7 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                         } else if (value.isBlocked == true) {
                           return Container(
                               height: size.height / 1.8,
-                              child: Center(
+                              child: const Center(
                                   child: Text(
                                 "Mark Entry Blocked ! ",
                                 style: TextStyle(
@@ -1860,34 +1784,34 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                                                                           builder:
                                                                               (context) {
                                                                             return Dialog(
+                                                                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
                                                                                 child: LimitedBox(
-                                                                              maxHeight: size.height / 2,
-                                                                              child: ListView.builder(
-                                                                                  shrinkWrap: true,
-                                                                                  itemCount: snapshot.gradeList.length,
-                                                                                  itemBuilder: (context, indx) {
-                                                                                    return ListTile(
-                                                                                      selectedTileColor: Colors.blue.shade100,
-                                                                                      selectedColor: UIGuide.PRIMARY2,
-                                                                                      onTap: () {
-                                                                                        controllers.text = snapshot.gradeList[indx].gradeName ?? '--';
+                                                                                  maxHeight: size.height / 2,
+                                                                                  child: ListView.builder(
+                                                                                      shrinkWrap: true,
+                                                                                      itemCount: snapshot.gradeList.length,
+                                                                                      itemBuilder: (context, indx) {
+                                                                                        return ListTile(
+                                                                                          selectedTileColor: Colors.blue.shade100,
+                                                                                          onTap: () {
+                                                                                            controllers.text = snapshot.gradeList[indx].gradeName ?? '--';
 
-                                                                                        print(snapshot.gradeList[indx].gradeName);
-                                                                                        value.studentMEList[index].toolList![ind].teGrade = snapshot.gradeList[indx].gradeName;
+                                                                                            print(snapshot.gradeList[indx].gradeName);
+                                                                                            value.studentMEList[index].toolList![ind].teGrade = snapshot.gradeList[indx].gradeName;
 
-                                                                                        controllerid.text = snapshot.gradeList[indx].gradeId ?? '--';
-                                                                                        print(controllerid.text);
-                                                                                        value.studentMEList[index].toolList![ind].teGradeId = controllerid.text;
-                                                                                        value.studentMEList[index].toolList![ind].teGrade = value.studentMEList[index].toolList![ind].teGrade;
-                                                                                        Navigator.of(context).pop();
-                                                                                      },
-                                                                                      title: Text(
-                                                                                        snapshot.gradeList[indx].gradeName ?? '--',
-                                                                                        textAlign: TextAlign.center,
-                                                                                      ),
-                                                                                    );
-                                                                                  }),
-                                                                            ));
+                                                                                            controllerid.text = snapshot.gradeList[indx].gradeId ?? '--';
+                                                                                            print(controllerid.text);
+                                                                                            value.studentMEList[index].toolList![ind].teGradeId = controllerid.text;
+                                                                                            value.studentMEList[index].toolList![ind].teGrade = value.studentMEList[index].toolList![ind].teGrade;
+                                                                                            Navigator.of(context).pop();
+                                                                                          },
+                                                                                          title: Text(
+                                                                                            snapshot.gradeList[indx].gradeName ?? '--',
+                                                                                            textAlign: TextAlign.center,
+                                                                                          ),
+                                                                                        );
+                                                                                      }),
+                                                                                ));
                                                                           });
                                                                 },
                                                                 child: Padding(
@@ -2012,6 +1936,10 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                                 builder: (context, value, child) {
                               return value.load
                                   ? MaterialButton(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                      ),
                                       onPressed: () {},
                                       color: UIGuide.light_Purple,
                                       child: const Text(
@@ -2020,6 +1948,10 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                                       ),
                                     )
                                   : MaterialButton(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                      ),
                                       onPressed: value.loadCommon
                                           ? null
                                           : () async {
@@ -2281,10 +2213,13 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                             Consumer<ToolMarkEntryProviders>(
                                 builder: (context, value, child) {
                               if (value.examStatus == 'Synchronized') {
-                                return Text("");
+                                return const Text("");
                               } else {
                                 if (value.loadverify) {
                                   return MaterialButton(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
                                     onPressed: () {},
                                     color: Colors.green,
                                     child: const Text(
@@ -2294,6 +2229,9 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                                   );
                                 } else {
                                   return MaterialButton(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
                                     onPressed: value.loadCommon
                                         ? null
                                         : () {
@@ -2328,7 +2266,7 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                                                     builder:
                                                         (BuildContext context) {
                                                       return AlertDialog(
-                                                        title: Center(
+                                                        title: const Center(
                                                           child: Text(
                                                             "Are You Sure Want To Verify",
                                                             style: TextStyle(
@@ -2350,7 +2288,8 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                                                                             8.0),
                                                                 child:
                                                                     OutlinedButton(
-                                                                  child: Text(
+                                                                  child:
+                                                                      const Text(
                                                                     '  Cancel  ',
                                                                     style:
                                                                         TextStyle(
@@ -2368,7 +2307,7 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                                                                         .pop();
                                                                   },
                                                                   style: ButtonStyle(
-                                                                      side: MaterialStateProperty.all(BorderSide(
+                                                                      side: MaterialStateProperty.all(const BorderSide(
                                                                           color: UIGuide
                                                                               .light_Purple,
                                                                           width:
@@ -2378,7 +2317,8 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                                                                 ),
                                                               ),
                                                               OutlinedButton(
-                                                                  child: Text(
+                                                                  child:
+                                                                      const Text(
                                                                     'Confirm',
                                                                     style:
                                                                         TextStyle(
@@ -2623,7 +2563,7 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                                                                     }
 
                                                                     ButtonStyle(
-                                                                        side: MaterialStateProperty.all(BorderSide(
+                                                                        side: MaterialStateProperty.all(const BorderSide(
                                                                             color: UIGuide
                                                                                 .light_Purple,
                                                                             width:
@@ -2652,9 +2592,12 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                             Consumer<ToolMarkEntryProviders>(
                                 builder: (context, value, child) {
                               if (value.examStatus == 'Synchronized') {
-                                return Text("");
+                                return const Text("");
                               } else {
                                 return MaterialButton(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
                                   onPressed: value.loadCommon
                                       ? null
                                       : () {
@@ -2708,7 +2651,8 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                                                                           8.0),
                                                               child:
                                                                   OutlinedButton(
-                                                                child: Text(
+                                                                child:
+                                                                    const Text(
                                                                   '  Cancel  ',
                                                                   style:
                                                                       TextStyle(
@@ -2726,7 +2670,7 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                                                                       .pop();
                                                                 },
                                                                 style: ButtonStyle(
-                                                                    side: MaterialStateProperty.all(BorderSide(
+                                                                    side: MaterialStateProperty.all(const BorderSide(
                                                                         color: UIGuide
                                                                             .light_Purple,
                                                                         width:
@@ -2736,7 +2680,7 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                                                               ),
                                                             ),
                                                             OutlinedButton(
-                                                              child: Text(
+                                                              child: const Text(
                                                                 'Confirm',
                                                                 style:
                                                                     TextStyle(
@@ -3009,7 +2953,7 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                                                                 }
                                                               },
                                                               style: ButtonStyle(
-                                                                  side: MaterialStateProperty.all(BorderSide(
+                                                                  side: MaterialStateProperty.all(const BorderSide(
                                                                       color: UIGuide
                                                                           .light_Purple,
                                                                       width:

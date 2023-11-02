@@ -50,8 +50,8 @@ class StudStatiticsProvider with ChangeNotifier {
           data["total"].map((x) => TotalStatitics.fromJson(x)));
       totalList.addAll(templistt);
 
-      notifyListeners();
       setLoading(false);
+      notifyListeners();
     } else {
       setLoading(false);
       print('Error in Statitics admin');

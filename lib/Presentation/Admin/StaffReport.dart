@@ -14,7 +14,6 @@ class StaffReport extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
     return DefaultTabController(
         length: 3,
         child: Scaffold(

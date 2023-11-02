@@ -3,11 +3,81 @@ import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:essconnect/Presentation/Admin/FlashNews/FlashnewsScreen.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import '../../Domain/Admin/FlashNewsList.dart';
 
 class FlashNewsProviderAdmin with ChangeNotifier {
+  DateTime? fromexam;
+  String fromDateDis = '';
+  late DateTime fromDateCheck;
+
+  getVariables() {
+    fromDateDis = '';
+    toDateDis = '';
+    notifyListeners();
+  }
+
+  //Get From date
+
+  getFromDate(BuildContext context) async {
+    fromexam = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now().subtract(const Duration(days: 0)),
+      lastDate: DateTime(2100),
+      builder: (context, child) {
+        return Theme(
+            data: ThemeData.light().copyWith(
+              primaryColor: UIGuide.light_Purple,
+              colorScheme: const ColorScheme.light(
+                primary: UIGuide.light_Purple,
+              ),
+              buttonTheme:
+                  const ButtonThemeData(textTheme: ButtonTextTheme.primary),
+            ),
+            child: child!);
+      },
+    );
+
+    fromDateDis = DateFormat('dd/MMM/yyyy').format(fromexam!);
+    fromDateCheck = DateTime(fromexam!.year, fromexam!.month, fromexam!.day);
+    print(fromDateDis);
+    notifyListeners();
+  }
+
+  // Get To date
+
+  DateTime? toexam;
+  String toDateDis = '';
+  late DateTime toDateCheck;
+
+  getToDate(BuildContext context) async {
+    toexam = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now().subtract(const Duration(days: 0)),
+      lastDate: DateTime(2100),
+      builder: (context, child) {
+        return Theme(
+            data: ThemeData.light().copyWith(
+              primaryColor: UIGuide.light_Purple,
+              colorScheme: const ColorScheme.light(
+                primary: UIGuide.light_Purple,
+              ),
+              buttonTheme:
+                  const ButtonThemeData(textTheme: ButtonTextTheme.primary),
+            ),
+            child: child!);
+      },
+    );
+    toDateDis = DateFormat('dd/MMM/yyyy').format(toexam!);
+    toDateCheck = DateTime(toexam!.year, toexam!.month, toexam!.day);
+    print(toDateDis);
+    notifyListeners();
+  }
+
   Future flashNewsUpload(
     context,
     String entryDate,

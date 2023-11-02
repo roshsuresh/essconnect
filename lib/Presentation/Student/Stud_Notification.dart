@@ -58,13 +58,18 @@ class Stud_Notification extends StatelessWidget {
                             ? 0
                             : value.receivedList.length,
                         itemBuilder: (BuildContext context, int index) {
-                          String createddate =
-                              value.receivedList[index].sentOn ?? '--';
-                          var updatedDate =
-                              DateFormat('yyyy-MM-dd').parse(createddate);
-                          String newDate = updatedDate.toString();
-                          String finalCreatedDate =
-                              newDate.replaceRange(10, 23, '');
+                          //created date
+                          String finalCreatedDate = "";
+
+                          if (value.receivedList[index].sentOn != null) {
+                            String createddate =
+                                value.receivedList[index].sentOn ?? '--';
+                            DateTime parsedDateTime =
+                                DateTime.parse(createddate);
+                            finalCreatedDate = DateFormat('dd-MMM-yyyy')
+                                .format(parsedDateTime);
+                          }
+
                           return AnimationConfiguration.staggeredList(
                             position: index,
                             delay: const Duration(milliseconds: 50),
@@ -78,14 +83,16 @@ class Stud_Notification extends StatelessWidget {
                                     left: 6.0, right: 6, bottom: 3, top: 3),
                                 child: Container(
                                   decoration: BoxDecoration(
-                                      color: const Color.fromARGB(
-                                          255, 238, 238, 245),
-                                      border: Border.all(
-                                          color: const Color.fromARGB(
-                                              255, 136, 187, 235)),
-                                      borderRadius: const BorderRadius.only(
-                                          topRight: Radius.circular(20),
-                                          bottomLeft: Radius.circular(20))),
+                                    color: const Color.fromARGB(
+                                        255, 238, 238, 245),
+                                    border: Border.all(
+                                        color: const Color.fromARGB(
+                                            255, 136, 187, 235)),
+                                    borderRadius: const BorderRadius.only(
+                                      topRight: Radius.circular(20),
+                                      bottomLeft: Radius.circular(20),
+                                    ),
+                                  ),
                                   width: size.width,
                                   child: Padding(
                                     padding: const EdgeInsets.all(5.0),

@@ -22,6 +22,7 @@ import 'package:essconnect/Presentation/Student/CurriculamScreen.dart';
 import 'package:essconnect/Presentation/Student/NoInternetScreen.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:essconnect/utils/spinkit.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:page_transition/page_transition.dart';
@@ -52,7 +53,7 @@ class _AdminHomeState extends State<AdminHome> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      await Provider.of<ConnectivityProvider>(context, listen: false);
+      Provider.of<ConnectivityProvider>(context, listen: false);
       await Provider.of<ModuleProviders>(context, listen: false)
           .getModuleDetails();
       await Provider.of<SchoolNameProvider>(context, listen: false)
@@ -78,18 +79,19 @@ class _AdminHomeState extends State<AdminHome> {
                   children: [
                     Consumer<SchoolNameProvider>(
                       builder: (context, snap, child) => snap.schoolname == null
-                          ? Container(
+                          ? const SizedBox(
                               height: 0,
                               width: 0,
                             )
                           : Padding(
                               padding: const EdgeInsets.only(top: 8.0),
                               child: Container(
-                                padding: EdgeInsets.only(top: 4, bottom: 4),
-                                decoration: BoxDecoration(
+                                padding:
+                                    const EdgeInsets.only(top: 4, bottom: 4),
+                                decoration: const BoxDecoration(
                                   // border: Border.all(color: UIGuide.THEME_LIGHT),
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(5)),
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(5)),
                                   gradient: LinearGradient(
                                     colors: [
                                       Color.fromARGB(255, 234, 237, 239),
@@ -103,7 +105,7 @@ class _AdminHomeState extends State<AdminHome> {
                                     child: Text(
                                   "${snap.schoolname ?? ""}, ${snap.place ?? ""}",
                                   textAlign: TextAlign.center,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       color: UIGuide.light_Purple,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w700),
@@ -174,20 +176,19 @@ class AdminHomeContent extends StatelessWidget {
               Consumer<ModuleProviders>(
                 builder: (context, module, child) => Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            PageTransition(
-                                type: PageTransitionType.rightToLeft,
-                                child: const StudReport(),
-                                duration: const Duration(milliseconds: 200),
-                                childCurrent: this));
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 10, right: 10),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              PageTransition(
+                                  type: PageTransitionType.rightToLeft,
+                                  child: const StudReport(),
+                                  duration: const Duration(milliseconds: 200),
+                                  childCurrent: this));
+                        },
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -216,7 +217,8 @@ class AdminHomeContent extends StatelessWidget {
                             kheight10,
                             const Center(
                               child: Text(
-                                'Student \n Report',
+                                'Student\nReport',
+                                textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontSize: 11,
                                     color: Colors.black87,
@@ -227,22 +229,17 @@ class AdminHomeContent extends StatelessWidget {
                         ),
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            PageTransition(
-                                type: PageTransitionType.rightToLeft,
-                                child: Student_statistics_admin(),
-                                duration: const Duration(milliseconds: 200),
-                                childCurrent: this));
-
-                        // MaterialPageRoute(
-                        //     builder: (context) => Student_statistics_admin()),
-                        //  );
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 10, right: 10),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              PageTransition(
+                                  type: PageTransitionType.rightToLeft,
+                                  child: Student_statistics_admin(),
+                                  duration: const Duration(milliseconds: 200),
+                                  childCurrent: this));
+                        },
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -273,6 +270,7 @@ class AdminHomeContent extends StatelessWidget {
                             const Center(
                               child: Text(
                                 ' Student\nStatistics',
+                                textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontSize: 11,
                                     color: Colors.black87,
@@ -283,18 +281,17 @@ class AdminHomeContent extends StatelessWidget {
                         ),
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            PageTransition(
-                                type: PageTransitionType.rightToLeft,
-                                child: const StaffReport(),
-                                duration: const Duration(milliseconds: 200),
-                                childCurrent: this));
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 10, right: 10),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              PageTransition(
+                                  type: PageTransitionType.rightToLeft,
+                                  child: const StaffReport(),
+                                  duration: const Duration(milliseconds: 200),
+                                  childCurrent: this));
+                        },
                         child: Column(
                           children: [
                             Card(
@@ -322,7 +319,8 @@ class AdminHomeContent extends StatelessWidget {
                             ),
                             kheight10,
                             const Text(
-                              ' Staff Report',
+                              'Staff\nReport',
+                              textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: 11,
                                   color: Colors.black87,
@@ -332,23 +330,20 @@ class AdminHomeContent extends StatelessWidget {
                         ),
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () async {
-                        module.timetable == true
-                            ? await Navigator.push(
-                                context,
-                                PageTransition(
-                                    type: PageTransitionType.rightToLeft,
-                                    child: const ExamTimetable(),
-                                    duration: const Duration(milliseconds: 200),
-                                    childCurrent: this))
-                            : _noAcess(context);
-                        //   MaterialPageRoute(
-                        //       builder: (context) => ExamTimetable()),
-                        // );
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 10, right: 10),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () async {
+                          module.timetable == true
+                              ? await Navigator.push(
+                                  context,
+                                  PageTransition(
+                                      type: PageTransitionType.rightToLeft,
+                                      child: const ExamTimetable(),
+                                      duration:
+                                          const Duration(milliseconds: 200),
+                                      childCurrent: this))
+                              : _noAcess(context);
+                        },
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -376,7 +371,8 @@ class AdminHomeContent extends StatelessWidget {
                             ),
                             kheight10,
                             const Text(
-                              '     Exam \n TimeTable',
+                              'Exam\nTimeTable',
+                              textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: 11,
                                   color: Colors.black87,
@@ -416,20 +412,19 @@ class AdminHomeContent extends StatelessWidget {
               kheight20,
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          PageTransition(
-                              type: PageTransitionType.rightToLeft,
-                              child: AdminToStaff(),
-                              duration: const Duration(milliseconds: 200),
-                              childCurrent: this));
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 10, right: 10),
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            PageTransition(
+                                type: PageTransitionType.rightToLeft,
+                                child: AdminToStaff(),
+                                duration: const Duration(milliseconds: 200),
+                                childCurrent: this));
+                      },
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
@@ -458,6 +453,7 @@ class AdminHomeContent extends StatelessWidget {
                           kheight10,
                           const Text(
                             'To Staff',
+                            textAlign: TextAlign.center,
                             style: TextStyle(
                                 fontSize: 11,
                                 color: Colors.black87,
@@ -467,18 +463,17 @@ class AdminHomeContent extends StatelessWidget {
                       ),
                     ),
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          PageTransition(
-                              type: PageTransitionType.rightToLeft,
-                              child: AdminToGuardian(),
-                              duration: const Duration(milliseconds: 200),
-                              childCurrent: this));
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 10, right: 10),
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            PageTransition(
+                                type: PageTransitionType.rightToLeft,
+                                child: AdminToGuardian(),
+                                duration: const Duration(milliseconds: 200),
+                                childCurrent: this));
+                      },
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
@@ -508,6 +503,7 @@ class AdminHomeContent extends StatelessWidget {
                           kheight10,
                           const Text(
                             'To Guardian',
+                            textAlign: TextAlign.center,
                             style: TextStyle(
                                 fontSize: 11,
                                 color: Colors.black87,
@@ -517,18 +513,17 @@ class AdminHomeContent extends StatelessWidget {
                       ),
                     ),
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          PageTransition(
-                              type: PageTransitionType.rightToLeft,
-                              child: const NotificationHistory(),
-                              duration: const Duration(milliseconds: 200),
-                              childCurrent: this));
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 10, right: 10),
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            PageTransition(
+                                type: PageTransitionType.rightToLeft,
+                                child: const NotificationHistory(),
+                                duration: const Duration(milliseconds: 200),
+                                childCurrent: this));
+                      },
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
@@ -567,18 +562,17 @@ class AdminHomeContent extends StatelessWidget {
                       ),
                     ),
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          PageTransition(
-                              type: PageTransitionType.rightToLeft,
-                              child: const AdminGallery(),
-                              duration: const Duration(milliseconds: 200),
-                              childCurrent: this));
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 10, right: 10),
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            PageTransition(
+                                type: PageTransitionType.rightToLeft,
+                                child: const AdminGallery(),
+                                duration: const Duration(milliseconds: 200),
+                                childCurrent: this));
+                      },
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
@@ -607,6 +601,7 @@ class AdminHomeContent extends StatelessWidget {
                           kheight10,
                           const Text(
                             'Gallery',
+                            textAlign: TextAlign.center,
                             style: TextStyle(
                                 fontSize: 11,
                                 color: Colors.black87,
@@ -621,21 +616,20 @@ class AdminHomeContent extends StatelessWidget {
               kheight10,
               Consumer<ModuleProviders>(
                 builder: (context, module, child) => Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  // crossAxisAlignment: CrossAxisAlignment.start,
+                  // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            PageTransition(
-                                type: PageTransitionType.rightToLeft,
-                                child: const ScreenFlashNews(),
-                                duration: const Duration(milliseconds: 200),
-                                childCurrent: this));
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 10, right: 10),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              PageTransition(
+                                  type: PageTransitionType.rightToLeft,
+                                  child: const ScreenFlashNews(),
+                                  duration: const Duration(milliseconds: 200),
+                                  childCurrent: this));
+                        },
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -673,75 +667,16 @@ class AdminHomeContent extends StatelessWidget {
                         ),
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            PageTransition(
-                                type: PageTransitionType.rightToLeft,
-                                child: const NoticeBoardAdnin(),
-                                duration: const Duration(milliseconds: 200),
-                                childCurrent: this));
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 10, right: 10),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Card(
-                              elevation: 10,
-                              color: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12.0),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Container(
-                                  height: 38,
-                                  width: 38,
-                                  decoration: const BoxDecoration(
-                                    image: DecorationImage(
-                                      opacity: 20,
-                                      image: AssetImage(
-                                        'assets/Noticeboard.png',
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            kheight10,
-                            const Text(
-                              'NoticeBoard',
-                              style: TextStyle(
-                                  fontSize: 11,
-                                  color: Colors.black87,
-                                  fontWeight: FontWeight.bold),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                    Consumer<Curriculamprovider>(
-                      builder: (context, curri, child) => GestureDetector(
-                        onTap: () async {
-                          if (module.curiculam == true) {
-                            await Provider.of<Curriculamprovider>(context,
-                                    listen: false)
-                                .getCuriculamtoken();
-                            String token = await curri.token.toString();
-                            await Navigator.push(
-                                context,
-                                PageTransition(
-                                    type: PageTransitionType.rightToLeft,
-                                    child: CurriculamPage(
-                                      token: token,
-                                    ),
-                                    duration: const Duration(milliseconds: 200),
-                                    childCurrent: this));
-                          } else {
-                            _noAcess(context);
-                          }
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              PageTransition(
+                                  type: PageTransitionType.rightToLeft,
+                                  child: const NoticeBoardAdnin(),
+                                  duration: const Duration(milliseconds: 200),
+                                  childCurrent: this));
                         },
                         child: Padding(
                           padding: const EdgeInsets.only(left: 10, right: 10),
@@ -759,27 +694,91 @@ class AdminHomeContent extends StatelessWidget {
                                   child: Container(
                                     height: 38,
                                     width: 38,
-                                    decoration: BoxDecoration(
-                                      image: const DecorationImage(
+                                    decoration: const BoxDecoration(
+                                      image: DecorationImage(
                                         opacity: 20,
                                         image: AssetImage(
-                                          'assets/Curriculum.png',
+                                          'assets/Noticeboard.png',
                                         ),
                                       ),
-                                      borderRadius: BorderRadius.circular(10),
                                     ),
                                   ),
                                 ),
                               ),
                               kheight10,
                               const Text(
-                                'e-Classroom',
+                                'NoticeBoard',
                                 style: TextStyle(
-                                    fontWeight: FontWeight.bold,
                                     fontSize: 11,
-                                    color: Colors.black87),
+                                    color: Colors.black87,
+                                    fontWeight: FontWeight.bold),
                               )
                             ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Consumer<Curriculamprovider>(
+                      builder: (context, curri, child) => Expanded(
+                        child: GestureDetector(
+                          onTap: () async {
+                            if (module.curiculam == true) {
+                              await Provider.of<Curriculamprovider>(context,
+                                      listen: false)
+                                  .getCuriculamtoken();
+                              String token = await curri.token.toString();
+                              await Navigator.push(
+                                  context,
+                                  PageTransition(
+                                      type: PageTransitionType.rightToLeft,
+                                      child: CurriculamPage(
+                                        token: token,
+                                      ),
+                                      duration:
+                                          const Duration(milliseconds: 200),
+                                      childCurrent: this));
+                            } else {
+                              _noAcess(context);
+                            }
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 10, right: 10),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Card(
+                                  elevation: 10,
+                                  color: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12.0),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Container(
+                                      height: 38,
+                                      width: 38,
+                                      decoration: BoxDecoration(
+                                        image: const DecorationImage(
+                                          opacity: 20,
+                                          image: AssetImage(
+                                            'assets/Curriculum.png',
+                                          ),
+                                        ),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                kheight10,
+                                const Text(
+                                  'e-Classroom',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 11,
+                                      color: Colors.black87),
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -816,20 +815,20 @@ class AdminHomeContent extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    GestureDetector(
-                      onTap: () async {
-                        module.attendenceEntry == true
-                            ? await Navigator.push(
-                                context,
-                                PageTransition(
-                                    type: PageTransitionType.rightToLeft,
-                                    child: AttendenceEntry(),
-                                    duration: const Duration(milliseconds: 200),
-                                    childCurrent: this))
-                            : _noAcess(context);
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 10, right: 10),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () async {
+                          module.attendenceEntry == true
+                              ? await Navigator.push(
+                                  context,
+                                  PageTransition(
+                                      type: PageTransitionType.rightToLeft,
+                                      child: AttendenceEntry(),
+                                      duration:
+                                          const Duration(milliseconds: 200),
+                                      childCurrent: this))
+                              : _noAcess(context);
+                        },
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -857,7 +856,7 @@ class AdminHomeContent extends StatelessWidget {
                             kheight10,
                             const Center(
                               child: Text(
-                                'Attendence\nEntry',
+                                'Attendence Entry',
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                     fontSize: 11,
@@ -869,20 +868,20 @@ class AdminHomeContent extends StatelessWidget {
                         ),
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () async {
-                        module.attendenceEntry == true
-                            ? await Navigator.push(
-                                context,
-                                PageTransition(
-                                    type: PageTransitionType.rightToLeft,
-                                    child: const AttendanceReport(),
-                                    duration: const Duration(milliseconds: 200),
-                                    childCurrent: this))
-                            : _noAcess(context);
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 10, right: 10),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () async {
+                          module.attendenceEntry == true
+                              ? await Navigator.push(
+                                  context,
+                                  PageTransition(
+                                      type: PageTransitionType.rightToLeft,
+                                      child: const AttendanceReport(),
+                                      duration:
+                                          const Duration(milliseconds: 200),
+                                      childCurrent: this))
+                              : _noAcess(context);
+                        },
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -910,7 +909,7 @@ class AdminHomeContent extends StatelessWidget {
                             ),
                             kheight10,
                             const Text(
-                              'Absentees\nReport',
+                              'Absentees Report',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontSize: 11,
@@ -921,20 +920,20 @@ class AdminHomeContent extends StatelessWidget {
                         ),
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () async {
-                        module.attendenceEntry == true
-                            ? await Navigator.push(
-                                context,
-                                PageTransition(
-                                    type: PageTransitionType.rightToLeft,
-                                    child: const AttendanceTakenReport(),
-                                    duration: const Duration(milliseconds: 200),
-                                    childCurrent: this))
-                            : _noAcess(context);
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 10, right: 10),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () async {
+                          module.attendenceEntry == true
+                              ? await Navigator.push(
+                                  context,
+                                  PageTransition(
+                                      type: PageTransitionType.rightToLeft,
+                                      child: const AttendanceTakenReport(),
+                                      duration:
+                                          const Duration(milliseconds: 200),
+                                      childCurrent: this))
+                              : _noAcess(context);
+                        },
                         child: Column(
                           children: [
                             Card(
@@ -1004,20 +1003,19 @@ class AdminHomeContent extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    GestureDetector(
-                      onTap: () async {
-                        module.tabulation == true
-                            ? await Navigator.push(
-                                context,
-                                PageTransition(
-                                  type: PageTransitionType.rightToLeft,
-                                  child: const MarkEntryNew(),
-                                  duration: const Duration(milliseconds: 300),
-                                ))
-                            : _noAcess(context);
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 10, right: 10),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () async {
+                          module.tabulation == true
+                              ? await Navigator.push(
+                                  context,
+                                  PageTransition(
+                                    type: PageTransitionType.rightToLeft,
+                                    child: const MarkEntryNew(),
+                                    duration: const Duration(milliseconds: 300),
+                                  ))
+                              : _noAcess(context);
+                        },
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -1056,20 +1054,19 @@ class AdminHomeContent extends StatelessWidget {
                         ),
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () async {
-                        module.tabulation == true
-                            ? await Navigator.push(
-                                context,
-                                PageTransition(
-                                  type: PageTransitionType.rightToLeft,
-                                  child: const ToolMarkEntry(),
-                                  duration: const Duration(milliseconds: 300),
-                                ))
-                            : _noAcess(context);
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 10, right: 10),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () async {
+                          module.tabulation == true
+                              ? await Navigator.push(
+                                  context,
+                                  PageTransition(
+                                    type: PageTransitionType.rightToLeft,
+                                    child: const ToolMarkEntry(),
+                                    duration: const Duration(milliseconds: 300),
+                                  ))
+                              : _noAcess(context);
+                        },
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -1096,7 +1093,7 @@ class AdminHomeContent extends StatelessWidget {
                             ),
                             kheight10,
                             const Text(
-                              'Tool Mark\nEntry',
+                              'Tool Mark Entry',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
@@ -1107,20 +1104,19 @@ class AdminHomeContent extends StatelessWidget {
                         ),
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () async {
-                        module.tabulation == true
-                            ? await Navigator.push(
-                                context,
-                                PageTransition(
-                                  type: PageTransitionType.rightToLeft,
-                                  child: const RemarksEntry(),
-                                  duration: const Duration(milliseconds: 300),
-                                ))
-                            : _noAcess(context);
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 10, right: 10),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () async {
+                          module.tabulation == true
+                              ? await Navigator.push(
+                                  context,
+                                  PageTransition(
+                                    type: PageTransitionType.rightToLeft,
+                                    child: const RemarksEntry(),
+                                    duration: const Duration(milliseconds: 300),
+                                  ))
+                              : _noAcess(context);
+                        },
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -1189,20 +1185,20 @@ class AdminHomeContent extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    GestureDetector(
-                      onTap: () async {
-                        module.fees == true || module.feesOnly == true
-                            ? await Navigator.push(
-                                context,
-                                PageTransition(
-                                    type: PageTransitionType.rightToLeft,
-                                    child: const FeeReport(),
-                                    duration: const Duration(milliseconds: 200),
-                                    childCurrent: this))
-                            : _noAcess(context);
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 10, right: 10),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () async {
+                          module.fees == true || module.feesOnly == true
+                              ? await Navigator.push(
+                                  context,
+                                  PageTransition(
+                                      type: PageTransitionType.rightToLeft,
+                                      child: const FeeReport(),
+                                      duration:
+                                          const Duration(milliseconds: 200),
+                                      childCurrent: this))
+                              : _noAcess(context);
+                        },
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -1243,20 +1239,20 @@ class AdminHomeContent extends StatelessWidget {
                         ),
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () async {
-                        module.fees == true || module.feesOnly == true
-                            ? await Navigator.push(
-                                context,
-                                PageTransition(
-                                    type: PageTransitionType.rightToLeft,
-                                    child: const StudentFeeSearch(),
-                                    duration: const Duration(milliseconds: 200),
-                                    childCurrent: this))
-                            : _noAcess(context);
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 10, right: 10),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () async {
+                          module.fees == true || module.feesOnly == true
+                              ? await Navigator.push(
+                                  context,
+                                  PageTransition(
+                                      type: PageTransitionType.rightToLeft,
+                                      child: const StudentFeeSearch(),
+                                      duration:
+                                          const Duration(milliseconds: 200),
+                                      childCurrent: this))
+                              : _noAcess(context);
+                        },
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -1295,20 +1291,19 @@ class AdminHomeContent extends StatelessWidget {
                         ),
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () async {
-                        module.tabulation == true
-                            ? await Navigator.push(
-                                context,
-                                PageTransition(
-                                  type: PageTransitionType.rightToLeft,
-                                  child: const MissingReportAdmin(),
-                                  duration: const Duration(milliseconds: 300),
-                                ))
-                            : _noAcess(context);
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 10, right: 10),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () async {
+                          module.tabulation == true
+                              ? await Navigator.push(
+                                  context,
+                                  PageTransition(
+                                    type: PageTransitionType.rightToLeft,
+                                    child: const MissingReportAdmin(),
+                                    duration: const Duration(milliseconds: 300),
+                                  ))
+                              : _noAcess(context);
+                        },
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -1347,25 +1342,24 @@ class AdminHomeContent extends StatelessWidget {
                         ),
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () async {
-                        SharedPreferences _pref =
-                            await SharedPreferences.getInstance();
-                        String schdomain =
-                            await _pref.getString("subDomain").toString();
-                        print(schdomain);
-                        await Navigator.push(
-                            context,
-                            PageTransition(
-                              type: PageTransitionType.rightToLeft,
-                              child: LoginScreenWeb(
-                                schdomain: schdomain,
-                              ),
-                              duration: const Duration(milliseconds: 300),
-                            ));
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 10, right: 10),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () async {
+                          SharedPreferences _pref =
+                              await SharedPreferences.getInstance();
+                          String schdomain =
+                              await _pref.getString("subDomain").toString();
+                          print(schdomain);
+                          await Navigator.push(
+                              context,
+                              PageTransition(
+                                type: PageTransitionType.rightToLeft,
+                                child: LoginScreenWeb(
+                                  schdomain: schdomain,
+                                ),
+                                duration: const Duration(milliseconds: 300),
+                              ));
+                        },
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -1459,39 +1453,54 @@ class AdminHomeContent extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30.0)),
                       onPressed: () async {
-                        AwesomeDialog(
+                        showCupertinoDialog(
                           context: context,
-                          dialogType: DialogType.info,
-                          borderSide: const BorderSide(
-                              color: UIGuide.light_Purple, width: 2),
-                          buttonsBorderRadius:
-                              const BorderRadius.all(Radius.circular(2)),
-                          headerAnimationLoop: false,
-                          animType: AnimType.bottomSlide,
-                          title: 'SignOut',
-                          desc: 'Are you sure want to sign out',
-                          showCloseIcon: true,
-                          btnOkColor: UIGuide.button1,
-                          btnCancelColor: UIGuide.button2,
-                          btnCancelOnPress: () {
-                            return;
-                          },
-                          btnOkOnPress: () async {
-                            SharedPreferences prefs =
-                                await SharedPreferences.getInstance();
-                            print("accesstoken  $prefs");
-                            await prefs.remove("accesstoken");
-                            print("username  $prefs");
-                            await prefs.remove("username");
-                            print("password  $prefs");
-                            await prefs.remove("password");
+                          builder: (context) {
+                            return Container(
+                              color: Colors.black.withOpacity(0.5),
+                              child: CupertinoAlertDialog(
+                                title: const Text("Logout"),
+                                content: const Text(
+                                    "Are you sure you want to log out?"),
+                                actions: <Widget>[
+                                  CupertinoDialogAction(
+                                    child: const Text(
+                                      "Cancel",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          color: UIGuide.light_Purple),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                  CupertinoDialogAction(
+                                    child: const Text("Logout",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            color: UIGuide.light_Purple)),
+                                    onPressed: () async {
+                                      SharedPreferences prefs =
+                                          await SharedPreferences.getInstance();
+                                      print("accesstoken  $prefs");
+                                      await prefs.remove("accesstoken");
+                                      print("username  $prefs");
+                                      await prefs.remove("username");
+                                      print("password  $prefs");
+                                      await prefs.remove("password");
 
-                            Navigator.of(context).pushAndRemoveUntil(
-                                MaterialPageRoute(
-                                    builder: (context) => LoginPage()),
-                                (Route<dynamic> route) => false);
+                                      Navigator.of(context).pushAndRemoveUntil(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  LoginPage()),
+                                          (Route<dynamic> route) => false);
+                                    },
+                                  ),
+                                ],
+                              ),
+                            );
                           },
-                        ).show();
+                        );
                       },
                       child: const Icon(
                         Icons.logout_outlined,

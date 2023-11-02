@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:animate_gradient/animate_gradient.dart';
 import 'package:essconnect/Constants.dart';
 import 'package:essconnect/Presentation/Login_Activation/ForgotPassword.dart';
-import 'package:essconnect/utils/LoadingIndication.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -102,7 +101,7 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
   }
 
   bool _isObscure = false;
-  bool isLoading = false;
+
   final _formKey = GlobalKey<FormState>();
   final _username = TextEditingController();
   final _password = TextEditingController();
@@ -112,265 +111,252 @@ class _LoginPageState extends State<LoginPage> with TickerProviderStateMixin {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 243, 243, 243),
       // backgroundColor: Color.fromARGB(255, 211, 228, 245),
-      body: isLoading
-          ? const LoadingIcon()
-          : ScrollConfiguration(
-              behavior: MyBehavior(),
-              child: SingleChildScrollView(
-                child: SizedBox(
-                  height: size.height,
-                  child: AnimateGradient(
-                    primaryColors: const [
-                      Color.fromARGB(255, 109, 173, 233),
-                      Color.fromARGB(255, 255, 255, 255),
-                      Color.fromARGB(255, 255, 255, 255),
-                    ],
-                    secondaryColors: const [
-                      Color.fromARGB(255, 255, 255, 255),
-                      Color.fromARGB(255, 255, 255, 255),
-                      Color.fromARGB(255, 109, 173, 233),
-                    ],
-                    child: Stack(
+      body: ScrollConfiguration(
+        behavior: MyBehavior(),
+        child: SingleChildScrollView(
+          child: SizedBox(
+            height: size.height,
+            child: AnimateGradient(
+              primaryColors: const [
+                Color.fromARGB(255, 109, 173, 233),
+                Color.fromARGB(255, 255, 255, 255),
+                Color.fromARGB(255, 255, 255, 255),
+              ],
+              secondaryColors: const [
+                Color.fromARGB(255, 255, 255, 255),
+                Color.fromARGB(255, 255, 255, 255),
+                Color.fromARGB(255, 109, 173, 233),
+              ],
+              child: Stack(
+                children: [
+                  Positioned(
+                    top: size.height * (animation2.value + .25),
+                    left: size.width * .75,
+                    child: CustomPaint(
+                      painter: MyPainter(35),
+                    ),
+                  ),
+                  Positioned(
+                    top: size.height * .98,
+                    left: size.width * .1,
+                    child: CustomPaint(
+                      painter: MyPainter(animation4.value - 55),
+                    ),
+                  ),
+                  Positioned(
+                    top: size.height * .12,
+                    left: size.width * .95,
+                    child: CustomPaint(
+                      painter: MyPainter(animation4.value - 90),
+                    ),
+                  ),
+                  Form(
+                    key: _formKey,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Positioned(
-                          top: size.height * (animation2.value + .25),
-                          left: size.width * .75,
-                          child: CustomPaint(
-                            painter: MyPainter(35),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 30.0, right: 30),
+                          child: TextFormField(
+                            cursorColor: UIGuide.light_Purple,
+                            controller: _username,
+                            decoration: InputDecoration(
+                              focusColor: UIGuide.light_Purple,
+                              prefixIcon: const Icon(
+                                Icons.person_outline_outlined,
+                                color: UIGuide.light_Purple,
+                              ),
+                              border: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                    style: BorderStyle.solid,
+                                    color: UIGuide.light_Purple,
+                                    width: 1.0),
+                                borderRadius: BorderRadius.circular(20.0),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                    color: UIGuide.light_Purple, width: 1),
+                                borderRadius: BorderRadius.circular(20.0),
+                              ),
+                              fillColor:
+                                  const Color.fromARGB(255, 255, 255, 255),
+                              hintText: "Enter Your Username",
+                              hintStyle: const TextStyle(
+                                color: Colors.grey,
+                                fontSize: 16,
+                                fontFamily: "verdana_regular",
+                                fontWeight: FontWeight.w400,
+                              ),
+                              labelText: 'Username',
+                              labelStyle:
+                                  const TextStyle(color: UIGuide.light_Purple),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(20.0),
+                                borderSide: const BorderSide(
+                                  color: UIGuide.light_Purple,
+                                  width: 1,
+                                ),
+                              ),
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your Username';
+                              }
+                              return null;
+                            },
                           ),
                         ),
-                        Positioned(
-                          top: size.height * .98,
-                          left: size.width * .1,
-                          child: CustomPaint(
-                            painter: MyPainter(animation4.value - 55),
+                        kheight20,
+                        Padding(
+                          padding: const EdgeInsets.only(left: 30.0, right: 30),
+                          child: TextFormField(
+                            cursorColor: UIGuide.light_Purple,
+                            obscureText: !_isObscure,
+                            controller: _password,
+                            decoration: InputDecoration(
+                              focusColor:
+                                  const Color.fromARGB(255, 255, 255, 255),
+                              prefixIcon: const Icon(
+                                Icons.password_sharp,
+                                color: UIGuide.light_Purple,
+                              ),
+                              // errorText: "Please enter valid username",
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(20.0),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                    color: UIGuide.light_Purple, width: 1.0),
+                                borderRadius: BorderRadius.circular(20.0),
+                              ),
+                              fillColor: Colors.grey,
+                              hintText: "Enter Your Password",
+                              hintStyle: const TextStyle(
+                                color: Colors.grey,
+                                fontSize: 16,
+                                fontFamily: "verdana_regular",
+                                fontWeight: FontWeight.w400,
+                              ),
+                              labelText: 'Password',
+                              labelStyle:
+                                  const TextStyle(color: UIGuide.light_Purple),
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  _isObscure
+                                      ? Icons.visibility
+                                      : Icons.visibility_off,
+                                  color: UIGuide.light_Purple,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    _isObscure = !_isObscure;
+                                  });
+                                },
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(20.0),
+                                borderSide: const BorderSide(
+                                  color: UIGuide.light_Purple,
+                                  width: 1.0,
+                                ),
+                              ),
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your password';
+                              }
+                              return null;
+                            },
                           ),
                         ),
-                        Positioned(
-                          top: size.height * .12,
-                          left: size.width * .95,
-                          child: CustomPaint(
-                            painter: MyPainter(animation4.value - 90),
-                          ),
-                        ),
-                        Form(
-                          key: _formKey,
-                          child: Column(
+                        kheight20,
+                        Consumer<LoginProvider>(
+                          builder: (context, val, _) => Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 30.0, right: 30),
-                                child: TextFormField(
-                                  cursorColor: UIGuide.light_Purple,
-                                  controller: _username,
-                                  decoration: InputDecoration(
-                                    focusColor: UIGuide.light_Purple,
-                                    prefixIcon: const Icon(
-                                      Icons.person_outline_outlined,
-                                      color: UIGuide.light_Purple,
-                                    ),
-                                    border: OutlineInputBorder(
-                                      borderSide: const BorderSide(
-                                          style: BorderStyle.solid,
+                              SizedBox(
+                                height: 45,
+                                width: size.width / 2.5,
+                                child: val.loadingLogin
+                                    ? const Center(
+                                        child: CircularProgressIndicator(
                                           color: UIGuide.light_Purple,
-                                          width: 1.0),
-                                      borderRadius: BorderRadius.circular(20.0),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(
-                                          color: UIGuide.light_Purple,
-                                          width: 1),
-                                      borderRadius: BorderRadius.circular(20.0),
-                                    ),
-                                    fillColor: const Color.fromARGB(
-                                        255, 255, 255, 255),
-                                    hintText: "Enter Your Username",
-                                    hintStyle: const TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 16,
-                                      fontFamily: "verdana_regular",
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                    labelText: 'Username',
-                                    labelStyle: const TextStyle(
-                                        color: UIGuide.light_Purple),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(20.0),
-                                      borderSide: const BorderSide(
-                                        color: UIGuide.light_Purple,
-                                        width: 1,
-                                      ),
-                                    ),
-                                  ),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Please enter your Username';
-                                    }
-                                    return null;
-                                  },
-                                ),
-                              ),
-                              kheight20,
-                              Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 30.0, right: 30),
-                                child: TextFormField(
-                                  cursorColor: UIGuide.light_Purple,
-                                  obscureText: !_isObscure,
-                                  controller: _password,
-                                  decoration: InputDecoration(
-                                    focusColor: const Color.fromARGB(
-                                        255, 255, 255, 255),
-                                    prefixIcon: const Icon(
-                                      Icons.password_sharp,
-                                      color: UIGuide.light_Purple,
-                                    ),
-                                    // errorText: "Please enter valid username",
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(20.0),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(
-                                          color: UIGuide.light_Purple,
-                                          width: 1.0),
-                                      borderRadius: BorderRadius.circular(20.0),
-                                    ),
-                                    fillColor: Colors.grey,
-                                    hintText: "Enter Your Password",
-                                    hintStyle: const TextStyle(
-                                      color: Colors.grey,
-                                      fontSize: 16,
-                                      fontFamily: "verdana_regular",
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                    labelText: 'Password',
-                                    labelStyle: const TextStyle(
-                                        color: UIGuide.light_Purple),
-                                    suffixIcon: IconButton(
-                                      icon: Icon(
-                                        _isObscure
-                                            ? Icons.visibility
-                                            : Icons.visibility_off,
-                                        color: UIGuide.light_Purple,
-                                      ),
-                                      onPressed: () {
-                                        setState(() {
-                                          _isObscure = !_isObscure;
-                                        });
-                                      },
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(20.0),
-                                      borderSide: const BorderSide(
-                                        color: UIGuide.light_Purple,
-                                        width: 1.0,
-                                      ),
-                                    ),
-                                  ),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'Please enter your password';
-                                    }
-                                    return null;
-                                  },
-                                ),
-                              ),
-                              kheight20,
-                              Consumer<LoginProvider>(
-                                builder: (context, val, _) => Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    SizedBox(
-                                      height: 45,
-                                      width: size.width / 2.5,
-                                      child: val.loadingLogin
-                                          ? const Center(
-                                              child: CircularProgressIndicator(
+                                          strokeWidth: 2,
+                                        ),
+                                      )
+                                    : Container(
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(15.0)),
+                                            border: Border.all(
                                                 color: UIGuide.light_Purple,
-                                                strokeWidth: 2,
-                                              ),
-                                            )
-                                          : Container(
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(
-                                                              15.0)),
-                                                  border: Border.all(
-                                                      color:
-                                                          UIGuide.light_Purple,
-                                                      width: 2)),
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(1.0),
-                                                child: MaterialButton(
-                                                    shape: const RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                                Radius.circular(
-                                                                    12.0))),
-                                                    color: UIGuide.light_Purple,
-                                                    onPressed: () async {
-                                                      if (_formKey.currentState!
-                                                          .validate()) {
-                                                        val.checkLogin(
-                                                            _username.text
-                                                                .trim(),
-                                                            _password.text
-                                                                .trim(),
-                                                            context);
+                                                width: 2)),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(1.0),
+                                          child: MaterialButton(
+                                              shape:
+                                                  const RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  12.0))),
+                                              color: UIGuide.light_Purple,
+                                              onPressed: () async {
+                                                if (_formKey.currentState!
+                                                    .validate()) {
+                                                  val.checkLogin(
+                                                      _username.text.trim(),
+                                                      _password.text.trim(),
+                                                      context);
 
-                                                        print(_username);
-                                                        print(_password);
-                                                      } else {
-                                                        print(
-                                                            "Enter some value");
-                                                      }
-                                                    },
-                                                    child: const Text(
-                                                      'LOGIN',
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    )),
-                                              ),
-                                            ),
-                                    ),
-                                  ],
-                                ),
+                                                  print(_username);
+                                                  print(_password);
+                                                } else {
+                                                  print("Enter some value");
+                                                }
+                                              },
+                                              child: const Text(
+                                                'LOGIN',
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              )),
+                                        ),
+                                      ),
                               ),
-                              kheight10,
-                              Consumer<LoginProvider>(
-                                builder: (context, valu, _) => InkWell(
-                                  splashColor: UIGuide.THEME_LIGHT,
-                                  onTap: valu.loadingLogin
-                                      ? null
-                                      : () async {
-                                          await Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      ForgotPasswordScreen()));
-                                        },
-                                  child: const Text(
-                                    "Forgot Password ? ",
-                                    style: TextStyle(
-                                        color: UIGuide.light_Purple,
-                                        fontSize: 15),
-                                  ),
-                                ),
-                              )
                             ],
                           ),
                         ),
+                        kheight10,
+                        Consumer<LoginProvider>(
+                          builder: (context, valu, _) => InkWell(
+                            splashColor: UIGuide.THEME_LIGHT,
+                            onTap: valu.loadingLogin
+                                ? null
+                                : () async {
+                                    await Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ForgotPasswordScreen()));
+                                  },
+                            child: const Text(
+                              "Forgot Password ? ",
+                              style: TextStyle(
+                                  color: UIGuide.light_Purple, fontSize: 15),
+                            ),
+                          ),
+                        )
                       ],
                     ),
                   ),
-                ),
+                ],
               ),
             ),
+          ),
+        ),
+      ),
     );
   }
 

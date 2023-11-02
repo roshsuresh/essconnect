@@ -86,14 +86,14 @@ class _FeeReportState extends State<FeeReport> {
               Consumer<SchoolPhotoProviders>(
                 builder: (context, value, child) => value.loadingSection
                     ? SizedBox(
-                        width: size.width * .43,
-                        height: 50,
+                        width: size.width * .42,
+                        height: 45,
                         child: const Center(child: Text('Loading...')))
                     : Padding(
                         padding: const EdgeInsets.all(10.0),
                         child: SizedBox(
                           width: size.width * .42,
-                          height: 50,
+                          height: 45,
                           child: MultiSelectDialogField(
                             items: value.dropDown,
                             listType: MultiSelectListType.CHIP,
@@ -113,14 +113,18 @@ class _FeeReportState extends State<FeeReport> {
                               style: TextStyle(color: UIGuide.light_Purple),
                             ),
                             separateSelectedItems: true,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
+                            decoration: const BoxDecoration(
+                              color: UIGuide.ButtonBlue,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey,
+                                  offset: Offset(0, 2),
+                                  blurRadius: 4,
+                                  spreadRadius: 0,
+                                ),
+                              ],
                               borderRadius:
-                                  const BorderRadius.all(Radius.circular(10)),
-                              border: Border.all(
-                                color: Colors.grey,
-                                width: 2,
-                              ),
+                                  BorderRadius.all(Radius.circular(10)),
                             ),
                             searchable: true,
                             buttonIcon: const Icon(
@@ -192,14 +196,14 @@ class _FeeReportState extends State<FeeReport> {
               Consumer<SchoolPhotoProviders>(
                 builder: (context, value, child) => value.loadingCourse
                     ? SizedBox(
-                        width: size.width * .43,
-                        height: 50,
+                        width: size.width * .42,
+                        height: 45,
                         child: const Center(child: Text('Loading...')))
                     : Padding(
                         padding: const EdgeInsets.all(10.0),
                         child: SizedBox(
                           width: size.width * .42,
-                          height: 50,
+                          height: 45,
                           child: MultiSelectDialogField(
                             // height: 200,
                             items: value.courseDrop, searchable: true,
@@ -221,14 +225,18 @@ class _FeeReportState extends State<FeeReport> {
                               style: TextStyle(color: UIGuide.light_Purple),
                             ),
                             separateSelectedItems: true,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
+                            decoration: const BoxDecoration(
+                              color: UIGuide.ButtonBlue,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey,
+                                  offset: Offset(0, 2),
+                                  blurRadius: 4,
+                                  spreadRadius: 0,
+                                ),
+                              ],
                               borderRadius:
-                                  const BorderRadius.all(Radius.circular(10)),
-                              border: Border.all(
-                                color: Colors.grey,
-                                width: 2,
-                              ),
+                                  BorderRadius.all(Radius.circular(10)),
                             ),
                             buttonIcon: const Icon(
                               Icons.arrow_drop_down_outlined,
@@ -279,86 +287,116 @@ class _FeeReportState extends State<FeeReport> {
               const Spacer()
             ],
           ),
-          const Text(
-            'From Date and To date should not exceed 30 days',
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                fontSize: 11.5, color: Color.fromARGB(255, 241, 128, 128)),
+          const Padding(
+            padding: EdgeInsets.only(bottom: 6.0),
+            child: Text(
+              'From Date and To date should not exceed 30 days',
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontSize: 11.5, color: Color.fromARGB(255, 241, 128, 128)),
+            ),
           ),
           Row(
             children: [
               const Spacer(),
-              SizedBox(
-                width: size.width * .42,
-                child: Consumer<FeeReportProvider>(
-                  builder: (context, value, child) => MaterialButton(
-                    child: Center(child: Text('From ${time}')),
-                    color: Colors.white,
-                    onPressed: (() async {
-                      value.clearcollectionList();
-                      _mydatetimeFrom = await showDatePicker(
-                        context: context,
-                        initialDate: _mydatetimeFrom ?? DateTime.now(),
-                        firstDate: DateTime(2022),
-                        lastDate: DateTime(2030),
-                        builder: (context, child) {
-                          return Theme(
-                              data: ThemeData.light().copyWith(
-                                primaryColor: UIGuide.light_Purple,
-                                colorScheme: const ColorScheme.light(
-                                  primary: UIGuide.light_Purple,
+              Padding(
+                padding: const EdgeInsets.only(left: 10, right: 10),
+                child: SizedBox(
+                  width: size.width * .42,
+                  height: 40,
+                  child: Consumer<FeeReportProvider>(
+                    builder: (context, value, child) => ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        elevation: 3,
+                        foregroundColor: UIGuide.light_Purple,
+                        backgroundColor: UIGuide.ButtonBlue,
+                        padding: const EdgeInsets.all(0),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            side: const BorderSide(
+                              color: UIGuide.light_black,
+                            )),
+                      ),
+                      onPressed: (() async {
+                        value.clearcollectionList();
+                        _mydatetimeFrom = await showDatePicker(
+                          context: context,
+                          initialDate: _mydatetimeFrom ?? DateTime.now(),
+                          firstDate: DateTime(2022),
+                          lastDate: DateTime(2030),
+                          builder: (context, child) {
+                            return Theme(
+                                data: ThemeData.light().copyWith(
+                                  primaryColor: UIGuide.light_Purple,
+                                  colorScheme: const ColorScheme.light(
+                                    primary: UIGuide.light_Purple,
+                                  ),
+                                  buttonTheme: const ButtonThemeData(
+                                      textTheme: ButtonTextTheme.primary),
                                 ),
-                                buttonTheme: const ButtonThemeData(
-                                    textTheme: ButtonTextTheme.primary),
-                              ),
-                              child: child!);
-                        },
-                      );
-                      setState(() {
-                        time =
-                            DateFormat('dd-MMM-yyyy').format(_mydatetimeFrom!);
-                        print(time);
-                      });
-                    }),
+                                child: child!);
+                          },
+                        );
+                        setState(() {
+                          time = DateFormat('dd-MMM-yyyy')
+                              .format(_mydatetimeFrom!);
+                          print(time);
+                        });
+                      }),
+                      child: Center(child: Text('From ${time}')),
+                    ),
                   ),
                 ),
               ),
               const Spacer(),
-              SizedBox(
-                width: size.width * .42,
-                child: Consumer<FeeReportProvider>(
-                  builder: (context, value, child) => MaterialButton(
-                    // minWidth: size.width - 250,
-                    color: Colors.white,
-                    onPressed: (() async {
-                      value.clearcollectionList();
-                      _mydatetimeTo = await showDatePicker(
-                        context: context,
-                        initialDate: _mydatetimeTo ?? DateTime.now(),
-                        firstDate: DateTime(2022),
-                        lastDate: DateTime(2030),
-                        builder: (context, child) {
-                          return Theme(
-                              data: ThemeData.light().copyWith(
-                                primaryColor: UIGuide.light_Purple,
-                                colorScheme: const ColorScheme.light(
-                                  primary: UIGuide.light_Purple,
+              Padding(
+                padding: const EdgeInsets.only(left: 10, right: 10),
+                child: SizedBox(
+                  width: size.width * .42,
+                  height: 40,
+                  child: Consumer<FeeReportProvider>(
+                    builder: (context, value, child) => ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        elevation: 3,
+                        foregroundColor: UIGuide.light_Purple,
+                        backgroundColor: UIGuide.ButtonBlue,
+                        padding: const EdgeInsets.all(0),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            side: const BorderSide(
+                              color: UIGuide.light_black,
+                            )),
+                      ),
+                      onPressed: (() async {
+                        value.clearcollectionList();
+                        _mydatetimeTo = await showDatePicker(
+                          context: context,
+                          initialDate: _mydatetimeTo ?? DateTime.now(),
+                          firstDate: DateTime(2022),
+                          lastDate: DateTime(2030),
+                          builder: (context, child) {
+                            return Theme(
+                                data: ThemeData.light().copyWith(
+                                  primaryColor: UIGuide.light_Purple,
+                                  colorScheme: const ColorScheme.light(
+                                    primary: UIGuide.light_Purple,
+                                  ),
+                                  buttonTheme: const ButtonThemeData(
+                                      textTheme: ButtonTextTheme.primary),
                                 ),
-                                buttonTheme: const ButtonThemeData(
-                                    textTheme: ButtonTextTheme.primary),
-                              ),
-                              child: child!);
-                        },
-                      );
-                      setState(() {
-                        timeNow =
-                            DateFormat('dd-MMM-yyyy').format(_mydatetimeTo!);
-                        print(timeNow);
-                      });
-                    }),
-                    // minWidth: size.width - 250,
-                    child: Center(child: Text('To $timeNow')),
+                                child: child!);
+                          },
+                        );
+                        setState(() {
+                          timeNow =
+                              DateFormat('dd-MMM-yyyy').format(_mydatetimeTo!);
+                          print(timeNow);
+                        });
+                      }),
+                      // minWidth: size.width - 250,
+                      child: Center(child: Text('To $timeNow')),
+                    ),
                   ),
                 ),
               ),
@@ -380,20 +418,19 @@ class _FeeReportState extends State<FeeReport> {
                           style: TextStyle(
                               color: UIGuide.light_Purple, fontSize: 16),
                         ))
-                      : TextButton(
-                          style: TextButton.styleFrom(
-                              backgroundColor: UIGuide.light_Purple),
+                      : ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            elevation: 3,
+                            foregroundColor: UIGuide.WHITE,
+                            backgroundColor: UIGuide.light_Purple,
+                            padding: const EdgeInsets.all(0),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                side: const BorderSide(
+                                  color: UIGuide.light_black,
+                                )),
+                          ),
                           onPressed: (() async {
-                            // Provider.of<SchoolPhotoProviders>(context, listen: false)
-                            //     .stdReportInitialValues
-                            //     .clear();
-                            // Provider.of<SchoolPhotoProviders>(context, listen: false)
-                            //     .courselist
-                            //     .clear();
-                            // Provider.of<SchoolPhotoProviders>(context, listen: false)
-                            //     .divisionDrop
-                            //     .clear();
-
                             DateTime dt1 = _mydatetimeFrom!;
                             DateTime dt2 = _mydatetimeTo!;
                             Duration diff = dt2.difference(dt1);
@@ -475,52 +512,78 @@ class _FeeReportState extends State<FeeReport> {
           ),
           kheight20,
           Padding(
-            padding: const EdgeInsets.only(left: 6, right: 6),
+            padding: const EdgeInsets.only(left: 3, right: 3),
             child: Table(
-              columnWidths: const {
-                0: FlexColumnWidth(0.8),
-                1: FlexColumnWidth(1),
-                2: FlexColumnWidth(2.5),
-                3: FlexColumnWidth(2),
-                4: FlexColumnWidth(1),
-              },
               border: TableBorder.all(
-                  color: const Color.fromARGB(255, 216, 214, 214)),
+                  color: const Color.fromARGB(255, 248, 248, 248)),
+              columnWidths: const {
+                0: FlexColumnWidth(0.5),
+                1: FlexColumnWidth(1.5),
+                2: FlexColumnWidth(2.5),
+                3: FlexColumnWidth(1.5),
+                4: FlexColumnWidth(.6),
+              },
               children: const [
                 TableRow(
                     decoration: BoxDecoration(
-                      //  border: Border.all(),
-                      color: Color.fromARGB(255, 226, 230, 241),
+                      color: Color.fromARGB(255, 223, 223, 223),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(8),
+                        topRight: Radius.circular(8),
+                      ),
                     ),
                     children: [
-                      Center(
-                        child: Text(
-                          ('Sl\nNo.'),
-                          style: TextStyle(fontWeight: FontWeight.w500),
+                      TableCell(
+                        verticalAlignment: TableCellVerticalAlignment.middle,
+                        child: Center(
+                          child: Text(
+                            'Sl \nNo.',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontWeight: FontWeight.w500),
+                          ),
                         ),
                       ),
-                      Center(
-                        child: Text(
-                          ('Date'),
-                          style: TextStyle(fontWeight: FontWeight.w500),
+                      TableCell(
+                        verticalAlignment: TableCellVerticalAlignment.middle,
+                        child: Center(
+                          child: Text(
+                            'Date',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontWeight: FontWeight.w500),
+                          ),
                         ),
                       ),
-                      Center(
-                        child: Text(
-                          ('Name'),
-                          style: TextStyle(fontWeight: FontWeight.w500),
+                      TableCell(
+                        verticalAlignment: TableCellVerticalAlignment.middle,
+                        child: Center(
+                          child: Text(
+                            'Name',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontWeight: FontWeight.w500),
+                          ),
                         ),
                       ),
-                      Center(
-                        child: Text(
-                          ('Remitted\n     Fee'),
-                          style: TextStyle(fontWeight: FontWeight.w500),
+                      TableCell(
+                        verticalAlignment: TableCellVerticalAlignment.middle,
+                        child: Padding(
+                          padding: EdgeInsets.all(3.0),
+                          child: Center(
+                            child: Text(
+                              'Remitted\nFee',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontWeight: FontWeight.w500),
+                            ),
+                          ),
                         ),
                       ),
-                      Center(
-                        child: Text(
-                          ('Details'),
-                          style: TextStyle(fontWeight: FontWeight.w500),
+                      TableCell(
+                        verticalAlignment: TableCellVerticalAlignment.middle,
+                        child: Center(
+                          child: Text(
+                            'View',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontWeight: FontWeight.w500),
+                          ),
                         ),
                       ),
                     ])
@@ -529,25 +592,31 @@ class _FeeReportState extends State<FeeReport> {
           ),
           Consumer<FeeReportProvider>(
             builder: (context, value, child) => Padding(
-              padding: const EdgeInsets.only(left: 6, right: 6),
+              padding: const EdgeInsets.only(left: 3, right: 3),
               child: LimitedBox(
                 maxHeight: size.height / 1.8,
                 child: value.loading
                     ? spinkitLoader()
                     : Scrollbar(
                         child: ListView.builder(
-                            physics: const BouncingScrollPhysics(),
+                            //  physics: const BouncingScrollPhysics(),
                             shrinkWrap: true,
                             itemCount: value.collectionList.isEmpty
                                 ? 0
                                 : value.collectionList.length,
                             itemBuilder: ((context, index) {
-                              String date =
-                                  value.collectionList[index].remittedDate ??
-                                      '--';
+                              String newdate = '';
 
-                              var updatedDate =
-                                  DateFormat('yyyy-MM-dd').parse(date);
+                              if (value.collectionList[index].remittedDate !=
+                                  null) {
+                                String createddate =
+                                    value.collectionList[index].remittedDate ??
+                                        '--';
+                                DateTime parsedDateTime =
+                                    DateTime.parse(createddate);
+                                newdate = DateFormat('dd-MMM-yyyy')
+                                    .format(parsedDateTime);
+                              }
                               String studID =
                                   value.collectionList[index].studentId ?? '';
                               String FeeID =
@@ -556,511 +625,624 @@ class _FeeReportState extends State<FeeReport> {
                               String busID = value.collectionList[index]
                                       .busFeeCollectionId ??
                                   '';
-                              var newdate = updatedDate
-                                  .toString()
-                                  .replaceRange(10, 23, '');
-                              print(updatedDate);
 
-                              return Padding(
-                                padding: const EdgeInsets.all(1.0),
-                                child: Table(
-                                  border: TableBorder.all(
-                                      color: const Color.fromARGB(
-                                          255, 245, 243, 243)),
-                                  columnWidths: const {
-                                    0: FlexColumnWidth(0.8),
-                                    1: FlexColumnWidth(1),
-                                    2: FlexColumnWidth(2.4),
-                                    3: FlexColumnWidth(2),
-                                    4: FlexColumnWidth(1),
-                                  },
-                                  children: [
-                                    TableRow(children: [
-                                      SizedBox(
-                                        child: Text(
-                                          (index + 1).toString(),
-                                          textAlign: TextAlign.center,
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                      ),
-                                      Center(
-                                        child: Text(
-                                          newdate.isEmpty ? '----' : newdate,
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                      ),
-                                      Text(
-                                        value.collectionList[index].name == null
-                                            ? '--'
-                                            : "  ${value.collectionList[index].name}",
-                                        textAlign: TextAlign.start,
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                      Center(
-                                        child: Text(
-                                          value.collectionList[index]
-                                                      .remittedFees ==
-                                                  null
-                                              ? '---'
-                                              : value.collectionList[index]
-                                                  .remittedFees
-                                                  .toString(),
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.w500,
+                              return InkWell(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(2.0),
+                                  child: Table(
+                                    border: TableBorder.all(
+                                        color: const Color.fromARGB(
+                                            255, 255, 255, 255)),
+                                    columnWidths: const {
+                                      0: FlexColumnWidth(0.5),
+                                      1: FlexColumnWidth(1.5),
+                                      2: FlexColumnWidth(2.5),
+                                      3: FlexColumnWidth(1.5),
+                                      4: FlexColumnWidth(.6),
+                                    },
+                                    children: [
+                                      TableRow(
+                                          decoration: BoxDecoration(
+                                            color: index.isEven
+                                                ? Colors.white
+                                                : const Color.fromARGB(
+                                                    255, 241, 241, 241),
                                           ),
-                                        ),
-                                      ),
-                                      Consumer<FeeReportProvider>(
-                                        builder: (context, value, child) =>
-                                            GestureDetector(
-                                          onTap: () async {
-                                            value.generalList.clear();
-                                            value.busFeeList.clear();
-                                            await Provider.of<
-                                                        FeeReportProvider>(
-                                                    context,
-                                                    listen: false)
-                                                .getAttachmentView(
-                                                    studID, FeeID, busID);
-                                            showDialog(
-                                                context: context,
-                                                builder: (context) {
-                                                  return Dialog(
-                                                      child: LimitedBox(
-                                                    maxHeight:
-                                                        size.height - 300,
-                                                    child: Column(
-                                                      mainAxisSize:
-                                                          MainAxisSize.min,
-                                                      children: [
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(4.0),
-                                                          child: Row(
-                                                            children: [
-                                                              const Text(
-                                                                'Name: ',
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        15),
-                                                              ),
-                                                              Flexible(
-                                                                child: RichText(
-                                                                  overflow:
-                                                                      TextOverflow
-                                                                          .ellipsis,
-                                                                  maxLines: 2,
-                                                                  strutStyle:
-                                                                      const StrutStyle(
-                                                                          fontSize:
-                                                                              13.0),
-                                                                  text: TextSpan(
-                                                                      style: const TextStyle(
-                                                                          color: UIGuide
-                                                                              .light_Purple,
-                                                                          fontSize:
-                                                                              15,
-                                                                          fontWeight: FontWeight
+                                          children: [
+                                            TableCell(
+                                              verticalAlignment:
+                                                  TableCellVerticalAlignment
+                                                      .middle,
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 5, bottom: 5),
+                                                child: Text(
+                                                  (index + 1).toString(),
+                                                  textAlign: TextAlign.center,
+                                                  style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      fontSize: 13),
+                                                ),
+                                              ),
+                                            ),
+                                            TableCell(
+                                              verticalAlignment:
+                                                  TableCellVerticalAlignment
+                                                      .middle,
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 5, bottom: 5),
+                                                child: Center(
+                                                  child: Text(
+                                                    newdate.isEmpty
+                                                        ? '----'
+                                                        : newdate,
+                                                    style: const TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        fontSize: 13),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            TableCell(
+                                              verticalAlignment:
+                                                  TableCellVerticalAlignment
+                                                      .middle,
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 5, bottom: 5, left: 2),
+                                                child: Text(
+                                                  value.collectionList[index]
+                                                              .name ==
+                                                          null
+                                                      ? '--'
+                                                      : "  ${value.collectionList[index].name}",
+                                                  textAlign: TextAlign.start,
+                                                  style: const TextStyle(
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.w500),
+                                                ),
+                                              ),
+                                            ),
+                                            TableCell(
+                                              verticalAlignment:
+                                                  TableCellVerticalAlignment
+                                                      .middle,
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 16),
+                                                child: Text(
+                                                  value.collectionList[index]
+                                                              .remittedFees ==
+                                                          null
+                                                      ? '---'
+                                                      : value
+                                                          .collectionList[index]
+                                                          .remittedFees!
+                                                          .toStringAsFixed(2),
+                                                  textAlign: TextAlign.end,
+                                                  style: const TextStyle(
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            const TableCell(
+                                              verticalAlignment:
+                                                  TableCellVerticalAlignment
+                                                      .middle,
+                                              child: Padding(
+                                                padding: EdgeInsets.only(
+                                                    top: 10, bottom: 10),
+                                                child: Icon(
+                                                  Icons.remove_red_eye,
+                                                  size: 18,
+                                                ),
+                                              ),
+                                            ),
+                                          ])
+                                    ],
+                                  ),
+                                ),
+                                onTap: () async {
+                                  value.generalList.clear();
+                                  value.busFeeList.clear();
+                                  await Provider.of<FeeReportProvider>(context,
+                                          listen: false)
+                                      .getAttachmentView(studID, FeeID, busID);
+                                  showModalBottomSheet(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        String finalCreatedDate = '';
+
+                                        if (value.transactionDate != null) {
+                                          String createddate =
+                                              value.transactionDate ?? '--';
+                                          DateTime parsedDateTime =
+                                              DateTime.parse(createddate);
+                                          finalCreatedDate =
+                                              DateFormat('dd-MMM-yyyy')
+                                                  .format(parsedDateTime);
+                                        }
+                                        return ListView(
+                                          shrinkWrap: true,
+                                          //  mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Align(
+                                              alignment: Alignment.topRight,
+                                              child: TextButton(
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                                child: const Text(
+                                                  "Close",
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 16),
+                                                ),
+                                              ),
+                                            ),
+                                            const Divider(
+                                              height: 0,
+                                              color: Color.fromARGB(
+                                                  255, 95, 95, 95),
+                                            ),
+                                            // Padding(
+                                            //   padding:
+                                            //       const EdgeInsets.all(8.0),
+                                            //   child: SizedBox(
+                                            //     width: size.width / 2.5,
+                                            //     child: const Divider(
+                                            //       thickness: 5,
+                                            //       color: Color.fromARGB(
+                                            //           255, 188, 189, 190),
+                                            //     ),
+                                            //   ),
+                                            // ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 10, right: 10, top: 5),
+                                              child: LimitedBox(
+                                                maxHeight: size.height / 2,
+                                                child: ListView(
+                                                  shrinkWrap: true,
+                                                  //   mainAxisSize: MainAxisSize.min,
+                                                  children: [
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              4.0),
+                                                      child: Row(
+                                                        children: [
+                                                          const Text(
+                                                            'Name: ',
+                                                            style: TextStyle(
+                                                                fontSize: 14),
+                                                          ),
+                                                          Flexible(
+                                                            child: RichText(
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              maxLines: 2,
+                                                              strutStyle:
+                                                                  const StrutStyle(
+                                                                      fontSize:
+                                                                          13.0),
+                                                              text: TextSpan(
+                                                                  style: const TextStyle(
+                                                                      color: UIGuide
+                                                                          .light_Purple,
+                                                                      fontSize:
+                                                                          14,
+                                                                      fontWeight:
+                                                                          FontWeight
                                                                               .w500),
-                                                                      text: value
-                                                                              .name ??
-                                                                          '---'),
-                                                                ),
-                                                              ),
-                                                            ],
+                                                                  text: value
+                                                                          .name ??
+                                                                      '---'),
+                                                            ),
                                                           ),
-                                                        ),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(4.0),
-                                                          child: Row(
-                                                            children: [
-                                                              const Text(
-                                                                'Adm No: ',
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        15),
-                                                              ),
-                                                              Text(
-                                                                value.admissionNo ??
-                                                                    '---',
-                                                                style: const TextStyle(
-                                                                    fontSize:
-                                                                        15,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500,
-                                                                    color: UIGuide
-                                                                        .light_Purple),
-                                                              ),
-                                                            ],
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              4.0),
+                                                      child: Row(
+                                                        children: [
+                                                          const Text(
+                                                            'Adm No: ',
+                                                            style: TextStyle(
+                                                                fontSize: 14),
                                                           ),
-                                                        ),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(4.0),
-                                                          child: Row(
-                                                            children: [
-                                                              const Text(
-                                                                'Division: ',
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        15),
-                                                              ),
-                                                              Text(
-                                                                value.division ??
-                                                                    '---',
-                                                                style: const TextStyle(
-                                                                    fontSize:
-                                                                        15,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500,
-                                                                    color: UIGuide
-                                                                        .light_Purple),
-                                                              ),
-                                                            ],
+                                                          Text(
+                                                            value.admissionNo ??
+                                                                '---',
+                                                            style: const TextStyle(
+                                                                fontSize: 14,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                color: UIGuide
+                                                                    .light_Purple),
                                                           ),
-                                                        ),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(4.0),
-                                                          child: Row(
-                                                            children: [
-                                                              const Text(
-                                                                'Date: ',
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        15),
-                                                              ),
-                                                              Text(
-                                                                value.transactionDate ??
-                                                                    '---',
-                                                                style: const TextStyle(
-                                                                    fontSize:
-                                                                        15,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500,
-                                                                    color: UIGuide
-                                                                        .light_Purple),
-                                                              ),
-                                                            ],
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              4.0),
+                                                      child: Row(
+                                                        children: [
+                                                          const Text(
+                                                            'Division: ',
+                                                            style: TextStyle(
+                                                                fontSize: 14),
                                                           ),
-                                                        ),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(4.0),
-                                                          child: Row(
-                                                            children: [
-                                                              const Text(
-                                                                'Order Id: ',
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        15),
-                                                              ),
-                                                              Flexible(
-                                                                child: RichText(
-                                                                  overflow:
-                                                                      TextOverflow
-                                                                          .ellipsis,
-                                                                  maxLines: 2,
-                                                                  strutStyle:
-                                                                      const StrutStyle(
-                                                                          fontSize:
-                                                                              13.0),
-                                                                  text: TextSpan(
-                                                                      style: const TextStyle(
-                                                                          color: UIGuide
-                                                                              .light_Purple,
-                                                                          fontSize:
-                                                                              15,
-                                                                          fontWeight: FontWeight
+                                                          Text(
+                                                            value.division ??
+                                                                '---',
+                                                            style: const TextStyle(
+                                                                fontSize: 14,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                color: UIGuide
+                                                                    .light_Purple),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              4.0),
+                                                      child: Row(
+                                                        children: [
+                                                          const Text(
+                                                            'Date: ',
+                                                            style: TextStyle(
+                                                                fontSize: 14),
+                                                          ),
+                                                          Text(
+                                                            finalCreatedDate,
+                                                            style: const TextStyle(
+                                                                fontSize: 14,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                color: UIGuide
+                                                                    .light_Purple),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              4.0),
+                                                      child: Row(
+                                                        children: [
+                                                          const Text(
+                                                            'Order Id: ',
+                                                            style: TextStyle(
+                                                                fontSize: 14),
+                                                          ),
+                                                          Flexible(
+                                                            child: RichText(
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              maxLines: 2,
+                                                              strutStyle:
+                                                                  const StrutStyle(
+                                                                      fontSize:
+                                                                          13.0),
+                                                              text: TextSpan(
+                                                                  style: const TextStyle(
+                                                                      color: UIGuide
+                                                                          .light_Purple,
+                                                                      fontSize:
+                                                                          15,
+                                                                      fontWeight:
+                                                                          FontWeight
                                                                               .w500),
-                                                                      text: value
-                                                                              .orderId ??
-                                                                          '---'),
-                                                                ),
-                                                              ),
-                                                            ],
+                                                                  text: value
+                                                                          .orderId ??
+                                                                      '---'),
+                                                            ),
                                                           ),
-                                                        ),
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(4.0),
-                                                          child: Row(
-                                                            children: [
-                                                              const Text(
-                                                                'Transaction Id: ',
-                                                                style: TextStyle(
-                                                                    fontSize:
-                                                                        15),
-                                                              ),
-                                                              Flexible(
-                                                                child: RichText(
-                                                                  overflow:
-                                                                      TextOverflow
-                                                                          .ellipsis,
-                                                                  maxLines: 2,
-                                                                  strutStyle:
-                                                                      const StrutStyle(
-                                                                          fontSize:
-                                                                              13.0),
-                                                                  text: TextSpan(
-                                                                      style: const TextStyle(
-                                                                          color: UIGuide
-                                                                              .light_Purple,
-                                                                          fontSize:
-                                                                              15,
-                                                                          fontWeight: FontWeight
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              4.0),
+                                                      child: Row(
+                                                        children: [
+                                                          const Text(
+                                                            'Transaction Id: ',
+                                                            style: TextStyle(
+                                                                fontSize: 14),
+                                                          ),
+                                                          Flexible(
+                                                            child: RichText(
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              maxLines: 2,
+                                                              strutStyle:
+                                                                  const StrutStyle(
+                                                                      fontSize:
+                                                                          13.0),
+                                                              text: TextSpan(
+                                                                  style: const TextStyle(
+                                                                      color: UIGuide
+                                                                          .light_Purple,
+                                                                      fontSize:
+                                                                          15,
+                                                                      fontWeight:
+                                                                          FontWeight
                                                                               .w500),
-                                                                      text: value
-                                                                              .transactionId ??
-                                                                          '---'),
-                                                                ),
-                                                              ),
-                                                            ],
+                                                                  text: value
+                                                                          .transactionId ??
+                                                                      '---'),
+                                                            ),
                                                           ),
-                                                        ),
-                                                        kheight10,
-                                                        Consumer<
-                                                            FeeReportProvider>(
-                                                          builder: (context,
-                                                              provider, child) {
-                                                            if (provider
-                                                                .generalList
-                                                                .isEmpty) {
-                                                              return Container();
-                                                            } else if (provider
-                                                                .generalList
-                                                                .isNotEmpty) {
-                                                              return Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                            .all(
-                                                                        2.0),
-                                                                child:
-                                                                    Container(
-                                                                  decoration: BoxDecoration(
-                                                                      border: Border.all(
-                                                                          color: UIGuide
-                                                                              .light_Purple,
-                                                                          width:
-                                                                              1),
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    kheight10,
+                                                    Consumer<FeeReportProvider>(
+                                                      builder: (context,
+                                                          provider, child) {
+                                                        if (provider.generalList
+                                                            .isEmpty) {
+                                                          return Container();
+                                                        } else if (provider
+                                                            .generalList
+                                                            .isNotEmpty) {
+                                                          return Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(2.0),
+                                                            child: Container(
+                                                              decoration: BoxDecoration(
+                                                                  border: Border.all(
+                                                                      color: UIGuide
+                                                                          .light_Purple,
+                                                                      width: 1),
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
                                                                               5)),
-                                                                  child: Column(
-                                                                    children: [
-                                                                      const Text(
-                                                                        'School Fees',
-                                                                        style: TextStyle(
-                                                                            color:
-                                                                                UIGuide.light_Purple,
-                                                                            fontWeight: FontWeight.w700,
-                                                                            decoration: TextDecoration.underline,
-                                                                            decorationStyle: TextDecorationStyle.dotted,
-                                                                            fontSize: 18),
-                                                                      ),
-                                                                      LimitedBox(
-                                                                        maxHeight:
-                                                                            150,
-                                                                        child: Consumer<
-                                                                            FeeReportProvider>(
-                                                                          builder: (context, value, child) => ListView.builder(
-                                                                              itemCount: value.generalList.isEmpty ? 0 : value.generalList.length,
-                                                                              shrinkWrap: true,
-                                                                              itemBuilder: ((context, index) {
-                                                                                return Column(
-                                                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                  mainAxisAlignment: MainAxisAlignment.start,
-                                                                                  children: [
-                                                                                    Padding(
-                                                                                      padding: const EdgeInsets.only(left: 16.0),
-                                                                                      child: Text(
-                                                                                        value.generalList[index].installmentname ?? '--',
-                                                                                        style: const TextStyle(color: UIGuide.light_Purple),
-                                                                                      ),
-                                                                                    ),
-                                                                                    ListTile(
-                                                                                      visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
-                                                                                      title: const Text('Amount to be Paid'),
-                                                                                      trailing: Text(
-                                                                                        value.generalList[index].netDue.toString(),
-                                                                                      ),
-                                                                                    ),
-                                                                                    ListTile(
-                                                                                      visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
-                                                                                      title: const Text('Paid Amount'),
-                                                                                      trailing: Text(
-                                                                                        value.generalList[index].paidAmount.toString(),
-                                                                                      ),
-                                                                                    )
-                                                                                  ],
-                                                                                );
-                                                                              })),
-                                                                        ),
-                                                                      )
-                                                                    ],
-                                                                  ),
-                                                                ),
-                                                              );
-                                                            }
-                                                            return const Text(
-                                                                ' ');
-                                                          },
-                                                        ),
-                                                        kheight10,
-                                                        Consumer<
-                                                            FeeReportProvider>(
-                                                          builder: (context,
-                                                              provider, child) {
-                                                            if (provider
-                                                                .busFeeList
-                                                                .isEmpty) {
-                                                              return Container();
-                                                            } else if (provider
-                                                                .busFeeList
-                                                                .isNotEmpty) {
-                                                              return Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                            .all(
-                                                                        2.0),
-                                                                child:
-                                                                    Container(
-                                                                  decoration: BoxDecoration(
-                                                                      border: Border.all(
-                                                                          color: UIGuide
-                                                                              .light_Purple,
-                                                                          width:
-                                                                              1),
-                                                                      borderRadius:
-                                                                          BorderRadius.circular(
-                                                                              5)),
-                                                                  child: Consumer<
-                                                                      FeeReportProvider>(
-                                                                    builder: (context,
-                                                                            value,
-                                                                            child) =>
-                                                                        Column(
-                                                                      children: [
-                                                                        const Text(
-                                                                          'Bus Fees',
-                                                                          style: TextStyle(
-                                                                              color: UIGuide.light_Purple,
-                                                                              fontWeight: FontWeight.w700,
-                                                                              decoration: TextDecoration.underline,
-                                                                              decorationStyle: TextDecorationStyle.dotted,
-                                                                              fontSize: 18),
-                                                                        ),
-                                                                        LimitedBox(
-                                                                          maxHeight:
-                                                                              150,
-                                                                          child: ListView.builder(
-                                                                              itemCount: value.busFeeList.isEmpty ? 0 : value.busFeeList.length,
-                                                                              shrinkWrap: true,
-                                                                              itemBuilder: ((context, index) {
-                                                                                return Column(
-                                                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                                                  mainAxisAlignment: MainAxisAlignment.start,
-                                                                                  children: [
-                                                                                    Padding(
-                                                                                      padding: const EdgeInsets.only(left: 16.0),
-                                                                                      child: Text(
-                                                                                        value.busFeeList[index].installmentname.toString(),
-                                                                                        style: const TextStyle(color: UIGuide.light_Purple),
-                                                                                      ),
-                                                                                    ),
-                                                                                    ListTile(
-                                                                                      visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
-                                                                                      horizontalTitleGap: 0,
-                                                                                      title: const Text('Amount to be Paid'),
-                                                                                      trailing: Text(
-                                                                                        value.busFeeList[index].netDue.toString(),
-                                                                                      ),
-                                                                                    ),
-                                                                                    ListTile(
-                                                                                      visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
-                                                                                      title: const Text('Paid Amount'),
-                                                                                      trailing: Text(
-                                                                                        value.busFeeList[index].paidAmount.toString(),
-                                                                                      ),
-                                                                                    )
-                                                                                  ],
-                                                                                );
-                                                                              })),
-                                                                        )
-                                                                      ],
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              );
-                                                            }
-                                                            return const Text(
-                                                                ' ');
-                                                          },
-                                                        ),
-                                                        Row(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .end,
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .end,
-                                                          children: [
-                                                            Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .all(6.0),
-                                                              child: SizedBox(
-                                                                width: 70,
-                                                                child:
-                                                                    MaterialButton(
-                                                                  onPressed:
-                                                                      () {
-                                                                    Navigator.pop(
-                                                                        context);
-                                                                  },
-                                                                  color: UIGuide
-                                                                      .light_Purple,
-                                                                  child:
-                                                                      const Text(
-                                                                    "OK",
+                                                              child: Column(
+                                                                children: [
+                                                                  const Text(
+                                                                    'School Fees',
                                                                     style: TextStyle(
                                                                         color: UIGuide
-                                                                            .WHITE,
+                                                                            .light_Purple,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w700,
+                                                                        decoration:
+                                                                            TextDecoration
+                                                                                .underline,
+                                                                        decorationStyle:
+                                                                            TextDecorationStyle
+                                                                                .dotted,
                                                                         fontSize:
-                                                                            15),
+                                                                            18),
                                                                   ),
+                                                                  LimitedBox(
+                                                                    maxHeight:
+                                                                        150,
+                                                                    child: Consumer<
+                                                                        FeeReportProvider>(
+                                                                      builder: (context, value, child) => ListView.builder(
+                                                                          physics: const NeverScrollableScrollPhysics(),
+                                                                          itemCount: value.generalList.isEmpty ? 0 : value.generalList.length,
+                                                                          shrinkWrap: true,
+                                                                          itemBuilder: ((context, index) {
+                                                                            return Column(
+                                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                                              mainAxisAlignment: MainAxisAlignment.start,
+                                                                              children: [
+                                                                                Padding(
+                                                                                  padding: const EdgeInsets.only(left: 16.0),
+                                                                                  child: Text(
+                                                                                    value.generalList[index].installmentname ?? '--',
+                                                                                    style: const TextStyle(color: UIGuide.light_Purple, fontWeight: FontWeight.bold),
+                                                                                  ),
+                                                                                ),
+                                                                                ListTile(
+                                                                                  visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+                                                                                  title: const Text(
+                                                                                    'Amount to be Paid',
+                                                                                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                                                                                  ),
+                                                                                  trailing: Text(
+                                                                                    value.generalList[index].netDue!.toStringAsFixed(2),
+                                                                                    style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                                                                                  ),
+                                                                                ),
+                                                                                ListTile(
+                                                                                  visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+                                                                                  title: const Text(
+                                                                                    'Paid Amount',
+                                                                                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                                                                                  ),
+                                                                                  trailing: Text(
+                                                                                    value.generalList[index].paidAmount!.toStringAsFixed(2),
+                                                                                    style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                                                                                  ),
+                                                                                )
+                                                                              ],
+                                                                            );
+                                                                          })),
+                                                                    ),
+                                                                  )
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          );
+                                                        }
+                                                        return const Text(' ');
+                                                      },
+                                                    ),
+                                                    kheight10,
+                                                    Consumer<FeeReportProvider>(
+                                                      builder: (context,
+                                                          provider, child) {
+                                                        if (provider.busFeeList
+                                                            .isEmpty) {
+                                                          return Container();
+                                                        } else if (provider
+                                                            .busFeeList
+                                                            .isNotEmpty) {
+                                                          return Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(2.0),
+                                                            child: Container(
+                                                              decoration: BoxDecoration(
+                                                                  border: Border.all(
+                                                                      color: UIGuide
+                                                                          .light_Purple,
+                                                                      width: 1),
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              5)),
+                                                              child: Consumer<
+                                                                  FeeReportProvider>(
+                                                                builder: (context,
+                                                                        value,
+                                                                        child) =>
+                                                                    Column(
+                                                                  children: [
+                                                                    const Text(
+                                                                      'Bus Fees',
+                                                                      style: TextStyle(
+                                                                          color: UIGuide
+                                                                              .light_Purple,
+                                                                          fontWeight: FontWeight
+                                                                              .w700,
+                                                                          decoration: TextDecoration
+                                                                              .underline,
+                                                                          decorationStyle: TextDecorationStyle
+                                                                              .dotted,
+                                                                          fontSize:
+                                                                              18),
+                                                                    ),
+                                                                    LimitedBox(
+                                                                      maxHeight:
+                                                                          150,
+                                                                      child: ListView.builder(
+                                                                          physics: const NeverScrollableScrollPhysics(),
+                                                                          itemCount: value.busFeeList.isEmpty ? 0 : value.busFeeList.length,
+                                                                          shrinkWrap: true,
+                                                                          itemBuilder: ((context, index) {
+                                                                            return Column(
+                                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                                              mainAxisAlignment: MainAxisAlignment.start,
+                                                                              children: [
+                                                                                Padding(
+                                                                                  padding: const EdgeInsets.only(left: 16.0),
+                                                                                  child: Text(
+                                                                                    value.busFeeList[index].installmentname.toString(),
+                                                                                    style: const TextStyle(color: UIGuide.light_Purple, fontWeight: FontWeight.bold),
+                                                                                  ),
+                                                                                ),
+                                                                                ListTile(
+                                                                                  visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+                                                                                  horizontalTitleGap: 0,
+                                                                                  title: const Text(
+                                                                                    'Amount to be Paid',
+                                                                                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                                                                                  ),
+                                                                                  trailing: Text(
+                                                                                    value.busFeeList[index].netDue!.toStringAsFixed(2),
+                                                                                    style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                                                                                  ),
+                                                                                ),
+                                                                                ListTile(
+                                                                                  visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+                                                                                  title: const Text(
+                                                                                    'Paid Amount',
+                                                                                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                                                                                  ),
+                                                                                  trailing: Text(
+                                                                                    value.busFeeList[index].paidAmount!.toStringAsFixed(2),
+                                                                                    style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                                                                                  ),
+                                                                                )
+                                                                              ],
+                                                                            );
+                                                                          })),
+                                                                    )
+                                                                  ],
                                                                 ),
                                                               ),
-                                                            )
-                                                          ],
-                                                        )
-                                                      ],
+                                                            ),
+                                                          );
+                                                        }
+                                                        return const Text(' ');
+                                                      },
                                                     ),
-                                                  ));
-                                                });
-                                          },
-                                          child: const Icon(
-                                            Icons.remove_red_eye,
-                                            size: 18,
-                                          ),
-                                        ),
-                                      )
-                                    ])
-                                  ],
-                                ),
+                                                    kheight20
+                                                    // Row(
+                                                    //   crossAxisAlignment:
+                                                    //       CrossAxisAlignment.end,
+                                                    //   mainAxisAlignment:
+                                                    //       MainAxisAlignment.end,
+                                                    //   children: [
+                                                    //     Padding(
+                                                    //       padding:
+                                                    //           const EdgeInsets
+                                                    //               .all(6.0),
+                                                    //       child: SizedBox(
+                                                    //         width: 70,
+                                                    //         child: MaterialButton(
+                                                    //           shape: RoundedRectangleBorder(
+                                                    //               borderRadius:
+                                                    //                   BorderRadius
+                                                    //                       .circular(
+                                                    //                           10)),
+                                                    //           onPressed: () {
+                                                    //             Navigator.pop(
+                                                    //                 context);
+                                                    //           },
+                                                    //           color: UIGuide
+                                                    //               .light_Purple,
+                                                    //           child: const Text(
+                                                    //             "OK",
+                                                    //             style: TextStyle(
+                                                    //                 color: UIGuide
+                                                    //                     .WHITE,
+                                                    //                 fontSize: 14),
+                                                    //           ),
+                                                    //         ),
+                                                    //       ),
+                                                    //     )
+                                                    //   ],
+                                                    // )
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        );
+                                      });
+                                },
                               );
                             })),
                       ),
@@ -1084,11 +1266,12 @@ class _FeeReportState extends State<FeeReport> {
                     : Text(
                         value.allTotal == null
                             ? '0.00'
-                            : value.allTotal.toString(),
+                            : value.allTotal!.toStringAsFixed(2),
                         style: const TextStyle(
                             fontWeight: FontWeight.w900, fontSize: 16),
                       ),
-                kWidth
+                kWidth20,
+                kWidth20
               ],
             ),
           )

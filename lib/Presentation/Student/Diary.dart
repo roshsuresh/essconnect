@@ -57,13 +57,17 @@ class Diary extends StatelessWidget {
                             ? 0
                             : value.diarylist.length,
                         itemBuilder: (BuildContext context, int index) {
-                          String createddate =
-                              value.diarylist[index].remarksDate ?? '--';
-                          var updatedDate =
-                              DateFormat('yyyy-MM-dd').parse(createddate);
-                          String newDate = updatedDate.toString();
-                          String finalCreatedDate =
-                              newDate.replaceRange(10, 23, '');
+                          String finalCreatedDate = "";
+
+                          if (value.diarylist[index].remarksDate != null) {
+                            String createddate =
+                                value.diarylist[index].remarksDate ?? '--';
+                            DateTime parsedDateTime =
+                                DateTime.parse(createddate);
+                            finalCreatedDate = DateFormat('dd/MMM/yyyy')
+                                .format(parsedDateTime);
+                          }
+
                           return AnimationConfiguration.staggeredList(
                             position: index,
                             delay: const Duration(milliseconds: 100),
@@ -76,25 +80,26 @@ class Diary extends StatelessWidget {
                                 child: Stack(
                                   children: [
                                     Padding(
-                                      padding: const EdgeInsets.all(8.0),
+                                      padding: const EdgeInsets.all(6.0),
                                       child: Container(
                                         width: width,
                                         decoration: BoxDecoration(
                                             color: const Color.fromARGB(
-                                                255, 255, 255, 255),
+                                                255, 234, 234, 236),
                                             border: Border.all(
-                                                color: UIGuide.light_Purple,
-                                                width: .5),
+                                                color: UIGuide.light_Purple),
                                             borderRadius:
-                                                const BorderRadius.all(
-                                                    Radius.circular(5))),
+                                                const BorderRadius.only(
+                                              topRight: Radius.circular(20),
+                                              bottomLeft: Radius.circular(20),
+                                            )),
                                         child: Padding(
                                           padding: const EdgeInsets.all(4.0),
                                           child: Container(
                                             width: width,
                                             decoration: const BoxDecoration(
                                                 color: Color.fromARGB(
-                                                    255, 243, 243, 252),
+                                                    255, 255, 255, 255),
                                                 borderRadius: BorderRadius.all(
                                                     Radius.circular(5))),
                                             child: Column(
@@ -107,7 +112,7 @@ class Diary extends StatelessWidget {
                                                   child: Row(
                                                     children: [
                                                       //  kWidth,
-                                                      const Text('  📘  '),
+                                                      const Text('📒  '),
                                                       Flexible(
                                                         child: RichText(
                                                           overflow: TextOverflow
@@ -115,7 +120,7 @@ class Diary extends StatelessWidget {
                                                           strutStyle:
                                                               const StrutStyle(
                                                                   fontSize:
-                                                                      14.0),
+                                                                      15.0),
                                                           text: TextSpan(
                                                               style: const TextStyle(
                                                                   color: UIGuide
@@ -142,40 +147,15 @@ class Diary extends StatelessWidget {
                                                 Padding(
                                                   padding:
                                                       const EdgeInsets.all(4.0),
-                                                  child: Container(
-                                                    width: width - 15,
-                                                    // decoration: BoxDecoration(
-                                                    //     color: const Color.fromARGB(
-                                                    //         255, 236, 237, 245),
-                                                    //     border: Border.all(
-                                                    //         color: const Color
-                                                    //                 .fromARGB(255,
-                                                    //             215, 207, 236)),
-                                                    //     borderRadius:
-                                                    //         const BorderRadius.all(
-                                                    //             Radius.circular(
-                                                    //                 4))),
-                                                    child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        TextWrapper(
-                                                          text: value
-                                                                      .diarylist[
-                                                                          index]
-                                                                      .remarks ==
-                                                                  null
-                                                              ? '--'
-                                                              : value
-                                                                  .diarylist[
-                                                                      index]
-                                                                  .remarks
-                                                                  .toString(),
-                                                          fSize: 16,
-                                                        )
-                                                      ],
-                                                    ),
+                                                  child: TextWrapper(
+                                                    text: value.diarylist[index]
+                                                                .remarks ==
+                                                            null
+                                                        ? '--'
+                                                        : value.diarylist[index]
+                                                            .remarks
+                                                            .toString(),
+                                                    fSize: 14,
                                                   ),
                                                 ),
                                                 Row(
@@ -190,7 +170,8 @@ class Diary extends StatelessWidget {
                                                       finalCreatedDate
                                                           .toString(),
                                                       style: const TextStyle(
-                                                          fontSize: 12),
+                                                          fontSize: 12,
+                                                          color: Colors.grey),
                                                     ),
                                                     kWidth,
                                                   ],

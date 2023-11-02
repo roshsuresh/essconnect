@@ -43,20 +43,31 @@ class StaffInfo extends StatelessWidget {
                     right: 100,
                     child: Center(
                       child: Container(
-                        height: 120,
-                        width: 120,
-                        decoration: BoxDecoration(
-                            color: Colors.black,
-                            image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: NetworkImage(value.staffReportList[index]
-                                            .staffPhoto ==
-                                        null
-                                    ? 'https://gj-eschool-files-public.s3.ap-south-1.amazonaws.com/ess-connect/student/avathar-01.jpeg'
-                                    : value.staffReportList[index].staffPhoto
-                                        .toString())),
+                        decoration: const BoxDecoration(
+                            color: Color.fromARGB(255, 211, 211, 211),
                             borderRadius:
-                                const BorderRadius.all(Radius.circular(10))),
+                                BorderRadius.all(Radius.circular(10))),
+                        child: Padding(
+                          padding: const EdgeInsets.all(2.0),
+                          child: Container(
+                            height: 120,
+                            width: 120,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: NetworkImage(value
+                                                .staffReportList[index]
+                                                .staffPhoto ==
+                                            null
+                                        ? 'https://gj-eschool-files-public.s3.ap-south-1.amazonaws.com/ess-connect/student/avathar-01.jpeg'
+                                        : value
+                                            .staffReportList[index].staffPhoto
+                                            .toString())),
+                                borderRadius: const BorderRadius.all(
+                                    Radius.circular(10))),
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -64,11 +75,20 @@ class StaffInfo extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(4.0),
+              padding: const EdgeInsets.all(6.0),
               child: Container(
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    border: Border.all(color: UIGuide.THEME_LIGHT)),
+                  color: UIGuide.WHITE,
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.grey,
+                      offset: Offset(1, 4),
+                      blurRadius: 4,
+                      spreadRadius: 1.5,
+                    ),
+                  ],
+                  borderRadius: BorderRadius.circular(10),
+                ),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(

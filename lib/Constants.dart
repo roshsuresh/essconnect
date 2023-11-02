@@ -2,29 +2,29 @@ import 'dart:core';
 
 import 'package:flutter/material.dart';
 
-///constant Strings
-const String login = "Login";
-const String forgotPass = "Forgot Password";
-const String userName = "User Name";
-const String passWord = "Password";
-const String schoolCode = "School Code";
-const String activate = "Activate";
-const String baseUrl =
-//"https://api.esstestonline.in";
-    "https://api.eschoolweb.org";
+// ///constant Strings
+// const String login = "Login";
+// const String forgotPass = "Forgot Password";
+// const String userName = "User Name";
+// const String passWord = "Password";
+// const String schoolCode = "School Code";
+// const String activate = "Activate";
+// const String baseUrl =
+// //"https://api.esstestonline.in";
+//     "https://api.eschoolweb.org";
 
-///constant assets
-const String buttonBackground = "assets/but_back.png";
-const String loginBackground = "assets/activation_page.png";
-const String gjlogo = "assets/backlogo.png";
-const String notcheck = "assets/square.svg";
-const String check = "assets/check-square.svg";
-const String activationButton = "assets/act_button.png";
-const String loginTabBackground = "assets/login_tab_back.png";
+// ///constant assets
+// const String buttonBackground = "assets/but_back.png";
+// const String loginBackground = "assets/activation_page.png";
+// const String gjlogo = "assets/backlogo.png";
+// const String notcheck = "assets/square.svg";
+// const String check = "assets/check-square.svg";
+// const String activationButton = "assets/act_button.png";
+// const String loginTabBackground = "assets/login_tab_back.png";
 
-///error
-const String activationError = "Enter a Valid Code to Continue";
-const String loginError = "Wrong  Username or Password";
+// ///error
+// const String activationError = "Enter a Valid Code to Continue";
+// const String loginError = "Wrong  Username or Password";
 
 //sized box
 const kWidth = SizedBox(
@@ -32,6 +32,9 @@ const kWidth = SizedBox(
 );
 const kWidth20 = SizedBox(
   width: 20,
+);
+const kheight5 = SizedBox(
+  height: 5,
 );
 const kheight10 = SizedBox(
   height: 10,
@@ -88,7 +91,6 @@ snackbarCenterWidget(int second, content, BuildContext context) {
 //      ),
 //   ),
 
-const Color UniformColor = Color.fromARGB(255, 73, 39, 197);
 
 
 //https://poki.com/en/g/burnin-rubber-5-xs

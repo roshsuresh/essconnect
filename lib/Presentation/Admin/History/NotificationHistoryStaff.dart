@@ -5,6 +5,7 @@ import 'package:essconnect/utils/constants.dart';
 import 'package:essconnect/utils/spinkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 import '../../../Application/AdminProviders/NotificationToGuardian.dart';
@@ -70,6 +71,17 @@ class StudentNotificationHistory extends StatelessWidget {
                   physics: const BouncingScrollPhysics(
                       parent: AlwaysScrollableScrollPhysics()),
                   itemBuilder: (BuildContext context, index) {
+                    //start date
+                    String finalStartDate = '';
+
+                    if (value.historyList[index].createdDate != null) {
+                      String startdate =
+                          value.historyList[index].createdDate ?? '--';
+                      DateTime parsedDateTime = DateTime.parse(startdate);
+
+                      finalStartDate =
+                          DateFormat('dd-MMM-yyyy').format(parsedDateTime);
+                    }
                     return AnimationConfiguration.staggeredList(
                       position: index,
                       delay: const Duration(milliseconds: 100),
@@ -153,9 +165,7 @@ class StudentNotificationHistory extends StatelessWidget {
                                                   fontSize: 12),
                                             ),
                                             Text(
-                                              value.historyList[index]
-                                                      .createdDate ??
-                                                  '--',
+                                              finalStartDate,
                                               style: const TextStyle(
                                                   color: Color.fromARGB(
                                                       255, 49, 47, 47),

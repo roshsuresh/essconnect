@@ -7,7 +7,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:provider/provider.dart';
-
 import '../../../../Domain/Staff/StudentReport_staff.dart';
 import '../../../../utils/constants.dart';
 import '../../../Domain/Admin/AttendanceModel.dart';
@@ -110,11 +109,11 @@ class _AttendanceReportState extends State<AttendanceReport> {
                     builder: (context, value, child) => value.loadingSection
                         ? SizedBox(
                             width: size.width * .43,
-                            height: 50,
+                            height: 45,
                             child: const Center(child: Text('Loading...')))
                         : SizedBox(
                             width: size.width * .43,
-                            height: 50,
+                            height: 45,
                             child: MultiSelectDialogField(
                               items: value.dropDown,
                               listType: MultiSelectListType.CHIP,
@@ -134,14 +133,18 @@ class _AttendanceReportState extends State<AttendanceReport> {
                                 style: TextStyle(color: UIGuide.light_Purple),
                               ),
                               separateSelectedItems: true,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
+                              decoration: const BoxDecoration(
+                                color: UIGuide.ButtonBlue,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey,
+                                    offset: Offset(0, 2),
+                                    blurRadius: 4,
+                                    spreadRadius: 0,
+                                  ),
+                                ],
                                 borderRadius:
-                                    const BorderRadius.all(Radius.circular(10)),
-                                border: Border.all(
-                                  color: Colors.grey,
-                                  width: 2,
-                                ),
+                                    BorderRadius.all(Radius.circular(10)),
                               ),
                               buttonIcon: const Icon(
                                 Icons.arrow_drop_down_outlined,
@@ -195,9 +198,7 @@ class _AttendanceReportState extends State<AttendanceReport> {
                                 await Provider.of<SchoolPhotoProviders>(context,
                                         listen: false)
                                     .sectionCounter(results.length);
-                                // await Provider.of<SchoolPhotoProviders>(context,
-                                //         listen: false)
-                                //     .clearCourse();
+
                                 await Provider.of<SchoolPhotoProviders>(context,
                                         listen: false)
                                     .getCourseList(section);
@@ -213,11 +214,11 @@ class _AttendanceReportState extends State<AttendanceReport> {
                     builder: (context, value, child) => value.loadingCourse
                         ? SizedBox(
                             width: size.width * .43,
-                            height: 50,
+                            height: 45,
                             child: const Center(child: Text('Loading...')))
                         : SizedBox(
                             width: size.width * .43,
-                            height: 50,
+                            height: 45,
                             child: MultiSelectDialogField(
                               items: value.courseDrop,
                               listType: MultiSelectListType.CHIP,
@@ -238,14 +239,18 @@ class _AttendanceReportState extends State<AttendanceReport> {
                                 style: TextStyle(color: UIGuide.light_Purple),
                               ),
                               separateSelectedItems: true,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
+                              decoration: const BoxDecoration(
+                                color: UIGuide.ButtonBlue,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey,
+                                    offset: Offset(0, 2),
+                                    blurRadius: 4,
+                                    spreadRadius: 0,
+                                  ),
+                                ],
                                 borderRadius:
-                                    const BorderRadius.all(Radius.circular(10)),
-                                border: Border.all(
-                                  color: Colors.grey,
-                                  width: 2,
-                                ),
+                                    BorderRadius.all(Radius.circular(10)),
                               ),
                               buttonIcon: const Icon(
                                 Icons.arrow_drop_down_outlined,
@@ -329,11 +334,11 @@ class _AttendanceReportState extends State<AttendanceReport> {
                     builder: (context, value, child) => value.loadingDivision
                         ? SizedBox(
                             width: size.width * .43,
-                            height: 50,
+                            height: 45,
                             child: const Center(child: Text('Loading...')))
                         : SizedBox(
                             width: size.width * .43,
-                            height: 50,
+                            height: 45,
                             child: MultiSelectDialogField(
                               items: value.divisionDrop,
                               listType: MultiSelectListType.CHIP,
@@ -353,14 +358,18 @@ class _AttendanceReportState extends State<AttendanceReport> {
                                 style: TextStyle(color: UIGuide.light_Purple),
                               ),
                               separateSelectedItems: true,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
+                              decoration: const BoxDecoration(
+                                color: UIGuide.ButtonBlue,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey,
+                                    offset: Offset(0, 2),
+                                    blurRadius: 4,
+                                    spreadRadius: 0,
+                                  ),
+                                ],
                                 borderRadius:
-                                    const BorderRadius.all(Radius.circular(10)),
-                                border: Border.all(
-                                  color: Colors.grey,
-                                  width: 2,
-                                ),
+                                    BorderRadius.all(Radius.circular(10)),
                               ),
                               buttonIcon: const Icon(
                                 Icons.arrow_drop_down_outlined,
@@ -409,24 +418,21 @@ class _AttendanceReportState extends State<AttendanceReport> {
                           ),
                   ),
                   const Spacer(),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: const BorderRadius.all(Radius.circular(10)),
-                      border: Border.all(
-                        color: Colors.grey,
-                        width: 2,
-                      ),
-                    ),
+                  SizedBox(
                     width: size.width * .43,
-                    height: 47,
-                    child: MaterialButton(
-                      shape: const RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(10.0))),
-
-                      // minWidth: size.width - 250,
-                      color: Colors.white,
+                    height: 45,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        elevation: 3,
+                        foregroundColor: UIGuide.light_Purple,
+                        backgroundColor: UIGuide.ButtonBlue,
+                        padding: const EdgeInsets.all(0),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            side: const BorderSide(
+                              color: UIGuide.light_black,
+                            )),
+                      ),
                       onPressed: (() async {
                         await Provider.of<AttendanceReportProvider>(context,
                                 listen: false)
@@ -455,17 +461,12 @@ class _AttendanceReportState extends State<AttendanceReport> {
                           print(timeNow);
                           smsDate =
                               DateFormat('yyyy-MM-dd').format(_mydatetime!);
-
-                          // smsDate = smsDate =='-'  ? DateFormat('yyyy-MM-dd').format(_mydatetime!):t
-                          // print("Smsdate $smsDate
-                          //     );
                         });
                       }),
-                      // minWidth: size.width - 250,
                       child: Center(
                           child: Text(
                         timeNow == '--' ? newdate.toString() : timeNow,
-                        style: TextStyle(fontSize: 16),
+                        style: const TextStyle(fontSize: 16),
                       )),
                     ),
                   ),
@@ -475,7 +476,7 @@ class _AttendanceReportState extends State<AttendanceReport> {
             ),
             Row(
               children: [
-                Spacer(),
+                const Spacer(),
                 Radio(
                   activeColor: UIGuide.light_Purple,
                   value: 'sms',
@@ -493,11 +494,11 @@ class _AttendanceReportState extends State<AttendanceReport> {
                       type = 'sms';
                     });
                   },
-                  child: Text(
+                  child: const Text(
                     "Text SMS",
                   ),
                 ),
-                Spacer(),
+                const Spacer(),
                 Radio(
                   activeColor: UIGuide.light_Purple,
                   value: 'Notification',
@@ -519,7 +520,7 @@ class _AttendanceReportState extends State<AttendanceReport> {
                     "Notification",
                   ),
                 ),
-                Spacer(),
+                const Spacer(),
               ],
             ),
             snap.isDualttendance == true
@@ -532,7 +533,7 @@ class _AttendanceReportState extends State<AttendanceReport> {
                           borderRadius: BorderRadius.circular(10)),
                       child: Row(
                         children: [
-                          Spacer(),
+                          const Spacer(),
                           Radio(
                             activeColor: UIGuide.light_Purple,
                             value: 'both',
@@ -557,11 +558,11 @@ class _AttendanceReportState extends State<AttendanceReport> {
                                 attType = 'both';
                               });
                             },
-                            child: Text(
+                            child: const Text(
                               "Both",
                             ),
                           ),
-                          Spacer(),
+                          const Spacer(),
                           Radio(
                             activeColor: UIGuide.light_Purple,
                             value: 'forenoon',
@@ -586,7 +587,7 @@ class _AttendanceReportState extends State<AttendanceReport> {
                                 attType = 'forenoon';
                               });
                             },
-                            child: Text(
+                            child: const Text(
                               "Forenoon",
                             ),
                           ),
@@ -618,7 +619,7 @@ class _AttendanceReportState extends State<AttendanceReport> {
                               "Afternoon",
                             ),
                           ),
-                          Spacer(),
+                          const Spacer(),
                         ],
                       ),
                     ),
@@ -651,20 +652,29 @@ class _AttendanceReportState extends State<AttendanceReport> {
                 // ),
                 Consumer<AttendanceReportProvider>(
                   builder: (context, val, child) => SizedBox(
-                    width: 120,
+                    width: size.width * .42,
                     height: 40,
                     child: val.loading
                         ? Center(
                             child: Container(
-                                child: Text(
+                                child: const Text(
                             'Loading Data...',
                             style: TextStyle(
                                 color: UIGuide.light_Purple,
                                 fontWeight: FontWeight.bold),
                           )))
-                        : TextButton(
-                            style: TextButton.styleFrom(
-                                backgroundColor: UIGuide.light_Purple),
+                        : ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              elevation: 3,
+                              foregroundColor: UIGuide.WHITE,
+                              backgroundColor: UIGuide.light_Purple,
+                              padding: const EdgeInsets.all(0),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  side: const BorderSide(
+                                    color: UIGuide.light_black,
+                                  )),
+                            ),
                             onPressed: (() async {
                               await Provider.of<AttendanceReportProvider>(
                                       context,
@@ -712,49 +722,70 @@ class _AttendanceReportState extends State<AttendanceReport> {
               ],
             ),
             kheight10,
-            Table(
-              columnWidths: const {
-                0: FlexColumnWidth(1.5),
-                1: FlexColumnWidth(4),
-                2: FlexColumnWidth(1.2),
-              },
-              children: [
-                TableRow(children: [
-                  const Text(
-                    '   Sl.No.',
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                  ),
-                  const Text(
-                    'Name',
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                  ),
-                  Consumer<AttendanceReportProvider>(
-                    builder: (context, value, child) => GestureDetector(
-                        onTap: () {
-                          value.selectAll();
-                          type == 'sms'
-                              ? value.lastList = value.attendanceList
-                              : print("eroor");
-                        },
-                        child: value.isselectAll
-                            ? Padding(
-                                padding: const EdgeInsets.only(left: 15),
-                                child: SvgPicture.asset(
-                                  UIGuide.check,
-                                  color: UIGuide.light_Purple,
-                                ),
-                              )
-                            : const Text(
-                                'Select All',
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
-                                    color: UIGuide.light_Purple),
-                              )),
+            Provider.of<AttendanceReportProvider>(context, listen: false)
+                    .attendanceList
+                    .isEmpty
+                ? const SizedBox(
+                    height: 0,
+                    width: 0,
                   )
-                ])
-              ],
-            ),
+                : Container(
+                    decoration: BoxDecoration(
+                        color: const Color.fromARGB(255, 241, 243, 245),
+                        border:
+                            Border.all(color: UIGuide.light_black, width: 1)),
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 2.0, bottom: 2),
+                      child: Table(
+                        columnWidths: const {
+                          0: FlexColumnWidth(1.3),
+                          1: FlexColumnWidth(4),
+                          2: FlexColumnWidth(1.3),
+                        },
+                        children: [
+                          TableRow(children: [
+                            const Text(
+                              '  Sl.No.',
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.bold),
+                            ),
+                            const Text(
+                              'Name',
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.bold),
+                            ),
+                            Consumer<AttendanceReportProvider>(
+                              builder: (context, value, child) =>
+                                  GestureDetector(
+                                      onTap: () {
+                                        value.selectAll();
+                                        type == 'sms'
+                                            ? value.lastList =
+                                                value.attendanceList
+                                            : print("eroor");
+                                      },
+                                      child: value.isselectAll
+                                          ? Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 15),
+                                              child: SvgPicture.asset(
+                                                UIGuide.check,
+                                                color: UIGuide.light_Purple,
+                                              ),
+                                            )
+                                          : const Text(
+                                              ' Select All',
+                                              style: TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: UIGuide.light_Purple),
+                                            )),
+                            )
+                          ])
+                        ],
+                      ),
+                    ),
+                  ),
             Consumer<AttendanceReportProvider>(
               builder: (context, value, child) {
                 return value.loading
@@ -770,9 +801,19 @@ class _AttendanceReportState extends State<AttendanceReport> {
                                 ? 0
                                 : value.attendanceList.length,
                             itemBuilder: ((context, index) {
-                              return Attendance_List_View(
-                                viewStud: value.attendanceList[index],
-                                indexx: index,
+                              return Container(
+                                decoration: BoxDecoration(
+                                  color: index.isEven
+                                      ? Colors.white
+                                      : const Color.fromARGB(
+                                          255, 241, 243, 245),
+                                  border: Border.all(
+                                      color: UIGuide.light_black, width: 1),
+                                ),
+                                child: Attendance_List_View(
+                                  viewStud: value.attendanceList[index],
+                                  indexx: index,
+                                ),
                               );
                             }),
                           ),
@@ -786,47 +827,57 @@ class _AttendanceReportState extends State<AttendanceReport> {
       bottomNavigationBar: BottomAppBar(
         elevation: 3.0,
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding:
+              const EdgeInsets.only(left: 10, right: 10, bottom: 2, top: 2),
           child: Consumer<AttendanceReportProvider>(
-            builder: (context, value, child) => MaterialButton(
-              color: UIGuide.light_Purple,
-              onPressed: () async {
-                if (type == 'Notification') {
-                  await Provider.of<AttendanceReportProvider>(context,
-                          listen: false)
-                      .submitStudent(context);
-                } else {
-                  await value.getProvider();
-                  if (value.providerName == null) {
-                    await ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        elevation: 10,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                        ),
-                        duration: Duration(seconds: 1),
-                        margin:
-                            EdgeInsets.only(bottom: 80, left: 30, right: 30),
-                        behavior: SnackBarBehavior.floating,
-                        content: Text(
-                          'Sms Provider Not Found.....!',
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    );
-                  } else {
-                    await Provider.of<AttendanceReportProvider>(context,
-                            listen: false)
-                        .submitSmsStudent(context, smsDate.toString());
-                  }
-                }
-              },
-              child: const Text('Proceed',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400)),
-            ),
+            builder: (context, value, child) => value.attendanceList.isEmpty
+                ? const SizedBox(
+                    height: 0,
+                    width: 0,
+                  )
+                : MaterialButton(
+                    color: UIGuide.light_Purple,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    onPressed: () async {
+                      if (type == 'Notification') {
+                        await Provider.of<AttendanceReportProvider>(context,
+                                listen: false)
+                            .submitStudent(context);
+                      } else {
+                        await value.getProvider();
+                        if (value.providerName == null) {
+                          await ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              elevation: 10,
+                              shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10)),
+                              ),
+                              duration: Duration(seconds: 1),
+                              margin: EdgeInsets.only(
+                                  bottom: 80, left: 30, right: 30),
+                              behavior: SnackBarBehavior.floating,
+                              content: Text(
+                                'Sms Provider Not Found.....!',
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          );
+                        } else {
+                          await Provider.of<AttendanceReportProvider>(context,
+                                  listen: false)
+                              .submitSmsStudent(context, smsDate.toString());
+                        }
+                      }
+                    },
+                    child: const Text('Proceed',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400)),
+                  ),
           ),
         ),
       ),
@@ -844,31 +895,38 @@ class Attendance_List_View extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<AttendanceReportProvider>(
-      builder: (context, value, child) => SizedBox(
-        height: 53,
-        child: ListTile(
-          style: ListTileStyle.list,
-          selectedColor: UIGuide.light_Purple,
-          leading: Text(
-            (indexx + 1).toString(),
-            textAlign: TextAlign.center,
-          ),
-          onTap: () {
-            value.selectItem(viewStud);
-          },
-          selectedTileColor: const Color.fromARGB(255, 10, 27, 141),
-          title: Text(viewStud.name.toString()),
-          subtitle: Text(viewStud.division ?? '---'),
-          trailing: viewStud.selected != null && viewStud.selected!
-              ? SvgPicture.asset(
-                  UIGuide.check,
-                  color: UIGuide.light_Purple,
-                )
-              : SvgPicture.asset(
-                  UIGuide.notcheck,
-                  color: UIGuide.light_Purple,
-                ),
+      builder: (context, value, child) => ListTile(
+        dense: true,
+        titleAlignment: ListTileTitleAlignment.center,
+        shape: const RoundedRectangleBorder(),
+        leading: Text(
+          (indexx + 1).toString(),
+          textAlign: TextAlign.center,
         ),
+        onTap: () {
+          value.selectItem(viewStud);
+        },
+        selectedTileColor: const Color.fromARGB(255, 10, 27, 141),
+        title: Text(
+          viewStud.name.toString(),
+          style: const TextStyle(
+              fontSize: 14, fontWeight: FontWeight.w600, color: UIGuide.BLACK),
+        ),
+        subtitle: Row(
+          children: [
+            const Text("Division: "),
+            Expanded(child: Text(viewStud.division ?? '---')),
+          ],
+        ),
+        trailing: viewStud.selected != null && viewStud.selected!
+            ? SvgPicture.asset(
+                UIGuide.check,
+                color: UIGuide.light_Purple,
+              )
+            : SvgPicture.asset(
+                UIGuide.notcheck,
+                color: UIGuide.light_Purple,
+              ),
       ),
     );
   }

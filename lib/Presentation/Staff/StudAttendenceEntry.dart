@@ -17,19 +17,19 @@ class AttendenceEntry extends StatefulWidget {
 class _AttendenceEntryState extends State<AttendenceEntry> {
   String? forattd;
   String? aftattd;
-  DateTime? curdate;
-  String? newdate;
-  String dateFinal = '--';
-  DateTime? _mydatetime;
+  // DateTime? curdate;
+  // String? newdate;
+  // String dateFinal = '--';
+  // DateTime? _mydatetime;
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       var p = Provider.of<AttendenceStaffProvider>(context, listen: false);
-
-      curdate = DateTime.now();
-      newdate = DateFormat('yyyy-MM-dd').format(curdate!);
-      dateFinal = newdate!;
+      p.getDateNow();
+      // curdate = DateTime.now();
+      // newdate = DateFormat('yyyy-MM-dd').format(curdate!);
+      // dateFinal = newdate!;
       await p.clearAllFilters();
       p.selectedCourse.clear();
       await p.courseClear();
@@ -74,462 +74,480 @@ class _AttendenceEntryState extends State<AttendenceEntry> {
         return value.load
             ? spinkitLoader()
             : Column(
-                //*  physics: const NeverScrollableScrollPhysics(),
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      MaterialButton(
-                          color: Colors.white,
-                          elevation: 5,
-                          child: Text(
-                            dateFinal == '--'
-                                ? '🗓️   $newdate'
-                                : "🗓️   $dateFinal",
-                            style: const TextStyle(color: UIGuide.light_Purple),
-                          ),
-                          onPressed: () async {
-                            _mydatetime = await showDatePicker(
-                              context: context,
-                              initialDate: _mydatetime ?? DateTime.now(),
-                              firstDate: DateTime(2022),
-                              lastDate: DateTime(2030),
-                              builder: (context, child) {
-                                return Theme(
-                                    data: ThemeData.light().copyWith(
-                                      primaryColor: UIGuide.light_Purple,
-                                      colorScheme: const ColorScheme.light(
-                                        primary: UIGuide.light_Purple,
-                                      ),
-                                      buttonTheme: const ButtonThemeData(
-                                          textTheme: ButtonTextTheme.primary),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        kWidth,
+                        Expanded(
+                          child: SizedBox(
+                            height: 45,
+                            child: Consumer<AttendenceStaffProvider>(
+                                builder: (context, snapshot, child) {
+                              return ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  elevation: 3,
+                                  foregroundColor: UIGuide.light_Purple,
+                                  backgroundColor: UIGuide.WHITE,
+                                  padding: const EdgeInsets.all(0),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      side: const BorderSide(
+                                        color: UIGuide.light_black,
+                                      )),
+                                ),
+                                onPressed: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return Dialog(
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(15)),
+                                            child: LimitedBox(
+                                              maxHeight: size.height / 1.3,
+                                              child: ListView.builder(
+                                                  shrinkWrap: true,
+                                                  itemCount:
+                                                      attendecourse!.length,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    return ListTile(
+                                                      onTap: () async {
+                                                        //markEntryDivisionListController.clear();
+                                                        markEntryDivisionListController1
+                                                            .clear();
+                                                        markEntryDivisionListController
+                                                            .clear();
+                                                        snapshot
+                                                            .clearStudentList();
+                                                        markEntryInitialValuesController
+                                                                .text =
+                                                            await attendecourse![
+                                                                        index]
+                                                                    ['value'] ??
+                                                                '--';
+                                                        markEntryInitialValuesController1
+                                                                .text =
+                                                            await attendecourse![
+                                                                        index]
+                                                                    ['text'] ??
+                                                                '--';
+                                                        courseId =
+                                                            markEntryInitialValuesController
+                                                                .text
+                                                                .toString();
+
+                                                        print(courseId);
+
+                                                        await Provider.of<
+                                                                    AttendenceStaffProvider>(
+                                                                context,
+                                                                listen: false)
+                                                            .divisionClear();
+
+                                                        await Provider.of<
+                                                                    AttendenceStaffProvider>(
+                                                                context,
+                                                                listen: false)
+                                                            .getAttendenceDivisionValues(
+                                                                courseId);
+
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                      title: Text(
+                                                        attendecourse![index]
+                                                                ['text'] ??
+                                                            '--',
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                      ),
+                                                    );
+                                                  }),
+                                            ));
+                                      });
+                                },
+                                child: TextField(
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
+                                      color: UIGuide.BLACK,
+                                      overflow: TextOverflow.clip),
+                                  textAlign: TextAlign.center,
+                                  controller: markEntryInitialValuesController1,
+                                  decoration: const InputDecoration(
+                                    contentPadding:
+                                        EdgeInsets.only(left: 0, top: 0),
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.never,
+                                    filled: true,
+                                    fillColor: Colors.transparent,
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          style: BorderStyle.none, width: 0),
                                     ),
-                                    child: child!);
-                              },
-                            );
-                            setState(() {
-                              dateFinal =
-                                  DateFormat('yyyy-MM-dd').format(_mydatetime!);
-                              print(dateFinal);
-                            });
-                          }),
-                    ],
+                                    labelText: "  Select Course",
+                                    hintText: "Course",
+                                  ),
+                                  enabled: false,
+                                ),
+                              );
+                            }),
+                          ),
+                        ),
+                        kWidth,
+                        value.loadDivision
+                            ? Expanded(
+                                child: Container(
+                                  height: 45,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    border: Border.all(
+                                        color: UIGuide.light_Purple, width: 1),
+                                  ),
+                                  child: const Center(
+                                    child: Text("Loading..."),
+                                  ),
+                                ),
+                              )
+                            : Expanded(
+                                child: SizedBox(
+                                  height: 45,
+                                  child: Consumer<AttendenceStaffProvider>(
+                                      builder: (context, snapshot, child) {
+                                    return ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        elevation: 3,
+                                        foregroundColor: UIGuide.light_Purple,
+                                        backgroundColor: UIGuide.ButtonBlue,
+                                        padding: const EdgeInsets.all(0),
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            side: const BorderSide(
+                                              color: UIGuide.light_black,
+                                            )),
+                                      ),
+                                      onPressed: () async {
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return Dialog(
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              15)),
+                                                  child: LimitedBox(
+                                                    maxHeight:
+                                                        size.height / 1.3,
+                                                    child: ListView.builder(
+                                                        shrinkWrap: true,
+                                                        itemCount: snapshot
+                                                            .attendenceDivisionList
+                                                            .length,
+                                                        itemBuilder:
+                                                            (context, index) {
+                                                          return ListTile(
+                                                            onTap: () async {
+                                                              markEntryDivisionListController
+                                                                  .text = snapshot
+                                                                      .attendenceDivisionList[
+                                                                          index]
+                                                                      .value ??
+                                                                  '---';
+                                                              markEntryDivisionListController1
+                                                                  .text = snapshot
+                                                                      .attendenceDivisionList[
+                                                                          index]
+                                                                      .text ??
+                                                                  '---';
+                                                              divisionId =
+                                                                  markEntryDivisionListController
+                                                                      .text
+                                                                      .toString();
+                                                              courseId =
+                                                                  markEntryInitialValuesController
+                                                                      .text
+                                                                      .toString();
+                                                              snapshot
+                                                                  .clearStudentList();
+
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop();
+                                                            },
+                                                            title: Text(
+                                                              snapshot
+                                                                      .attendenceDivisionList[
+                                                                          index]
+                                                                      .text ??
+                                                                  '---',
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                            ),
+                                                          );
+                                                        }),
+                                                  ));
+                                            });
+                                      },
+                                      child: TextField(
+                                        style: const TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w500,
+                                            color: UIGuide.BLACK,
+                                            overflow: TextOverflow.clip),
+                                        textAlign: TextAlign.center,
+                                        controller:
+                                            markEntryDivisionListController1,
+                                        decoration: const InputDecoration(
+                                          contentPadding:
+                                              EdgeInsets.only(left: 0, top: 0),
+                                          floatingLabelBehavior:
+                                              FloatingLabelBehavior.never,
+                                          filled: true,
+                                          fillColor: Colors.transparent,
+                                          border: OutlineInputBorder(
+                                            borderSide: BorderSide(
+                                                style: BorderStyle.none,
+                                                width: 0),
+                                          ),
+                                          labelText: "  Select Division",
+                                          hintText: "Division",
+                                        ),
+                                        enabled: false,
+                                      ),
+                                    );
+                                  }),
+                                ),
+                              ),
+                        kWidth
+                      ],
+                    ),
                   ),
-                  Row(
-                    children: [
-                      SizedBox(
-                        height: 50,
-                        width: MediaQuery.of(context).size.width * 0.49,
-                        child: Consumer<AttendenceStaffProvider>(
-                            builder: (context, snapshot, child) {
-                          return InkWell(
-                            onTap: () {
-                              showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return Dialog(
-                                        child: LimitedBox(
-                                      maxHeight: size.width / 1.3,
-                                      child: ListView.builder(
-                                          shrinkWrap: true,
-                                          itemCount: attendecourse!.length,
-                                          itemBuilder: (context, index) {
-                                            return ListTile(
-                                              onTap: () async {
-                                                //markEntryDivisionListController.clear();
-                                                markEntryDivisionListController1
-                                                    .clear();
-                                                markEntryDivisionListController
-                                                    .clear();
-                                                snapshot.clearStudentList();
-                                                markEntryInitialValuesController
-                                                        .text =
-                                                    await attendecourse![index]
-                                                            ['value'] ??
-                                                        '--';
-                                                markEntryInitialValuesController1
-                                                        .text =
-                                                    await attendecourse![index]
-                                                            ['text'] ??
-                                                        '--';
-                                                courseId =
-                                                    markEntryInitialValuesController
-                                                        .text
-                                                        .toString();
-
-                                                print(courseId);
-
-                                                await Provider.of<
-                                                            AttendenceStaffProvider>(
-                                                        context,
-                                                        listen: false)
-                                                    .divisionClear();
-
-                                                await Provider.of<
-                                                            AttendenceStaffProvider>(
-                                                        context,
-                                                        listen: false)
-                                                    .getAttendenceDivisionValues(
-                                                        courseId);
-
-                                                Navigator.of(context).pop();
-                                              },
-                                              title: Text(
-                                                attendecourse![index]['text'] ??
-                                                    '--',
-                                                textAlign: TextAlign.center,
-                                              ),
-                                            );
-                                          }),
-                                    ));
-                                  });
-                            },
-                            child: Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: Column(
-                                children: [
-                                  Container(
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(left: 8, right: 8, bottom: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        kWidth,
+                        Expanded(
+                          child: SizedBox(
+                            height: 38,
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  elevation: 3,
+                                  foregroundColor: UIGuide.light_Purple,
+                                  backgroundColor: UIGuide.ButtonBlue,
+                                  padding: const EdgeInsets.all(0),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      side: const BorderSide(
+                                        color: UIGuide.light_black,
+                                      )),
+                                ),
+                                child: Text(
+                                  "🗓️    ${value.dateDisplay}",
+                                  style: const TextStyle(
+                                      color: UIGuide.light_Purple),
+                                ),
+                                onPressed: () async {
+                                  await value.getDate(context);
+                                }),
+                          ),
+                        ),
+                        kWidth,
+                        Expanded(
+                          child: SizedBox(
+                            height: 40,
+                            child: value.loading
+                                ? Container(
+                                    height: 40,
                                     decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
                                       border: Border.all(
                                           color: UIGuide.light_Purple,
                                           width: 1),
                                     ),
-                                    height: 40,
-                                    child: TextField(
-                                      style: const TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                          color: UIGuide.BLACK,
-                                          overflow: TextOverflow.clip),
-                                      textAlign: TextAlign.center,
-                                      controller:
-                                          markEntryInitialValuesController1,
-                                      decoration: const InputDecoration(
-                                        contentPadding:
-                                            EdgeInsets.only(left: 0, top: 0),
-                                        floatingLabelBehavior:
-                                            FloatingLabelBehavior.never,
-                                        filled: true,
-                                        fillColor:
-                                            Color.fromARGB(255, 238, 237, 237),
-                                        border: OutlineInputBorder(),
-                                        labelText: "  Select Course",
-                                        hintText: "Course",
-                                      ),
-                                      enabled: false,
+                                    child: const Center(
+                                        child: Text(
+                                      "Loading...",
+                                      style: TextStyle(
+                                          color: UIGuide.light_Purple,
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold),
+                                    )))
+                                : ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      elevation: 3,
+                                      foregroundColor: UIGuide.WHITE,
+                                      backgroundColor: UIGuide.light_Purple,
+                                      padding: const EdgeInsets.all(0),
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          side: const BorderSide(
+                                            color: UIGuide.light_black,
+                                          )),
                                     ),
-                                  ),
-                                  SizedBox(
-                                    height: 0,
-                                    child: TextField(
-                                      textAlign: TextAlign.center,
-                                      controller:
-                                          markEntryInitialValuesController,
-                                      decoration: const InputDecoration(
-                                        filled: true,
-                                        fillColor:
-                                            Color.fromARGB(255, 238, 237, 237),
-                                        border: OutlineInputBorder(),
-                                        labelText: "",
-                                        hintText: "",
-                                      ),
-                                      enabled: false,
+                                    child: const Text(
+                                      'View',
+                                      style: TextStyle(
+                                          color: UIGuide.WHITE,
+                                          fontWeight: FontWeight.bold),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        }),
-                      ),
-                      const Spacer(),
-                      value.loadDivision
-                          ? Container(
-                              height: 40,
-                              width: MediaQuery.of(context).size.width * 0.49,
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: UIGuide.light_Purple, width: 1),
-                              ),
-                              child: const Center(
-                                child: Text("Loading..."),
-                              ),
-                            )
-                          : SizedBox(
-                              height: 50,
-                              width: MediaQuery.of(context).size.width * 0.49,
-                              child: Consumer<AttendenceStaffProvider>(
-                                  builder: (context, snapshot, child) {
-                                return InkWell(
-                                  onTap: () async {
-                                    showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return Dialog(
-                                              child: LimitedBox(
-                                            maxHeight: size.width / 1.3,
-                                            child: ListView.builder(
-                                                shrinkWrap: true,
-                                                itemCount: snapshot
-                                                    .attendenceDivisionList
-                                                    .length,
-                                                itemBuilder: (context, index) {
-                                                  return ListTile(
-                                                    onTap: () async {
-                                                      markEntryDivisionListController
-                                                          .text = snapshot
-                                                              .attendenceDivisionList[
-                                                                  index]
-                                                              .value ??
-                                                          '---';
-                                                      markEntryDivisionListController1
-                                                          .text = snapshot
-                                                              .attendenceDivisionList[
-                                                                  index]
-                                                              .text ??
-                                                          '---';
-                                                      divisionId =
-                                                          markEntryDivisionListController
-                                                              .text
-                                                              .toString();
-                                                      courseId =
-                                                          markEntryInitialValuesController
-                                                              .text
-                                                              .toString();
-
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                    },
-                                                    title: Text(
-                                                      snapshot
-                                                              .attendenceDivisionList[
-                                                                  index]
-                                                              .text ??
-                                                          '---',
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    ),
-                                                  );
-                                                }),
-                                          ));
-                                        });
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(5.0),
-                                    child: Column(
-                                      children: [
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                                color: UIGuide.light_Purple,
-                                                width: 1),
+                                    onPressed: () async {
+                                      print(value.dateSend);
+                                      if (value.dateSend.isEmpty) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(const SnackBar(
+                                          elevation: 10,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10)),
                                           ),
-                                          height: 40,
-                                          child: TextField(
-                                            style: const TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w500,
-                                                color: UIGuide.BLACK,
-                                                overflow: TextOverflow.clip),
+                                          duration: Duration(seconds: 1),
+                                          margin: EdgeInsets.only(
+                                              bottom: 80, left: 30, right: 30),
+                                          behavior: SnackBarBehavior.floating,
+                                          content: Text(
+                                            "Select Date..!",
                                             textAlign: TextAlign.center,
-                                            controller:
-                                                markEntryDivisionListController1,
-                                            decoration: const InputDecoration(
-                                              contentPadding: EdgeInsets.only(
-                                                  left: 0, top: 0),
-                                              floatingLabelBehavior:
-                                                  FloatingLabelBehavior.never,
-                                              filled: true,
-                                              fillColor: Color.fromARGB(
-                                                  255, 238, 237, 237),
-                                              border: OutlineInputBorder(),
-                                              labelText: "  Select Division",
-                                              hintText: "Division",
-                                            ),
-                                            enabled: false,
                                           ),
-                                        ),
-                                        SizedBox(
-                                          height: 0,
-                                          child: TextField(
-                                            controller:
-                                                markEntryDivisionListController,
-                                            decoration: const InputDecoration(
-                                              filled: true,
-                                              fillColor: Color.fromARGB(
-                                                  255, 238, 237, 237),
-                                              border: OutlineInputBorder(),
-                                              labelText: "",
-                                              hintText: "",
-                                            ),
-                                            enabled: false,
+                                        ));
+                                      } else if (markEntryInitialValuesController
+                                              .text.isEmpty ||
+                                          markEntryDivisionListController
+                                              .text.isEmpty) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(const SnackBar(
+                                          elevation: 10,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(10)),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                );
-                              }),
-                            ),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        height: 35,
-                        width: 150,
-                        child: value.loading
-                            ? Container(
-                                child: const Center(
-                                    child: Text(
-                                "Loading...",
-                                style: TextStyle(
-                                    color: UIGuide.light_Purple,
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold),
-                              )))
-                            : MaterialButton(
-                                color: UIGuide.light_Purple,
-                                child: const Text(
-                                  'View',
-                                  style: TextStyle(
-                                      color: UIGuide.WHITE,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                onPressed: () async {
-                                  // await value.loading
-                                  //     ? const CircularProgressIndicator()
-                                  //     : await Provider.of<AttendenceStaffProvider>(
-                                  //             context,
-                                  //             listen: false)
-                                  //         .clearStudentList();
-                                  print(dateFinal);
-                                  if (dateFinal.isEmpty) {
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(const SnackBar(
-                                      elevation: 10,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(10)),
-                                      ),
-                                      duration: Duration(seconds: 1),
-                                      margin: EdgeInsets.only(
-                                          bottom: 80, left: 30, right: 30),
-                                      behavior: SnackBarBehavior.floating,
-                                      content: Text(
-                                        "Select Date..!",
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ));
-                                  } else if (markEntryInitialValuesController
-                                          .text.isEmpty ||
-                                      markEntryDivisionListController
-                                          .text.isEmpty) {
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(const SnackBar(
-                                      elevation: 10,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(10)),
-                                      ),
-                                      duration: Duration(seconds: 1),
-                                      margin: EdgeInsets.only(
-                                          bottom: 80, left: 30, right: 30),
-                                      behavior: SnackBarBehavior.floating,
-                                      content: Text(
-                                        "Select mandatory fields...!",
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ));
-                                  } else {
-                                    // await value.loading
-                                    //     ? spinkitLoader
-                                    //     :
-                                    await Provider.of<AttendenceStaffProvider>(
-                                            context,
-                                            listen: false)
-                                        .clearStudentList();
+                                          duration: Duration(seconds: 1),
+                                          margin: EdgeInsets.only(
+                                              bottom: 80, left: 30, right: 30),
+                                          behavior: SnackBarBehavior.floating,
+                                          content: Text(
+                                            "Select mandatory fields...!",
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ));
+                                      } else {
+                                        await value.clearStudentList();
 
-                                    await Provider.of<AttendenceStaffProvider>(
-                                            context,
-                                            listen: false)
-                                        .getstudentsAttendenceView(
-                                            dateFinal, divisionId);
-                                  }
-                                }),
-                      ),
-                    ],
+                                        await value.getstudentsAttendenceView(
+                                            value.dateSend, divisionId);
+                                      }
+                                    }),
+                          ),
+                        ),
+                        kWidth
+                      ],
+                    ),
                   ),
-                  kheight10,
                   Consumer<AttendenceStaffProvider>(
                     builder: (context, val, child) =>
                         val.isDualAttendance == false
                             ? Expanded(
                                 child: Column(
                                   children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(4.0),
-                                      child: Table(
-                                        border: TableBorder.all(
-                                            color: const Color.fromARGB(
-                                                255, 247, 244, 244)),
-                                        columnWidths: const {
-                                          0: FlexColumnWidth(1),
-                                          1: FlexColumnWidth(3),
-                                          2: FlexColumnWidth(1),
-                                          // 3: FlexColumnWidth(1.5),
-                                        },
-                                        children: const [
-                                          TableRow(
-                                              decoration: BoxDecoration(
-                                                  color: Color.fromARGB(
-                                                      255, 228, 224, 224)),
-                                              children: [
-                                                SizedBox(
-                                                  height: 30,
-                                                  child: Center(
-                                                      child: Text(
-                                                    'Roll No.',
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        fontSize: 12),
-                                                  )),
-                                                ),
-                                                SizedBox(
-                                                  height: 30,
-                                                  child: Center(
-                                                    child: Text(
-                                                      'Name           ',
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          fontSize: 12),
-                                                    ),
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  height: 30,
-                                                  child: Center(
-                                                      child: Text(
-                                                    'Attendance  ',
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        fontSize: 12),
-                                                  )),
-                                                ),
-                                              ]),
-                                        ],
-                                      ),
-                                    ),
+                                    value.studentsAttendenceView.isEmpty
+                                        ? const SizedBox(
+                                            height: 0,
+                                            width: 0,
+                                          )
+                                        : Padding(
+                                            padding: const EdgeInsets.all(4.0),
+                                            child: Table(
+                                              border: TableBorder.all(
+                                                  color: const Color.fromARGB(
+                                                      255, 255, 255, 255)),
+                                              columnWidths: const {
+                                                0: FlexColumnWidth(.8),
+                                                1: FlexColumnWidth(3),
+                                                2: FlexColumnWidth(1.2),
+                                              },
+                                              children: const [
+                                                TableRow(
+                                                    decoration: BoxDecoration(
+                                                        color: Color.fromARGB(
+                                                            255, 211, 211, 211),
+                                                        borderRadius:
+                                                            BorderRadius.only(
+                                                                topLeft: Radius
+                                                                    .circular(
+                                                                        12),
+                                                                topRight: Radius
+                                                                    .circular(
+                                                                        12))),
+                                                    children: [
+                                                      TableCell(
+                                                        verticalAlignment:
+                                                            TableCellVerticalAlignment
+                                                                .middle,
+                                                        child: SizedBox(
+                                                          height: 35,
+                                                          child: Center(
+                                                              child: Text(
+                                                            'Roll No.',
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                fontSize: 13),
+                                                          )),
+                                                        ),
+                                                      ),
+                                                      TableCell(
+                                                        verticalAlignment:
+                                                            TableCellVerticalAlignment
+                                                                .middle,
+                                                        child: SizedBox(
+                                                          height: 35,
+                                                          child: Center(
+                                                            child: Text(
+                                                              'Name',
+                                                              style: TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                  fontSize: 13),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      TableCell(
+                                                        verticalAlignment:
+                                                            TableCellVerticalAlignment
+                                                                .middle,
+                                                        child: SizedBox(
+                                                          height: 35,
+                                                          child: Center(
+                                                              child: Text(
+                                                            'Attendance',
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                fontSize: 13),
+                                                          )),
+                                                        ),
+                                                      ),
+                                                    ]),
+                                              ],
+                                            ),
+                                          ),
                                     Consumer<AttendenceStaffProvider>(
                                       builder: (context, value, child) {
                                         return value.loading
                                             ? Expanded(child: spinkitLoader())
                                             : Expanded(
-                                                // maxHeight: size.height - 370,
                                                 child: Scrollbar(
                                                   child: ListView.builder(
                                                     physics:
@@ -545,113 +563,161 @@ class _AttendenceEntryState extends State<AttendenceEntry> {
                                                       return Padding(
                                                         padding:
                                                             const EdgeInsets
-                                                                .all(4.0),
-                                                        child: Container(
-                                                          decoration: BoxDecoration(
-                                                              color: value
-                                                                          .studentsAttendenceView[
-                                                                              0]
-                                                                          .studAttId ==
-                                                                      null
-                                                                  ? Colors.white
-                                                                  : UIGuide
-                                                                      .light_black),
-                                                          child: Column(
-                                                            children: [
-                                                              Table(
-                                                                border: TableBorder.all(
-                                                                    color: const Color
-                                                                        .fromARGB(
-                                                                        255,
-                                                                        247,
-                                                                        244,
-                                                                        244)),
-                                                                columnWidths: const {
-                                                                  0: FlexColumnWidth(
-                                                                      1.0),
-                                                                  1: FlexColumnWidth(
-                                                                      3),
-                                                                  2: FlexColumnWidth(
-                                                                      1),
-                                                                },
+                                                                .only(
+                                                                left: 4.0,
+                                                                right: 4,
+                                                                top: 2,
+                                                                bottom: 2),
+                                                        child: Table(
+                                                          border: TableBorder.all(
+                                                              color: const Color
+                                                                  .fromARGB(
+                                                                  255,
+                                                                  247,
+                                                                  244,
+                                                                  244)),
+                                                          columnWidths: const {
+                                                            0: FlexColumnWidth(
+                                                                .8),
+                                                            1: FlexColumnWidth(
+                                                                3),
+                                                            2: FlexColumnWidth(
+                                                                1.2),
+                                                          },
+                                                          children: [
+                                                            TableRow(
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color: value.studentsAttendenceView[0].studAttId !=
+                                                                          null
+                                                                      ? const Color
+                                                                          .fromARGB(
+                                                                          255,
+                                                                          223,
+                                                                          223,
+                                                                          223)
+                                                                      : index
+                                                                              .isEven
+                                                                          ? const Color
+                                                                              .fromARGB(
+                                                                              255,
+                                                                              255,
+                                                                              255,
+                                                                              255)
+                                                                          : const Color
+                                                                              .fromARGB(
+                                                                              255,
+                                                                              236,
+                                                                              236,
+                                                                              236),
+                                                                ),
                                                                 children: [
-                                                                  TableRow(
-                                                                      decoration:
-                                                                          const BoxDecoration(),
-                                                                      children: [
+                                                                  TableCell(
+                                                                    verticalAlignment:
+                                                                        TableCellVerticalAlignment
+                                                                            .middle,
+                                                                    child:
+                                                                        Center(
+                                                                      child:
+                                                                          Text(
+                                                                        value.studentsAttendenceView[index].rollNo ==
+                                                                                null
+                                                                            ? '0'
+                                                                            : value.studentsAttendenceView[index].rollNo.toString(),
+                                                                        textAlign:
+                                                                            TextAlign.center,
+                                                                        style: const TextStyle(
+                                                                            fontSize:
+                                                                                12),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                  TableCell(
+                                                                    verticalAlignment:
+                                                                        TableCellVerticalAlignment
+                                                                            .middle,
+                                                                    child:
                                                                         Padding(
-                                                                          padding: const EdgeInsets
-                                                                              .all(
-                                                                              2.0),
-                                                                          child:
-                                                                              Center(
-                                                                            child:
-                                                                                Text(
-                                                                              value.studentsAttendenceView[index].rollNo == null ? '0' : value.studentsAttendenceView[index].rollNo.toString(),
-                                                                              textAlign: TextAlign.center,
-                                                                              style: const TextStyle(fontSize: 12),
-                                                                            ),
-                                                                          ),
+                                                                      padding: const EdgeInsets
+                                                                          .only(
+                                                                          left:
+                                                                              4,
+                                                                          top:
+                                                                              4,
+                                                                          bottom:
+                                                                              4),
+                                                                      child:
+                                                                          Text(
+                                                                        value.studentsAttendenceView[index].name ??
+                                                                            '--',
+                                                                        textAlign:
+                                                                            TextAlign.start,
+                                                                        style: const TextStyle(
+                                                                            fontSize:
+                                                                                14,
+                                                                            fontWeight:
+                                                                                FontWeight.w500),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                  TableCell(
+                                                                    verticalAlignment:
+                                                                        TableCellVerticalAlignment
+                                                                            .middle,
+                                                                    child:
+                                                                        InkWell(
+                                                                      onTap:
+                                                                          () async {
+                                                                        setState(
+                                                                            () {
+                                                                          if (value.studentsAttendenceView[index].forenoon == 'A' &&
+                                                                              value.studentsAttendenceView[index].afternoon == 'A') {
+                                                                            value.studentsAttendenceView[index].afternoon =
+                                                                                'P';
+                                                                            value.studentsAttendenceView[index].forenoon =
+                                                                                'P';
+                                                                          } else {
+                                                                            value.studentsAttendenceView[index].afternoon =
+                                                                                'A';
+                                                                            value.studentsAttendenceView[index].forenoon =
+                                                                                'A';
+                                                                          }
+                                                                          forattd = value
+                                                                              .studentsAttendenceView[index]
+                                                                              .forenoon;
+                                                                          aftattd = value
+                                                                              .studentsAttendenceView[index]
+                                                                              .afternoon;
+                                                                          print(
+                                                                              "Forenonnn   $forattd");
+                                                                          print(
+                                                                              "afternoon   $aftattd");
+                                                                        });
+                                                                      },
+                                                                      child:
+                                                                          Padding(
+                                                                        padding: const EdgeInsets
+                                                                            .all(
+                                                                            4.0),
+                                                                        child:
+                                                                            SizedBox(
+                                                                          width:
+                                                                              28,
+                                                                          height:
+                                                                              28,
+                                                                          child: value.studentsAttendenceView[index].forenoon == 'A' && value.studentsAttendenceView[index].afternoon == 'A'
+                                                                              ? SvgPicture.asset(
+                                                                                  UIGuide.absent,
+                                                                                )
+                                                                              : SvgPicture.asset(
+                                                                                  UIGuide.present,
+                                                                                ),
                                                                         ),
-                                                                        Padding(
-                                                                          padding: const EdgeInsets
-                                                                              .all(
-                                                                              2.0),
-                                                                          child:
-                                                                              Text(
-                                                                            value.studentsAttendenceView[index].name ??
-                                                                                '--',
-                                                                            textAlign:
-                                                                                TextAlign.start,
-                                                                            style:
-                                                                                const TextStyle(fontSize: 14),
-                                                                          ),
-                                                                        ),
-                                                                        GestureDetector(
-                                                                          onTap:
-                                                                              () async {
-                                                                            setState(() {
-                                                                              if (value.studentsAttendenceView[index].forenoon == 'A' && value.studentsAttendenceView[index].afternoon == 'A') {
-                                                                                value.studentsAttendenceView[index].afternoon = 'P';
-                                                                                value.studentsAttendenceView[index].forenoon = 'P';
-                                                                              } else {
-                                                                                value.studentsAttendenceView[index].afternoon = 'A';
-                                                                                value.studentsAttendenceView[index].forenoon = 'A';
-                                                                              }
-                                                                              forattd = value.studentsAttendenceView[index].forenoon;
-                                                                              aftattd = value.studentsAttendenceView[index].afternoon;
-                                                                              print("Forenonnn   $forattd");
-                                                                              print("afternoon   $aftattd");
-                                                                            });
-                                                                          },
-                                                                          child:
-                                                                              Container(
-                                                                            color:
-                                                                                Colors.transparent,
-                                                                            width:
-                                                                                28,
-                                                                            height:
-                                                                                26,
-                                                                            child:
-                                                                                SizedBox(
-                                                                              width: 28,
-                                                                              height: 26,
-                                                                              child: value.studentsAttendenceView[index].forenoon == 'A' && value.studentsAttendenceView[index].afternoon == 'A'
-                                                                                  ? SvgPicture.asset(
-                                                                                      UIGuide.absent,
-                                                                                    )
-                                                                                  : SvgPicture.asset(
-                                                                                      UIGuide.present,
-                                                                                    ),
-                                                                            ),
-                                                                          ),
-                                                                        ),
-                                                                      ]),
-                                                                ],
-                                                              ),
-                                                              // kheight10,
-                                                            ],
-                                                          ),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ]),
+                                                          ],
                                                         ),
                                                       );
                                                     }),
@@ -666,262 +732,337 @@ class _AttendenceEntryState extends State<AttendenceEntry> {
                             : Expanded(
                                 child: Column(
                                   children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(5.0),
-                                      child: Table(
-                                        border: TableBorder.all(
-                                            color: const Color.fromARGB(
-                                                255, 247, 244, 244)),
-                                        columnWidths: const {
-                                          0: FlexColumnWidth(1),
-                                          1: FlexColumnWidth(3),
-                                          2: FlexColumnWidth(1.5),
-                                          3: FlexColumnWidth(1.5),
-                                        },
-                                        children: const [
-                                          TableRow(
-                                              decoration: BoxDecoration(
-                                                color: Color.fromARGB(
-                                                    255, 228, 224, 224),
-                                              ),
-                                              children: [
-                                                SizedBox(
-                                                  height: 30,
-                                                  child: Center(
-                                                      child: Text(
-                                                    'Roll No.',
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        fontSize: 12),
-                                                  )),
-                                                ),
-                                                SizedBox(
-                                                  height: 30,
-                                                  child: Center(
-                                                    child: Text(
-                                                      'Name           ',
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          fontSize: 12),
-                                                    ),
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  height: 30,
-                                                  child: Center(
-                                                      child: Text(
-                                                    'Forenoon',
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        fontSize: 12),
-                                                  )),
-                                                ),
-                                                SizedBox(
-                                                  height: 30,
-                                                  child: Center(
-                                                      child: Text(
-                                                    'Afternoon',
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        fontSize: 12),
-                                                  )),
-                                                ),
-                                              ]),
-                                        ],
-                                      ),
-                                    ),
+                                    value.studentsAttendenceView.isEmpty
+                                        ? const SizedBox(
+                                            height: 0,
+                                            width: 0,
+                                          )
+                                        : Padding(
+                                            padding: const EdgeInsets.all(5.0),
+                                            child: Table(
+                                              border: TableBorder.all(
+                                                  color: const Color.fromARGB(
+                                                      255, 255, 255, 255)),
+                                              columnWidths: const {
+                                                0: FlexColumnWidth(1),
+                                                1: FlexColumnWidth(3),
+                                                2: FlexColumnWidth(1.5),
+                                                3: FlexColumnWidth(1.5),
+                                              },
+                                              children: const [
+                                                TableRow(
+                                                    decoration: BoxDecoration(
+                                                        color: Color.fromARGB(
+                                                            255, 211, 211, 211),
+                                                        borderRadius:
+                                                            BorderRadius.only(
+                                                                topLeft: Radius
+                                                                    .circular(
+                                                                        12),
+                                                                topRight: Radius
+                                                                    .circular(
+                                                                        12))),
+                                                    children: [
+                                                      TableCell(
+                                                        verticalAlignment:
+                                                            TableCellVerticalAlignment
+                                                                .middle,
+                                                        child: SizedBox(
+                                                          height: 35,
+                                                          child: Center(
+                                                              child: Text(
+                                                            'Roll No.',
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                fontSize: 12),
+                                                          )),
+                                                        ),
+                                                      ),
+                                                      TableCell(
+                                                        verticalAlignment:
+                                                            TableCellVerticalAlignment
+                                                                .middle,
+                                                        child: SizedBox(
+                                                          height: 35,
+                                                          child: Center(
+                                                            child: Text(
+                                                              'Name           ',
+                                                              style: TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                  fontSize: 12),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      TableCell(
+                                                        verticalAlignment:
+                                                            TableCellVerticalAlignment
+                                                                .middle,
+                                                        child: SizedBox(
+                                                          height: 35,
+                                                          child: Center(
+                                                              child: Text(
+                                                            'Forenoon',
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                fontSize: 12),
+                                                          )),
+                                                        ),
+                                                      ),
+                                                      TableCell(
+                                                        verticalAlignment:
+                                                            TableCellVerticalAlignment
+                                                                .middle,
+                                                        child: SizedBox(
+                                                          height: 35,
+                                                          child: Center(
+                                                              child: Text(
+                                                            'Afternoon',
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                fontSize: 12),
+                                                          )),
+                                                        ),
+                                                      ),
+                                                    ]),
+                                              ],
+                                            ),
+                                          ),
                                     Consumer<AttendenceStaffProvider>(
                                         builder: (context, value, child) {
                                       return value.loading
                                           ? Expanded(child: spinkitLoader())
                                           : Expanded(
-                                              child: LimitedBox(
-                                                maxHeight: size.height - 370,
-                                                child: Scrollbar(
-                                                  child: ListView.builder(
-                                                    physics:
-                                                        const BouncingScrollPhysics(),
-                                                    shrinkWrap: true,
-                                                    itemCount: value
-                                                        .studentsAttendenceView
-                                                        .length,
-                                                    itemBuilder:
-                                                        ((context, index) {
-                                                      return Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(4.0),
-                                                        child: Container(
-                                                          decoration: BoxDecoration(
+                                              child: Scrollbar(
+                                                child: ListView.builder(
+                                                  physics:
+                                                      const BouncingScrollPhysics(
+                                                          parent:
+                                                              AlwaysScrollableScrollPhysics()),
+                                                  shrinkWrap: true,
+                                                  itemCount: value
+                                                      .studentsAttendenceView
+                                                      .length,
+                                                  itemBuilder:
+                                                      ((context, index) {
+                                                    return Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              left: 4.0,
+                                                              right: 4,
+                                                              top: 2,
+                                                              bottom: 2),
+                                                      child: Table(
+                                                        border: TableBorder.all(
+                                                            color: const Color
+                                                                .fromARGB(255,
+                                                                247, 244, 244)),
+                                                        columnWidths: const {
+                                                          0: FlexColumnWidth(
+                                                              1.0),
+                                                          1: FlexColumnWidth(3),
+                                                          2: FlexColumnWidth(
+                                                              1.5),
+                                                          3: FlexColumnWidth(
+                                                              1.5),
+                                                        },
+                                                        children: [
+                                                          TableRow(
+                                                            decoration:
+                                                                BoxDecoration(
                                                               color: value
                                                                           .studentsAttendenceView[
                                                                               0]
-                                                                          .studAttId ==
+                                                                          .studAttId !=
                                                                       null
-                                                                  ? Colors.white
-                                                                  : UIGuide
-                                                                      .light_black),
-                                                          child: Table(
-                                                            border: TableBorder.all(
-                                                                color: const Color
-                                                                    .fromARGB(
-                                                                    255,
-                                                                    247,
-                                                                    244,
-                                                                    244)),
-                                                            columnWidths: const {
-                                                              0: FlexColumnWidth(
-                                                                  1.0),
-                                                              1: FlexColumnWidth(
-                                                                  3),
-                                                              2: FlexColumnWidth(
-                                                                  1.5),
-                                                              3: FlexColumnWidth(
-                                                                  1.5),
-                                                            },
+                                                                  ? const Color
+                                                                      .fromARGB(
+                                                                      255,
+                                                                      223,
+                                                                      223,
+                                                                      223)
+                                                                  : index.isEven
+                                                                      ? const Color
+                                                                          .fromARGB(
+                                                                          255,
+                                                                          255,
+                                                                          255,
+                                                                          255)
+                                                                      : const Color
+                                                                          .fromARGB(
+                                                                          255,
+                                                                          231,
+                                                                          231,
+                                                                          231),
+                                                            ),
                                                             children: [
-                                                              TableRow(
-                                                                decoration:
-                                                                    const BoxDecoration(),
-                                                                children: [
-                                                                  Padding(
-                                                                    padding:
-                                                                        const EdgeInsets
-                                                                            .all(
-                                                                            2.0),
-                                                                    child: Text(
-                                                                      value.studentsAttendenceView[index].rollNo ==
-                                                                              null
-                                                                          ? '0'
-                                                                          : value
+                                                              TableCell(
+                                                                verticalAlignment:
+                                                                    TableCellVerticalAlignment
+                                                                        .middle,
+                                                                child: Center(
+                                                                  child: Text(
+                                                                    value.studentsAttendenceView[index].rollNo ==
+                                                                            null
+                                                                        ? '0'
+                                                                        : value
+                                                                            .studentsAttendenceView[index]
+                                                                            .rollNo
+                                                                            .toString(),
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .center,
+                                                                    style: const TextStyle(
+                                                                        fontSize:
+                                                                            12),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              TableCell(
+                                                                verticalAlignment:
+                                                                    TableCellVerticalAlignment
+                                                                        .middle,
+                                                                child: Padding(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                          .only(
+                                                                          left:
+                                                                              4,
+                                                                          top:
+                                                                              4,
+                                                                          bottom:
+                                                                              4),
+                                                                  child: Text(
+                                                                    value.studentsAttendenceView[index]
+                                                                            .name ??
+                                                                        '--',
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .start,
+                                                                    style: const TextStyle(
+                                                                        fontSize:
+                                                                            14),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              TableCell(
+                                                                verticalAlignment:
+                                                                    TableCellVerticalAlignment
+                                                                        .middle,
+                                                                child: InkWell(
+                                                                  onTap: () {
+                                                                    setState(
+                                                                        () {
+                                                                      if (value
                                                                               .studentsAttendenceView[index]
-                                                                              .rollNo
-                                                                              .toString(),
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .center,
-                                                                      style: const TextStyle(
-                                                                          fontSize:
-                                                                              12),
-                                                                    ),
-                                                                  ),
-                                                                  Padding(
+                                                                              .forenoon ==
+                                                                          'A') {
+                                                                        value.studentsAttendenceView[index].forenoon =
+                                                                            'P';
+                                                                      } else {
+                                                                        value.studentsAttendenceView[index].forenoon =
+                                                                            'A';
+                                                                      }
+                                                                      forattd = value
+                                                                          .studentsAttendenceView[
+                                                                              index]
+                                                                          .forenoon;
+
+                                                                      print(
+                                                                          "Forenonnn   $forattd");
+                                                                    });
+                                                                  },
+                                                                  child:
+                                                                      Padding(
                                                                     padding:
                                                                         const EdgeInsets
                                                                             .all(
-                                                                            2.0),
-                                                                    child: Text(
-                                                                      value.studentsAttendenceView[index]
-                                                                              .name ??
-                                                                          '--',
-                                                                      textAlign:
-                                                                          TextAlign
-                                                                              .start,
-                                                                      style: const TextStyle(
-                                                                          fontSize:
-                                                                              14),
-                                                                    ),
-                                                                  ),
-                                                                  GestureDetector(
-                                                                    onTap: () {
-                                                                      setState(
-                                                                          () {
-                                                                        if (value.studentsAttendenceView[index].forenoon ==
-                                                                            'A') {
-                                                                          value.studentsAttendenceView[index].forenoon =
-                                                                              'P';
-                                                                        } else {
-                                                                          value.studentsAttendenceView[index].forenoon =
-                                                                              'A';
-                                                                        }
-                                                                        forattd = value
-                                                                            .studentsAttendenceView[index]
-                                                                            .forenoon;
-
-                                                                        print(
-                                                                            "Forenonnn   $forattd");
-                                                                      });
-                                                                    },
+                                                                            1.0),
                                                                     child:
-                                                                        Container(
-                                                                      color: Colors
-                                                                          .transparent,
+                                                                        SizedBox(
                                                                       width: 28,
                                                                       height:
-                                                                          26,
-                                                                      child:
-                                                                          SizedBox(
-                                                                        width:
-                                                                            28,
-                                                                        height:
-                                                                            26,
-                                                                        child: value.studentsAttendenceView[index].forenoon ==
-                                                                                'A'
-                                                                            ? SvgPicture.asset(
-                                                                                UIGuide.absent,
-                                                                              )
-                                                                            : SvgPicture.asset(
-                                                                                UIGuide.present,
-                                                                              ),
-                                                                      ),
+                                                                          28,
+                                                                      child: value.studentsAttendenceView[index].forenoon ==
+                                                                              'A'
+                                                                          ? SvgPicture
+                                                                              .asset(
+                                                                              UIGuide.absent,
+                                                                            )
+                                                                          : SvgPicture
+                                                                              .asset(
+                                                                              UIGuide.present,
+                                                                            ),
                                                                     ),
                                                                   ),
-                                                                  GestureDetector(
-                                                                    onTap: () {
-                                                                      setState(
-                                                                          () {
-                                                                        if (value.studentsAttendenceView[index].afternoon ==
-                                                                            'A') {
-                                                                          value.studentsAttendenceView[index].afternoon =
-                                                                              'P';
-                                                                        } else {
-                                                                          value.studentsAttendenceView[index].afternoon =
-                                                                              'A';
-                                                                        }
-                                                                        forattd = value
-                                                                            .studentsAttendenceView[index]
-                                                                            .afternoon;
+                                                                ),
+                                                              ),
+                                                              TableCell(
+                                                                verticalAlignment:
+                                                                    TableCellVerticalAlignment
+                                                                        .middle,
+                                                                child: InkWell(
+                                                                  onTap: () {
+                                                                    setState(
+                                                                        () {
+                                                                      if (value
+                                                                              .studentsAttendenceView[index]
+                                                                              .afternoon ==
+                                                                          'A') {
+                                                                        value.studentsAttendenceView[index].afternoon =
+                                                                            'P';
+                                                                      } else {
+                                                                        value.studentsAttendenceView[index].afternoon =
+                                                                            'A';
+                                                                      }
+                                                                      forattd = value
+                                                                          .studentsAttendenceView[
+                                                                              index]
+                                                                          .afternoon;
 
-                                                                        print(
-                                                                            "Forenonnn   $aftattd");
-                                                                      });
-                                                                    },
+                                                                      print(
+                                                                          "Forenonnn   $aftattd");
+                                                                    });
+                                                                  },
+                                                                  child:
+                                                                      Padding(
+                                                                    padding:
+                                                                        const EdgeInsets
+                                                                            .all(
+                                                                            1.0),
                                                                     child:
-                                                                        Container(
-                                                                      color: Colors
-                                                                          .transparent,
+                                                                        SizedBox(
                                                                       width: 28,
                                                                       height:
-                                                                          26,
-                                                                      child:
-                                                                          SizedBox(
-                                                                        width:
-                                                                            28,
-                                                                        height:
-                                                                            26,
-                                                                        child: value.studentsAttendenceView[index].afternoon ==
-                                                                                'A'
-                                                                            ? SvgPicture.asset(
-                                                                                UIGuide.absent,
-                                                                              )
-                                                                            : SvgPicture.asset(
-                                                                                UIGuide.present,
-                                                                              ),
-                                                                      ),
+                                                                          28,
+                                                                      child: value.studentsAttendenceView[index].afternoon ==
+                                                                              'A'
+                                                                          ? SvgPicture
+                                                                              .asset(
+                                                                              UIGuide.absent,
+                                                                            )
+                                                                          : SvgPicture
+                                                                              .asset(
+                                                                              UIGuide.present,
+                                                                            ),
                                                                     ),
                                                                   ),
-                                                                ],
+                                                                ),
                                                               ),
                                                             ],
                                                           ),
-                                                        ),
-                                                      );
-                                                    }),
-                                                  ),
+                                                        ],
+                                                      ),
+                                                    );
+                                                  }),
                                                 ),
                                               ),
                                             );
@@ -935,7 +1076,7 @@ class _AttendenceEntryState extends State<AttendenceEntry> {
       }),
       bottomNavigationBar: BottomAppBar(
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(2.0),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
@@ -945,6 +1086,10 @@ class _AttendenceEntryState extends State<AttendenceEntry> {
                   builder: (context, value, child) {
                 return value.loadingg
                     ? MaterialButton(
+                        minWidth: 100,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
                         onPressed: () async {},
                         color: UIGuide.WHITE,
                         child: const Text(
@@ -953,6 +1098,7 @@ class _AttendenceEntryState extends State<AttendenceEntry> {
                         ),
                       )
                     : MaterialButton(
+                        minWidth: 100,
                         onPressed: value.loadinggNull
                             ? null
                             : () async {
@@ -994,19 +1140,7 @@ class _AttendenceEntryState extends State<AttendenceEntry> {
                                           'A'
                                       ? aftcount = aftcount + 1
                                       : aftcount;
-                                  // if (value.isDualAttendance == true) {
-                                  //   if (value.studentsAttendenceView[i].forenoon ==
-                                  //       "A") {}
-                                  // } else if (value
-                                  //         .studentsAttendenceView[i].forenoon ==
-                                  //     "A") {
-                                  //   attendLen.add(
-                                  //       value.studentsAttendenceView[i].forenoon);
-                                  // }
                                 }
-                                // print("Length==$attendLen");
-                                // print("length   ${attendLen.length}");
-                                // log("Litsssss   $obj");
 
                                 if (markEntryDivisionListController
                                         .text.isEmpty ||
@@ -1047,10 +1181,13 @@ class _AttendenceEntryState extends State<AttendenceEntry> {
                                   ));
                                 } else {
                                   await value.attendanceSave(context, obj,
-                                      dateFinal, forecount, aftcount);
+                                      value.dateSend, forecount, aftcount);
                                 }
                               },
                         color: UIGuide.light_Purple,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
                         child: const Text(
                           'Save',
                           style: TextStyle(color: Colors.white),
@@ -1063,14 +1200,22 @@ class _AttendenceEntryState extends State<AttendenceEntry> {
                 divisionId = markEntryDivisionListController.text.toString();
                 return value.loadinggDelete
                     ? MaterialButton(
+                        minWidth: 100,
                         onPressed: () async {},
                         color: UIGuide.WHITE,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
                         child: const Text(
                           'Deleting....',
                           style: TextStyle(color: Colors.red),
                         ),
                       )
                     : MaterialButton(
+                        minWidth: 100,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
                         onPressed: value.loadinggNull
                             ? null
                             : () {
@@ -1141,7 +1286,7 @@ class _AttendenceEntryState extends State<AttendenceEntry> {
                                                       await value
                                                           .attendanceDelete(
                                                               divisionId,
-                                                              dateFinal,
+                                                              value.dateSend,
                                                               context);
                                                       Navigator.of(context)
                                                           .pop();
@@ -1168,8 +1313,6 @@ class _AttendenceEntryState extends State<AttendenceEntry> {
                                           );
                                         },
                                       );
-
-                                // value.attendanceDelete(divisionId, dateFinal, context);
                               },
                         color: Colors.red,
                         child: const Text(
@@ -1177,7 +1320,8 @@ class _AttendenceEntryState extends State<AttendenceEntry> {
                           style: TextStyle(color: Colors.white),
                         ),
                       );
-              })
+              }),
+              kWidth
             ],
           ),
         ),
@@ -1185,225 +1329,3 @@ class _AttendenceEntryState extends State<AttendenceEntry> {
     );
   }
 }
-
-// class AttendenceviewWidget extends StatefulWidget {
-//   AttendenceviewWidget({Key? key}) : super(key: key);
-//
-//   @override
-//   State<AttendenceviewWidget> createState() => _AttendenceviewWidgetState();
-// }
-//
-// class _AttendenceviewWidgetState extends State<AttendenceviewWidget> {
-//   String att = '';
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Consumer<AttendenceStaffProvider>(
-//       builder: (context, val, child) => val.loading
-//           ? Column(
-//               children: [
-//                 const SizedBox(
-//                   height: 150,
-//                 ),
-//                 spinkitLoader(),
-//               ],
-//             )
-//           : Column(
-//               children: [
-//                 Padding(
-//                   padding: const EdgeInsets.all(5.0),
-//                   child: Table(
-//                     columnWidths: const {
-//                       0: FlexColumnWidth(1),
-//                       1: FlexColumnWidth(3),
-//                       2: FlexColumnWidth(1),
-//                       // 3: FlexColumnWidth(1.5),
-//                     },
-//                     children: const [
-//                       TableRow(
-//                           decoration: BoxDecoration(
-//                             color: Color.fromARGB(255, 228, 224, 224),
-//                           ),
-//                           children: [
-//                             SizedBox(
-//                               height: 30,
-//                               child: Center(
-//                                   child: Text(
-//                                 'Roll No.',
-//                                 style: TextStyle(
-//                                     fontWeight: FontWeight.w500, fontSize: 12),
-//                               )),
-//                             ),
-//                             SizedBox(
-//                               height: 30,
-//                               child: Center(
-//                                 child: Text(
-//                                   'Name           ',
-//                                   style: TextStyle(
-//                                       fontWeight: FontWeight.w500,
-//                                       fontSize: 12),
-//                                 ),
-//                               ),
-//                             ),
-//                             SizedBox(
-//                               height: 30,
-//                               child: Center(
-//                                   child: Text(
-//                                 'Attendance',
-//                                 style: TextStyle(
-//                                     fontWeight: FontWeight.w500, fontSize: 12),
-//                               )),
-//                             ),
-//                           ]),
-//                     ],
-//                   ),
-//                 ),
-//                 Consumer<AttendenceStaffProvider>(
-//                   builder: (context, value, child) {
-//                     return value.loading
-//                         ? spinkitLoader()
-//                         : LimitedBox(
-//                             maxHeight: 530,
-//                             child: Scrollbar(
-//                               child: ListView.builder(
-//                                 physics: const BouncingScrollPhysics(),
-//                                 shrinkWrap: true,
-//                                 itemCount: value.studentsAttendenceView.length,
-//                                 itemBuilder: ((context, index) {
-//                                   String att = value
-//                                           .studentsAttendenceView[index]
-//                                           .absent ??
-//                                       '--';
-//                                   value.forattt = value
-//                                       .studentsAttendenceView[index].forenoon;
-//
-//                                   return Column(
-//                                     children: [
-//                                       Table(
-//                                         columnWidths: const {
-//                                           0: FlexColumnWidth(1.0),
-//                                           1: FlexColumnWidth(3),
-//                                           2: FlexColumnWidth(1),
-//                                         },
-//                                         children: [
-//                                           TableRow(
-//                                               decoration: const BoxDecoration(),
-//                                               children: [
-//                                                 Text(
-//                                                   value
-//                                                               .studentsAttendenceView[
-//                                                                   index]
-//                                                               .rollNo ==
-//                                                           null
-//                                                       ? '0'
-//                                                       : value
-//                                                           .studentsAttendenceView[
-//                                                               index]
-//                                                           .rollNo
-//                                                           .toString(),
-//                                                   textAlign: TextAlign.center,
-//                                                   style: const TextStyle(
-//                                                       fontSize: 12),
-//                                                 ),
-//                                                 Text(
-//                                                   value
-//                                                           .studentsAttendenceView[
-//                                                               index]
-//                                                           .name ??
-//                                                       '--',
-//                                                   textAlign: TextAlign.start,
-//                                                   style: const TextStyle(
-//                                                       fontSize: 14),
-//                                                 ),
-//                                                 GestureDetector(
-//                                                   onTap: () async {
-//                                                     await value.attendView();
-//                                                     value.forattt = value
-//                                                         .studentsAttendenceView[
-//                                                             index]
-//                                                         .forenoon;
-//                                                     value.aftattt = value.studentsAttendenceView[index].afternoon;
-//
-//                                                     if (value.aftattt == 'A' || value.forattt == 'A') {
-//                                                       value.forattt = 'P';
-//                                                       value.aftattt = 'P';
-//                                                       print(value.forattt);
-//                                                       print(value.aftattt);
-//
-//                                                     } else if (value.forattt ==
-//                                                         'P' || value.aftattt =='P') {
-//                                                       value.forattt = "A";
-//                                                       value.aftattt ="A";
-//                                                       print(
-//                                                           "-------fornoon${value.forattt}");
-//                                                       print(
-//                                                           "-------afternoon${value.aftattt}");
-//                                                     }
-//                                                     value.selectItem(value
-//                                                             .studentsAttendenceView[
-//                                                         index]);
-//                                                     if (value
-//                                                                 .studentsAttendenceView[
-//                                                                     index]
-//                                                                 .select !=
-//                                                             null &&
-//                                                         value
-//                                                             .studentsAttendenceView[
-//                                                                 index]
-//                                                             .select!) {
-//                                                       att = value
-//                                                               .studentsAttendenceView[
-//                                                                   index]
-//                                                               .absent ??
-//                                                           '--';
-//                                                       print('Absent');
-//                                                       print(att);
-//                                                     } else {
-//                                                       att = "P";
-//                                                       print('Present');
-//                                                     }
-//                                                   },
-//                                                   child: Container(
-//                                                     color: Colors.transparent,
-//                                                     width: 25,
-//                                                     height: 22,
-//                                                     child: SizedBox(
-//                                                       width: 25,
-//                                                       height: 22,
-//                                                       child: value
-//                                                                       .studentsAttendenceView[
-//                                                                           index]
-//                                                                       .select !=
-//                                                                   null &&
-//                                                               value
-//                                                                   .studentsAttendenceView[
-//                                                                       index]
-//                                                                   .select! &&
-//                                                               value.forattt == 'P'
-//                                                           ? SvgPicture.asset(
-//                                                               UIGuide.absent,
-//                                                             )
-//                                                           : SvgPicture.asset(
-//                                                               UIGuide.present,
-//                                                             ),
-//                                                     ),
-//                                                   ),
-//                                                 ),
-//                                               ]),
-//                                         ],
-//                                       ),
-//                                       kheight20,
-//                                     ],
-//                                   );
-//                                 }),
-//                               ),
-//                             ),
-//                           );
-//                   },
-//                 ),
-//               ],
-//             ),
-//     );
-//   }
-// }
-

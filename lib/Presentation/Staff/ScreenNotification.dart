@@ -88,12 +88,16 @@ class StaffNotificationReceived extends StatelessWidget {
                       ? 0
                       : value.notificationList.length,
                   itemBuilder: (BuildContext context, int index) {
-                    String createddate =
-                        value.notificationList[index].sentOn ?? '--';
-                    var updatedDate =
-                        DateFormat('yyyy-MM-dd').parse(createddate);
-                    String newDate = updatedDate.toString();
-                    String finalCreatedDate = newDate.replaceRange(10, 23, '');
+                    String finalCreatedDate = "";
+
+                    if (value.notificationList[index].sentOn != null) {
+                      String startdate =
+                          value.notificationList[index].sentOn ?? '--';
+                      DateTime parsedDateTime = DateTime.parse(startdate);
+
+                      finalCreatedDate =
+                          DateFormat('dd-MMM-yyyy').format(parsedDateTime);
+                    }
                     return AnimationConfiguration.staggeredList(
                       position: index,
                       delay: const Duration(milliseconds: 100),
@@ -290,11 +294,11 @@ class StaffNotificationSendHistory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       var p =
           Provider.of<StaffNotificationScreenProvider>(context, listen: false);
-      p.getNotificationHistory();
       p.historyList.clear();
+      await p.getNotificationHistory();
     });
     var size = MediaQuery.of(context).size;
 
@@ -309,6 +313,18 @@ class StaffNotificationSendHistory extends StatelessWidget {
                   itemCount:
                       value.historyList.isEmpty ? 0 : value.historyList.length,
                   itemBuilder: (BuildContext context, int index) {
+                    //start date
+                    String finalStartDate = '';
+
+                    if (value.historyList[index].createdDate != null) {
+                      String startdate =
+                          value.historyList[index].createdDate ?? '--';
+                      DateTime parsedDateTime = DateTime.parse(startdate);
+
+                      finalStartDate =
+                          DateFormat('dd-MMM-yyyy').format(parsedDateTime);
+                    }
+
                     return AnimationConfiguration.staggeredList(
                       position: index,
                       delay: const Duration(milliseconds: 100),
@@ -384,9 +400,7 @@ class StaffNotificationSendHistory extends StatelessWidget {
                                                 fontSize: 12),
                                           ),
                                           Text(
-                                            value.historyList[index]
-                                                    .createdDate ??
-                                                '--',
+                                            finalStartDate,
                                             style: const TextStyle(
                                                 color: Color.fromARGB(
                                                     255, 49, 47, 47),

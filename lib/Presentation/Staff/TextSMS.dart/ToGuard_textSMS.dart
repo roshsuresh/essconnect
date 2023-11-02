@@ -79,7 +79,6 @@ class _TextSMS_staffState extends State<TextSMS_staff> {
                                           return ListTile(
                                             selectedTileColor:
                                                 Colors.blue.shade100,
-                                            selectedColor: UIGuide.PRIMARY2,
 
                                             // selected: snapshot.isCourseSelected(
                                             //     attendecourse![index]),
@@ -199,7 +198,7 @@ class _TextSMS_staffState extends State<TextSMS_staff> {
                                             selectedTileColor:
                                                 const Color.fromARGB(
                                                     255, 15, 104, 177),
-                                            selectedColor: UIGuide.PRIMARY2,
+
                                             // selected: snapshot.isFormatSelected(
                                             //     snapshot.divisionlist[index]),
                                             onTap: () async {
@@ -313,7 +312,7 @@ class _TextSMS_staffState extends State<TextSMS_staff> {
                 //                           return ListTile(
                 //                             selectedTileColor: Color.fromARGB(
                 //                                 255, 15, 104, 177),
-                //                             selectedColor: UIGuide.PRIMARY2,
+                //
                 //                             selected: snapshot.isFormatSelected(
                 //                                 snapshot.smsFormats[index]),
                 //                             onTap: () async {

@@ -66,7 +66,7 @@ class Text_Matter_SMS extends StatelessWidget {
                                           selectedTileColor:
                                               const Color.fromARGB(
                                                   255, 15, 104, 177),
-                                          selectedColor: UIGuide.PRIMARY2,
+
                                           // selected: snapshot.isFormatSelected(
                                           //     snapshot.smsFormats[index]),
                                           onTap: () async {

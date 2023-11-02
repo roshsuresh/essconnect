@@ -25,6 +25,7 @@ import 'package:essconnect/Presentation/Student/CurriculamScreen.dart';
 import 'package:essconnect/Presentation/Student/NoInternetScreen.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:essconnect/utils/spinkit.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
 import 'package:page_transition/page_transition.dart';
@@ -1213,39 +1214,54 @@ class SchoolHeadHomeScreenContents extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30.0)),
                       onPressed: () async {
-                        AwesomeDialog(
+                        showCupertinoDialog(
                           context: context,
-                          dialogType: DialogType.info,
-                          borderSide: const BorderSide(
-                              color: UIGuide.light_Purple, width: 2),
-                          buttonsBorderRadius:
-                              const BorderRadius.all(Radius.circular(2)),
-                          headerAnimationLoop: false,
-                          animType: AnimType.bottomSlide,
-                          title: 'SignOut',
-                          desc: 'Are you sure want to sign out',
-                          showCloseIcon: true,
-                          btnOkColor: UIGuide.button1,
-                          btnCancelColor: UIGuide.button2,
-                          btnCancelOnPress: () {
-                            return;
-                          },
-                          btnOkOnPress: () async {
-                            SharedPreferences prefs =
-                                await SharedPreferences.getInstance();
-                            print("accesstoken  $prefs");
-                            prefs.remove("accesstoken");
-                            print("username  $prefs");
-                            await prefs.remove("username");
-                            print("password  $prefs");
-                            await prefs.remove("password");
+                          builder: (context) {
+                            return Container(
+                              color: Colors.black.withOpacity(0.5),
+                              child: CupertinoAlertDialog(
+                                title: const Text("Logout"),
+                                content: const Text(
+                                    "Are you sure you want to log out?"),
+                                actions: <Widget>[
+                                  CupertinoDialogAction(
+                                    child: const Text(
+                                      "Cancel",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          color: UIGuide.light_Purple),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                  CupertinoDialogAction(
+                                    child: const Text("Logout",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w500,
+                                            color: UIGuide.light_Purple)),
+                                    onPressed: () async {
+                                      SharedPreferences prefs =
+                                          await SharedPreferences.getInstance();
+                                      print("accesstoken  $prefs");
+                                      await prefs.remove("accesstoken");
+                                      print("username  $prefs");
+                                      await prefs.remove("username");
+                                      print("password  $prefs");
+                                      await prefs.remove("password");
 
-                            Navigator.of(context).pushAndRemoveUntil(
-                                MaterialPageRoute(
-                                    builder: (context) => LoginPage()),
-                                (Route<dynamic> route) => false);
+                                      Navigator.of(context).pushAndRemoveUntil(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  LoginPage()),
+                                          (Route<dynamic> route) => false);
+                                    },
+                                  ),
+                                ],
+                              ),
+                            );
                           },
-                        ).show();
+                        );
                       },
                       child: const Icon(
                         Icons.logout_outlined,

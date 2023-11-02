@@ -11,13 +11,13 @@ class spinkitLoader extends StatelessWidget {
     Colors.green,
     Colors.blue,
     Colors.indigo,
-    Color.fromARGB(255, 0, 207, 235),
+    const Color.fromARGB(255, 0, 207, 235),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Container(
+      child: SizedBox(
         width: 68,
         height: 68,
         child: LoadingIndicator(
@@ -26,10 +26,6 @@ class spinkitLoader extends StatelessWidget {
           indicatorType: Indicator.ballRotateChase,
         ),
       ),
-      //     SpinKitCircle(
-      //   color: UIGuide.light_Purple,
-      //   size: 50,
-      // )
     );
   }
 }

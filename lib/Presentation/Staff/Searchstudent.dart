@@ -3,6 +3,7 @@ import 'package:essconnect/Application/Staff_Providers/SearchProvider.dart';
 import 'package:essconnect/Constants.dart';
 import 'package:essconnect/Debouncer.dart';
 import 'package:essconnect/Domain/Staff/SearchStudReport.dart';
+import 'package:essconnect/Domain/Staff/StudentReport_staff.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:essconnect/utils/spinkit.dart';
 import 'package:flutter/material.dart';
@@ -50,54 +51,59 @@ class _SearchStudent_stfState extends State<SearchStudent_stf> {
                         color: Colors.grey,
                       )),
                   Expanded(
-                    child: TextField(
-                      controller: clearValue,
-                      onChanged: (value) {
-                        _debouncer.run(() async {
-                          await Provider.of<Screen_Search_Providers>(context,
-                                  listen: false)
-                              .clearStudentList();
-                          await Provider.of<Screen_Search_Providers>(context,
-                                  listen: false)
-                              .getSearch_View(value);
-                          print('-***--**-*-*-*-*-*');
-                        });
-                      },
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20.0),
+                    child: SizedBox(
+                      height: 50,
+                      child: TextField(
+                        focusNode: FocusNode(),
+                        controller: clearValue,
+                        onChanged: (value) {
+                          _debouncer.run(() async {
+                            await Provider.of<Screen_Search_Providers>(context,
+                                    listen: false)
+                                .clearStudentList();
+                            await Provider.of<Screen_Search_Providers>(context,
+                                    listen: false)
+                                .getSearch_View(value);
+                            print('-***--**-*-*-*-*-*');
+                          });
+                        },
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                          suffixIcon: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                icon: const Icon(Icons.close),
+                                color: Colors.grey,
+                                onPressed: (() {
+                                  clearValue.clear();
+                                }),
+                              ),
+                            ],
+                          ),
+                          hintText: 'Search',
+                          hintStyle: const TextStyle(
+                            color: Colors.grey,
+                            fontSize: 20,
+                          ),
+                          fillColor: UIGuide.light_black,
+                          filled: true,
+                          //  contentPadding: EdgeInsets.only(left: 8),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                const BorderSide(color: Colors.transparent),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide: const BorderSide(color: Colors.grey),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                         ),
-                        suffixIcon: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            IconButton(
-                              icon: const Icon(Icons.close),
-                              color: Colors.grey,
-                              onPressed: (() {
-                                clearValue.clear();
-                              }),
-                            ),
-                          ],
-                        ),
-                        hintText: 'Search',
-                        hintStyle: const TextStyle(
-                          color: Colors.grey,
-                          fontSize: 20,
-                        ),
-                        fillColor: UIGuide.light_black,
-                        filled: true,
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                              color: UIGuide.light_Purple, width: .5),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: const BorderSide(color: Colors.grey),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
+                        style: const TextStyle(color: UIGuide.light_Purple),
                       ),
-                      style: const TextStyle(color: UIGuide.light_Purple),
                     ),
                   ),
                 ],
@@ -141,6 +147,7 @@ class _SearchStudent_stfState extends State<SearchStudent_stf> {
                             : provider.searchStudent.length,
                         itemBuilder: (context, index) {
                           return Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               kheight10,
                               GestureDetector(
@@ -157,14 +164,13 @@ class _SearchStudent_stfState extends State<SearchStudent_stf> {
                                 },
                                 child: Container(
                                   width: size.width - 15,
-                                  height: 82,
                                   decoration: const BoxDecoration(
                                       color: UIGuide.light_black,
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(10))),
                                   child: Row(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                        CrossAxisAlignment.center,
                                     children: [
                                       kWidth,
                                       Center(
@@ -193,10 +199,8 @@ class _SearchStudent_stfState extends State<SearchStudent_stf> {
                                               children: [
                                                 const Text(
                                                   'Name : ',
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      fontSize: 13),
+                                                  style:
+                                                      TextStyle(fontSize: 13),
                                                 ),
                                                 RichText(
                                                   overflow:
@@ -207,7 +211,10 @@ class _SearchStudent_stfState extends State<SearchStudent_stf> {
                                                   text: TextSpan(
                                                       style: const TextStyle(
                                                         fontSize: 12,
-                                                        color: Colors.black,
+                                                        color: UIGuide
+                                                            .light_Purple,
+                                                        fontWeight:
+                                                            FontWeight.w500,
                                                       ),
                                                       text: provider
                                                               .searchStudent[
@@ -222,10 +229,8 @@ class _SearchStudent_stfState extends State<SearchStudent_stf> {
                                                 const Text(
                                                   'Roll No : ',
                                                   textAlign: TextAlign.start,
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      fontSize: 13),
+                                                  style:
+                                                      TextStyle(fontSize: 13),
                                                 ),
                                                 RichText(
                                                   overflow:
@@ -236,6 +241,8 @@ class _SearchStudent_stfState extends State<SearchStudent_stf> {
                                                   text: TextSpan(
                                                     style: const TextStyle(
                                                       fontSize: 12,
+                                                      fontWeight:
+                                                          FontWeight.w500,
                                                       color: Colors.black,
                                                     ),
                                                     text: provider
@@ -260,8 +267,6 @@ class _SearchStudent_stfState extends State<SearchStudent_stf> {
                                                       textAlign:
                                                           TextAlign.start,
                                                       style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w500,
                                                           fontSize: 13),
                                                     ),
                                                     RichText(
@@ -274,6 +279,8 @@ class _SearchStudent_stfState extends State<SearchStudent_stf> {
                                                       text: TextSpan(
                                                         style: const TextStyle(
                                                           fontSize: 12,
+                                                          fontWeight:
+                                                              FontWeight.w500,
                                                           color: Colors.black,
                                                         ),
                                                         text: provider
@@ -292,10 +299,8 @@ class _SearchStudent_stfState extends State<SearchStudent_stf> {
                                                 const Text(
                                                   'Adm No : ',
                                                   textAlign: TextAlign.start,
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      fontSize: 13),
+                                                  style:
+                                                      TextStyle(fontSize: 13),
                                                 ),
                                                 RichText(
                                                   overflow:
@@ -306,6 +311,8 @@ class _SearchStudent_stfState extends State<SearchStudent_stf> {
                                                   text: TextSpan(
                                                     style: const TextStyle(
                                                       fontSize: 12,
+                                                      fontWeight:
+                                                          FontWeight.w500,
                                                       color: Colors.black,
                                                     ),
                                                     text: provider
@@ -338,10 +345,8 @@ class _SearchStudent_stfState extends State<SearchStudent_stf> {
                                                   const Text(
                                                     'Phone : ',
                                                     textAlign: TextAlign.start,
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        fontSize: 13),
+                                                    style:
+                                                        TextStyle(fontSize: 13),
                                                   ),
                                                   RichText(
                                                     overflow:
@@ -353,6 +358,8 @@ class _SearchStudent_stfState extends State<SearchStudent_stf> {
                                                     text: TextSpan(
                                                       style: const TextStyle(
                                                         fontSize: 13,
+                                                        fontWeight:
+                                                            FontWeight.w500,
                                                         color: Colors.black,
                                                       ),
                                                       text: provider
@@ -362,6 +369,7 @@ class _SearchStudent_stfState extends State<SearchStudent_stf> {
                                                           '---',
                                                     ),
                                                   ),
+                                                  kWidth,
                                                   const Icon(
                                                     Icons.phone,
                                                     size: 17,
@@ -399,12 +407,12 @@ class _SearchStudent_stfState extends State<SearchStudent_stf> {
 }
 
 class StudProfileViewBySearch_Staff extends StatelessWidget {
-  SearchStudReport stud;
+  ViewStudentReport stud;
   StudProfileViewBySearch_Staff({
     Key? key,
     required this.stud,
   }) : super(key: key);
-  //final int indexx;
+
   String? phn;
   @override
   Widget build(BuildContext context) {
@@ -434,7 +442,6 @@ class StudProfileViewBySearch_Staff extends StatelessWidget {
                 Container(
                   height: 260,
                   width: size.width,
-                  // color: UIGuide.WHITE,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: gradient,
@@ -450,19 +457,22 @@ class StudProfileViewBySearch_Staff extends StatelessWidget {
                   right: 30,
                   child: Container(
                       decoration: const BoxDecoration(
-                          color: UIGuide.WHITE,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Color.fromARGB(255, 128, 125, 125),
-                              offset: Offset(
-                                2,
-                                5.0,
-                              ),
-                              blurRadius: 5.0,
-                              spreadRadius: 2.0,
+                        color: UIGuide.WHITE,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Color.fromARGB(255, 128, 125, 125),
+                            offset: Offset(
+                              2,
+                              4.0,
                             ),
-                          ],
-                          borderRadius: BorderRadius.all(Radius.circular(10))),
+                            blurRadius: 4.0,
+                            spreadRadius: 2.0,
+                          ),
+                        ],
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(10),
+                        ),
+                      ),
                       width: size.width - 50,
                       height: 170,
                       child: Column(
@@ -496,33 +506,44 @@ class StudProfileViewBySearch_Staff extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Table(
-                              // defaultColumnWidth: FixedColumnWidth(120.0),
                               border: TableBorder.all(
-                                  color: Color.fromARGB(255, 233, 233, 245),
+                                  color:
+                                      const Color.fromARGB(255, 233, 233, 233),
                                   style: BorderStyle.solid,
+                                  borderRadius: BorderRadius.circular(10),
                                   width: 2),
                               children: [
                                 TableRow(children: [
-                                  Column(
-                                    children: [
-                                      const Text('Roll No',
-                                          style: TextStyle(color: Colors.grey)),
-                                      Text(
-                                          stud.rollNo == null
-                                              ? '---'
-                                              : stud.rollNo.toString(),
-                                          style:
-                                              const TextStyle(fontSize: 16.0)),
-                                    ],
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 3, bottom: 3),
+                                    child: Column(
+                                      children: [
+                                        const Text('Roll No',
+                                            style:
+                                                TextStyle(color: Colors.grey)),
+                                        Text(
+                                            stud.rollNo == null
+                                                ? '---'
+                                                : stud.rollNo.toString(),
+                                            style: const TextStyle(
+                                                fontSize: 16.0)),
+                                      ],
+                                    ),
                                   ),
-                                  Column(
-                                    children: [
-                                      const Text('Adm No',
-                                          style: TextStyle(color: Colors.grey)),
-                                      Text(stud.admnNo ?? '---',
-                                          style:
-                                              const TextStyle(fontSize: 14.0)),
-                                    ],
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 3, bottom: 3),
+                                    child: Column(
+                                      children: [
+                                        const Text('Adm No',
+                                            style:
+                                                TextStyle(color: Colors.grey)),
+                                        Text(stud.admnNo ?? '---',
+                                            style: const TextStyle(
+                                                fontSize: 14.0)),
+                                      ],
+                                    ),
                                   ),
                                 ])
                               ],
@@ -533,13 +554,20 @@ class StudProfileViewBySearch_Staff extends StatelessWidget {
                 ),
                 Center(
                   child: CircleAvatar(
-                    foregroundColor: Colors.white,
-                    foregroundImage: NetworkImage(
-                      stud.studentPhoto ??
-                          'https://gj-eschool-files-public.s3.ap-south-1.amazonaws.com/ess-connect/student/avathar-02.jpeg',
-                    ),
                     radius: 65,
                     backgroundColor: UIGuide.WHITE,
+                    child: Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: CircleAvatar(
+                        foregroundColor: Colors.white,
+                        foregroundImage: NetworkImage(
+                          stud.studentPhoto ??
+                              'https://gj-eschool-files-public.s3.ap-south-1.amazonaws.com/ess-connect/student/avathar-02.jpeg',
+                        ),
+                        radius: 65,
+                        backgroundColor: UIGuide.WHITE,
+                      ),
+                    ),
                   ),
                 )
               ],
@@ -550,96 +578,106 @@ class StudProfileViewBySearch_Staff extends StatelessWidget {
                 padding: const EdgeInsets.all(10),
                 width: size.width,
                 decoration: BoxDecoration(
-                    color: UIGuide.light_black,
+                    color: UIGuide.WHITE,
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.grey, // Shadow color
+                        offset: Offset(0, 4), // Offset of the shadow
+                        blurRadius: 4, // Spread of the shadow
+                        spreadRadius: 0, // Spread radius of the shadow
+                      ),
+                    ],
                     borderRadius: BorderRadius.circular(10)),
                 child: Column(
                   children: [
-                    Container(
-                      decoration: const BoxDecoration(
-                        color: UIGuide.light_black,
-                      ),
-                      width: size.width,
-                      height: 85,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Row(
                         children: [
                           const Text(
-                            'Permenent Address',
-                            style: TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.w700),
-                          ),
-                          const SizedBox(
-                            height: 5,
+                            'Permenent Address: ',
+                            style: TextStyle(fontSize: 12),
                           ),
                           Flexible(
-                            child: RichText(
-                              overflow: TextOverflow.ellipsis,
-                              strutStyle: const StrutStyle(fontSize: 13),
-                              maxLines: 3,
-                              text: TextSpan(
-                                style: const TextStyle(
-                                    fontSize: 15,
-                                    color: Color.fromARGB(255, 44, 43, 43)),
-                                text: stud.address ?? '---',
+                            child: Text(
+                              stud.address ?? '---',
+                              overflow: TextOverflow.clip,
+                              maxLines: 10,
+                              style: const TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
                               ),
                             ),
-                          ),
+                          )
                         ],
                       ),
                     ),
-                    Row(
-                      children: [
-                        const Text(
-                          'Bus Name : ',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500, fontSize: 13),
-                        ),
-                        Flexible(
-                          child: Text(
-                            stud.bus ?? '---',
-                            overflow: TextOverflow.clip,
-                            style: const TextStyle(fontSize: 12),
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Row(
+                        children: [
+                          const Text(
+                            'Bus Name : ',
+                            style: TextStyle(fontSize: 12),
                           ),
-                        )
-                      ],
+                          Flexible(
+                            child: Text(
+                              stud.bus ?? '---',
+                              overflow: TextOverflow.clip,
+                              style: const TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
-                    kheight10,
-                    Row(
-                      children: [
-                        const Text(
-                          'Bus Stop : ',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500, fontSize: 13),
-                        ),
-                        Flexible(
-                          child: Text(
-                            stud.stop ?? '---',
-                            overflow: TextOverflow.clip,
-                            style: const TextStyle(fontSize: 12),
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Row(
+                        children: [
+                          const Text(
+                            'Bus Stop : ',
+                            style: TextStyle(fontSize: 12),
                           ),
-                        )
-                      ],
+                          Flexible(
+                            child: Text(
+                              stud.stop ?? '---',
+                              overflow: TextOverflow.clip,
+                              style: const TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
-                    kheight10,
                     GestureDetector(
                       onTap: () {
                         _makingPhoneCall(phn.toString());
                       },
-                      child: Row(
-                        children: [
-                          const Text(
-                            'Phone No : ',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500, fontSize: 13),
-                          ),
-                          Flexible(
-                            child: Text(
-                              phn = stud.mobNo ?? '---',
-                              overflow: TextOverflow.clip,
-                              style: const TextStyle(fontSize: 12),
+                      child: Padding(
+                        padding: const EdgeInsets.all(4.0),
+                        child: Row(
+                          children: [
+                            const Text(
+                              'Phone No : ',
+                              style: TextStyle(fontSize: 13),
                             ),
-                          )
-                        ],
+                            Flexible(
+                              child: Text(
+                                phn = stud.mobNo ?? '---',
+                                overflow: TextOverflow.clip,
+                                style: const TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ],

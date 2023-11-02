@@ -87,6 +87,7 @@ class StudReportDivision {
 //View initial
 
 class ViewStudentReport {
+  String? studentId;
   String? admnNo;
   String? name;
   String? division;
@@ -111,7 +112,8 @@ class ViewStudentReport {
   bool? selected;
 
   ViewStudentReport(
-      {this.admnNo,
+      {this.studentId,
+      this.admnNo,
       this.name,
       this.division,
       this.course,
@@ -135,6 +137,7 @@ class ViewStudentReport {
       this.selected});
 
   ViewStudentReport.fromJson(Map<String, dynamic> json) {
+    studentId = json['studentId'];
     admnNo = json['admnNo'];
     name = json['name'];
     division = json['division'];
@@ -160,6 +163,7 @@ class ViewStudentReport {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    data['studentId'] = studentId;
     data['admnNo'] = admnNo;
     data['name'] = name;
     data['division'] = division;

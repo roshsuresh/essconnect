@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:essconnect/Domain/Staff/SearchStudReport.dart';
+import 'package:essconnect/Domain/Staff/StudentReport_staff.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
@@ -14,7 +15,7 @@ class FeeDetailsProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  List<SearchStudReport> searchStudent = [];
+  List<ViewStudentReport> searchStudent = [];
   Future<bool> getSearchView(String word) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoading(true);
@@ -38,8 +39,8 @@ class FeeDetailsProvider with ChangeNotifier {
       Map<String, dynamic> data =
           jsonDecode(await response.stream.bytesToString());
       print(data);
-      List<SearchStudReport> templist = List<SearchStudReport>.from(
-          data["viewStudentReport"].map((x) => SearchStudReport.fromJson(x)));
+      List<ViewStudentReport> templist = List<ViewStudentReport>.from(
+          data["viewStudentReport"].map((x) => ViewStudentReport.fromJson(x)));
       searchStudent.addAll(templist);
       setLoading(false);
       notifyListeners();

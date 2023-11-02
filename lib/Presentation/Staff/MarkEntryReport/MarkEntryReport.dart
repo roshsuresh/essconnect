@@ -486,7 +486,6 @@ class _MarkEntryReportState extends State<MarkEntryReport> {
                                             return ListTile(
                                               selectedTileColor:
                                                   Colors.blue.shade100,
-                                              selectedColor: UIGuide.PRIMARY2,
                                               onTap: () async {
                                                 examController1.text = snapshot
                                                         .markReportExamList[

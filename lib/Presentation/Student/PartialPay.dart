@@ -127,7 +127,7 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
                                           radius: const Radius.circular(20),
                                           child: Padding(
                                             padding: const EdgeInsets.only(
-                                                left: 20.0, right: 8),
+                                                left: 18, right: 5),
                                             child: LimitedBox(
                                                 maxHeight: 160,
                                                 child: Consumer<FeesProvider>(
@@ -182,13 +182,28 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
                                                                             index]
                                                                         .netDue
                                                                         .toString(),
+                                                                style: const TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                    fontSize:
+                                                                        15),
                                                               ),
-                                                              title: Text(
-                                                                valuee
-                                                                        .feeList[
-                                                                            index]
-                                                                        .installmentName ??
-                                                                    '--',
+                                                              title: SizedBox(
+                                                                width:
+                                                                    size.width /
+                                                                        2.5,
+                                                                child: Text(
+                                                                  valuee.feeList[index]
+                                                                          .installmentName ??
+                                                                      '--',
+                                                                  style: const TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                      fontSize:
+                                                                          15),
+                                                                ),
                                                               ),
                                                             );
                                                           }),
@@ -305,13 +320,13 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
                                         Scrollbar(
                                           controller: _controllerr2,
                                           thumbVisibility: true,
-                                          thickness: 10,
+                                          thickness: 8,
                                           radius: const Radius.circular(10),
                                           child: Padding(
                                             padding: const EdgeInsets.only(
-                                                left: 20, right: 8),
+                                                left: 18, right: 5),
                                             child: LimitedBox(
-                                                maxHeight: 165,
+                                                maxHeight: 160,
                                                 child: Consumer<FeesProvider>(
                                                     builder:
                                                         (context, val, child) {
@@ -354,12 +369,28 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
                                                                 .toString(),
                                                             textAlign:
                                                                 TextAlign.end,
+                                                            style: const TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
+                                                                fontSize: 15),
                                                           ),
-                                                          title: Text(val
-                                                                  .busFeeList[
-                                                                      index]
-                                                                  .installmentName ??
-                                                              '--'),
+                                                          title: SizedBox(
+                                                            width: size.width /
+                                                                2.5,
+                                                            child: Text(
+                                                              val
+                                                                      .busFeeList[
+                                                                          index]
+                                                                      .installmentName ??
+                                                                  '--',
+                                                              style: const TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                  fontSize: 15),
+                                                            ),
+                                                          ),
                                                         );
                                                       });
                                                 })),
@@ -463,331 +494,368 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
                               ),
                               kheight20,
                               kheight20,
-                              GestureDetector(
-                                child: const Text(
-                                  'Last Transaction Details',
-                                  style: TextStyle(
-                                    color: UIGuide.light_Purple,
-                                    decoration: TextDecoration.underline,
-                                    decorationStyle: TextDecorationStyle.dashed,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                                onTap: () async {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return Dialog(
-                                          child: Consumer<FeesProvider>(builder:
-                                              (context, provider, child) {
-                                            String date = provider
-                                                    .lastTransactionStartDate ??
-                                                '--';
-                                            var updatedDate =
-                                                DateFormat('yyyy-MM-dd')
-                                                    .parse(date);
-                                            String newDate =
-                                                updatedDate.toString();
-                                            String finalDate = newDate
-                                                .replaceRange(10, 23, '');
-                                            return SingleChildScrollView(
-                                              scrollDirection: Axis.vertical,
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: [
-                                                  kheight10,
-                                                  const Padding(
-                                                    padding:
-                                                        EdgeInsets.all(8.0),
-                                                    child: Text(
-                                                      'Your last transaction  details',
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          color: UIGuide
-                                                              .light_Purple),
-                                                    ),
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: Row(
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  InkWell(
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(8),
+                                          border: Border.all(
+                                              color: const Color.fromARGB(
+                                                  255, 223, 223, 223))),
+                                      child: const Padding(
+                                        padding: EdgeInsets.all(3.0),
+                                        child: Text(
+                                          'Last Transaction Details',
+                                          style: TextStyle(
+                                              color: UIGuide.light_Purple,
+                                              fontWeight: FontWeight.w600),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ),
+                                    ),
+                                    onTap: () async {
+                                      showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return Dialog(
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          15)),
+                                              child: Consumer<FeesProvider>(
+                                                  builder: (context, provider,
+                                                      child) {
+                                                String finalDate = "";
+
+                                                if (provider
+                                                        .lastTransactionStartDate !=
+                                                    null) {
+                                                  String createddate = provider
+                                                          .lastTransactionStartDate ??
+                                                      '--';
+                                                  DateTime parsedDateTime =
+                                                      DateTime.parse(
+                                                          createddate);
+                                                  finalDate = DateFormat(
+                                                          'dd-MMM-yyyy')
+                                                      .format(parsedDateTime);
+                                                }
+
+                                                return Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: SingleChildScrollView(
+                                                    scrollDirection:
+                                                        Axis.vertical,
+                                                    child: Column(
+                                                      mainAxisSize:
+                                                          MainAxisSize.min,
                                                       children: [
-                                                        const Text(
-                                                          'Transaction Date: ',
-                                                        ),
-                                                        Flexible(
-                                                          child: RichText(
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
-                                                            strutStyle:
-                                                                const StrutStyle(),
-                                                            maxLines: 3,
-                                                            text: TextSpan(
-                                                                style: const TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                    color: UIGuide
-                                                                        .light_Purple),
-                                                                text:
-                                                                    // provider.title ??
-                                                                    finalDate),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: Row(
-                                                      children: [
-                                                        const Text(
-                                                          'Transaction amount: ',
-                                                        ),
-                                                        Text(
-                                                          provider.lastTransactionAmount ==
-                                                                  null
-                                                              ? ''
-                                                              : provider
-                                                                  .lastTransactionAmount
-                                                                  .toString(),
-                                                          style: const TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              color: UIGuide
-                                                                  .light_Purple),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: Row(
-                                                      children: [
-                                                        const Text(
-                                                          'Transaction Status: ',
-                                                        ),
-                                                        Consumer<FeesProvider>(
-                                                          builder: (context,
-                                                              value, child) {
-                                                            String stats = provider
-                                                                        .lastOrderStatus ==
-                                                                    null
-                                                                ? ''
-                                                                : provider
-                                                                    .lastOrderStatus
-                                                                    .toString();
-                                                            if (stats ==
-                                                                "Success") {
-                                                              return const Text(
-                                                                "Success",
-                                                                style: TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                    color: Colors
-                                                                        .green),
-                                                              );
-                                                            } else if (stats ==
-                                                                "Failed") {
-                                                              return const Text(
-                                                                "Failed",
-                                                                style: TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                    color: Colors
-                                                                        .red),
-                                                              );
-                                                            } else if (stats ==
-                                                                "Cancelled") {
-                                                              return const Text(
-                                                                "Cancelled",
-                                                                style: TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                    color: Color
-                                                                        .fromARGB(
-                                                                            255,
-                                                                            192,
-                                                                            56,
-                                                                            7)),
-                                                              );
-                                                            } else if (stats ==
-                                                                "Processing") {
-                                                              return const Text(
-                                                                "Processing",
-                                                                style: TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                    color: Colors
-                                                                        .orange),
-                                                              );
-                                                            } else if (stats ==
-                                                                "Pending") {
-                                                              return const Text(
-                                                                "Pending",
-                                                                style: TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                    color: Colors
-                                                                        .orange),
-                                                              );
-                                                            } else {
-                                                              return const Text(
-                                                                "--",
-                                                                style: TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                    color: UIGuide
-                                                                        .light_Purple),
-                                                              );
-                                                            }
-                                                          },
+                                                        kheight10,
+                                                        const Padding(
+                                                          padding:
+                                                              EdgeInsets.all(
+                                                                  4.0),
                                                           child: Text(
-                                                            provider.lastOrderStatus ==
-                                                                    null
-                                                                ? ''
-                                                                : provider
-                                                                    .lastOrderStatus
-                                                                    .toString(),
-                                                            style: const TextStyle(
+                                                            'Your last transaction  details',
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                            style: TextStyle(
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .bold,
+                                                                fontSize: 15,
                                                                 color: UIGuide
                                                                     .light_Purple),
                                                           ),
                                                         ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  Consumer<FeesProvider>(
-                                                    builder: (context, value,
-                                                        child) {
-                                                      String status = provider
-                                                                  .lastOrderStatus ==
-                                                              null
-                                                          ? ''
-                                                          : provider
-                                                              .lastOrderStatus
-                                                              .toString();
-                                                      if (status == 'Success' ||
-                                                          status == 'Failed') {
-                                                        return Padding(
+                                                        kheight5,
+                                                        Padding(
                                                           padding:
                                                               const EdgeInsets
                                                                   .all(8.0),
                                                           child: Row(
                                                             children: [
                                                               const Text(
-                                                                'Download receipt: ',
+                                                                'Transaction Date: ',
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        13),
                                                               ),
-                                                              GestureDetector(
-                                                                onTap:
-                                                                    () async {
-                                                                  String orderID = await provider
-                                                                              .orderId ==
+                                                              Flexible(
+                                                                child: RichText(
+                                                                  overflow:
+                                                                      TextOverflow
+                                                                          .ellipsis,
+                                                                  strutStyle:
+                                                                      const StrutStyle(),
+                                                                  maxLines: 3,
+                                                                  text: TextSpan(
+                                                                      style: const TextStyle(fontWeight: FontWeight.bold, color: UIGuide.light_Purple),
+                                                                      text:
+                                                                          // provider.title ??
+                                                                          finalDate),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                          child: Row(
+                                                            children: [
+                                                              const Text(
+                                                                'Transaction Amount: ',
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        13),
+                                                              ),
+                                                              Text(
+                                                                provider.lastTransactionAmount ==
+                                                                        null
+                                                                    ? ''
+                                                                    : provider
+                                                                        .lastTransactionAmount
+                                                                        .toString(),
+                                                                style: const TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    color: UIGuide
+                                                                        .light_Purple),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                          child: Row(
+                                                            children: [
+                                                              const Text(
+                                                                'Transaction Status: ',
+                                                                style: TextStyle(
+                                                                    fontSize:
+                                                                        13),
+                                                              ),
+                                                              Consumer<
+                                                                  FeesProvider>(
+                                                                builder:
+                                                                    (context,
+                                                                        value,
+                                                                        child) {
+                                                                  String stats = provider
+                                                                              .lastOrderStatus ==
                                                                           null
                                                                       ? ''
                                                                       : provider
-                                                                          .orderId
+                                                                          .lastOrderStatus
                                                                           .toString();
-
-                                                                  await Provider.of<
-                                                                              FeesProvider>(
-                                                                          context,
-                                                                          listen:
-                                                                              false)
-                                                                      .pdfDownload(
-                                                                          orderID);
-                                                                  String
-                                                                      extenstion =
-                                                                      await provider
-                                                                              .extension ??
-                                                                          '--';
-
-                                                                  SchedulerBinding
-                                                                      .instance
-                                                                      .addPostFrameCallback(
-                                                                          (_) {
-                                                                    Navigator
-                                                                        .pushReplacement(
-                                                                      context,
-                                                                      MaterialPageRoute(
-                                                                          builder: (context) =>
-                                                                              PdfDownload()),
+                                                                  if (stats ==
+                                                                      "Success") {
+                                                                    return const Text(
+                                                                      "Success",
+                                                                      style: TextStyle(
+                                                                          fontWeight: FontWeight
+                                                                              .bold,
+                                                                          color:
+                                                                              Colors.green),
                                                                     );
-                                                                  });
+                                                                  } else if (stats ==
+                                                                      "Failed") {
+                                                                    return const Text(
+                                                                      "Failed",
+                                                                      style: TextStyle(
+                                                                          fontWeight: FontWeight
+                                                                              .bold,
+                                                                          color:
+                                                                              Colors.red),
+                                                                    );
+                                                                  } else if (stats ==
+                                                                      "Cancelled") {
+                                                                    return const Text(
+                                                                      "Cancelled",
+                                                                      style: TextStyle(
+                                                                          fontWeight: FontWeight
+                                                                              .bold,
+                                                                          color: Color.fromARGB(
+                                                                              255,
+                                                                              192,
+                                                                              56,
+                                                                              7)),
+                                                                    );
+                                                                  } else if (stats ==
+                                                                      "Processing") {
+                                                                    return const Text(
+                                                                      "Processing",
+                                                                      style: TextStyle(
+                                                                          fontWeight: FontWeight
+                                                                              .bold,
+                                                                          color:
+                                                                              Colors.orange),
+                                                                    );
+                                                                  } else if (stats ==
+                                                                      "Pending") {
+                                                                    return const Text(
+                                                                      "Pending",
+                                                                      style: TextStyle(
+                                                                          fontWeight: FontWeight
+                                                                              .bold,
+                                                                          color:
+                                                                              Colors.orange),
+                                                                    );
+                                                                  } else {
+                                                                    return const Text(
+                                                                      "--",
+                                                                      style: TextStyle(
+                                                                          fontWeight: FontWeight
+                                                                              .bold,
+                                                                          color:
+                                                                              UIGuide.light_Purple),
+                                                                    );
+                                                                  }
                                                                 },
-                                                                child: const Icon(
-                                                                    Icons
-                                                                        .download,
-                                                                    color: UIGuide
-                                                                        .light_Purple),
-                                                              )
+                                                                child: Text(
+                                                                  provider.lastOrderStatus ==
+                                                                          null
+                                                                      ? ''
+                                                                      : provider
+                                                                          .lastOrderStatus
+                                                                          .toString(),
+                                                                  style: const TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                      color: UIGuide
+                                                                          .light_Purple),
+                                                                ),
+                                                              ),
                                                             ],
                                                           ),
-                                                        );
-                                                      } else {
-                                                        return Container(
-                                                          height: 0,
-                                                          width: 0,
-                                                        );
-                                                      }
-                                                    },
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment.end,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .end,
-                                                      children: [
-                                                        kWidth,
-                                                        MaterialButton(
-                                                          height: 30,
-                                                          onPressed: () async {
-                                                            Navigator.pop(
-                                                                context);
+                                                        ),
+                                                        Consumer<FeesProvider>(
+                                                          builder: (context,
+                                                              value, child) {
+                                                            String status = provider
+                                                                        .lastOrderStatus ==
+                                                                    null
+                                                                ? ''
+                                                                : provider
+                                                                    .lastOrderStatus
+                                                                    .toString();
+                                                            if (status ==
+                                                                    'Success' ||
+                                                                status ==
+                                                                    'Failed') {
+                                                              return Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .all(
+                                                                        8.0),
+                                                                child: Row(
+                                                                  children: [
+                                                                    const Text(
+                                                                      'Download Receipt: ',
+                                                                      style: TextStyle(
+                                                                          fontSize:
+                                                                              13),
+                                                                    ),
+                                                                    GestureDetector(
+                                                                      onTap:
+                                                                          () async {
+                                                                        String orderID = await provider.orderId ==
+                                                                                null
+                                                                            ? ''
+                                                                            : provider.orderId.toString();
+
+                                                                        await Provider.of<FeesProvider>(context,
+                                                                                listen: false)
+                                                                            .pdfDownload(orderID);
+                                                                        String
+                                                                            extenstion =
+                                                                            await provider.extension ??
+                                                                                '--';
+
+                                                                        SchedulerBinding
+                                                                            .instance
+                                                                            .addPostFrameCallback((_) {
+                                                                          Navigator
+                                                                              .pushReplacement(
+                                                                            context,
+                                                                            MaterialPageRoute(builder: (context) => PdfDownload()),
+                                                                          );
+                                                                        });
+                                                                      },
+                                                                      child: const Icon(
+                                                                          Icons
+                                                                              .download,
+                                                                          color:
+                                                                              UIGuide.light_Purple),
+                                                                    )
+                                                                  ],
+                                                                ),
+                                                              );
+                                                            } else {
+                                                              return Container(
+                                                                height: 0,
+                                                                width: 0,
+                                                              );
+                                                            }
                                                           },
-                                                          color: UIGuide
-                                                              .light_Purple,
-                                                          child: const Text(
-                                                            'OK',
-                                                            style: TextStyle(
+                                                        ),
+                                                        Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .end,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .end,
+                                                            children: [
+                                                              kWidth,
+                                                              MaterialButton(
+                                                                shape: RoundedRectangleBorder(
+                                                                    borderRadius:
+                                                                        BorderRadius.circular(
+                                                                            8)),
+                                                                height: 30,
+                                                                onPressed:
+                                                                    () async {
+                                                                  Navigator.pop(
+                                                                      context);
+                                                                },
                                                                 color: UIGuide
-                                                                    .WHITE),
+                                                                    .light_Purple,
+                                                                child:
+                                                                    const Text(
+                                                                  'OK',
+                                                                  style: TextStyle(
+                                                                      color: UIGuide
+                                                                          .WHITE),
+                                                                ),
+                                                              )
+                                                            ],
                                                           ),
                                                         )
                                                       ],
                                                     ),
-                                                  )
-                                                ],
-                                              ),
+                                                  ),
+                                                );
+                                              }),
                                             );
-                                          }),
-                                        );
-                                      });
-                                },
+                                          });
+                                    },
+                                  ),
+                                ],
                               ),
                               const SizedBox(
                                 height: 80,
@@ -804,7 +872,9 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
                               child: Consumer<FeesProvider>(
                                 builder: (context, trans, child) =>
                                     MaterialButton(
-                                  height: 50,
+                                  height: 45,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(15)),
                                   onPressed: () async {
                                     if (trans.gateway == null) {
                                       ScaffoldMessenger.of(context)
@@ -4910,7 +4980,7 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
     print(words);
     print(words[5]);
     String paymentGatewayTransactionId = words[5];
-    await Future.delayed(Duration(seconds: 5));
+    await Future.delayed(const Duration(seconds: 5));
     await Provider.of<FinalStatusProvider>(contex, listen: false)
         .transactionStatusWorldLine(orderID, paymentGatewayTransactionId);
 

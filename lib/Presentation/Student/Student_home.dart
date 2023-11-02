@@ -11,6 +11,7 @@ import 'package:essconnect/Presentation/Student/Offline/BusFeeInitial.dart';
 import 'package:essconnect/Presentation/Student/Offline/FeeInitialScreen.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:essconnect/utils/spinkit.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
@@ -273,7 +274,7 @@ class _StudentHomeState extends State<StudentHome> {
                                       const Text(
                                         'Profile',
                                         style: TextStyle(
-                                            fontWeight: FontWeight.w400,
+                                            fontWeight: FontWeight.w600,
                                             fontSize: 11,
                                             color: Colors.black),
                                       )
@@ -326,7 +327,7 @@ class _StudentHomeState extends State<StudentHome> {
                                       const Text(
                                         'Notice Board',
                                         style: TextStyle(
-                                            fontWeight: FontWeight.w400,
+                                            fontWeight: FontWeight.w600,
                                             fontSize: 11,
                                             color: Colors.black),
                                       )
@@ -381,7 +382,7 @@ class _StudentHomeState extends State<StudentHome> {
                                       const Text(
                                         'Gallery',
                                         style: TextStyle(
-                                            fontWeight: FontWeight.w400,
+                                            fontWeight: FontWeight.w600,
                                             fontSize: 11,
                                             color: Colors.black),
                                       )
@@ -431,7 +432,7 @@ class _StudentHomeState extends State<StudentHome> {
                                             const Text(
                                               'Notification',
                                               style: TextStyle(
-                                                  fontWeight: FontWeight.w400,
+                                                  fontWeight: FontWeight.w600,
                                                   fontSize: 11,
                                                   color: Colors.black),
                                             )
@@ -517,7 +518,7 @@ class _StudentHomeState extends State<StudentHome> {
                                                   'Notification',
                                                   style: TextStyle(
                                                       fontWeight:
-                                                          FontWeight.w400,
+                                                          FontWeight.w600,
                                                       fontSize: 11,
                                                       color: Colors.black),
                                                 )
@@ -644,7 +645,7 @@ class _StudentHomeState extends State<StudentHome> {
                                                         'Pay Fee',
                                                         style: TextStyle(
                                                             fontWeight:
-                                                                FontWeight.w400,
+                                                                FontWeight.w600,
                                                             fontSize: 11,
                                                             color:
                                                                 Colors.black),
@@ -720,7 +721,7 @@ class _StudentHomeState extends State<StudentHome> {
                                                             TextAlign.center,
                                                         style: TextStyle(
                                                             fontWeight:
-                                                                FontWeight.w400,
+                                                                FontWeight.w600,
                                                             fontSize: 11,
                                                             color:
                                                                 Colors.black),
@@ -848,7 +849,7 @@ class _StudentHomeState extends State<StudentHome> {
                                                         'Fees',
                                                         style: TextStyle(
                                                             fontWeight:
-                                                                FontWeight.w400,
+                                                                FontWeight.w600,
                                                             fontSize: 11,
                                                             color:
                                                                 Colors.black),
@@ -922,7 +923,7 @@ class _StudentHomeState extends State<StudentHome> {
                                                             TextAlign.center,
                                                         style: TextStyle(
                                                             fontWeight:
-                                                                FontWeight.w400,
+                                                                FontWeight.w600,
                                                             fontSize: 11,
                                                             color:
                                                                 Colors.black),
@@ -1018,7 +1019,7 @@ class _StudentHomeState extends State<StudentHome> {
                                         const Text(
                                           'Attendance',
                                           style: TextStyle(
-                                              fontWeight: FontWeight.w400,
+                                              fontWeight: FontWeight.w600,
                                               fontSize: 11,
                                               color: Colors.black),
                                         )
@@ -1088,7 +1089,7 @@ class _StudentHomeState extends State<StudentHome> {
                                             const Text(
                                               'Timetable',
                                               style: TextStyle(
-                                                  fontWeight: FontWeight.w400,
+                                                  fontWeight: FontWeight.w600,
                                                   fontSize: 11,
                                                   color: Colors.black),
                                             )
@@ -1143,7 +1144,7 @@ class _StudentHomeState extends State<StudentHome> {
                                         const Text(
                                           'Diary',
                                           style: TextStyle(
-                                              fontWeight: FontWeight.w400,
+                                              fontWeight: FontWeight.w600,
                                               fontSize: 11,
                                               color: Colors.black),
                                         )
@@ -1210,7 +1211,7 @@ class _StudentHomeState extends State<StudentHome> {
                                         const Text(
                                           'Report Card',
                                           style: TextStyle(
-                                              fontWeight: FontWeight.w400,
+                                              fontWeight: FontWeight.w600,
                                               fontSize: 11,
                                               color: Colors.black),
                                         )
@@ -1282,7 +1283,7 @@ class _StudentHomeState extends State<StudentHome> {
                                           const Text(
                                             'e-Classroom',
                                             style: TextStyle(
-                                                fontWeight: FontWeight.w400,
+                                                fontWeight: FontWeight.w600,
                                                 fontSize: 11,
                                                 color: Colors.black),
                                           )
@@ -1357,48 +1358,107 @@ class _StudentHomeState extends State<StudentHome> {
                                       borderRadius:
                                           BorderRadius.circular(30.0)),
                                   onPressed: () async {
-                                    AwesomeDialog(
-                                            context: context,
-                                            dialogType: DialogType.info,
-                                            borderSide: const BorderSide(
-                                                color: UIGuide.light_Purple,
-                                                width: 2),
-                                            buttonsBorderRadius:
-                                                const BorderRadius.all(
-                                                    Radius.circular(2)),
-                                            headerAnimationLoop: false,
-                                            animType: AnimType.bottomSlide,
-                                            title: 'SignOut',
-                                            desc:
-                                                'Are you sure want to sign out',
-                                            showCloseIcon: true,
-                                            btnCancelColor: UIGuide.button2,
-                                            btnOkColor: UIGuide.button1,
-                                            btnCancelOnPress: () {
-                                              return;
-                                            },
-                                            btnOkOnPress: () async {
-                                              SharedPreferences prefs =
-                                                  await SharedPreferences
-                                                      .getInstance();
-                                              print("accesstoken  $prefs");
-                                              await prefs.remove("accesstoken");
-                                              print("username  $prefs");
-                                              await prefs.remove("username");
-                                              print("password  $prefs");
-                                              await prefs.remove("password");
+                                    showCupertinoDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return Container(
+                                          color: Colors.black.withOpacity(0.5),
+                                          child: CupertinoAlertDialog(
+                                            title: const Text("Logout"),
+                                            content: const Text(
+                                                "Are you sure you want to log out?"),
+                                            actions: <Widget>[
+                                              CupertinoDialogAction(
+                                                child: const Text(
+                                                  "Cancel",
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      color:
+                                                          UIGuide.light_Purple),
+                                                ),
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                              ),
+                                              CupertinoDialogAction(
+                                                child: const Text("Logout",
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        color: UIGuide
+                                                            .light_Purple)),
+                                                onPressed: () async {
+                                                  SharedPreferences prefs =
+                                                      await SharedPreferences
+                                                          .getInstance();
+                                                  print("accesstoken  $prefs");
+                                                  await prefs
+                                                      .remove("accesstoken");
+                                                  print("username  $prefs");
+                                                  await prefs
+                                                      .remove("username");
+                                                  print("password  $prefs");
+                                                  await prefs
+                                                      .remove("password");
 
-                                              Navigator.of(context)
-                                                  .pushAndRemoveUntil(
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              LoginPage()),
-                                                      (Route<dynamic> route) =>
-                                                          false);
-                                            },
-                                            buttonsTextStyle: const TextStyle(
-                                                color: Colors.white))
-                                        .show();
+                                                  Navigator.of(context)
+                                                      .pushAndRemoveUntil(
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  LoginPage()),
+                                                          (Route<dynamic>
+                                                                  route) =>
+                                                              false);
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    );
+
+                                    // AwesomeDialog(
+                                    //         context: context,
+                                    //         dialogType: DialogType.noHeader,
+                                    //         // borderSide: const BorderSide(
+                                    //         //     color: UIGuide.light_Purple,
+                                    //         //     width: 2),
+                                    //         buttonsBorderRadius:
+                                    //             const BorderRadius.all(
+                                    //                 Radius.circular(2)),
+                                    //         animType: AnimType.bottomSlide,
+                                    //         title: 'SignOut?',
+                                    //         desc:
+                                    //             'Are you sure want to sign out?',
+                                    //         showCloseIcon: false,
+                                    //         btnCancelColor: UIGuide.button2,
+                                    //         btnOkColor: UIGuide.button1,
+                                    //         btnCancelOnPress: () {
+                                    //           return;
+                                    //         },
+                                    //         btnOkOnPress: () async {
+                                    //           SharedPreferences prefs =
+                                    //               await SharedPreferences
+                                    //                   .getInstance();
+                                    //           print("accesstoken  $prefs");
+                                    //           await prefs.remove("accesstoken");
+                                    //           print("username  $prefs");
+                                    //           await prefs.remove("username");
+                                    //           print("password  $prefs");
+                                    //           await prefs.remove("password");
+
+                                    //           Navigator.of(context)
+                                    //               .pushAndRemoveUntil(
+                                    //                   MaterialPageRoute(
+                                    //                       builder: (context) =>
+                                    //                           LoginPage()),
+                                    //                   (Route<dynamic> route) =>
+                                    //                       false);
+                                    //         },
+                                    //         buttonsTextStyle: const TextStyle(
+                                    //             color: Colors.white))
+                                    //     .show();
                                   },
                                   child: const Icon(
                                     Icons.logout_outlined,
@@ -1682,18 +1742,18 @@ class ProfileHome extends StatelessWidget {
                                             MainAxisAlignment.end,
                                         children: [
                                           IconButton(
-                                              onPressed: (() {
-                                                HapticFeedback.selectionClick();
-                                                var currentname =
-                                                    value.studName;
-                                                _displayNameOfSiblings(
-                                                    context, currentname);
-                                              }),
-                                              icon: const Icon(
-                                                Icons.switch_account_outlined,
-                                                size: 30,
-                                                color: Colors.white70,
-                                              )),
+                                            onPressed: (() async {
+                                              HapticFeedback.selectionClick();
+                                              var currentname = value.studName;
+                                              await _displayNameOfSiblings(
+                                                  context, currentname);
+                                            }),
+                                            icon: const Icon(
+                                              Icons.switch_account_outlined,
+                                              size: 30,
+                                              color: Colors.white70,
+                                            ),
+                                          ),
                                         ],
                                       )
                                     ],
@@ -1714,8 +1774,6 @@ class ProfileHome extends StatelessWidget {
       ),
     );
   }
-
-  bool loading = false;
 
   _displayNameOfSiblings(BuildContext context, String? name) async {
     await Provider.of<ProfileProvider>(context, listen: false).siblingsAPI();

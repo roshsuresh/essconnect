@@ -6,6 +6,7 @@ import 'package:essconnect/utils/spinkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:photo_view/photo_view.dart';
@@ -57,6 +58,17 @@ class NoticeBoard extends StatelessWidget {
                         itemCount:
                             noticeresponse == null ? 0 : noticeresponse!.length,
                         itemBuilder: (BuildContext context, int index) {
+                          //created date
+                          String finalCreatedDate = "";
+
+                          if (noticeresponse![index]['entryDate'] != null) {
+                            String createddate =
+                                noticeresponse![index]['entryDate'] ?? '--';
+                            DateTime parsedDateTime =
+                                DateTime.parse(createddate);
+                            finalCreatedDate = DateFormat('dd-MMM-yyyy')
+                                .format(parsedDateTime);
+                          }
                           var noticeattach = noticeresponse![index]['noticeId'];
                           return AnimationConfiguration.staggeredList(
                             position: index,
@@ -156,13 +168,7 @@ class NoticeBoard extends StatelessWidget {
                                                 children: [
                                                   kWidth,
                                                   Text(
-                                                    noticeresponse![index]
-                                                                ['entryDate'] ==
-                                                            null
-                                                        ? '--'
-                                                        : noticeresponse![index]
-                                                                ['entryDate']
-                                                            .toString(),
+                                                    finalCreatedDate,
                                                     style: const TextStyle(
                                                         fontSize: 12),
                                                   ),

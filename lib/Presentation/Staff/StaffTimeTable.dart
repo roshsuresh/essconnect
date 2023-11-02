@@ -51,19 +51,20 @@ class Staff_Timetable extends StatelessWidget {
                       children: [
                         kheight20,
                         Table(
-                          border: TableBorder.all(color: Colors.white),
+                          border: TableBorder.all(
+                              color: const Color.fromARGB(255, 255, 255, 255)),
                           columnWidths: const {
                             0: FlexColumnWidth(4),
                             1: FlexColumnWidth(2),
                           },
-                          children: [
+                          children: const [
                             TableRow(
                                 decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.white),
-                                  color:
-                                      const Color.fromARGB(255, 228, 224, 224),
-                                ),
-                                children: const [
+                                    color: UIGuide.light_black,
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(12),
+                                        topRight: Radius.circular(12))),
+                                children: [
                                   SizedBox(
                                     height: 30,
                                     child: Center(
@@ -86,19 +87,23 @@ class Staff_Timetable extends StatelessWidget {
                                 ]),
                           ],
                         ),
-                        GestureDetector(
+                        InkWell(
                           child: Table(
-                            border: TableBorder.all(color: Colors.white),
+                            border: TableBorder.all(
+                                color:
+                                    const Color.fromARGB(255, 255, 255, 255)),
                             columnWidths: const {
                               0: FlexColumnWidth(4),
                               1: FlexColumnWidth(2),
                             },
                             children: [
                               TableRow(
-                                  decoration: BoxDecoration(
-                                    border: Border.all(color: Colors.white),
-                                    color: const Color.fromARGB(
-                                        255, 245, 242, 242),
+                                  decoration: const BoxDecoration(
+                                    color: Color.fromARGB(255, 243, 243, 243),
+                                    borderRadius: BorderRadius.only(
+                                      bottomLeft: Radius.circular(12),
+                                      bottomRight: Radius.circular(12),
+                                    ),
                                   ),
                                   children: [
                                     Padding(
@@ -386,7 +391,7 @@ class _StaffTimetableimageState extends State<StaffTimetableimage> {
           : Center(
               child: Container(
                   child: PhotoView(
-                backgroundDecoration: BoxDecoration(color: UIGuide.WHITE),
+                backgroundDecoration: const BoxDecoration(color: UIGuide.WHITE),
                 loadingBuilder: (context, event) {
                   return spinkitLoader();
                 },

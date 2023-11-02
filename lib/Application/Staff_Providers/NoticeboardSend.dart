@@ -6,6 +6,7 @@ import 'package:essconnect/Domain/Staff/NoticeboardSendModel.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Map? noticeboardInitialStf;
@@ -15,6 +16,76 @@ List? staffNoticeView;
 Map? staffNoticeViewAttach;
 
 class StaffNoticeboardSendProviders with ChangeNotifier {
+  DateTime? fromexam;
+  String fromDateDis = '';
+  late DateTime fromDateCheck;
+
+  getVariables() {
+    fromDateDis = '';
+    toDateDis = '';
+    imageid = '';
+    notifyListeners();
+  }
+
+  //Get From date
+
+  getFromDate(BuildContext context) async {
+    fromexam = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now().subtract(const Duration(days: 0)),
+      lastDate: DateTime(2100),
+      builder: (context, child) {
+        return Theme(
+            data: ThemeData.light().copyWith(
+              primaryColor: UIGuide.light_Purple,
+              colorScheme: const ColorScheme.light(
+                primary: UIGuide.light_Purple,
+              ),
+              buttonTheme:
+                  const ButtonThemeData(textTheme: ButtonTextTheme.primary),
+            ),
+            child: child!);
+      },
+    );
+
+    fromDateDis = DateFormat('dd/MMM/yyyy').format(fromexam!);
+    fromDateCheck = DateTime(fromexam!.year, fromexam!.month, fromexam!.day);
+    print(fromDateDis);
+    notifyListeners();
+  }
+
+  // Get To date
+
+  DateTime? toexam;
+  String toDateDis = '';
+  late DateTime toDateCheck;
+
+  getToDate(BuildContext context) async {
+    toexam = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now().subtract(const Duration(days: 0)),
+      lastDate: DateTime(2100),
+      builder: (context, child) {
+        return Theme(
+            data: ThemeData.light().copyWith(
+              primaryColor: UIGuide.light_Purple,
+              colorScheme: const ColorScheme.light(
+                primary: UIGuide.light_Purple,
+              ),
+              buttonTheme:
+                  const ButtonThemeData(textTheme: ButtonTextTheme.primary),
+            ),
+            child: child!);
+      },
+    );
+    toDateDis = DateFormat('dd/MMM/yyyy').format(toexam!);
+    toDateCheck = DateTime(toexam!.year, toexam!.month, toexam!.day);
+    print(toDateDis);
+    notifyListeners();
+  }
+
   bool? isClassTeacher;
 
   Future sendNoticeboard() async {
@@ -129,7 +200,7 @@ class StaffNoticeboardSendProviders with ChangeNotifier {
     notifyListeners();
   }
 
-  String? id;
+  String? imageid;
   Future noticeImageSave(BuildContext context, String path) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoadingg(true);
@@ -151,8 +222,8 @@ class StaffNoticeboardSendProviders with ChangeNotifier {
           jsonDecode(await response.stream.bytesToString());
 
       NoticeImageId idd = NoticeImageId.fromJson(data);
-      id = idd.id;
-      print('...............   $id');
+      imageid = idd.id;
+      print('...............   $imageid');
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         elevation: 10,
         shape: RoundedRectangleBorder(
@@ -257,6 +328,7 @@ class StaffNoticeboardSendProviders with ChangeNotifier {
               btnOkIcon: Icons.cancel,
               btnOkColor: Colors.green)
           .show();
+      getVariables();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         elevation: 10,

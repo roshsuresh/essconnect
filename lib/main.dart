@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:essconnect/Application/AdminProviders/Attendanceprovider.dart';
 import 'package:essconnect/Application/AdminProviders/ChatProviders.dart';
 import 'package:essconnect/Application/AdminProviders/ExamTTPtoviders.dart';
-
 import 'package:essconnect/Application/Module%20Providers.dart/MobileAppCheckin.dart';
 import 'package:essconnect/Application/Module%20Providers.dart/SchoolNameProvider.dart';
 import 'package:essconnect/Application/Staff_Providers/ExamTTProviderStaff.dart';
@@ -307,14 +306,14 @@ class _GjInfoTechState extends State<GjInfoTech> {
         themeMode: ThemeMode.light,
         theme: ThemeData(
           textTheme: const TextTheme(
-            displayLarge: TextStyle(fontSize: 15),
-            bodyLarge: TextStyle(fontSize: 15.0),
+            displayLarge: TextStyle(fontSize: 14),
+            bodyLarge: TextStyle(fontSize: 14.0),
             bodyMedium: TextStyle(fontSize: 14.0),
-            labelLarge: TextStyle(fontSize: 15.0),
+            labelLarge: TextStyle(fontSize: 14.0),
+            headlineLarge: TextStyle(fontSize: 14),
           ),
           colorScheme: ColorScheme.fromSwatch(
-            accentColor: const Color.fromARGB(
-                255, 219, 235, 250), // but now it should be declared like this
+            accentColor: const Color.fromARGB(255, 219, 235, 250),
           ),
           primaryColor: UIGuide.light_Purple,
           textSelectionTheme: const TextSelectionThemeData(
@@ -327,7 +326,7 @@ class _GjInfoTechState extends State<GjInfoTech> {
                   borderRadius: BorderRadius.circular(15),
                   borderSide: const BorderSide(color: Colors.black))),
         ),
-        routes: routes,
+        //  routes: routes,
         home: SplashFuturePage(),
         debugShowCheckedModeBanner: false,
       ),

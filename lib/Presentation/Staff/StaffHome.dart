@@ -4,6 +4,7 @@ import 'package:essconnect/Application/Module%20Providers.dart/SchoolNameProvide
 import 'package:essconnect/Application/Staff_Providers/NotificationCount.dart';
 import 'package:essconnect/Application/StudentProviders/CurriculamProviders.dart';
 import 'package:essconnect/Application/StudentProviders/InternetConnection.dart';
+import 'package:essconnect/Presentation/Admin/WebViewLogin.dart';
 import 'package:essconnect/Presentation/Staff/AbsenteesReport.dart';
 import 'package:essconnect/Presentation/Staff/ExamTT.dart/ExamTTScreen.dart';
 import 'package:essconnect/Presentation/Staff/MarkEntryNew.dart';
@@ -13,6 +14,7 @@ import 'package:essconnect/Presentation/Staff/ToolMarkEntry.dart';
 import 'package:essconnect/Presentation/Student/CurriculamScreen.dart';
 import 'package:essconnect/Presentation/Student/NoInternetScreen.dart';
 import 'package:essconnect/utils/spinkit.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
@@ -190,7 +192,7 @@ class _StaffHomeState extends State<StaffHome> {
                                           'Profile',
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
-                                              fontWeight: FontWeight.w400,
+                                              fontWeight: FontWeight.w600,
                                               fontSize: 11,
                                               color: Colors.black),
                                         )
@@ -237,7 +239,7 @@ class _StaffHomeState extends State<StaffHome> {
                                             const Text(
                                               'Notifications',
                                               style: TextStyle(
-                                                  fontWeight: FontWeight.w400,
+                                                  fontWeight: FontWeight.w600,
                                                   fontSize: 11,
                                                   color: Colors.black),
                                             )
@@ -320,7 +322,7 @@ class _StaffHomeState extends State<StaffHome> {
                                                   'Notifications',
                                                   style: TextStyle(
                                                       fontWeight:
-                                                          FontWeight.w400,
+                                                          FontWeight.w600,
                                                       fontSize: 11,
                                                       color: Colors.black),
                                                 )
@@ -384,7 +386,7 @@ class _StaffHomeState extends State<StaffHome> {
                                                 'Timetable',
                                                 textAlign: TextAlign.center,
                                                 style: TextStyle(
-                                                    fontWeight: FontWeight.w400,
+                                                    fontWeight: FontWeight.w600,
                                                     fontSize: 11,
                                                     color: Colors.black),
                                               )
@@ -441,7 +443,7 @@ class _StaffHomeState extends State<StaffHome> {
                                         const Text(
                                           '    Exam\nTimetable',
                                           style: TextStyle(
-                                              fontWeight: FontWeight.w400,
+                                              fontWeight: FontWeight.w600,
                                               fontSize: 11,
                                               color: Colors.black),
                                         )
@@ -552,7 +554,7 @@ class _StaffHomeState extends State<StaffHome> {
                                                   'Attendance',
                                                   style: TextStyle(
                                                       fontWeight:
-                                                          FontWeight.w400,
+                                                          FontWeight.w600,
                                                       fontSize: 11,
                                                       color: Colors.black),
                                                 )
@@ -615,7 +617,7 @@ class _StaffHomeState extends State<StaffHome> {
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontWeight:
-                                                          FontWeight.w400,
+                                                          FontWeight.w600,
                                                       fontSize: 11,
                                                       color: Colors.black),
                                                 )
@@ -677,7 +679,7 @@ class _StaffHomeState extends State<StaffHome> {
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontWeight:
-                                                          FontWeight.w400,
+                                                          FontWeight.w600,
                                                       fontSize: 11,
                                                       color: Colors.black),
                                                 )
@@ -738,7 +740,7 @@ class _StaffHomeState extends State<StaffHome> {
                                                   'Remarks Entry',
                                                   style: TextStyle(
                                                       fontWeight:
-                                                          FontWeight.w400,
+                                                          FontWeight.w600,
                                                       fontSize: 11,
                                                       color: Colors.black),
                                                 )
@@ -831,7 +833,7 @@ class _StaffHomeState extends State<StaffHome> {
                                         const Text(
                                           'To Guardian',
                                           style: TextStyle(
-                                              fontWeight: FontWeight.w400,
+                                              fontWeight: FontWeight.w600,
                                               fontSize: 11,
                                               color: Colors.black),
                                         )
@@ -887,7 +889,7 @@ class _StaffHomeState extends State<StaffHome> {
                                         const Text(
                                           'Notice Board',
                                           style: TextStyle(
-                                              fontWeight: FontWeight.w400,
+                                              fontWeight: FontWeight.w600,
                                               fontSize: 11,
                                               color: Colors.black),
                                         )
@@ -940,7 +942,7 @@ class _StaffHomeState extends State<StaffHome> {
                                         const Text(
                                           'Gallery',
                                           style: TextStyle(
-                                              fontWeight: FontWeight.w400,
+                                              fontWeight: FontWeight.w600,
                                               fontSize: 11,
                                               color: Colors.black),
                                         )
@@ -1011,7 +1013,7 @@ class _StaffHomeState extends State<StaffHome> {
                                           const Text(
                                             'e-Class room',
                                             style: TextStyle(
-                                                fontWeight: FontWeight.w400,
+                                                fontWeight: FontWeight.w600,
                                                 fontSize: 11,
                                                 color: Colors.black),
                                           )
@@ -1119,7 +1121,7 @@ class _StaffHomeState extends State<StaffHome> {
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontWeight:
-                                                          FontWeight.w400,
+                                                          FontWeight.w600,
                                                       fontSize: 11,
                                                       color: Colors.black),
                                                 )
@@ -1182,7 +1184,7 @@ class _StaffHomeState extends State<StaffHome> {
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontWeight:
-                                                          FontWeight.w400,
+                                                          FontWeight.w600,
                                                       fontSize: 11,
                                                       color: Colors.black),
                                                 )
@@ -1245,12 +1247,75 @@ class _StaffHomeState extends State<StaffHome> {
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontWeight:
-                                                          FontWeight.w400,
+                                                          FontWeight.w600,
                                                       fontSize: 11,
                                                       color: Colors.black),
                                                 )
                                               ],
                                             ),
+                                          ),
+                                        ),
+                                        GestureDetector(
+                                          onTap: () async {
+                                            SharedPreferences _pref =
+                                                await SharedPreferences
+                                                    .getInstance();
+                                            String schdomain = await _pref
+                                                .getString("subDomain")
+                                                .toString();
+                                            print(schdomain);
+                                            await Navigator.push(
+                                                context,
+                                                PageTransition(
+                                                  type: PageTransitionType
+                                                      .rightToLeft,
+                                                  child: LoginScreenWeb(
+                                                    schdomain: schdomain,
+                                                  ),
+                                                  duration: const Duration(
+                                                      milliseconds: 300),
+                                                ));
+                                          },
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Card(
+                                                elevation: 10,
+                                                color: Colors.white,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          12.0),
+                                                ),
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: Container(
+                                                    height: 38,
+                                                    width: 38,
+                                                    decoration:
+                                                        const BoxDecoration(
+                                                      image: DecorationImage(
+                                                        opacity: 20,
+                                                        image: AssetImage(
+                                                          'assets/Loginwebb.png',
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              kheight10,
+                                              const Text(
+                                                'Login-Web',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 11,
+                                                    color: Colors.black87),
+                                              )
+                                            ],
                                           ),
                                         ),
                                       ],
@@ -1319,45 +1384,105 @@ class _StaffHomeState extends State<StaffHome> {
                                       borderRadius:
                                           BorderRadius.circular(30.0)),
                                   onPressed: () async {
-                                    AwesomeDialog(
+                                    showCupertinoDialog(
                                       context: context,
-                                      dialogType: DialogType.info,
-                                      borderSide: const BorderSide(
-                                          color: UIGuide.light_Purple,
-                                          width: 2),
-                                      buttonsBorderRadius:
-                                          const BorderRadius.all(
-                                              Radius.circular(2)),
-                                      headerAnimationLoop: false,
-                                      animType: AnimType.bottomSlide,
-                                      title: 'SignOut',
-                                      desc: 'Are you sure want to sign out',
-                                      showCloseIcon: true,
-                                      btnOkColor: UIGuide.button1,
-                                      btnCancelColor: UIGuide.button2,
-                                      btnCancelOnPress: () {
-                                        return;
-                                      },
-                                      btnOkOnPress: () async {
-                                        SharedPreferences prefs =
-                                            await SharedPreferences
-                                                .getInstance();
-                                        print("accesstoken  $prefs");
-                                        await prefs.remove("accesstoken");
-                                        print("username  $prefs");
-                                        await prefs.remove("username");
-                                        print("password  $prefs");
-                                        await prefs.remove("password");
+                                      builder: (context) {
+                                        return Container(
+                                          color: Colors.black.withOpacity(0.5),
+                                          child: CupertinoAlertDialog(
+                                            title: const Text("Logout"),
+                                            content: const Text(
+                                                "Are you sure you want to log out?"),
+                                            actions: <Widget>[
+                                              CupertinoDialogAction(
+                                                child: const Text(
+                                                  "Cancel",
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      color:
+                                                          UIGuide.light_Purple),
+                                                ),
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                              ),
+                                              CupertinoDialogAction(
+                                                child: const Text("Logout",
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        color: UIGuide
+                                                            .light_Purple)),
+                                                onPressed: () async {
+                                                  SharedPreferences prefs =
+                                                      await SharedPreferences
+                                                          .getInstance();
+                                                  print("accesstoken  $prefs");
+                                                  await prefs
+                                                      .remove("accesstoken");
+                                                  print("username  $prefs");
+                                                  await prefs
+                                                      .remove("username");
+                                                  print("password  $prefs");
+                                                  await prefs
+                                                      .remove("password");
 
-                                        Navigator.of(context)
-                                            .pushAndRemoveUntil(
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        LoginPage()),
-                                                (Route<dynamic> route) =>
-                                                    false);
+                                                  Navigator.of(context)
+                                                      .pushAndRemoveUntil(
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  LoginPage()),
+                                                          (Route<dynamic>
+                                                                  route) =>
+                                                              false);
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                        );
                                       },
-                                    ).show();
+                                    );
+
+                                    // AwesomeDialog(
+                                    //   context: context,
+                                    //   dialogType: DialogType.info,
+                                    //   borderSide: const BorderSide(
+                                    //       color: UIGuide.light_Purple,
+                                    //       width: 2),
+                                    //   buttonsBorderRadius:
+                                    //       const BorderRadius.all(
+                                    //           Radius.circular(2)),
+                                    //   headerAnimationLoop: false,
+                                    //   animType: AnimType.bottomSlide,
+                                    //   title: 'SignOut',
+                                    //   desc: 'Are you sure want to sign out',
+                                    //   showCloseIcon: true,
+                                    //   btnOkColor: UIGuide.button1,
+                                    //   btnCancelColor: UIGuide.button2,
+                                    //   btnCancelOnPress: () {
+                                    //     return;
+                                    //   },
+                                    //   btnOkOnPress: () async {
+                                    //     SharedPreferences prefs =
+                                    //         await SharedPreferences
+                                    //             .getInstance();
+                                    //     print("accesstoken  $prefs");
+                                    //     await prefs.remove("accesstoken");
+                                    //     print("username  $prefs");
+                                    //     await prefs.remove("username");
+                                    //     print("password  $prefs");
+                                    //     await prefs.remove("password");
+
+                                    //     Navigator.of(context)
+                                    //         .pushAndRemoveUntil(
+                                    //             MaterialPageRoute(
+                                    //                 builder: (context) =>
+                                    //                     LoginPage()),
+                                    //             (Route<dynamic> route) =>
+                                    //                 false);
+                                    //   },
+                                    // ).show();
                                   },
                                   child: const Icon(
                                     Icons.logout_outlined,

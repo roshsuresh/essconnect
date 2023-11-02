@@ -105,47 +105,43 @@ class StaffGalleryView extends StatelessWidget {
                                           )),
                                           kWidth,
                                           Expanded(
-                                            child: Container(
-                                                height: 110,
-                                                child: Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      value
-                                                              .galleryReceived[
-                                                                  index]
-                                                              .title ??
-                                                          '---',
-                                                      style: const TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          fontSize: 12),
-                                                      maxLines: 2,
-                                                    ),
-                                                    kheight10,
-                                                    Text(
-                                                      value
-                                                                      .galleryReceived[
-                                                                          index]
-                                                                      .caption ==
-                                                                  null ||
-                                                              value
-                                                                      .galleryReceived[
-                                                                          index]
-                                                                      .caption ==
-                                                                  "null"
-                                                          ? ''
-                                                          : value
-                                                              .galleryReceived[
-                                                                  index]
-                                                              .caption
-                                                              .toString(),
-                                                      maxLines: 3,
-                                                    ),
-                                                    kheight10,
-                                                  ],
-                                                )),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  value.galleryReceived[index]
+                                                          .title ??
+                                                      '---',
+                                                  style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      fontSize: 12),
+                                                  maxLines: 2,
+                                                ),
+                                                kheight10,
+                                                Text(
+                                                  value.galleryReceived[index]
+                                                                  .caption ==
+                                                              null ||
+                                                          value
+                                                                  .galleryReceived[
+                                                                      index]
+                                                                  .caption ==
+                                                              "null"
+                                                      ? ''
+                                                      : value
+                                                          .galleryReceived[
+                                                              index]
+                                                          .caption
+                                                          .toString(),
+                                                  maxLines: 3,
+                                                ),
+                                                kheight10,
+                                              ],
+                                            ),
                                           )
                                         ],
                                       ),
@@ -156,7 +152,7 @@ class StaffGalleryView extends StatelessWidget {
                                               context,
                                               listen: false)
                                           .galleyAttachment(idd);
-                                      Navigator.push(
+                                      await Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
@@ -180,55 +176,66 @@ class GalleryonTapStaff extends StatelessWidget {
   bool isLoading = false;
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Consumer<GallerySendProvider_Stf>(
-          builder: (context, value, child) => value.load
-              ? spinkitLoader()
-              : Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: GridView.count(
-                    crossAxisCount: 3,
-                    mainAxisSpacing: 8,
-                    crossAxisSpacing: 4,
-                    children: List.generate(
-                        value.galleryAttachResponse == null
-                            ? 0
-                            : value.galleryAttachResponse!.length, (index) {
-                      return GestureDetector(
-                        child: isLoading
-                            ? const Center(
-                                child: CircularProgressIndicator(),
-                              )
-                            : Container(
-                                height: 100,
-                                width: 50,
-                                decoration: BoxDecoration(
-                                    color: Colors.black12,
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(10)),
-                                    image: DecorationImage(
-                                        fit: BoxFit.cover,
-                                        image: NetworkImage(
-                                            value.galleryAttachResponse![index]
-                                                    ['url'] ??
-                                                const AssetImage(
-                                                    'assets/noimages.png')))),
-                              ),
-                        onTap: () async {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ViewImageOntapStaff(
-                                      currentIndex: index,
-                                    )),
-                          );
-                        },
-                      );
-                    }),
-                  ),
-                ),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Gallery'),
+        titleSpacing: 00.0,
+        centerTitle: true,
+        toolbarHeight: 50.2,
+        toolbarOpacity: 0.8,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              bottomRight: Radius.circular(25),
+              bottomLeft: Radius.circular(25)),
         ),
+        backgroundColor: UIGuide.light_Purple,
+      ),
+      body: Consumer<GallerySendProvider_Stf>(
+        builder: (context, value, child) => value.load
+            ? spinkitLoader()
+            : Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: GridView.count(
+                  crossAxisCount: 3,
+                  mainAxisSpacing: 8,
+                  crossAxisSpacing: 4,
+                  children: List.generate(
+                      value.galleryAttachResponse == null
+                          ? 0
+                          : value.galleryAttachResponse!.length, (index) {
+                    return GestureDetector(
+                      child: isLoading
+                          ? const Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : Container(
+                              height: 100,
+                              width: 50,
+                              decoration: BoxDecoration(
+                                  color: Colors.black12,
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(10)),
+                                  image: DecorationImage(
+                                      fit: BoxFit.cover,
+                                      image: NetworkImage(
+                                          value.galleryAttachResponse![index]
+                                                  ['url'] ??
+                                              const AssetImage(
+                                                  'assets/noimages.png')))),
+                            ),
+                      onTap: () async {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ViewImageOntapStaff(
+                                    currentIndex: index,
+                                  )),
+                        );
+                      },
+                    );
+                  }),
+                ),
+              ),
       ),
     );
   }
@@ -326,6 +333,11 @@ class _ViewImageOntapStaffState extends State<ViewImageOntapStaff> {
           centerTitle: true,
           toolbarHeight: 50.2,
           toolbarOpacity: 0.8,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                bottomRight: Radius.circular(25),
+                bottomLeft: Radius.circular(25)),
+          ),
           backgroundColor: UIGuide.light_Purple,
           actions: [
             Padding(

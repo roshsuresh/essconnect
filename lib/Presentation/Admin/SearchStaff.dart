@@ -51,76 +51,59 @@ class _SearchStaffState extends State<SearchStaff> {
                           color: Colors.grey,
                         )),
                     Expanded(
-                      child: TextField(
-                        controller: clearValue,
-                        onChanged: (value) {
-                          _debouncer.run(() async {
-                            await Provider.of<SearchStaffProviders>(context,
-                                    listen: false)
-                                .clearStaffList();
-                            await Provider.of<SearchStaffProviders>(context,
-                                    listen: false)
-                                .getSearchStaffView(clearValue.text.toString());
+                      child: SizedBox(
+                        height: 50,
+                        child: TextField(
+                          controller: clearValue,
+                          onChanged: (value) {
+                            _debouncer.run(() async {
+                              await Provider.of<SearchStaffProviders>(context,
+                                      listen: false)
+                                  .clearStaffList();
+                              await Provider.of<SearchStaffProviders>(context,
+                                      listen: false)
+                                  .getSearchStaffView(
+                                      clearValue.text.toString());
 
-                            print('-***--**-*-*-*-*-*');
-                          });
-                        },
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20.0),
+                              print('-***--**-*-*-*-*-*');
+                            });
+                          },
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            suffixIcon: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  icon: const Icon(Icons.close),
+                                  color: Colors.grey,
+                                  onPressed: (() {
+                                    clearValue.clear();
+                                  }),
+                                ),
+                              ],
+                            ),
+                            hintText: 'Search',
+                            hintStyle: const TextStyle(
+                              color: Colors.grey,
+                              fontSize: 20,
+                            ),
+                            fillColor: UIGuide.light_black,
+                            filled: true,
+                            focusedBorder: OutlineInputBorder(
+                              borderSide:
+                                  const BorderSide(color: Colors.transparent),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: const BorderSide(color: Colors.grey),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
                           ),
-                          suffixIcon: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              // val.loading
-                              //     ? IconButton(
-                              //         onPressed: () {},
-                              //         icon: const Icon(Icons.search),
-                              //         color: Colors.grey,
-                              //       )
-                              //     : IconButton(
-                              //         icon: const Icon(Icons.search),
-                              //         color: Colors.grey,
-                              //         onPressed: (() {
-                              //           Provider.of<SearchStaffProviders>(
-                              //                   context,
-                              //                   listen: false)
-                              //               .getSearchStaffView(
-                              //                   clearValue.text.toString());
-                              //           Provider.of<SearchStaffProviders>(
-                              //                   context,
-                              //                   listen: false)
-                              //               .clearStaffList();
-                              //         }),
-                              //       ),
-                              IconButton(
-                                icon: const Icon(Icons.close),
-                                color: Colors.grey,
-                                onPressed: (() {
-                                  clearValue.clear();
-                                }),
-                              ),
-                            ],
-                          ),
-                          hintText: 'Search',
-                          hintStyle: const TextStyle(
-                            color: Colors.grey,
-                            fontSize: 20,
-                          ),
-                          fillColor: UIGuide.light_black,
-                          filled: true,
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                                color: UIGuide.light_Purple, width: .5),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: const BorderSide(color: Colors.grey),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
+                          style: const TextStyle(color: UIGuide.light_Purple),
                         ),
-                        style: const TextStyle(color: UIGuide.light_Purple),
                       ),
                     ),
                   ],
@@ -203,11 +186,13 @@ class _SearchStaffState extends State<SearchStaff> {
                                                                 .staffPhoto ==
                                                             null
                                                         ? 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhwaLDKaK49tsHmdMGOrmTdns5qiw080F2Yw&usqp=CAU'
-                                                        : value.staffReportList[index].staffPhoto
+                                                        : value
+                                                            .staffReportList[
+                                                                index]
+                                                            .staffPhoto
                                                             .toString())),
-                                                borderRadius:
-                                                    const BorderRadius.all(
-                                                        Radius.circular(10))),
+                                                borderRadius: const BorderRadius.all(
+                                                    Radius.circular(10))),
                                           ),
                                         ),
                                         Padding(

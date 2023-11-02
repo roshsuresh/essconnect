@@ -59,8 +59,6 @@ class ReportCard extends StatelessWidget {
                       ? LottieBuilder.network(
                           'https://assets2.lottiefiles.com/private_files/lf30_lkquf6qz.json')
                       : Column(
-                          // physics: const BouncingScrollPhysics(
-                          //     parent: AlwaysScrollableScrollPhysics()),
                           children: [
                             kheight20,
                             Table(
@@ -116,7 +114,6 @@ class ReportCard extends StatelessWidget {
                               ],
                             ),
                             Expanded(
-                              //maxHeight: size.height - 30,
                               child: Consumer<ReportCardProvider>(
                                 builder: (context, provider, child) {
                                   return ListView.builder(
@@ -125,19 +122,21 @@ class ReportCard extends StatelessWidget {
                                           ? 0
                                           : value.reportcardList.length,
                                       itemBuilder: ((context, index) {
-                                        String time = value
-                                                .reportcardList[index]
-                                                .uploadedDate ??
-                                            '--';
-                                        var updatedDate =
-                                            DateFormat('yyyy-MM-dd')
-                                                .parse(time);
-                                        String newDate = updatedDate.toString();
-                                        String Corect_tym =
-                                            newDate.replaceRange(10, 23, '');
+                                        //created date
+                                        String Corect_tym = "";
 
-                                        // String Corect_tym =
-                                        //     time.replaceRange(10, 20, '');
+                                        if (value.reportcardList[index]
+                                                .uploadedDate !=
+                                            null) {
+                                          String createddate = value
+                                                  .reportcardList[index]
+                                                  .uploadedDate ??
+                                              '--';
+                                          DateTime parsedDateTime =
+                                              DateTime.parse(createddate);
+                                          Corect_tym = DateFormat('dd-MMM-yyyy')
+                                              .format(parsedDateTime);
+                                        }
                                         print('dob $Corect_tym');
                                         String reAttach = value
                                                 .reportcardList[index].fileId ??
