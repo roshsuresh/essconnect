@@ -142,13 +142,8 @@ class ReportCard extends StatelessWidget {
                                                 .reportcardList[index].fileId ??
                                             '--';
                                         print(reAttach);
-                                        return GestureDetector(
+                                        return InkWell(
                                           onTap: () async {
-                                            final attch = await Provider.of<
-                                                        ReportCardProvider>(
-                                                    context,
-                                                    listen: false)
-                                                .reportCardAttachment(reAttach);
                                             if (provider.extension.toString() ==
                                                 '.pdf') {
                                               Navigator.push(
@@ -168,7 +163,7 @@ class ReportCard extends StatelessWidget {
                                           },
                                           child: Table(
                                             border: TableBorder.all(
-                                                color: Color.fromARGB(
+                                                color: const Color.fromARGB(
                                                     255, 255, 255, 255)),
                                             columnWidths: const {
                                               0: FlexColumnWidth(3),
@@ -177,9 +172,9 @@ class ReportCard extends StatelessWidget {
                                             },
                                             children: [
                                               TableRow(
-                                                  decoration: BoxDecoration(
-                                                      color:
-                                                          const Color.fromARGB(
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                          color: Color.fromARGB(
                                                               255,
                                                               246,
                                                               247,

@@ -166,6 +166,13 @@ class ProfileProvider with ChangeNotifier {
     }
   }
 
+  //Clear Blood Group List
+
+  clearBloodGroup() {
+    bloodGrpList.clear();
+    notifyListeners();
+  }
+
   String? studentIdEdit;
   int? offlineIdEdit;
   int? installationIdEdit;
@@ -177,6 +184,8 @@ class ProfileProvider with ChangeNotifier {
   String? mobileNoEdit;
   String? photoIdEdit;
   StudentPhoto? studentPhotoEdit;
+  String? bloodGroupIdEdit;
+  String? bloodGroupEdit;
 
   //Offline
   String? idOffline;
@@ -189,7 +198,10 @@ class ProfileProvider with ChangeNotifier {
   String? mobileNoOffline;
   String? studentPhotoIdOffline;
   StudentPhoto? studentPhotoOffline;
+  String? bloodGroupIdOffline;
 
+  String? offlineBloodGroupName;
+  List<BloodGroupListModel> bloodGrpList = [];
   Future getProfileEdit() async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoadingg(true);
@@ -215,6 +227,9 @@ class ProfileProvider with ChangeNotifier {
       studentPhotoEdit = ini.studentPhoto;
       offlineIdEdit = ini.offlineId;
       installationIdEdit = ini.installationId;
+      bloodGroupEdit = ini.bloodGroup;
+      bloodGroupIdEdit = ini.bloodGroupId;
+
       print(studentIdEdit);
 
       OfflineStudentValues off =
@@ -230,7 +245,24 @@ class ProfileProvider with ChangeNotifier {
       mobileNoOffline = off.mobileNo;
       studentPhotoIdOffline = off.studentPhotoId;
       studentPhotoOffline = off.studentPhoto;
+      bloodGroupIdOffline = off.bloodGroupId;
       print(idOffline);
+
+      // blood group
+
+      List<BloodGroupListModel> templist = List<BloodGroupListModel>.from(
+          data["bloodGroup"].map((x) => BloodGroupListModel.fromJson(x)));
+      bloodGrpList.addAll(templist);
+
+      // offline blood grp id
+      if (bloodGroupIdOffline != null) {
+        for (var group in bloodGrpList) {
+          if (group.value == bloodGroupIdOffline) {
+            offlineBloodGroupName = group.text;
+          }
+        }
+      }
+
       setLoadingg(false);
       notifyListeners();
     } else {
@@ -312,15 +344,15 @@ class ProfileProvider with ChangeNotifier {
   // save profile
 
   Future getSaveProfile(
-    BuildContext context,
-    int offlineID,
-    int installationId,
-    String guardianNa,
-    String addressE,
-    String emailIDE,
-    String mobileNoE,
-    String studentPhoId,
-  ) async {
+      BuildContext context,
+      int offlineID,
+      int installationId,
+      String guardianNa,
+      String addressE,
+      String emailIDE,
+      String mobileNoE,
+      String studentPhoId,
+      String bloodGrpID) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoadingg(true);
     var headers = {
@@ -341,7 +373,9 @@ class ProfileProvider with ChangeNotifier {
       "isAddressChanged": true,
       "isEmailIdChanged": true,
       "isMobileNoChanged": true,
-      "isPhotoChanged": true
+      "isPhotoChanged": true,
+      "bloodGroupId": bloodGrpID,
+      "isBloodGroupChanged": true
     });
 
     request.headers.addAll(headers);
@@ -399,7 +433,8 @@ class ProfileProvider with ChangeNotifier {
       String emailIDE,
       String mobileNoE,
       String studentPhoId,
-      String offID) async {
+      String offID,
+      String bloodGrpID) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoadingg(true);
     print({
@@ -414,7 +449,9 @@ class ProfileProvider with ChangeNotifier {
       "isAddressChanged": true,
       "isEmailIdChanged": true,
       "isMobileNoChanged": true,
-      "isPhotoChanged": true
+      "isPhotoChanged": true,
+      "bloodGroupId": bloodGrpID,
+      "isBloodGroupChanged": true
     });
     var headers = {
       'Content-Type': 'application/json',
@@ -434,7 +471,9 @@ class ProfileProvider with ChangeNotifier {
       "isAddressChanged": true,
       "isEmailIdChanged": true,
       "isMobileNoChanged": true,
-      "isPhotoChanged": true
+      "isPhotoChanged": true,
+      "bloodGroupId": bloodGrpID,
+      "isBloodGroupChanged": true
     });
     // "offlineId": offlineID,
     // "installationId": installationId,

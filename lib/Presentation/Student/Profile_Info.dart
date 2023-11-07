@@ -218,7 +218,6 @@ class Profile_Info extends StatelessWidget {
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
                         width: width,
-                        // height: 332,
                         color: const Color.fromARGB(255, 240, 243, 247),
                         child: SingleChildScrollView(
                           physics: const NeverScrollableScrollPhysics(),
@@ -238,11 +237,12 @@ class Profile_Info extends StatelessWidget {
                                 ],
                               ),
                               Container(
-                                  margin: const EdgeInsets.only(
-                                      left: 10.0, right: 20.0),
-                                  child: const Divider(
-                                    color: Colors.black,
-                                  )),
+                                margin: const EdgeInsets.only(
+                                    left: 10.0, right: 20.0),
+                                child: const Divider(
+                                  color: Colors.black,
+                                ),
+                              ),
                               Padding(
                                 padding: const EdgeInsets.only(left: 12.0),
                                 child: Table(

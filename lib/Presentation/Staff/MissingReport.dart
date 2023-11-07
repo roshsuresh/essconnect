@@ -815,13 +815,12 @@ class _MissingReportState extends State<MissingReport> {
                                                   .division
                                                   .toString(),
                                               style: const TextStyle(
-                                                  color: UIGuide.light_Purple),
+                                                  color: UIGuide.light_Purple,
+                                                  fontWeight: FontWeight.w600),
                                             ),
                                             const Text("  ( Total Students :"),
                                             Text(
                                               "${value.viewStudentList[index].divisionWiseStudentsCount.toString()} )",
-                                              style: const TextStyle(
-                                                  color: UIGuide.light_Purple),
                                             ),
                                           ],
                                         ),
@@ -860,21 +859,24 @@ class _MissingReportState extends State<MissingReport> {
                                                         padding:
                                                             const EdgeInsets
                                                                 .all(2),
-                                                        decoration: const BoxDecoration(
-                                                            borderRadius: BorderRadius.only(
-                                                                topLeft: Radius
-                                                                    .circular(
-                                                                        10),
-                                                                bottomRight:
-                                                                    Radius
-                                                                        .circular(
-                                                                            5)),
-                                                            color:
-                                                                Color.fromARGB(
-                                                                    255,
-                                                                    228,
-                                                                    230,
-                                                                    241)),
+                                                        decoration:
+                                                            const BoxDecoration(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .only(
+                                                                  topLeft: Radius
+                                                                      .circular(
+                                                                          10),
+                                                                  bottomRight: Radius
+                                                                      .circular(
+                                                                          8),
+                                                                ),
+                                                                color: Color
+                                                                    .fromARGB(
+                                                                        255,
+                                                                        242,
+                                                                        244,
+                                                                        255)),
                                                         child: Padding(
                                                           padding:
                                                               const EdgeInsets
@@ -962,11 +964,12 @@ class _MissingReportState extends State<MissingReport> {
                                                                         fontSize:
                                                                             12.0),
                                                                 text: TextSpan(
-                                                                  style:
-                                                                      const TextStyle(
-                                                                    color: UIGuide
-                                                                        .light_Purple,
-                                                                  ),
+                                                                  style: const TextStyle(
+                                                                      color: UIGuide
+                                                                          .light_Purple,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w600),
                                                                   text: value
                                                                           .viewStudentList[
                                                                               index]

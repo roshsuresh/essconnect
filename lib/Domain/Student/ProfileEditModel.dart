@@ -41,6 +41,8 @@ class InitialValues {
   String? mobileNo;
   String? photoId;
   StudentPhoto? studentPhoto;
+  String? bloodGroupId;
+  String? bloodGroup;
 
   InitialValues(
       {this.studentId,
@@ -53,7 +55,9 @@ class InitialValues {
       this.emailId,
       this.mobileNo,
       this.photoId,
-      this.studentPhoto});
+      this.studentPhoto,
+      this.bloodGroupId,
+      this.bloodGroup});
 
   InitialValues.fromJson(Map<String, dynamic> json) {
     studentId = json['studentId'];
@@ -69,6 +73,8 @@ class InitialValues {
     studentPhoto = json['studentPhoto'] != null
         ? StudentPhoto.fromJson(json['studentPhoto'])
         : null;
+    bloodGroupId = json['bloodGroupId'];
+    bloodGroup = json['bloodGroup'];
   }
 
   Map<String, dynamic> toJson() {
@@ -86,6 +92,8 @@ class InitialValues {
     if (studentPhoto != null) {
       data['studentPhoto'] = studentPhoto!.toJson();
     }
+    data['bloodGroupId'] = bloodGroupId;
+    data['bloodGroup'] = bloodGroup;
     return data;
   }
 }
@@ -187,6 +195,8 @@ class OfflineStudentValues {
   bool? isAddressChanged;
   bool? isEmailIdChanged;
   bool? isMobileNoChanged;
+  String? bloodGroupId;
+  bool? isBloodGroupChanged;
 
   OfflineStudentValues(
       {this.id,
@@ -203,7 +213,9 @@ class OfflineStudentValues {
       this.isGuardianNameChanged,
       this.isAddressChanged,
       this.isEmailIdChanged,
-      this.isMobileNoChanged});
+      this.isMobileNoChanged,
+      this.bloodGroupId,
+      this.isBloodGroupChanged});
 
   OfflineStudentValues.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -223,6 +235,8 @@ class OfflineStudentValues {
     isAddressChanged = json['isAddressChanged'];
     isEmailIdChanged = json['isEmailIdChanged'];
     isMobileNoChanged = json['isMobileNoChanged'];
+    bloodGroupId = json['bloodGroupId'];
+    isBloodGroupChanged = json['isBloodGroupChanged'];
   }
 
   Map<String, dynamic> toJson() {
@@ -244,6 +258,31 @@ class OfflineStudentValues {
     data['isAddressChanged'] = isAddressChanged;
     data['isEmailIdChanged'] = isEmailIdChanged;
     data['isMobileNoChanged'] = isMobileNoChanged;
+    data['bloodGroupId'] = bloodGroupId;
+    data['isBloodGroupChanged'] = isBloodGroupChanged;
+    return data;
+  }
+}
+
+class BloodGroupListModel {
+  String? value;
+  String? text;
+
+  BloodGroupListModel({
+    this.value,
+    this.text,
+  });
+
+  BloodGroupListModel.fromJson(Map<String, dynamic> json) {
+    value = json['value'];
+    text = json['text'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['value'] = value;
+    data['text'] = text;
+
     return data;
   }
 }

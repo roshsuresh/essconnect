@@ -58,21 +58,21 @@ class PaymentHistory extends StatelessWidget {
                           child: Table(
                             border: TableBorder.all(
                                 color:
-                                    const Color.fromARGB(255, 248, 248, 248)),
+                                    const Color.fromARGB(255, 255, 255, 255)),
                             columnWidths: const {
                               0: FlexColumnWidth(.6),
-                              1: FlexColumnWidth(2.1),
+                              1: FlexColumnWidth(2.5),
                               2: FlexColumnWidth(2.3),
                               3: FlexColumnWidth(2.2),
-                              4: FlexColumnWidth(1.8)
+                              4: FlexColumnWidth(1.6)
                             },
                             children: const [
                               TableRow(
                                   decoration: BoxDecoration(
                                     color: Color.fromARGB(255, 223, 223, 223),
                                     borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(8),
-                                      topRight: Radius.circular(8),
+                                      topLeft: Radius.circular(12),
+                                      topRight: Radius.circular(12),
                                     ),
                                   ),
                                   children: [
@@ -80,7 +80,8 @@ class PaymentHistory extends StatelessWidget {
                                       verticalAlignment:
                                           TableCellVerticalAlignment.middle,
                                       child: Padding(
-                                        padding: EdgeInsets.all(3.0),
+                                        padding:
+                                            EdgeInsets.only(top: 5, bottom: 5),
                                         child: Center(
                                             child: Text(
                                           'Sl.',
@@ -107,10 +108,11 @@ class PaymentHistory extends StatelessWidget {
                                       verticalAlignment:
                                           TableCellVerticalAlignment.middle,
                                       child: Padding(
-                                        padding: EdgeInsets.all(3.0),
+                                        padding:
+                                            EdgeInsets.only(top: 5, bottom: 5),
                                         child: Center(
                                             child: Text(
-                                          'Payment\nMode',
+                                          'Payment Mode',
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                               fontWeight: FontWeight.w700),
@@ -124,7 +126,7 @@ class PaymentHistory extends StatelessWidget {
                                         padding: EdgeInsets.all(3.0),
                                         child: Center(
                                             child: Text(
-                                          'Amount\npaid',
+                                          'Amount paid',
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                               fontWeight: FontWeight.w700),
@@ -178,12 +180,12 @@ class PaymentHistory extends StatelessWidget {
                                       delay: const Duration(milliseconds: 100),
                                       child: SlideAnimation(
                                         duration:
-                                            const Duration(milliseconds: 2500),
+                                            const Duration(milliseconds: 3500),
                                         curve: Curves.fastLinearToSlowEaseIn,
                                         child: FadeInAnimation(
                                           curve: Curves.fastLinearToSlowEaseIn,
                                           duration: const Duration(
-                                              milliseconds: 2500),
+                                              milliseconds: 3500),
                                           child: InkWell(
                                             child: Padding(
                                               padding:
@@ -191,13 +193,13 @@ class PaymentHistory extends StatelessWidget {
                                               child: Table(
                                                 border: TableBorder.all(
                                                     color: const Color.fromARGB(
-                                                        255, 248, 248, 248)),
+                                                        255, 255, 255, 255)),
                                                 columnWidths: const {
                                                   0: FlexColumnWidth(.6),
-                                                  1: FlexColumnWidth(2.1),
+                                                  1: FlexColumnWidth(2.5),
                                                   2: FlexColumnWidth(2.3),
                                                   3: FlexColumnWidth(2.2),
-                                                  4: FlexColumnWidth(1.8)
+                                                  4: FlexColumnWidth(1.6)
                                                 },
                                                 children: [
                                                   TableRow(

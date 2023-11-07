@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:essconnect/Application/StudentProviders/ProfileProvider.dart';
 import 'package:essconnect/Constants.dart';
-import 'package:essconnect/utils/spinkit.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -20,6 +19,7 @@ class _ProfileEditState extends State<ProfileEdit> {
   final _emailcontroller = TextEditingController();
   final _mobilecontroller = TextEditingController();
   final _bloodgroupcontroller = TextEditingController();
+  final _bloodgroupIDcontroller = TextEditingController();
   final _addresscontroller = TextEditingController();
   final _photoIDcontroller = TextEditingController();
   bool isEmailValid = true;
@@ -37,6 +37,7 @@ class _ProfileEditState extends State<ProfileEdit> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       var p = Provider.of<ProfileProvider>(context, listen: false);
+      await p.clearBloodGroup();
 
       await p.getProfileEdit();
       _guardiancontroller.text = p.idOffline == null
@@ -46,7 +47,14 @@ class _ProfileEditState extends State<ProfileEdit> {
           p.idOffline == null ? p.emailIdEdit ?? "" : p.emailIdOffline ?? "";
       _mobilecontroller.text =
           p.idOffline == null ? p.mobileNoEdit ?? "" : p.mobileNoOffline ?? "";
-      _bloodgroupcontroller.text = p.bloodGroup ?? "";
+
+      _bloodgroupcontroller.text = p.bloodGroupIdOffline == null
+          ? p.bloodGroupEdit ?? ""
+          : p.offlineBloodGroupName ?? "";
+      _bloodgroupIDcontroller.text = p.bloodGroupIdOffline == null
+          ? p.bloodGroupIdEdit ?? ""
+          : p.bloodGroupIdOffline ?? "";
+
       _addresscontroller.text =
           p.idOffline == null ? p.addressEdit ?? "" : p.addressOffline ?? "";
       _photoIDcontroller.text = p.idOffline == null
@@ -67,12 +75,11 @@ class _ProfileEditState extends State<ProfileEdit> {
         ),
         titleSpacing: 00.0,
         centerTitle: true,
-        toolbarHeight: 60.2,
-        toolbarOpacity: 0.8,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
-              bottomRight: Radius.circular(25),
-              bottomLeft: Radius.circular(25)),
+            bottomRight: Radius.circular(25),
+            bottomLeft: Radius.circular(25),
+          ),
         ),
         backgroundColor: UIGuide.light_Purple,
       ),
@@ -116,37 +123,9 @@ class _ProfileEditState extends State<ProfileEdit> {
                                       backgroundColor: UIGuide.WHITE,
                                     ),
                             ),
-                            // value.selectedImage != null
-                            //     ? Positioned(
-                            //         right: -10,
-                            //         child: InkWell(
-                            //           onTap: () async {
-                            //             await value.removeSelectedImage();
-                            //             _photoIDcontroller.text = null;
-
-                            //             snackbarWidget(
-                            //                 2, "Image Removed", context);
-                            //           },
-                            //           child: Container(
-                            //               decoration: BoxDecoration(
-                            //                 color: Colors
-                            //                     .grey, // Set the background color here
-                            //                 shape: BoxShape
-                            //                     .circle, // You can change the shape as needed
-                            //               ),
-                            //               child: Padding(
-                            //                 padding: const EdgeInsets.all(4.0),
-                            //                 child: Icon(Icons.close),
-                            //               )),
-                            //         ))
-                            //     : SizedBox(
-                            //         height: 0,
-                            //         width: 0,
-                            //       ),
                             Positioned(
                                 right: -10,
                                 bottom: 10,
-                                // top: 87,
                                 child: SizedBox(
                                   height: 40,
                                   width: 40,
@@ -194,21 +173,22 @@ class _ProfileEditState extends State<ProfileEdit> {
                                                               .start,
                                                       children: [
                                                         Padding(
-                                                            padding:
-                                                                EdgeInsets.all(
-                                                                    8.0),
-                                                            child: Text(
-                                                              "  Profile Photo",
-                                                              style: TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w800,
-                                                                  fontSize: 20),
-                                                            )),
+                                                          padding:
+                                                              EdgeInsets.all(
+                                                                  8.0),
+                                                          child: Text(
+                                                            "  Profile Photo",
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w800,
+                                                                fontSize: 20),
+                                                          ),
+                                                        ),
                                                       ],
                                                     ),
                                                     value.loadingg
-                                                        ? SizedBox(
+                                                        ? const SizedBox(
                                                             height: 0,
                                                           )
                                                         : Padding(
@@ -497,30 +477,76 @@ class _ProfileEditState extends State<ProfileEdit> {
                       ),
                     ),
                   ),
-                  // Padding(
-                  //   padding: const EdgeInsets.all(8.0),
-                  //   child: SizedBox(
-                  //     height: 50,
-                  //     width: size.width,
-                  //     child: TextField(
-                  //       controller: _bloodgroupcontroller,
-                  //       decoration: const InputDecoration(
-                  //         contentPadding: EdgeInsets.only(bottom: 0),
-                  //         labelText: "Blood Group",
-                  //         labelStyle: TextStyle(
-                  //           color: Colors.grey,
-                  //         ),
-                  //         enabledBorder: UnderlineInputBorder(
-                  //           borderSide: BorderSide(color: Colors.black45),
-                  //         ),
-                  //         focusedBorder: UnderlineInputBorder(
-                  //           borderSide: BorderSide(color: Colors.black54),
-                  //         ),
-                  //       ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SizedBox(
+                      height: 45,
+                      child: InkWell(
+                          onTap: () {
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return Dialog(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(15)),
+                                      child: LimitedBox(
+                                        maxHeight: size.height / 1.3,
+                                        child: ListView.builder(
+                                            shrinkWrap: true,
+                                            itemCount:
+                                                value.bloodGrpList.length,
+                                            itemBuilder: (context, index) {
+                                              return ListTile(
+                                                onTap: () async {
+                                                  _bloodgroupcontroller.text =
+                                                      value.bloodGrpList[index]
+                                                              .text ??
+                                                          "";
 
-                  //     ),
-                  //   ),
-                  // ),
+                                                  _bloodgroupIDcontroller.text =
+                                                      value.bloodGrpList[index]
+                                                              .value ??
+                                                          "";
+
+                                                  Navigator.of(context).pop();
+                                                },
+                                                title: Text(
+                                                  value.bloodGrpList[index]
+                                                          .text ??
+                                                      '--',
+                                                  textAlign: TextAlign.center,
+                                                ),
+                                              );
+                                            }),
+                                      ));
+                                });
+                          },
+                          child: TextField(
+                            controller: _bloodgroupcontroller,
+                            decoration: const InputDecoration(
+                              contentPadding: EdgeInsets.only(bottom: 0),
+                              labelText: "Select Blood Group",
+                              labelStyle: TextStyle(color: Colors.grey),
+                              disabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.black45),
+                              ),
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.black45),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.black54),
+                              ),
+                              enabled: true,
+                              hintStyle: TextStyle(
+                                color: Color.fromARGB(255, 0, 0, 0),
+                              ),
+                            ),
+                            enabled: false,
+                            style: const TextStyle(color: UIGuide.BLACK),
+                          )),
+                    ),
+                  ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: SizedBox(
@@ -543,7 +569,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                         inputFormatters: [
                           LengthLimitingTextInputFormatter(500)
                         ],
-                        keyboardType: TextInputType.multiline, //or null,
+                        keyboardType: TextInputType.multiline,
                       ),
                     ),
                   ),
@@ -551,30 +577,35 @@ class _ProfileEditState extends State<ProfileEdit> {
               ),
             ),
             if (value.loadingg)
-              Container(
-                color: Colors.black.withOpacity(0.2),
-                child: Center(
-                  child: Container(
-                    decoration: const BoxDecoration(color: UIGuide.WHITE),
-                    child: const Padding(
-                      padding: EdgeInsets.all(15.0),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          CircularProgressIndicator(
-                            color: UIGuide.light_Purple,
-                            strokeWidth: 2,
-                          ),
-                          kWidth,
-                          Text(
-                            "Please Wait...",
-                            style: TextStyle(
-                                color: UIGuide.light_Purple,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 18),
-                          )
-                        ],
+              WillPopScope(
+                onWillPop: () async {
+                  return false;
+                },
+                child: Container(
+                  color: Colors.black.withOpacity(0.2),
+                  child: Center(
+                    child: Container(
+                      decoration: const BoxDecoration(color: UIGuide.WHITE),
+                      child: const Padding(
+                        padding: EdgeInsets.all(15.0),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CircularProgressIndicator(
+                              color: UIGuide.light_Purple,
+                              strokeWidth: 2,
+                            ),
+                            kWidth,
+                            Text(
+                              "Please Wait...",
+                              style: TextStyle(
+                                  color: UIGuide.light_Purple,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 18),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -584,102 +615,122 @@ class _ProfileEditState extends State<ProfileEdit> {
         );
       }),
       bottomNavigationBar: Consumer<ProfileProvider>(
-        builder: (context, value, _) => BottomAppBar(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              kWidth20,
-              Expanded(
-                  child: ElevatedButton(
-                onPressed: value.loadingg
-                    ? null
-                    : () {
-                        Navigator.pop(context);
-                      },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: UIGuide.WHITE,
-                  foregroundColor: UIGuide.light_Purple,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                    side: const BorderSide(
-                      color: UIGuide.light_Purple,
-                      width: 2.0,
+        builder: (context, value, _) => Stack(
+          children: [
+            BottomAppBar(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  kWidth20,
+                  Expanded(
+                      child: ElevatedButton(
+                    onPressed: value.loadingg
+                        ? null
+                        : () {
+                            Navigator.pop(context);
+                          },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: UIGuide.WHITE,
+                      foregroundColor: UIGuide.light_Purple,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        side: const BorderSide(
+                          color: UIGuide.light_Purple,
+                          width: 2.0,
+                        ),
+                      ),
                     ),
+                    child: const Text("Cancel",
+                        style: TextStyle(color: UIGuide.light_Purple)),
+                  )),
+                  kWidth20,
+                  Expanded(
+                      child: ElevatedButton(
+                    onPressed: value.loadingg
+                        ? null
+                        : () async {
+                            if ((value.addressEdit != null) &&
+                                _addresscontroller.text.trim().isEmpty) {
+                              print("address empty");
+                              snackbarWidget(
+                                  2, "Add address to continue...", context);
+                            } else if (((value.mobileNoEdit != null) &&
+                                _mobilecontroller.text.trim().isEmpty)) {
+                              print("mobile empty");
+                              snackbarWidget(
+                                  2, "Enter valid mobile number", context);
+                            } else if (((value.guardianNameEdit != null) &&
+                                _guardiancontroller.text.trim().isEmpty)) {
+                              print("Guardian empty");
+                              snackbarWidget(2,
+                                  "Enter Guardian name to continue", context);
+                            } else if (((value.emailIdEdit != null) &&
+                                _emailcontroller.text.trim().isEmpty)) {
+                              print("email empty");
+                              snackbarWidget(2, "Enter valid Email", context);
+                            } else if (((value.bloodGroupIdEdit != null) &&
+                                _bloodgroupIDcontroller.text.trim().isEmpty)) {
+                              print("Blood Group empty");
+                              snackbarWidget(2, "Select Blood Group", context);
+                            } else if (((value.mobileNoEdit != null) &&
+                                _mobilecontroller.text.trim().length != 10)) {
+                              snackbarWidget(
+                                  2, "Enter valid mobile number", context);
+                            } else if (_mobilecontroller.text.length == 10 ||
+                                _mobilecontroller.text.trim().isEmpty) {
+                              if (isEmailValid ||
+                                  _emailcontroller.text.trim().isEmpty) {
+                                value.idOffline == null
+                                    ? await value.getSaveProfile(
+                                        context,
+                                        value.offlineIdEdit ?? 0,
+                                        value.installationIdEdit ?? 0,
+                                        _guardiancontroller.text.trim(),
+                                        _addresscontroller.text.trim(),
+                                        _emailcontroller.text.trim(),
+                                        _mobilecontroller.text.trim(),
+                                        _photoIDcontroller.text.trim(),
+                                        _bloodgroupIDcontroller.text.trim())
+                                    : await value.getUpdateProfile(
+                                        context,
+                                        value.offlineIdEdit ?? 0,
+                                        value.installationIdEdit ?? 0,
+                                        _guardiancontroller.text.trim(),
+                                        _addresscontroller.text.trim(),
+                                        _emailcontroller.text.trim(),
+                                        _mobilecontroller.text.trim(),
+                                        _photoIDcontroller.text.trim(),
+                                        value.idOffline ?? '',
+                                        _bloodgroupIDcontroller.text.trim());
+                              } else {
+                                snackbarWidget(2, "Enter valid email", context);
+                              }
+                            } else {
+                              snackbarWidget(
+                                  2, "Something went wrong", context);
+                            }
+                          },
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: UIGuide.light_Purple,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10))),
+                    child: const Text("Save",
+                        style: TextStyle(color: Colors.white)),
+                  )),
+                  kWidth20
+                ],
+              ),
+            ),
+            if (value.loadingg)
+              Positioned.fill(
+                child: GestureDetector(
+                  onTap: () {},
+                  child: Container(
+                    color: Colors.transparent,
                   ),
                 ),
-                child: const Text("Cancel",
-                    style: TextStyle(color: UIGuide.light_Purple)),
-              )),
-              kWidth20,
-              Expanded(
-                  child: ElevatedButton(
-                onPressed: value.loadingg
-                    ? null
-                    : () async {
-                        if ((value.addressEdit != null) &&
-                            _addresscontroller.text.trim().isEmpty) {
-                          print("address empty");
-                          snackbarWidget(
-                              2, "Add address to continue...", context);
-                        } else if (((value.mobileNoEdit != null) &&
-                            _mobilecontroller.text.trim().isEmpty)) {
-                          print("mobile empty");
-                          snackbarWidget(
-                              2, "Enter valid mobile number", context);
-                        } else if (((value.guardianNameEdit != null) &&
-                            _guardiancontroller.text.trim().isEmpty)) {
-                          print("Guardian empty");
-                          snackbarWidget(
-                              2, "Enter Guardian name to continue", context);
-                        } else if (((value.emailIdEdit != null) &&
-                            _emailcontroller.text.trim().isEmpty)) {
-                          print("email empty");
-                          snackbarWidget(2, "Enter valid Email", context);
-                        } else if (((value.mobileNoEdit != null) &&
-                            _mobilecontroller.text.trim().length != 10)) {
-                          snackbarWidget(
-                              2, "Enter valid mobile number", context);
-                        } else if (_mobilecontroller.text.length == 10 ||
-                            _mobilecontroller.text.trim().isEmpty) {
-                          if (isEmailValid ||
-                              _emailcontroller.text.trim().isEmpty) {
-                            value.idOffline == null
-                                ? await value.getSaveProfile(
-                                    context,
-                                    value.offlineIdEdit ?? 0,
-                                    value.installationIdEdit ?? 0,
-                                    _guardiancontroller.text.trim(),
-                                    _addresscontroller.text.trim(),
-                                    _emailcontroller.text.trim(),
-                                    _mobilecontroller.text.trim(),
-                                    _photoIDcontroller.text.trim())
-                                : await value.getUpdateProfile(
-                                    context,
-                                    value.offlineIdEdit ?? 0,
-                                    value.installationIdEdit ?? 0,
-                                    _guardiancontroller.text.trim(),
-                                    _addresscontroller.text.trim(),
-                                    _emailcontroller.text.trim(),
-                                    _mobilecontroller.text.trim(),
-                                    _photoIDcontroller.text.trim(),
-                                    value.idOffline ?? '');
-                          } else {
-                            snackbarWidget(2, "Enter valid email", context);
-                          }
-                        } else {
-                          snackbarWidget(2, "Something went wrong", context);
-                        }
-                      },
-                style: ElevatedButton.styleFrom(
-                    backgroundColor: UIGuide.light_Purple,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10))),
-                child:
-                    const Text("Save", style: TextStyle(color: Colors.white)),
-              )),
-              kWidth20
-            ],
-          ),
+              ),
+          ],
         ),
       ),
     );

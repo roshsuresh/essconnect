@@ -85,7 +85,7 @@ class StaffProfileView extends StatelessWidget {
                                   text: TextSpan(
                                       style: const TextStyle(
                                           fontSize: 15,
-                                          fontWeight: FontWeight.w500,
+                                          fontWeight: FontWeight.w600,
                                           color: UIGuide.light_Purple),
                                       text: value.name == null
                                           ? '---'
@@ -96,7 +96,7 @@ class StaffProfileView extends StatelessWidget {
                                       ? '---'
                                       : value.designation.toString(),
                                   style: const TextStyle(
-                                      fontWeight: FontWeight.w500,
+                                      fontWeight: FontWeight.w400,
                                       fontSize: 13),
                                 ),
                                 kheight10,
@@ -134,7 +134,8 @@ class StaffProfileView extends StatelessWidget {
                         color: const Color.fromARGB(255, 251, 252, 255),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.all(5.0),
+                        padding: const EdgeInsets.only(
+                            top: 15, bottom: 15, left: 5, right: 5),
                         child: Column(
                           children: [
                             Row(
@@ -146,9 +147,6 @@ class StaffProfileView extends StatelessWidget {
                                 ),
                                 const Text(
                                   '  Gender : ',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                  ),
                                 ),
                                 Text(
                                   value.gender == null
@@ -156,6 +154,7 @@ class StaffProfileView extends StatelessWidget {
                                       : value.gender.toString(),
                                   overflow: TextOverflow.clip,
                                   style: const TextStyle(
+                                    fontWeight: FontWeight.w500,
                                     color: UIGuide.light_Purple,
                                   ),
                                 )
@@ -171,9 +170,6 @@ class StaffProfileView extends StatelessWidget {
                                 ),
                                 const Text(
                                   '  DOB : ',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                  ),
                                 ),
                                 Text(
                                   value.dateOfBirth == null
@@ -181,6 +177,7 @@ class StaffProfileView extends StatelessWidget {
                                       : value.dateOfBirth.toString(),
                                   overflow: TextOverflow.clip,
                                   style: const TextStyle(
+                                    fontWeight: FontWeight.w500,
                                     color: UIGuide.light_Purple,
                                   ),
                                 )
@@ -200,9 +197,6 @@ class StaffProfileView extends StatelessWidget {
                                   ),
                                   const Text(
                                     '  Phone No : ',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                    ),
                                   ),
                                   Text(
                                     value.mobileNo == null
@@ -210,6 +204,7 @@ class StaffProfileView extends StatelessWidget {
                                         : value.mobileNo.toString(),
                                     overflow: TextOverflow.clip,
                                     style: const TextStyle(
+                                      fontWeight: FontWeight.w500,
                                       color: UIGuide.light_Purple,
                                     ),
                                   )
@@ -226,9 +221,6 @@ class StaffProfileView extends StatelessWidget {
                                 ),
                                 const Text(
                                   '  Short Name : ',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                  ),
                                 ),
                                 Text(
                                   value.shortname == null
@@ -237,6 +229,7 @@ class StaffProfileView extends StatelessWidget {
                                   overflow: TextOverflow.clip,
                                   style: const TextStyle(
                                     color: UIGuide.light_Purple,
+                                    fontWeight: FontWeight.w500,
                                   ),
                                 )
                               ],
@@ -251,9 +244,6 @@ class StaffProfileView extends StatelessWidget {
                                 ),
                                 const Text(
                                   '  Email : ',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                  ),
                                 ),
                                 Text(
                                   value.emailid == null
@@ -262,6 +252,7 @@ class StaffProfileView extends StatelessWidget {
                                   overflow: TextOverflow.clip,
                                   style: const TextStyle(
                                     color: UIGuide.light_Purple,
+                                    fontWeight: FontWeight.w500,
                                   ),
                                 )
                               ],
@@ -279,8 +270,6 @@ class StaffProfileView extends StatelessWidget {
                                     ),
                                     Text(
                                       '  Permenent Address',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w500),
                                     ),
                                   ],
                                 ),
@@ -292,6 +281,7 @@ class StaffProfileView extends StatelessWidget {
                                       value.address ?? "--",
                                       maxLines: 6,
                                       style: const TextStyle(
+                                          fontWeight: FontWeight.w500,
                                           color: UIGuide.light_Purple,
                                           overflow: TextOverflow.ellipsis),
                                     ),

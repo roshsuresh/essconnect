@@ -1,6 +1,7 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:essconnect/utils/spinkit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
@@ -103,7 +104,7 @@ class Attendence extends StatelessWidget {
                                                         const EdgeInsets.all(
                                                             8.0),
                                                     child: Text(
-                                                        'Percentage % : ${provider.totPercentage == null ? '--' : provider.totPercentage.toString()}'),
+                                                        'Percentage : ${provider.totPercentage == null ? '--' : provider.totPercentage.toString()}'),
                                                   ),
                                                 ])
                                               ],
@@ -125,72 +126,76 @@ class Attendence extends StatelessWidget {
                                   4: FlexColumnWidth(2),
                                 },
                                 border: TableBorder.all(
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(10),
+                                        topRight: Radius.circular(10)),
                                     color: const Color.fromARGB(
-                                        255, 215, 216, 216),
-                                    width: .2),
+                                        255, 248, 248, 248)),
                                 children: const [
                                   TableRow(
                                       decoration: BoxDecoration(
-                                          color: Color.fromARGB(
-                                              255, 231, 233, 235)),
+                                        borderRadius: BorderRadius.only(
+                                            topLeft: Radius.circular(10),
+                                            topRight: Radius.circular(10)),
+                                        color:
+                                            Color.fromARGB(255, 223, 223, 223),
+                                      ),
                                       children: [
-                                        Padding(
-                                          padding: EdgeInsets.only(
-                                              top: 19.0,
-                                              bottom: 4,
-                                              left: 4,
-                                              right: 4),
+                                        TableCell(
+                                          verticalAlignment:
+                                              TableCellVerticalAlignment.middle,
                                           child: Text(
                                             'Month',
                                             style: TextStyle(
-                                                fontWeight: FontWeight.w700),
+                                                fontWeight: FontWeight.w600),
                                             textAlign: TextAlign.center,
                                           ),
                                         ),
-                                        Padding(
-                                          padding: EdgeInsets.only(
-                                              top: 4.0,
-                                              bottom: 4,
-                                              left: 4,
-                                              right: 4),
+                                        TableCell(
+                                          verticalAlignment:
+                                              TableCellVerticalAlignment.middle,
+                                          child: Padding(
+                                            padding: EdgeInsets.only(
+                                              top: 6.0,
+                                              bottom: 6,
+                                            ),
+                                            child: Text(
+                                              'No of Working Days',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.w600),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                        ),
+                                        TableCell(
+                                          verticalAlignment:
+                                              TableCellVerticalAlignment.middle,
                                           child: Text(
-                                            'No of \n Working \n Days',
+                                            'Days Present',
                                             style: TextStyle(
-                                                fontWeight: FontWeight.w700),
+                                                fontWeight: FontWeight.w600),
                                             textAlign: TextAlign.center,
                                           ),
                                         ),
-                                        Padding(
-                                          padding: EdgeInsets.only(
-                                              top: 10.0,
-                                              bottom: 4,
-                                              left: 4,
-                                              right: 4),
+                                        TableCell(
+                                          verticalAlignment:
+                                              TableCellVerticalAlignment.middle,
                                           child: Text(
-                                            'Days \n Present',
+                                            'Days Absent',
                                             style: TextStyle(
-                                                fontWeight: FontWeight.w700),
+                                                fontWeight: FontWeight.w600),
                                             textAlign: TextAlign.center,
                                           ),
                                         ),
-                                        Padding(
-                                          padding: EdgeInsets.only(
-                                              top: 10.0,
-                                              bottom: 4,
-                                              left: 4,
-                                              right: 4),
+                                        TableCell(
+                                          verticalAlignment:
+                                              TableCellVerticalAlignment.middle,
                                           child: Text(
-                                            'Days \n Absent',
+                                            '%',
                                             style: TextStyle(
-                                                fontWeight: FontWeight.w700),
+                                                fontWeight: FontWeight.w600),
                                             textAlign: TextAlign.center,
                                           ),
-                                        ),
-                                        Text(
-                                          ' \n %',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w700),
-                                          textAlign: TextAlign.center,
                                         ),
                                       ])
                                 ],
@@ -605,102 +610,175 @@ class Attendence extends StatelessWidget {
                                                       },
                                                     );
                                         },
-                                        child: Table(
-                                          columnWidths: const {
-                                            0: FlexColumnWidth(3),
-                                            1: FlexColumnWidth(2),
-                                            2: FlexColumnWidth(2),
-                                            3: FlexColumnWidth(2),
-                                            4: FlexColumnWidth(2),
-                                          },
-                                          border: TableBorder.all(
-                                              color: const Color.fromARGB(
-                                                  255, 245, 243, 243)),
-                                          children: [
-                                            TableRow(children: [
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Text(
-                                                  value.attendList[index]
-                                                          .month ??
-                                                      '--',
-                                                  style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w400),
-                                                  textAlign: TextAlign.center,
-                                                ),
+                                        child: AnimationConfiguration
+                                            .staggeredList(
+                                          position: index,
+                                          delay:
+                                              const Duration(milliseconds: 100),
+                                          child: SlideAnimation(
+                                            duration: const Duration(
+                                                milliseconds: 3500),
+                                            curve:
+                                                Curves.fastLinearToSlowEaseIn,
+                                            child: FadeInAnimation(
+                                              curve:
+                                                  Curves.fastLinearToSlowEaseIn,
+                                              duration: const Duration(
+                                                  milliseconds: 3500),
+                                              child: Table(
+                                                columnWidths: const {
+                                                  0: FlexColumnWidth(3),
+                                                  1: FlexColumnWidth(2),
+                                                  2: FlexColumnWidth(2),
+                                                  3: FlexColumnWidth(2),
+                                                  4: FlexColumnWidth(2),
+                                                },
+                                                border: TableBorder.all(
+                                                    color: Color.fromARGB(
+                                                        255, 255, 255, 255)),
+                                                children: [
+                                                  TableRow(
+                                                      decoration: BoxDecoration(
+                                                        color: index.isEven
+                                                            ? Colors.white
+                                                            : const Color
+                                                                .fromARGB(255,
+                                                                241, 241, 241),
+                                                      ),
+                                                      children: [
+                                                        TableCell(
+                                                          verticalAlignment:
+                                                              TableCellVerticalAlignment
+                                                                  .middle,
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .only(
+                                                                    top: 12,
+                                                                    left: 8,
+                                                                    bottom: 12),
+                                                            child: Text(
+                                                              value
+                                                                      .attendList[
+                                                                          index]
+                                                                      .month ??
+                                                                  '--',
+                                                              style: const TextStyle(
+                                                                  fontSize: 13,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w400),
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .start,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        TableCell(
+                                                          verticalAlignment:
+                                                              TableCellVerticalAlignment
+                                                                  .middle,
+                                                          child: Text(
+                                                            value
+                                                                        .attendList[
+                                                                            index]
+                                                                        .totalWorkingDays ==
+                                                                    null
+                                                                ? '--'
+                                                                : value
+                                                                    .attendList[
+                                                                        index]
+                                                                    .totalWorkingDays
+                                                                    .toString(),
+                                                            style: const TextStyle(
+                                                                fontSize: 13,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400),
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                          ),
+                                                        ),
+                                                        TableCell(
+                                                          verticalAlignment:
+                                                              TableCellVerticalAlignment
+                                                                  .middle,
+                                                          child: Text(
+                                                            value
+                                                                        .attendList[
+                                                                            index]
+                                                                        .daysPresent ==
+                                                                    null
+                                                                ? '--'
+                                                                : value
+                                                                    .attendList[
+                                                                        index]
+                                                                    .daysPresent
+                                                                    .toString(),
+                                                            style: const TextStyle(
+                                                                fontSize: 13,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400),
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                          ),
+                                                        ),
+                                                        TableCell(
+                                                          verticalAlignment:
+                                                              TableCellVerticalAlignment
+                                                                  .middle,
+                                                          child: Text(
+                                                            value
+                                                                        .attendList[
+                                                                            index]
+                                                                        .daysAbsent ==
+                                                                    null
+                                                                ? '--'
+                                                                : value
+                                                                    .attendList[
+                                                                        index]
+                                                                    .daysAbsent
+                                                                    .toString(),
+                                                            style: const TextStyle(
+                                                                fontSize: 13,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400),
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                          ),
+                                                        ),
+                                                        TableCell(
+                                                          verticalAlignment:
+                                                              TableCellVerticalAlignment
+                                                                  .middle,
+                                                          child: Text(
+                                                            value
+                                                                        .attendList[
+                                                                            index]
+                                                                        .monthres ==
+                                                                    null
+                                                                ? '--'
+                                                                : value
+                                                                    .attendList[
+                                                                        index]
+                                                                    .monthres
+                                                                    .toString(),
+                                                            style: const TextStyle(
+                                                                fontSize: 13,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400),
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                          ),
+                                                        ),
+                                                      ])
+                                                ],
                                               ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Text(
-                                                  value.attendList[index]
-                                                              .totalWorkingDays ==
-                                                          null
-                                                      ? '--'
-                                                      : value.attendList[index]
-                                                          .totalWorkingDays
-                                                          .toString(),
-                                                  style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w400),
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Text(
-                                                  value.attendList[index]
-                                                              .daysPresent ==
-                                                          null
-                                                      ? '--'
-                                                      : value.attendList[index]
-                                                          .daysPresent
-                                                          .toString(),
-                                                  style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w400),
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Text(
-                                                  value.attendList[index]
-                                                              .daysAbsent ==
-                                                          null
-                                                      ? '--'
-                                                      : value.attendList[index]
-                                                          .daysAbsent
-                                                          .toString(),
-                                                  style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w400),
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Text(
-                                                  value.attendList[index]
-                                                              .monthres ==
-                                                          null
-                                                      ? '--'
-                                                      : value.attendList[index]
-                                                          .monthres
-                                                          .toString(),
-                                                  style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w400),
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              ),
-                                            ])
-                                          ],
+                                            ),
+                                          ),
                                         ),
                                       );
                                     })),

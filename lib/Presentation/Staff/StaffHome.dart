@@ -18,6 +18,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:marquee/marquee.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
@@ -136,150 +137,937 @@ class _StaffHomeState extends State<StaffHome> {
                             topLeft: Radius.circular(30),
                             topRight: Radius.circular(30)),
                       ),
-                      child: ListView(
-                        physics: const BouncingScrollPhysics(),
-                        children: [
-                          kheight20,
-                          kheight10,
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              GestureDetector(
-                                onTap: () async {
-                                  await Navigator.push(
-                                      context,
-                                      PageTransition(
-                                        type: PageTransitionType.rightToLeft,
-                                        child: const StaffProfileView(),
-                                        duration:
-                                            const Duration(milliseconds: 300),
-                                      ));
-                                },
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 10, right: 10),
-                                  child: SingleChildScrollView(
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Card(
-                                          elevation: 10,
-                                          color: Colors.white,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(12.0),
-                                          ),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Container(
-                                              height: 38,
-                                              width: 38,
-                                              decoration: const BoxDecoration(
-                                                image: DecorationImage(
-                                                  opacity: 20,
-                                                  image: AssetImage(
-                                                    'assets/Profilee.png',
+                      child: AnimationLimiter(
+                        child: ListView(
+                          physics: const BouncingScrollPhysics(),
+                          children: [
+                            kheight20,
+                            kheight10,
+                            AnimationConfiguration.staggeredList(
+                              position: 0,
+                              delay: const Duration(milliseconds: 100),
+                              child: SlideAnimation(
+                                duration: const Duration(milliseconds: 2500),
+                                curve: Curves.fastLinearToSlowEaseIn,
+                                child: FadeInAnimation(
+                                  curve: Curves.fastLinearToSlowEaseIn,
+                                  duration: const Duration(milliseconds: 2500),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () async {
+                                          await Navigator.push(
+                                              context,
+                                              PageTransition(
+                                                type: PageTransitionType
+                                                    .rightToLeft,
+                                                child: const StaffProfileView(),
+                                                duration: const Duration(
+                                                    milliseconds: 300),
+                                              ));
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 10, right: 10),
+                                          child: SingleChildScrollView(
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                Card(
+                                                  elevation: 10,
+                                                  color: Colors.white,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            12.0),
                                                   ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        kheight10,
-                                        const Text(
-                                          'Profile',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 11,
-                                              color: Colors.black),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Consumer<StaffNotificationCountProviders>(
-                                builder: (context, count, child) => count
-                                        .loading
-                                    ? Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 10, right: 10),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            Card(
-                                              elevation: 10,
-                                              color: Colors.white,
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(12.0),
-                                              ),
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Container(
-                                                  height: 38,
-                                                  width: 38,
-                                                  decoration:
-                                                      const BoxDecoration(
-                                                    image: DecorationImage(
-                                                      image: AssetImage(
-                                                        'assets/notificationnew.png',
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: Container(
+                                                      height: 38,
+                                                      width: 38,
+                                                      decoration:
+                                                          const BoxDecoration(
+                                                        image: DecorationImage(
+                                                          opacity: 20,
+                                                          image: AssetImage(
+                                                            'assets/Profilee.png',
+                                                          ),
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
                                                 ),
+                                                kheight10,
+                                                const Text(
+                                                  'Profile',
+                                                  textAlign: TextAlign.center,
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      fontSize: 11,
+                                                      color: Colors.black),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Consumer<StaffNotificationCountProviders>(
+                                        builder: (context, count, child) =>
+                                            count.loading
+                                                ? Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 10,
+                                                            right: 10),
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
+                                                      children: [
+                                                        Card(
+                                                          elevation: 10,
+                                                          color: Colors.white,
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        12.0),
+                                                          ),
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
+                                                            child: Container(
+                                                              height: 38,
+                                                              width: 38,
+                                                              decoration:
+                                                                  const BoxDecoration(
+                                                                image:
+                                                                    DecorationImage(
+                                                                  image:
+                                                                      AssetImage(
+                                                                    'assets/notificationnew.png',
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        kheight10,
+                                                        const Text(
+                                                          'Notifications',
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                              fontSize: 11,
+                                                              color:
+                                                                  Colors.black),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  )
+                                                : badges.Badge(
+                                                    showBadge: count.count == 0
+                                                        ? false
+                                                        : true,
+                                                    badgeAnimation: const badges
+                                                        .BadgeAnimation.rotation(
+                                                      animationDuration:
+                                                          Duration(seconds: 1),
+                                                      colorChangeAnimationDuration:
+                                                          Duration(seconds: 1),
+                                                      loopAnimation: false,
+                                                      curve:
+                                                          Curves.fastOutSlowIn,
+                                                      colorChangeAnimationCurve:
+                                                          Curves.easeInCubic,
+                                                    ),
+                                                    position:
+                                                        badges.BadgePosition
+                                                            .topEnd(end: 9),
+                                                    badgeContent: Text(
+                                                      count.count == null
+                                                          ? ''
+                                                          : count.count
+                                                              .toString(),
+                                                      style: const TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 10,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                    child: GestureDetector(
+                                                      onTap: () async {
+                                                        await Navigator.push(
+                                                            context,
+                                                            PageTransition(
+                                                              type: PageTransitionType
+                                                                  .rightToLeft,
+                                                              child:
+                                                                  StaffNotificationScreen(),
+                                                              duration:
+                                                                  const Duration(
+                                                                      milliseconds:
+                                                                          300),
+                                                            ));
+                                                      },
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(
+                                                                left: 10,
+                                                                right: 10),
+                                                        child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceEvenly,
+                                                          children: [
+                                                            Card(
+                                                              elevation: 10,
+                                                              color:
+                                                                  Colors.white,
+                                                              shape:
+                                                                  RoundedRectangleBorder(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            12.0),
+                                                              ),
+                                                              child: Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                        .all(
+                                                                        8.0),
+                                                                child:
+                                                                    Container(
+                                                                  height: 38,
+                                                                  width: 38,
+                                                                  decoration:
+                                                                      const BoxDecoration(
+                                                                    image:
+                                                                        DecorationImage(
+                                                                      image:
+                                                                          AssetImage(
+                                                                        'assets/notificationnew.png',
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            kheight10,
+                                                            const Text(
+                                                              'Notifications',
+                                                              style: TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                  fontSize: 11,
+                                                                  color: Colors
+                                                                      .black),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                      ),
+                                      Consumer<ModuleProviders>(
+                                          builder: (context, module, child) =>
+                                              GestureDetector(
+                                                onTap: () async {
+                                                  module.timetable == true
+                                                      ? await Navigator.push(
+                                                          context,
+                                                          PageTransition(
+                                                            type:
+                                                                PageTransitionType
+                                                                    .rightToLeft,
+                                                            child:
+                                                                const Staff_Timetable(),
+                                                            duration:
+                                                                const Duration(
+                                                                    milliseconds:
+                                                                        300),
+                                                          ))
+                                                      : _noAcess();
+                                                },
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 10, right: 10),
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
+                                                    children: [
+                                                      Card(
+                                                        elevation: 10,
+                                                        color: Colors.white,
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      12.0),
+                                                        ),
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                          child: Container(
+                                                            height: 38,
+                                                            width: 38,
+                                                            decoration:
+                                                                const BoxDecoration(
+                                                              image:
+                                                                  DecorationImage(
+                                                                image:
+                                                                    AssetImage(
+                                                                  'assets/Timetable.png',
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      kheight10,
+                                                      const Text(
+                                                        'Timetable',
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            fontSize: 11,
+                                                            color:
+                                                                Colors.black),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              )),
+                                      Consumer<ModuleProviders>(
+                                        builder: (context, module, child) =>
+                                            GestureDetector(
+                                          onTap: () async {
+                                            module.timetable == true
+                                                ? await Navigator.push(
+                                                    context,
+                                                    PageTransition(
+                                                      type: PageTransitionType
+                                                          .rightToLeft,
+                                                      child:
+                                                          const ExamTimetableStaff(),
+                                                      duration: const Duration(
+                                                          milliseconds: 300),
+                                                    ))
+                                                : _noAcess();
+                                          },
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 10, right: 10),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                Card(
+                                                  elevation: 10,
+                                                  color: Colors.white,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            12.0),
+                                                  ),
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: Container(
+                                                      height: 38,
+                                                      width: 38,
+                                                      decoration:
+                                                          const BoxDecoration(
+                                                        image: DecorationImage(
+                                                          image: AssetImage(
+                                                            'assets/diary.png',
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                kheight10,
+                                                const Text(
+                                                  '    Exam\nTimetable',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      fontSize: 11,
+                                                      color: Colors.black),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            kheight10,
+                            AnimationConfiguration.staggeredList(
+                              position: 1,
+                              delay: const Duration(milliseconds: 300),
+                              child: SlideAnimation(
+                                duration: const Duration(milliseconds: 2500),
+                                curve: Curves.fastLinearToSlowEaseIn,
+                                child: FadeInAnimation(
+                                  curve: Curves.fastLinearToSlowEaseIn,
+                                  duration: const Duration(milliseconds: 2500),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(6.0),
+                                    child: Container(
+                                      height: 170,
+                                      decoration: BoxDecoration(
+                                          color: const Color.fromARGB(
+                                              255, 236, 237, 245),
+                                          borderRadius:
+                                              BorderRadius.circular(20)),
+                                      width: size.width,
+                                      child: Column(
+                                        children: [
+                                          kheight10,
+                                          Row(children: <Widget>[
+                                            const Text(
+                                              ' ──  ',
+                                              style: TextStyle(
+                                                color: Colors.black26,
                                               ),
                                             ),
-                                            kheight10,
                                             const Text(
-                                              'Notifications',
+                                              " * Entries * ",
+                                              textAlign: TextAlign.left,
                                               style: TextStyle(
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: 11,
-                                                  color: Colors.black),
-                                            )
-                                          ],
+                                                  color: UIGuide.light_Purple,
+                                                  fontWeight: FontWeight.w900),
+                                            ),
+                                            Expanded(
+                                              child: Container(
+                                                  margin: const EdgeInsets.only(
+                                                      left: 10.0, right: 20.0),
+                                                  child: const Divider(
+                                                    color: UIGuide.light_Purple,
+                                                    height: 36,
+                                                  )),
+                                            ),
+                                          ]),
+                                          kheight10,
+                                          Consumer<ModuleProviders>(
+                                            builder: (context, module, child) =>
+                                                Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 5, right: 5),
+                                                  child: GestureDetector(
+                                                    onTap: () async {
+                                                      module.attendenceEntry ==
+                                                              true
+                                                          ? await Navigator.push(
+                                                              context,
+                                                              PageTransition(
+                                                                type: PageTransitionType
+                                                                    .rightToLeft,
+                                                                child:
+                                                                    AttendenceEntry(),
+                                                                duration:
+                                                                    const Duration(
+                                                                        milliseconds:
+                                                                            300),
+                                                              ))
+                                                          : _noAcess();
+                                                    },
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
+                                                      children: [
+                                                        Card(
+                                                          elevation: 10,
+                                                          color: Colors.white,
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        12.0),
+                                                          ),
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
+                                                            child: Container(
+                                                              height: 38,
+                                                              width: 38,
+                                                              decoration:
+                                                                  const BoxDecoration(
+                                                                image:
+                                                                    DecorationImage(
+                                                                  opacity: 20,
+                                                                  image: AssetImage(
+                                                                      'assets/Attendance entry.png'),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        kheight10,
+                                                        const Text(
+                                                          'Attendance',
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                              fontSize: 11,
+                                                              color:
+                                                                  Colors.black),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                                GestureDetector(
+                                                  onTap: () async {
+                                                    module.tabulation == true
+                                                        ? await Navigator.push(
+                                                            context,
+                                                            PageTransition(
+                                                              type: PageTransitionType
+                                                                  .rightToLeft,
+                                                              child:
+                                                                  const MarkEntryNew(),
+                                                              duration:
+                                                                  const Duration(
+                                                                      milliseconds:
+                                                                          300),
+                                                            ))
+                                                        : _noAcess();
+                                                  },
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 5, right: 5),
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
+                                                      children: [
+                                                        Card(
+                                                          elevation: 10,
+                                                          color: Colors.white,
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        12.0),
+                                                          ),
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
+                                                            child: Container(
+                                                              height: 38,
+                                                              width: 38,
+                                                              decoration:
+                                                                  const BoxDecoration(
+                                                                image:
+                                                                    DecorationImage(
+                                                                  opacity: 20,
+                                                                  image:
+                                                                      AssetImage(
+                                                                    'assets/Tabulation.png',
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        kheight10,
+                                                        const Text(
+                                                          'MarkEntry',
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                              fontSize: 11,
+                                                              color:
+                                                                  Colors.black),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                                GestureDetector(
+                                                  onTap: () async {
+                                                    module.tabulation == true
+                                                        ? await Navigator.push(
+                                                            context,
+                                                            PageTransition(
+                                                              type: PageTransitionType
+                                                                  .rightToLeft,
+                                                              child:
+                                                                  const ToolMarkEntry(),
+                                                              duration:
+                                                                  const Duration(
+                                                                      milliseconds:
+                                                                          300),
+                                                            ))
+                                                        : _noAcess();
+                                                  },
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 5, right: 5),
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
+                                                      children: [
+                                                        Card(
+                                                          elevation: 10,
+                                                          color: Colors.white,
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        12.0),
+                                                          ),
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
+                                                            child: Container(
+                                                              height: 38,
+                                                              width: 38,
+                                                              decoration:
+                                                                  const BoxDecoration(
+                                                                image:
+                                                                    DecorationImage(
+                                                                  image:
+                                                                      AssetImage(
+                                                                    'assets/ToolMarkEntry.png',
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        kheight10,
+                                                        const Text(
+                                                          'Tool Mark\nEntry',
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                              fontSize: 11,
+                                                              color:
+                                                                  Colors.black),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                                GestureDetector(
+                                                  onTap: () async {
+                                                    module.tabulation == true
+                                                        ? await Navigator.push(
+                                                            context,
+                                                            PageTransition(
+                                                              type: PageTransitionType
+                                                                  .rightToLeft,
+                                                              child:
+                                                                  const RemarksEntry(),
+                                                              duration:
+                                                                  const Duration(
+                                                                      milliseconds:
+                                                                          300),
+                                                            ))
+                                                        : _noAcess();
+                                                  },
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 5, right: 5),
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
+                                                      children: [
+                                                        Card(
+                                                          elevation: 10,
+                                                          color: Colors.white,
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        12.0),
+                                                          ),
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
+                                                            child: Container(
+                                                              height: 38,
+                                                              width: 38,
+                                                              decoration:
+                                                                  const BoxDecoration(
+                                                                image:
+                                                                    DecorationImage(
+                                                                  image:
+                                                                      AssetImage(
+                                                                    'assets/Remarks.png',
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        kheight10,
+                                                        const Text(
+                                                          'Remarks Entry',
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                              fontSize: 11,
+                                                              color:
+                                                                  Colors.black),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            AnimationConfiguration.staggeredList(
+                              position: 2,
+                              delay: const Duration(milliseconds: 100),
+                              child: SlideAnimation(
+                                duration: const Duration(milliseconds: 2500),
+                                curve: Curves.fastLinearToSlowEaseIn,
+                                child: FadeInAnimation(
+                                  curve: Curves.fastLinearToSlowEaseIn,
+                                  duration: const Duration(milliseconds: 2500),
+                                  child: Row(children: <Widget>[
+                                    const Text(
+                                      ' ──    ',
+                                      style: TextStyle(
+                                        color: Colors.black26,
+                                      ),
+                                    ),
+                                    const Text(
+                                      "Communication",
+                                      textAlign: TextAlign.left,
+                                      style: TextStyle(
+                                          color: UIGuide.light_Purple,
+                                          fontWeight: FontWeight.w900),
+                                    ),
+                                    Expanded(
+                                      child: Container(
+                                          margin: const EdgeInsets.only(
+                                              left: 20.0, right: 10.0),
+                                          child: const Divider(
+                                            color: UIGuide.light_Purple,
+                                            height: 36,
+                                          )),
+                                    ),
+                                  ]),
+                                ),
+                              ),
+                            ),
+                            kheight10,
+                            Consumer<ModuleProviders>(
+                              builder: (context, module, child) =>
+                                  AnimationConfiguration.staggeredList(
+                                position: 3,
+                                delay: const Duration(milliseconds: 100),
+                                child: SlideAnimation(
+                                  duration: const Duration(milliseconds: 2500),
+                                  curve: Curves.fastLinearToSlowEaseIn,
+                                  child: FadeInAnimation(
+                                    curve: Curves.fastLinearToSlowEaseIn,
+                                    duration:
+                                        const Duration(milliseconds: 2500),
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        GestureDetector(
+                                          onTap: () async {
+                                            module.curiculam == true
+                                                ? await Navigator.push(
+                                                    context,
+                                                    PageTransition(
+                                                      type: PageTransitionType
+                                                          .rightToLeft,
+                                                      child: Staff_ToGuardian(),
+                                                      duration: const Duration(
+                                                          milliseconds: 300),
+                                                    ))
+                                                : _noAcess();
+                                          },
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 10, right: 10),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                Card(
+                                                  elevation: 10,
+                                                  color: Colors.white,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            12.0),
+                                                  ),
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: Container(
+                                                      height: 38,
+                                                      width: 38,
+                                                      decoration:
+                                                          const BoxDecoration(
+                                                        image: DecorationImage(
+                                                          opacity: 20,
+                                                          image: AssetImage(
+                                                            'assets/01communicationto guardian.png',
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                kheight10,
+                                                const Text(
+                                                  'To Guardian',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      fontSize: 11,
+                                                      color: Colors.black),
+                                                )
+                                              ],
+                                            ),
+                                          ),
                                         ),
-                                      )
-                                    : badges.Badge(
-                                        showBadge:
-                                            count.count == 0 ? false : true,
-                                        badgeAnimation: const badges
-                                            .BadgeAnimation.rotation(
-                                          animationDuration:
-                                              Duration(seconds: 1),
-                                          colorChangeAnimationDuration:
-                                              Duration(seconds: 1),
-                                          loopAnimation: false,
-                                          curve: Curves.fastOutSlowIn,
-                                          colorChangeAnimationCurve:
-                                              Curves.easeInCubic,
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 10, right: 10),
+                                          child: GestureDetector(
+                                            onTap: () async {
+                                              await Navigator.push(
+                                                  context,
+                                                  PageTransition(
+                                                    type: PageTransitionType
+                                                        .rightToLeft,
+                                                    child: StaffNoticeBoard(),
+                                                    duration: const Duration(
+                                                        milliseconds: 300),
+                                                  ));
+                                            },
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                Card(
+                                                  elevation: 10,
+                                                  color: Colors.white,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            12.0),
+                                                  ),
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: Container(
+                                                      height: 38,
+                                                      width: 38,
+                                                      decoration: BoxDecoration(
+                                                        image:
+                                                            const DecorationImage(
+                                                          opacity: 20,
+                                                          image: AssetImage(
+                                                            'assets/Noticeboard.png',
+                                                          ),
+                                                        ),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                kheight10,
+                                                const Text(
+                                                  'Notice Board',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      fontSize: 11,
+                                                      color: Colors.black),
+                                                )
+                                              ],
+                                            ),
+                                          ),
                                         ),
-                                        position:
-                                            badges.BadgePosition.topEnd(end: 9),
-                                        badgeContent: Text(
-                                          count.count == null
-                                              ? ''
-                                              : count.count.toString(),
-                                          style: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 10,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        child: GestureDetector(
+                                        GestureDetector(
                                           onTap: () async {
                                             await Navigator.push(
                                                 context,
                                                 PageTransition(
                                                   type: PageTransitionType
                                                       .rightToLeft,
-                                                  child:
-                                                      StaffNotificationScreen(),
+                                                  child: const StaffGallery(),
                                                   duration: const Duration(
                                                       milliseconds: 300),
                                                 ));
@@ -309,8 +1097,9 @@ class _StaffHomeState extends State<StaffHome> {
                                                       decoration:
                                                           const BoxDecoration(
                                                         image: DecorationImage(
+                                                          opacity: 20,
                                                           image: AssetImage(
-                                                            'assets/notificationnew.png',
+                                                            'assets/Gallery.png',
                                                           ),
                                                         ),
                                                       ),
@@ -319,7 +1108,7 @@ class _StaffHomeState extends State<StaffHome> {
                                                 ),
                                                 kheight10,
                                                 const Text(
-                                                  'Notifications',
+                                                  'Gallery',
                                                   style: TextStyle(
                                                       fontWeight:
                                                           FontWeight.w600,
@@ -330,1184 +1119,647 @@ class _StaffHomeState extends State<StaffHome> {
                                             ),
                                           ),
                                         ),
-                                      ),
-                              ),
-                              Consumer<ModuleProviders>(
-                                  builder: (context, module, child) =>
-                                      GestureDetector(
-                                        onTap: () async {
-                                          module.timetable == true
-                                              ? await Navigator.push(
-                                                  context,
-                                                  PageTransition(
-                                                    type: PageTransitionType
-                                                        .rightToLeft,
-                                                    child:
-                                                        const Staff_Timetable(),
-                                                    duration: const Duration(
-                                                        milliseconds: 300),
-                                                  ))
-                                              : _noAcess();
-                                        },
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 10, right: 10),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              Card(
-                                                elevation: 10,
-                                                color: Colors.white,
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          12.0),
-                                                ),
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: Container(
-                                                    height: 38,
-                                                    width: 38,
-                                                    decoration:
-                                                        const BoxDecoration(
-                                                      image: DecorationImage(
-                                                        image: AssetImage(
-                                                          'assets/Timetable.png',
+                                        Consumer<Curriculamprovider>(
+                                          builder: (context, curri, child) =>
+                                              GestureDetector(
+                                            onTap: () async {
+                                              if (module.curiculam == true) {
+                                                await Provider.of<
+                                                            Curriculamprovider>(
+                                                        context,
+                                                        listen: false)
+                                                    .getCuriculamtoken();
+                                                String token =
+                                                    curri.token.toString();
+
+                                                await Navigator.push(
+                                                    context,
+                                                    PageTransition(
+                                                      type: PageTransitionType
+                                                          .rightToLeft,
+                                                      child: CurriculamPage(
+                                                        token: token,
+                                                      ),
+                                                      duration: const Duration(
+                                                          milliseconds: 300),
+                                                    ));
+                                              } else {
+                                                _noAcess();
+                                              }
+                                            },
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 10, right: 10),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
+                                                children: [
+                                                  Card(
+                                                    elevation: 10,
+                                                    color: Colors.white,
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              12.0),
+                                                    ),
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: Container(
+                                                        height: 38,
+                                                        width: 38,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          image:
+                                                              const DecorationImage(
+                                                            opacity: 20,
+                                                            image: AssetImage(
+                                                              'assets/Curriculum.png',
+                                                            ),
+                                                          ),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(10),
                                                         ),
                                                       ),
                                                     ),
                                                   ),
-                                                ),
-                                              ),
-                                              kheight10,
-                                              const Text(
-                                                'Timetable',
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 11,
-                                                    color: Colors.black),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      )),
-                              Consumer<ModuleProviders>(
-                                builder: (context, module, child) =>
-                                    GestureDetector(
-                                  onTap: () async {
-                                    module.timetable == true
-                                        ? await Navigator.push(
-                                            context,
-                                            PageTransition(
-                                              type: PageTransitionType
-                                                  .rightToLeft,
-                                              child: const ExamTimetableStaff(),
-                                              duration: const Duration(
-                                                  milliseconds: 300),
-                                            ))
-                                        : _noAcess();
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 10, right: 10),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Card(
-                                          elevation: 10,
-                                          color: Colors.white,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(12.0),
-                                          ),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Container(
-                                              height: 38,
-                                              width: 38,
-                                              decoration: const BoxDecoration(
-                                                image: DecorationImage(
-                                                  image: AssetImage(
-                                                    'assets/diary.png',
-                                                  ),
-                                                ),
+                                                  kheight10,
+                                                  const Text(
+                                                    'e-Class room',
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontSize: 11,
+                                                        color: Colors.black),
+                                                  )
+                                                ],
                                               ),
                                             ),
                                           ),
-                                        ),
-                                        kheight10,
-                                        const Text(
-                                          '    Exam\nTimetable',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 11,
-                                              color: Colors.black),
                                         )
                                       ],
                                     ),
                                   ),
                                 ),
                               ),
-                            ],
-                          ),
-                          kheight10,
-                          Padding(
-                            padding: const EdgeInsets.all(6.0),
-                            child: Container(
-                              height: 170,
-                              decoration: BoxDecoration(
-                                  color:
-                                      const Color.fromARGB(255, 236, 237, 245),
-                                  borderRadius: BorderRadius.circular(20)),
-                              width: size.width,
-                              child: Column(
-                                children: [
-                                  kheight10,
-                                  Row(children: <Widget>[
-                                    const Text(
-                                      ' ──  ',
-                                      style: TextStyle(
-                                        color: Colors.black26,
+                            ),
+                            kheight10,
+                            AnimationConfiguration.staggeredList(
+                              position: 4,
+                              delay: const Duration(milliseconds: 100),
+                              child: SlideAnimation(
+                                duration: const Duration(milliseconds: 2500),
+                                curve: Curves.fastLinearToSlowEaseIn,
+                                child: FadeInAnimation(
+                                  curve: Curves.fastLinearToSlowEaseIn,
+                                  duration: const Duration(milliseconds: 2500),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(6.0),
+                                    child: Container(
+                                      height: 170,
+                                      decoration: BoxDecoration(
+                                          color: const Color.fromARGB(
+                                              255, 236, 237, 245),
+                                          borderRadius:
+                                              BorderRadius.circular(20)),
+                                      width: size.width,
+                                      child: Column(
+                                        children: [
+                                          kheight10,
+                                          Row(children: <Widget>[
+                                            const Text(
+                                              ' ──  ',
+                                              style: TextStyle(
+                                                color: Colors.black26,
+                                              ),
+                                            ),
+                                            const Text(
+                                              " * Reports * ",
+                                              textAlign: TextAlign.left,
+                                              style: TextStyle(
+                                                  color: UIGuide.light_Purple,
+                                                  fontWeight: FontWeight.w900),
+                                            ),
+                                            Expanded(
+                                              child: Container(
+                                                  margin: const EdgeInsets.only(
+                                                      left: 10.0, right: 20.0),
+                                                  child: const Divider(
+                                                    color: UIGuide.light_Purple,
+                                                    height: 36,
+                                                  )),
+                                            ),
+                                          ]),
+                                          kheight10,
+                                          Consumer<ModuleProviders>(
+                                            builder: (context, module, child) =>
+                                                Row(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                GestureDetector(
+                                                  onTap: () async {
+                                                    await Navigator.push(
+                                                        context,
+                                                        PageTransition(
+                                                          type:
+                                                              PageTransitionType
+                                                                  .rightToLeft,
+                                                          child:
+                                                              const StudReport(),
+                                                          duration:
+                                                              const Duration(
+                                                                  milliseconds:
+                                                                      300),
+                                                        ));
+                                                  },
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 5, right: 5),
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
+                                                      children: [
+                                                        Card(
+                                                          elevation: 10,
+                                                          color: Colors.white,
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        12.0),
+                                                          ),
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
+                                                            child: Container(
+                                                              height: 38,
+                                                              width: 38,
+                                                              decoration:
+                                                                  const BoxDecoration(
+                                                                image:
+                                                                    DecorationImage(
+                                                                  image:
+                                                                      AssetImage(
+                                                                    'assets/01student report.png',
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        kheight10,
+                                                        const Text(
+                                                          'Student\nReport',
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                              fontSize: 11,
+                                                              color:
+                                                                  Colors.black),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                                GestureDetector(
+                                                  onTap: () async {
+                                                    module.attendenceEntry ==
+                                                            true
+                                                        ? await Navigator.push(
+                                                            context,
+                                                            PageTransition(
+                                                              type: PageTransitionType
+                                                                  .rightToLeft,
+                                                              child:
+                                                                  const AbsenteesReportStaff(),
+                                                              duration:
+                                                                  const Duration(
+                                                                      milliseconds:
+                                                                          300),
+                                                            ))
+                                                        : _noAcess();
+                                                  },
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 5, right: 5),
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
+                                                      children: [
+                                                        Card(
+                                                          elevation: 10,
+                                                          color: Colors.white,
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        12.0),
+                                                          ),
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
+                                                            child: Container(
+                                                              height: 38,
+                                                              width: 38,
+                                                              decoration:
+                                                                  const BoxDecoration(
+                                                                image:
+                                                                    DecorationImage(
+                                                                  opacity: 20,
+                                                                  image:
+                                                                      AssetImage(
+                                                                    'assets/attendance report.png',
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        kheight10,
+                                                        const Text(
+                                                          'Absentees\nReport',
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                              fontSize: 11,
+                                                              color:
+                                                                  Colors.black),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                                GestureDetector(
+                                                  onTap: () async {
+                                                    module.tabulation == true
+                                                        ? await Navigator.push(
+                                                            context,
+                                                            PageTransition(
+                                                              type: PageTransitionType
+                                                                  .rightToLeft,
+                                                              child:
+                                                                  const MissingReport(),
+                                                              duration:
+                                                                  const Duration(
+                                                                      milliseconds:
+                                                                          300),
+                                                            ))
+                                                        : _noAcess();
+                                                  },
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 5, right: 5),
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
+                                                      children: [
+                                                        Card(
+                                                          elevation: 10,
+                                                          color: Colors.white,
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        12.0),
+                                                          ),
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
+                                                            child: Container(
+                                                              height: 38,
+                                                              width: 38,
+                                                              decoration:
+                                                                  const BoxDecoration(
+                                                                image:
+                                                                    DecorationImage(
+                                                                  opacity: 20,
+                                                                  image:
+                                                                      AssetImage(
+                                                                    'assets/missing report.png',
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        kheight10,
+                                                        const Text(
+                                                          'MarkEntry\nMissing Report ',
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                              fontSize: 11,
+                                                              color:
+                                                                  Colors.black),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                                GestureDetector(
+                                                  onTap: () async {
+                                                    SharedPreferences _pref =
+                                                        await SharedPreferences
+                                                            .getInstance();
+                                                    String schdomain =
+                                                        await _pref
+                                                            .getString(
+                                                                "subDomain")
+                                                            .toString();
+                                                    print(schdomain);
+                                                    await Navigator.push(
+                                                        context,
+                                                        PageTransition(
+                                                          type:
+                                                              PageTransitionType
+                                                                  .rightToLeft,
+                                                          child: LoginScreenWeb(
+                                                            schdomain:
+                                                                schdomain,
+                                                          ),
+                                                          duration:
+                                                              const Duration(
+                                                                  milliseconds:
+                                                                      300),
+                                                        ));
+                                                  },
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
+                                                    children: [
+                                                      Card(
+                                                        elevation: 10,
+                                                        color: Colors.white,
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      12.0),
+                                                        ),
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                          child: Container(
+                                                            height: 38,
+                                                            width: 38,
+                                                            decoration:
+                                                                const BoxDecoration(
+                                                              image:
+                                                                  DecorationImage(
+                                                                opacity: 20,
+                                                                image:
+                                                                    AssetImage(
+                                                                  'assets/Loginwebb.png',
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      kheight10,
+                                                      const Text(
+                                                        'Login-Web',
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontSize: 11,
+                                                            color:
+                                                                Colors.black87),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                    const Text(
-                                      " * Entries * ",
-                                      textAlign: TextAlign.left,
-                                      style: TextStyle(
-                                          color: UIGuide.light_Purple,
-                                          fontWeight: FontWeight.w900),
-                                    ),
-                                    Expanded(
-                                      child: Container(
-                                          margin: const EdgeInsets.only(
-                                              left: 10.0, right: 20.0),
-                                          child: const Divider(
-                                            color: UIGuide.light_Purple,
-                                            height: 36,
-                                          )),
-                                    ),
-                                  ]),
-                                  kheight10,
-                                  Consumer<ModuleProviders>(
-                                    builder: (context, module, child) => Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 5, right: 5),
-                                          child: GestureDetector(
-                                            onTap: () async {
-                                              module.attendenceEntry == true
-                                                  ? await Navigator.push(
-                                                      context,
-                                                      PageTransition(
-                                                        type: PageTransitionType
-                                                            .rightToLeft,
-                                                        child:
-                                                            AttendenceEntry(),
-                                                        duration:
-                                                            const Duration(
-                                                                milliseconds:
-                                                                    300),
-                                                      ))
-                                                  : _noAcess();
-                                            },
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                Card(
-                                                  elevation: 10,
-                                                  color: Colors.white,
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            12.0),
-                                                  ),
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: Container(
-                                                      height: 38,
-                                                      width: 38,
-                                                      decoration:
-                                                          const BoxDecoration(
-                                                        image: DecorationImage(
-                                                          opacity: 20,
-                                                          image: AssetImage(
-                                                              'assets/Attendance entry.png'),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                kheight10,
-                                                const Text(
-                                                  'Attendance',
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 11,
-                                                      color: Colors.black),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                        GestureDetector(
-                                          onTap: () async {
-                                            module.tabulation == true
-                                                ? await Navigator.push(
-                                                    context,
-                                                    PageTransition(
-                                                      type: PageTransitionType
-                                                          .rightToLeft,
-                                                      child:
-                                                          const MarkEntryNew(),
-                                                      duration: const Duration(
-                                                          milliseconds: 300),
-                                                    ))
-                                                : _noAcess();
-                                          },
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 5, right: 5),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                Card(
-                                                  elevation: 10,
-                                                  color: Colors.white,
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            12.0),
-                                                  ),
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: Container(
-                                                      height: 38,
-                                                      width: 38,
-                                                      decoration:
-                                                          const BoxDecoration(
-                                                        image: DecorationImage(
-                                                          opacity: 20,
-                                                          image: AssetImage(
-                                                            'assets/Tabulation.png',
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                kheight10,
-                                                const Text(
-                                                  'MarkEntry',
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 11,
-                                                      color: Colors.black),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                        GestureDetector(
-                                          onTap: () async {
-                                            module.tabulation == true
-                                                ? await Navigator.push(
-                                                    context,
-                                                    PageTransition(
-                                                      type: PageTransitionType
-                                                          .rightToLeft,
-                                                      child:
-                                                          const ToolMarkEntry(),
-                                                      duration: const Duration(
-                                                          milliseconds: 300),
-                                                    ))
-                                                : _noAcess();
-                                          },
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 5, right: 5),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                Card(
-                                                  elevation: 10,
-                                                  color: Colors.white,
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            12.0),
-                                                  ),
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: Container(
-                                                      height: 38,
-                                                      width: 38,
-                                                      decoration:
-                                                          const BoxDecoration(
-                                                        image: DecorationImage(
-                                                          image: AssetImage(
-                                                            'assets/ToolMarkEntry.png',
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                kheight10,
-                                                const Text(
-                                                  'Tool Mark\nEntry',
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 11,
-                                                      color: Colors.black),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                        GestureDetector(
-                                          onTap: () async {
-                                            module.tabulation == true
-                                                ? await Navigator.push(
-                                                    context,
-                                                    PageTransition(
-                                                      type: PageTransitionType
-                                                          .rightToLeft,
-                                                      child:
-                                                          const RemarksEntry(),
-                                                      duration: const Duration(
-                                                          milliseconds: 300),
-                                                    ))
-                                                : _noAcess();
-                                          },
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 5, right: 5),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                Card(
-                                                  elevation: 10,
-                                                  color: Colors.white,
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            12.0),
-                                                  ),
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: Container(
-                                                      height: 38,
-                                                      width: 38,
-                                                      decoration:
-                                                          const BoxDecoration(
-                                                        image: DecorationImage(
-                                                          image: AssetImage(
-                                                            'assets/Remarks.png',
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                kheight10,
-                                                const Text(
-                                                  'Remarks Entry',
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 11,
-                                                      color: Colors.black),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
                                   ),
-                                ],
+                                ),
                               ),
                             ),
-                          ),
-                          Row(children: <Widget>[
-                            const Text(
-                              ' ──    ',
-                              style: TextStyle(
-                                color: Colors.black26,
+                            kheight20,
+                            Row(children: <Widget>[
+                              const Text(
+                                ' ──  ',
+                                style: TextStyle(
+                                  color: Colors.black26,
+                                ),
                               ),
-                            ),
-                            const Text(
-                              "Communication",
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                  color: UIGuide.light_Purple,
-                                  fontWeight: FontWeight.w900),
-                            ),
-                            Expanded(
-                              child: Container(
-                                  margin: const EdgeInsets.only(
-                                      left: 20.0, right: 10.0),
-                                  child: const Divider(
+                              const Text(
+                                "Change Password/ SignOut",
+                                textAlign: TextAlign.left,
+                                style: TextStyle(
                                     color: UIGuide.light_Purple,
-                                    height: 36,
-                                  )),
-                            ),
-                          ]),
-                          kheight10,
-                          Consumer<ModuleProviders>(
-                            builder: (context, module, child) => Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                                    fontWeight: FontWeight.w900),
+                              ),
+                              Expanded(
+                                child: Container(
+                                    margin: const EdgeInsets.only(
+                                        left: 20.0, right: 10.0),
+                                    child: const Divider(
+                                      color: Colors.black,
+                                      height: 36,
+                                    )),
+                              ),
+                            ]),
+                            kheight10,
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                GestureDetector(
-                                  onTap: () async {
-                                    module.curiculam == true
-                                        ? await Navigator.push(
-                                            context,
-                                            PageTransition(
-                                              type: PageTransitionType
-                                                  .rightToLeft,
-                                              child: Staff_ToGuardian(),
-                                              duration: const Duration(
-                                                  milliseconds: 300),
-                                            ))
-                                        : _noAcess();
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 10, right: 10),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Card(
-                                          elevation: 10,
-                                          color: Colors.white,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(12.0),
-                                          ),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Container(
-                                              height: 38,
-                                              width: 38,
-                                              decoration: const BoxDecoration(
-                                                image: DecorationImage(
-                                                  opacity: 20,
-                                                  image: AssetImage(
-                                                    'assets/01communicationto guardian.png',
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        kheight10,
-                                        const Text(
-                                          'To Guardian',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 11,
-                                              color: Colors.black),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 10, right: 10),
-                                  child: GestureDetector(
-                                    onTap: () async {
+                                MaterialButton(
+                                    elevation: 10,
+                                    minWidth: 50,
+                                    color: UIGuide.THEME_LIGHT,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(30.0)),
+                                    onPressed: () async {
                                       await Navigator.push(
                                           context,
                                           PageTransition(
                                             type:
                                                 PageTransitionType.rightToLeft,
-                                            child: StaffNoticeBoard(),
+                                            child: PasswordChange(),
                                             duration: const Duration(
                                                 milliseconds: 300),
                                           ));
                                     },
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Card(
-                                          elevation: 10,
-                                          color: Colors.white,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(12.0),
-                                          ),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Container(
-                                              height: 38,
-                                              width: 38,
-                                              decoration: BoxDecoration(
-                                                image: const DecorationImage(
-                                                  opacity: 20,
-                                                  image: AssetImage(
-                                                    'assets/Noticeboard.png',
-                                                  ),
-                                                ),
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        kheight10,
-                                        const Text(
-                                          'Notice Board',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 11,
-                                              color: Colors.black),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                GestureDetector(
-                                  onTap: () async {
-                                    await Navigator.push(
-                                        context,
-                                        PageTransition(
-                                          type: PageTransitionType.rightToLeft,
-                                          child: const StaffGallery(),
-                                          duration:
-                                              const Duration(milliseconds: 300),
-                                        ));
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 10, right: 10),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Card(
-                                          elevation: 10,
-                                          color: Colors.white,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(12.0),
-                                          ),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Container(
-                                              height: 38,
-                                              width: 38,
-                                              decoration: const BoxDecoration(
-                                                image: DecorationImage(
-                                                  opacity: 20,
-                                                  image: AssetImage(
-                                                    'assets/Gallery.png',
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        kheight10,
-                                        const Text(
-                                          'Gallery',
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 11,
-                                              color: Colors.black),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Consumer<Curriculamprovider>(
-                                  builder: (context, curri, child) =>
-                                      GestureDetector(
-                                    onTap: () async {
-                                      if (module.curiculam == true) {
-                                        await Provider.of<Curriculamprovider>(
-                                                context,
-                                                listen: false)
-                                            .getCuriculamtoken();
-                                        String token = curri.token.toString();
-
-                                        await Navigator.push(
-                                            context,
-                                            PageTransition(
-                                              type: PageTransitionType
-                                                  .rightToLeft,
-                                              child: CurriculamPage(
-                                                token: token,
-                                              ),
-                                              duration: const Duration(
-                                                  milliseconds: 300),
-                                            ));
-                                      } else {
-                                        _noAcess();
-                                      }
-                                    },
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 10, right: 10),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Card(
-                                            elevation: 10,
-                                            color: Colors.white,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(12.0),
-                                            ),
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Container(
-                                                height: 38,
-                                                width: 38,
-                                                decoration: BoxDecoration(
-                                                  image: const DecorationImage(
-                                                    opacity: 20,
-                                                    image: AssetImage(
-                                                      'assets/Curriculum.png',
-                                                    ),
-                                                  ),
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          kheight10,
-                                          const Text(
-                                            'e-Class room',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 11,
-                                                color: Colors.black),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                          kheight10,
-                          Padding(
-                            padding: const EdgeInsets.all(6.0),
-                            child: Container(
-                              height: 170,
-                              decoration: BoxDecoration(
-                                  color:
-                                      const Color.fromARGB(255, 236, 237, 245),
-                                  borderRadius: BorderRadius.circular(20)),
-                              width: size.width,
-                              child: Column(
-                                children: [
-                                  kheight10,
-                                  Row(children: <Widget>[
-                                    const Text(
-                                      ' ──  ',
-                                      style: TextStyle(
-                                        color: Colors.black26,
-                                      ),
-                                    ),
-                                    const Text(
-                                      " * Reports * ",
-                                      textAlign: TextAlign.left,
-                                      style: TextStyle(
-                                          color: UIGuide.light_Purple,
-                                          fontWeight: FontWeight.w900),
-                                    ),
-                                    Expanded(
-                                      child: Container(
-                                          margin: const EdgeInsets.only(
-                                              left: 10.0, right: 20.0),
-                                          child: const Divider(
-                                            color: UIGuide.light_Purple,
-                                            height: 36,
-                                          )),
-                                    ),
-                                  ]),
-                                  kheight10,
-                                  Consumer<ModuleProviders>(
-                                    builder: (context, module, child) => Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        GestureDetector(
-                                          onTap: () async {
-                                            await Navigator.push(
-                                                context,
-                                                PageTransition(
-                                                  type: PageTransitionType
-                                                      .rightToLeft,
-                                                  child: const StudReport(),
-                                                  duration: const Duration(
-                                                      milliseconds: 300),
-                                                ));
-                                          },
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 5, right: 5),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                Card(
-                                                  elevation: 10,
-                                                  color: Colors.white,
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            12.0),
-                                                  ),
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: Container(
-                                                      height: 38,
-                                                      width: 38,
-                                                      decoration:
-                                                          const BoxDecoration(
-                                                        image: DecorationImage(
-                                                          image: AssetImage(
-                                                            'assets/01student report.png',
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                kheight10,
-                                                const Text(
-                                                  'Student\nReport',
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 11,
-                                                      color: Colors.black),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                        GestureDetector(
-                                          onTap: () async {
-                                            module.attendenceEntry == true
-                                                ? await Navigator.push(
-                                                    context,
-                                                    PageTransition(
-                                                      type: PageTransitionType
-                                                          .rightToLeft,
-                                                      child:
-                                                          const AbsenteesReportStaff(),
-                                                      duration: const Duration(
-                                                          milliseconds: 300),
-                                                    ))
-                                                : _noAcess();
-                                          },
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 5, right: 5),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                Card(
-                                                  elevation: 10,
-                                                  color: Colors.white,
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            12.0),
-                                                  ),
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: Container(
-                                                      height: 38,
-                                                      width: 38,
-                                                      decoration:
-                                                          const BoxDecoration(
-                                                        image: DecorationImage(
-                                                          opacity: 20,
-                                                          image: AssetImage(
-                                                            'assets/attendance report.png',
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                kheight10,
-                                                const Text(
-                                                  'Absentees\nReport',
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 11,
-                                                      color: Colors.black),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                        GestureDetector(
-                                          onTap: () async {
-                                            module.tabulation == true
-                                                ? await Navigator.push(
-                                                    context,
-                                                    PageTransition(
-                                                      type: PageTransitionType
-                                                          .rightToLeft,
-                                                      child:
-                                                          const MissingReport(),
-                                                      duration: const Duration(
-                                                          milliseconds: 300),
-                                                    ))
-                                                : _noAcess();
-                                          },
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 5, right: 5),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                Card(
-                                                  elevation: 10,
-                                                  color: Colors.white,
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            12.0),
-                                                  ),
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: Container(
-                                                      height: 38,
-                                                      width: 38,
-                                                      decoration:
-                                                          const BoxDecoration(
-                                                        image: DecorationImage(
-                                                          opacity: 20,
-                                                          image: AssetImage(
-                                                            'assets/missing report.png',
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                kheight10,
-                                                const Text(
-                                                  'MarkEntry\nMissing Report ',
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 11,
-                                                      color: Colors.black),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                        GestureDetector(
-                                          onTap: () async {
-                                            SharedPreferences _pref =
-                                                await SharedPreferences
-                                                    .getInstance();
-                                            String schdomain = await _pref
-                                                .getString("subDomain")
-                                                .toString();
-                                            print(schdomain);
-                                            await Navigator.push(
-                                                context,
-                                                PageTransition(
-                                                  type: PageTransitionType
-                                                      .rightToLeft,
-                                                  child: LoginScreenWeb(
-                                                    schdomain: schdomain,
-                                                  ),
-                                                  duration: const Duration(
-                                                      milliseconds: 300),
-                                                ));
-                                          },
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              Card(
-                                                elevation: 10,
-                                                color: Colors.white,
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          12.0),
-                                                ),
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: Container(
-                                                    height: 38,
-                                                    width: 38,
-                                                    decoration:
-                                                        const BoxDecoration(
-                                                      image: DecorationImage(
-                                                        opacity: 20,
-                                                        image: AssetImage(
-                                                          'assets/Loginwebb.png',
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                              kheight10,
-                                              const Text(
-                                                'Login-Web',
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 11,
-                                                    color: Colors.black87),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          kheight20,
-                          Row(children: <Widget>[
-                            const Text(
-                              ' ──  ',
-                              style: TextStyle(
-                                color: Colors.black26,
-                              ),
-                            ),
-                            const Text(
-                              "Change Password/ SignOut",
-                              textAlign: TextAlign.left,
-                              style: TextStyle(
-                                  color: UIGuide.light_Purple,
-                                  fontWeight: FontWeight.w900),
-                            ),
-                            Expanded(
-                              child: Container(
-                                  margin: const EdgeInsets.only(
-                                      left: 20.0, right: 10.0),
-                                  child: const Divider(
-                                    color: Colors.black,
-                                    height: 36,
-                                  )),
-                            ),
-                          ]),
-                          kheight10,
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              MaterialButton(
-                                  elevation: 10,
-                                  minWidth: 50,
-                                  color: UIGuide.THEME_LIGHT,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(30.0)),
-                                  onPressed: () async {
-                                    await Navigator.push(
-                                        context,
-                                        PageTransition(
-                                          type: PageTransitionType.rightToLeft,
-                                          child: PasswordChange(),
-                                          duration:
-                                              const Duration(milliseconds: 300),
-                                        ));
-                                  },
-                                  child: const Icon(
-                                    Icons.key_sharp,
-                                    color: UIGuide.light_Purple,
-                                  )),
-                              MaterialButton(
-                                  minWidth: 50,
-                                  elevation: 10,
-                                  color: UIGuide.THEME_LIGHT,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(30.0)),
-                                  onPressed: () async {
-                                    showCupertinoDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return Container(
-                                          color: Colors.black.withOpacity(0.5),
-                                          child: CupertinoAlertDialog(
-                                            title: const Text("Logout"),
-                                            content: const Text(
-                                                "Are you sure you want to log out?"),
-                                            actions: <Widget>[
-                                              CupertinoDialogAction(
-                                                child: const Text(
-                                                  "Cancel",
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                      color:
-                                                          UIGuide.light_Purple),
-                                                ),
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                },
-                                              ),
-                                              CupertinoDialogAction(
-                                                child: const Text("Logout",
+                                    child: const Icon(
+                                      Icons.key_sharp,
+                                      color: UIGuide.light_Purple,
+                                    )),
+                                MaterialButton(
+                                    minWidth: 50,
+                                    elevation: 10,
+                                    color: UIGuide.THEME_LIGHT,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(30.0)),
+                                    onPressed: () async {
+                                      showCupertinoDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return Container(
+                                            color:
+                                                Colors.black.withOpacity(0.5),
+                                            child: CupertinoAlertDialog(
+                                              title: const Text("Logout"),
+                                              content: const Text(
+                                                  "Are you sure you want to log out?"),
+                                              actions: <Widget>[
+                                                CupertinoDialogAction(
+                                                  child: const Text(
+                                                    "Cancel",
                                                     style: TextStyle(
                                                         fontWeight:
                                                             FontWeight.w500,
                                                         color: UIGuide
-                                                            .light_Purple)),
-                                                onPressed: () async {
-                                                  SharedPreferences prefs =
-                                                      await SharedPreferences
-                                                          .getInstance();
-                                                  print("accesstoken  $prefs");
-                                                  await prefs
-                                                      .remove("accesstoken");
-                                                  print("username  $prefs");
-                                                  await prefs
-                                                      .remove("username");
-                                                  print("password  $prefs");
-                                                  await prefs
-                                                      .remove("password");
+                                                            .light_Purple),
+                                                  ),
+                                                  onPressed: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                ),
+                                                CupertinoDialogAction(
+                                                  child: const Text("Logout",
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          color: UIGuide
+                                                              .light_Purple)),
+                                                  onPressed: () async {
+                                                    SharedPreferences prefs =
+                                                        await SharedPreferences
+                                                            .getInstance();
+                                                    print(
+                                                        "accesstoken  $prefs");
+                                                    await prefs
+                                                        .remove("accesstoken");
+                                                    print("username  $prefs");
+                                                    await prefs
+                                                        .remove("username");
+                                                    print("password  $prefs");
+                                                    await prefs
+                                                        .remove("password");
 
-                                                  Navigator.of(context)
-                                                      .pushAndRemoveUntil(
-                                                          MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  LoginPage()),
-                                                          (Route<dynamic>
-                                                                  route) =>
-                                                              false);
-                                                },
-                                              ),
-                                            ],
-                                          ),
-                                        );
-                                      },
-                                    );
+                                                    Navigator.of(context)
+                                                        .pushAndRemoveUntil(
+                                                            MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        LoginPage()),
+                                                            (Route<dynamic>
+                                                                    route) =>
+                                                                false);
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                        },
+                                      );
 
-                                    // AwesomeDialog(
-                                    //   context: context,
-                                    //   dialogType: DialogType.info,
-                                    //   borderSide: const BorderSide(
-                                    //       color: UIGuide.light_Purple,
-                                    //       width: 2),
-                                    //   buttonsBorderRadius:
-                                    //       const BorderRadius.all(
-                                    //           Radius.circular(2)),
-                                    //   headerAnimationLoop: false,
-                                    //   animType: AnimType.bottomSlide,
-                                    //   title: 'SignOut',
-                                    //   desc: 'Are you sure want to sign out',
-                                    //   showCloseIcon: true,
-                                    //   btnOkColor: UIGuide.button1,
-                                    //   btnCancelColor: UIGuide.button2,
-                                    //   btnCancelOnPress: () {
-                                    //     return;
-                                    //   },
-                                    //   btnOkOnPress: () async {
-                                    //     SharedPreferences prefs =
-                                    //         await SharedPreferences
-                                    //             .getInstance();
-                                    //     print("accesstoken  $prefs");
-                                    //     await prefs.remove("accesstoken");
-                                    //     print("username  $prefs");
-                                    //     await prefs.remove("username");
-                                    //     print("password  $prefs");
-                                    //     await prefs.remove("password");
+                                      // AwesomeDialog(
+                                      //   context: context,
+                                      //   dialogType: DialogType.info,
+                                      //   borderSide: const BorderSide(
+                                      //       color: UIGuide.light_Purple,
+                                      //       width: 2),
+                                      //   buttonsBorderRadius:
+                                      //       const BorderRadius.all(
+                                      //           Radius.circular(2)),
+                                      //   headerAnimationLoop: false,
+                                      //   animType: AnimType.bottomSlide,
+                                      //   title: 'SignOut',
+                                      //   desc: 'Are you sure want to sign out',
+                                      //   showCloseIcon: true,
+                                      //   btnOkColor: UIGuide.button1,
+                                      //   btnCancelColor: UIGuide.button2,
+                                      //   btnCancelOnPress: () {
+                                      //     return;
+                                      //   },
+                                      //   btnOkOnPress: () async {
+                                      //     SharedPreferences prefs =
+                                      //         await SharedPreferences
+                                      //             .getInstance();
+                                      //     print("accesstoken  $prefs");
+                                      //     await prefs.remove("accesstoken");
+                                      //     print("username  $prefs");
+                                      //     await prefs.remove("username");
+                                      //     print("password  $prefs");
+                                      //     await prefs.remove("password");
 
-                                    //     Navigator.of(context)
-                                    //         .pushAndRemoveUntil(
-                                    //             MaterialPageRoute(
-                                    //                 builder: (context) =>
-                                    //                     LoginPage()),
-                                    //             (Route<dynamic> route) =>
-                                    //                 false);
-                                    //   },
-                                    // ).show();
-                                  },
-                                  child: const Icon(
-                                    Icons.logout_outlined,
-                                    color: UIGuide.light_Purple,
-                                  )),
-                            ],
-                          ),
-                          kheight20,
-                          const Center(
-                            child: Text(
-                              "Powered By GJ Infotech (P) Ltd.",
-                              style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                  color: UIGuide.light_Purple),
+                                      //     Navigator.of(context)
+                                      //         .pushAndRemoveUntil(
+                                      //             MaterialPageRoute(
+                                      //                 builder: (context) =>
+                                      //                     LoginPage()),
+                                      //             (Route<dynamic> route) =>
+                                      //                 false);
+                                      //   },
+                                      // ).show();
+                                    },
+                                    child: const Icon(
+                                      Icons.logout_outlined,
+                                      color: UIGuide.light_Purple,
+                                    )),
+                              ],
                             ),
-                          ),
-                          kheight20,
-                          kheight10,
-                          kheight20,
-                          kheight10,
-                          kheight10,
-                          kheight20,
-                          kheight20,
-                        ],
+                            kheight20,
+                            const Center(
+                              child: Text(
+                                "Powered By GJ Infotech (P) Ltd.",
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    color: UIGuide.light_Purple),
+                              ),
+                            ),
+                            kheight20,
+                            kheight10,
+                            kheight20,
+                            kheight10,
+                            kheight10,
+                            kheight20,
+                            kheight20,
+                          ],
+                        ),
                       ),
                     ),
                   ],
