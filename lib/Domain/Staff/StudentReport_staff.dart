@@ -49,7 +49,7 @@ class StudReportCourse {
   StudReportCourse({this.value, required this.text});
 
   String? value;
-  String text;
+  String? text;
 
   factory StudReportCourse.fromJson(Map<String, dynamic> json) =>
       StudReportCourse(

@@ -18,8 +18,8 @@ class _ProfileEditState extends State<ProfileEdit> {
   final _guardiancontroller = TextEditingController();
   final _emailcontroller = TextEditingController();
   final _mobilecontroller = TextEditingController();
-  final _bloodgroupcontroller = TextEditingController();
-  final _bloodgroupIDcontroller = TextEditingController();
+  // final _bloodgroupcontroller = TextEditingController();
+  // final _bloodgroupIDcontroller = TextEditingController();
   final _addresscontroller = TextEditingController();
   final _photoIDcontroller = TextEditingController();
   bool isEmailValid = true;
@@ -48,12 +48,12 @@ class _ProfileEditState extends State<ProfileEdit> {
       _mobilecontroller.text =
           p.idOffline == null ? p.mobileNoEdit ?? "" : p.mobileNoOffline ?? "";
 
-      _bloodgroupcontroller.text = p.bloodGroupIdOffline == null
-          ? p.bloodGroupEdit ?? ""
-          : p.offlineBloodGroupName ?? "";
-      _bloodgroupIDcontroller.text = p.bloodGroupIdOffline == null
-          ? p.bloodGroupIdEdit ?? ""
-          : p.bloodGroupIdOffline ?? "";
+      // _bloodgroupcontroller.text = p.bloodGroupIdOffline == null
+      //     ? p.bloodGroupEdit ?? ""
+      //     : p.offlineBloodGroupName ?? "";
+      // _bloodgroupIDcontroller.text = p.bloodGroupIdOffline == null
+      //     ? p.bloodGroupIdEdit ?? ""
+      //     : p.bloodGroupIdOffline ?? "";
 
       _addresscontroller.text =
           p.idOffline == null ? p.addressEdit ?? "" : p.addressOffline ?? "";
@@ -477,76 +477,76 @@ class _ProfileEditState extends State<ProfileEdit> {
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SizedBox(
-                      height: 45,
-                      child: InkWell(
-                          onTap: () {
-                            showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return Dialog(
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(15)),
-                                      child: LimitedBox(
-                                        maxHeight: size.height / 1.3,
-                                        child: ListView.builder(
-                                            shrinkWrap: true,
-                                            itemCount:
-                                                value.bloodGrpList.length,
-                                            itemBuilder: (context, index) {
-                                              return ListTile(
-                                                onTap: () async {
-                                                  _bloodgroupcontroller.text =
-                                                      value.bloodGrpList[index]
-                                                              .text ??
-                                                          "";
+                  // Padding(
+                  //   padding: const EdgeInsets.all(8.0),
+                  //   child: SizedBox(
+                  //     height: 45,
+                  //     child: InkWell(
+                  //         onTap: () {
+                  //           showDialog(
+                  //               context: context,
+                  //               builder: (context) {
+                  //                 return Dialog(
+                  //                     shape: RoundedRectangleBorder(
+                  //                         borderRadius:
+                  //                             BorderRadius.circular(15)),
+                  //                     child: LimitedBox(
+                  //                       maxHeight: size.height / 1.3,
+                  //                       child: ListView.builder(
+                  //                           shrinkWrap: true,
+                  //                           itemCount:
+                  //                               value.bloodGrpList.length,
+                  //                           itemBuilder: (context, index) {
+                  //                             return ListTile(
+                  //                               onTap: () async {
+                  //                                 _bloodgroupcontroller.text =
+                  //                                     value.bloodGrpList[index]
+                  //                                             .text ??
+                  //                                         "";
 
-                                                  _bloodgroupIDcontroller.text =
-                                                      value.bloodGrpList[index]
-                                                              .value ??
-                                                          "";
+                  //                                 _bloodgroupIDcontroller.text =
+                  //                                     value.bloodGrpList[index]
+                  //                                             .value ??
+                  //                                         "";
 
-                                                  Navigator.of(context).pop();
-                                                },
-                                                title: Text(
-                                                  value.bloodGrpList[index]
-                                                          .text ??
-                                                      '--',
-                                                  textAlign: TextAlign.center,
-                                                ),
-                                              );
-                                            }),
-                                      ));
-                                });
-                          },
-                          child: TextField(
-                            controller: _bloodgroupcontroller,
-                            decoration: const InputDecoration(
-                              contentPadding: EdgeInsets.only(bottom: 0),
-                              labelText: "Select Blood Group",
-                              labelStyle: TextStyle(color: Colors.grey),
-                              disabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.black45),
-                              ),
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.black45),
-                              ),
-                              focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.black54),
-                              ),
-                              enabled: true,
-                              hintStyle: TextStyle(
-                                color: Color.fromARGB(255, 0, 0, 0),
-                              ),
-                            ),
-                            enabled: false,
-                            style: const TextStyle(color: UIGuide.BLACK),
-                          )),
-                    ),
-                  ),
+                  //                                 Navigator.of(context).pop();
+                  //                               },
+                  //                               title: Text(
+                  //                                 value.bloodGrpList[index]
+                  //                                         .text ??
+                  //                                     '--',
+                  //                                 textAlign: TextAlign.center,
+                  //                               ),
+                  //                             );
+                  //                           }),
+                  //                     ));
+                  //               });
+                  //         },
+                  //         child: TextField(
+                  //           controller: _bloodgroupcontroller,
+                  //           decoration: const InputDecoration(
+                  //             contentPadding: EdgeInsets.only(bottom: 0),
+                  //             labelText: "Select Blood Group",
+                  //             labelStyle: TextStyle(color: Colors.grey),
+                  //             disabledBorder: UnderlineInputBorder(
+                  //               borderSide: BorderSide(color: Colors.black45),
+                  //             ),
+                  //             enabledBorder: UnderlineInputBorder(
+                  //               borderSide: BorderSide(color: Colors.black45),
+                  //             ),
+                  //             focusedBorder: UnderlineInputBorder(
+                  //               borderSide: BorderSide(color: Colors.black54),
+                  //             ),
+                  //             enabled: true,
+                  //             hintStyle: TextStyle(
+                  //               color: Color.fromARGB(255, 0, 0, 0),
+                  //             ),
+                  //           ),
+                  //           enabled: false,
+                  //           style: const TextStyle(color: UIGuide.BLACK),
+                  //         )),
+                  //   ),
+                  // ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: SizedBox(
@@ -668,11 +668,13 @@ class _ProfileEditState extends State<ProfileEdit> {
                                 _emailcontroller.text.trim().isEmpty)) {
                               print("email empty");
                               snackbarWidget(2, "Enter valid Email", context);
-                            } else if (((value.bloodGroupIdEdit != null) &&
-                                _bloodgroupIDcontroller.text.trim().isEmpty)) {
-                              print("Blood Group empty");
-                              snackbarWidget(2, "Select Blood Group", context);
-                            } else if (((value.mobileNoEdit != null) &&
+                            }
+                            // else if (((value.bloodGroupIdEdit != null) &&
+                            //     _bloodgroupIDcontroller.text.trim().isEmpty)) {
+                            //   print("Blood Group empty");
+                            //   snackbarWidget(2, "Select Blood Group", context);
+                            // }
+                            else if (((value.mobileNoEdit != null) &&
                                 _mobilecontroller.text.trim().length != 10)) {
                               snackbarWidget(
                                   2, "Enter valid mobile number", context);
@@ -689,8 +691,9 @@ class _ProfileEditState extends State<ProfileEdit> {
                                         _addresscontroller.text.trim(),
                                         _emailcontroller.text.trim(),
                                         _mobilecontroller.text.trim(),
-                                        _photoIDcontroller.text.trim(),
-                                        _bloodgroupIDcontroller.text.trim())
+                                        _photoIDcontroller.text.trim()
+                                        // _bloodgroupIDcontroller.text.trim()
+                                        )
                                     : await value.getUpdateProfile(
                                         context,
                                         value.offlineIdEdit ?? 0,
@@ -700,8 +703,9 @@ class _ProfileEditState extends State<ProfileEdit> {
                                         _emailcontroller.text.trim(),
                                         _mobilecontroller.text.trim(),
                                         _photoIDcontroller.text.trim(),
-                                        value.idOffline ?? '',
-                                        _bloodgroupIDcontroller.text.trim());
+                                        value.idOffline ?? ''
+                                        //    _bloodgroupIDcontroller.text.trim()
+                                        );
                               } else {
                                 snackbarWidget(2, "Enter valid email", context);
                               }

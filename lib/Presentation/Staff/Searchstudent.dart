@@ -880,10 +880,19 @@ class _StudProfileViewBySearch_StaffState
                     },
                   );
                 },
-                child: const Text(
-                  "Gaurdian Details",
-                  style: TextStyle(
-                      color: UIGuide.light_Purple, fontWeight: FontWeight.bold),
+                child: const Row(
+                  children: [
+                    Icon(
+                      Icons.person_outline_outlined,
+                      color: UIGuide.light_Purple,
+                    ),
+                    Text(
+                      "  Gaurdian Details",
+                      style: TextStyle(
+                          color: UIGuide.light_Purple,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -1048,10 +1057,19 @@ class _StudProfileViewBySearch_StaffState
                     },
                   );
                 },
-                child: const Text(
-                  "Father Details",
-                  style: TextStyle(
-                      color: UIGuide.light_Purple, fontWeight: FontWeight.bold),
+                child: const Row(
+                  children: [
+                    Icon(
+                      Icons.person_4_outlined,
+                      color: UIGuide.light_Purple,
+                    ),
+                    Text(
+                      "  Father Details",
+                      style: TextStyle(
+                          color: UIGuide.light_Purple,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -1213,10 +1231,19 @@ class _StudProfileViewBySearch_StaffState
                     },
                   );
                 },
-                child: const Text(
-                  "Mother Details",
-                  style: TextStyle(
-                      color: UIGuide.light_Purple, fontWeight: FontWeight.bold),
+                child: const Row(
+                  children: [
+                    Icon(
+                      Icons.person_3_outlined,
+                      color: UIGuide.light_Purple,
+                    ),
+                    Text(
+                      "  Mother Details",
+                      style: TextStyle(
+                          color: UIGuide.light_Purple,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -1225,21 +1252,23 @@ class _StudProfileViewBySearch_StaffState
               child: InkWell(
                 onTap: () {
                   value.siblingdata.isEmpty
-                      ? ScaffoldMessenger.of(context)
-                          .showSnackBar(const SnackBar(
-                          elevation: 10,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                      ? ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            elevation: 10,
+                            shape: RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10)),
+                            ),
+                            duration: Duration(seconds: 1),
+                            margin: EdgeInsets.only(
+                                bottom: 50, left: 30, right: 30),
+                            behavior: SnackBarBehavior.floating,
+                            content: Text(
+                              "No Siblings found....",
+                              textAlign: TextAlign.center,
+                            ),
                           ),
-                          duration: Duration(seconds: 1),
-                          margin:
-                              EdgeInsets.only(bottom: 50, left: 30, right: 30),
-                          behavior: SnackBarBehavior.floating,
-                          content: Text(
-                            "No Siblings found....",
-                            textAlign: TextAlign.center,
-                          ),
-                        ))
+                        )
                       : showModalBottomSheet(
                           context: context,
                           isScrollControlled: true,
@@ -1450,10 +1479,19 @@ class _StudProfileViewBySearch_StaffState
                           },
                         );
                 },
-                child: const Text(
-                  "Sibling Details",
-                  style: TextStyle(
-                      color: UIGuide.light_Purple, fontWeight: FontWeight.bold),
+                child: const Row(
+                  children: [
+                    Icon(
+                      Icons.group_outlined,
+                      color: UIGuide.light_Purple,
+                    ),
+                    Text(
+                      "  Sibling Details",
+                      style: TextStyle(
+                          color: UIGuide.light_Purple,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -1852,10 +1890,19 @@ class _StudProfileViewBySearch_StaffState
                     },
                   );
                 },
-                child: const Text(
-                  "Health Status",
-                  style: TextStyle(
-                      color: UIGuide.light_Purple, fontWeight: FontWeight.bold),
+                child: const Row(
+                  children: [
+                    Icon(
+                      Icons.monitor_heart_outlined,
+                      color: UIGuide.light_Purple,
+                    ),
+                    Text(
+                      "  Health Status",
+                      style: TextStyle(
+                          color: UIGuide.light_Purple,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -1888,7 +1935,7 @@ class _StudProfileViewBySearch_StaffState
                               Icons.calendar_month_outlined,
                               color: UIGuide.light_Purple,
                             ),
-                            title: Text("As on Date $asonDate" ?? '--'),
+                            title: Text("As on Date $asonDate"),
                             titleTextStyle: const TextStyle(
                                 fontSize: 16,
                                 color: UIGuide.light_Purple,
@@ -2084,10 +2131,19 @@ class _StudProfileViewBySearch_StaffState
                     },
                   );
                 },
-                child: const Text(
-                  "Attendance",
-                  style: TextStyle(
-                      color: UIGuide.light_Purple, fontWeight: FontWeight.bold),
+                child: const Row(
+                  children: [
+                    Icon(
+                      Icons.verified_user_outlined,
+                      color: UIGuide.light_Purple,
+                    ),
+                    Text(
+                      "  Attendance",
+                      style: TextStyle(
+                          color: UIGuide.light_Purple,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -2346,10 +2402,19 @@ class _StudProfileViewBySearch_StaffState
                     },
                   );
                 },
-                child: const Text(
-                  "Fees",
-                  style: TextStyle(
-                      color: UIGuide.light_Purple, fontWeight: FontWeight.bold),
+                child: const Row(
+                  children: [
+                    Icon(
+                      Icons.currency_rupee_outlined,
+                      color: UIGuide.light_Purple,
+                    ),
+                    Text(
+                      "  Fees",
+                      style: TextStyle(
+                          color: UIGuide.light_Purple,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -2596,10 +2661,19 @@ class _StudProfileViewBySearch_StaffState
                           },
                         );
                 },
-                child: const Text(
-                  "Academic Performance",
-                  style: TextStyle(
-                      color: UIGuide.light_Purple, fontWeight: FontWeight.bold),
+                child: const Row(
+                  children: [
+                    Icon(
+                      Icons.school_outlined,
+                      color: UIGuide.light_Purple,
+                    ),
+                    Text(
+                      "  Academic Performance",
+                      style: TextStyle(
+                          color: UIGuide.light_Purple,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -2622,10 +2696,16 @@ class _StudProfileViewBySearch_StaffState
                     );
                   }
                 },
-                child: const Text(
-                  "Class TimeTable",
-                  style: TextStyle(
-                      color: UIGuide.light_Purple, fontWeight: FontWeight.bold),
+                child: const Row(
+                  children: [
+                    Icon(Icons.timelapse, color: UIGuide.light_Purple),
+                    Text(
+                      "  Class TimeTable",
+                      style: TextStyle(
+                          color: UIGuide.light_Purple,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ],
                 ),
               ),
             ),

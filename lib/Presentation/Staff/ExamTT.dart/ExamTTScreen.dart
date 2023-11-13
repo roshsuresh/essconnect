@@ -13,7 +13,7 @@ class ExamTimetableStaff extends StatelessWidget {
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       var p = Provider.of<ExamTTAdmProvidersStaff>(context, listen: false);
-      await p.getCourseList();
+      //  await p.getCourseList();
     });
     return DefaultTabController(
       length: 2,

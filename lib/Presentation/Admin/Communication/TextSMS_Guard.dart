@@ -28,9 +28,7 @@ class TextSMSGuardian extends StatelessWidget {
                   width: size.width * .42,
                   height: 50,
                   child: MultiSelectDialogField(
-                    // height: 200,
                     items: value.dropDown,
-
                     listType: MultiSelectListType.CHIP,
                     title: const Text(
                       "Select Section",
@@ -218,9 +216,6 @@ class TextSMSGuardian extends StatelessWidget {
                         courseData.map((e) => data.value);
                         print("${courseData.map((e) => data.value)}");
                       }
-                      String div = courseData.join('&');
-
-                      print("data $courseData");
 
                       print(courseData.join('&'));
                     },

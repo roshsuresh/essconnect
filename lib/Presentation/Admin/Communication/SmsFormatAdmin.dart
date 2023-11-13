@@ -44,7 +44,7 @@ class _SmsFormatAdminState extends State<SmsFormatAdmin> {
         appBar: AppBar(
           title: Text(
             widget.types == "sms" ? "Send SMS" : "Send E-mail",
-            style: TextStyle(fontSize: 20),
+            style: const TextStyle(fontSize: 20),
           ),
           titleSpacing: 00.0,
           centerTitle: true,
@@ -65,17 +65,28 @@ class _SmsFormatAdminState extends State<SmsFormatAdmin> {
                   LottieBuilder.network(
                     'https://assets10.lottiefiles.com/private_files/lf30_kBx3K1.json',
                   ),
-
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SizedBox(
-                        height: 50,
+                        height: 45,
                         width: MediaQuery.of(context).size.width * 0.60,
                         child: Consumer<NotificationToGuardianAdmin>(
                             builder: (context, snapshot, child) {
-                          return InkWell(
-                            onTap: () {
+                          return ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              elevation: 3,
+                              foregroundColor: UIGuide.light_Purple,
+                              backgroundColor:
+                                  const Color.fromARGB(255, 255, 255, 255),
+                              padding: const EdgeInsets.all(0),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  side: const BorderSide(
+                                    color: UIGuide.light_black,
+                                  )),
+                            ),
+                            onPressed: () {
                               showDialog(
                                   context: context,
                                   builder: (context) {
@@ -126,65 +137,36 @@ class _SmsFormatAdminState extends State<SmsFormatAdmin> {
                                         ));
                                   });
                             },
-                            child: Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: Column(
-                                children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: UIGuide.light_Purple,
-                                          width: 1),
-                                    ),
-                                    height: 40,
-                                    child: TextField(
-                                      style: const TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                          color: UIGuide.BLACK,
-                                          overflow: TextOverflow.clip),
-                                      textAlign: TextAlign.center,
-                                      controller: formatController1,
-                                      decoration: const InputDecoration(
-                                        contentPadding:
-                                            EdgeInsets.only(left: 0, top: 0),
-                                        floatingLabelBehavior:
-                                            FloatingLabelBehavior.never,
-                                        filled: true,
-                                        fillColor:
-                                            Color.fromARGB(255, 238, 237, 237),
-                                        border: OutlineInputBorder(),
-                                        labelText: "  Select Format",
-                                        hintText: "Format",
-                                      ),
-                                      enabled: false,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 0,
-                                    child: TextField(
-                                      textAlign: TextAlign.center,
-                                      controller: formatController,
-                                      decoration: const InputDecoration(
-                                        filled: true,
-                                        fillColor:
-                                            Color.fromARGB(255, 238, 237, 237),
-                                        border: OutlineInputBorder(),
-                                        labelText: "",
-                                        hintText: "",
-                                      ),
-                                      enabled: false,
-                                    ),
-                                  ),
-                                ],
+                            child: TextField(
+                              style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: UIGuide.BLACK,
+                                  overflow: TextOverflow.clip),
+                              textAlign: TextAlign.center,
+                              controller: formatController1,
+                              decoration: const InputDecoration(
+                                contentPadding:
+                                    EdgeInsets.only(left: 0, top: 0),
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.never,
+                                filled: true,
+                                fillColor: Colors.transparent,
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      style: BorderStyle.none, width: 0),
+                                ),
+                                labelText: "  Select Format",
+                                hintText: "Format",
                               ),
+                              enabled: false,
                             ),
                           );
                         }),
                       ),
                     ],
                   ),
-                  //kheight10,
+                  kheight5,
                   Consumer<NotificationToGuardianAdmin>(
                     builder: (context, value, child) => value.smsBody == null ||
                             value.smsBody == ""
@@ -211,7 +193,6 @@ class _SmsFormatAdminState extends State<SmsFormatAdmin> {
                                 )),
                           ),
                   ),
-
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

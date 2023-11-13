@@ -26,7 +26,7 @@ class ExamTTAdmProviders with ChangeNotifier {
   DateTime? examStart;
   String startDateD = '';
   String startDate = '';
-
+  late DateTime startDateCheck;
   getExamStartDate(BuildContext context) async {
     examStart = (await showDatePicker(
       context: context,
@@ -49,6 +49,8 @@ class ExamTTAdmProviders with ChangeNotifier {
 
     startDateD = DateFormat('dd-MM-yyyy').format(examStart!);
     startDate = DateFormat('yyyy-MM-dd').format(examStart!);
+    startDateCheck =
+        DateTime(examStart!.year, examStart!.month, examStart!.day);
     print(startDateD);
     notifyListeners();
   }

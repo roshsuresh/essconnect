@@ -47,7 +47,7 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
       partialBUS = 0;
       partialFee = 0;
       p.transactionList.clear();
-      await p.gatewayName();
+      await p.gatewayName(context);
       await p.feesData();
     });
   }

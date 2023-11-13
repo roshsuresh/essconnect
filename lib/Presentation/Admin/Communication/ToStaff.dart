@@ -142,8 +142,7 @@ class _AdminToStaffNotificationState extends State<AdminToStaffNotification> {
                           for (var i = 0; i < results.length; i++) {
                             StudReportSectionList data =
                                 results[i] as StudReportSectionList;
-                            print(data.text);
-                            print(data.value);
+
                             subjectData.add(data.value);
                             subjectData.map((e) => data.value);
                             print("${subjectData.map((e) => data.value)}");
@@ -152,6 +151,7 @@ class _AdminToStaffNotificationState extends State<AdminToStaffNotification> {
                           await Provider.of<SchoolPhotoProviders>(context,
                                   listen: false)
                               .sectionCounter(results.length);
+                          await val.clearStaffList();
                           print("data $section");
 
                           print(subjectData.join(','));
@@ -190,6 +190,13 @@ class _AdminToStaffNotificationState extends State<AdminToStaffNotification> {
                                   await val.clearStaffList();
 
                                   await val.getNotificationView(section);
+
+                                  if (val.stafflist.isEmpty) {
+                                    snackbarWidget(
+                                        2,
+                                        "No data for specified condition",
+                                        context);
+                                  }
                                 },
                                 child: const Text(
                                   'View',

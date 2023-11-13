@@ -1,6 +1,8 @@
 import 'dart:core';
 
+import 'package:essconnect/utils/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 
 // ///constant Strings
 // const String login = "Login";
@@ -42,6 +44,51 @@ const kheight10 = SizedBox(
 const kheight20 = SizedBox(
   height: 20,
 );
+
+loadingProgessWidget() {
+  return Container(
+    color: Colors.black.withOpacity(0.2),
+    child: Center(
+      child: Container(
+        decoration: const BoxDecoration(color: UIGuide.WHITE),
+        child: const Padding(
+          padding: EdgeInsets.all(15.0),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: 48,
+                height: 48,
+                child: LoadingIndicator(
+                  colors: [
+                    Colors.red,
+                    Colors.orange,
+                    Colors.yellow,
+                    Colors.green,
+                    Colors.blue,
+                    Colors.indigo,
+                    Color.fromARGB(255, 0, 207, 235),
+                  ],
+                  strokeWidth: 2.0,
+                  indicatorType: Indicator.ballRotateChase,
+                ),
+              ),
+              kWidth,
+              Text(
+                "Please Wait...",
+                style: TextStyle(
+                    color: UIGuide.light_Purple,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 18),
+              )
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
+}
 
 snackbarWidget(int second, content, BuildContext context) {
   ScaffoldMessenger.of(context).showSnackBar(

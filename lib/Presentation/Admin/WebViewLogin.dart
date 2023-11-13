@@ -197,9 +197,9 @@ class _LoginScreenWebState extends State<LoginScreenWeb> {
                       return snap.hasData
                           ? InAppWebView(
                               key: webViewKey,
-                              // contextMenu: contextMenu,
+
                               initialUrlRequest: URLRequest(url: Uri.parse(
-                                  //  'https://${widget.schdomain}.esstestonline.in/login'
+                                  // 'https://${widget.schdomain}.esstestonline.in/parent/fees-payment'
                                   'https://${widget.schdomain}.eschoolweb.org')),
                               // initialFile: "assets/index.html",
                               initialUserScripts:
@@ -300,10 +300,9 @@ class _LoginScreenWebState extends State<LoginScreenWeb> {
                                 log(consoleMessage.toString());
                               },
                             )
-                          : Container(
-                              child: Center(
+                          : Center(
                               child: spinkitLoader(),
-                            ));
+                            );
                     }),
               ],
             ),

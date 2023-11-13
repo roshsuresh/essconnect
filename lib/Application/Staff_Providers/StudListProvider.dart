@@ -121,7 +121,7 @@ class StudReportListProvider_stf with ChangeNotifier {
       notifyListeners();
     }
     clearAllFilters();
-    addFilterCourse(studReportCourse.first.text);
+    //addFilterCourse(studReportCourse.first.text);
   }
 
   removeCourse(StudReportCourse item) {
@@ -271,6 +271,8 @@ class StudReportListProvider_stf with ChangeNotifier {
   }
 
   List<ViewStudentReport> viewStudReportListt = [];
+  List<ViewStudentReport> viewterminatedList = [];
+  List<ViewStudentReport> viewNotTerminatedList = [];
   Future<bool> viewStudentReportList(
       String section, String course, String division) async {
     setLoading(true);
@@ -287,6 +289,7 @@ class StudReportListProvider_stf with ChangeNotifier {
     request.body = json.encode({"SchoolId": _pref.getString('schoolId')});
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
+
     if (response.statusCode == 200) {
       Map<String, dynamic> data =
           jsonDecode(await response.stream.bytesToString());
@@ -294,6 +297,14 @@ class StudReportListProvider_stf with ChangeNotifier {
       List<ViewStudentReport> templist = List<ViewStudentReport>.from(
           data["viewStudentReport"].map((x) => ViewStudentReport.fromJson(x)));
       viewStudReportListt.addAll(templist);
+
+      viewNotTerminatedList = viewStudReportListt
+          .where((item) => item.terminationStatus == false)
+          .toList();
+
+      viewterminatedList = viewStudReportListt
+          .where((item) => item.terminationStatus == true)
+          .toList();
       setLoading(false);
       notifyListeners();
     } else {
@@ -305,6 +316,8 @@ class StudReportListProvider_stf with ChangeNotifier {
 
   clearViewList() {
     viewStudReportListt.clear();
+    viewNotTerminatedList.clear();
+    viewterminatedList.clear();
     notifyListeners();
   }
 }

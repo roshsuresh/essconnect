@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:essconnect/Application/Module%20Providers.dart/SchoolNameProvider.dart';
 import 'package:essconnect/Application/StudentProviders/CurriculamProviders.dart';
 import 'package:essconnect/Application/StudentProviders/InternetConnection.dart';
@@ -10,8 +8,8 @@ import 'package:essconnect/Presentation/Student/Diary.dart';
 import 'package:essconnect/Presentation/Student/NoInternetScreen.dart';
 import 'package:essconnect/Presentation/Student/Offline/BusFeeInitial.dart';
 import 'package:essconnect/Presentation/Student/Offline/FeeInitialScreen.dart';
+import 'package:essconnect/Presentation/Student/StudFeedbackForm.dart';
 import 'package:essconnect/utils/constants.dart';
-import 'package:essconnect/utils/spinkit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -1434,6 +1432,73 @@ class _StudentHomeState extends State<StudentHome> {
                                                   )
                                                 ],
                                               ),
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 10, right: 10),
+                                          child: GestureDetector(
+                                            onTap: () async {
+                                              module.offlineTab == true
+                                                  ? await Navigator.push(
+                                                      context,
+                                                      PageTransition(
+                                                        type: PageTransitionType
+                                                            .rightToLeft,
+                                                        child:
+                                                            const StudFeedbackFormScreen(),
+                                                        duration:
+                                                            const Duration(
+                                                                milliseconds:
+                                                                    300),
+                                                      ))
+                                                  : _noAcess();
+                                            },
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                Card(
+                                                  elevation: 10,
+                                                  color: Colors.white,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            12.0),
+                                                  ),
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: Container(
+                                                      height: 38,
+                                                      width: 38,
+                                                      decoration: BoxDecoration(
+                                                        image:
+                                                            const DecorationImage(
+                                                          opacity: 20,
+                                                          image: AssetImage(
+                                                            'assets/Reportcard.png',
+                                                          ),
+                                                        ),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                kheight,
+                                                const Text(
+                                                  'Feedback Form',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      fontSize: 11,
+                                                      color: Colors.black),
+                                                )
+                                              ],
                                             ),
                                           ),
                                         ),

@@ -40,7 +40,7 @@ class _ExamTTUploadStaffState extends State<ExamTTUploadStaff> {
       studReportcourseController.clear();
       studReportcourseController1.clear();
       await p.getVariables();
-      //p.getCourseList();
+      p.getCourseList();
     });
   }
 
@@ -440,6 +440,7 @@ class _ExamTTUploadStaffState extends State<ExamTTUploadStaff> {
                             print("${divisionData.map((e) => data.value)}");
                           }
                           division = divisionData.join(',');
+
                           await Provider.of<ExamTTAdmProvidersStaff>(context,
                                   listen: false)
                               .divisionCounter(results.length);
@@ -501,6 +502,12 @@ class _ExamTTUploadStaffState extends State<ExamTTUploadStaff> {
                               .isAfter(val.toDateCheck)) {
                             snackbarWidget(2,
                                 'From date is greater than to date', context);
+                          } else if (val.fromDateCheck
+                              .isAfter(val.startDateCheck)) {
+                            snackbarWidget(
+                                2,
+                                'From date should be earlier than the startdate',
+                                context);
                           } else {
                             await val.examSave(
                                 context,

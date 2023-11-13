@@ -344,15 +344,16 @@ class ProfileProvider with ChangeNotifier {
   // save profile
 
   Future getSaveProfile(
-      BuildContext context,
-      int offlineID,
-      int installationId,
-      String guardianNa,
-      String addressE,
-      String emailIDE,
-      String mobileNoE,
-      String studentPhoId,
-      String bloodGrpID) async {
+    BuildContext context,
+    int offlineID,
+    int installationId,
+    String guardianNa,
+    String addressE,
+    String emailIDE,
+    String mobileNoE,
+    String studentPhoId,
+    //  String bloodGrpID
+  ) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoadingg(true);
     var headers = {
@@ -374,8 +375,8 @@ class ProfileProvider with ChangeNotifier {
       "isEmailIdChanged": true,
       "isMobileNoChanged": true,
       "isPhotoChanged": true,
-      "bloodGroupId": bloodGrpID,
-      "isBloodGroupChanged": true
+      // "bloodGroupId": bloodGrpID,
+      // "isBloodGroupChanged": true
     });
 
     request.headers.addAll(headers);
@@ -425,16 +426,17 @@ class ProfileProvider with ChangeNotifier {
   //Update profile
 
   Future getUpdateProfile(
-      BuildContext context,
-      int offlineID,
-      int installationId,
-      String guardianNa,
-      String addressE,
-      String emailIDE,
-      String mobileNoE,
-      String studentPhoId,
-      String offID,
-      String bloodGrpID) async {
+    BuildContext context,
+    int offlineID,
+    int installationId,
+    String guardianNa,
+    String addressE,
+    String emailIDE,
+    String mobileNoE,
+    String studentPhoId,
+    String offID,
+    //  String bloodGrpID
+  ) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoadingg(true);
     print({
@@ -450,8 +452,8 @@ class ProfileProvider with ChangeNotifier {
       "isEmailIdChanged": true,
       "isMobileNoChanged": true,
       "isPhotoChanged": true,
-      "bloodGroupId": bloodGrpID,
-      "isBloodGroupChanged": true
+      // "bloodGroupId": bloodGrpID,
+      // "isBloodGroupChanged": true
     });
     var headers = {
       'Content-Type': 'application/json',
@@ -472,23 +474,9 @@ class ProfileProvider with ChangeNotifier {
       "isEmailIdChanged": true,
       "isMobileNoChanged": true,
       "isPhotoChanged": true,
-      "bloodGroupId": bloodGrpID,
-      "isBloodGroupChanged": true
+      // "bloodGroupId": bloodGrpID,
+      // "isBloodGroupChanged": true
     });
-    // "offlineId": offlineID,
-    // "installationId": installationId,
-    // "guardianName": guardianNa,
-    // "address": addressE,
-    // "emailId": emailIDE,
-    // "mobileNo": mobileNoE,
-    // "studentPhotoId": studentPhoId,
-    // "isGuardianNameChanged": true,
-    // "isAddressChanged": true,
-    // "isEmailIdChanged": true,
-    // "isMobileNoChanged": true,
-    // "isPhotoChanged": true
-    //   }
-    // });
 
     request.headers.addAll(headers);
 

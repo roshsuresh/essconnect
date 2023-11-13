@@ -42,7 +42,7 @@ class _SmsFormatToStaffState extends State<SmsFormatToStaff> {
         appBar: AppBar(
           title: Text(
             widget.types == "sms" ? "Send SMS" : "Send E-mail",
-            style: TextStyle(fontSize: 20),
+            style: const TextStyle(fontSize: 20),
           ),
           titleSpacing: 00.0,
           centerTitle: true,
@@ -67,12 +67,23 @@ class _SmsFormatToStaffState extends State<SmsFormatToStaff> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       SizedBox(
-                        height: 50,
+                        height: 45,
                         width: MediaQuery.of(context).size.width * 0.60,
                         child: Consumer<NotificationToStaffAdminProviders>(
                             builder: (context, snapshot, child) {
-                          return InkWell(
-                            onTap: () {
+                          return ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              elevation: 3,
+                              foregroundColor: UIGuide.light_Purple,
+                              backgroundColor: UIGuide.ButtonBlue,
+                              padding: const EdgeInsets.all(0),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  side: const BorderSide(
+                                    color: UIGuide.light_black,
+                                  )),
+                            ),
+                            onPressed: () {
                               showDialog(
                                   context: context,
                                   builder: (context) {
@@ -123,69 +134,40 @@ class _SmsFormatToStaffState extends State<SmsFormatToStaff> {
                                         ));
                                   });
                             },
-                            child: Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: Column(
-                                children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: UIGuide.light_Purple,
-                                          width: 1),
-                                    ),
-                                    height: 40,
-                                    child: TextField(
-                                      style: const TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w500,
-                                          color: UIGuide.BLACK,
-                                          overflow: TextOverflow.clip),
-                                      textAlign: TextAlign.center,
-                                      controller: formatController1,
-                                      decoration: const InputDecoration(
-                                        contentPadding:
-                                            EdgeInsets.only(left: 0, top: 0),
-                                        floatingLabelBehavior:
-                                            FloatingLabelBehavior.never,
-                                        filled: true,
-                                        fillColor:
-                                            Color.fromARGB(255, 238, 237, 237),
-                                        border: OutlineInputBorder(),
-                                        labelText: "  Select Format",
-                                        hintText: "Format",
-                                      ),
-                                      enabled: false,
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 0,
-                                    child: TextField(
-                                      textAlign: TextAlign.center,
-                                      controller: formatController,
-                                      decoration: const InputDecoration(
-                                        filled: true,
-                                        fillColor:
-                                            Color.fromARGB(255, 238, 237, 237),
-                                        border: OutlineInputBorder(),
-                                        labelText: "",
-                                        hintText: "",
-                                      ),
-                                      enabled: false,
-                                    ),
-                                  ),
-                                ],
+                            child: TextField(
+                              style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: UIGuide.BLACK,
+                                  overflow: TextOverflow.clip),
+                              textAlign: TextAlign.center,
+                              controller: formatController1,
+                              decoration: const InputDecoration(
+                                contentPadding:
+                                    EdgeInsets.only(left: 0, top: 0),
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.never,
+                                filled: true,
+                                fillColor: Colors.transparent,
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      style: BorderStyle.none, width: 0),
+                                ),
+                                labelText: "  Select Format",
+                                hintText: "Format",
                               ),
+                              enabled: false,
                             ),
                           );
                         }),
                       ),
                     ],
                   ),
-                  kheight10,
+                  kheight5,
                   Consumer<NotificationToStaffAdminProviders>(
                     builder: (context, value, child) => value.smsBody == null ||
                             value.smsBody == ""
-                        ? Container(
+                        ? const SizedBox(
                             height: 0,
                             width: 0,
                           )
@@ -224,26 +206,10 @@ class _SmsFormatToStaffState extends State<SmsFormatToStaff> {
                                   child: MaterialButton(
                                     onPressed: () async {
                                       if (formatController1.text.isEmpty) {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          const SnackBar(
-                                            elevation: 10,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(10)),
-                                            ),
-                                            duration: Duration(seconds: 1),
-                                            margin: EdgeInsets.only(
-                                                bottom: 80,
-                                                left: 30,
-                                                right: 30),
-                                            behavior: SnackBarBehavior.floating,
-                                            content: Text(
-                                              'Please select any format.....!',
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ),
-                                        );
+                                        snackbarWidget(
+                                            2,
+                                            "Please select any format",
+                                            context);
                                       } else {
                                         print(value.stafflist.length);
 
@@ -253,27 +219,10 @@ class _SmsFormatToStaffState extends State<SmsFormatToStaff> {
                                               formatController.text.toString(),
                                               widget.toList);
                                         } else {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(
-                                            const SnackBar(
-                                              elevation: 10,
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(10)),
-                                              ),
-                                              duration: Duration(seconds: 1),
-                                              margin: EdgeInsets.only(
-                                                  bottom: 80,
-                                                  left: 30,
-                                                  right: 30),
-                                              behavior:
-                                                  SnackBarBehavior.floating,
-                                              content: Text(
-                                                'Sms format not approved...!',
-                                                textAlign: TextAlign.center,
-                                              ),
-                                            ),
-                                          );
+                                          snackbarWidget(
+                                              2,
+                                              "SMS format nor approvec",
+                                              context);
                                         }
                                       }
                                     },

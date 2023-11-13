@@ -14,6 +14,7 @@ import 'package:essconnect/Presentation/Admin/MarkEntryMissingReportAdmin.dart';
 import 'package:essconnect/Presentation/Admin/StudentStatistiics.dart';
 import 'package:essconnect/Presentation/Admin/WebViewLogin.dart';
 import 'package:essconnect/Presentation/Staff/MarkEntryNew.dart';
+import 'package:essconnect/Presentation/Staff/MarkEntryReport/MarkEntryReport.dart';
 import 'package:essconnect/Presentation/Staff/RemarksEntry.dart';
 import 'package:essconnect/Presentation/Staff/StudAttendenceEntry.dart';
 import 'package:essconnect/Presentation/Staff/StudReport.dart';
@@ -143,6 +144,7 @@ class AdminHomeContent extends StatelessWidget {
       physics: const BouncingScrollPhysics(),
       children: [
         Container(
+          clipBehavior: Clip.hardEdge,
           decoration: const BoxDecoration(
               color: Color.fromARGB(255, 255, 255, 255),
               borderRadius: BorderRadius.only(
@@ -1153,6 +1155,56 @@ class AdminHomeContent extends StatelessWidget {
                         ),
                       ),
                     ),
+                    // Expanded(
+                    //   child: GestureDetector(
+                    //     onTap: () async {
+                    //       module.tabulation == true
+                    //           ? await Navigator.push(
+                    //               context,
+                    //               PageTransition(
+                    //                 type: PageTransitionType.rightToLeft,
+                    //                 child: MarkEntryReport(),
+                    //                 duration: const Duration(milliseconds: 300),
+                    //               ))
+                    //           : _noAcess(context);
+                    //     },
+                    //     child: Column(
+                    //       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    //       children: [
+                    //         Card(
+                    //           elevation: 10,
+                    //           color: Colors.white,
+                    //           shape: RoundedRectangleBorder(
+                    //             borderRadius: BorderRadius.circular(12.0),
+                    //           ),
+                    //           child: Padding(
+                    //             padding: const EdgeInsets.all(8.0),
+                    //             child: Container(
+                    //               height: 38,
+                    //               width: 38,
+                    //               decoration: const BoxDecoration(
+                    //                 image: DecorationImage(
+                    //                   image: AssetImage(
+                    //                     'assets/Remarks.png',
+                    //                   ),
+                    //                 ),
+                    //               ),
+                    //             ),
+                    //           ),
+                    //         ),
+                    //         kheight10,
+                    //         const Text(
+                    //           'Mark Entry\nReport',
+                    //           textAlign: TextAlign.center,
+                    //           style: TextStyle(
+                    //               fontWeight: FontWeight.bold,
+                    //               fontSize: 11,
+                    //               color: Colors.black87),
+                    //         )
+                    //       ],
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
               ),

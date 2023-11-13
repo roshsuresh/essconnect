@@ -487,6 +487,12 @@ class _ExamTTUploadState extends State<ExamTTUpload> {
                       } else if (val.fromDateCheck.isAfter(val.toDateCheck)) {
                         snackbarWidget(
                             2, 'From date is greater than to date', context);
+                      } else if (val.fromDateCheck
+                          .isAfter(val.startDateCheck)) {
+                        snackbarWidget(
+                            2,
+                            'From date should be earlier than the startdate',
+                            context);
                       } else {
                         await val.examSave(
                             context,

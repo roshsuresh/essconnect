@@ -154,7 +154,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
       p.totalBusFee = 0;
       p.transactionList.clear();
       await p.vendorMapping();
-      await p.gatewayName();
+      await p.gatewayName(context);
       await p.feesData();
     });
   }

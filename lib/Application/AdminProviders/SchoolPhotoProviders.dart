@@ -193,7 +193,7 @@ class SchoolPhotoProviders with ChangeNotifier {
           data["course"].map((x) => StudReportCourse.fromJson(x)));
       courselist.addAll(templist);
       courseDrop = courselist.map((subjectdata) {
-        return MultiSelectItem(subjectdata, subjectdata.text);
+        return MultiSelectItem(subjectdata, subjectdata.text ?? "");
       }).toList();
       setloadingCourse(false);
       notifyListeners();

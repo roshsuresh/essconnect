@@ -110,7 +110,6 @@ class _Notification_AdminToGuardainState
   final ScrollController _scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
     return Scaffold(
       body: Consumer<NotificationToGuardianAdmin>(
         builder: (context, val, _) => Column(
@@ -120,10 +119,7 @@ class _Notification_AdminToGuardainState
               children: [
                 Consumer<SchoolPhotoProviders>(
                   builder: (context, value, child) => value.loadingSection
-                      ? const Expanded(
-                          // width: size.width * .43,
-                          // height: 50,
-                          child: Center(child: Text('Loading...')))
+                      ? const Expanded(child: Center(child: Text('Loading...')))
                       : Expanded(
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
