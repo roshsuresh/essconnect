@@ -344,16 +344,15 @@ class ProfileProvider with ChangeNotifier {
   // save profile
 
   Future getSaveProfile(
-    BuildContext context,
-    int offlineID,
-    int installationId,
-    String guardianNa,
-    String addressE,
-    String emailIDE,
-    String mobileNoE,
-    String studentPhoId,
-    //  String bloodGrpID
-  ) async {
+      BuildContext context,
+      int offlineID,
+      int installationId,
+      String guardianNa,
+      String addressE,
+      String emailIDE,
+      String mobileNoE,
+      String studentPhoId,
+      String bloodGrpID) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoadingg(true);
     var headers = {
@@ -375,8 +374,8 @@ class ProfileProvider with ChangeNotifier {
       "isEmailIdChanged": true,
       "isMobileNoChanged": true,
       "isPhotoChanged": true,
-      // "bloodGroupId": bloodGrpID,
-      // "isBloodGroupChanged": true
+      "bloodGroupId": bloodGrpID,
+      "isBloodGroupChanged": true
     });
 
     request.headers.addAll(headers);
@@ -426,17 +425,16 @@ class ProfileProvider with ChangeNotifier {
   //Update profile
 
   Future getUpdateProfile(
-    BuildContext context,
-    int offlineID,
-    int installationId,
-    String guardianNa,
-    String addressE,
-    String emailIDE,
-    String mobileNoE,
-    String studentPhoId,
-    String offID,
-    //  String bloodGrpID
-  ) async {
+      BuildContext context,
+      int offlineID,
+      int installationId,
+      String guardianNa,
+      String addressE,
+      String emailIDE,
+      String mobileNoE,
+      String studentPhoId,
+      String offID,
+      String bloodGrpID) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoadingg(true);
     print({
@@ -452,8 +450,8 @@ class ProfileProvider with ChangeNotifier {
       "isEmailIdChanged": true,
       "isMobileNoChanged": true,
       "isPhotoChanged": true,
-      // "bloodGroupId": bloodGrpID,
-      // "isBloodGroupChanged": true
+      "bloodGroupId": bloodGrpID,
+      "isBloodGroupChanged": true
     });
     var headers = {
       'Content-Type': 'application/json',
@@ -474,8 +472,8 @@ class ProfileProvider with ChangeNotifier {
       "isEmailIdChanged": true,
       "isMobileNoChanged": true,
       "isPhotoChanged": true,
-      // "bloodGroupId": bloodGrpID,
-      // "isBloodGroupChanged": true
+      "bloodGroupId": bloodGrpID,
+      "isBloodGroupChanged": true
     });
 
     request.headers.addAll(headers);
@@ -532,7 +530,8 @@ class ProfileProvider with ChangeNotifier {
 
   //Delete image
 
-  Future deleteStudentImage(BuildContext context, String imgID) async {
+  Future deleteStudentImage(
+      BuildContext context, String imgID, int offlineIDd, int instaIDd) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoadingg(true);
     var headers = {
@@ -548,6 +547,7 @@ class ProfileProvider with ChangeNotifier {
     setLoadingg(true);
     if (response.statusCode == 204) {
       setLoadingg(true);
+      await deleteStudentImageFromS3(imgID, offlineIDd, instaIDd);
       studentPhotoOffline!.url =
           'https://gj-eschool-files-public.s3.ap-south-1.amazonaws.com/ess-connect/student/avathar-02.jpeg';
       studentPhotoIdOffline = null;
@@ -586,6 +586,39 @@ class ProfileProvider with ChangeNotifier {
 
       setLoadingg(false);
       notifyListeners();
+    }
+  }
+
+  //Delete image From s3
+
+  Future deleteStudentImageFromS3(
+      String imgID, int offlineIDd, int instaIDd) async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    setLoadingg(true);
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+    };
+    var request = http.Request(
+        'POST', Uri.parse('${UIGuide.baseURL}/student-profile/deletePhoto'));
+    request.body = json.encode({
+      "offlineId": offlineIDd,
+      "installationId": instaIDd,
+      "studentPhotoId": imgID
+    });
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+    setLoadingg(true);
+    if (response.statusCode == 200) {
+      setLoadingg(false);
+      print("DELETED FROM S3");
+      notifyListeners();
+    } else {
+      print(response.reasonPhrase);
+
+      setLoadingg(false);
     }
   }
 }

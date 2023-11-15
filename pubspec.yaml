@@ -32,8 +32,10 @@ dependencies:
   anim_search_bar: ^2.0.3
   animate_gradient: ^0.0.2+1
   animated_text_kit: ^4.2.2
+  auto_size_text: ^3.0.0
   awesome_dialog: ^3.0.1
   badges: ^3.1.1
+  basispaysdk: ^1.1.2
   carousel_slider: ^4.2.1
   collection: ^1.17.0
   connectivity_plus: ^4.0.2
