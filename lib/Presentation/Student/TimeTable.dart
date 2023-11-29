@@ -92,39 +92,44 @@ class _ClasstimetableState extends State<Classtimetable> {
                         kheight20,
                         Table(
                           border: TableBorder.all(
-                              color: const Color.fromARGB(255, 255, 255, 255)),
+                            color: const Color.fromARGB(255, 255, 255, 255),
+                          ),
                           columnWidths: const {
                             0: FlexColumnWidth(4),
                             1: FlexColumnWidth(2),
                           },
                           children: const [
                             TableRow(
-                                decoration: BoxDecoration(
-                                    color: UIGuide.light_black,
-                                    borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(12),
-                                        topRight: Radius.circular(12))),
-                                children: [
-                                  SizedBox(
-                                    height: 30,
-                                    child: Center(
-                                      child: Text(
-                                        'Class TimeTable',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w700),
-                                      ),
+                              decoration: BoxDecoration(
+                                color: UIGuide.light_black,
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(12),
+                                  topRight: Radius.circular(12),
+                                ),
+                              ),
+                              children: [
+                                SizedBox(
+                                  height: 30,
+                                  child: Center(
+                                    child: Text(
+                                      'Class TimeTable',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w700),
                                     ),
                                   ),
-                                  SizedBox(
-                                    height: 30,
-                                    child: Center(
-                                        child: Text(
+                                ),
+                                SizedBox(
+                                  height: 30,
+                                  child: Center(
+                                    child: Text(
                                       'View',
                                       style: TextStyle(
                                           fontWeight: FontWeight.w700),
-                                    )),
+                                    ),
                                   ),
-                                ]),
+                                ),
+                              ],
+                            ),
                           ],
                         ),
                         Consumer<Timetableprovider>(
@@ -598,7 +603,8 @@ class _PdfViewPagesState extends State<PdfViewPages> {
         final imgResult2 = provider.url.toString();
         final name = provider.name.toString();
         return imageview(imgResult2, name);
-      } else if (provider.extension.toString() == '.jpeg') {
+      } else if (provider.extension.toString() == '.jpeg' ||
+          provider.extension.toString() == '.jfif') {
         final imgResult3 = provider.url.toString();
         final name = provider.name.toString();
         return imageview(imgResult3, name);
@@ -846,7 +852,8 @@ class _ImageViewExamState extends State<ImageViewExam> {
         final imgResult2 = provider.urlExam.toString();
         final name = provider.nameExam.toString();
         return imageview(imgResult2, name);
-      } else if (provider.extensionExam.toString() == '.jpeg') {
+      } else if (provider.extensionExam.toString() == '.jpeg' ||
+          provider.extensionExam.toString() == '.jfif') {
         final imgResult3 = provider.urlExam.toString();
         final name = provider.nameExam.toString();
         return imageview(imgResult3, name);

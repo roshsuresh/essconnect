@@ -2557,6 +2557,9 @@ class _StudProfileViewBySearch_StaffState
                                           print(reAttach);
                                           return InkWell(
                                             onTap: () async {
+                                              await value
+                                                  .getreportCardAttachment(
+                                                      reAttach);
                                               if (value.extension.toString() ==
                                                   '.pdf') {
                                                 Navigator.push(
@@ -2681,18 +2684,19 @@ class _StudProfileViewBySearch_StaffState
               padding: const EdgeInsets.all(8.0),
               child: InkWell(
                 onTap: () async {
-                  //value.getTimetable(widget.stud.studentId.toString());
+                  //  value.getTimetable(widget.stud.studentId.toString());
                   if (value.ttextension.toString() == '.pdf') {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => AdminTimeTableView()),
+                        builder: (context) => AdminTimeTableView(),
+                      ),
                     );
                   } else {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => const NoTimeTableScreen()),
+                          builder: (context) => TimeTableviewAttachment()),
                     );
                   }
                 },

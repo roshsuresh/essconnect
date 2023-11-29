@@ -9,11 +9,11 @@ class StudentData {
   String? dob;
   String? terminationStatus;
   String? bloodgroup;
-  Null? houseGroup;
+  String? houseGroup;
   String? permanentAddress1;
   String? height;
   String? weight;
-  Null? healthCardNo;
+  String? healthCardNo;
   String? visionLeft;
   String? visionRight;
   String? teeth;
@@ -44,46 +44,46 @@ class StudentData {
 
   StudentData(
       {this.studentName,
-        this.admissionNo,
-        this.gender,
-        this.classNo,
-        this.course,
-        this.division,
-        this.dob,
-        this.terminationStatus,
-        this.bloodgroup,
-        this.houseGroup,
-        this.permanentAddress1,
-        this.height,
-        this.weight,
-        this.healthCardNo,
-        this.visionLeft,
-        this.visionRight,
-        this.teeth,
-        this.oralHygiene,
-        this.remarks,
-        this.disability,
-        this.guardianName,
-        this.guardianRelation,
-        this.guardianMobile1,
-        this.guardianEmail,
-        this.fatherName,
-        this.fatherMobile1,
-        this.fatherEmail,
-        this.motherName,
-        this.motherMobile1,
-        this.motherEmail,
-        this.secondLanguage,
-        this.siblingsDetails,
-        this.studentPhoto,
-        this.studentPhotoId,
-        this.fatherPhoto,
-        this.fatherPhotoId,
-        this.motherPhoto,
-        this.motherPhotoId,
-        this.guardianPhoto,
-        this.guardianPhotoId,
-        this.bankAdmnNo});
+      this.admissionNo,
+      this.gender,
+      this.classNo,
+      this.course,
+      this.division,
+      this.dob,
+      this.terminationStatus,
+      this.bloodgroup,
+      this.houseGroup,
+      this.permanentAddress1,
+      this.height,
+      this.weight,
+      this.healthCardNo,
+      this.visionLeft,
+      this.visionRight,
+      this.teeth,
+      this.oralHygiene,
+      this.remarks,
+      this.disability,
+      this.guardianName,
+      this.guardianRelation,
+      this.guardianMobile1,
+      this.guardianEmail,
+      this.fatherName,
+      this.fatherMobile1,
+      this.fatherEmail,
+      this.motherName,
+      this.motherMobile1,
+      this.motherEmail,
+      this.secondLanguage,
+      this.siblingsDetails,
+      this.studentPhoto,
+      this.studentPhotoId,
+      this.fatherPhoto,
+      this.fatherPhotoId,
+      this.motherPhoto,
+      this.motherPhotoId,
+      this.guardianPhoto,
+      this.guardianPhotoId,
+      this.bankAdmnNo});
 
   StudentData.fromJson(Map<String, dynamic> json) {
     studentName = json['studentName'];
@@ -211,12 +211,12 @@ class SiblingsDetails {
 
   SiblingsDetails(
       {this.siblingAdmNo,
-        this.siblingRollNo,
-        this.siblingName,
-        this.siblingDivision,
-        this.siblingRelation,
-        this.studentPhotoId,
-        this.siblingPhoto});
+      this.siblingRollNo,
+      this.siblingName,
+      this.siblingDivision,
+      this.siblingRelation,
+      this.studentPhotoId,
+      this.siblingPhoto});
 
   SiblingsDetails.fromJson(Map<String, dynamic> json) {
     siblingAdmNo = json['siblingAdmNo'];
@@ -258,14 +258,14 @@ class SiblingPhoto {
 
   SiblingPhoto(
       {this.name,
-        this.extension,
-        this.path,
-        this.url,
-        this.isTemporary,
-        this.isDeleted,
-        this.images,
-        this.createdAt,
-        this.id});
+      this.extension,
+      this.path,
+      this.url,
+      this.isTemporary,
+      this.isDeleted,
+      this.images,
+      this.createdAt,
+      this.id});
 
   SiblingPhoto.fromJson(Map<String, dynamic> json) {
     name = json['name'];
@@ -300,6 +300,7 @@ class SiblingPhoto {
     return data;
   }
 }
+
 class Images {
   String? fileId;
   String? dimension;
@@ -336,11 +337,11 @@ class StduAttendanceDetails {
 
   StduAttendanceDetails(
       {this.attendanceAsOnDate,
-        this.workDays,
-        this.presentDays,
-        this.absentDays,
-        this.attendancePercentage,
-        this.absentPercentage});
+      this.workDays,
+      this.presentDays,
+      this.absentDays,
+      this.attendancePercentage,
+      this.absentPercentage});
 
   StduAttendanceDetails.fromJson(Map<String, dynamic> json) {
     attendanceAsOnDate = json['attendanceAsOnDate'];
@@ -373,10 +374,10 @@ class StudFeeDetails {
 
   StudFeeDetails(
       {this.busPaidAmount,
-        this.schoolPaidAmount,
-        this.busPendingAmount,
-        this.schoolPendingAmount,
-        this.maxDate});
+      this.schoolPaidAmount,
+      this.busPendingAmount,
+      this.schoolPendingAmount,
+      this.maxDate});
 
   StudFeeDetails.fromJson(Map<String, dynamic> json) {
     busPaidAmount = json['busPaidAmount'];
@@ -426,7 +427,6 @@ class AcademicPerformance {
 
 //ReportCard
 
-
 class ReportcardAttachment {
   String? name;
   String? extension;
@@ -434,20 +434,19 @@ class ReportcardAttachment {
   String? url;
   bool? isTemporary;
   bool? isDeleted;
-  Null? images;
+
   String? createdAt;
   String? id;
 
   ReportcardAttachment(
       {this.name,
-        this.extension,
-        this.path,
-        this.url,
-        this.isTemporary,
-        this.isDeleted,
-        this.images,
-        this.createdAt,
-        this.id});
+      this.extension,
+      this.path,
+      this.url,
+      this.isTemporary,
+      this.isDeleted,
+      this.createdAt,
+      this.id});
 
   ReportcardAttachment.fromJson(Map<String, dynamic> json) {
     name = json['name'];
@@ -456,7 +455,7 @@ class ReportcardAttachment {
     url = json['url'];
     isTemporary = json['isTemporary'];
     isDeleted = json['isDeleted'];
-    images = json['images'];
+
     createdAt = json['createdAt'];
     id = json['id'];
   }
@@ -469,7 +468,7 @@ class ReportcardAttachment {
     data['url'] = this.url;
     data['isTemporary'] = this.isTemporary;
     data['isDeleted'] = this.isDeleted;
-    data['images'] = this.images;
+
     data['createdAt'] = this.createdAt;
     data['id'] = this.id;
     return data;
@@ -491,14 +490,14 @@ class TimtableView {
 
   TimtableView(
       {this.name,
-        this.extension,
-        this.path,
-        this.url,
-        this.isTemporary,
-        this.isDeleted,
-        this.images,
-        this.createdAt,
-        this.id});
+      this.extension,
+      this.path,
+      this.url,
+      this.isTemporary,
+      this.isDeleted,
+      this.images,
+      this.createdAt,
+      this.id});
 
   TimtableView.fromJson(Map<String, dynamic> json) {
     name = json['name'];

@@ -1821,8 +1821,6 @@ class ProfileHome extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(4.0),
             child: Row(
-              //  mainAxisAlignment: MainAxisAlignment.center,
-
               children: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -1918,13 +1916,13 @@ class ProfileHome extends StatelessWidget {
                             ),
                           ),
                           IconButton(
-                            onPressed: (() async {
+                            onPressed: () async {
                               studName = value.studName;
                               HapticFeedback.selectionClick();
                               var currentname = value.studName;
                               await value.siblingsAPI();
                               await _displayNameOfSiblings(contex, currentname);
-                            }),
+                            },
                             icon: const Icon(
                               Icons.switch_account_outlined,
                               size: 30,

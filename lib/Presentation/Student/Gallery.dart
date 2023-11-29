@@ -368,38 +368,44 @@ class _ViewImageOntapState extends State<ViewImageOntap> {
           backgroundColor: UIGuide.light_Purple,
           actions: [
             Padding(
-                padding: const EdgeInsets.only(right: 15.0),
-                child: IconButton(
-                    onPressed: () async {
-                      await requestDownload(
-                        value.galleryList[widget.currentIndex]['url'] == null
-                            ? '--'
-                            : value.galleryList[widget.currentIndex]['url']
-                                .toString(),
-                        value.galleryList[widget.currentIndex]['title'] == null
-                            ? '---${widget.currentIndex}'
-                            : value.galleryList[widget.currentIndex]['title'],
-                      );
-                    },
-                    icon: const Icon(Icons.download_outlined))),
+              padding: const EdgeInsets.only(right: 15.0),
+              child: IconButton(
+                onPressed: () async {
+                  await requestDownload(
+                    value.galleryList[widget.currentIndex]['url'] == null
+                        ? '--'
+                        : value.galleryList[widget.currentIndex]['url']
+                            .toString(),
+                    value.galleryList[widget.currentIndex]['title'] == null
+                        ? '---${widget.currentIndex}'
+                        : value.galleryList[widget.currentIndex]['title'],
+                  );
+                },
+                icon: const Icon(Icons.download_outlined),
+              ),
+            ),
           ],
         ),
         body: PhotoViewGallery.builder(
-            backgroundDecoration: const BoxDecoration(color: UIGuide.WHITE),
-            scrollPhysics: const BouncingScrollPhysics(),
-            enableRotation: false,
-            onPageChanged: onPageChanged,
-            itemCount: value.galleryList.isEmpty ? 0 : value.galleryList.length,
-            builder: ((_, indee) {
-              final imgUrl = value.galleryList[widget.currentIndex]['url'];
-              return PhotoViewGalleryPageOptions(
-                  imageProvider: NetworkImage(
-                      imgUrl ?? const AssetImage('assets/noimages.png')),
-                  initialScale: PhotoViewComputedScale.contained * 0.8,
-                  heroAttributes: PhotoViewHeroAttributes(
-                      tag: value.galleryList[widget.currentIndex]['url']));
-            }),
-            loadingBuilder: (context, event) => spinkitLoader()),
+          backgroundDecoration: const BoxDecoration(color: UIGuide.WHITE),
+          scrollPhysics: const BouncingScrollPhysics(),
+          enableRotation: false,
+          onPageChanged: onPageChanged,
+          itemCount: value.galleryList.isEmpty ? 0 : value.galleryList.length,
+          builder: ((_, indee) {
+            final imgUrl = value.galleryList[widget.currentIndex]['url'];
+            return PhotoViewGalleryPageOptions(
+              imageProvider: NetworkImage(
+                imgUrl ?? const AssetImage('assets/noimages.png'),
+              ),
+              initialScale: PhotoViewComputedScale.contained * 0.8,
+              heroAttributes: PhotoViewHeroAttributes(
+                tag: value.galleryList[widget.currentIndex]['url'],
+              ),
+            );
+          }),
+          loadingBuilder: (context, event) => spinkitLoader(),
+        ),
       ),
     );
   }

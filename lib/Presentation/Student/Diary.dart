@@ -84,24 +84,26 @@ class Diary extends StatelessWidget {
                                       child: Container(
                                         width: width,
                                         decoration: BoxDecoration(
-                                            color: const Color.fromARGB(
-                                                255, 234, 234, 236),
-                                            border: Border.all(
-                                                color: UIGuide.light_Purple),
-                                            borderRadius:
-                                                const BorderRadius.only(
-                                              topRight: Radius.circular(20),
-                                              bottomLeft: Radius.circular(20),
-                                            )),
+                                          color: const Color.fromARGB(
+                                              255, 234, 234, 236),
+                                          border: Border.all(
+                                              color: UIGuide.light_Purple),
+                                          borderRadius: const BorderRadius.only(
+                                            topRight: Radius.circular(20),
+                                            bottomLeft: Radius.circular(20),
+                                          ),
+                                        ),
                                         child: Padding(
                                           padding: const EdgeInsets.all(4.0),
                                           child: Container(
                                             width: width,
                                             decoration: const BoxDecoration(
-                                                color: Color.fromARGB(
-                                                    255, 255, 255, 255),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(5))),
+                                              color: Color.fromARGB(
+                                                  255, 255, 255, 255),
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(5),
+                                              ),
+                                            ),
                                             child: Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
@@ -122,23 +124,24 @@ class Diary extends StatelessWidget {
                                                                   fontSize:
                                                                       15.0),
                                                           text: TextSpan(
-                                                              style: const TextStyle(
-                                                                  color: UIGuide
-                                                                      .light_Purple,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500),
-                                                              text: value
-                                                                          .diarylist[
-                                                                              index]
-                                                                          .category ==
-                                                                      null
-                                                                  ? '--'
-                                                                  : value
-                                                                      .diarylist[
-                                                                          index]
-                                                                      .category
-                                                                      .toString()),
+                                                            style: const TextStyle(
+                                                                color: UIGuide
+                                                                    .light_Purple,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500),
+                                                            text: value
+                                                                        .diarylist[
+                                                                            index]
+                                                                        .category ==
+                                                                    null
+                                                                ? '--'
+                                                                : value
+                                                                    .diarylist[
+                                                                        index]
+                                                                    .category
+                                                                    .toString(),
+                                                          ),
                                                         ),
                                                       ),
                                                     ],

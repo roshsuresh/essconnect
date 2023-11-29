@@ -40,7 +40,7 @@ class PasswordChange extends StatelessWidget {
             kheight20,
             kheight10,
             Center(
-              child: Container(
+              child: SizedBox(
                   height: 150,
                   width: 200,
                   child: LottieBuilder.asset('assets/vsqFXTvh4d.json')

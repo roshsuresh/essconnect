@@ -416,7 +416,8 @@ class _StaffTimetableimageState extends State<StaffTimetableimage> {
         final imgResult2 = provider.url.toString();
         final name = provider.name.toString();
         return imageview(imgResult2, name);
-      } else if (provider.extension.toString() == '.jpeg') {
+      } else if (provider.extension.toString() == '.jpeg' ||
+          provider.extension.toString() == '.jfif') {
         final imgResult3 = provider.url.toString();
         final name = provider.name.toString();
         return imageview(imgResult3, name);

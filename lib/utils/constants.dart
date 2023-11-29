@@ -10,6 +10,7 @@ class UIGuide {
       // "https://api.essuatonline.in";
       "https://api.esstestonline.in";
   //   "https://api.eschoolweb.org";
+
   static const String absent = "assets/aa.svg";
   static const String present = "assets/ppp.svg";
   static const String success = "assets/success.svg";

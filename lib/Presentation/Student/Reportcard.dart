@@ -144,6 +144,8 @@ class ReportCard extends StatelessWidget {
                                         print(reAttach);
                                         return InkWell(
                                           onTap: () async {
+                                            await provider
+                                                .reportCardAttachment(reAttach);
                                             if (provider.extension.toString() ==
                                                 '.pdf') {
                                               Navigator.push(

@@ -97,7 +97,9 @@ class _SmsFormatGuardianState extends State<SmsFormatGuardian> {
                                                     provcheck = snapshot
                                                         .formatlist[index]
                                                         .isApproved!;
+
                                                     formatController1.clear();
+
                                                     formatController
                                                         .text = await snapshot
                                                             .formatlist[index]

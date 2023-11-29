@@ -308,12 +308,14 @@ class _GjInfoTechState extends State<GjInfoTech> {
         title: 'e-SS Connect',
         themeMode: ThemeMode.light,
         theme: ThemeData(
+          useMaterial3: false,
           textTheme: const TextTheme(
             displayLarge: TextStyle(fontSize: 14),
             bodyLarge: TextStyle(fontSize: 14.0),
             bodyMedium: TextStyle(fontSize: 14.0),
             labelLarge: TextStyle(fontSize: 14.0),
             headlineLarge: TextStyle(fontSize: 14),
+            headlineSmall: TextStyle(fontSize: 14),
           ),
           colorScheme: ColorScheme.fromSwatch(
             accentColor: const Color.fromARGB(255, 219, 235, 250),
@@ -329,7 +331,6 @@ class _GjInfoTechState extends State<GjInfoTech> {
                   borderRadius: BorderRadius.circular(15),
                   borderSide: const BorderSide(color: Colors.black))),
         ),
-        //  routes: routes,
         home: SplashFuturePage(),
         debugShowCheckedModeBanner: false,
       ),

@@ -130,13 +130,15 @@ class Profile_Info extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
-                                          provider.division == null
-                                              ? '--'
-                                              : provider.division.toString(),
-                                          style: const TextStyle(
-                                              fontSize: 14.0,
-                                              color: Color.fromARGB(
-                                                  255, 82, 82, 82))),
+                                        provider.division == null
+                                            ? '--'
+                                            : provider.division.toString(),
+                                        style: const TextStyle(
+                                          fontSize: 14.0,
+                                          color:
+                                              Color.fromARGB(255, 82, 82, 82),
+                                        ),
+                                      ),
                                     ],
                                   ),
                                   Padding(
@@ -158,12 +160,13 @@ class Profile_Info extends StatelessWidget {
                                                         fontSize: 12.0,
                                                         color: Colors.grey)),
                                                 Text(
-                                                    provider.rollNo == null
-                                                        ? '--'
-                                                        : provider.rollNo
-                                                            .toString(),
-                                                    style: const TextStyle(
-                                                        fontSize: 16.0)),
+                                                  provider.rollNo == null
+                                                      ? '--'
+                                                      : provider.rollNo
+                                                          .toString(),
+                                                  style: const TextStyle(
+                                                      fontSize: 16.0),
+                                                ),
                                               ],
                                             ),
                                           ),
@@ -171,17 +174,20 @@ class Profile_Info extends StatelessWidget {
                                             padding: const EdgeInsets.all(4.0),
                                             child: Column(
                                               children: [
-                                                const Text('Adm No',
-                                                    style: TextStyle(
-                                                        fontSize: 12.0,
-                                                        color: Colors.grey)),
+                                                const Text(
+                                                  'Adm No',
+                                                  style: TextStyle(
+                                                      fontSize: 12.0,
+                                                      color: Colors.grey),
+                                                ),
                                                 Text(
-                                                    provider.admissionNo == null
-                                                        ? '--'
-                                                        : provider.admissionNo
-                                                            .toString(),
-                                                    style: const TextStyle(
-                                                        fontSize: 16.0)),
+                                                  provider.admissionNo == null
+                                                      ? '--'
+                                                      : provider.admissionNo
+                                                          .toString(),
+                                                  style: const TextStyle(
+                                                      fontSize: 16.0),
+                                                ),
                                               ],
                                             ),
                                           ),
@@ -196,12 +202,6 @@ class Profile_Info extends StatelessWidget {
                           child: Padding(
                             padding: const EdgeInsets.only(top: 8.0),
                             child: CircleAvatar(
-                              // child: FadeInImage.assetNetwork(
-                              //   placeholder: 'assets/male-student-icon.jpg',
-                              //   image:
-                              //       "https://png.pngtree.com/element_our/png/20181129/male-student-icon-png_251938.jpg",
-                              //   fit: BoxFit.cover,
-                              // ),
                               backgroundImage: NetworkImage(
                                   provider.studPhoto == null
                                       ? 'https://gj-eschool-files-public.s3.ap-south-1.amazonaws.com/ess-connect/student/avathar-02.jpeg'

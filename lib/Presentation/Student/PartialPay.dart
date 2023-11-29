@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:basispaysdk/basispaysdk.dart';
 import 'package:essconnect/Application/StudentProviders/FeesProvider.dart';
 import 'package:essconnect/Application/StudentProviders/FinalStatusProvider.dart';
 import 'package:essconnect/Constants.dart';
@@ -4394,38 +4393,38 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
     };
     print(
         "******************            $paymentRequestDictionary        ***********************");
-    try {
-      var response = Basispaysdk.startTransaction(
-          apiKey, //[API-KEY From Basispay team]
-          saltKey, //[SALT-KEY From Basispay team]
-          returnUrl, //[YOUR- RETURN URL to get the response]
-          false,
-          paymentRequestDictionary);
-      response.then((value) {
-        print(value);
-        print("=======================================================");
-        setState(() {});
-        showAlertTrakNPay(context, orderId);
-      }).catchError((onError) {
-        if (onError is PlatformException) {
-          print('-------------------Failed-----------------');
-          showAlertTrakNPay(context, orderId);
-          setState(() {
-            print(onError.message! + " \n  " + onError.details.toString());
-          });
-        } else {
-          setState(() {
-            showAlertTrakNPay(context, orderId);
-            print('-------------------Pending-----------------');
-            print(onError.toString());
-          });
-        }
-      });
-    } catch (err) {
-      showAlertTrakNPay(context, orderId);
-      print('-------------------ERROR-----------------');
-      print(err.toString());
-    }
+    // try {
+    //   var response = Basispaysdk.startTransaction(
+    //       apiKey, //[API-KEY From Basispay team]
+    //       saltKey, //[SALT-KEY From Basispay team]
+    //       returnUrl, //[YOUR- RETURN URL to get the response]
+    //       false,
+    //       paymentRequestDictionary);
+    //   response.then((value) {
+    //     print(value);
+    //     print("=======================================================");
+    //     setState(() {});
+    //     showAlertTrakNPay(context, orderId);
+    //   }).catchError((onError) {
+    //     if (onError is PlatformException) {
+    //       print('-------------------Failed-----------------');
+    //       showAlertTrakNPay(context, orderId);
+    //       setState(() {
+    //         print(onError.message! + " \n  " + onError.details.toString());
+    //       });
+    //     } else {
+    //       setState(() {
+    //         showAlertTrakNPay(context, orderId);
+    //         print('-------------------Pending-----------------');
+    //         print(onError.toString());
+    //       });
+    //     }
+    //   });
+    // } catch (err) {
+    //   showAlertTrakNPay(context, orderId);
+    //   print('-------------------ERROR-----------------');
+    //   print(err.toString());
+    // }
   }
 
   //////////////////

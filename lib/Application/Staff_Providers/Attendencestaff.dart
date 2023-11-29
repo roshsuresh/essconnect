@@ -292,19 +292,19 @@ class AttendenceStaffProvider with ChangeNotifier {
     return true;
   }
 
-  bool _loadingg = false;
-  bool get loadingg => _loadingg;
-  setLoadingg(bool value) {
-    _loadingg = value;
-    notifyListeners();
-  }
+  // bool _loadingg = false;
+  // bool get loadingg => _loadingg;
+  // setLoadingg(bool value) {
+  //   _loadingg = value;
+  //   notifyListeners();
+  // }
   //save
 
   Future attendanceSave(BuildContext context, List finallList, String date,
       int forecount, int aftcount) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
-    setLoadingg(true);
-    setLoadinggNull(true);
+    setLoading(true);
+    // setLoadinggNull(true);
     var headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
@@ -319,10 +319,10 @@ class AttendenceStaffProvider with ChangeNotifier {
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
-    setLoadingg(true);
+    setLoading(true);
     if (response.statusCode == 200) {
-      setLoadingg(true);
-      setLoadinggNull(true);
+      setLoading(true);
+      //  setLoadinggNull(true);
       print('Correct........______________________________');
       print(await response.stream.bytesToString());
       await AwesomeDialog(
@@ -342,8 +342,8 @@ class AttendenceStaffProvider with ChangeNotifier {
               btnOkColor: Colors.green)
           .show();
 
-      setLoadingg(false);
-      setLoadinggNull(false);
+      setLoading(false);
+      //  setLoadinggNull(false);
       notifyListeners();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -359,32 +359,32 @@ class AttendenceStaffProvider with ChangeNotifier {
           textAlign: TextAlign.center,
         ),
       ));
-      setLoadingg(false);
-      setLoadinggNull(false);
+      setLoading(false);
+      // setLoadinggNull(false);
       print('Error Response in attendance');
     }
   }
   //delete
 
-  bool _loadinggDelete = false;
-  bool get loadinggDelete => _loadinggDelete;
-  setLoadinggDelete(bool value) {
-    _loadinggDelete = value;
-    notifyListeners();
-  }
+  // bool _loadinggDelete = false;
+  // bool get loadinggDelete => _loadinggDelete;
+  // setLoadinggDelete(bool value) {
+  //   _loadinggDelete = value;
+  //   notifyListeners();
+  // }
 
-  bool _loadinggNull = false;
-  bool get loadinggNull => _loadinggNull;
-  setLoadinggNull(bool value) {
-    _loadinggNull = value;
-    notifyListeners();
-  }
+  // bool _loadinggNull = false;
+  // bool get loadinggNull => _loadinggNull;
+  // setLoadinggNull(bool value) {
+  //   _loadinggNull = value;
+  //   notifyListeners();
+  // }
 
   Future attendanceDelete(
       String divisionid, String date, BuildContext context) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
-    setLoadinggDelete(true);
-    setLoadinggNull(true);
+    setLoading(true);
+    // setLoadinggNull(true);
     var headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
@@ -398,14 +398,14 @@ class AttendenceStaffProvider with ChangeNotifier {
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
-      setLoadinggDelete(true);
-      setLoadinggNull(true);
+      setLoading(true);
+      // setLoadinggNull(true);
       print(await response.stream.bytesToString());
       print('correct');
       snackbarWidget(2, "Deleted Successfully", context);
       await clearStudentList();
-      setLoadinggDelete(false);
-      setLoadinggNull(false);
+      setLoading(false);
+      // setLoadinggNull(false);
       notifyListeners();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -421,8 +421,8 @@ class AttendenceStaffProvider with ChangeNotifier {
           textAlign: TextAlign.center,
         ),
       ));
-      setLoadinggDelete(false);
-      setLoadinggNull(false);
+      setLoading(false);
+      // setLoadinggNull(false);
       print('Error in noticeDelete stf');
     }
   }

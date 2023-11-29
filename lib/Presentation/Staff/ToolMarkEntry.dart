@@ -724,7 +724,7 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                             Consumer<ToolMarkEntryProviders>(
                               builder: (context, snapshot, child) {
                                 if (snapshot.toolOptionSubjectList.isEmpty) {
-                                  return Container(
+                                  return const SizedBox(
                                     height: 0,
                                     width: 0,
                                   );
@@ -893,7 +893,7 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                                                         selectedTileColor:
                                                             Colors
                                                                 .blue.shade100,
-                                                        onTap: () {
+                                                        onTap: () async {
                                                           toolExamListController
                                                               .text = snapshot
                                                                   .toolExamList[
@@ -906,6 +906,8 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                                                                       index]
                                                                   .value ??
                                                               '--';
+                                                          await snapshot
+                                                              .clearStudList();
 
                                                           Navigator.of(context)
                                                               .pop();
@@ -1085,7 +1087,7 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                         ],
                       ),
                       value.examStatus != "Verified"
-                          ? Container(
+                          ? const SizedBox(
                               height: 0,
                               width: 0,
                             )
@@ -1113,13 +1115,13 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                           if (value.loading) {
                             return LimitedBox(
                               maxHeight: size.height / 1.8,
-                              child: Container(
+                              child: SizedBox(
                                 height: size.height / 1.8,
                                 child: spinkitLoader(),
                               ),
                             );
                           } else if (value.isBlocked == true) {
-                            return Container(
+                            return SizedBox(
                                 height: size.height / 1.8,
                                 child: const Center(
                                     child: Text(
@@ -1904,7 +1906,7 @@ class _ToolMarkEntryState extends State<ToolMarkEntry> {
                               ),
                             ));
                           } else {
-                            return Container(
+                            return const SizedBox(
                               height: 0,
                               width: 0,
                             );

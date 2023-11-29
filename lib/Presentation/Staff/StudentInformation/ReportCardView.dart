@@ -1,5 +1,3 @@
-
-
 import 'dart:developer';
 import 'dart:io';
 import 'dart:isolate';
@@ -21,7 +19,7 @@ class AdminReportCard extends StatefulWidget {
   static void downloadCallback(
       String id, DownloadTaskStatus status, int progress) {
     final SendPort send =
-    IsolateNameServer.lookupPortByName('downloader_send_port')!;
+        IsolateNameServer.lookupPortByName('downloader_send_port')!;
     send.send([id, status, progress]);
   }
 
@@ -59,7 +57,6 @@ class _AdminReportCardState extends State<AdminReportCard> {
   }
 
   Future<void> requestDownload(String _url, String _name) async {
-    final dir = await getExternalStorageDirectory();
     var _localPath;
 
     //dir!.path;
@@ -70,8 +67,8 @@ class _AdminReportCardState extends State<AdminReportCard> {
     if (Platform.isAndroid) {
       _localPath = '/storage/emulated/0/Download';
     } else if (Platform.isIOS) {
-      final dir = await getExternalStorageDirectory();
-      _localPath = dir!.path;
+      final dir = await getApplicationDocumentsDirectory();
+      _localPath = dir.path;
     }
     print("pathhhh  $_localPath");
     final savedDir = Directory(_localPath);
