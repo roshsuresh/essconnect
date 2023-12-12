@@ -1,4 +1,3 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:essconnect/Application/AdminProviders/SchoolPhotoProviders.dart';
 import 'package:essconnect/Application/AdminProviders/dashboardProvider.dart';
@@ -14,7 +13,6 @@ import 'package:essconnect/Presentation/Admin/MarkEntryMissingReportAdmin.dart';
 import 'package:essconnect/Presentation/Admin/StudentStatistiics.dart';
 import 'package:essconnect/Presentation/Admin/WebViewLogin.dart';
 import 'package:essconnect/Presentation/Staff/MarkEntryNew.dart';
-import 'package:essconnect/Presentation/Staff/MarkEntryReport/MarkEntryReport.dart';
 import 'package:essconnect/Presentation/Staff/RemarksEntry.dart';
 import 'package:essconnect/Presentation/Staff/StudAttendenceEntry.dart';
 import 'package:essconnect/Presentation/Staff/StudReport.dart';

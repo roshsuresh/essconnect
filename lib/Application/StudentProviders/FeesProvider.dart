@@ -5,6 +5,7 @@ import 'package:essconnect/Domain/Student/TrakNpayModel.dart';
 import 'package:essconnect/Domain/Student/TransactionModel.dart';
 import 'package:essconnect/Domain/Student/WorldLineModel.dart';
 import 'package:essconnect/Presentation/Admin/WebViewLogin.dart';
+import 'package:essconnect/Presentation/Student/FeeWebScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -1414,13 +1415,13 @@ class FeesProvider with ChangeNotifier {
         gateway = att.gateway;
         print('gateway  $gateway');
         setLoading(false);
-        // if (gateway == "CCavenue") {
+        // if (gateway == 'TrakNPay') {
         //   String schdomain = _pref.getString("subDomain").toString();
         //   print(schdomain);
         //   return Navigator.pushReplacement(
         //       context,
         //       MaterialPageRoute(
-        //           builder: (context) => LoginScreenWeb(
+        //           builder: (context) => FeeWebScreen(
         //                 schdomain: schdomain,
         //               )));
         // }

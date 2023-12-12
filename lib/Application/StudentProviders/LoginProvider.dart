@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:essconnect/Application/StudentProviders/SiblingsProvider.dart';
+import 'package:essconnect/Constants.dart';
 import 'package:essconnect/Domain/Student/LoginModel.dart';
 import 'package:essconnect/Presentation/Admin/AdminHome.dart';
 import 'package:essconnect/Presentation/ChildLogin/ChildHomeScreen.dart';
@@ -198,6 +199,11 @@ class LoginProvider with ChangeNotifier {
               style: TextStyle(fontSize: 16),
             )));
       }
+    } else if (response.statusCode == 401) {
+      setLoadingLogin(false);
+      var dataa = await response.stream.bytesToString();
+      print(dataa);
+      snackbarWidget(3, dataa, context);
     } else {
       setLoadingLogin(false);
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

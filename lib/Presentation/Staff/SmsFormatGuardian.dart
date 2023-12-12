@@ -1,5 +1,6 @@
 import 'package:essconnect/Constants.dart';
 import 'package:essconnect/utils/constants.dart';
+import 'package:essconnect/utils/spinkit.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
@@ -94,6 +95,7 @@ class _SmsFormatGuardianState extends State<SmsFormatGuardian> {
                                               itemBuilder: (context, index) {
                                                 return ListTile(
                                                   onTap: () async {
+                                                    Navigator.of(context).pop();
                                                     provcheck = snapshot
                                                         .formatlist[index]
                                                         .isApproved!;
@@ -105,6 +107,7 @@ class _SmsFormatGuardianState extends State<SmsFormatGuardian> {
                                                             .formatlist[index]
                                                             .value ??
                                                         '--';
+
                                                     formatController1
                                                         .text = await snapshot
                                                             .formatlist[index]
@@ -114,8 +117,6 @@ class _SmsFormatGuardianState extends State<SmsFormatGuardian> {
                                                         .getSMSContent(
                                                             formatController
                                                                 .text);
-
-                                                    Navigator.of(context).pop();
                                                   },
                                                   title: Text(
                                                     snapshot.formatlist[index]
@@ -457,35 +458,7 @@ class _SmsFormatGuardianState extends State<SmsFormatGuardian> {
                   )
                 ],
               ),
-              if (value.loadsendSms)
-                Container(
-                  color: Colors.black.withOpacity(0.2),
-                  child: Center(
-                    child: Container(
-                      decoration: const BoxDecoration(color: UIGuide.WHITE),
-                      child: const Padding(
-                        padding: EdgeInsets.all(15.0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            CircularProgressIndicator(
-                              color: UIGuide.light_Purple,
-                            ),
-                            kWidth,
-                            Text(
-                              "Please Wait...",
-                              style: TextStyle(
-                                  color: UIGuide.light_Purple,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 18),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+              if (value.loading) pleaseWaitLoader()
             ],
           ),
         ));

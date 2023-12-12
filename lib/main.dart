@@ -6,6 +6,7 @@ import 'package:essconnect/Application/AdminProviders/ChatProviders.dart';
 import 'package:essconnect/Application/AdminProviders/ExamTTPtoviders.dart';
 import 'package:essconnect/Application/Module%20Providers.dart/MobileAppCheckin.dart';
 import 'package:essconnect/Application/Module%20Providers.dart/SchoolNameProvider.dart';
+import 'package:essconnect/Application/Staff_Providers/AncedotalStaffProvider.dart';
 import 'package:essconnect/Application/Staff_Providers/ExamTTProviderStaff.dart';
 import 'package:essconnect/Application/Staff_Providers/MarkEntryNewProvider.dart';
 import 'package:essconnect/Application/Staff_Providers/MissingReportProviders.dart';
@@ -21,7 +22,6 @@ import 'package:essconnect/Application/SuperAdminProviders/NoticeBoardProvidersS
 import 'package:essconnect/Presentation/ChildLogin/ChildHomeScreen.dart';
 import 'package:essconnect/Presentation/SchoolHead/SchoolHeadHome.dart';
 import 'package:essconnect/Presentation/SchoolSuperAdmin/SuperAdminHome.dart';
-import 'package:essconnect/routes.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -51,7 +51,6 @@ import 'Application/AdminProviders/dashboardProvider.dart';
 import 'Application/Module Providers.dart/Module.dart';
 import 'Application/Staff_Providers/Attendencestaff.dart';
 import 'Application/Staff_Providers/GallerySendProviderStaff.dart';
-import 'Application/Staff_Providers/MarkEntryProvider.dart';
 import 'Application/Staff_Providers/MarkReportProvider.dart';
 import 'Application/Staff_Providers/NoticeboardSend.dart';
 import 'Application/Staff_Providers/Notification_ToGuardianProvider.dart';
@@ -239,7 +238,7 @@ class _GjInfoTechState extends State<GjInfoTech> {
         ChangeNotifierProvider(create: (context) => StaffProfileProvider()),
         ChangeNotifierProvider(
             create: (context) => StudReportListProvider_stf()),
-        ChangeNotifierProvider(create: (context) => MarkEntryProvider()),
+        // ChangeNotifierProvider(create: (context) => MarkEntryProvider()),
         ChangeNotifierProvider(create: (context) => StaffTimetableProvider()),
         ChangeNotifierProvider(create: (context) => AttendenceStaffProvider()),
         ChangeNotifierProvider(create: (context) => FlashnewsProvider()),
@@ -303,6 +302,7 @@ class _GjInfoTechState extends State<GjInfoTech> {
         ChangeNotifierProvider(create: (context) => SchoolNameProvider()),
         ChangeNotifierProvider(
             create: (context) => StudentReportProviderStaff()),
+        ChangeNotifierProvider(create: (context) => AnecdotalStaffProviders()),
       ],
       child: MaterialApp(
         title: 'e-SS Connect',
@@ -464,7 +464,7 @@ class _SplashFuturePageState extends State<SplashFuturePage>
 
     Timer(const Duration(seconds: 3), () async {
       await Provider.of<TokenExpiryCheckProviders>(context, listen: false)
-          .checkTokenExpired();
+          .checkTokenExpired(context);
       await _checkSession();
     });
   }
@@ -510,16 +510,19 @@ class _SplashFuturePageState extends State<SplashFuturePage>
               curve: Curves.fastLinearToSlowEaseIn,
               opacity: _containerOpacity,
               child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 2000),
-                  curve: Curves.fastLinearToSlowEaseIn,
-                  height: _width / _containerSize,
-                  width: _width / _containerSize,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(30),
+                duration: const Duration(milliseconds: 2000),
+                curve: Curves.fastLinearToSlowEaseIn,
+                height: _width / _containerSize,
+                width: _width / _containerSize,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(
+                    30,
                   ),
-                  child: Image.asset('assets/ESS-logo.png')),
+                ),
+                child: Image.asset('assets/ESS-logo.png'),
+              ),
             ),
           ),
         ],

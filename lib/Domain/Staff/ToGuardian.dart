@@ -26,18 +26,13 @@ class NotificationToGuardian_initialValues {
 class CommunicationToGuardian_course {
   String? value;
   String? text;
-  Null selected;
-  Null active;
   int? order;
 
-  CommunicationToGuardian_course(
-      {this.value, this.text, this.selected, this.active, this.order});
+  CommunicationToGuardian_course({this.value, this.text, this.order});
 
   CommunicationToGuardian_course.fromJson(Map<String, dynamic> json) {
     value = json['value'];
     text = json['text'];
-    selected = json['selected'];
-    active = json['active'];
     order = json['order'];
   }
 
@@ -45,8 +40,6 @@ class CommunicationToGuardian_course {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['value'] = this.value;
     data['text'] = this.text;
-    data['selected'] = this.selected;
-    data['active'] = this.active;
     data['order'] = this.order;
     return data;
   }
@@ -55,28 +48,21 @@ class CommunicationToGuardian_course {
 class CommunicationToGuardian_Division {
   String? value;
   String? text;
-  Null selected;
-  Null active;
-  Null order;
 
-  CommunicationToGuardian_Division(
-      {this.value, this.text, this.selected, this.active, this.order});
+  CommunicationToGuardian_Division({
+    this.value,
+    this.text,
+  });
 
   CommunicationToGuardian_Division.fromJson(Map<String, dynamic> json) {
     value = json['value'];
     text = json['text'];
-    selected = json['selected'];
-    active = json['active'];
-    order = json['order'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['value'] = this.value;
     data['text'] = this.text;
-    data['selected'] = this.selected;
-    data['active'] = this.active;
-    data['order'] = this.order;
     return data;
   }
 }

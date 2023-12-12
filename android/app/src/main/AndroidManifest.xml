@@ -10,6 +10,8 @@
         <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
         <!-- <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
         <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" /> -->
+        <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
 
         <uses-permission android:name="com.google.android.gms.permission.AD_ID" tools:node="remove"/>
    <application
@@ -17,6 +19,7 @@
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:requestLegacyExternalStorage="true"
+        android:enableOnBackInvokedCallback="true"
         >
 
 
@@ -63,5 +66,7 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+            <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDPKi7RHsv3jzTUZz_yooD08AOZIBrBu04"/>
     </application>
 </manifest>

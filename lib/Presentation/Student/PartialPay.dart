@@ -1133,7 +1133,7 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
 ///////////////////                                 TrakNPay                                    ////////////////////////
 //  -----------------------------------------------------------------------------------------------------------------  //
                                                   else if (trans.gateway ==
-                                                      'TrakNPay') {
+                                                      'TrakNPayyyy') {
                                                     await Provider.of<
                                                                 FeesProvider>(
                                                             context,
@@ -1595,7 +1595,7 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
 ///////////////////                                 TrakNPay                                    ////////////////////////
 //  -----------------------------------------------------------------------------------------------------------------  //
                                                   else if (trans.gateway ==
-                                                      'TrakNPay') {
+                                                      'TrakNPayyyy') {
                                                     await Provider.of<
                                                                 FeesProvider>(
                                                             context,
@@ -2079,7 +2079,7 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
 ///////////////////                                 TrakNPay                                    ////////////////////////
 //  -----------------------------------------------------------------------------------------------------------------  //
                                                     else if (trans.gateway ==
-                                                        'TrakNPay') {
+                                                        'TrakNPayyyy') {
                                                       await Provider.of<
                                                                   FeesProvider>(
                                                               context,
@@ -2543,7 +2543,7 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
 ///////////////////                                 TrakNPay                                    ////////////////////////
 //  -----------------------------------------------------------------------------------------------------------------  //
                                                     else if (trans.gateway ==
-                                                        'TrakNPay') {
+                                                        'TrakNPayyyy') {
                                                       await Provider.of<
                                                                   FeesProvider>(
                                                               context,
@@ -3005,7 +3005,7 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
 ///////////////////                                 TrakNPay                                    ////////////////////////
 //  -----------------------------------------------------------------------------------------------------------------  //
                                                     else if (trans.gateway ==
-                                                        'TrakNPay') {
+                                                        'TrakNPayyyy') {
                                                       await Provider.of<
                                                                   FeesProvider>(
                                                               context,

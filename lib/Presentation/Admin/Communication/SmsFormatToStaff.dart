@@ -221,7 +221,7 @@ class _SmsFormatToStaffState extends State<SmsFormatToStaff> {
                                         } else {
                                           snackbarWidget(
                                               2,
-                                              "SMS format nor approvec",
+                                              "SMS format not approved",
                                               context);
                                         }
                                       }

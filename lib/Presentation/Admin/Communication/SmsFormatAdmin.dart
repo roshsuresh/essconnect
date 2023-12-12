@@ -1,5 +1,6 @@
 import 'package:essconnect/Constants.dart';
 import 'package:essconnect/utils/constants.dart';
+import 'package:essconnect/utils/spinkit.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
@@ -445,35 +446,7 @@ class _SmsFormatAdminState extends State<SmsFormatAdmin> {
                   )
                 ],
               ),
-              if (value.loadSMS)
-                Container(
-                  color: Colors.black.withOpacity(0.2),
-                  child: Center(
-                    child: Container(
-                      decoration: BoxDecoration(color: UIGuide.WHITE),
-                      child: Padding(
-                        padding: const EdgeInsets.all(15.0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            CircularProgressIndicator(
-                              color: UIGuide.light_Purple,
-                            ),
-                            kWidth,
-                            Text(
-                              "Please Wait...",
-                              style: TextStyle(
-                                  color: UIGuide.light_Purple,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 18),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+              if (value.loading) pleaseWaitLoader()
             ],
           ),
         ));

@@ -149,23 +149,25 @@ class _StaffNoticeBoard_sentState extends State<StaffNoticeBoard_sent> {
                 child: SizedBox(
                   height: 40,
                   child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        elevation: 3,
-                        foregroundColor: UIGuide.light_Purple,
-                        backgroundColor: UIGuide.ButtonBlue,
-                        padding: const EdgeInsets.all(0),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            side: const BorderSide(
-                              color: UIGuide.light_black,
-                            )),
+                    style: ElevatedButton.styleFrom(
+                      elevation: 3,
+                      foregroundColor: UIGuide.light_Purple,
+                      backgroundColor: UIGuide.ButtonBlue,
+                      padding: const EdgeInsets.all(0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        side: const BorderSide(
+                          color: UIGuide.light_black,
+                        ),
                       ),
-                      onPressed: () {},
-                      child: Text(
-                        '🗓️  ${datee.toString()}',
-                        style:
-                            const TextStyle(color: UIGuide.BLACK, fontSize: 14),
-                      )),
+                    ),
+                    onPressed: () {},
+                    child: Text(
+                      '🗓️  ${datee.toString()}',
+                      style:
+                          const TextStyle(color: UIGuide.BLACK, fontSize: 14),
+                    ),
+                  ),
                 ),
               ),
               kWidth,
@@ -181,10 +183,11 @@ class _StaffNoticeBoard_sentState extends State<StaffNoticeBoard_sent> {
                         backgroundColor: UIGuide.ButtonBlue,
                         padding: const EdgeInsets.all(0),
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            side: const BorderSide(
-                              color: UIGuide.light_black,
-                            )),
+                          borderRadius: BorderRadius.circular(10),
+                          side: const BorderSide(
+                            color: UIGuide.light_black,
+                          ),
+                        ),
                       ),
                       onPressed: () {
                         showDialog(
@@ -192,7 +195,8 @@ class _StaffNoticeBoard_sentState extends State<StaffNoticeBoard_sent> {
                             builder: (context) {
                               return Dialog(
                                   shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(15)),
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
                                   child: LimitedBox(
                                     maxHeight: size.height - 300,
                                     child: ListView.builder(
@@ -205,10 +209,12 @@ class _StaffNoticeBoard_sentState extends State<StaffNoticeBoard_sent> {
                                             onTap: () async {
                                               print(
                                                   {noticeCategoryStf![index]});
+
                                               categoryvalueController.text =
                                                   await noticeCategoryStf![
                                                           index]['value'] ??
                                                       '--';
+
                                               categoryvalueController1.text =
                                                   await noticeCategoryStf![
                                                           index]['text'] ??

@@ -394,6 +394,7 @@ class _ViewImageOntapState extends State<ViewImageOntap> {
           itemCount: value.galleryList.isEmpty ? 0 : value.galleryList.length,
           builder: ((_, indee) {
             final imgUrl = value.galleryList[widget.currentIndex]['url'];
+
             return PhotoViewGalleryPageOptions(
               imageProvider: NetworkImage(
                 imgUrl ?? const AssetImage('assets/noimages.png'),

@@ -1,15 +1,9 @@
-
-
 class AttendanceInitial {
-
   bool? isDualAttendance;
 
-
-  AttendanceInitial(
-      {
-        this.isDualAttendance,
-
-      });
+  AttendanceInitial({
+    this.isDualAttendance,
+  });
 
   AttendanceInitial.fromJson(Map<String, dynamic> json) {
     isDualAttendance = json['isDualAttendance'];
@@ -174,22 +168,22 @@ class GetNumbers {
 
   GetNumbers(
       {this.id,
-        this.studentId,
-        this.admNo,
-        this.classTeacher,
-        this.name,
-        this.course,
-        this.division,
-        this.rollNo,
-        this.guardianName,
-        this.fatherName,
-        this.motherName,
-        this.guardianMobile,
-        this.guardianEmail,
-        this.fatherMobile,
-        this.fatherEmail,
-        this.motherMobile,
-        this.motherEmail});
+      this.studentId,
+      this.admNo,
+      this.classTeacher,
+      this.name,
+      this.course,
+      this.division,
+      this.rollNo,
+      this.guardianName,
+      this.fatherName,
+      this.motherName,
+      this.guardianMobile,
+      this.guardianEmail,
+      this.fatherMobile,
+      this.fatherEmail,
+      this.motherMobile,
+      this.motherEmail});
 
   GetNumbers.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -234,32 +228,27 @@ class GetNumbers {
   }
 }
 
-
 // SendSms
 
 class AttendanceSmsSave {
   AttendanceSmsSave({
-    required this.id,
     required this.sendFailed,
     required this.sendSuccess,
     required this.typeSend,
   });
 
-  String id;
   int sendFailed;
   int sendSuccess;
   String typeSend;
 
   factory AttendanceSmsSave.fromJson(Map<String, dynamic> json) =>
       AttendanceSmsSave(
-        id: json["id"],
         sendFailed: json["sendFailed"],
         sendSuccess: json["sendSuccess"],
         typeSend: json["typeSend"],
       );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
         "sendFailed": sendFailed,
         "sendSuccess": sendSuccess,
         "typeSend": typeSend,

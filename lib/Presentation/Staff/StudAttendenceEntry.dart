@@ -224,6 +224,9 @@ class _AttendenceEntryState extends State<AttendenceEntry> {
                                                               (context, index) {
                                                             return ListTile(
                                                               onTap: () async {
+                                                                Navigator.of(
+                                                                        context)
+                                                                    .pop();
                                                                 //markEntryDivisionListController.clear();
                                                                 markEntryDivisionListController1
                                                                     .clear();
@@ -264,10 +267,6 @@ class _AttendenceEntryState extends State<AttendenceEntry> {
                                                                             false)
                                                                     .getAttendenceDivisionValues(
                                                                         courseId);
-
-                                                                Navigator.of(
-                                                                        context)
-                                                                    .pop();
                                                               },
                                                               title: Text(
                                                                 attendecourse![
@@ -442,6 +441,8 @@ class _AttendenceEntryState extends State<AttendenceEntry> {
                                                                       return ListTile(
                                                                         onTap:
                                                                             () async {
+                                                                          Navigator.of(context)
+                                                                              .pop();
                                                                           markEntryDivisionListController.text =
                                                                               snapshot.attendenceDivisionList[index].value ?? '---';
                                                                           markEntryDivisionListController1.text =
@@ -454,9 +455,6 @@ class _AttendenceEntryState extends State<AttendenceEntry> {
                                                                               .toString();
                                                                           snapshot
                                                                               .clearStudentList();
-
-                                                                          Navigator.of(context)
-                                                                              .pop();
                                                                         },
                                                                         title:
                                                                             Text(

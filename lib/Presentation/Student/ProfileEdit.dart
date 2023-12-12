@@ -625,26 +625,29 @@ class _ProfileEditState extends State<ProfileEdit> {
                 children: [
                   kWidth20,
                   Expanded(
-                      child: ElevatedButton(
-                    onPressed: value.loadingg
-                        ? null
-                        : () {
-                            Navigator.pop(context);
-                          },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: UIGuide.WHITE,
-                      foregroundColor: UIGuide.light_Purple,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                        side: const BorderSide(
-                          color: UIGuide.light_Purple,
-                          width: 2.0,
+                    child: ElevatedButton(
+                      onPressed: value.loadingg
+                          ? null
+                          : () {
+                              Navigator.pop(context);
+                            },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: UIGuide.WHITE,
+                        foregroundColor: UIGuide.light_Purple,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          side: const BorderSide(
+                            color: UIGuide.light_Purple,
+                            width: 2.0,
+                          ),
                         ),
                       ),
+                      child: const Text(
+                        "Cancel",
+                        style: TextStyle(color: UIGuide.light_Purple),
+                      ),
                     ),
-                    child: const Text("Cancel",
-                        style: TextStyle(color: UIGuide.light_Purple)),
-                  )),
+                  ),
                   kWidth20,
                   Expanded(
                       child: ElevatedButton(

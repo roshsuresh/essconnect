@@ -40,6 +40,7 @@ class _MissingReportAdminState extends State<MissingReportAdmin> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       var p = Provider.of<MissingReportProviders>(context, listen: false);
+      await p.setLoading(false);
       await p.courseClear();
       await p.clearDivision();
       await p.clearPart();
@@ -88,777 +89,805 @@ class _MissingReportAdminState extends State<MissingReportAdmin> {
         backgroundColor: UIGuide.light_Purple,
       ),
       body: Consumer<MissingReportProviders>(
-        builder: (context, value, child) => Column(
-          // physics: const PageScrollPhysics(),
-          // shrinkWrap: true,
+        builder: (context, value, child) => Stack(
           children: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  const Spacer(),
-                  SizedBox(
-                    height: 45,
-                    width: MediaQuery.of(context).size.width * 0.46,
-                    child: Consumer<MissingReportProviders>(
-                        builder: (context, snapshot, child) {
-                      return ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          elevation: 3,
-                          foregroundColor: UIGuide.light_Purple,
-                          backgroundColor: UIGuide.ButtonBlue,
-                          padding: const EdgeInsets.all(0),
-                          shape: RoundedRectangleBorder(
-                            side: const BorderSide(
-                              color: UIGuide.light_black,
-                            ),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        onPressed: () async {
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return Dialog(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(15)),
-                                    child: LimitedBox(
-                                      maxHeight: size.height - 300,
-                                      child: ListView.builder(
-                                          shrinkWrap: true,
-                                          itemCount: snapshot
-                                              .missingInitialValues.length,
-                                          itemBuilder: (context, index) {
-                                            return ListTile(
-                                              onTap: () async {
-                                                missingInitialValuesController
-                                                    .text = snapshot
-                                                        .missingInitialValues[
-                                                            index]
-                                                        .id ??
-                                                    '--';
-                                                missingInitialValuesController1
-                                                    .text = snapshot
-                                                        .missingInitialValues[
-                                                            index]
-                                                        .courseName ??
-                                                    '--';
-                                                courseId =
-                                                    missingInitialValuesController
-                                                        .text
-                                                        .toString();
-                                                await snapshot.clearDivision();
-                                                await snapshot.clearPart();
-
-                                                snapshot.divisionLen = 0;
-
-                                                divisionData.clear();
-
-                                                missingPartController.clear();
-                                                missingPartController1.clear();
-
-                                                missingExamController.clear();
-                                                missingExamController1.clear();
-
-                                                await snapshot.clearSubject();
-                                                subjectData.clear();
-                                                snapshot.subjectLen = 0;
-                                                userData.clear();
-                                                snapshot.userLen = 0;
-
-                                                await snapshot
-                                                    .getDivisionList(courseId);
-
-                                                await value
-                                                    .clearViewStaffList();
-                                                await value
-                                                    .clearViewStudentList();
-                                                Navigator.of(context).pop();
-                                              },
-                                              title: Text(
-                                                snapshot
-                                                        .missingInitialValues[
-                                                            index]
-                                                        .courseName ??
-                                                    '--',
-                                                textAlign: TextAlign.center,
-                                              ),
-                                            );
-                                          }),
-                                    ));
-                              });
-                        },
-                        child: TextField(
-                          style: const TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              color: UIGuide.BLACK,
-                              overflow: TextOverflow.clip),
-                          textAlign: TextAlign.center,
-                          controller: missingInitialValuesController1,
-                          decoration: InputDecoration(
-                            filled: true,
-                            contentPadding:
-                                const EdgeInsets.only(left: 0, top: 0),
-                            floatingLabelBehavior: FloatingLabelBehavior.never,
-                            fillColor: Colors.transparent,
-                            border: const OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(style: BorderStyle.none, width: 0),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                  color: Colors.white, width: 2.0),
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: const BorderSide(
-                                color: Colors.white,
-                                width: 2.0,
-                              ),
-                            ),
-                            labelText: "  Select Course",
-                            hintText: "   Select Course",
-                          ),
-                          readOnly: true,
-                          enabled: false,
-                        ),
-                      );
-                    }),
-                  ),
-                  const Spacer(),
-                  Consumer<MissingReportProviders>(
-                    builder: (context, value, child) => SizedBox(
-                      width: size.width * .46,
-                      height: 45,
-                      child: MultiSelectDialogField(
-                        items: value.divisionDrop,
-                        listType: MultiSelectListType.CHIP,
-                        title: const Text(
-                          "Select Division",
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                        selectedItemsTextStyle: const TextStyle(
-                            fontWeight: FontWeight.w900,
-                            color: UIGuide.light_Purple),
-                        confirmText: const Text(
-                          'OK',
-                          style: TextStyle(color: UIGuide.light_Purple),
-                        ),
-                        cancelText: const Text(
-                          'Cancel',
-                          style: TextStyle(color: UIGuide.light_Purple),
-                        ),
-                        separateSelectedItems: true,
-                        decoration: const BoxDecoration(
-                          color: UIGuide.ButtonBlue,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey,
-                              offset: Offset(0, 2),
-                              blurRadius: 4,
-                              spreadRadius: 0,
-                            ),
-                          ],
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                        ),
-                        buttonIcon: const Icon(
-                          Icons.arrow_drop_down_outlined,
-                          color: Colors.grey,
-                        ),
-                        buttonText: value.divisionLen == 0
-                            ? const Text(
-                                "Select Division",
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 14,
+            Column(
+              // physics: const PageScrollPhysics(),
+              // shrinkWrap: true,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: [
+                      const Spacer(),
+                      SizedBox(
+                        height: 45,
+                        width: MediaQuery.of(context).size.width * 0.46,
+                        child: Consumer<MissingReportProviders>(
+                            builder: (context, snapshot, child) {
+                          return ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              elevation: 3,
+                              foregroundColor: UIGuide.light_Purple,
+                              backgroundColor: UIGuide.ButtonBlue,
+                              padding: const EdgeInsets.all(0),
+                              shape: RoundedRectangleBorder(
+                                side: const BorderSide(
+                                  color: UIGuide.light_black,
                                 ),
-                              )
-                            : Text(
-                                "   ${value.divisionLen.toString()} Selected",
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 14,
-                                ),
-                              ),
-                        searchable: true,
-                        chipDisplay: MultiSelectChipDisplay.none(),
-                        onConfirm: (results) async {
-                          divisionData = [];
-
-                          for (var i = 0; i < results.length; i++) {
-                            DivisionListReport data =
-                                results[i] as DivisionListReport;
-                            print(data.text);
-                            print(data.value);
-                            divisionData.add(data.value);
-                            divisionData.map((e) => data.value);
-                            print("${divisionData.map((e) => data.value)}");
-                          }
-
-                          division = divisionData.join(',');
-                          await Provider.of<MissingReportProviders>(context,
-                                  listen: false)
-                              .divisionCounter(results.length);
-
-                          await value.clearSubject();
-                          subjectData.clear();
-                          value.subjectLen = 0;
-                          userData.clear();
-                          value.userLen = 0;
-                          value.partList.clear();
-
-                          missingPartController.clear();
-                          missingPartController1.clear();
-
-                          missingExamController.clear();
-                          missingExamController1.clear();
-
-                          await value.clearViewStaffList();
-
-                          await value.clearViewStudentList();
-                          results.clear();
-                          await value.getPartList(division);
-
-                          print("data $division");
-                          print("=====$divisionData");
-                        },
-                      ),
-                    ),
-                  ),
-                  const Spacer(),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0, right: 8),
-              child: Row(
-                children: [
-                  const Spacer(),
-                  SizedBox(
-                    height: 45,
-                    width: MediaQuery.of(context).size.width * 0.46,
-                    child: Consumer<MissingReportProviders>(
-                        builder: (context, snapshot, child) {
-                      return ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          elevation: 3,
-                          foregroundColor: UIGuide.light_Purple,
-                          backgroundColor: UIGuide.ButtonBlue,
-                          padding: const EdgeInsets.all(0),
-                          shape: RoundedRectangleBorder(
-                            side: const BorderSide(
-                              color: UIGuide.light_black,
-                            ),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        onPressed: () async {
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return Dialog(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(15)),
-                                    child: LimitedBox(
-                                      maxHeight: size.height - 300,
-                                      child: ListView.builder(
-                                          shrinkWrap: true,
-                                          itemCount: snapshot.partList.length,
-                                          itemBuilder: (context, index) {
-                                            return ListTile(
-                                              onTap: () async {
-                                                missingPartController.text =
-                                                    snapshot.partList[index]
-                                                            .value ??
-                                                        '--';
-                                                missingPartController1.text =
-                                                    snapshot.partList[index]
-                                                            .text ??
-                                                        '--';
-                                                partID = missingPartController
-                                                    .text
-                                                    .toString();
-
-                                                missingExamController.clear();
-                                                missingExamController1.clear();
-                                                await snapshot.examClear();
-                                                await snapshot.clearSubject();
-                                                subjectData.clear();
-                                                snapshot.subjectLen = 0;
-                                                userData.clear();
-                                                snapshot.userLen = 0;
-
-                                                await snapshot.getExamValues(
-                                                    courseId,
-                                                    partID,
-                                                    divisionData);
-
-                                                await value
-                                                    .clearViewStaffList();
-
-                                                await value
-                                                    .clearViewStudentList();
-                                                Navigator.of(context).pop();
-                                              },
-                                              title: Text(
-                                                snapshot.partList[index].text ??
-                                                    '--',
-                                                textAlign: TextAlign.center,
-                                              ),
-                                            );
-                                          }),
-                                    ));
-                              });
-                        },
-                        child: TextField(
-                          style: const TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              color: UIGuide.BLACK,
-                              overflow: TextOverflow.clip),
-                          textAlign: TextAlign.center,
-                          controller: missingPartController1,
-                          decoration: InputDecoration(
-                            filled: true,
-                            contentPadding:
-                                const EdgeInsets.only(left: 0, top: 0),
-                            floatingLabelBehavior: FloatingLabelBehavior.never,
-                            fillColor: Colors.transparent,
-                            border: const OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(style: BorderStyle.none, width: 0),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                  color: Colors.white, width: 2.0),
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: const BorderSide(
-                                color: Colors.white,
-                                width: 2.0,
+                                borderRadius: BorderRadius.circular(10),
                               ),
                             ),
-                            labelText: "  Select Part",
-                            hintText: "   Select Part",
-                          ),
-                          readOnly: true,
-                          enabled: false,
-                        ),
-                      );
-                    }),
-                  ),
-                  const Spacer(),
-                  SizedBox(
-                    height: 45,
-                    width: MediaQuery.of(context).size.width * 0.46,
-                    child: Consumer<MissingReportProviders>(
-                        builder: (context, snapshot, child) {
-                      return ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          elevation: 3,
-                          foregroundColor: UIGuide.light_Purple,
-                          backgroundColor: UIGuide.ButtonBlue,
-                          padding: const EdgeInsets.all(0),
-                          shape: RoundedRectangleBorder(
-                            side: const BorderSide(
-                              color: UIGuide.light_black,
-                            ),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        onPressed: () async {
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return Dialog(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(15)),
-                                    child: LimitedBox(
-                                      maxHeight: size.height - 300,
-                                      child: ListView.builder(
-                                          shrinkWrap: true,
-                                          itemCount: snapshot.examList.length,
-                                          itemBuilder: (context, index) {
-                                            return ListTile(
-                                              onTap: () async {
-                                                missingExamController.text =
-                                                    snapshot.examList[index]
-                                                            .value ??
-                                                        '--';
-                                                missingExamController1.text =
-                                                    snapshot.examList[index]
-                                                            .text ??
-                                                        '--';
-
-                                                examId = missingExamController
-                                                    .text
-                                                    .toString();
-
-                                                await snapshot.clearSubject();
-                                                subjectData.clear();
-                                                snapshot.subjectLen = 0;
-                                                userData.clear();
-                                                snapshot.userLen = 0;
-
-                                                await snapshot.getSubjectList(
-                                                    courseId,
-                                                    partID,
-                                                    examId,
-                                                    divisionData);
-
-                                                await value
-                                                    .clearViewStaffList();
-                                                await value
-                                                    .clearViewStudentList();
-
-                                                Navigator.of(context).pop();
-                                              },
-                                              title: Text(
-                                                snapshot.examList[index].text ??
-                                                    '--',
-                                                textAlign: TextAlign.center,
-                                              ),
-                                            );
-                                          }),
-                                    ));
-                              });
-                        },
-                        child: TextField(
-                          style: const TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              color: UIGuide.BLACK,
-                              overflow: TextOverflow.clip),
-                          textAlign: TextAlign.center,
-                          controller: missingExamController1,
-                          decoration: InputDecoration(
-                            filled: true,
-                            contentPadding:
-                                const EdgeInsets.only(left: 0, top: 0),
-                            floatingLabelBehavior: FloatingLabelBehavior.never,
-                            fillColor: Colors.transparent,
-                            border: const OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(style: BorderStyle.none, width: 0),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                  color: Colors.white, width: 2.0),
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: const BorderSide(
-                                color: Colors.white,
-                                width: 2.0,
-                              ),
-                            ),
-                            labelText: "  Select Exam",
-                            hintText: "   Select Exam",
-                          ),
-                          readOnly: true,
-                          enabled: false,
-                        ),
-                      );
-                    }),
-                  ),
-                  const Spacer(),
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  const Spacer(),
-                  Consumer<MissingReportProviders>(
-                    builder: (context, value, child) => SizedBox(
-                      width: size.width * .46,
-                      height: 45,
-                      child: MultiSelectDialogField(
-                        items: value.subjectDrop,
-                        listType: MultiSelectListType.CHIP,
-                        title: const Text(
-                          "Select Subject",
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                        selectedItemsTextStyle: const TextStyle(
-                            fontWeight: FontWeight.w900,
-                            color: UIGuide.light_Purple),
-                        confirmText: const Text(
-                          'OK',
-                          style: TextStyle(color: UIGuide.light_Purple),
-                        ),
-                        cancelText: const Text(
-                          'Cancel',
-                          style: TextStyle(color: UIGuide.light_Purple),
-                        ),
-                        separateSelectedItems: true,
-                        decoration: const BoxDecoration(
-                          color: UIGuide.ButtonBlue,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey,
-                              offset: Offset(0, 2),
-                              blurRadius: 4,
-                              spreadRadius: 0,
-                            ),
-                          ],
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                        ),
-                        buttonIcon: const Icon(
-                          Icons.arrow_drop_down_outlined,
-                          color: Colors.grey,
-                        ),
-                        buttonText: value.subjectLen == 0
-                            ? const Text(
-                                "Select Subject",
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 14,
-                                ),
-                              )
-                            : Text(
-                                "   ${value.subjectLen.toString()} Selected",
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 14,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                        searchable: true,
-                        chipDisplay: MultiSelectChipDisplay.none(),
-                        onConfirm: (results) async {
-                          subjectData = [];
-                          for (var i = 0; i < results.length; i++) {
-                            SubjectListModel data =
-                                results[i] as SubjectListModel;
-                            print(data.text);
-                            print(data.value);
-                            subjectData.add(data.value);
-                            subjectData.map((e) => data.value);
-                            print("${subjectData.map((e) => data.value)}");
-                          }
-                          subject = subjectData.join(',');
-                          await Provider.of<MissingReportProviders>(context,
-                                  listen: false)
-                              .subjectCounter(results.length);
-                          results.clear();
-
-                          print("data $subject");
-                          await value.clearViewStaffList();
-                          await value.clearViewStudentList();
-                          results.clear();
-                        },
-                      ),
-                    ),
-                  ),
-                  const Spacer(),
-                  Consumer<MissingReportProviders>(
-                    builder: (context, value, child) => SizedBox(
-                      width: size.width * .46,
-                      height: 45,
-                      child: MultiSelectDialogField(
-                        items: value.userDrop,
-                        listType: MultiSelectListType.CHIP,
-                        title: const Text(
-                          "Select User",
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                        selectedItemsTextStyle: const TextStyle(
-                            fontWeight: FontWeight.w900,
-                            color: UIGuide.light_Purple),
-                        confirmText: const Text(
-                          'OK',
-                          style: TextStyle(color: UIGuide.light_Purple),
-                        ),
-                        cancelText: const Text(
-                          'Cancel',
-                          style: TextStyle(color: UIGuide.light_Purple),
-                        ),
-                        separateSelectedItems: true,
-                        decoration: const BoxDecoration(
-                          color: UIGuide.ButtonBlue,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey,
-                              offset: Offset(0, 2),
-                              blurRadius: 4,
-                              spreadRadius: 0,
-                            ),
-                          ],
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                        ),
-                        buttonIcon: const Icon(
-                          Icons.arrow_drop_down_outlined,
-                          color: Colors.grey,
-                        ),
-                        buttonText: value.userLen == 0
-                            ? const Text(
-                                "Select User",
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 14,
-                                ),
-                              )
-                            : Text(
-                                "   ${value.userLen.toString()} Selected",
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 14,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                        searchable: true,
-                        chipDisplay: MultiSelectChipDisplay.none(),
-                        onConfirm: (resultsw) async {
-                          userData = [];
-                          for (var i = 0; i < resultsw.length; i++) {
-                            UsersListModel data = resultsw[i] as UsersListModel;
-                            print(data.text);
-                            print(data.value);
-                            userData.add(data.value);
-                            userData.map((e) => data.value);
-                            print("${userData.map((e) => data.value)}");
-                          }
-                          subject = userData.join(',');
-                          await Provider.of<MissingReportProviders>(context,
-                                  listen: false)
-                              .userCounter(resultsw.length);
-                          resultsw.clear();
-
-                          print("data $user");
-                          await value.clearViewStaffList();
-                          await value.clearViewStudentList();
-                          resultsw.clear();
-                        },
-                      ),
-                    ),
-                  ),
-                  const Spacer()
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0, right: 8),
-              child: Row(
-                children: [
-                  const Spacer(),
-                  SizedBox(
-                    width: size.width * .46,
-                    child: InkWell(
-                        onTap: () => value.studentWiseCheckbox(),
-                        child: Row(
-                          children: [
-                            Checkbox(
-                              activeColor: UIGuide.light_Purple,
-                              value: value.isShown,
-                              onChanged: (newValue) {
-                                value.studentWiseCheckbox();
-                              },
-                            ),
-                            const Expanded(
-                              //   width: size.width * .35,
-                              child: Text(
-                                'Show student wise report',
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    color: UIGuide.BLACK, fontSize: 12),
-                              ),
-                            )
-                          ],
-                        )),
-                  ),
-                  const Spacer(),
-                  SizedBox(
-                    width: size.width * .46,
-                    height: 45,
-                    child: value.load
-                        ? const Center(
-                            child: Text(
-                              'Loading...',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: UIGuide.light_Purple,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          )
-                        : MaterialButton(
                             onPressed: () async {
-                              if (missingInitialValuesController.text.isEmpty &&
-                                  missingExamController.text.isEmpty &&
-                                  missingPartController.text.isEmpty) {
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(const SnackBar(
-                                  elevation: 10,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20)),
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return Dialog(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(15)),
+                                        child: LimitedBox(
+                                          maxHeight: size.height - 300,
+                                          child: ListView.builder(
+                                              shrinkWrap: true,
+                                              itemCount: snapshot
+                                                  .missingInitialValues.length,
+                                              itemBuilder: (context, index) {
+                                                return ListTile(
+                                                  onTap: () async {
+                                                    Navigator.of(context).pop();
+                                                    missingInitialValuesController
+                                                        .text = snapshot
+                                                            .missingInitialValues[
+                                                                index]
+                                                            .id ??
+                                                        '--';
+                                                    missingInitialValuesController1
+                                                        .text = snapshot
+                                                            .missingInitialValues[
+                                                                index]
+                                                            .courseName ??
+                                                        '--';
+                                                    courseId =
+                                                        missingInitialValuesController
+                                                            .text
+                                                            .toString();
+                                                    await snapshot
+                                                        .clearDivision();
+                                                    await snapshot.clearPart();
+
+                                                    snapshot.divisionLen = 0;
+
+                                                    divisionData.clear();
+
+                                                    missingPartController
+                                                        .clear();
+                                                    missingPartController1
+                                                        .clear();
+
+                                                    missingExamController
+                                                        .clear();
+                                                    missingExamController1
+                                                        .clear();
+
+                                                    await snapshot
+                                                        .clearSubject();
+                                                    subjectData.clear();
+                                                    snapshot.subjectLen = 0;
+                                                    userData.clear();
+                                                    snapshot.userLen = 0;
+
+                                                    await snapshot
+                                                        .getDivisionList(
+                                                            courseId);
+
+                                                    await value
+                                                        .clearViewStaffList();
+                                                    await value
+                                                        .clearViewStudentList();
+                                                  },
+                                                  title: Text(
+                                                    snapshot
+                                                            .missingInitialValues[
+                                                                index]
+                                                            .courseName ??
+                                                        '--',
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                );
+                                              }),
+                                        ));
+                                  });
+                            },
+                            child: TextField(
+                              style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: UIGuide.BLACK,
+                                  overflow: TextOverflow.clip),
+                              textAlign: TextAlign.center,
+                              controller: missingInitialValuesController1,
+                              decoration: InputDecoration(
+                                filled: true,
+                                contentPadding:
+                                    const EdgeInsets.only(left: 0, top: 0),
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.never,
+                                fillColor: Colors.transparent,
+                                border: const OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      style: BorderStyle.none, width: 0),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                      color: Colors.white, width: 2.0),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderSide: const BorderSide(
+                                    color: Colors.white,
+                                    width: 2.0,
                                   ),
-                                  duration: Duration(seconds: 3),
-                                  margin: EdgeInsets.only(
-                                      bottom: 80, left: 30, right: 30),
-                                  behavior: SnackBarBehavior.floating,
-                                  content: Text(
-                                    'Enter mandatory fields...',
+                                ),
+                                labelText: "  Select Course",
+                                hintText: "   Select Course",
+                              ),
+                              readOnly: true,
+                              enabled: false,
+                            ),
+                          );
+                        }),
+                      ),
+                      const Spacer(),
+                      Consumer<MissingReportProviders>(
+                        builder: (context, value, child) => SizedBox(
+                          width: size.width * .46,
+                          height: 45,
+                          child: MultiSelectDialogField(
+                            items: value.divisionDrop,
+                            listType: MultiSelectListType.CHIP,
+                            title: const Text(
+                              "Select Division",
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                            selectedItemsTextStyle: const TextStyle(
+                                fontWeight: FontWeight.w900,
+                                color: UIGuide.light_Purple),
+                            confirmText: const Text(
+                              'OK',
+                              style: TextStyle(color: UIGuide.light_Purple),
+                            ),
+                            cancelText: const Text(
+                              'Cancel',
+                              style: TextStyle(color: UIGuide.light_Purple),
+                            ),
+                            separateSelectedItems: true,
+                            decoration: const BoxDecoration(
+                              color: UIGuide.ButtonBlue,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey,
+                                  offset: Offset(0, 2),
+                                  blurRadius: 4,
+                                  spreadRadius: 0,
+                                ),
+                              ],
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10)),
+                            ),
+                            buttonIcon: const Icon(
+                              Icons.arrow_drop_down_outlined,
+                              color: Colors.grey,
+                            ),
+                            buttonText: value.divisionLen == 0
+                                ? const Text(
+                                    "Select Division",
+                                    style: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 14,
+                                    ),
+                                  )
+                                : Text(
+                                    "   ${value.divisionLen.toString()} Selected",
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                            searchable: true,
+                            chipDisplay: MultiSelectChipDisplay.none(),
+                            onConfirm: (results) async {
+                              divisionData = [];
+
+                              for (var i = 0; i < results.length; i++) {
+                                DivisionListReport data =
+                                    results[i] as DivisionListReport;
+                                print(data.text);
+                                print(data.value);
+                                divisionData.add(data.value);
+                                divisionData.map((e) => data.value);
+                                print("${divisionData.map((e) => data.value)}");
+                              }
+
+                              division = divisionData.join(',');
+                              await Provider.of<MissingReportProviders>(context,
+                                      listen: false)
+                                  .divisionCounter(results.length);
+
+                              await value.clearSubject();
+                              subjectData.clear();
+                              value.subjectLen = 0;
+                              userData.clear();
+                              value.userLen = 0;
+                              value.partList.clear();
+
+                              missingPartController.clear();
+                              missingPartController1.clear();
+
+                              missingExamController.clear();
+                              missingExamController1.clear();
+
+                              await value.clearViewStaffList();
+
+                              await value.clearViewStudentList();
+                              results.clear();
+                              await value.getPartList(division);
+
+                              print("data $division");
+                              print("=====$divisionData");
+                            },
+                          ),
+                        ),
+                      ),
+                      const Spacer(),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0, right: 8),
+                  child: Row(
+                    children: [
+                      const Spacer(),
+                      SizedBox(
+                        height: 45,
+                        width: MediaQuery.of(context).size.width * 0.46,
+                        child: Consumer<MissingReportProviders>(
+                            builder: (context, snapshot, child) {
+                          return ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              elevation: 3,
+                              foregroundColor: UIGuide.light_Purple,
+                              backgroundColor: UIGuide.ButtonBlue,
+                              padding: const EdgeInsets.all(0),
+                              shape: RoundedRectangleBorder(
+                                side: const BorderSide(
+                                  color: UIGuide.light_black,
+                                ),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            onPressed: () async {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return Dialog(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(15)),
+                                        child: LimitedBox(
+                                          maxHeight: size.height - 300,
+                                          child: ListView.builder(
+                                              shrinkWrap: true,
+                                              itemCount:
+                                                  snapshot.partList.length,
+                                              itemBuilder: (context, index) {
+                                                return ListTile(
+                                                  onTap: () async {
+                                                    Navigator.of(context).pop();
+                                                    missingPartController.text =
+                                                        snapshot.partList[index]
+                                                                .value ??
+                                                            '--';
+                                                    missingPartController1
+                                                        .text = snapshot
+                                                            .partList[index]
+                                                            .text ??
+                                                        '--';
+                                                    partID =
+                                                        missingPartController
+                                                            .text
+                                                            .toString();
+
+                                                    missingExamController
+                                                        .clear();
+                                                    missingExamController1
+                                                        .clear();
+                                                    await snapshot.examClear();
+                                                    await snapshot
+                                                        .clearSubject();
+                                                    subjectData.clear();
+                                                    snapshot.subjectLen = 0;
+                                                    userData.clear();
+                                                    snapshot.userLen = 0;
+
+                                                    await snapshot
+                                                        .getExamValues(
+                                                            courseId,
+                                                            partID,
+                                                            divisionData);
+
+                                                    await value
+                                                        .clearViewStaffList();
+
+                                                    await value
+                                                        .clearViewStudentList();
+                                                  },
+                                                  title: Text(
+                                                    snapshot.partList[index]
+                                                            .text ??
+                                                        '--',
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                );
+                                              }),
+                                        ));
+                                  });
+                            },
+                            child: TextField(
+                              style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: UIGuide.BLACK,
+                                  overflow: TextOverflow.clip),
+                              textAlign: TextAlign.center,
+                              controller: missingPartController1,
+                              decoration: InputDecoration(
+                                filled: true,
+                                contentPadding:
+                                    const EdgeInsets.only(left: 0, top: 0),
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.never,
+                                fillColor: Colors.transparent,
+                                border: const OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      style: BorderStyle.none, width: 0),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                      color: Colors.white, width: 2.0),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderSide: const BorderSide(
+                                    color: Colors.white,
+                                    width: 2.0,
+                                  ),
+                                ),
+                                labelText: "  Select Part",
+                                hintText: "   Select Part",
+                              ),
+                              readOnly: true,
+                              enabled: false,
+                            ),
+                          );
+                        }),
+                      ),
+                      const Spacer(),
+                      SizedBox(
+                        height: 45,
+                        width: MediaQuery.of(context).size.width * 0.46,
+                        child: Consumer<MissingReportProviders>(
+                            builder: (context, snapshot, child) {
+                          return ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              elevation: 3,
+                              foregroundColor: UIGuide.light_Purple,
+                              backgroundColor: UIGuide.ButtonBlue,
+                              padding: const EdgeInsets.all(0),
+                              shape: RoundedRectangleBorder(
+                                side: const BorderSide(
+                                  color: UIGuide.light_black,
+                                ),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            onPressed: () async {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return Dialog(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(15)),
+                                        child: LimitedBox(
+                                          maxHeight: size.height - 300,
+                                          child: ListView.builder(
+                                              shrinkWrap: true,
+                                              itemCount:
+                                                  snapshot.examList.length,
+                                              itemBuilder: (context, index) {
+                                                return ListTile(
+                                                  onTap: () async {
+                                                    Navigator.of(context).pop();
+                                                    missingExamController.text =
+                                                        snapshot.examList[index]
+                                                                .value ??
+                                                            '--';
+                                                    missingExamController1
+                                                        .text = snapshot
+                                                            .examList[index]
+                                                            .text ??
+                                                        '--';
+
+                                                    examId =
+                                                        missingExamController
+                                                            .text
+                                                            .toString();
+
+                                                    await snapshot
+                                                        .clearSubject();
+                                                    subjectData.clear();
+                                                    snapshot.subjectLen = 0;
+                                                    userData.clear();
+                                                    snapshot.userLen = 0;
+
+                                                    await snapshot
+                                                        .getSubjectList(
+                                                            courseId,
+                                                            partID,
+                                                            examId,
+                                                            divisionData);
+
+                                                    await value
+                                                        .clearViewStaffList();
+                                                    await value
+                                                        .clearViewStudentList();
+                                                  },
+                                                  title: Text(
+                                                    snapshot.examList[index]
+                                                            .text ??
+                                                        '--',
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                );
+                                              }),
+                                        ));
+                                  });
+                            },
+                            child: TextField(
+                              style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: UIGuide.BLACK,
+                                  overflow: TextOverflow.clip),
+                              textAlign: TextAlign.center,
+                              controller: missingExamController1,
+                              decoration: InputDecoration(
+                                filled: true,
+                                contentPadding:
+                                    const EdgeInsets.only(left: 0, top: 0),
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.never,
+                                fillColor: Colors.transparent,
+                                border: const OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      style: BorderStyle.none, width: 0),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                      color: Colors.white, width: 2.0),
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderSide: const BorderSide(
+                                    color: Colors.white,
+                                    width: 2.0,
+                                  ),
+                                ),
+                                labelText: "  Select Exam",
+                                hintText: "   Select Exam",
+                              ),
+                              readOnly: true,
+                              enabled: false,
+                            ),
+                          );
+                        }),
+                      ),
+                      const Spacer(),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    children: [
+                      const Spacer(),
+                      Consumer<MissingReportProviders>(
+                        builder: (context, value, child) => SizedBox(
+                          width: size.width * .46,
+                          height: 45,
+                          child: MultiSelectDialogField(
+                            items: value.subjectDrop,
+                            listType: MultiSelectListType.CHIP,
+                            title: const Text(
+                              "Select Subject",
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                            selectedItemsTextStyle: const TextStyle(
+                                fontWeight: FontWeight.w900,
+                                color: UIGuide.light_Purple),
+                            confirmText: const Text(
+                              'OK',
+                              style: TextStyle(color: UIGuide.light_Purple),
+                            ),
+                            cancelText: const Text(
+                              'Cancel',
+                              style: TextStyle(color: UIGuide.light_Purple),
+                            ),
+                            separateSelectedItems: true,
+                            decoration: const BoxDecoration(
+                              color: UIGuide.ButtonBlue,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey,
+                                  offset: Offset(0, 2),
+                                  blurRadius: 4,
+                                  spreadRadius: 0,
+                                ),
+                              ],
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10)),
+                            ),
+                            buttonIcon: const Icon(
+                              Icons.arrow_drop_down_outlined,
+                              color: Colors.grey,
+                            ),
+                            buttonText: value.subjectLen == 0
+                                ? const Text(
+                                    "Select Subject",
+                                    style: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 14,
+                                    ),
+                                  )
+                                : Text(
+                                    "   ${value.subjectLen.toString()} Selected",
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 14,
+                                    ),
                                     textAlign: TextAlign.center,
                                   ),
-                                ));
-                              } else {
-                                await value.clearViewStaffList();
-                                await value.clearViewStudentList();
-                                value.isShown == true
-                                    ? await value.getViewStudentAdmin(
-                                        courseId,
-                                        partID,
-                                        examId,
-                                        divisionData,
-                                        subjectData,
-                                        value.isShown,
-                                        context,
-                                        userData)
-                                    : await value.getViewAdmin(
-                                        courseId,
-                                        partID,
-                                        examId,
-                                        divisionData,
-                                        subjectData,
-                                        value.isShown,
-                                        context,
-                                        userData);
+                            searchable: true,
+                            chipDisplay: MultiSelectChipDisplay.none(),
+                            onConfirm: (results) async {
+                              subjectData = [];
+                              for (var i = 0; i < results.length; i++) {
+                                SubjectListModel data =
+                                    results[i] as SubjectListModel;
+                                print(data.text);
+                                print(data.value);
+                                subjectData.add(data.value);
+                                subjectData.map((e) => data.value);
+                                print("${subjectData.map((e) => data.value)}");
                               }
+                              subject = subjectData.join(',');
+                              await Provider.of<MissingReportProviders>(context,
+                                      listen: false)
+                                  .subjectCounter(results.length);
+                              results.clear();
+
+                              print("data $subject");
+                              await value.clearViewStaffList();
+                              await value.clearViewStudentList();
+                              results.clear();
                             },
-                            color: UIGuide.light_Purple,
-                            shape: const RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10.0))),
-                            child: const Text(
-                              'View',
-                              style: TextStyle(
-                                  letterSpacing: 2,
-                                  color: UIGuide.WHITE,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold),
-                            ),
                           ),
+                        ),
+                      ),
+                      const Spacer(),
+                      Consumer<MissingReportProviders>(
+                        builder: (context, value, child) => SizedBox(
+                          width: size.width * .46,
+                          height: 45,
+                          child: MultiSelectDialogField(
+                            items: value.userDrop,
+                            listType: MultiSelectListType.CHIP,
+                            title: const Text(
+                              "Select User",
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                            selectedItemsTextStyle: const TextStyle(
+                                fontWeight: FontWeight.w900,
+                                color: UIGuide.light_Purple),
+                            confirmText: const Text(
+                              'OK',
+                              style: TextStyle(color: UIGuide.light_Purple),
+                            ),
+                            cancelText: const Text(
+                              'Cancel',
+                              style: TextStyle(color: UIGuide.light_Purple),
+                            ),
+                            separateSelectedItems: true,
+                            decoration: const BoxDecoration(
+                              color: UIGuide.ButtonBlue,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey,
+                                  offset: Offset(0, 2),
+                                  blurRadius: 4,
+                                  spreadRadius: 0,
+                                ),
+                              ],
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10)),
+                            ),
+                            buttonIcon: const Icon(
+                              Icons.arrow_drop_down_outlined,
+                              color: Colors.grey,
+                            ),
+                            buttonText: value.userLen == 0
+                                ? const Text(
+                                    "Select User",
+                                    style: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 14,
+                                    ),
+                                  )
+                                : Text(
+                                    "   ${value.userLen.toString()} Selected",
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 14,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                            searchable: true,
+                            chipDisplay: MultiSelectChipDisplay.none(),
+                            onConfirm: (resultsw) async {
+                              userData = [];
+                              for (var i = 0; i < resultsw.length; i++) {
+                                UsersListModel data =
+                                    resultsw[i] as UsersListModel;
+                                print(data.text);
+                                print(data.value);
+                                userData.add(data.value);
+                                userData.map((e) => data.value);
+                                print("${userData.map((e) => data.value)}");
+                              }
+                              subject = userData.join(',');
+                              await Provider.of<MissingReportProviders>(context,
+                                      listen: false)
+                                  .userCounter(resultsw.length);
+                              resultsw.clear();
+
+                              print("data $user");
+                              await value.clearViewStaffList();
+                              await value.clearViewStudentList();
+                              resultsw.clear();
+                            },
+                          ),
+                        ),
+                      ),
+                      const Spacer()
+                    ],
                   ),
-                  const Spacer(),
-                ],
-              ),
-            ),
-            kheight10,
-            value.isShown == true
-                ? value.load
-                    ? Expanded(child: spinkitLoader())
-                    : Expanded(
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0, right: 8),
+                  child: Row(
+                    children: [
+                      const Spacer(),
+                      SizedBox(
+                        width: size.width * .46,
+                        child: InkWell(
+                            onTap: () => value.studentWiseCheckbox(),
+                            child: Row(
+                              children: [
+                                Checkbox(
+                                  activeColor: UIGuide.light_Purple,
+                                  value: value.isShown,
+                                  onChanged: (newValue) {
+                                    value.studentWiseCheckbox();
+                                  },
+                                ),
+                                const Expanded(
+                                  //   width: size.width * .35,
+                                  child: Text(
+                                    'Show student wise report',
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        color: UIGuide.BLACK, fontSize: 12),
+                                  ),
+                                )
+                              ],
+                            )),
+                      ),
+                      const Spacer(),
+                      SizedBox(
+                        width: size.width * .46,
+                        height: 45,
+                        child: value.loading
+                            ? const Center(
+                                child: Text(
+                                  'Loading...',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: UIGuide.light_Purple,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              )
+                            : MaterialButton(
+                                onPressed: () async {
+                                  if (missingInitialValuesController
+                                          .text.isEmpty &&
+                                      missingExamController.text.isEmpty &&
+                                      missingPartController.text.isEmpty) {
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(const SnackBar(
+                                      elevation: 10,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20)),
+                                      ),
+                                      duration: Duration(seconds: 3),
+                                      margin: EdgeInsets.only(
+                                          bottom: 80, left: 30, right: 30),
+                                      behavior: SnackBarBehavior.floating,
+                                      content: Text(
+                                        'Enter mandatory fields...',
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ));
+                                  } else {
+                                    await value.clearViewStaffList();
+                                    await value.clearViewStudentList();
+                                    value.isShown == true
+                                        ? await value.getViewStudentAdmin(
+                                            courseId,
+                                            partID,
+                                            examId,
+                                            divisionData,
+                                            subjectData,
+                                            value.isShown,
+                                            context,
+                                            userData)
+                                        : await value.getViewAdmin(
+                                            courseId,
+                                            partID,
+                                            examId,
+                                            divisionData,
+                                            subjectData,
+                                            value.isShown,
+                                            context,
+                                            userData);
+                                  }
+                                },
+                                color: UIGuide.light_Purple,
+                                shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(10.0))),
+                                child: const Text(
+                                  'View',
+                                  style: TextStyle(
+                                      letterSpacing: 2,
+                                      color: UIGuide.WHITE,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                      ),
+                      const Spacer(),
+                    ],
+                  ),
+                ),
+                kheight10,
+                value.isShown == true
+                    ? Expanded(
                         //  maxHeight: size.height / 1.69,
                         child: Scrollbar(
                           thickness: 5,
@@ -1118,8 +1147,6 @@ class _MissingReportAdminState extends State<MissingReportAdmin> {
                               }),
                         ),
                       )
-                : value.load
-                    ? Expanded(child: spinkitLoader())
                     : Expanded(
                         child: Scrollbar(
                           thickness: 5,
@@ -1260,6 +1287,9 @@ class _MissingReportAdminState extends State<MissingReportAdmin> {
                               }),
                         ),
                       )
+              ],
+            ),
+            if (value.loading) pleaseWaitLoader()
           ],
         ),
       ),

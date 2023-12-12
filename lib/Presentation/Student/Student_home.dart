@@ -5,6 +5,7 @@ import 'package:essconnect/Application/StudentProviders/NotificationCountProvide
 import 'package:essconnect/Constants.dart';
 import 'package:essconnect/Presentation/Student/CurriculamScreen.dart';
 import 'package:essconnect/Presentation/Student/Diary.dart';
+import 'package:essconnect/Presentation/Student/MapScreen.dart';
 import 'package:essconnect/Presentation/Student/NoInternetScreen.dart';
 import 'package:essconnect/Presentation/Student/Offline/BusFeeInitial.dart';
 import 'package:essconnect/Presentation/Student/Offline/FeeInitialScreen.dart';
@@ -1446,8 +1447,7 @@ class _StudentHomeState extends State<StudentHome> {
                                                       PageTransition(
                                                         type: PageTransitionType
                                                             .rightToLeft,
-                                                        child:
-                                                            const StudFeedbackFormScreen(),
+                                                        child: const MapPage(),
                                                         duration:
                                                             const Duration(
                                                                 milliseconds:

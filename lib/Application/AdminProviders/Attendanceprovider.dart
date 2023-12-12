@@ -13,9 +13,7 @@ import '../../utils/constants.dart';
 
 class AttendanceReportProvider with ChangeNotifier {
   bool _loading = false;
-
   bool get loading => _loading;
-
   setLoading(bool value) {
     _loading = value;
     notifyListeners();
@@ -24,33 +22,38 @@ class AttendanceReportProvider with ChangeNotifier {
   List lastList = [];
   List<AttendanceModel> attendanceList = [];
   bool? isDualttendance;
-  Future<bool> attendanceInitial() async {
+  Future attendanceInitial() async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
-
+    setLoading(true);
     var headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
-    var request = http.Request(
-        'GET',
-        Uri.parse(
-            '${UIGuide.baseURL}/studentAbsentPresentReport/initialvalues'));
-    request.headers.addAll(headers);
+    try {
+      var request = http.Request(
+          'GET',
+          Uri.parse(
+              '${UIGuide.baseURL}/studentAbsentPresentReport/initialvalues'));
+      request.headers.addAll(headers);
 
-    http.StreamedResponse response = await request.send();
-    print(response.statusCode);
-    if (response.statusCode == 200) {
-      final data = jsonDecode(await response.stream.bytesToString());
-      print(data);
-      AttendanceInitial dual = AttendanceInitial.fromJson(data);
-      isDualttendance = dual.isDualAttendance;
-      print("attttttt$isDualttendance");
-
-      notifyListeners();
-    } else {
-      print('erroorrrrrrrr');
+      http.StreamedResponse response = await request.send();
+      print(response.statusCode);
+      if (response.statusCode == 200) {
+        setLoading(true);
+        final data = jsonDecode(await response.stream.bytesToString());
+        print(data);
+        AttendanceInitial dual = AttendanceInitial.fromJson(data);
+        isDualttendance = dual.isDualAttendance;
+        print("attttttt$isDualttendance");
+        setLoading(false);
+        notifyListeners();
+      } else {
+        setLoading(false);
+        print('erroorrrrrrrr');
+      }
+    } catch (e) {
+      setLoading(false);
     }
-    return true;
   }
 
   Future getAttReportView(String section, String course, String division,
@@ -87,8 +90,8 @@ class AttendanceReportProvider with ChangeNotifier {
   }
 
   List<StudentAttendancetakenDatum> takenList = [];
-  Future<bool> getAttendanceTaken(BuildContext context, String date,
-      String section, String course, String type) async {
+  Future getAttendanceTaken(BuildContext context, String date, String section,
+      String course, String type) async {
     setLoading(true);
     SharedPreferences _pref = await SharedPreferences.getInstance();
     notifyListeners();
@@ -96,33 +99,36 @@ class AttendanceReportProvider with ChangeNotifier {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
-    var request = http.Request(
-        'GET',
-        Uri.parse(
-            '${UIGuide.baseURL}/attendancetakenornottaken/viewAttendance/?attendanceDate=$date&section=$section&course=$course&attendance=$type'));
+    try {
+      var request = http.Request(
+          'GET',
+          Uri.parse(
+              '${UIGuide.baseURL}/attendancetakenornottaken/viewAttendance/?attendanceDate=$date&section=$section&course=$course&attendance=$type'));
 
-    request.headers.addAll(headers);
+      request.headers.addAll(headers);
 
-    http.StreamedResponse response = await request.send();
+      http.StreamedResponse response = await request.send();
 
-    if (response.statusCode == 200) {
-      Map<String, dynamic> data =
-          jsonDecode(await response.stream.bytesToString());
+      if (response.statusCode == 200) {
+        Map<String, dynamic> data =
+            jsonDecode(await response.stream.bytesToString());
 
-      List<StudentAttendancetakenDatum> templist =
-          List<StudentAttendancetakenDatum>.from(
-              data["studentAttendancetakenData"]
-                  .map((x) => StudentAttendancetakenDatum.fromJson(x)));
-      takenList.addAll(templist);
+        List<StudentAttendancetakenDatum> templist =
+            List<StudentAttendancetakenDatum>.from(
+                data["studentAttendancetakenData"]
+                    .map((x) => StudentAttendancetakenDatum.fromJson(x)));
+        takenList.addAll(templist);
 
-      print('correct');
-      setLoading(false);
-      notifyListeners();
-    } else {
-      print('Error in attendance report');
+        print('correct');
+        setLoading(false);
+        notifyListeners();
+      } else {
+        print('Error in attendance report');
+        setLoading(false);
+      }
+    } catch (e) {
       setLoading(false);
     }
-    return true;
   }
 
   //smsProvider
@@ -131,7 +137,7 @@ class AttendanceReportProvider with ChangeNotifier {
   String? providerName;
   //String? providerId;
 
-  Future<bool> getProvider() async {
+  Future getProvider() async {
     setLoading(true);
     SharedPreferences _pref = await SharedPreferences.getInstance();
     notifyListeners();
@@ -139,32 +145,37 @@ class AttendanceReportProvider with ChangeNotifier {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
-    var request = http.Request('GET',
-        Uri.parse('${UIGuide.baseURL}/mobileapp/staffdet/sms/currentprovider'));
+    try {
+      var request = http.Request(
+          'GET',
+          Uri.parse(
+              '${UIGuide.baseURL}/mobileapp/staffdet/sms/currentprovider'));
 
-    request.headers.addAll(headers);
+      request.headers.addAll(headers);
 
-    http.StreamedResponse response = await request.send();
+      http.StreamedResponse response = await request.send();
 
-    if (response.statusCode == 200) {
-      Map<String, dynamic> data =
-          jsonDecode(await response.stream.bytesToString());
+      if (response.statusCode == 200) {
+        Map<String, dynamic> data =
+            jsonDecode(await response.stream.bytesToString());
 
-      Map<String, dynamic> providerrrr = data['currentSmsProvider'];
-      print(data);
-      print(providerrrr);
-      CurrentSmsProvider prov =
-          CurrentSmsProvider.fromJson(data['currentSmsProvider']);
-      providerName = prov.providerName;
-      print("provid,$providerName".toString());
+        Map<String, dynamic> providerrrr = data['currentSmsProvider'];
+        print(data);
+        print(providerrrr);
+        CurrentSmsProvider prov =
+            CurrentSmsProvider.fromJson(data['currentSmsProvider']);
+        providerName = prov.providerName;
+        print("provid,$providerName".toString());
 
-      setLoading(false);
-      notifyListeners();
-    } else {
-      print('Error in attendance report');
+        setLoading(false);
+        notifyListeners();
+      } else {
+        print('Error in attendance report');
+        setLoading(false);
+      }
+    } catch (e) {
       setLoading(false);
     }
-    return true;
   }
 
   clearList() {
@@ -293,55 +304,66 @@ class AttendanceReportProvider with ChangeNotifier {
   }
 
   List<SMSfomatModel> formatlist = [];
-  Future<bool> viewSMSFormat() async {
+  Future viewSMSFormat() async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
-
+    setLoading(true);
     var headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
-    var request = http.Request('GET',
-        Uri.parse('${UIGuide.baseURL}/mobileapp/staffdet/attendanceformat'));
-    request.headers.addAll(headers);
+    try {
+      var request = http.Request('GET',
+          Uri.parse('${UIGuide.baseURL}/mobileapp/staffdet/attendanceformat'));
+      request.headers.addAll(headers);
 
-    http.StreamedResponse response = await request.send();
-    print('object');
-    if (response.statusCode == 200) {
-      List data = jsonDecode(await response.stream.bytesToString());
-      print(data);
-      List<SMSfomatModel> templist =
-          List<SMSfomatModel>.from(data.map((x) => SMSfomatModel.fromJson(x)));
-      formatlist.addAll(templist);
-
-      notifyListeners();
-    } else {
-      print('Error in formatList stf');
+      http.StreamedResponse response = await request.send();
+      print('object');
+      if (response.statusCode == 200) {
+        setLoading(true);
+        List data = jsonDecode(await response.stream.bytesToString());
+        print(data);
+        List<SMSfomatModel> templist = List<SMSfomatModel>.from(
+            data.map((x) => SMSfomatModel.fromJson(x)));
+        formatlist.addAll(templist);
+        setLoading(false);
+        notifyListeners();
+      } else {
+        setLoading(false);
+        print('Error in formatList stf');
+      }
+    } catch (e) {
+      setLoading(false);
     }
-    return true;
   }
 
   String? smsBody;
-  Future<int> getSMSContent(String idd) async {
+  Future getSMSContent(String idd) async {
+    setLoading(true);
     SharedPreferences _pref = await SharedPreferences.getInstance();
     var headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
-    var response = await http.get(
-        Uri.parse(
-            "${UIGuide.baseURL}/studentAbsentPresentReport/get-formats-by-id/$idd"),
-        headers: headers);
-    if (response.statusCode == 200) {
-      print('correct');
-      Map<String, dynamic> dashboard = json.decode(response.body);
-      SMSContentModel ac = SMSContentModel.fromJson(dashboard);
-      smsBody = ac.smsBody;
+    try {
+      var response = await http.get(
+          Uri.parse(
+              "${UIGuide.baseURL}/studentAbsentPresentReport/get-formats-by-id/$idd"),
+          headers: headers);
+      if (response.statusCode == 200) {
+        print('correct');
+        Map<String, dynamic> dashboard = json.decode(response.body);
+        SMSContentModel ac = SMSContentModel.fromJson(dashboard);
+        smsBody = ac.smsBody;
+        setLoading(false);
 
-      notifyListeners();
-    } else {
-      print('Error in dashboard');
+        notifyListeners();
+      } else {
+        setLoading(false);
+        print('Error in dashboard');
+      }
+    } catch (e) {
+      setLoading(false);
     }
-    return response.statusCode;
   }
 
   //sendsms
@@ -350,75 +372,85 @@ class AttendanceReportProvider with ChangeNotifier {
   String? isfailed;
   Future sendSmsAttendance(
       BuildContext context, String date, String formatId) async {
+    setLoading(true);
     SharedPreferences _pref = await SharedPreferences.getInstance();
 
     var headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
-
-    var request = http.Request('POST',
-        Uri.parse('${UIGuide.baseURL}/studentAbsentPresentReport/send-sms'));
-    print(Uri.parse('${UIGuide.baseURL}/studentAbsentPresentReport/send-sms'));
-    request.body = json.encode({
-      "ExampleMessage": "",
-      "SendEmailorSMS": "SMS",
-      "content": null,
-      "StudEntry": selectedsmsList,
-      "formatId": formatId,
-      "group": "guardianGeneralSMS",
-      "attendanceDate": date
-    });
-
-    print(json.encode({
-      "ExampleMessage": "",
-      "SendEmailorSMS": "SMS",
-      "content": null,
-      "StudEntry": selectedsmsList,
-      "formatId": formatId,
-      "group": "guardianGeneralSMS",
-      "attendanceDate": date
-    }));
-
-    request.headers.addAll(headers);
-
-    http.StreamedResponse response = await request.send();
-
-    if (response.statusCode == 201) {
-      Map<String, dynamic> data =
-          jsonDecode(await response.stream.bytesToString());
-      AttendanceSmsSave smsrrsponse = AttendanceSmsSave.fromJson(data);
-      issuccess = smsrrsponse.sendSuccess.toString();
-      isfailed = smsrrsponse.sendFailed.toString();
+    try {
+      var request = http.Request('POST',
+          Uri.parse('${UIGuide.baseURL}/studentAbsentPresentReport/send-sms'));
       print(
-          ' _ _ _ _ _ _ _ _ _ _ _ _ _ Correct_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _');
-      await AwesomeDialog(
-              dismissOnTouchOutside: false,
-              dismissOnBackKeyPress: false,
-              context: context,
-              dialogType: DialogType.success,
-              animType: AnimType.rightSlide,
-              headerAnimationLoop: false,
-              title: 'Sent Successfully',
-              desc: 'Success: $issuccess \n Failed: $isfailed',
-              btnOkOnPress: () async {},
-              btnOkColor: Colors.green)
-          .show();
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        elevation: 10,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(20)),
-        ),
-        duration: Duration(seconds: 1),
-        margin: EdgeInsets.only(bottom: 80, left: 30, right: 30),
-        behavior: SnackBarBehavior.floating,
-        content: Text(
-          'Something Went Wrong....',
-          textAlign: TextAlign.center,
-        ),
-      ));
-      print('Error Response in attendance');
+          Uri.parse('${UIGuide.baseURL}/studentAbsentPresentReport/send-sms'));
+      request.body = json.encode({
+        "ExampleMessage": "",
+        "SendEmailorSMS": "SMS",
+        "content": null,
+        "StudEntry": selectedsmsList,
+        "formatId": formatId,
+        "group": "guardianGeneralSMS",
+        "attendanceDate": date
+      });
+
+      print(json.encode({
+        "ExampleMessage": "",
+        "SendEmailorSMS": "SMS",
+        "content": null,
+        "StudEntry": selectedsmsList,
+        "formatId": formatId,
+        "group": "guardianGeneralSMS",
+        "attendanceDate": date
+      }));
+
+      request.headers.addAll(headers);
+
+      http.StreamedResponse response = await request.send();
+
+      if (response.statusCode == 201) {
+        setLoading(true);
+        Map<String, dynamic> data =
+            jsonDecode(await response.stream.bytesToString());
+        print(data["sendSMS"]);
+        AttendanceSmsSave smsrrsponse =
+            AttendanceSmsSave.fromJson(data["sendSMS"]);
+        issuccess = smsrrsponse.sendSuccess.toString();
+        isfailed = smsrrsponse.sendFailed.toString();
+        print(
+            ' _ _ _ _ _ _ _ _ _ _ _ _ _ Correct_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _');
+        await AwesomeDialog(
+                dismissOnTouchOutside: false,
+                dismissOnBackKeyPress: false,
+                context: context,
+                dialogType: DialogType.success,
+                animType: AnimType.rightSlide,
+                headerAnimationLoop: false,
+                title: 'Sent Successfully',
+                desc: 'Success: $issuccess \n Failed: $isfailed',
+                btnOkOnPress: () async {},
+                btnOkColor: Colors.green)
+            .show();
+        setLoading(false);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          elevation: 10,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+          ),
+          duration: Duration(seconds: 1),
+          margin: EdgeInsets.only(bottom: 80, left: 30, right: 30),
+          behavior: SnackBarBehavior.floating,
+          content: Text(
+            'Something Went Wrong....',
+            textAlign: TextAlign.center,
+          ),
+        ));
+        setLoading(false);
+        print('Error Response in attendance');
+      }
+    } catch (e) {
+      setLoading(false);
     }
   }
 }

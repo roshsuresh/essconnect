@@ -1,13 +1,14 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:essconnect/Domain/Student/LoginModel.dart';
+import 'package:essconnect/Presentation/Login_Activation/Login_page.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 class TokenExpiryCheckProviders with ChangeNotifier {
-  Future checkTokenExpired() async {
+  Future checkTokenExpired(BuildContext context) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String? userNamee = await pref.getString('username');
     String? passWordd = await pref.getString('password');
@@ -29,6 +30,11 @@ class TokenExpiryCheckProviders with ChangeNotifier {
 
       log('token added-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-');
       notifyListeners();
+    } else if (response.statusCode == 401) {
+      print("Unauthorized  ");
+
+      return Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => LoginPage()));
     } else {
       print('Something went wrong in token generation');
     }

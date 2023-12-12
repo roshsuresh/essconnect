@@ -399,8 +399,13 @@ class _Notification_AdminToGuardainState
                                         ),
                                       ),
                                 chipDisplay: MultiSelectChipDisplay.none(),
-                                onConfirm: (results) {
+                                onConfirm: (results) async {
                                   courseData = [];
+                                  await Provider.of<
+                                              NotificationToGuardianAdmin>(
+                                          context,
+                                          listen: false)
+                                      .clearStudentList();
                                   for (var i = 0; i < results.length; i++) {
                                     StudReportDivision data =
                                         results[i] as StudReportDivision;
@@ -849,140 +854,144 @@ class Text_Matter_NotificationAdmin extends StatelessWidget {
         ),
         backgroundColor: UIGuide.light_Purple,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          // crossAxisAlignment: CrossAxisAlignment.center,
-          // mainAxisAlignment: MainAxisAlignment.center,
+      body: Consumer<NotificationToGuardian_Providers>(
+        builder: (context, val, _) => Stack(
           children: [
-            LottieBuilder.network(
-                'https://assets10.lottiefiles.com/private_files/lf30_kBx3K1.json'),
-            kheight20,
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: LimitedBox(
-                maxHeight: 80,
-                child: TextFormField(
-                  inputFormatters: [LengthLimitingTextInputFormatter(50)],
-                  controller: titleController,
-                  minLines: 1,
-                  maxLines: 4,
-                  keyboardType: TextInputType.multiline,
-                  decoration: const InputDecoration(
-                    labelText: 'Title*',
-                    hintText: 'Enter Title',
-                    labelStyle: TextStyle(color: UIGuide.light_Purple),
-                    hintStyle: TextStyle(color: Colors.grey),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(20),
-                          topRight: Radius.circular(0),
-                          bottomLeft: Radius.circular(0),
-                          bottomRight: Radius.circular(20)),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: UIGuide.light_Purple, width: 1.0),
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(20),
-                          topRight: Radius.circular(0),
-                          bottomLeft: Radius.circular(0),
-                          bottomRight: Radius.circular(20)),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: LimitedBox(
-                maxHeight: 150,
-                child: TextFormField(
-                  inputFormatters: [LengthLimitingTextInputFormatter(1000)],
-                  controller: matterController,
-                  minLines: 1,
-                  maxLines: 15,
-                  keyboardType: TextInputType.multiline,
-                  decoration: const InputDecoration(
-                    labelText: 'Matter*',
-                    hintText: 'Enter Matter',
-                    labelStyle: TextStyle(color: UIGuide.light_Purple),
-                    hintStyle: TextStyle(color: Colors.grey),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(20),
-                          topRight: Radius.circular(0),
-                          bottomLeft: Radius.circular(0),
-                          bottomRight: Radius.circular(20)),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: UIGuide.light_Purple, width: 1.0),
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(20),
-                          topRight: Radius.circular(0),
-                          bottomLeft: Radius.circular(0),
-                          bottomRight: Radius.circular(20)),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            kheight20,
-            Consumer<NotificationToGuardianAdmin>(
-              builder: (context, value, _) => value.load
-                  ? spinkitLoader()
-                  : SizedBox(
-                      width: 150,
-                      height: 40,
-                      child: MaterialButton(
-                        onPressed: () async {
-                          if (titleController.text.trim().isNotEmpty &&
-                              matterController.text.trim().isNotEmpty) {
-                            await Provider.of<NotificationToGuardian_Providers>(
-                                    context,
-                                    listen: false)
-                                .sendNotification(context, titleController.text,
-                                    matterController.text, toList,
-                                    sentTo: type);
-                            titleController.clear();
-                            matterController.clear();
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                elevation: 10,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10)),
-                                ),
-                                duration: Duration(seconds: 1),
-                                margin: EdgeInsets.only(
-                                    bottom: 80, left: 30, right: 30),
-                                behavior: SnackBarBehavior.floating,
-                                content: Text(
-                                  'Enter Title & Matter!',
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            );
-                          }
-                        },
-                        shape: RoundedRectangleBorder(
-                          borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(20),
-                              topRight: Radius.circular(0),
-                              bottomLeft: Radius.circular(0),
-                              bottomRight: Radius.circular(20)),
-                          side:
-                              BorderSide(color: Theme.of(context).primaryColor),
-                        ),
-                        color: UIGuide.light_Purple,
-                        child: const Text(
-                          'Send',
-                          style: TextStyle(color: Colors.white),
+            SingleChildScrollView(
+              child: Column(
+                // crossAxisAlignment: CrossAxisAlignment.center,
+                // mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  LottieBuilder.network(
+                      'https://assets10.lottiefiles.com/private_files/lf30_kBx3K1.json'),
+                  kheight20,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: LimitedBox(
+                      maxHeight: 80,
+                      child: TextFormField(
+                        inputFormatters: [LengthLimitingTextInputFormatter(50)],
+                        controller: titleController,
+                        minLines: 1,
+                        maxLines: 4,
+                        keyboardType: TextInputType.multiline,
+                        decoration: const InputDecoration(
+                          labelText: 'Title*',
+                          hintText: 'Enter Title',
+                          labelStyle: TextStyle(color: UIGuide.light_Purple),
+                          hintStyle: TextStyle(color: Colors.grey),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                topRight: Radius.circular(0),
+                                bottomLeft: Radius.circular(0),
+                                bottomRight: Radius.circular(20)),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: UIGuide.light_Purple, width: 1.0),
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                topRight: Radius.circular(0),
+                                bottomLeft: Radius.circular(0),
+                                bottomRight: Radius.circular(20)),
+                          ),
                         ),
                       ),
                     ),
-            )
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: LimitedBox(
+                      maxHeight: 150,
+                      child: TextFormField(
+                        inputFormatters: [
+                          LengthLimitingTextInputFormatter(1000)
+                        ],
+                        controller: matterController,
+                        minLines: 1,
+                        maxLines: 15,
+                        keyboardType: TextInputType.multiline,
+                        decoration: const InputDecoration(
+                          labelText: 'Matter*',
+                          hintText: 'Enter Matter',
+                          labelStyle: TextStyle(color: UIGuide.light_Purple),
+                          hintStyle: TextStyle(color: Colors.grey),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                topRight: Radius.circular(0),
+                                bottomLeft: Radius.circular(0),
+                                bottomRight: Radius.circular(20)),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: UIGuide.light_Purple, width: 1.0),
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                topRight: Radius.circular(0),
+                                bottomLeft: Radius.circular(0),
+                                bottomRight: Radius.circular(20)),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  kheight20,
+                  SizedBox(
+                    width: 150,
+                    height: 40,
+                    child: MaterialButton(
+                      onPressed: () async {
+                        if (titleController.text.trim().isNotEmpty &&
+                            matterController.text.trim().isNotEmpty) {
+                          await Provider.of<NotificationToGuardian_Providers>(
+                                  context,
+                                  listen: false)
+                              .sendNotification(context, titleController.text,
+                                  matterController.text, toList,
+                                  sentTo: type);
+                          titleController.clear();
+                          matterController.clear();
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              elevation: 10,
+                              shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10)),
+                              ),
+                              duration: Duration(seconds: 1),
+                              margin: EdgeInsets.only(
+                                  bottom: 80, left: 30, right: 30),
+                              behavior: SnackBarBehavior.floating,
+                              content: Text(
+                                'Enter Title & Matter!',
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          );
+                        }
+                      },
+                      shape: RoundedRectangleBorder(
+                        borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(20),
+                            topRight: Radius.circular(0),
+                            bottomLeft: Radius.circular(0),
+                            bottomRight: Radius.circular(20)),
+                        side: BorderSide(color: Theme.of(context).primaryColor),
+                      ),
+                      color: UIGuide.light_Purple,
+                      child: const Text(
+                        'Send',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            if (val.loading) pleaseWaitLoader()
           ],
         ),
       ),

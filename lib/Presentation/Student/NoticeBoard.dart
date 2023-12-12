@@ -37,8 +37,9 @@ class NoticeBoard extends StatelessWidget {
         toolbarOpacity: 0.8,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
-              bottomRight: Radius.circular(25),
-              bottomLeft: Radius.circular(25)),
+            bottomRight: Radius.circular(25),
+            bottomLeft: Radius.circular(25),
+          ),
         ),
         backgroundColor: UIGuide.light_Purple,
       ),
@@ -69,6 +70,7 @@ class NoticeBoard extends StatelessWidget {
                             finalCreatedDate = DateFormat('dd-MMM-yyyy')
                                 .format(parsedDateTime);
                           }
+
                           var noticeattach = noticeresponse![index]['noticeId'];
                           return AnimationConfiguration.staggeredList(
                             position: index,
@@ -84,14 +86,17 @@ class NoticeBoard extends StatelessWidget {
                                       left: 6.0, right: 6, bottom: 3, top: 3),
                                   child: Container(
                                     decoration: BoxDecoration(
+                                      color: const Color.fromARGB(
+                                          255, 234, 234, 236),
+                                      border: Border.all(
                                         color: const Color.fromARGB(
-                                            255, 234, 234, 236),
-                                        border: Border.all(
-                                            color: const Color.fromARGB(
-                                                255, 136, 187, 235)),
-                                        borderRadius: const BorderRadius.only(
-                                            topRight: Radius.circular(20),
-                                            bottomLeft: Radius.circular(20))),
+                                            255, 136, 187, 235),
+                                      ),
+                                      borderRadius: const BorderRadius.only(
+                                        topRight: Radius.circular(20),
+                                        bottomLeft: Radius.circular(20),
+                                      ),
+                                    ),
                                     width: size.width,
                                     child: Padding(
                                       padding: const EdgeInsets.all(6.0),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UIGuide {
@@ -42,5 +43,16 @@ Future<Map<String, dynamic>> parseJWT() async {
   } else {
     Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
     return decodedToken;
+  }
+}
+
+class LottieAminBus extends StatelessWidget {
+  const LottieAminBus({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(child: LottieBuilder.asset("assets/Animated bus.json")),
+    );
   }
 }

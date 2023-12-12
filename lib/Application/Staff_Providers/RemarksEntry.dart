@@ -1,14 +1,11 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:essconnect/Domain/Staff/MarkEntry/InitailModel.dart';
-import 'package:essconnect/Domain/Staff/MarkEntry/UASViewModel.dart';
+import 'package:essconnect/Constants.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../../Domain/Admin/StudentListModel.dart';
 import '../../Domain/Staff/RemarkentryStaff.dart';
 
 class RemarksEntryProvider with ChangeNotifier {
@@ -20,33 +17,40 @@ class RemarksEntryProvider with ChangeNotifier {
   }
 
   List<RemarksCourseList> remarksEntryInitialValues = [];
-  Future<bool> getRemarkEntryInitialValues() async {
+  Future getRemarkEntryInitialValues(BuildContext context) async {
+    await courseClear();
     SharedPreferences _pref = await SharedPreferences.getInstance();
-
+    setLoading(true);
     var headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
-    var request = http.Request(
-        'GET', Uri.parse('${UIGuide.baseURL}/remarks-entry/initialvalues'));
+    try {
+      var request = http.Request(
+          'GET', Uri.parse('${UIGuide.baseURL}/remarks-entry/initialvalues'));
 
-    request.headers.addAll(headers);
+      request.headers.addAll(headers);
 
-    http.StreamedResponse response = await request.send();
+      http.StreamedResponse response = await request.send();
 
-    if (response.statusCode == 200) {
-      Map<String, dynamic> data =
-          jsonDecode(await response.stream.bytesToString());
+      if (response.statusCode == 200) {
+        setLoading(true);
+        Map<String, dynamic> data =
+            jsonDecode(await response.stream.bytesToString());
 
-      List<RemarksCourseList> templist = List<RemarksCourseList>.from(
-          data["courseList"].map((x) => RemarksCourseList.fromJson(x)));
-      remarksEntryInitialValues.addAll(templist);
-      print(templist);
-      notifyListeners();
-    } else {
-      print('Error in markEntryInitialValues stf');
+        List<RemarksCourseList> templist = List<RemarksCourseList>.from(
+            data["courseList"].map((x) => RemarksCourseList.fromJson(x)));
+        remarksEntryInitialValues.addAll(templist);
+        print(templist);
+        setLoading(false);
+        notifyListeners();
+      } else {
+        setLoading(false);
+        print('Error in markEntryInitialValues stf');
+      }
+    } catch (e) {
+      setLoading(false);
     }
-    return true;
   }
 
 // Division
@@ -63,77 +67,96 @@ class RemarksEntryProvider with ChangeNotifier {
   List<RemarkDivisionList> remarkEntryDivisionList = [];
 
   List<RemarksTermlist> remarkterm = [];
-  Future<bool> getRemarkEntryDivisionValues(String id, String instId) async {
+  Future getRemarkEntryDivisionValues(
+      String id, String instId, BuildContext context) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
+    setLoading(true);
 
     var headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
-    var request = http.Request('GET',
-        Uri.parse('${UIGuide.baseURL}/remarks-entry/division/$id/$instId'));
+    try {
+      var request = http.Request('GET',
+          Uri.parse('${UIGuide.baseURL}/remarks-entry/division/$id/$instId'));
 
-    request.headers.addAll(headers);
+      request.headers.addAll(headers);
 
-    http.StreamedResponse response = await request.send();
+      http.StreamedResponse response = await request.send();
 
-    if (response.statusCode == 200) {
-      Map<String, dynamic> data =
-          jsonDecode(await response.stream.bytesToString());
-      RemarkDivisionInitialValues inita =
-          RemarkDivisionInitialValues.fromJson(data);
-      tabmethod = inita.tabulationMethod;
-      print("tabemthd: $tabmethod");
-      print("division and term");
-      log(data.toString());
+      if (response.statusCode == 200) {
+        setLoading(true);
+        Map<String, dynamic> data =
+            jsonDecode(await response.stream.bytesToString());
+        RemarkDivisionInitialValues inita =
+            RemarkDivisionInitialValues.fromJson(data);
+        tabmethod = inita.tabulationMethod;
+        print("tabemthd: $tabmethod");
+        print("division and term");
+        log(data.toString());
 
-      List<RemarkDivisionList> templist = List<RemarkDivisionList>.from(
-          data["divisionList"].map((x) => RemarkDivisionList.fromJson(x)));
-      remarkEntryDivisionList.addAll(templist);
+        List<RemarkDivisionList> templist = List<RemarkDivisionList>.from(
+            data["divisionList"].map((x) => RemarkDivisionList.fromJson(x)));
+        remarkEntryDivisionList.addAll(templist);
 
-      List<RemarksTermlist> templist2 = List<RemarksTermlist>.from(
-          data["termList"].map((x) => RemarksTermlist.fromJson(x)));
-      remarkterm.addAll(templist2);
+        List<RemarksTermlist> templist2 = List<RemarksTermlist>.from(
+            data["termList"].map((x) => RemarksTermlist.fromJson(x)));
+        remarkterm.addAll(templist2);
+        setLoading(false);
 
-      notifyListeners();
-    } else {
-      print('Error in MarkEntryDivisionList stf');
+        notifyListeners();
+      } else {
+        setLoading(false);
+        print('Error in MarkEntryDivisionList stf');
+      }
+    } catch (e) {
+      snackbarWidget(4, 'Something Went Wrong....', context);
+      setLoading(false);
     }
-    return true;
   }
+
 //Category
   List<RemarksCategoryList> remarkCategoryList = [];
-  Future<bool> getRemarkEntryCategoryValues(String divid, String instId) async {
+  Future getRemarkEntryCategoryValues(
+      String divid, String instId, BuildContext context) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
+    setLoading(true);
 
     var headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
-    var request = http.Request('GET',
-        Uri.parse('${UIGuide.baseURL}/remarks-entry/category/$divid/$instId'));
+    try {
+      var request = http.Request(
+          'GET',
+          Uri.parse(
+              '${UIGuide.baseURL}/remarks-entry/category/$divid/$instId'));
 
-    request.headers.addAll(headers);
+      request.headers.addAll(headers);
 
-    http.StreamedResponse response = await request.send();
+      http.StreamedResponse response = await request.send();
 
-    if (response.statusCode == 200) {
-      Map<String, dynamic> data =
-      jsonDecode(await response.stream.bytesToString());
+      if (response.statusCode == 200) {
+        setLoading(true);
+        Map<String, dynamic> data =
+            jsonDecode(await response.stream.bytesToString());
 
+        List<RemarksCategoryList> templist1 = List<RemarksCategoryList>.from(
+            data["remarksCategoryList"]
+                .map((x) => RemarksCategoryList.fromJson(x)));
+        remarkCategoryList.addAll(templist1);
+        setLoading(false);
 
-      List<RemarksCategoryList> templist1 = List<RemarksCategoryList>.from(
-          data["remarksCategoryList"]
-              .map((x) => RemarksCategoryList.fromJson(x)));
-      remarkCategoryList.addAll(templist1);
-
-      notifyListeners();
-    } else {
-      print('Error in MarkEntryDivisionList stf');
+        notifyListeners();
+      } else {
+        setLoading(false);
+        print('Error in MarkEntryDivisionList stf');
+      }
+    } catch (e) {
+      snackbarWidget(4, 'Something Went Wrong....', context);
+      setLoading(false);
     }
-    return true;
   }
-
 
   //term
 
@@ -142,51 +165,57 @@ class RemarksEntryProvider with ChangeNotifier {
     notifyListeners();
   }
 
-
-
   List<RemarksTermlist> remarkTermList = [];
-  Future<bool> getRemarkEntryTermValues(String divisionId, String? assessmentId,
-      String instId,String tabmthd) async {
+  Future getRemarkEntryTermValues(String divisionId, String? assessmentId,
+      String instId, String tabmthd, BuildContext context) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
+    setLoading(true);
 
     var headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
-    var request = http.Request(
-        'GET',
-        Uri.parse(
-            '${UIGuide.baseURL}/remarks-entry/term/$divisionId/$assessmentId/$instId/$tabmthd'));
-    print("demooooooo");
-    print(request);
-    request.headers.addAll(headers);
 
-    http.StreamedResponse response = await request.send();
+    try {
+      var request = http.Request(
+          'GET',
+          Uri.parse(
+              '${UIGuide.baseURL}/remarks-entry/term/$divisionId/$assessmentId/$instId/$tabmthd'));
+      print("demooooooo");
+      print(request);
+      request.headers.addAll(headers);
 
-    if (response.statusCode == 200) {
-      Map<String, dynamic> data =
-          jsonDecode(await response.stream.bytesToString());
+      http.StreamedResponse response = await request.send();
 
-      log(data.toString());
-      print(assessment);
+      if (response.statusCode == 200) {
+        setLoading(true);
+        Map<String, dynamic> data =
+            jsonDecode(await response.stream.bytesToString());
 
-      List<RemarksTermlist> templist = List<RemarksTermlist>.from(
-          data["termlist"].map((x) => RemarksTermlist.fromJson(x)));
-      print("termlisssss");
-      remarkTermList.addAll(templist);
+        log(data.toString());
+        print(assessment);
 
+        List<RemarksTermlist> templist = List<RemarksTermlist>.from(
+            data["termlist"].map((x) => RemarksTermlist.fromJson(x)));
+        print("termlisssss");
+        remarkTermList.addAll(templist);
+        setLoading(false);
 
-      // else{
-      //   List<RemarksTermlist> templist1 = List<RemarksTermlist>.from(
-      //       data["assessmentList"].map((x) => RemarksTermlist.fromJson(x)));
-      //   remarkTermList.addAll(templist1);
-      // }
+        // else{
+        //   List<RemarksTermlist> templist1 = List<RemarksTermlist>.from(
+        //       data["assessmentList"].map((x) => RemarksTermlist.fromJson(x)));
+        //   remarkTermList.addAll(templist1);
+        // }
 
-      notifyListeners();
-    } else {
-      print('Error in category stf');
+        notifyListeners();
+      } else {
+        setLoading(false);
+        print('Error in category stf');
+      }
+    } catch (e) {
+      snackbarWidget(4, 'Something Went Wrong....', context);
+      setLoading(false);
     }
-    return true;
   }
 
   //Assessment
@@ -197,40 +226,48 @@ class RemarksEntryProvider with ChangeNotifier {
   }
 
   List<RemarksAssessmentList> remarkEntryAssessmentList = [];
-  Future<bool> getRemarkEntryAssessmentValues(String divionId,
-      String assessmentId, String termId, String instId) async {
+  Future getRemarkEntryAssessmentValues(String divionId, String assessmentId,
+      String termId, String instId, BuildContext context) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
+    setLoading(true);
     print('object');
     var headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
+    try {
+      var request = http.Request(
+          'GET',
+          Uri.parse(
+              '${UIGuide.baseURL}/remarks-entry/assessment/$divionId/$assessmentId/$instId/$termId'));
 
-    var request = http.Request(
-        'GET',
-        Uri.parse(
-            '${UIGuide.baseURL}/remarks-entry/assessment/$divionId/$assessmentId/$instId/$termId'));
+      request.headers.addAll(headers);
+      print(request);
 
-    request.headers.addAll(headers);
-    print(request);
+      http.StreamedResponse response = await request.send();
 
-    http.StreamedResponse response = await request.send();
+      if (response.statusCode == 200) {
+        setLoading(true);
+        Map<String, dynamic> data =
+            jsonDecode(await response.stream.bytesToString());
 
-    if (response.statusCode == 200) {
-      Map<String, dynamic> data =
-          jsonDecode(await response.stream.bytesToString());
+        log(data.toString());
 
-      log(data.toString());
+        List<RemarksAssessmentList> templist = List<RemarksAssessmentList>.from(
+            data["assessmentList"]
+                .map((x) => RemarksAssessmentList.fromJson(x)));
+        remarkEntryAssessmentList.addAll(templist);
+        setLoading(false);
 
-      List<RemarksAssessmentList> templist = List<RemarksAssessmentList>.from(
-          data["assessmentList"].map((x) => RemarksAssessmentList.fromJson(x)));
-      remarkEntryAssessmentList.addAll(templist);
-
-      notifyListeners();
-    } else {
-      print('Error in MarkEntrysubjectList stf');
+        notifyListeners();
+      } else {
+        setLoading(false);
+        print('Error in MarkEntrysubjectList stf');
+      }
+    } catch (e) {
+      snackbarWidget(4, 'Something Went Wrong....', context);
+      setLoading(false);
     }
-    return true;
   }
 
   bool isTerminated = false;
@@ -265,7 +302,7 @@ class RemarksEntryProvider with ChangeNotifier {
   List<RemarksStudentList> studListRemarks = [];
   List<RemarkMasterList> remarksMaster = [];
   // String remarksEntryId='';
-  Future<bool> getRemarksEntryView(
+  Future getRemarksEntryView(
       String course,
       String division,
       String category,
@@ -282,54 +319,56 @@ class RemarksEntryProvider with ChangeNotifier {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
-    setLoading(true);
-    var request = http.Request(
-        'POST', Uri.parse('${UIGuide.baseURL}/remarks-entry/view'));
-    print(request);
-    request.body = json.encode({
-      "course": course == "null" ? null : course,
-      "division": division == "null" ? null : division,
-      "category": category == "null" ? null : category,
-      "term": term == "null" ? null : term,
-      "assessment": assessment == "null" ? null : assessment,
-      "includeTerminatedStudents": terminated,
-      "IsAssessment": isAssessment,
-      "IsTerm": isTerm,
-      "TabulationType": tabCode
-    });
-    print(request.body);
-
-    request.headers.addAll(headers);
-    setLoading(true);
-    http.StreamedResponse response = await request.send();
-    print(request.body);
-    if (response.statusCode == 200) {
+    try {
       setLoading(true);
+      var request = http.Request(
+          'POST', Uri.parse('${UIGuide.baseURL}/remarks-entry/view'));
+      print(request);
+      request.body = json.encode({
+        "course": course == "null" ? null : course,
+        "division": division == "null" ? null : division,
+        "category": category == "null" ? null : category,
+        "term": term == "null" ? null : term,
+        "assessment": assessment == "null" ? null : assessment,
+        "includeTerminatedStudents": terminated,
+        "IsAssessment": isAssessment,
+        "IsTerm": isTerm,
+        "TabulationType": tabCode
+      });
+      print(request.body);
 
-      print('---------------------correct--------------------------');
-      Map<String, dynamic> data =
-          jsonDecode(await response.stream.bytesToString());
-
-      // log(data.toString());
+      request.headers.addAll(headers);
       setLoading(true);
+      http.StreamedResponse response = await request.send();
+      print(request.body);
+      if (response.statusCode == 200) {
+        setLoading(true);
 
-      List<RemarksStudentList> templist = List<RemarksStudentList>.from(
-          data['studentList'].map((x) => RemarksStudentList.fromJson(x)));
-      studListRemarks.addAll(templist);
+        print('---------------------correct--------------------------');
+        Map<String, dynamic> data =
+            jsonDecode(await response.stream.bytesToString());
 
-      List<RemarkMasterList> templist1 = List<RemarkMasterList>.from(
-          data['remarkMasterList'].map((x) => RemarkMasterList.fromJson(x)));
-      remarksMaster.addAll(templist1);
-      // remarksEntryId=studListRemarks[0].remarksEntryId.toString();
+        // log(data.toString());
+        setLoading(true);
 
-      notifyListeners();
+        List<RemarksStudentList> templist = List<RemarksStudentList>.from(
+            data['studentList'].map((x) => RemarksStudentList.fromJson(x)));
+        studListRemarks.addAll(templist);
+
+        List<RemarkMasterList> templist1 = List<RemarkMasterList>.from(
+            data['remarkMasterList'].map((x) => RemarkMasterList.fromJson(x)));
+        remarksMaster.addAll(templist1);
+        // remarksEntryId=studListRemarks[0].remarksEntryId.toString();
+
+        notifyListeners();
+        setLoading(false);
+      } else {
+        setLoading(false);
+        print('Error in MarkEntryView UAS');
+      }
+    } catch (e) {
       setLoading(false);
-    } else {
-      setLoading(false);
-      print('Error in MarkEntryView UAS');
     }
-
-    return true;
   }
 
 //ATTACHMENT
@@ -351,40 +390,46 @@ class RemarksEntryProvider with ChangeNotifier {
       String remarksEntryId,
       String remarksEntryDetId) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
-
+    setLoading(true);
     var headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
-    var request = await http.Request(
-        'GET',
-        Uri.parse(
-            "${UIGuide.baseURL}/remarks-entry/preview/?rollNo=$rollNo&studentId=$studentId&name=$studName&remarks=$remarks&remarksMasterId=$remarksMasterId&fileId=$fileId&remarksEntryId=$remarksEntryId&remarksEntryDetId=$remarksEntryDetId"));
-    request.headers.addAll(headers);
-    print(request);
+    try {
+      var request = await http.Request(
+          'GET',
+          Uri.parse(
+              "${UIGuide.baseURL}/remarks-entry/preview/?rollNo=$rollNo&studentId=$studentId&name=$studName&remarks=$remarks&remarksMasterId=$remarksMasterId&fileId=$fileId&remarksEntryId=$remarksEntryId&remarksEntryDetId=$remarksEntryDetId"));
+      request.headers.addAll(headers);
+      print(request);
 
-    http.StreamedResponse response = await request.send();
+      http.StreamedResponse response = await request.send();
 
-    print(response);
-    if (response.statusCode == 200) {
-      print('correct');
+      print(response);
+      if (response.statusCode == 200) {
+        setLoading(true);
+        print('correct');
 
-      Map<String, dynamic> data =
-          jsonDecode(await response.stream.bytesToString());
-      MarkHistoryAttachment attach = MarkHistoryAttachment.fromJson(data);
-      name = attach.name.toString();
-      print(name);
-      extension = attach.extension.toString();
-      path = attach.path.toString();
-      url = attach.url.toString();
-      id = attach.id.toString();
+        Map<String, dynamic> data =
+            jsonDecode(await response.stream.bytesToString());
+        MarkHistoryAttachment attach = MarkHistoryAttachment.fromJson(data);
+        name = attach.name.toString();
+        print(name);
+        extension = attach.extension.toString();
+        path = attach.path.toString();
+        url = attach.url.toString();
+        id = attach.id.toString();
+        setLoading(false);
 
-      notifyListeners();
-    } else {
+        notifyListeners();
+      } else {
+        setLoading(false);
+        print('Error in Response');
+      }
+    } catch (e) {
       setLoading(false);
-      print('Error in Response');
     }
-    return response.statusCode;
+    // return response.statusCode;
   }
 
   // public -attachment
@@ -402,37 +447,40 @@ class RemarksEntryProvider with ChangeNotifier {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
-    var request = await http.Request(
-        'GET',
-        Uri.parse(
-            "${UIGuide.baseURL}/remarks-entry/preview/?rollNo=$rollNo&studentId=$studentId&name=$studName&fileId=$fileId&remarksEntryId=$remarksEntryId&remarksEntryDetId=$remarksEntryDetId"));
-    request.headers.addAll(headers);
-    print(request);
+    try {
+      var request = await http.Request(
+          'GET',
+          Uri.parse(
+              "${UIGuide.baseURL}/remarks-entry/preview/?rollNo=$rollNo&studentId=$studentId&name=$studName&fileId=$fileId&remarksEntryId=$remarksEntryId&remarksEntryDetId=$remarksEntryDetId"));
+      request.headers.addAll(headers);
+      print(request);
 
-    http.StreamedResponse response = await request.send();
+      http.StreamedResponse response = await request.send();
 
-    print(response);
-    if (response.statusCode == 200) {
-      setLoading(true);
-      print('correct');
+      print(response);
+      if (response.statusCode == 200) {
+        setLoading(true);
+        print('correct');
 
-      Map<String, dynamic> data =
-          jsonDecode(await response.stream.bytesToString());
-      MarkHistoryAttachment attach = MarkHistoryAttachment.fromJson(data);
-      name = attach.name.toString();
-      print(name);
-      extension = attach.extension.toString();
-      path = attach.path.toString();
-      url = attach.url.toString();
-      id = attach.id.toString();
+        Map<String, dynamic> data =
+            jsonDecode(await response.stream.bytesToString());
+        MarkHistoryAttachment attach = MarkHistoryAttachment.fromJson(data);
+        name = attach.name.toString();
+        print(name);
+        extension = attach.extension.toString();
+        path = attach.path.toString();
+        url = attach.url.toString();
+        id = attach.id.toString();
 
+        setLoading(false);
+        notifyListeners();
+      } else {
+        setLoading(false);
+        print('Error in Response');
+      }
+    } catch (e) {
       setLoading(false);
-      notifyListeners();
-    } else {
-      setLoading(false);
-      print('Error in Response');
     }
-    return response.statusCode;
   }
 
   //SAVE
@@ -442,6 +490,7 @@ class RemarksEntryProvider with ChangeNotifier {
     _loadSave = value;
     notifyListeners();
   }
+
   //commonload
   bool _commonload = false;
   bool get commonload => _commonload;
@@ -465,6 +514,7 @@ class RemarksEntryProvider with ChangeNotifier {
   ) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoadSave(true);
+    setLoading(true);
 
     var headers = {
       'Content-Type': 'application/json',
@@ -492,52 +542,66 @@ class RemarksEntryProvider with ChangeNotifier {
 
     http.StreamedResponse response = await request.send();
     setLoadSave(true);
+    try {
+      if (response.statusCode == 200) {
+        setLoadSave(true);
+        setLoading(true);
 
-    if (response.statusCode == 200) {
-      setLoadSave(true);
+        print('Correct........______________________________');
+        print(await response.stream.bytesToString());
+        await AwesomeDialog(
+                dismissOnTouchOutside: false,
+                dismissOnBackKeyPress: false,
+                context: context,
+                dialogType: DialogType.success,
+                animType: AnimType.rightSlide,
+                headerAnimationLoop: false,
+                title: 'Success',
+                desc: 'Successfully Saved',
+                btnOkOnPress: () async {
+                  await clearStuentList();
+                  await getRemarksEntryView(
+                      course,
+                      division,
+                      category,
+                      term,
+                      assessment,
+                      isTerminated,
+                      isAssessment,
+                      isTerm,
+                      tabmethod);
+                },
+                btnOkColor: Colors.green)
+            .show();
 
+        setLoadSave(false);
+        setLoading(false);
+        setCommonLoad(false);
 
-      print('Correct........______________________________');
-      print(await response.stream.bytesToString());
-      await AwesomeDialog(
-              dismissOnTouchOutside: false,
-              dismissOnBackKeyPress: false,
-              context: context,
-              dialogType: DialogType.success,
-              animType: AnimType.rightSlide,
-              headerAnimationLoop: false,
-              title: 'Success',
-              desc: 'Successfully Saved',
-              btnOkOnPress: () async {
-                await clearStuentList();
-                await getRemarksEntryView(course, division, category, term,
-                    assessment, isTerminated, isAssessment, isTerm, tabmethod);
-              },
-              btnOkColor: Colors.green)
-          .show();
-
+        notifyListeners();
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          elevation: 10,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+          ),
+          duration: Duration(seconds: 1),
+          margin: EdgeInsets.only(bottom: 80, left: 30, right: 30),
+          behavior: SnackBarBehavior.floating,
+          content: Text(
+            'Something Went Wrong....',
+            textAlign: TextAlign.center,
+          ),
+        ));
+        setLoadSave(false);
+        setLoading(false);
+        print('Error Response save');
+      }
+    } catch (e) {
+      setLoading(false);
       setLoadSave(false);
-      setCommonLoad(false);
-
-      notifyListeners();
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        elevation: 10,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(20)),
-        ),
-        duration: Duration(seconds: 1),
-        margin: EdgeInsets.only(bottom: 80, left: 30, right: 30),
-        behavior: SnackBarBehavior.floating,
-        content: Text(
-          'Something Went Wrong....',
-          textAlign: TextAlign.center,
-        ),
-      ));
-      setLoadSave(false);
-      print('Error Response save');
+      snackbarWidget(4, 'Something Went Wrong....', context);
     }
-    setLoadSave(false);
   }
 
   //delete
@@ -562,75 +626,83 @@ class RemarksEntryProvider with ChangeNotifier {
   ) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoadDelete(true);
+    setLoading(true);
 
     var headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
+    try {
+      var request = http.Request(
+          'POST', Uri.parse('${UIGuide.baseURL}/remarks-entry/delete'));
+      print(request);
 
-    var request = http.Request(
-        'POST', Uri.parse('${UIGuide.baseURL}/remarks-entry/delete'));
-    print(request);
+      request.body = json.encode({
+        "RemarkeDetails": {
+          "course": course,
+          "division": division,
+          "category": category,
+          "term": term,
+          "assessment": assessment,
+          "includeTerminatedStudents": includeTerminatedStudents
+        },
+        "RemarksEntryId": remarkEntryId,
+        "TabulationMethod": tabmethod
+      });
+      log(request.body);
+      request.headers.addAll(headers);
 
-    request.body = json.encode({
-      "RemarkeDetails": {
-        "course": course,
-        "division": division,
-        "category": category,
-        "term": term,
-        "assessment": assessment,
-        "includeTerminatedStudents": includeTerminatedStudents
-      },
-      "RemarksEntryId": remarkEntryId,
-      "TabulationMethod": tabmethod
-    });
-    log(request.body);
-    request.headers.addAll(headers);
-
-    http.StreamedResponse response = await request.send();
-    setLoadDelete(true);
-
-    if (response.statusCode == 200) {
+      http.StreamedResponse response = await request.send();
       setLoadDelete(true);
 
-      print('Correct........______________________________');
-      print(await response.stream.bytesToString());
-      await AwesomeDialog(
-              dismissOnTouchOutside: false,
-              dismissOnBackKeyPress: false,
-              context: context,
-              dialogType: DialogType.error,
-              animType: AnimType.rightSlide,
-              headerAnimationLoop: false,
-              title: 'Delete',
-              desc: 'Deleted Successfully',
-              btnOkOnPress: () async {
-                await clearStuentList();
-              },
-              btnOkColor: Colors.red)
-          .show();
+      if (response.statusCode == 200) {
+        setLoading(true);
+        setLoadDelete(true);
 
-      setLoadDelete(false);
+        print('Correct........______________________________');
+        print(await response.stream.bytesToString());
+        await AwesomeDialog(
+                dismissOnTouchOutside: false,
+                dismissOnBackKeyPress: false,
+                context: context,
+                dialogType: DialogType.error,
+                animType: AnimType.rightSlide,
+                headerAnimationLoop: false,
+                title: 'Delete',
+                desc: 'Deleted Successfully',
+                btnOkOnPress: () async {
+                  await clearStuentList();
+                },
+                btnOkColor: Colors.red)
+            .show();
 
-      notifyListeners();
-    } else {
-      print(response.reasonPhrase);
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        elevation: 10,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(20)),
-        ),
-        duration: Duration(seconds: 1),
-        margin: EdgeInsets.only(bottom: 80, left: 30, right: 30),
-        behavior: SnackBarBehavior.floating,
-        content: Text(
-          'Something Went Wrong ....',
-          textAlign: TextAlign.center,
-        ),
-      ));
+        setLoadDelete(false);
+        setLoading(false);
+
+        notifyListeners();
+      } else {
+        print(response.reasonPhrase);
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          elevation: 10,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+          ),
+          duration: Duration(seconds: 1),
+          margin: EdgeInsets.only(bottom: 80, left: 30, right: 30),
+          behavior: SnackBarBehavior.floating,
+          content: Text(
+            'Something Went Wrong ....',
+            textAlign: TextAlign.center,
+          ),
+        ));
+        setLoadDelete(false);
+        setLoading(false);
+        print('Error Response Verify');
+      }
+    } catch (e) {
       setLoadDelete(false);
-      print('Error Response Verify');
+      setLoading(false);
+      snackbarWidget(4, 'Something Went Wrong....', context);
     }
-    setLoadDelete(false);
   }
 }

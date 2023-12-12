@@ -31,17 +31,18 @@ class AttendenceProvider with ChangeNotifier {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
-    var response = await http.get(
-        Uri.parse("${UIGuide.baseURL}/mobileapp/parent/getattendance"),
-        headers: headers);
-    setLoading(true);
     try {
+      var response = await http.get(
+          Uri.parse("${UIGuide.baseURL}/mobileapp/parent/getattendance"),
+          headers: headers);
+      setLoading(true);
+
       if (response.statusCode == 200 || response.statusCode == 201) {
         final data = json.decode(response.body);
         attendenceRespo = json.decode(response.body);
         attendenceData = attendenceRespo!['attendence'];
         setLoading(true);
-        // print(data);
+        log(data.toString());
         attend = attendenceData!['monthwiseAttendence'];
 
         AttendencePercentageModel tot =

@@ -1,4 +1,3 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:essconnect/Application/Staff_Providers/Notification_ToGuardianProvider.dart';
 import 'package:essconnect/Domain/Staff/ToGuardian.dart';
 import 'package:essconnect/utils/spinkit.dart';
@@ -27,14 +26,21 @@ class Staff_ToGuardian extends StatelessWidget {
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 19),
             ),
             const Spacer(),
-            IconButton(
-                onPressed: () {
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Staff_ToGuardian()));
-                },
-                icon: const Icon(Icons.refresh_outlined)),
+            Consumer<NotificationToGuardian_Providers>(
+              builder: (context, value, child) => value.loading
+                  ? const SizedBox(
+                      height: 0,
+                      width: 0,
+                    )
+                  : IconButton(
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Staff_ToGuardian()));
+                      },
+                      icon: const Icon(Icons.refresh_outlined)),
+            ),
             kWidth
           ],
         ),
@@ -118,18 +124,16 @@ class _Notification_StaffToGuardainState
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       var p =
           Provider.of<NotificationToGuardian_Providers>(context, listen: false);
-      p.communicationToGuardianCourseStaff();
-      p.clearAllFilters();
-      p.selectedCourse.clear();
-      p.courseClear();
-      p.divisionClear();
-      p.removeDivisionAll();
-      p.clearStudentList();
+
+      await p.courseClear();
+      await p.divisionClear();
+      await p.clearStudentList();
       p.selectedList.clear();
       p.isselectAll = false;
+      await p.communicationToGuardianCourseStaff();
     });
   }
 
@@ -139,478 +143,522 @@ class _Notification_StaffToGuardainState
     var size = MediaQuery.of(context).size;
     return Scaffold(
       body: Consumer<NotificationToGuardian_Providers>(
-        builder: (context, value, child) => Column(
+        builder: (context, value, child) => Stack(
           children: [
-            const SizedBox(
-              height: 3,
-            ),
-            Row(
+            Column(
               children: [
-                kWidth,
-                Expanded(
-                  child: SizedBox(
-                    height: 45,
-                    child: Consumer<NotificationToGuardian_Providers>(
-                        builder: (context, snapshot, child) {
-                      return ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          elevation: 3,
-                          foregroundColor: UIGuide.light_Purple,
-                          backgroundColor: UIGuide.ButtonBlue,
-                          padding: const EdgeInsets.all(0),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              side: const BorderSide(
-                                color: UIGuide.light_black,
-                              )),
-                        ),
-                        onPressed: () {
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return Dialog(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(15)),
-                                    child: LimitedBox(
-                                      maxHeight: size.height - 300,
-                                      child: ListView.builder(
-                                          shrinkWrap: true,
-                                          itemCount: snapshot
-                                              .communicationToGuardianInitialValues
-                                              .length,
-                                          itemBuilder: (context, index) {
-                                            return ListTile(
-                                              selectedTileColor:
-                                                  Colors.blue.shade100,
-                                              onTap: () async {
-                                                notificationCourseController
-                                                    .text = snapshot
-                                                        .communicationToGuardianInitialValues[
-                                                            index]
-                                                        .value ??
-                                                    '--';
-                                                notificationCourseController1
-                                                    .text = snapshot
-                                                        .communicationToGuardianInitialValues[
-                                                            index]
-                                                        .text ??
-                                                    '--';
-                                                courseId =
+                const SizedBox(
+                  height: 3,
+                ),
+                Row(
+                  children: [
+                    kWidth,
+                    Expanded(
+                      child: SizedBox(
+                        height: 45,
+                        child: Consumer<NotificationToGuardian_Providers>(
+                            builder: (context, snapshot, child) {
+                          return ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              elevation: 3,
+                              foregroundColor: UIGuide.light_Purple,
+                              backgroundColor: UIGuide.ButtonBlue,
+                              padding: const EdgeInsets.all(0),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  side: const BorderSide(
+                                    color: UIGuide.light_black,
+                                  )),
+                            ),
+                            onPressed: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return Dialog(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(15)),
+                                        child: LimitedBox(
+                                          maxHeight: size.height - 300,
+                                          child: ListView.builder(
+                                              shrinkWrap: true,
+                                              itemCount: snapshot
+                                                  .communicationToGuardianInitialValues
+                                                  .length,
+                                              itemBuilder: (context, index) {
+                                                return ListTile(
+                                                  selectedTileColor:
+                                                      Colors.blue.shade100,
+                                                  onTap: () async {
+                                                    Navigator.of(context).pop();
                                                     notificationCourseController
-                                                        .text
-                                                        .toString();
-                                                notificationDivisionListController
-                                                    .clear();
-                                                notificationDivisionListController1
-                                                    .clear();
-                                                snapshot.divisionClear();
-                                                await snapshot
-                                                    .clearStudentList();
-                                                await Provider.of<
-                                                            NotificationToGuardian_Providers>(
-                                                        context,
-                                                        listen: false)
-                                                    .communicationToGuardianDivisionStaff(
-                                                        courseId);
-                                                Navigator.of(context).pop();
-                                              },
-                                              title: Text(
-                                                snapshot
-                                                        .communicationToGuardianInitialValues[
-                                                            index]
-                                                        .text ??
-                                                    '--',
-                                                textAlign: TextAlign.center,
-                                              ),
-                                            );
-                                          }),
-                                    ));
-                              });
-                        },
-                        child: TextField(
-                          style: const TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              color: UIGuide.BLACK,
-                              overflow: TextOverflow.clip),
-                          textAlign: TextAlign.center,
-                          controller: notificationCourseController1,
-                          decoration: const InputDecoration(
-                            contentPadding: EdgeInsets.only(left: 0, top: 0),
-                            floatingLabelBehavior: FloatingLabelBehavior.never,
-                            filled: true,
-                            fillColor: Colors.transparent,
-                            border: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(style: BorderStyle.none, width: 0),
-                            ),
-                            labelText: "  Select Course",
-                            hintText: "Course",
-                          ),
-                          enabled: false,
-                        ),
-                      );
-                    }),
-                  ),
-                ),
-                kWidth,
-                Expanded(
-                  child: SizedBox(
-                    height: 45,
-                    child: Consumer<NotificationToGuardian_Providers>(
-                        builder: (context, snapshot, child) {
-                      return ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          elevation: 3,
-                          foregroundColor: UIGuide.light_Purple,
-                          backgroundColor: UIGuide.ButtonBlue,
-                          padding: const EdgeInsets.all(0),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              side: const BorderSide(
-                                color: UIGuide.light_black,
-                              )),
-                        ),
-                        onPressed: () async {
-                          showDialog(
-                              context: context,
-                              builder: (context) {
-                                return Dialog(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(15)),
-                                    child: LimitedBox(
-                                      maxHeight: size.height - 300,
-                                      child: ListView.builder(
-                                          shrinkWrap: true,
-                                          itemCount: snapshot
-                                              .notificationDivisionList.length,
-                                          itemBuilder: (context, index) {
-                                            print(snapshot
-                                                .notificationDivisionList
-                                                .length);
-                                            return ListTile(
-                                              onTap: () async {
-                                                await snapshot
-                                                    .clearStudentList();
-                                                notificationDivisionListController
-                                                    .text = snapshot
-                                                        .notificationDivisionList[
-                                                            index]
-                                                        .value ??
-                                                    '---';
-                                                notificationDivisionListController1
-                                                    .text = snapshot
-                                                        .notificationDivisionList[
-                                                            index]
-                                                        .text ??
-                                                    '---';
-
-                                                divisionId =
-                                                    notificationDivisionListController
-                                                        .text
-                                                        .toString();
-                                                courseId =
+                                                        .text = snapshot
+                                                            .communicationToGuardianInitialValues[
+                                                                index]
+                                                            .value ??
+                                                        '--';
                                                     notificationCourseController1
-                                                        .text
-                                                        .toString();
-                                                Navigator.of(context).pop();
-                                              },
-                                              title: Text(
-                                                snapshot
-                                                        .notificationDivisionList[
-                                                            index]
-                                                        .text ??
-                                                    '---',
-                                                textAlign: TextAlign.center,
-                                              ),
-                                            );
-                                          }),
-                                    ));
-                              });
-                        },
-                        child: TextField(
-                          style: const TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              color: UIGuide.BLACK,
-                              overflow: TextOverflow.clip),
-                          textAlign: TextAlign.center,
-                          controller: notificationDivisionListController1,
-                          decoration: const InputDecoration(
-                            contentPadding: EdgeInsets.only(left: 0, top: 0),
-                            floatingLabelBehavior: FloatingLabelBehavior.never,
-                            filled: true,
-                            fillColor: Colors.transparent,
-                            border: OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(style: BorderStyle.none, width: 0),
+                                                        .text = snapshot
+                                                            .communicationToGuardianInitialValues[
+                                                                index]
+                                                            .text ??
+                                                        '--';
+                                                    courseId =
+                                                        notificationCourseController
+                                                            .text
+                                                            .toString();
+                                                    notificationDivisionListController
+                                                        .clear();
+                                                    notificationDivisionListController1
+                                                        .clear();
+                                                    snapshot.divisionClear();
+                                                    await snapshot
+                                                        .clearStudentList();
+                                                    await Provider.of<
+                                                                NotificationToGuardian_Providers>(
+                                                            context,
+                                                            listen: false)
+                                                        .communicationToGuardianDivisionStaff(
+                                                            courseId);
+                                                  },
+                                                  title: Text(
+                                                    snapshot
+                                                            .communicationToGuardianInitialValues[
+                                                                index]
+                                                            .text ??
+                                                        '--',
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                );
+                                              }),
+                                        ));
+                                  });
+                            },
+                            child: TextField(
+                              style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: UIGuide.BLACK,
+                                  overflow: TextOverflow.clip),
+                              textAlign: TextAlign.center,
+                              controller: notificationCourseController1,
+                              decoration: const InputDecoration(
+                                contentPadding:
+                                    EdgeInsets.only(left: 0, top: 0),
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.never,
+                                filled: true,
+                                fillColor: Colors.transparent,
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      style: BorderStyle.none, width: 0),
+                                ),
+                                labelText: "  Select Course",
+                                hintText: "Course",
+                              ),
+                              enabled: false,
                             ),
-                            labelText: "  Select Division",
-                            hintText: "Division",
-                          ),
-                          enabled: false,
-                        ),
-                      );
-                    }),
-                  ),
-                ),
-                kWidth
-              ],
-            ),
-            SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(color: UIGuide.light_black, width: 1)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      // Spacer(),
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            type = "sms";
-                          });
-                        },
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Radio(
-                              activeColor: UIGuide.light_Purple,
-                              value: 'sms',
-                              groupValue: type,
-                              onChanged: (value) {
-                                setState(() {
-                                  type = value.toString();
-                                });
-                                print(type);
-                              },
-                            ),
-                            const Text(
-                              "SMS",
-                            ),
-                          ],
-                        ),
+                          );
+                        }),
                       ),
-
-                      // Spacer(),
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            type = "email";
-                          });
-                        },
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Radio(
-                              activeColor: UIGuide.light_Purple,
-                              value: 'email',
-                              groupValue: type,
-                              onChanged: (value) {
-                                setState(() {
-                                  type = value.toString();
-                                });
-                                print(type);
-                              },
-                            ),
-                            const Text(
-                              "E-mail",
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      // Spacer(),
-                      GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            type = "notification";
-                          });
-                        },
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Radio(
-                              activeColor: UIGuide.light_Purple,
-                              value: 'notification',
-                              groupValue: type,
-                              onChanged: (value) {
-                                setState(() {
-                                  type = value.toString();
-                                });
-                                print(type);
-                              },
-                            ),
-                            const Text(
-                              "Notification",
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      // Spacer(),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(
-                  width: 120,
-                  height: 35,
-                  child: Consumer<NotificationToGuardian_Providers>(
-                    builder: (context, val, child) => val.loading
-                        ? const Center(
-                            child: Text(
-                            "Loading",
-                            style: TextStyle(
-                                color: UIGuide.light_Purple, fontSize: 16),
-                          ))
-                        : MaterialButton(
-                            color: UIGuide.light_Purple,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                            ),
-                            child: const Text(
-                              'View',
-                              style: TextStyle(
-                                  color: UIGuide.WHITE,
-                                  fontWeight: FontWeight.bold),
+                    ),
+                    kWidth,
+                    Expanded(
+                      child: SizedBox(
+                        height: 45,
+                        child: Consumer<NotificationToGuardian_Providers>(
+                            builder: (context, snapshot, child) {
+                          return ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              elevation: 3,
+                              foregroundColor: UIGuide.light_Purple,
+                              backgroundColor: UIGuide.ButtonBlue,
+                              padding: const EdgeInsets.all(0),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  side: const BorderSide(
+                                    color: UIGuide.light_black,
+                                  )),
                             ),
                             onPressed: () async {
-                              if (notificationCourseController.text.isEmpty ||
-                                  notificationDivisionListController
-                                      .text.isEmpty) {
-                                snackbarWidget(
-                                    2, 'Select Course & Division', context);
-                              } else {
-                                await Provider.of<
-                                            NotificationToGuardian_Providers>(
-                                        context,
-                                        listen: false)
-                                    .clearStudentList();
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return Dialog(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(15)),
+                                        child: LimitedBox(
+                                          maxHeight: size.height - 300,
+                                          child: ListView.builder(
+                                              shrinkWrap: true,
+                                              itemCount: snapshot
+                                                  .notificationDivisionList
+                                                  .length,
+                                              itemBuilder: (context, index) {
+                                                return ListTile(
+                                                  onTap: () async {
+                                                    Navigator.of(context).pop();
+                                                    await snapshot
+                                                        .clearStudentList();
+                                                    notificationDivisionListController
+                                                        .text = snapshot
+                                                            .notificationDivisionList[
+                                                                index]
+                                                            .value ??
+                                                        '---';
+                                                    notificationDivisionListController1
+                                                        .text = snapshot
+                                                            .notificationDivisionList[
+                                                                index]
+                                                            .text ??
+                                                        '---';
 
-                                divisionId = notificationDivisionListController
-                                    .text
-                                    .toString();
-                                courseId = notificationCourseController.text
-                                    .toString();
-
-                                await Provider.of<
-                                            NotificationToGuardian_Providers>(
-                                        context,
-                                        listen: false)
-                                    .getNotificationView(courseId, divisionId);
-                              }
-                            }),
-                  ),
-                ),
-              ],
-            ),
-            kheight10,
-            value.notificationView.isEmpty
-                ? const SizedBox(
-                    height: 0,
-                    width: 0,
-                  )
-                : Container(
-                    decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 241, 243, 245),
-                        border:
-                            Border.all(color: UIGuide.light_black, width: 1)),
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 2.0, bottom: 2),
-                      child: Table(
-                        columnWidths: const {
-                          0: FlexColumnWidth(1.3),
-                          1: FlexColumnWidth(4),
-                          2: FlexColumnWidth(1.4),
-                        },
-                        children: [
-                          TableRow(children: [
-                            const Text(
-                              ' Sl.No.',
-                              style: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.bold),
-                            ),
-                            const Center(
-                              child: Text(
-                                'Name',
-                                style: TextStyle(
-                                    fontSize: 15, fontWeight: FontWeight.bold),
+                                                    divisionId =
+                                                        notificationDivisionListController
+                                                            .text
+                                                            .toString();
+                                                    courseId =
+                                                        notificationCourseController1
+                                                            .text
+                                                            .toString();
+                                                  },
+                                                  title: Text(
+                                                    snapshot
+                                                            .notificationDivisionList[
+                                                                index]
+                                                            .text ??
+                                                        '---',
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                );
+                                              }),
+                                        ));
+                                  });
+                            },
+                            child: TextField(
+                              style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  color: UIGuide.BLACK,
+                                  overflow: TextOverflow.clip),
+                              textAlign: TextAlign.center,
+                              controller: notificationDivisionListController1,
+                              decoration: const InputDecoration(
+                                contentPadding:
+                                    EdgeInsets.only(left: 0, top: 0),
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.never,
+                                filled: true,
+                                fillColor: Colors.transparent,
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      style: BorderStyle.none, width: 0),
+                                ),
+                                labelText: "  Select Division",
+                                hintText: "Division",
                               ),
+                              enabled: false,
                             ),
-                            Consumer<NotificationToGuardian_Providers>(
-                              builder: (context, value, child) =>
-                                  GestureDetector(
-                                      onTap: () {
-                                        value.selectAll();
-                                      },
-                                      child: value.isselectAll
-                                          ? Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 15),
-                                              child: SvgPicture.asset(
-                                                UIGuide.check,
-                                                color: UIGuide.light_Purple,
-                                              ),
-                                            )
-                                          : const Text(
-                                              '  Select All',
-                                              style: TextStyle(
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: UIGuide.light_Purple),
-                                            )),
-                            )
-                          ])
+                          );
+                        }),
+                      ),
+                    ),
+                    kWidth
+                  ],
+                ),
+                SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          border:
+                              Border.all(color: UIGuide.light_black, width: 1)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          // Spacer(),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                type = "sms";
+                              });
+                            },
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Radio(
+                                  activeColor: UIGuide.light_Purple,
+                                  value: 'sms',
+                                  groupValue: type,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      type = value.toString();
+                                    });
+                                    print(type);
+                                  },
+                                ),
+                                const Text(
+                                  "SMS",
+                                ),
+                              ],
+                            ),
+                          ),
+
+                          // Spacer(),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                type = "email";
+                              });
+                            },
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Radio(
+                                  activeColor: UIGuide.light_Purple,
+                                  value: 'email',
+                                  groupValue: type,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      type = value.toString();
+                                    });
+                                    print(type);
+                                  },
+                                ),
+                                const Text(
+                                  "E-mail",
+                                ),
+                              ],
+                            ),
+                          ),
+
+                          // Spacer(),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                type = "notification";
+                              });
+                            },
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Radio(
+                                  activeColor: UIGuide.light_Purple,
+                                  value: 'notification',
+                                  groupValue: type,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      type = value.toString();
+                                    });
+                                    print(type);
+                                  },
+                                ),
+                                const Text(
+                                  "Notification",
+                                ),
+                              ],
+                            ),
+                          ),
+
+                          // Spacer(),
                         ],
                       ),
                     ),
                   ),
-            Consumer<NotificationToGuardian_Providers>(
-              builder: (context, value, child) {
-                return value.loading
-                    ? Expanded(
-                        child: Center(child: spinkitLoader()),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: 120,
+                      height: 35,
+                      child: Consumer<NotificationToGuardian_Providers>(
+                        builder: (context, val, child) => val.loading
+                            ? const Center(
+                                child: Text(
+                                "Loading",
+                                style: TextStyle(
+                                    color: UIGuide.light_Purple, fontSize: 16),
+                              ))
+                            : MaterialButton(
+                                color: UIGuide.light_Purple,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ),
+                                child: const Text(
+                                  'View',
+                                  style: TextStyle(
+                                      color: UIGuide.WHITE,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                onPressed: () async {
+                                  if (notificationCourseController
+                                          .text.isEmpty ||
+                                      notificationDivisionListController
+                                          .text.isEmpty) {
+                                    snackbarWidget(
+                                        2, 'Select Course & Division', context);
+                                  } else {
+                                    await Provider.of<
+                                                NotificationToGuardian_Providers>(
+                                            context,
+                                            listen: false)
+                                        .clearStudentList();
+
+                                    divisionId =
+                                        notificationDivisionListController.text
+                                            .toString();
+                                    courseId = notificationCourseController.text
+                                        .toString();
+
+                                    await Provider.of<
+                                                NotificationToGuardian_Providers>(
+                                            context,
+                                            listen: false)
+                                        .getNotificationView(
+                                            courseId, divisionId);
+                                  }
+                                }),
+                      ),
+                    ),
+                  ],
+                ),
+                kheight10,
+                value.notificationView.isEmpty
+                    ? const SizedBox(
+                        height: 0,
+                        width: 0,
                       )
-                    : Expanded(
-                        child: Scrollbar(
-                          thickness: 5,
-                          controller: _scrollController,
-                          child: ListView.builder(
-                            scrollDirection: Axis.vertical,
-                            itemCount: value.notificationView.isEmpty
-                                ? 0
-                                : value.notificationView.length,
-                            itemBuilder: ((context, index) {
-                              return Container(
-                                decoration: BoxDecoration(
-                                  color: index.isEven
-                                      ? Colors.white
-                                      : const Color.fromARGB(
-                                          255, 241, 243, 245),
-                                  border: Border.all(
-                                      color: UIGuide.light_black, width: 1),
+                    : Container(
+                        decoration: BoxDecoration(
+                            color: const Color.fromARGB(255, 241, 243, 245),
+                            border: Border.all(
+                                color: UIGuide.light_black, width: 1)),
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 2.0, bottom: 2),
+                          child: Table(
+                            columnWidths: const {
+                              0: FlexColumnWidth(1.3),
+                              1: FlexColumnWidth(4),
+                              2: FlexColumnWidth(1.4),
+                            },
+                            children: [
+                              TableRow(children: [
+                                const Text(
+                                  ' Sl.No.',
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold),
                                 ),
-                                child: Notification_StudList(
-                                  viewStud: value.notificationView[index],
-                                  indexx: index,
+                                const Center(
+                                  child: Text(
+                                    'Name',
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold),
+                                  ),
                                 ),
-                              );
-                            }),
+                                Consumer<NotificationToGuardian_Providers>(
+                                  builder: (context, value, child) =>
+                                      GestureDetector(
+                                          onTap: () {
+                                            value.selectAll();
+                                          },
+                                          child: value.isselectAll
+                                              ? Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          left: 15),
+                                                  child: SvgPicture.asset(
+                                                    UIGuide.check,
+                                                    color: UIGuide.light_Purple,
+                                                  ),
+                                                )
+                                              : const Text(
+                                                  '  Select All',
+                                                  style: TextStyle(
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color:
+                                                          UIGuide.light_Purple),
+                                                )),
+                                )
+                              ])
+                            ],
                           ),
                         ),
-                      );
-              },
+                      ),
+                Consumer<NotificationToGuardian_Providers>(
+                  builder: (context, value, child) {
+                    return Expanded(
+                      child: Scrollbar(
+                        thickness: 5,
+                        controller: _scrollController,
+                        child: ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          itemCount: value.notificationView.isEmpty
+                              ? 0
+                              : value.notificationView.length,
+                          itemBuilder: ((context, index) {
+                            return Container(
+                              decoration: BoxDecoration(
+                                color: index.isEven
+                                    ? Colors.white
+                                    : const Color.fromARGB(255, 241, 243, 245),
+                                border: Border.all(
+                                    color: UIGuide.light_black, width: 1),
+                              ),
+                              child: Notification_StudList(
+                                viewStud: value.notificationView[index],
+                                indexx: index,
+                              ),
+                            );
+                          }),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ],
             ),
+            if (value.loading) pleaseWaitLoader()
+            // WillPopScope(
+            //   onWillPop: () async {
+            //     return false;
+            //   },
+            //   child: Container(
+            //     color: Colors.black.withOpacity(0.2),
+            //     child: Center(
+            //       child: Container(
+            //         decoration: const BoxDecoration(color: UIGuide.WHITE),
+            //         child: const Padding(
+            //           padding: EdgeInsets.all(15.0),
+            //           child: Row(
+            //             mainAxisSize: MainAxisSize.min,
+            //             mainAxisAlignment: MainAxisAlignment.center,
+            //             children: [
+            //               CircularProgressIndicator(
+            //                 color: UIGuide.light_Purple,
+            //                 strokeWidth: 2,
+            //               ),
+            //               kWidth,
+            //               Text(
+            //                 "Please Wait...",
+            //                 style: TextStyle(
+            //                     color: UIGuide.light_Purple,
+            //                     fontWeight: FontWeight.w700,
+            //                     fontSize: 18),
+            //               )
+            //             ],
+            //           ),
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),
@@ -619,100 +667,86 @@ class _Notification_StaffToGuardainState
         child: Padding(
           padding: const EdgeInsets.only(left: 12, right: 12),
           child: Consumer<NotificationToGuardian_Providers>(
-            builder: (context, value, child) => value.loading
-                ? MaterialButton(
+            builder: (context, value, child) => value
+                        .notificationView.isEmpty ||
+                    value.loading
+                ? const SizedBox(
+                    height: 0,
+                    width: 0,
+                  )
+                : MaterialButton(
                     shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0))),
                     color: UIGuide.light_Purple,
-                    onPressed: () {},
-                    child: const Text('Please Wait...',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400)),
-                  )
-                : value.notificationView.isEmpty
-                    ? const SizedBox(
-                        height: 0,
-                        width: 0,
-                      )
-                    : MaterialButton(
-                        shape: const RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10.0))),
-                        color: UIGuide.light_Purple,
-                        onPressed: () async {
-                          if (type == 'notification') {
-                            await Provider.of<NotificationToGuardian_Providers>(
-                                    context,
-                                    listen: false)
-                                .submitStudent(context);
+                    onPressed: () async {
+                      if (type == 'notification') {
+                        await Provider.of<NotificationToGuardian_Providers>(
+                                context,
+                                listen: false)
+                            .submitStudent(context);
+                      } else {
+                        await Provider.of<NotificationToGuardian_Providers>(
+                                context,
+                                listen: false)
+                            .getProvider();
+                        value.type = type;
+                        if (type == 'email') {
+                          await Provider.of<NotificationToGuardian_Providers>(
+                                  context,
+                                  listen: false)
+                              .submitSmsStudent(context);
+                        } else if (type == "sms") {
+                          if (value.providerName == null) {
+                            await ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                elevation: 10,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                ),
+                                duration: Duration(seconds: 1),
+                                margin: EdgeInsets.only(
+                                    bottom: 80, left: 30, right: 30),
+                                behavior: SnackBarBehavior.floating,
+                                content: Text(
+                                  'Sms Provider Not Found.....!',
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            );
                           } else {
                             await Provider.of<NotificationToGuardian_Providers>(
                                     context,
                                     listen: false)
-                                .getProvider();
-                            value.type = type;
-                            if (type == 'email') {
-                              await Provider.of<
-                                          NotificationToGuardian_Providers>(
-                                      context,
-                                      listen: false)
-                                  .submitSmsStudent(context);
-                            } else if (type == "sms") {
-                              if (value.providerName == null) {
-                                await ScaffoldMessenger.of(context)
-                                    .showSnackBar(
-                                  const SnackBar(
-                                    elevation: 10,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                    ),
-                                    duration: Duration(seconds: 1),
-                                    margin: EdgeInsets.only(
-                                        bottom: 80, left: 30, right: 30),
-                                    behavior: SnackBarBehavior.floating,
-                                    content: Text(
-                                      'Sms Provider Not Found.....!',
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                );
-                              } else {
-                                await Provider.of<
-                                            NotificationToGuardian_Providers>(
-                                        context,
-                                        listen: false)
-                                    .submitSmsStudent(context);
-                              }
-                            } else {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  elevation: 10,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(10)),
-                                  ),
-                                  duration: Duration(seconds: 1),
-                                  margin: EdgeInsets.only(
-                                      bottom: 80, left: 30, right: 30),
-                                  behavior: SnackBarBehavior.floating,
-                                  content: Text(
-                                    'Something went wrong.....!',
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                              );
-                            }
+                                .submitSmsStudent(context);
                           }
-                        },
-                        child: const Text('Proceed',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400)),
-                      ),
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              elevation: 10,
+                              shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10)),
+                              ),
+                              duration: Duration(seconds: 1),
+                              margin: EdgeInsets.only(
+                                  bottom: 80, left: 30, right: 30),
+                              behavior: SnackBarBehavior.floating,
+                              content: Text(
+                                'Something went wrong.....!',
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          );
+                        }
+                      }
+                    },
+                    child: const Text('Proceed',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400)),
+                  ),
           ),
         ),
       ),
@@ -792,87 +826,90 @@ class Text_Matter_Notification extends StatelessWidget {
         ),
         backgroundColor: UIGuide.light_Purple,
       ),
-      body: SingleChildScrollView(
-        child: Column(
+      body: Consumer<NotificationToGuardian_Providers>(
+        builder: (context, val, _) => Stack(
           children: [
-            LottieBuilder.network(
-                'https://assets10.lottiefiles.com/private_files/lf30_kBx3K1.json'),
-            kheight20,
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: LimitedBox(
-                maxHeight: 80,
-                child: TextFormField(
-                  inputFormatters: [LengthLimitingTextInputFormatter(50)],
-                  controller: titleController,
-                  minLines: 1,
-                  maxLines: 4,
-                  keyboardType: TextInputType.multiline,
-                  decoration: const InputDecoration(
-                    labelText: 'Title*',
-                    hintText: 'Enter Title',
-                    labelStyle: TextStyle(color: UIGuide.light_Purple),
-                    hintStyle: TextStyle(color: Colors.grey),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(20),
-                          topRight: Radius.circular(0),
-                          bottomLeft: Radius.circular(0),
-                          bottomRight: Radius.circular(20)),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: UIGuide.light_Purple, width: 1.0),
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(20),
-                          topRight: Radius.circular(0),
-                          bottomLeft: Radius.circular(0),
-                          bottomRight: Radius.circular(20)),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: LimitedBox(
-                maxHeight: 150,
-                child: TextFormField(
-                  inputFormatters: [LengthLimitingTextInputFormatter(1000)],
-                  controller: matterController,
-                  minLines: 1,
-                  maxLines: 15,
-                  keyboardType: TextInputType.multiline,
-                  decoration: const InputDecoration(
-                    labelText: 'Matter*',
-                    hintText: 'Enter Matter',
-                    labelStyle: TextStyle(color: UIGuide.light_Purple),
-                    hintStyle: TextStyle(color: Colors.grey),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(20),
-                          topRight: Radius.circular(0),
-                          bottomLeft: Radius.circular(0),
-                          bottomRight: Radius.circular(20)),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: UIGuide.light_Purple, width: 1.0),
-                      borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(20),
-                          topRight: Radius.circular(0),
-                          bottomLeft: Radius.circular(0),
-                          bottomRight: Radius.circular(20)),
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  LottieBuilder.network(
+                      'https://assets10.lottiefiles.com/private_files/lf30_kBx3K1.json'),
+                  kheight20,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: LimitedBox(
+                      maxHeight: 80,
+                      child: TextFormField(
+                        inputFormatters: [LengthLimitingTextInputFormatter(50)],
+                        controller: titleController,
+                        minLines: 1,
+                        maxLines: 4,
+                        keyboardType: TextInputType.multiline,
+                        decoration: const InputDecoration(
+                          labelText: 'Title*',
+                          hintText: 'Enter Title',
+                          labelStyle: TextStyle(color: UIGuide.light_Purple),
+                          hintStyle: TextStyle(color: Colors.grey),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                topRight: Radius.circular(0),
+                                bottomLeft: Radius.circular(0),
+                                bottomRight: Radius.circular(20)),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: UIGuide.light_Purple, width: 1.0),
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                topRight: Radius.circular(0),
+                                bottomLeft: Radius.circular(0),
+                                bottomRight: Radius.circular(20)),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
-            ),
-            kheight20,
-            Consumer<NotificationToGuardian_Providers>(
-              builder: (context, value, _) => value.load
-                  ? spinkitLoader()
-                  : SizedBox(
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: LimitedBox(
+                      maxHeight: 150,
+                      child: TextFormField(
+                        inputFormatters: [
+                          LengthLimitingTextInputFormatter(1000)
+                        ],
+                        controller: matterController,
+                        minLines: 1,
+                        maxLines: 15,
+                        keyboardType: TextInputType.multiline,
+                        decoration: const InputDecoration(
+                          labelText: 'Matter*',
+                          hintText: 'Enter Matter',
+                          labelStyle: TextStyle(color: UIGuide.light_Purple),
+                          hintStyle: TextStyle(color: Colors.grey),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                topRight: Radius.circular(0),
+                                bottomLeft: Radius.circular(0),
+                                bottomRight: Radius.circular(20)),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: UIGuide.light_Purple, width: 1.0),
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                topRight: Radius.circular(0),
+                                bottomLeft: Radius.circular(0),
+                                bottomRight: Radius.circular(20)),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  kheight20,
+                  Consumer<NotificationToGuardian_Providers>(
+                    builder: (context, value, _) => SizedBox(
                       width: 150,
                       height: 40,
                       child: MaterialButton(
@@ -921,7 +958,11 @@ class Text_Matter_Notification extends StatelessWidget {
                         ),
                       ),
                     ),
-            )
+                  )
+                ],
+              ),
+            ),
+            if (val.loading) pleaseWaitLoader()
           ],
         ),
       ),

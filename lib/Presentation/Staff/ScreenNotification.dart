@@ -98,6 +98,7 @@ class StaffNotificationReceived extends StatelessWidget {
                       finalCreatedDate =
                           DateFormat('dd-MMM-yyyy').format(parsedDateTime);
                     }
+
                     return AnimationConfiguration.staggeredList(
                       position: index,
                       delay: const Duration(milliseconds: 100),
@@ -111,13 +112,15 @@ class StaffNotificationReceived extends StatelessWidget {
                               left: 6.0, right: 6, bottom: 3, top: 3),
                           child: Container(
                             decoration: BoxDecoration(
-                                color: const Color.fromARGB(255, 234, 234, 236),
-                                border: Border.all(
-                                    color: const Color.fromARGB(
-                                        255, 136, 187, 235)),
-                                borderRadius: const BorderRadius.only(
-                                    topRight: Radius.circular(20),
-                                    bottomLeft: Radius.circular(20))),
+                              color: const Color.fromARGB(255, 234, 234, 236),
+                              border: Border.all(
+                                color: const Color.fromARGB(255, 136, 187, 235),
+                              ),
+                              borderRadius: const BorderRadius.only(
+                                topRight: Radius.circular(20),
+                                bottomLeft: Radius.circular(20),
+                              ),
+                            ),
                             width: size.width,
                             child: Padding(
                               padding: const EdgeInsets.all(6.0),

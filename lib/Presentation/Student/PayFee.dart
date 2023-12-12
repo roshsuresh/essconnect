@@ -1061,7 +1061,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
 ///////////////////                                 TrakNPay                                    ////////////////////////
 //  -----------------------------------------------------------------------------------------------------------------  //
                                           else if (trans.gateway ==
-                                              'TrakNPay') {
+                                              'TrakNPayyyy') {
                                             await Provider.of<FeesProvider>(
                                                     context,
                                                     listen: false)
@@ -1446,7 +1446,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
 ///////////////////                                 TrakNPay                                    ////////////////////////
 //  -----------------------------------------------------------------------------------------------------------------  //
                                           else if (trans.gateway ==
-                                              'TrakNPay') {
+                                              'TrakNPayyyy') {
                                             await Provider.of<FeesProvider>(
                                                     context,
                                                     listen: false)
@@ -1846,7 +1846,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
 ///////////////////                                 TrakNPay                                    ////////////////////////
 //  -----------------------------------------------------------------------------------------------------------------  //
                                           else if (trans.gateway ==
-                                              'TrakNPay') {
+                                              'TrakNPayyyy') {
                                             await Provider.of<FeesProvider>(
                                                     context,
                                                     listen: false)
