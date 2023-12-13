@@ -808,277 +808,269 @@ class _MissingReportState extends State<MissingReport> {
                 ),
                 kheight10,
                 value.isShown == true
-                    ? value.loading
-                        ? Expanded(child: spinkitLoader())
-                        : Expanded(
-                            //  maxHeight: size.height / 1.69,
-                            child: Scrollbar(
-                              thickness: 5,
-                              controller: _scrollController,
-                              child: ListView.builder(
-                                  itemCount: value.viewStudentList.isEmpty
-                                      ? 0
-                                      : value.viewStudentList.length,
-                                  // shrinkWrap: true,
-                                  itemBuilder: (context, index) {
-                                    return Column(
-                                      children: [
-                                        Container(
-                                          // width: size.width,
-                                          decoration: BoxDecoration(
-                                              color: const Color.fromARGB(
-                                                  255, 232, 232, 235),
-                                              borderRadius:
-                                                  BorderRadius.circular(10)),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.min,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                    ? Expanded(
+                        //  maxHeight: size.height / 1.69,
+                        child: Scrollbar(
+                          thickness: 5,
+                          controller: _scrollController,
+                          child: ListView.builder(
+                              itemCount: value.viewStudentList.isEmpty
+                                  ? 0
+                                  : value.viewStudentList.length,
+                              // shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                return Column(
+                                  children: [
+                                    Container(
+                                      // width: size.width,
+                                      decoration: BoxDecoration(
+                                          color: const Color.fromARGB(
+                                              255, 232, 232, 235),
+                                          borderRadius:
+                                              BorderRadius.circular(10)),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              value.viewStudentList[index]
+                                                  .division
+                                                  .toString(),
+                                              style: const TextStyle(
+                                                  color: UIGuide.light_Purple,
+                                                  fontWeight: FontWeight.w600),
+                                            ),
+                                            const Text("  ( Total Students :"),
+                                            Text(
+                                              "${value.viewStudentList[index].divisionWiseStudentsCount.toString()} )",
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(5.0),
+                                      child: ListView.builder(
+                                        shrinkWrap: true,
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        itemCount: value.viewStudentList[index]
+                                                .studentList!.isEmpty
+                                            ? 0
+                                            : value.viewStudentList[index]
+                                                .studentList!.length,
+                                        itemBuilder: (context, index1) =>
+                                            Padding(
+                                          padding: const EdgeInsets.all(5.0),
+                                          child: Container(
+                                            width: size.width,
+                                            decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color:
+                                                        UIGuide.light_Purple),
+                                                borderRadius:
+                                                    BorderRadius.circular(10)),
+                                            child: Column(
                                               children: [
-                                                Text(
-                                                  value.viewStudentList[index]
-                                                      .division
-                                                      .toString(),
-                                                  style: const TextStyle(
-                                                      color:
-                                                          UIGuide.light_Purple,
-                                                      fontWeight:
-                                                          FontWeight.w600),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(0),
+                                                  child: Row(
+                                                    children: [
+                                                      Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(2),
+                                                        decoration:
+                                                            const BoxDecoration(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .only(
+                                                                  topLeft: Radius
+                                                                      .circular(
+                                                                          10),
+                                                                  bottomRight: Radius
+                                                                      .circular(
+                                                                          8),
+                                                                ),
+                                                                color: Color
+                                                                    .fromARGB(
+                                                                        255,
+                                                                        242,
+                                                                        244,
+                                                                        255)),
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(3.0),
+                                                          child: Text(
+                                                            '${index1 + 1}',
+                                                            style: const TextStyle(
+                                                                color: UIGuide
+                                                                    .light_Purple),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      kWidth,
+                                                      const Text("Division: "),
+                                                      Flexible(
+                                                        child: RichText(
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          strutStyle:
+                                                              const StrutStyle(
+                                                                  fontSize:
+                                                                      12.0),
+                                                          text: TextSpan(
+                                                            style: const TextStyle(
+                                                                color: UIGuide
+                                                                    .light_Purple),
+                                                            text: value
+                                                                    .viewStudentList[
+                                                                        index]
+                                                                    .division ??
+                                                                '--',
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      kWidth,
+                                                      Expanded(
+                                                        child: Row(
+                                                          children: [
+                                                            const Text(
+                                                                "Roll No: "),
+                                                            Text(
+                                                              value
+                                                                          .viewStudentList[
+                                                                              index]
+                                                                          .studentList![
+                                                                              index1]
+                                                                          .rollNo ==
+                                                                      null
+                                                                  ? ''
+                                                                  : value
+                                                                      .viewStudentList[
+                                                                          index]
+                                                                      .studentList![
+                                                                          index1]
+                                                                      .rollNo
+                                                                      .toString(),
+                                                              style: const TextStyle(
+                                                                  color: UIGuide
+                                                                      .light_Purple),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
-                                                const Text(
-                                                    "  ( Total Students :"),
-                                                Text(
-                                                  "${value.viewStudentList[index].divisionWiseStudentsCount.toString()} )",
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(5.0),
+                                                  child: Row(
+                                                    children: [
+                                                      Expanded(
+                                                        child: Row(
+                                                          children: [
+                                                            const Text(
+                                                                " Name: "),
+                                                            Flexible(
+                                                              child: RichText(
+                                                                overflow:
+                                                                    TextOverflow
+                                                                        .ellipsis,
+                                                                maxLines: 2,
+                                                                strutStyle:
+                                                                    const StrutStyle(
+                                                                        fontSize:
+                                                                            12.0),
+                                                                text: TextSpan(
+                                                                  style: const TextStyle(
+                                                                      color: UIGuide
+                                                                          .light_Purple,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w600),
+                                                                  text: value
+                                                                          .viewStudentList[
+                                                                              index]
+                                                                          .studentList![
+                                                                              index1]
+                                                                          .name ??
+                                                                      "--",
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
+                                                Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            5.0),
+                                                    child: ListView.builder(
+                                                        physics:
+                                                            const NeverScrollableScrollPhysics(),
+                                                        shrinkWrap: true,
+                                                        itemCount: value
+                                                                .viewStudentList[
+                                                                    index]
+                                                                .studentList![
+                                                                    index1]
+                                                                .sUbjectList!
+                                                                .isEmpty
+                                                            ? 0
+                                                            : value
+                                                                .viewStudentList[
+                                                                    index]
+                                                                .studentList![
+                                                                    index1]
+                                                                .sUbjectList!
+                                                                .length,
+                                                        itemBuilder:
+                                                            (context, index2) {
+                                                          return Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(4.0),
+                                                            child: Text(
+                                                              value
+                                                                      .viewStudentList[
+                                                                          index]
+                                                                      .studentList![
+                                                                          index1]
+                                                                      .sUbjectList![
+                                                                          index2]
+                                                                      .subject ??
+                                                                  '--',
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              maxLines: 2,
+                                                              style: const TextStyle(
+                                                                  color: UIGuide
+                                                                      .light_Purple),
+                                                            ),
+                                                          );
+                                                        }))
                                               ],
                                             ),
                                           ),
                                         ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(5.0),
-                                          child: ListView.builder(
-                                            shrinkWrap: true,
-                                            physics:
-                                                const NeverScrollableScrollPhysics(),
-                                            itemCount: value
-                                                    .viewStudentList[index]
-                                                    .studentList!
-                                                    .isEmpty
-                                                ? 0
-                                                : value.viewStudentList[index]
-                                                    .studentList!.length,
-                                            itemBuilder: (context, index1) =>
-                                                Padding(
-                                              padding:
-                                                  const EdgeInsets.all(5.0),
-                                              child: Container(
-                                                width: size.width,
-                                                decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                        color: UIGuide
-                                                            .light_Purple),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10)),
-                                                child: Column(
-                                                  children: [
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              0),
-                                                      child: Row(
-                                                        children: [
-                                                          Container(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(2),
-                                                            decoration:
-                                                                const BoxDecoration(
-                                                                    borderRadius:
-                                                                        BorderRadius
-                                                                            .only(
-                                                                      topLeft: Radius
-                                                                          .circular(
-                                                                              10),
-                                                                      bottomRight:
-                                                                          Radius.circular(
-                                                                              8),
-                                                                    ),
-                                                                    color: Color
-                                                                        .fromARGB(
-                                                                            255,
-                                                                            242,
-                                                                            244,
-                                                                            255)),
-                                                            child: Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .all(3.0),
-                                                              child: Text(
-                                                                '${index1 + 1}',
-                                                                style: const TextStyle(
-                                                                    color: UIGuide
-                                                                        .light_Purple),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          kWidth,
-                                                          const Text(
-                                                              "Division: "),
-                                                          Flexible(
-                                                            child: RichText(
-                                                              overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
-                                                              strutStyle:
-                                                                  const StrutStyle(
-                                                                      fontSize:
-                                                                          12.0),
-                                                              text: TextSpan(
-                                                                style: const TextStyle(
-                                                                    color: UIGuide
-                                                                        .light_Purple),
-                                                                text: value
-                                                                        .viewStudentList[
-                                                                            index]
-                                                                        .division ??
-                                                                    '--',
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          kWidth,
-                                                          Expanded(
-                                                            child: Row(
-                                                              children: [
-                                                                const Text(
-                                                                    "Roll No: "),
-                                                                Text(
-                                                                  value.viewStudentList[index].studentList![index1].rollNo ==
-                                                                          null
-                                                                      ? ''
-                                                                      : value
-                                                                          .viewStudentList[
-                                                                              index]
-                                                                          .studentList![
-                                                                              index1]
-                                                                          .rollNo
-                                                                          .toString(),
-                                                                  style: const TextStyle(
-                                                                      color: UIGuide
-                                                                          .light_Purple),
-                                                                )
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              5.0),
-                                                      child: Row(
-                                                        children: [
-                                                          Expanded(
-                                                            child: Row(
-                                                              children: [
-                                                                const Text(
-                                                                    " Name: "),
-                                                                Flexible(
-                                                                  child:
-                                                                      RichText(
-                                                                    overflow:
-                                                                        TextOverflow
-                                                                            .ellipsis,
-                                                                    maxLines: 2,
-                                                                    strutStyle: const StrutStyle(
-                                                                        fontSize:
-                                                                            12.0),
-                                                                    text:
-                                                                        TextSpan(
-                                                                      style: const TextStyle(
-                                                                          color: UIGuide
-                                                                              .light_Purple,
-                                                                          fontWeight:
-                                                                              FontWeight.w600),
-                                                                      text: value
-                                                                              .viewStudentList[index]
-                                                                              .studentList![index1]
-                                                                              .name ??
-                                                                          "--",
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(5.0),
-                                                        child: ListView.builder(
-                                                            physics:
-                                                                const NeverScrollableScrollPhysics(),
-                                                            shrinkWrap: true,
-                                                            itemCount: value
-                                                                    .viewStudentList[
-                                                                        index]
-                                                                    .studentList![
-                                                                        index1]
-                                                                    .sUbjectList!
-                                                                    .isEmpty
-                                                                ? 0
-                                                                : value
-                                                                    .viewStudentList[
-                                                                        index]
-                                                                    .studentList![
-                                                                        index1]
-                                                                    .sUbjectList!
-                                                                    .length,
-                                                            itemBuilder:
-                                                                (context,
-                                                                    index2) {
-                                                              return Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                        .all(
-                                                                        4.0),
-                                                                child: Text(
-                                                                  value
-                                                                          .viewStudentList[
-                                                                              index]
-                                                                          .studentList![
-                                                                              index1]
-                                                                          .sUbjectList![
-                                                                              index2]
-                                                                          .subject ??
-                                                                      '--',
-                                                                  overflow:
-                                                                      TextOverflow
-                                                                          .ellipsis,
-                                                                  maxLines: 2,
-                                                                  style: const TextStyle(
-                                                                      color: UIGuide
-                                                                          .light_Purple),
-                                                                ),
-                                                              );
-                                                            }))
-                                                  ],
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    );
-                                  }),
-                            ),
-                          )
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              }),
+                        ),
+                      )
                     : Expanded(
                         child: Scrollbar(
                           thickness: 5,
