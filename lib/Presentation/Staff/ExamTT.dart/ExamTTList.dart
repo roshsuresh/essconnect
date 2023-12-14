@@ -82,9 +82,10 @@ class _ExamTTHistoryStaffState extends State<ExamTTHistoryStaff> {
                             width: size.width,
                             // height: 140,
                             decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: UIGuide.light_Purple, width: 1),
-                                borderRadius: BorderRadius.circular(10)),
+                              border: Border.all(
+                                  color: UIGuide.light_Purple, width: 1),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
                             child: Column(
                               children: [
                                 Padding(

@@ -1,0 +1,740 @@
+import 'package:essconnect/Application/Staff_Providers/AncedotalStaffProvider.dart';
+import 'package:essconnect/Constants.dart';
+import 'package:essconnect/Domain/Staff/Anecdotal/InitialSelectionModel.dart';
+import 'package:essconnect/utils/constants.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:multi_select_flutter/chip_display/multi_select_chip_display.dart';
+import 'package:multi_select_flutter/dialog/multi_select_dialog_field.dart';
+import 'package:multi_select_flutter/util/multi_select_list_type.dart';
+import 'package:provider/provider.dart';
+
+class AnecdotalentryScreen extends StatefulWidget {
+  AnecdotalentryScreen({super.key});
+
+  @override
+  State<AnecdotalentryScreen> createState() => _AnecdotalentryScreenState();
+}
+
+class _AnecdotalentryScreenState extends State<AnecdotalentryScreen> {
+  @override
+  Widget build(BuildContext context) {
+    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+    //   var p = Provider.of<AnecdotalStaffProviders>(context, listen: false);
+    //   await p.getStudentViewList();
+    // });
+    var size = MediaQuery.of(context).size;
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.only(left: 8, right: 8),
+        child: Consumer<AnecdotalStaffProviders>(
+          builder: (context, value, _) => ListView(
+            children: [
+              kheight10,
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        elevation: 3,
+                        foregroundColor: UIGuide.BLACK,
+                        backgroundColor: UIGuide.ButtonBlue,
+                        padding: const EdgeInsets.all(0),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            side: const BorderSide(
+                              color: UIGuide.light_black,
+                            )),
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const StudentListAnecdotalView()));
+                      },
+                      child: const Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: EdgeInsets.only(left: 10),
+                          child: Text(
+                            "Select Student",
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        elevation: 3,
+                        foregroundColor: UIGuide.BLACK,
+                        backgroundColor: UIGuide.ButtonBlue,
+                        padding: const EdgeInsets.all(0),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            side: const BorderSide(
+                              color: UIGuide.light_black,
+                            )),
+                      ),
+                      onPressed: () {},
+                      child: const Icon(Icons.list_alt))
+                ],
+              ),
+              kheight5,
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    elevation: 3,
+                    foregroundColor: UIGuide.BLACK,
+                    backgroundColor: UIGuide.ButtonBlue,
+                    padding: const EdgeInsets.all(0),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        side: const BorderSide(
+                          color: UIGuide.light_black,
+                        )),
+                  ),
+                  onPressed: () {},
+                  child: const Row(
+                    children: [
+                      kWidth,
+                      Text(
+                        "Remarks Category",
+                      ),
+                      Spacer(),
+                      Icon(Icons.arrow_drop_down),
+                      kWidth
+                    ],
+                  )),
+              kheight5,
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    elevation: 3,
+                    foregroundColor: UIGuide.BLACK,
+                    backgroundColor: UIGuide.ButtonBlue,
+                    padding: const EdgeInsets.all(0),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        side: const BorderSide(
+                          color: UIGuide.light_black,
+                        )),
+                  ),
+                  onPressed: () {},
+                  child: const Row(
+                    children: [
+                      kWidth,
+                      Text(
+                        "Dairy subject",
+                      ),
+                      Spacer(),
+                      Icon(Icons.arrow_drop_down),
+                      kWidth
+                    ],
+                  )),
+              kheight5,
+              Row(
+                children: [
+                  Expanded(
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            elevation: 3,
+                            foregroundColor: UIGuide.BLACK,
+                            backgroundColor: UIGuide.ButtonBlue,
+                            padding: const EdgeInsets.all(0),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                side: const BorderSide(
+                                  color: UIGuide.light_black,
+                                )),
+                          ),
+                          onPressed: () {},
+                          child: const Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: EdgeInsets.only(left: 10),
+                              child: Text(
+                                "Select Staff",
+                              ),
+                            ),
+                          ))),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        elevation: 3,
+                        foregroundColor: UIGuide.BLACK,
+                        backgroundColor: UIGuide.ButtonBlue,
+                        padding: const EdgeInsets.all(0),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            side: const BorderSide(
+                              color: UIGuide.light_black,
+                            )),
+                      ),
+                      onPressed: () {},
+                      child: const Icon(Icons.format_list_bulleted_rounded))
+                ],
+              ),
+              kheight10,
+              LimitedBox(
+                maxHeight: 180,
+                child: TextFormField(
+                  inputFormatters: [LengthLimitingTextInputFormatter(1000)],
+                  // controller: matterController,
+                  minLines: 1,
+                  maxLines: 15,
+                  keyboardType: TextInputType.multiline,
+                  decoration: const InputDecoration(
+                    labelText: 'Remarks',
+                    hintText: 'Enter Remarks',
+                    labelStyle: TextStyle(color: UIGuide.light_Purple),
+                    hintStyle: TextStyle(color: Colors.grey),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: UIGuide.light_Purple, width: 1.0),
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                    ),
+                  ),
+                ),
+              ),
+              kheight10,
+              Row(
+                children: [
+                  Expanded(
+                    child: InkWell(
+                        onTap: () async {
+                          value.isimportantCheckbox();
+                        },
+                        child: Row(
+                          children: [
+                            Checkbox(
+                              activeColor: UIGuide.light_Purple,
+                              value: value.isimportant,
+                              onChanged: (newValue) async {
+                                value.isimportantCheckbox();
+                              },
+                            ),
+                            const Expanded(
+                              //  width: size.width * .35,
+                              child: Text(
+                                "Is Important Entry",
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    color: UIGuide.BLACK, fontSize: 12),
+                              ),
+                            )
+                          ],
+                        )),
+                  ),
+                  // kWidth,
+                  Expanded(
+                    child: InkWell(
+                        onTap: () async {
+                          value.isShownToGuardian();
+                        },
+                        child: Row(
+                          children: [
+                            Checkbox(
+                              activeColor: UIGuide.light_Purple,
+                              value: value.showToGuardian,
+                              onChanged: (newValue) async {
+                                value.isShownToGuardian();
+                              },
+                            ),
+                            const Expanded(
+                              //  width: size.width * .35,
+                              child: Text(
+                                "Show In Guardian Login",
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    color: UIGuide.BLACK, fontSize: 12),
+                              ),
+                            )
+                          ],
+                        )),
+                  ),
+                ],
+              ),
+              kheight20,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 150,
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          elevation: 3,
+                          foregroundColor: UIGuide.WHITE,
+                          backgroundColor: UIGuide.light_Purple,
+                          padding: const EdgeInsets.all(0),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              side: const BorderSide(
+                                color: UIGuide.light_black,
+                              )),
+                        ),
+                        onPressed: () {},
+                        child: const Text("Save")),
+                  ),
+                ],
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class StudentListAnecdotalView extends StatefulWidget {
+  const StudentListAnecdotalView({super.key});
+
+  @override
+  State<StudentListAnecdotalView> createState() =>
+      _StudentListAnecdotalViewState();
+}
+
+class _StudentListAnecdotalViewState extends State<StudentListAnecdotalView> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_scrollListener);
+    var p = Provider.of<AnecdotalStaffProviders>(context, listen: false);
+    p.getStudentViewList();
+    p.getSectionInitial();
+    p.sectionInitialValues.clear();
+  }
+
+  void _scrollListener() async {
+    final provider =
+        Provider.of<AnecdotalStaffProviders>(context, listen: false);
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
+      if (provider.hasMoreData()) {
+        print("object");
+
+        await provider.getStudentViewList();
+      }
+    }
+  }
+
+  List sectionData = [];
+  List courseData = [];
+  List divisionData = [];
+  String section = '';
+  String course = "";
+  String sectionToDiv = '';
+  String division = '';
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          title: const Text('Student List'),
+          titleSpacing: 00.0,
+          centerTitle: true,
+          toolbarHeight: 60.2,
+          toolbarOpacity: 0.8,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                bottomRight: Radius.circular(25),
+                bottomLeft: Radius.circular(25)),
+          ),
+          backgroundColor: UIGuide.light_Purple,
+        ),
+        body: Consumer<AnecdotalStaffProviders>(
+          builder: (context, value, _) => Stack(
+            children: [
+              Column(
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SizedBox(
+                            height: 45,
+                            child: MultiSelectDialogField(
+                              items: value.sectiondropDown,
+                              listType: MultiSelectListType.CHIP,
+                              title: const Text(
+                                "Select Section",
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                              selectedItemsTextStyle: const TextStyle(
+                                  fontWeight: FontWeight.w900,
+                                  color: UIGuide.light_Purple),
+                              confirmText: const Text(
+                                'OK',
+                                style: TextStyle(color: UIGuide.light_Purple),
+                              ),
+                              cancelText: const Text(
+                                'Cancel',
+                                style: TextStyle(color: UIGuide.light_Purple),
+                              ),
+                              separateSelectedItems: true,
+                              decoration: const BoxDecoration(
+                                color: UIGuide.ButtonBlue,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey,
+                                    offset: Offset(0, 2),
+                                    blurRadius: 4,
+                                    spreadRadius: 0,
+                                  ),
+                                ],
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10)),
+                              ),
+                              buttonIcon: const Icon(
+                                Icons.arrow_drop_down_outlined,
+                                color: Colors.grey,
+                              ),
+                              buttonText: value.sectionLen == 0
+                                  ? const Text(
+                                      "Select Section",
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 16,
+                                      ),
+                                    )
+                                  : Text(
+                                      "   ${value.sectionLen.toString()} Selected",
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                              chipDisplay: MultiSelectChipDisplay.none(),
+                              onConfirm: (results) async {
+                                sectionData = [];
+                                divisionData.clear();
+                                courseData.clear();
+                                value.courseLen = 0;
+                                value.divisionLen = 0;
+
+                                for (var i = 0; i < results.length; i++) {
+                                  SectionsModel data =
+                                      results[i] as SectionsModel;
+                                  print(data.name);
+                                  print(data.id);
+                                  sectionData.add(data.id);
+                                  sectionData.map((e) => data.id);
+                                  print("${sectionData.map((e) => data.id)}");
+                                }
+                                section = sectionData
+                                    .map((id) => 'getSectionValues=$id')
+                                    .join('&');
+                                sectionToDiv = sectionData.join(',');
+                                await value.getCourseList(sectionToDiv);
+
+                                print(section);
+                                await value.sectionCounter(results.length);
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SizedBox(
+                            height: 45,
+                            child: MultiSelectDialogField(
+                              items: value.coursedropDown,
+                              listType: MultiSelectListType.CHIP,
+                              title: const Text(
+                                "Select Course",
+                                style: TextStyle(color: Colors.black),
+                              ),
+                              selectedItemsTextStyle: const TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w900,
+                                  color: UIGuide.light_Purple),
+                              confirmText: const Text(
+                                'OK',
+                                style: TextStyle(color: UIGuide.light_Purple),
+                              ),
+                              cancelText: const Text(
+                                'Cancel',
+                                style: TextStyle(color: UIGuide.light_Purple),
+                              ),
+                              separateSelectedItems: true,
+                              decoration: const BoxDecoration(
+                                color: UIGuide.ButtonBlue,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey,
+                                    offset: Offset(0, 2),
+                                    blurRadius: 4,
+                                    spreadRadius: 0,
+                                  ),
+                                ],
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10)),
+                              ),
+                              buttonIcon: const Icon(
+                                Icons.arrow_drop_down_outlined,
+                                color: Colors.grey,
+                              ),
+                              buttonText: value.courseLen == 0
+                                  ? const Text(
+                                      "Select Course",
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 16,
+                                      ),
+                                    )
+                                  : Text(
+                                      "   ${value.courseLen.toString()} Selected",
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                              chipDisplay: MultiSelectChipDisplay.none(),
+                              onConfirm: (results) async {
+                                courseData = [];
+                                courseData.clear();
+                                value.divisionLen = 0;
+
+                                for (var a = 0; a < results.length; a++) {
+                                  SectionsModel data =
+                                      results[a] as SectionsModel;
+
+                                  courseData.add(data.id);
+                                  courseData.map((e) => data.id);
+                                  print("${courseData.map((e) => data.id)}");
+                                }
+                                print('courseData course== $courseData');
+
+                                course = courseData
+                                    .map((id) => 'getCourseValues=$id')
+                                    .join('&');
+                                print(course);
+
+                                await value.courseCounter(results.length);
+                                results.clear();
+                                await value.getDivisionList(course);
+
+                                print("course   $course");
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 8.0, right: 8),
+                          child: SizedBox(
+                            height: 45,
+                            child: MultiSelectDialogField(
+                              items: value.divisiondropDown,
+                              listType: MultiSelectListType.CHIP,
+                              title: const Text(
+                                "Select Division",
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                              selectedItemsTextStyle: const TextStyle(
+                                  fontWeight: FontWeight.w900,
+                                  color: UIGuide.light_Purple),
+                              confirmText: const Text(
+                                'OK',
+                                style: TextStyle(color: UIGuide.light_Purple),
+                              ),
+                              cancelText: const Text(
+                                'Cancel',
+                                style: TextStyle(color: UIGuide.light_Purple),
+                              ),
+                              separateSelectedItems: true,
+                              decoration: const BoxDecoration(
+                                color: UIGuide.ButtonBlue,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey,
+                                    offset: Offset(0, 2),
+                                    blurRadius: 4,
+                                    spreadRadius: 0,
+                                  ),
+                                ],
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10)),
+                              ),
+                              buttonIcon: const Icon(
+                                Icons.arrow_drop_down_outlined,
+                                color: Colors.grey,
+                              ),
+                              buttonText: value.divisionLen == 0
+                                  ? const Text(
+                                      "Select Division",
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 16,
+                                      ),
+                                    )
+                                  : Text(
+                                      "   ${value.divisionLen.toString()} Selected",
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                              chipDisplay: MultiSelectChipDisplay.none(),
+                              onConfirm: (results) async {
+                                divisionData = [];
+
+                                for (var i = 0; i < results.length; i++) {
+                                  SectionsModel data =
+                                      results[i] as SectionsModel;
+
+                                  print(data.id);
+                                  divisionData.add(data.id);
+                                  divisionData.map((e) => data.id);
+                                  print("${divisionData.map((e) => data.id)}");
+                                }
+                                print("divisionDataaaa    $divisionData");
+                                //  division = divisionData.join(',');
+                                division = divisionData
+                                    .map((id) => 'getCourseValues=$id')
+                                    .join('&');
+                                print(division);
+                                value.divisionCounter(results.length);
+                                results.clear();
+                                print("data div  $division");
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 6.0, right: 6),
+                          child: SizedBox(
+                            height: 45,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                elevation: 3,
+                                foregroundColor: UIGuide.WHITE,
+                                backgroundColor: UIGuide.light_Purple,
+                                padding: const EdgeInsets.all(0),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    side: const BorderSide(
+                                      color: UIGuide.light_black,
+                                    )),
+                              ),
+                              onPressed: () {},
+                              child: const Text(
+                                'View',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 16),
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                  Expanded(
+                    child: Scrollbar(
+                      child: ListView.builder(
+                          controller: _scrollController,
+                          itemCount: value.studentViewList.length,
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            return ListTile(
+                              dense: true,
+                              titleAlignment: ListTileTitleAlignment.center,
+                              shape: const RoundedRectangleBorder(),
+                              selectedColor: UIGuide.light_Purple,
+                              leading: Text(
+                                (index + 1).toString(),
+                                textAlign: TextAlign.center,
+                              ),
+                              onTap: () {
+                                // value.selectItem(viewStud);
+                              },
+                              selectedTileColor:
+                                  const Color.fromARGB(255, 10, 27, 141),
+                              title: Text(
+                                value.studentViewList[index].name ?? "",
+                                style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    color: UIGuide.BLACK),
+                              ),
+                              subtitle: Row(
+                                children: [
+                                  const Text("Adm no: "),
+                                  Expanded(
+                                      child: Text(
+                                          value.studentViewList[index].admNo ??
+                                              '---')),
+                                ],
+                              ),
+                              trailing: value.studentViewList[index].selected !=
+                                          null &&
+                                      value.studentViewList[index].selected!
+                                  ? SvgPicture.asset(
+                                      UIGuide.check,
+                                      color: UIGuide.light_Purple,
+                                    )
+                                  : SvgPicture.asset(
+                                      UIGuide.notcheck,
+                                      color: UIGuide.light_Purple,
+                                    ),
+                            );
+                          }),
+                    ),
+                  ),
+                  value.loading
+                      ? const Padding(
+                          padding: EdgeInsets.all(15.0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                width: 30,
+                                height: 30,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  color: UIGuide.light_Purple,
+                                ),
+                              ),
+                              kWidth,
+                              Text(
+                                "Please Wait...",
+                                style: TextStyle(
+                                    color: UIGuide.light_Purple,
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 16),
+                              )
+                            ],
+                          ),
+                        )
+                      : const SizedBox(
+                          height: 0,
+                        )
+                ],
+              ),
+            ],
+          ),
+        ));
+  }
+}

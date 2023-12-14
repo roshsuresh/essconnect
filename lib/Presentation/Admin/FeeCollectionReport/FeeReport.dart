@@ -78,531 +78,560 @@ class _FeeReportState extends State<FeeReport> {
         ),
         backgroundColor: UIGuide.light_Purple,
       ),
-      body: ListView(
-        children: [
-          Row(
-            children: [
-              const Spacer(),
-              Consumer<SchoolPhotoProviders>(
-                builder: (context, value, child) => value.loadingSection
-                    ? SizedBox(
-                        width: size.width * .42,
-                        height: 45,
-                        child: const Center(child: Text('Loading...')))
-                    : Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: SizedBox(
-                          width: size.width * .42,
-                          height: 45,
-                          child: MultiSelectDialogField(
-                            items: value.dropDown,
-                            listType: MultiSelectListType.CHIP,
-                            title: const Text(
-                              "Select Section",
-                              style: TextStyle(color: Colors.grey),
-                            ),
-                            selectedItemsTextStyle: const TextStyle(
-                                fontWeight: FontWeight.w900,
-                                color: UIGuide.light_Purple),
-                            confirmText: const Text(
-                              'OK',
-                              style: TextStyle(color: UIGuide.light_Purple),
-                            ),
-                            cancelText: const Text(
-                              'Cancel',
-                              style: TextStyle(color: UIGuide.light_Purple),
-                            ),
-                            separateSelectedItems: true,
-                            decoration: const BoxDecoration(
-                              color: UIGuide.ButtonBlue,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey,
-                                  offset: Offset(0, 2),
-                                  blurRadius: 4,
-                                  spreadRadius: 0,
-                                ),
-                              ],
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
-                            ),
-                            searchable: true,
-                            buttonIcon: const Icon(
-                              Icons.arrow_drop_down_outlined,
-                              color: Colors.grey,
-                            ),
-                            buttonText: value.sectionLen == 0
-                                ? const Text(
+      body: Consumer<FeeReportProvider>(
+        builder: (context, val, _) => Stack(
+          children: [
+            ListView(
+              children: [
+                Row(
+                  children: [
+                    const Spacer(),
+                    Consumer<SchoolPhotoProviders>(
+                      builder: (context, value, child) => value.loadingSection
+                          ? SizedBox(
+                              width: size.width * .42,
+                              height: 45,
+                              child: const Center(child: Text('Loading...')))
+                          : Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: SizedBox(
+                                width: size.width * .42,
+                                height: 45,
+                                child: MultiSelectDialogField(
+                                  items: value.dropDown,
+                                  listType: MultiSelectListType.CHIP,
+                                  title: const Text(
                                     "Select Section",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16,
-                                    ),
-                                  )
-                                : Text(
-                                    "   ${value.sectionLen.toString()} Selected",
-                                    style: const TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16,
-                                    ),
+                                    style: TextStyle(color: Colors.grey),
                                   ),
-                            chipDisplay: MultiSelectChipDisplay.none(),
-                            onConfirm: (results) async {
-                              subjectData = [];
-                              diviData.clear();
-                              value.courseLen = 0;
-                              value.divisionLen = 0;
-                              await Provider.of<SchoolPhotoProviders>(context,
-                                      listen: false)
-                                  .clearCourse();
-                              await Provider.of<SchoolPhotoProviders>(context,
-                                      listen: false)
-                                  .clearDivision();
+                                  selectedItemsTextStyle: const TextStyle(
+                                      fontWeight: FontWeight.w900,
+                                      color: UIGuide.light_Purple),
+                                  confirmText: const Text(
+                                    'OK',
+                                    style:
+                                        TextStyle(color: UIGuide.light_Purple),
+                                  ),
+                                  cancelText: const Text(
+                                    'Cancel',
+                                    style:
+                                        TextStyle(color: UIGuide.light_Purple),
+                                  ),
+                                  separateSelectedItems: true,
+                                  decoration: const BoxDecoration(
+                                    color: UIGuide.ButtonBlue,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey,
+                                        offset: Offset(0, 2),
+                                        blurRadius: 4,
+                                        spreadRadius: 0,
+                                      ),
+                                    ],
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10)),
+                                  ),
+                                  searchable: true,
+                                  buttonIcon: const Icon(
+                                    Icons.arrow_drop_down_outlined,
+                                    color: Colors.grey,
+                                  ),
+                                  buttonText: value.sectionLen == 0
+                                      ? const Text(
+                                          "Select Section",
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                          ),
+                                        )
+                                      : Text(
+                                          "   ${value.sectionLen.toString()} Selected",
+                                          style: const TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                  chipDisplay: MultiSelectChipDisplay.none(),
+                                  onConfirm: (results) async {
+                                    subjectData = [];
+                                    diviData.clear();
+                                    value.courseLen = 0;
+                                    value.divisionLen = 0;
+                                    await Provider.of<SchoolPhotoProviders>(
+                                            context,
+                                            listen: false)
+                                        .clearCourse();
+                                    await Provider.of<SchoolPhotoProviders>(
+                                            context,
+                                            listen: false)
+                                        .clearDivision();
 
-                              await Provider.of<FeeReportProvider>(context,
-                                      listen: false)
-                                  .collectionList;
+                                    await Provider.of<FeeReportProvider>(
+                                            context,
+                                            listen: false)
+                                        .collectionList;
 
-                              for (var i = 0; i < results.length; i++) {
-                                StudReportSectionList data =
-                                    results[i] as StudReportSectionList;
-                                print(data.text);
-                                print(data.value);
-                                subjectData.add(data.value);
-                                subjectData.map((e) => data.value);
-                                print("${subjectData.map((e) => data.value)}");
-                              }
-                              setState(() {
-                                value.courselist.clear();
-                                value.courseDrop.clear();
-                                value.courseLen = 0;
-                              });
-                              section = subjectData.join(',');
-                              await Provider.of<SchoolPhotoProviders>(context,
-                                      listen: false)
-                                  .sectionCounter(results.length);
-                              await Provider.of<SchoolPhotoProviders>(context,
-                                      listen: false)
-                                  .getCourseList(section);
-                              print("data $subjectData");
+                                    for (var i = 0; i < results.length; i++) {
+                                      StudReportSectionList data =
+                                          results[i] as StudReportSectionList;
+                                      print(data.text);
+                                      print(data.value);
+                                      subjectData.add(data.value);
+                                      subjectData.map((e) => data.value);
+                                      print(
+                                          "${subjectData.map((e) => data.value)}");
+                                    }
+                                    setState(() {
+                                      value.courselist.clear();
+                                      value.courseDrop.clear();
+                                      value.courseLen = 0;
+                                    });
+                                    section = subjectData.join(',');
+                                    await Provider.of<SchoolPhotoProviders>(
+                                            context,
+                                            listen: false)
+                                        .sectionCounter(results.length);
+                                    await Provider.of<SchoolPhotoProviders>(
+                                            context,
+                                            listen: false)
+                                        .getCourseList(section);
+                                    print("data $subjectData");
 
-                              print(subjectData.join('&'));
-                            },
-                          ),
-                        ),
-                      ),
-              ),
-              const Spacer(),
-              Consumer<SchoolPhotoProviders>(
-                builder: (context, value, child) => value.loadingCourse
-                    ? SizedBox(
-                        width: size.width * .42,
-                        height: 45,
-                        child: const Center(child: Text('Loading...')))
-                    : Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: SizedBox(
-                          width: size.width * .42,
-                          height: 45,
-                          child: MultiSelectDialogField(
-                            // height: 200,
-                            items: value.courseDrop, searchable: true,
-                            listType: MultiSelectListType.CHIP,
-                            title: const Text(
-                              "Select Course",
-                              style: TextStyle(color: Colors.black),
-                            ),
-                            // selectedColor: Color.fromARGB(255, 157, 232, 241),
-                            selectedItemsTextStyle: const TextStyle(
-                                fontWeight: FontWeight.w900,
-                                color: UIGuide.light_Purple),
-                            confirmText: const Text(
-                              'OK',
-                              style: TextStyle(color: UIGuide.light_Purple),
-                            ),
-                            cancelText: const Text(
-                              'Cancel',
-                              style: TextStyle(color: UIGuide.light_Purple),
-                            ),
-                            separateSelectedItems: true,
-                            decoration: const BoxDecoration(
-                              color: UIGuide.ButtonBlue,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey,
-                                  offset: Offset(0, 2),
-                                  blurRadius: 4,
-                                  spreadRadius: 0,
+                                    print(subjectData.join('&'));
+                                  },
                                 ),
-                              ],
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
+                              ),
                             ),
-                            buttonIcon: const Icon(
-                              Icons.arrow_drop_down_outlined,
-                              color: Colors.grey,
-                            ),
-                            buttonText: value.courseLen == 0
-                                ? const Text(
+                    ),
+                    const Spacer(),
+                    Consumer<SchoolPhotoProviders>(
+                      builder: (context, value, child) => value.loadingCourse
+                          ? SizedBox(
+                              width: size.width * .42,
+                              height: 45,
+                              child: const Center(child: Text('Loading...')))
+                          : Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: SizedBox(
+                                width: size.width * .42,
+                                height: 45,
+                                child: MultiSelectDialogField(
+                                  // height: 200,
+                                  items: value.courseDrop, searchable: true,
+                                  listType: MultiSelectListType.CHIP,
+                                  title: const Text(
                                     "Select Course",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16,
-                                    ),
-                                  )
-                                : Text(
-                                    "   ${value.courseLen.toString()} Selected",
-                                    style: const TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16,
-                                    ),
+                                    style: TextStyle(color: Colors.black),
                                   ),
-                            chipDisplay: MultiSelectChipDisplay.none(),
-                            onConfirm: (results) async {
-                              diviData = [];
-                              for (var i = 0; i < results.length; i++) {
-                                StudReportCourse data =
-                                    results[i] as StudReportCourse;
-                                print(data.value);
-                                print(data.text);
-                                diviData.add(data.value);
-                                diviData.map((e) => data.value);
-                                print("${diviData.map((e) => data.value)}");
-                              }
-                              course = diviData.join(',');
-                              await Provider.of<SchoolPhotoProviders>(context,
-                                      listen: false)
-                                  .courseCounter(results.length);
-                              results.clear();
-                              await Provider.of<SchoolPhotoProviders>(context,
-                                      listen: false)
-                                  .getDivisionList(course);
+                                  // selectedColor: Color.fromARGB(255, 157, 232, 241),
+                                  selectedItemsTextStyle: const TextStyle(
+                                      fontWeight: FontWeight.w900,
+                                      color: UIGuide.light_Purple),
+                                  confirmText: const Text(
+                                    'OK',
+                                    style:
+                                        TextStyle(color: UIGuide.light_Purple),
+                                  ),
+                                  cancelText: const Text(
+                                    'Cancel',
+                                    style:
+                                        TextStyle(color: UIGuide.light_Purple),
+                                  ),
+                                  separateSelectedItems: true,
+                                  decoration: const BoxDecoration(
+                                    color: UIGuide.ButtonBlue,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey,
+                                        offset: Offset(0, 2),
+                                        blurRadius: 4,
+                                        spreadRadius: 0,
+                                      ),
+                                    ],
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10)),
+                                  ),
+                                  buttonIcon: const Icon(
+                                    Icons.arrow_drop_down_outlined,
+                                    color: Colors.grey,
+                                  ),
+                                  buttonText: value.courseLen == 0
+                                      ? const Text(
+                                          "Select Course",
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                          ),
+                                        )
+                                      : Text(
+                                          "   ${value.courseLen.toString()} Selected",
+                                          style: const TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                  chipDisplay: MultiSelectChipDisplay.none(),
+                                  onConfirm: (results) async {
+                                    diviData = [];
+                                    for (var i = 0; i < results.length; i++) {
+                                      StudReportCourse data =
+                                          results[i] as StudReportCourse;
+                                      print(data.value);
+                                      print(data.text);
+                                      diviData.add(data.value);
+                                      diviData.map((e) => data.value);
+                                      print(
+                                          "${diviData.map((e) => data.value)}");
+                                    }
+                                    course = diviData.join(',');
+                                    await Provider.of<SchoolPhotoProviders>(
+                                            context,
+                                            listen: false)
+                                        .courseCounter(results.length);
+                                    results.clear();
+                                    await Provider.of<SchoolPhotoProviders>(
+                                            context,
+                                            listen: false)
+                                        .getDivisionList(course);
 
-                              print(diviData.join(','));
-                            },
-                          ),
-                        ),
-                      ),
-              ),
-              const Spacer()
-            ],
-          ),
-          const Padding(
-            padding: EdgeInsets.only(bottom: 6.0),
-            child: Text(
-              'From Date and To date should not exceed 30 days',
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: 11.5, color: Color.fromARGB(255, 241, 128, 128)),
-            ),
-          ),
-          Row(
-            children: [
-              const Spacer(),
-              Padding(
-                padding: const EdgeInsets.only(left: 10, right: 10),
-                child: SizedBox(
-                  width: size.width * .42,
-                  height: 40,
-                  child: Consumer<FeeReportProvider>(
-                    builder: (context, value, child) => ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        elevation: 3,
-                        foregroundColor: UIGuide.light_Purple,
-                        backgroundColor: UIGuide.ButtonBlue,
-                        padding: const EdgeInsets.all(0),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            side: const BorderSide(
-                              color: UIGuide.light_black,
-                            )),
-                      ),
-                      onPressed: (() async {
-                        value.clearcollectionList();
-                        _mydatetimeFrom = await showDatePicker(
-                          context: context,
-                          initialDate: _mydatetimeFrom ?? DateTime.now(),
-                          firstDate: DateTime(2022),
-                          lastDate: DateTime(2030),
-                          builder: (context, child) {
-                            return Theme(
-                                data: ThemeData.light().copyWith(
-                                  primaryColor: UIGuide.light_Purple,
-                                  colorScheme: const ColorScheme.light(
-                                    primary: UIGuide.light_Purple,
-                                  ),
-                                  buttonTheme: const ButtonThemeData(
-                                      textTheme: ButtonTextTheme.primary),
+                                    print(diviData.join(','));
+                                  },
                                 ),
-                                child: child!);
-                          },
-                        );
-                        setState(() {
-                          time = DateFormat('dd-MMM-yyyy')
-                              .format(_mydatetimeFrom!);
-                          print(time);
-                        });
-                      }),
-                      child: Center(child: Text('From ${time}')),
+                              ),
+                            ),
                     ),
+                    const Spacer()
+                  ],
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(bottom: 6.0),
+                  child: Text(
+                    'From Date and To date should not exceed 30 days',
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: 11.5,
+                        color: Color.fromARGB(255, 241, 128, 128)),
                   ),
                 ),
-              ),
-              const Spacer(),
-              Padding(
-                padding: const EdgeInsets.only(left: 10, right: 10),
-                child: SizedBox(
-                  width: size.width * .42,
-                  height: 40,
-                  child: Consumer<FeeReportProvider>(
-                    builder: (context, value, child) => ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        elevation: 3,
-                        foregroundColor: UIGuide.light_Purple,
-                        backgroundColor: UIGuide.ButtonBlue,
-                        padding: const EdgeInsets.all(0),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            side: const BorderSide(
-                              color: UIGuide.light_black,
-                            )),
+                Row(
+                  children: [
+                    const Spacer(),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10, right: 10),
+                      child: SizedBox(
+                        width: size.width * .42,
+                        height: 40,
+                        child: Consumer<FeeReportProvider>(
+                          builder: (context, value, child) => ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              elevation: 3,
+                              foregroundColor: UIGuide.light_Purple,
+                              backgroundColor: UIGuide.ButtonBlue,
+                              padding: const EdgeInsets.all(0),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  side: const BorderSide(
+                                    color: UIGuide.light_black,
+                                  )),
+                            ),
+                            onPressed: (() async {
+                              value.clearcollectionList();
+                              _mydatetimeFrom = await showDatePicker(
+                                context: context,
+                                initialDate: _mydatetimeFrom ?? DateTime.now(),
+                                firstDate: DateTime(2022),
+                                lastDate: DateTime(2030),
+                                builder: (context, child) {
+                                  return Theme(
+                                      data: ThemeData.light().copyWith(
+                                        primaryColor: UIGuide.light_Purple,
+                                        colorScheme: const ColorScheme.light(
+                                          primary: UIGuide.light_Purple,
+                                        ),
+                                        buttonTheme: const ButtonThemeData(
+                                            textTheme: ButtonTextTheme.primary),
+                                      ),
+                                      child: child!);
+                                },
+                              );
+                              setState(() {
+                                time = DateFormat('dd-MMM-yyyy')
+                                    .format(_mydatetimeFrom!);
+                                print(time);
+                              });
+                            }),
+                            child: Center(child: Text('From ${time}')),
+                          ),
+                        ),
                       ),
-                      onPressed: (() async {
-                        value.clearcollectionList();
-                        _mydatetimeTo = await showDatePicker(
-                          context: context,
-                          initialDate: _mydatetimeTo ?? DateTime.now(),
-                          firstDate: DateTime(2022),
-                          lastDate: DateTime(2030),
-                          builder: (context, child) {
-                            return Theme(
-                                data: ThemeData.light().copyWith(
-                                  primaryColor: UIGuide.light_Purple,
-                                  colorScheme: const ColorScheme.light(
-                                    primary: UIGuide.light_Purple,
-                                  ),
-                                  buttonTheme: const ButtonThemeData(
-                                      textTheme: ButtonTextTheme.primary),
+                    ),
+                    const Spacer(),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10, right: 10),
+                      child: SizedBox(
+                        width: size.width * .42,
+                        height: 40,
+                        child: Consumer<FeeReportProvider>(
+                          builder: (context, value, child) => ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              elevation: 3,
+                              foregroundColor: UIGuide.light_Purple,
+                              backgroundColor: UIGuide.ButtonBlue,
+                              padding: const EdgeInsets.all(0),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  side: const BorderSide(
+                                    color: UIGuide.light_black,
+                                  )),
+                            ),
+                            onPressed: (() async {
+                              value.clearcollectionList();
+                              _mydatetimeTo = await showDatePicker(
+                                context: context,
+                                initialDate: _mydatetimeTo ?? DateTime.now(),
+                                firstDate: DateTime(2022),
+                                lastDate: DateTime(2030),
+                                builder: (context, child) {
+                                  return Theme(
+                                      data: ThemeData.light().copyWith(
+                                        primaryColor: UIGuide.light_Purple,
+                                        colorScheme: const ColorScheme.light(
+                                          primary: UIGuide.light_Purple,
+                                        ),
+                                        buttonTheme: const ButtonThemeData(
+                                            textTheme: ButtonTextTheme.primary),
+                                      ),
+                                      child: child!);
+                                },
+                              );
+                              setState(() {
+                                timeNow = DateFormat('dd-MMM-yyyy')
+                                    .format(_mydatetimeTo!);
+                                print(timeNow);
+                              });
+                            }),
+                            // minWidth: size.width - 250,
+                            child: Center(child: Text('To $timeNow')),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const Spacer()
+                  ],
+                ),
+                kheight10,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: 120,
+                      height: 40,
+                      child: Consumer<FeeReportProvider>(
+                        builder: (contexr, value, child) => value.loading
+                            ? const Center(
+                                child: Text(
+                                'Loading..',
+                                style: TextStyle(
+                                    color: UIGuide.light_Purple, fontSize: 16),
+                              ))
+                            : ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  elevation: 3,
+                                  foregroundColor: UIGuide.WHITE,
+                                  backgroundColor: UIGuide.light_Purple,
+                                  padding: const EdgeInsets.all(0),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                      side: const BorderSide(
+                                        color: UIGuide.light_black,
+                                      )),
                                 ),
-                                child: child!);
-                          },
-                        );
-                        setState(() {
-                          timeNow =
-                              DateFormat('dd-MMM-yyyy').format(_mydatetimeTo!);
-                          print(timeNow);
-                        });
-                      }),
-                      // minWidth: size.width - 250,
-                      child: Center(child: Text('To $timeNow')),
-                    ),
-                  ),
-                ),
-              ),
-              const Spacer()
-            ],
-          ),
-          kheight10,
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                width: 120,
-                height: 40,
-                child: Consumer<FeeReportProvider>(
-                  builder: (contexr, value, child) => value.loading
-                      ? const Center(
-                          child: Text(
-                          'Loading..',
-                          style: TextStyle(
-                              color: UIGuide.light_Purple, fontSize: 16),
-                        ))
-                      : ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            elevation: 3,
-                            foregroundColor: UIGuide.WHITE,
-                            backgroundColor: UIGuide.light_Purple,
-                            padding: const EdgeInsets.all(0),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                                side: const BorderSide(
-                                  color: UIGuide.light_black,
-                                )),
-                          ),
-                          onPressed: (() async {
-                            if (time == "--" || timeNow == "--") {
-                              snackbarWidget(
-                                  2, "Select From & To date ", context);
-                            } else {
-                              DateTime dt1 = _mydatetimeFrom!;
-                              DateTime dt2 = _mydatetimeTo!;
-                              Duration diff = dt2.difference(dt1);
-                              if (diff.inDays >= 0 && diff.inDays <= 30) {
-                                await Provider.of<FeeReportProvider>(context,
-                                        listen: false)
-                                    .clearcollectionList();
-                                await Provider.of<FeeReportProvider>(context,
-                                        listen: false)
-                                    .getFeeReportView(
-                                        section, course, time, timeNow);
+                                onPressed: (() async {
+                                  if (time == "--" || timeNow == "--") {
+                                    snackbarWidget(
+                                        2, "Select From & To date ", context);
+                                  } else {
+                                    DateTime dt1 = _mydatetimeFrom!;
+                                    DateTime dt2 = _mydatetimeTo!;
+                                    Duration diff = dt2.difference(dt1);
+                                    if (diff.inDays >= 0 && diff.inDays <= 30) {
+                                      await Provider.of<FeeReportProvider>(
+                                              context,
+                                              listen: false)
+                                          .clearcollectionList();
+                                      await Provider.of<FeeReportProvider>(
+                                              context,
+                                              listen: false)
+                                          .getFeeReportView(
+                                              section, course, time, timeNow);
 
-                                if (value.collectionList.isEmpty) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      elevation: 10,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(20)),
-                                      ),
-                                      duration: Duration(seconds: 3),
-                                      margin: EdgeInsets.only(
-                                          bottom: 80, left: 30, right: 30),
-                                      behavior: SnackBarBehavior.floating,
-                                      content: Text(
-                                        'No Data For Specified Condition',
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ),
-                                  );
-                                }
-                              } else if (diff.isNegative) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    elevation: 10,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(20)),
-                                    ),
-                                    duration: Duration(seconds: 3),
-                                    margin: EdgeInsets.only(
-                                        bottom: 80, left: 30, right: 30),
-                                    behavior: SnackBarBehavior.floating,
-                                    content: Text(
-                                      'From date should be lesser than To date',
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                );
-                              } else {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    elevation: 10,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(20),
-                                          bottomRight: Radius.circular(20)),
-                                    ),
-                                    duration: Duration(seconds: 3),
-                                    margin: EdgeInsets.only(
-                                        bottom: 80, left: 30, right: 30),
-                                    behavior: SnackBarBehavior.floating,
-                                    content: Text(
-                                      'Please select date range between 30 days',
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                );
-                              }
-                            }
-                          }),
-                          child: const Text(
-                            'View',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                ),
-              ),
-            ],
-          ),
-          kheight20,
-          Padding(
-            padding: const EdgeInsets.only(left: 3, right: 3),
-            child: Table(
-              border: TableBorder.all(
-                  color: const Color.fromARGB(255, 248, 248, 248)),
-              columnWidths: const {
-                0: FlexColumnWidth(0.5),
-                1: FlexColumnWidth(1.5),
-                2: FlexColumnWidth(2.5),
-                3: FlexColumnWidth(1.5),
-                4: FlexColumnWidth(.6),
-              },
-              children: const [
-                TableRow(
-                    decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 223, 223, 223),
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(8),
-                        topRight: Radius.circular(8),
+                                      if (value.collectionList.isEmpty) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                            elevation: 10,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(20)),
+                                            ),
+                                            duration: Duration(seconds: 3),
+                                            margin: EdgeInsets.only(
+                                                bottom: 80,
+                                                left: 30,
+                                                right: 30),
+                                            behavior: SnackBarBehavior.floating,
+                                            content: Text(
+                                              'No Data For Specified Condition',
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                    } else if (diff.isNegative) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          elevation: 10,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(20)),
+                                          ),
+                                          duration: Duration(seconds: 3),
+                                          margin: EdgeInsets.only(
+                                              bottom: 80, left: 30, right: 30),
+                                          behavior: SnackBarBehavior.floating,
+                                          content: Text(
+                                            'From date should be lesser than To date',
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                      );
+                                    } else {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          elevation: 10,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(20),
+                                                bottomRight:
+                                                    Radius.circular(20)),
+                                          ),
+                                          duration: Duration(seconds: 3),
+                                          margin: EdgeInsets.only(
+                                              bottom: 80, left: 30, right: 30),
+                                          behavior: SnackBarBehavior.floating,
+                                          content: Text(
+                                            'Please select date range between 30 days',
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                  }
+                                }),
+                                child: const Text(
+                                  'View',
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
                       ),
                     ),
-                    children: [
-                      TableCell(
-                        verticalAlignment: TableCellVerticalAlignment.middle,
-                        child: Center(
-                          child: Text(
-                            'Sl No.',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontWeight: FontWeight.w500),
-                          ),
-                        ),
-                      ),
-                      TableCell(
-                        verticalAlignment: TableCellVerticalAlignment.middle,
-                        child: Center(
-                          child: Text(
-                            'Date',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontWeight: FontWeight.w500),
-                          ),
-                        ),
-                      ),
-                      TableCell(
-                        verticalAlignment: TableCellVerticalAlignment.middle,
-                        child: Center(
-                          child: Text(
-                            'Name',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontWeight: FontWeight.w500),
-                          ),
-                        ),
-                      ),
-                      TableCell(
-                        verticalAlignment: TableCellVerticalAlignment.middle,
-                        child: Padding(
-                          padding: EdgeInsets.all(3.0),
-                          child: Center(
-                            child: Text(
-                              'Remitted\nFee',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(fontWeight: FontWeight.w500),
+                  ],
+                ),
+                kheight20,
+                Padding(
+                  padding: const EdgeInsets.only(left: 3, right: 3),
+                  child: Table(
+                    border: TableBorder.all(
+                        color: const Color.fromARGB(255, 248, 248, 248)),
+                    columnWidths: const {
+                      0: FlexColumnWidth(0.5),
+                      1: FlexColumnWidth(1.5),
+                      2: FlexColumnWidth(2.5),
+                      3: FlexColumnWidth(1.5),
+                      4: FlexColumnWidth(.6),
+                    },
+                    children: const [
+                      TableRow(
+                          decoration: BoxDecoration(
+                            color: Color.fromARGB(255, 223, 223, 223),
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(8),
+                              topRight: Radius.circular(8),
                             ),
                           ),
-                        ),
-                      ),
-                      TableCell(
-                        verticalAlignment: TableCellVerticalAlignment.middle,
-                        child: Center(
-                          child: Text(
-                            'View',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontWeight: FontWeight.w500),
-                          ),
-                        ),
-                      ),
-                    ])
-              ],
-            ),
-          ),
-          Consumer<FeeReportProvider>(
-            builder: (context, value, child) => Padding(
-              padding: const EdgeInsets.only(left: 3, right: 3),
-              child: LimitedBox(
-                maxHeight: size.height / 1.8,
-                child: value.loading
-                    ? spinkitLoader()
-                    : Scrollbar(
+                          children: [
+                            TableCell(
+                              verticalAlignment:
+                                  TableCellVerticalAlignment.middle,
+                              child: Center(
+                                child: Text(
+                                  'Sl No.',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(fontWeight: FontWeight.w500),
+                                ),
+                              ),
+                            ),
+                            TableCell(
+                              verticalAlignment:
+                                  TableCellVerticalAlignment.middle,
+                              child: Center(
+                                child: Text(
+                                  'Date',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(fontWeight: FontWeight.w500),
+                                ),
+                              ),
+                            ),
+                            TableCell(
+                              verticalAlignment:
+                                  TableCellVerticalAlignment.middle,
+                              child: Center(
+                                child: Text(
+                                  'Name',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(fontWeight: FontWeight.w500),
+                                ),
+                              ),
+                            ),
+                            TableCell(
+                              verticalAlignment:
+                                  TableCellVerticalAlignment.middle,
+                              child: Padding(
+                                padding: EdgeInsets.all(3.0),
+                                child: Center(
+                                  child: Text(
+                                    'Remitted\nFee',
+                                    textAlign: TextAlign.center,
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w500),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            TableCell(
+                              verticalAlignment:
+                                  TableCellVerticalAlignment.middle,
+                              child: Center(
+                                child: Text(
+                                  'View',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(fontWeight: FontWeight.w500),
+                                ),
+                              ),
+                            ),
+                          ])
+                    ],
+                  ),
+                ),
+                Consumer<FeeReportProvider>(
+                  builder: (context, value, child) => Padding(
+                    padding: const EdgeInsets.only(left: 3, right: 3),
+                    child: LimitedBox(
+                      maxHeight: size.height / 1.8,
+                      child: Scrollbar(
                         child: ListView.builder(
                             //  physics: const BouncingScrollPhysics(),
                             shrinkWrap: true,
@@ -1251,36 +1280,40 @@ class _FeeReportState extends State<FeeReport> {
                               );
                             })),
                       ),
-              ),
-            ),
-          ),
-          Consumer<FeeReportProvider>(
-            builder: (context, value, child) => Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                value.allTotal == null
-                    ? const Text('')
-                    : const Text(
-                        "Total:  ",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w700, fontSize: 16),
-                      ),
-                value.allTotal == null
-                    ? const Text('')
-                    : Text(
-                        value.allTotal == null
-                            ? '0.00'
-                            : value.allTotal!.toStringAsFixed(2),
-                        style: const TextStyle(
-                            fontWeight: FontWeight.w900, fontSize: 16),
-                      ),
-                kWidth20,
-                kWidth20
+                    ),
+                  ),
+                ),
+                Consumer<FeeReportProvider>(
+                  builder: (context, value, child) => Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      value.allTotal == null
+                          ? const Text('')
+                          : const Text(
+                              "Total:  ",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w700, fontSize: 16),
+                            ),
+                      value.allTotal == null
+                          ? const Text('')
+                          : Text(
+                              value.allTotal == null
+                                  ? '0.00'
+                                  : value.allTotal!.toStringAsFixed(2),
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.w900, fontSize: 16),
+                            ),
+                      kWidth20,
+                      kWidth20
+                    ],
+                  ),
+                )
               ],
             ),
-          )
-        ],
+            if (val.loading) pleaseWaitLoader()
+          ],
+        ),
       ),
     );
   }
