@@ -2,6 +2,7 @@ import 'package:essconnect/Application/Staff_Providers/AncedotalStaffProvider.da
 import 'package:essconnect/Constants.dart';
 import 'package:essconnect/Domain/Staff/Anecdotal/InitialSelectionModel.dart';
 import 'package:essconnect/utils/constants.dart';
+import 'package:essconnect/utils/spinkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -24,7 +25,7 @@ class _AnecdotalentryScreenState extends State<AnecdotalentryScreen> {
     //   var p = Provider.of<AnecdotalStaffProviders>(context, listen: false);
     //   await p.getStudentViewList();
     // });
-    var size = MediaQuery.of(context).size;
+
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.only(left: 8, right: 8),
@@ -309,11 +310,15 @@ class _StudentListAnecdotalViewState extends State<StudentListAnecdotalView> {
   @override
   void initState() {
     super.initState();
-    _scrollController.addListener(_scrollListener);
-    var p = Provider.of<AnecdotalStaffProviders>(context, listen: false);
-    p.getStudentViewList();
-    p.getSectionInitial();
-    p.sectionInitialValues.clear();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      _scrollController.addListener(_scrollListener);
+      var p = Provider.of<AnecdotalStaffProviders>(context, listen: false);
+      await p.clearAllDetails();
+      await p.getStudentViewList(section, course, division);
+
+      await p.getSectionInitial();
+      p.sectionInitialValues.clear();
+    });
   }
 
   void _scrollListener() async {
@@ -324,7 +329,7 @@ class _StudentListAnecdotalViewState extends State<StudentListAnecdotalView> {
       if (provider.hasMoreData()) {
         print("object");
 
-        await provider.getStudentViewList();
+        await provider.getStudentViewByPagination(section, course, division);
       }
     }
   }
@@ -334,407 +339,451 @@ class _StudentListAnecdotalViewState extends State<StudentListAnecdotalView> {
   List divisionData = [];
   String section = '';
   String course = "";
-  String sectionToDiv = '';
+  String sectionToCourse = '';
+  String courseToDiv = '';
   String division = '';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Student List'),
-          titleSpacing: 00.0,
-          centerTitle: true,
-          toolbarHeight: 60.2,
-          toolbarOpacity: 0.8,
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.only(
-                bottomRight: Radius.circular(25),
-                bottomLeft: Radius.circular(25)),
-          ),
-          backgroundColor: UIGuide.light_Purple,
+      appBar: AppBar(
+        title: const Text('Student List'),
+        titleSpacing: 00.0,
+        centerTitle: true,
+        toolbarHeight: 60.2,
+        toolbarOpacity: 0.8,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              bottomRight: Radius.circular(25),
+              bottomLeft: Radius.circular(25)),
         ),
-        body: Consumer<AnecdotalStaffProviders>(
-          builder: (context, value, _) => Stack(
-            children: [
-              Column(
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: SizedBox(
-                            height: 45,
-                            child: MultiSelectDialogField(
-                              items: value.sectiondropDown,
-                              listType: MultiSelectListType.CHIP,
-                              title: const Text(
-                                "Select Section",
-                                style: TextStyle(color: Colors.grey),
-                              ),
-                              selectedItemsTextStyle: const TextStyle(
-                                  fontWeight: FontWeight.w900,
-                                  color: UIGuide.light_Purple),
-                              confirmText: const Text(
-                                'OK',
-                                style: TextStyle(color: UIGuide.light_Purple),
-                              ),
-                              cancelText: const Text(
-                                'Cancel',
-                                style: TextStyle(color: UIGuide.light_Purple),
-                              ),
-                              separateSelectedItems: true,
-                              decoration: const BoxDecoration(
-                                color: UIGuide.ButtonBlue,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey,
-                                    offset: Offset(0, 2),
-                                    blurRadius: 4,
-                                    spreadRadius: 0,
-                                  ),
-                                ],
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10)),
-                              ),
-                              buttonIcon: const Icon(
-                                Icons.arrow_drop_down_outlined,
-                                color: Colors.grey,
-                              ),
-                              buttonText: value.sectionLen == 0
-                                  ? const Text(
-                                      "Select Section",
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                      ),
-                                    )
-                                  : Text(
-                                      "   ${value.sectionLen.toString()} Selected",
-                                      style: const TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                      ),
+        backgroundColor: UIGuide.light_Purple,
+      ),
+      body: Consumer<AnecdotalStaffProviders>(
+        builder: (context, value, _) => Stack(
+          children: [
+            Column(
+              children: [
+                Row(
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SizedBox(
+                          height: 45,
+                          child: MultiSelectDialogField(
+                            items: value.sectiondropDown,
+                            listType: MultiSelectListType.CHIP,
+                            title: const Text(
+                              "Select Section",
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                            selectedItemsTextStyle: const TextStyle(
+                                fontWeight: FontWeight.w900,
+                                color: UIGuide.light_Purple),
+                            confirmText: const Text(
+                              'OK',
+                              style: TextStyle(color: UIGuide.light_Purple),
+                            ),
+                            cancelText: const Text(
+                              'Cancel',
+                              style: TextStyle(color: UIGuide.light_Purple),
+                            ),
+                            separateSelectedItems: true,
+                            decoration: const BoxDecoration(
+                              color: UIGuide.ButtonBlue,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey,
+                                  offset: Offset(0, 2),
+                                  blurRadius: 4,
+                                  spreadRadius: 0,
+                                ),
+                              ],
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10)),
+                            ),
+                            buttonIcon: const Icon(
+                              Icons.arrow_drop_down_outlined,
+                              color: Colors.grey,
+                            ),
+                            buttonText: value.sectionLen == 0
+                                ? const Text(
+                                    "Select Section",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
                                     ),
-                              chipDisplay: MultiSelectChipDisplay.none(),
-                              onConfirm: (results) async {
-                                sectionData = [];
-                                divisionData.clear();
-                                courseData.clear();
-                                value.courseLen = 0;
-                                value.divisionLen = 0;
+                                  )
+                                : Text(
+                                    "   ${value.sectionLen.toString()} Selected",
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                            chipDisplay: MultiSelectChipDisplay.none(),
+                            onConfirm: (results) async {
+                              sectionData = [];
+                              divisionData.clear();
+                              courseData.clear();
+                              value.courseLen = 0;
+                              value.divisionLen = 0;
 
-                                for (var i = 0; i < results.length; i++) {
-                                  SectionsModel data =
-                                      results[i] as SectionsModel;
-                                  print(data.name);
-                                  print(data.id);
-                                  sectionData.add(data.id);
-                                  sectionData.map((e) => data.id);
-                                  print("${sectionData.map((e) => data.id)}");
-                                }
-                                section = sectionData
-                                    .map((id) => 'getSectionValues=$id')
-                                    .join('&');
-                                sectionToDiv = sectionData.join(',');
-                                await value.getCourseList(sectionToDiv);
+                              for (var i = 0; i < results.length; i++) {
+                                SectionsModel data =
+                                    results[i] as SectionsModel;
+                                print(data.name);
+                                print(data.id);
+                                sectionData.add(data.id);
+                                sectionData.map((e) => data.id);
+                                print("${sectionData.map((e) => data.id)}");
+                              }
+                              section = sectionData
+                                  .map((id) => 'getSectionValues=$id')
+                                  .join('&');
+                              await value.clearCourse();
+                              await value.clearDivision();
+                              sectionToCourse = sectionData.join(',');
+                              await value.getCourseList(sectionToCourse);
 
-                                print(section);
-                                await value.sectionCounter(results.length);
-                              },
+                              print(section);
+                              await value.sectionCounter(results.length);
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SizedBox(
+                          height: 45,
+                          child: MultiSelectDialogField(
+                            items: value.coursedropDown,
+                            listType: MultiSelectListType.CHIP,
+                            title: const Text(
+                              "Select Course",
+                              style: TextStyle(color: Colors.black),
+                            ),
+                            selectedItemsTextStyle: const TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w900,
+                                color: UIGuide.light_Purple),
+                            confirmText: const Text(
+                              'OK',
+                              style: TextStyle(color: UIGuide.light_Purple),
+                            ),
+                            cancelText: const Text(
+                              'Cancel',
+                              style: TextStyle(color: UIGuide.light_Purple),
+                            ),
+                            separateSelectedItems: true,
+                            decoration: const BoxDecoration(
+                              color: UIGuide.ButtonBlue,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey,
+                                  offset: Offset(0, 2),
+                                  blurRadius: 4,
+                                  spreadRadius: 0,
+                                ),
+                              ],
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10)),
+                            ),
+                            buttonIcon: const Icon(
+                              Icons.arrow_drop_down_outlined,
+                              color: Colors.grey,
+                            ),
+                            buttonText: value.courseLen == 0
+                                ? const Text(
+                                    "Select Course",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                    ),
+                                  )
+                                : Text(
+                                    "   ${value.courseLen.toString()} Selected",
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                            chipDisplay: MultiSelectChipDisplay.none(),
+                            onConfirm: (results) async {
+                              courseData = [];
+                              courseData.clear();
+                              value.divisionLen = 0;
+
+                              for (var a = 0; a < results.length; a++) {
+                                SectionsModel data =
+                                    results[a] as SectionsModel;
+
+                                courseData.add(data.id);
+                                courseData.map((e) => data.id);
+                                print("${courseData.map((e) => data.id)}");
+                              }
+                              print('courseData course== $courseData');
+
+                              course = courseData
+                                  .map((id) => 'getCourseValues=$id')
+                                  .join('&');
+                              print(course);
+
+                              // cousse--Div
+
+                              courseToDiv = courseData
+                                  .map((id) => 'getDivisionValues=$id')
+                                  .join('&');
+
+                              await value.courseCounter(results.length);
+                              results.clear();
+                              await value.clearDivision();
+                              await value.getDivisionList(courseToDiv);
+
+                              print("course   $course");
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 8.0, right: 8),
+                        child: SizedBox(
+                          height: 45,
+                          child: MultiSelectDialogField(
+                            items: value.divisiondropDown,
+                            listType: MultiSelectListType.CHIP,
+                            title: const Text(
+                              "Select Division",
+                              style: TextStyle(color: Colors.grey),
+                            ),
+                            selectedItemsTextStyle: const TextStyle(
+                                fontWeight: FontWeight.w900,
+                                color: UIGuide.light_Purple),
+                            confirmText: const Text(
+                              'OK',
+                              style: TextStyle(color: UIGuide.light_Purple),
+                            ),
+                            cancelText: const Text(
+                              'Cancel',
+                              style: TextStyle(color: UIGuide.light_Purple),
+                            ),
+                            separateSelectedItems: true,
+                            decoration: const BoxDecoration(
+                              color: UIGuide.ButtonBlue,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey,
+                                  offset: Offset(0, 2),
+                                  blurRadius: 4,
+                                  spreadRadius: 0,
+                                ),
+                              ],
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10)),
+                            ),
+                            buttonIcon: const Icon(
+                              Icons.arrow_drop_down_outlined,
+                              color: Colors.grey,
+                            ),
+                            buttonText: value.divisionLen == 0
+                                ? const Text(
+                                    "Select Division",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                    ),
+                                  )
+                                : Text(
+                                    "   ${value.divisionLen.toString()} Selected",
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                            chipDisplay: MultiSelectChipDisplay.none(),
+                            onConfirm: (results) async {
+                              divisionData = [];
+
+                              for (var i = 0; i < results.length; i++) {
+                                SectionsModel data =
+                                    results[i] as SectionsModel;
+
+                                print(data.id);
+                                divisionData.add(data.id);
+                                divisionData.map((e) => data.id);
+                                print("${divisionData.map((e) => data.id)}");
+                              }
+                              print("divisionDataaaa    $divisionData");
+                              //  division = divisionData.join(',');
+                              division = divisionData
+                                  .map((id) => 'getDivisionValues=$id')
+                                  .join('&');
+                              print(division);
+                              value.divisionCounter(results.length);
+                              results.clear();
+                              print("data div  $division");
+                            },
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 6.0, right: 6),
+                        child: SizedBox(
+                          height: 45,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              elevation: 3,
+                              foregroundColor: UIGuide.WHITE,
+                              backgroundColor: UIGuide.light_Purple,
+                              padding: const EdgeInsets.all(0),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  side: const BorderSide(
+                                    color: UIGuide.light_black,
+                                  )),
+                            ),
+                            onPressed: () async {
+                              await value.clearStudentViewList();
+                              value.currentPage = 0;
+                              await value.getStudentViewList(
+                                  section, course, division);
+                            },
+                            child: const Text(
+                              'View',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 16),
                             ),
                           ),
                         ),
                       ),
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: SizedBox(
-                            height: 45,
-                            child: MultiSelectDialogField(
-                              items: value.coursedropDown,
-                              listType: MultiSelectListType.CHIP,
-                              title: const Text(
-                                "Select Course",
-                                style: TextStyle(color: Colors.black),
-                              ),
-                              selectedItemsTextStyle: const TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w900,
-                                  color: UIGuide.light_Purple),
-                              confirmText: const Text(
-                                'OK',
-                                style: TextStyle(color: UIGuide.light_Purple),
-                              ),
-                              cancelText: const Text(
-                                'Cancel',
-                                style: TextStyle(color: UIGuide.light_Purple),
-                              ),
-                              separateSelectedItems: true,
-                              decoration: const BoxDecoration(
-                                color: UIGuide.ButtonBlue,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey,
-                                    offset: Offset(0, 2),
-                                    blurRadius: 4,
-                                    spreadRadius: 0,
-                                  ),
-                                ],
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10)),
-                              ),
-                              buttonIcon: const Icon(
-                                Icons.arrow_drop_down_outlined,
-                                color: Colors.grey,
-                              ),
-                              buttonText: value.courseLen == 0
-                                  ? const Text(
-                                      "Select Course",
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                      ),
-                                    )
-                                  : Text(
-                                      "   ${value.courseLen.toString()} Selected",
-                                      style: const TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                              chipDisplay: MultiSelectChipDisplay.none(),
-                              onConfirm: (results) async {
-                                courseData = [];
-                                courseData.clear();
-                                value.divisionLen = 0;
-
-                                for (var a = 0; a < results.length; a++) {
-                                  SectionsModel data =
-                                      results[a] as SectionsModel;
-
-                                  courseData.add(data.id);
-                                  courseData.map((e) => data.id);
-                                  print("${courseData.map((e) => data.id)}");
-                                }
-                                print('courseData course== $courseData');
-
-                                course = courseData
-                                    .map((id) => 'getCourseValues=$id')
-                                    .join('&');
-                                print(course);
-
-                                await value.courseCounter(results.length);
-                                results.clear();
-                                await value.getDivisionList(course);
-
-                                print("course   $course");
-                              },
+                    )
+                  ],
+                ),
+                Expanded(
+                  child: Scrollbar(
+                    child: ListView.builder(
+                        controller: _scrollController,
+                        itemCount: value.studentViewList.length,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            dense: true,
+                            titleAlignment: ListTileTitleAlignment.center,
+                            shape: const RoundedRectangleBorder(),
+                            selectedColor: UIGuide.light_Purple,
+                            leading: Text(
+                              (index + 1).toString(),
+                              textAlign: TextAlign.center,
                             ),
-                          ),
-                        ),
-                      ),
-                    ],
+                            onTap: () {
+                              // value.selectItem(viewStud);
+                            },
+                            selectedTileColor:
+                                const Color.fromARGB(255, 10, 27, 141),
+                            title: Text(
+                              value.studentViewList[index].name ?? "",
+                              style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600,
+                                  color: UIGuide.BLACK),
+                            ),
+                            subtitle: Row(
+                              children: [
+                                const Text("Adm no: "),
+                                Expanded(
+                                    child: Text(
+                                        value.studentViewList[index].admNo ??
+                                            '---')),
+                              ],
+                            ),
+                            trailing:
+                                value.studentViewList[index].selected != null &&
+                                        value.studentViewList[index].selected!
+                                    ? SvgPicture.asset(
+                                        UIGuide.check,
+                                        color: UIGuide.light_Purple,
+                                      )
+                                    : SvgPicture.asset(
+                                        UIGuide.notcheck,
+                                        color: UIGuide.light_Purple,
+                                      ),
+                          );
+                        }),
                   ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 8.0, right: 8),
-                          child: SizedBox(
-                            height: 45,
-                            child: MultiSelectDialogField(
-                              items: value.divisiondropDown,
-                              listType: MultiSelectListType.CHIP,
-                              title: const Text(
-                                "Select Division",
-                                style: TextStyle(color: Colors.grey),
-                              ),
-                              selectedItemsTextStyle: const TextStyle(
-                                  fontWeight: FontWeight.w900,
-                                  color: UIGuide.light_Purple),
-                              confirmText: const Text(
-                                'OK',
-                                style: TextStyle(color: UIGuide.light_Purple),
-                              ),
-                              cancelText: const Text(
-                                'Cancel',
-                                style: TextStyle(color: UIGuide.light_Purple),
-                              ),
-                              separateSelectedItems: true,
-                              decoration: const BoxDecoration(
-                                color: UIGuide.ButtonBlue,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey,
-                                    offset: Offset(0, 2),
-                                    blurRadius: 4,
-                                    spreadRadius: 0,
-                                  ),
-                                ],
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10)),
-                              ),
-                              buttonIcon: const Icon(
-                                Icons.arrow_drop_down_outlined,
-                                color: Colors.grey,
-                              ),
-                              buttonText: value.divisionLen == 0
-                                  ? const Text(
-                                      "Select Division",
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                      ),
-                                    )
-                                  : Text(
-                                      "   ${value.divisionLen.toString()} Selected",
-                                      style: const TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                              chipDisplay: MultiSelectChipDisplay.none(),
-                              onConfirm: (results) async {
-                                divisionData = [];
-
-                                for (var i = 0; i < results.length; i++) {
-                                  SectionsModel data =
-                                      results[i] as SectionsModel;
-
-                                  print(data.id);
-                                  divisionData.add(data.id);
-                                  divisionData.map((e) => data.id);
-                                  print("${divisionData.map((e) => data.id)}");
-                                }
-                                print("divisionDataaaa    $divisionData");
-                                //  division = divisionData.join(',');
-                                division = divisionData
-                                    .map((id) => 'getCourseValues=$id')
-                                    .join('&');
-                                print(division);
-                                value.divisionCounter(results.length);
-                                results.clear();
-                                print("data div  $division");
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 6.0, right: 6),
-                          child: SizedBox(
-                            height: 45,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                elevation: 3,
-                                foregroundColor: UIGuide.WHITE,
-                                backgroundColor: UIGuide.light_Purple,
-                                padding: const EdgeInsets.all(0),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    side: const BorderSide(
-                                      color: UIGuide.light_black,
-                                    )),
-                              ),
-                              onPressed: () {},
-                              child: const Text(
-                                'View',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 16),
+                ),
+                value.loadingPage
+                    ? const Padding(
+                        padding: EdgeInsets.all(15.0),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              width: 30,
+                              height: 30,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: UIGuide.light_Purple,
                               ),
                             ),
-                          ),
+                            kWidth,
+                            Text(
+                              "Please Wait...",
+                              style: TextStyle(
+                                  color: UIGuide.light_Purple,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 16),
+                            )
+                          ],
                         ),
                       )
-                    ],
-                  ),
-                  Expanded(
-                    child: Scrollbar(
-                      child: ListView.builder(
-                          controller: _scrollController,
-                          itemCount: value.studentViewList.length,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            return ListTile(
-                              dense: true,
-                              titleAlignment: ListTileTitleAlignment.center,
-                              shape: const RoundedRectangleBorder(),
-                              selectedColor: UIGuide.light_Purple,
-                              leading: Text(
-                                (index + 1).toString(),
-                                textAlign: TextAlign.center,
-                              ),
-                              onTap: () {
-                                // value.selectItem(viewStud);
-                              },
-                              selectedTileColor:
-                                  const Color.fromARGB(255, 10, 27, 141),
-                              title: Text(
-                                value.studentViewList[index].name ?? "",
-                                style: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
-                                    color: UIGuide.BLACK),
-                              ),
-                              subtitle: Row(
-                                children: [
-                                  const Text("Adm no: "),
-                                  Expanded(
-                                      child: Text(
-                                          value.studentViewList[index].admNo ??
-                                              '---')),
-                                ],
-                              ),
-                              trailing: value.studentViewList[index].selected !=
-                                          null &&
-                                      value.studentViewList[index].selected!
-                                  ? SvgPicture.asset(
-                                      UIGuide.check,
-                                      color: UIGuide.light_Purple,
-                                    )
-                                  : SvgPicture.asset(
-                                      UIGuide.notcheck,
-                                      color: UIGuide.light_Purple,
-                                    ),
-                            );
-                          }),
-                    ),
-                  ),
-                  value.loading
-                      ? const Padding(
-                          padding: EdgeInsets.all(15.0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SizedBox(
-                                width: 30,
-                                height: 30,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  color: UIGuide.light_Purple,
-                                ),
-                              ),
-                              kWidth,
-                              Text(
-                                "Please Wait...",
-                                style: TextStyle(
-                                    color: UIGuide.light_Purple,
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 16),
-                              )
-                            ],
-                          ),
-                        )
-                      : const SizedBox(
-                          height: 0,
-                        )
-                ],
+                    : const SizedBox(
+                        height: 0,
+                      )
+              ],
+            ),
+            if (value.loading) pleaseWaitLoader()
+          ],
+        ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: Padding(
+          padding:
+              const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
+          child: SizedBox(
+            height: 35,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                elevation: 3,
+                foregroundColor: UIGuide.WHITE,
+                backgroundColor: UIGuide.light_Purple,
+                padding: const EdgeInsets.all(0),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    side: const BorderSide(
+                      color: UIGuide.light_black,
+                    )),
               ),
-            ],
+              onPressed: () {},
+              child: Text(
+                "Proceed",
+                style: TextStyle(fontSize: 16),
+              ),
+            ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

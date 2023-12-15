@@ -33,6 +33,9 @@ class AnecdotalStaffProviders with ChangeNotifier {
     coursedropDown.clear();
     courseList.clear();
     studentViewList.clear();
+    sectionCounter(0);
+    courseCounter(0);
+    divisionCounter(0);
     notifyListeners();
   }
 
@@ -69,7 +72,6 @@ class AnecdotalStaffProviders with ChangeNotifier {
         print("corect");
         setLoading(true);
         final data = json.decode(response.body);
-        log(data.toString());
 
         List<SectionsModel> templist = List<SectionsModel>.from(
             data["sections"].map((x) => SectionsModel.fromJson(x)));
@@ -134,7 +136,7 @@ class AnecdotalStaffProviders with ChangeNotifier {
 
   List<SectionsModel> divisionList = [];
   List<MultiSelectItem> divisiondropDown = [];
-  Future getDivisionList(String section) async {
+  Future getDivisionList(String course) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoading(true);
     var headers = {
@@ -144,7 +146,7 @@ class AnecdotalStaffProviders with ChangeNotifier {
     try {
       var response = await http.get(
           Uri.parse(
-              "${UIGuide.baseURL}/student-selector/student-selector-search-options?getDivisionValues=e11eb894-a435-41e0-abc3-63063a732686"),
+              "${UIGuide.baseURL}/student-selector/student-selector-search-options?$course"),
           headers: headers);
 
       if (response.statusCode == 200) {
@@ -214,12 +216,18 @@ class AnecdotalStaffProviders with ChangeNotifier {
     notifyListeners();
   }
 
+  clearStudentViewList() {
+    studentViewList.clear();
+    notifyListeners();
+  }
+
   int currentPage = 0;
   int? pageSize;
   int? countStud;
 
   List<StudentViewAnecdotalModel> studentViewList = [];
-  Future getStudentViewList() async {
+  Future getStudentViewList(
+      String section, String course, String division) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoading(true);
     var headers = {
@@ -230,7 +238,7 @@ class AnecdotalStaffProviders with ChangeNotifier {
       var request = http.Request(
           'GET',
           Uri.parse(
-              '${UIGuide.baseURL}/student-selector?filterStudyingStatus=studying&avoidRelievedStaff=all&searchOption=contains&page=$currentPage&'));
+              '${UIGuide.baseURL}/student-selector?filterStudyingStatus=studying&avoidRelievedStaff=all&searchOption=contains&page=$currentPage&$section&$course&$division'));
 
       request.headers.addAll(headers);
       print(request);
@@ -238,8 +246,10 @@ class AnecdotalStaffProviders with ChangeNotifier {
 
       if (response.statusCode == 200) {
         setLoading(true);
+
         Map<String, dynamic> data =
             jsonDecode(await response.stream.bytesToString());
+        print(data);
 
         List<StudentViewAnecdotalModel> templist =
             List<StudentViewAnecdotalModel>.from(data["results"]
@@ -250,8 +260,8 @@ class AnecdotalStaffProviders with ChangeNotifier {
             PaginationStudentView.fromJson(data['pagination']);
         pageSize = pagenata.pageSize;
         countStud = pagenata.count;
-        currentPage++;
-        print(currentPage);
+        //  currentPage++;
+        print(countStud);
 
         setLoading(false);
         notifyListeners();
@@ -265,11 +275,69 @@ class AnecdotalStaffProviders with ChangeNotifier {
     }
   }
 
+  //Stud List by pagination
+
+  bool _loadingPage = false;
+  bool get loadingPage => _loadingPage;
+  setLoadingPage(bool value) {
+    _loadingPage = value;
+    notifyListeners();
+  }
+
+  Future getStudentViewByPagination(
+      String section, String course, String division) async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    setLoadingPage(true);
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+    };
+    try {
+      var request = http.Request(
+          'GET',
+          Uri.parse(
+              '${UIGuide.baseURL}/student-selector?filterStudyingStatus=studying&avoidRelievedStaff=all&searchOption=contains&page=$currentPage&$section&$course&$division'));
+
+      request.headers.addAll(headers);
+      print(request);
+      http.StreamedResponse response = await request.send();
+
+      if (response.statusCode == 200) {
+        setLoadingPage(true);
+
+        Map<String, dynamic> data =
+            jsonDecode(await response.stream.bytesToString());
+        // print(data);
+        List<StudentViewAnecdotalModel> templist =
+            List<StudentViewAnecdotalModel>.from(data["results"]
+                .map((x) => StudentViewAnecdotalModel.fromJson(x)));
+        studentViewList.addAll(templist);
+        PaginationStudentView pagenata =
+            PaginationStudentView.fromJson(data['pagination']);
+        pageSize = pagenata.pageSize;
+        countStud = pagenata.count;
+        currentPage++;
+        print(currentPage);
+
+        setLoadingPage(false);
+        notifyListeners();
+      } else {
+        setLoadingPage(false);
+        print('Error in getStudentViewList stf');
+      }
+    } catch (e) {
+      print('Error in getStudentViewList stf');
+      setLoadingPage(false);
+    }
+  }
+
   //check more Pagination
 
   bool hasMoreData() {
     final totalCount = countStud;
+    // print("studentView length :  ${studentViewList.length}");
+    // print("Total  :  $totalCount");
     notifyListeners();
-    return studentViewList.length <= totalCount!;
+    return studentViewList.length < totalCount!;
   }
 }

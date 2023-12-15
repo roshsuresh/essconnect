@@ -108,14 +108,15 @@ class _StaffHomeState extends State<StaffHome> {
                                   ),
                                 ),
                                 child: Center(
-                                    child: Text(
-                                  "${snap.schoolname ?? ""}, ${snap.place ?? ""}",
-                                  textAlign: TextAlign.center,
-                                  style: const TextStyle(
-                                      color: UIGuide.light_Purple,
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w700),
-                                )),
+                                  child: Text(
+                                    "${snap.schoolname ?? ""}, ${snap.place ?? ""}",
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(
+                                        color: UIGuide.light_Purple,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                ),
                               ),
                             ),
                     ),
