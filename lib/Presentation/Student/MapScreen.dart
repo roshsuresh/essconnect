@@ -21,7 +21,7 @@ class _MapPageState extends State<MapPage> {
       Completer<GoogleMapController>();
 
   static const LatLng _pGooglePlex = LatLng(10.3457792, 76.2017075);
-  static const LatLng _pApplePark = LatLng(10.3442014, 76.2120421);
+  // static const LatLng _pApplePark = LatLng(10.3442014, 76.2120421);
   LatLng? _currentP = null;
 
   Map<PolylineId, Polyline> polylines = {};
@@ -32,6 +32,7 @@ class _MapPageState extends State<MapPage> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await delays();
       try {
+        _getLocation();
         getLocationUpdates().then(
           (_) => {
             getPolylinePoints().then((coordinates) => {
@@ -48,6 +49,20 @@ class _MapPageState extends State<MapPage> {
 
   Future delays() async {
     await Future.delayed(Duration(seconds: 1));
+  }
+
+  Location location = Location();
+  LocationData? currentLocation;
+  Future<void> _getLocation() async {
+    try {
+      var _currentLocation = await location.getLocation();
+      setState(() {
+        currentLocation = _currentLocation;
+      });
+      print("currentLocation :   $currentLocation");
+    } catch (e) {
+      print("Error getting location: $e");
+    }
   }
 
   // Future<void> _getLocation() async {
@@ -89,7 +104,6 @@ class _MapPageState extends State<MapPage> {
 
   @override
   void dispose() {
-    // Cancel subscriptions, dispose controllers, and release resources.
     super.dispose();
   }
 
@@ -105,10 +119,17 @@ class _MapPageState extends State<MapPage> {
               myLocationEnabled: true,
               onMapCreated: ((GoogleMapController controller) =>
                   _mapController.complete(controller)),
-              initialCameraPosition: const CameraPosition(
-                target: _pGooglePlex,
-                //zoom: 13,
+              initialCameraPosition: CameraPosition(
+                target: LatLng(
+                  _currentP!.latitude ?? 0.0,
+                  _currentP!.longitude ?? 0.0,
+                ),
+                zoom: 15.0,
               ),
+              // initialCameraPosition: const CameraPosition(
+              //   target: _pGooglePlex,
+              //   //zoom: 13,
+              // ),
               markers: {
                 Marker(
                   markerId: const MarkerId("_currentLocation"),
@@ -117,14 +138,15 @@ class _MapPageState extends State<MapPage> {
                   position: _currentP!,
                 ),
                 const Marker(
-                    markerId: MarkerId("_sourceLocation"),
-                    icon: BitmapDescriptor.defaultMarker,
-                    position: _pGooglePlex),
-                Marker(
-                    markerId: const MarkerId("_destionationLocation"),
-                    icon: BitmapDescriptor.defaultMarkerWithHue(
-                        BitmapDescriptor.hueViolet),
-                    position: _pApplePark)
+                  markerId: MarkerId("_sourceLocation"),
+                  icon: BitmapDescriptor.defaultMarker,
+                  position: _pGooglePlex,
+                ),
+                // Marker(
+                //     markerId: const MarkerId("_destionationLocation"),
+                //     icon: BitmapDescriptor.defaultMarkerWithHue(
+                //         BitmapDescriptor.hueViolet),
+                //     position: _pApplePark)
               },
               polylines: Set<Polyline>.of(polylines.values),
             ),
@@ -165,13 +187,13 @@ class _MapPageState extends State<MapPage> {
       (LocationData currentLocation) {
         if (currentLocation.latitude != null &&
             currentLocation.longitude != null) {
-          if (mounted)
-            setState(() {
-              _currentP =
-                  LatLng(currentLocation.latitude!, currentLocation.longitude!);
-              print(currentLocation.latitude!);
-              _cameraToPosition(_currentP!);
-            });
+          //  if (mounted)
+          //    setState(() {
+          _currentP =
+              LatLng(currentLocation.latitude!, currentLocation.longitude!);
+          print(currentLocation.latitude!);
+          //   _cameraToPosition(_currentP!);
+          //  });
         }
       },
     );
@@ -182,9 +204,10 @@ class _MapPageState extends State<MapPage> {
     PolylinePoints polylinePoints = PolylinePoints();
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
       'AIzaSyDPKi7RHsv3jzTUZz_yooD08AOZIBrBu04',
-      //PointLatLng(_currentP!.latitude, _currentP!.longitude),
+      PointLatLng(currentLocation!.latitude!, currentLocation!.longitude!),
+      //  PointLatLng(_currentP!.latitude, _currentP!.longitude),
       PointLatLng(_pGooglePlex.latitude, _pGooglePlex.longitude),
-      PointLatLng(_pApplePark.latitude, _pApplePark.longitude),
+      // PointLatLng(_pApplePark.latitude, _pApplePark.longitude),
       travelMode: TravelMode.driving,
     );
     if (result.points.isNotEmpty) {

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 
@@ -7,6 +8,7 @@ import 'package:essconnect/Domain/Staff/Anecdotal/StudListviewAnectdotal.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -23,6 +25,110 @@ class AnecdotalStaffProviders with ChangeNotifier {
   isShownToGuardian() {
     showToGuardian = !showToGuardian;
     notifyListeners();
+  }
+
+  DateTime? dateselect;
+  String dateDisplay = '';
+  String dateSend = '';
+  DateTime? currentDate;
+
+  getDateNow() async {
+    currentDate = DateTime.now();
+    dateDisplay = DateFormat('dd-MMM-yyyy').format(currentDate!);
+    dateSend = DateFormat('yyyy-MM-dd').format(currentDate!);
+    print("dateDis:  $dateDisplay");
+    print("dateS:  $dateSend");
+    notifyListeners();
+  }
+
+  //get date
+
+  getDate(BuildContext context) async {
+    dateselect = await showDatePicker(
+      context: context,
+      initialDate: dateselect ?? DateTime.now(),
+      firstDate: DateTime(2022),
+      lastDate: DateTime(2030),
+      builder: (context, child) {
+        return Theme(
+            data: ThemeData.light().copyWith(
+              primaryColor: UIGuide.light_Purple,
+              colorScheme: const ColorScheme.light(
+                primary: UIGuide.light_Purple,
+              ),
+              buttonTheme:
+                  const ButtonThemeData(textTheme: ButtonTextTheme.primary),
+            ),
+            child: child!);
+      },
+    );
+    dateDisplay = DateFormat('dd-MMM-yyyy').format(dateselect!);
+    dateSend = DateFormat('yyyy-MM-dd').format(dateselect!);
+    print("dateDisplay:  $dateDisplay");
+    print("dateSend:  $dateSend");
+    notifyListeners();
+  }
+
+  DateTime _currentTime = DateTime.now();
+  late Timer _timer;
+
+  String get formattedTime => DateFormat('hh:mm a').format(_currentTime);
+
+  timeModel() {
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      _currentTime = DateTime.now();
+      notifyListeners();
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
+  //  category --  subject List
+
+  List<CategorySubjectModel> remarksCategoryList = [];
+  List<CategorySubjectModel> dairySubjectList = [];
+  Future getCategorySubject() async {
+    remarksCategoryList.clear();
+    dairySubjectList.clear();
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    setLoading(true);
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+    };
+    try {
+      var response = await http.get(
+          Uri.parse("${UIGuide.baseURL}/anecdotal/initialvalues"),
+          headers: headers);
+
+      if (response.statusCode == 200) {
+        print("corect");
+        setLoading(true);
+        final data = json.decode(response.body);
+
+        List<CategorySubjectModel> templist = List<CategorySubjectModel>.from(
+            data["category"].map((x) => CategorySubjectModel.fromJson(x)));
+        remarksCategoryList.addAll(templist);
+
+        List<CategorySubjectModel> templist1 = List<CategorySubjectModel>.from(
+            data["subject"].map((x) => CategorySubjectModel.fromJson(x)));
+        dairySubjectList.addAll(templist1);
+
+        setLoading(false);
+        notifyListeners();
+      } else {
+        setLoading(false);
+        print("Error in getCategorySubject response");
+      }
+    } catch (e) {
+      print("Error in getCategorySubject response");
+      setLoading(false);
+      print(e);
+    }
   }
 
   clearAllDetails() {
@@ -273,6 +379,142 @@ class AnecdotalStaffProviders with ChangeNotifier {
       print('Error in getStudentViewList stf');
       setLoading(false);
     }
+  }
+
+  // ----------------- select all stud
+  //
+
+  List allStudentID = [];
+  bool allSelected = false;
+
+  selectAll(String section, String course, String division) async {
+    if (allSelected == true) {
+      allStudentID.clear();
+      allSelected = false;
+      isselectAll = false;
+    } else {
+      await getSelectAllStudents(section, course, division);
+      allSelected = true;
+      isselectAll = true;
+    }
+    notifyListeners();
+  }
+
+  Future getSelectAllStudents(
+      String section, String course, String division) async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    setLoading(true);
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+    };
+    try {
+      var request = http.Request(
+          'GET',
+          Uri.parse(
+              '${UIGuide.baseURL}/student-selector?filterStudyingStatus=studying&avoidRelievedStaff=all&searchOption=contains&page=$currentPage&fetchAllIds=1&$section&$course&$division'));
+
+      request.headers.addAll(headers);
+      print(request);
+      http.StreamedResponse response = await request.send();
+
+      if (response.statusCode == 200) {
+        setLoading(true);
+        allStudentID.clear();
+
+        var data = jsonDecode(await response.stream.bytesToString());
+        print(data);
+        allStudentID = data;
+        // allSelected = true;
+        print(allStudentID.length);
+
+        setLoading(false);
+        notifyListeners();
+      } else {
+        setLoading(false);
+        print('Error in getSelectAllStudents stf');
+      }
+    } catch (e) {
+      print('Error in getSelectAllStudents stf');
+      setLoading(false);
+    }
+  }
+
+  //Select Student
+
+  void selectItem(StudentViewAnecdotalModel model) {
+    StudentViewAnecdotalModel selected =
+        studentViewList.firstWhere((element) => element.admNo == model.admNo);
+    selected.selected ??= false;
+    selected.selected = !selected.selected!;
+    if (selected.selected == false) {
+      isselectAll = false;
+    }
+    print(selected.toJson());
+    notifyListeners();
+  }
+
+  bool isselectAll = false;
+  // void selectAll() {
+  //   if (studentViewList.first.selected == true) {
+  //     for (var element in studentViewList) {
+  //       element.selected = false;
+  //     }
+  //     isselectAll = false;
+  //   } else {
+  //     for (var element in studentViewList) {
+  //       element.selected = true;
+  //     }
+  //     isselectAll = true;
+  //   }
+  //   notifyListeners();
+  // }
+
+  List<StudentViewAnecdotalModel> selectedList = [];
+  List finalSelectedList = [];
+  submitStudent(BuildContext context) {
+    finalSelectedList.clear();
+    if (allSelected == true) {
+      finalSelectedList = allStudentID;
+      Navigator.pop(context);
+      print("finalSelectedList  -----   $finalSelectedList");
+    } else {
+      selectedList.clear();
+      selectedList =
+          studentViewList.where((element) => element.selected == true).toList();
+      if (selectedList.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          elevation: 10,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+          ),
+          duration: Duration(seconds: 1),
+          margin: EdgeInsets.only(bottom: 80, left: 30, right: 30),
+          behavior: SnackBarBehavior.floating,
+          content: Text(
+            'Select any student',
+            textAlign: TextAlign.center,
+          ),
+        ));
+      } else {
+        print('selected.....');
+        print(studentViewList
+            .where((element) => element.selected == true)
+            .toList());
+        finalSelectedList = selectedList.map((e) => e.id).toList();
+        Navigator.pop(context);
+        print("finalSelectedList-single  -----   $finalSelectedList");
+        // Navigator.push(
+        //     context,
+        //     MaterialPageRoute(
+        //       builder: (context) => Text_Matter_Notification(
+        //         toList: selectedList.map((e) => e.studentId).toList(),
+        //         type: "Student",
+        //       ),
+        //     ));
+      }
+    }
+    notifyListeners();
   }
 
   //Stud List by pagination

@@ -16,3 +16,24 @@ class SectionsModel {
     return data;
   }
 }
+
+// category
+
+class CategorySubjectModel {
+  String? value;
+  String? text;
+
+  CategorySubjectModel({this.value, this.text});
+
+  CategorySubjectModel.fromJson(Map<String, dynamic> json) {
+    value = json['value'];
+    text = json['text'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['value'] = this.value;
+    data['text'] = this.text;
+    return data;
+  }
+}

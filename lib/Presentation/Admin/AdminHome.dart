@@ -6,6 +6,7 @@ import 'package:essconnect/Application/Module%20Providers.dart/SchoolNameProvide
 import 'package:essconnect/Application/StudentProviders/CurriculamProviders.dart';
 import 'package:essconnect/Presentation/Admin/AttendanceTaken/AbsentReport.dart';
 import 'package:essconnect/Presentation/Admin/AttendanceTaken/Takenornot.dart';
+import 'package:essconnect/Presentation/Admin/Birthday/InitialScreen.dart';
 import 'package:essconnect/Presentation/Admin/Communication/ToStaff.dart';
 import 'package:essconnect/Presentation/Admin/ExamTimetable/ExamScreen.dart';
 import 'package:essconnect/Presentation/Admin/History/NotificationHistoryStaff.dart';
@@ -708,6 +709,57 @@ class AdminHomeContent extends StatelessWidget {
                               kheight10,
                               const Text(
                                 'NoticeBoard',
+                                style: TextStyle(
+                                    fontSize: 11,
+                                    color: Colors.black87,
+                                    fontWeight: FontWeight.bold),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              PageTransition(
+                                  type: PageTransitionType.rightToLeft,
+                                  child: const BirthdayInitialScreen(),
+                                  duration: const Duration(milliseconds: 200),
+                                  childCurrent: this));
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10, right: 10),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Card(
+                                elevation: 10,
+                                color: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12.0),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Container(
+                                    height: 38,
+                                    width: 38,
+                                    decoration: const BoxDecoration(
+                                      image: DecorationImage(
+                                        opacity: 20,
+                                        image: AssetImage(
+                                          'assets/Noticeboard.png',
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              kheight10,
+                              const Text(
+                                'Birthday',
                                 style: TextStyle(
                                     fontSize: 11,
                                     color: Colors.black87,

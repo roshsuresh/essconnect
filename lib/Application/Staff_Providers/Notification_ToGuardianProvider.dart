@@ -206,7 +206,6 @@ class NotificationToGuardian_Providers with ChangeNotifier {
       }
       isselectAll = true;
     }
-
     notifyListeners();
   }
 //send notification
