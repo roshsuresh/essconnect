@@ -30,378 +30,99 @@ class _AnecdotalentryScreenState extends State<AnecdotalentryScreen> {
   final remarkController = TextEditingController();
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
+
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       var p = Provider.of<AnecdotalStaffProviders>(context, listen: false);
+      await p.setLoading(false);
+      await p.clearInitial();
       await p.getCategorySubject();
       await p.getDateNow();
       await p.timeModel();
     });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.only(left: 8, right: 8),
-        child: Consumer<AnecdotalStaffProviders>(
-          builder: (context, value, _) => ListView(
-            children: [
-              kheight10,
-              Row(
+      body: Consumer<AnecdotalStaffProviders>(
+        builder: (context, value, _) => Stack(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 8, right: 8),
+              child: ListView(
                 children: [
-                  Expanded(
-                    child: SizedBox(
-                      height: 45,
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          side: const BorderSide(
-                            color: UIGuide.light_black,
-                          ),
-                        ),
-                        elevation: 5,
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 10),
-                            child: Text(
-                              value.finalSelectedList.isEmpty
-                                  ? "Select Student"
-                                  : "${value.finalSelectedList.length} Student Selected",
-                              style: const TextStyle(
-                                  color: UIGuide.BLACK,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500),
+                  kheight10,
+                  Row(
+                    children: [
+                      Expanded(
+                        child: SizedBox(
+                          height: 45,
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              side: const BorderSide(
+                                color: UIGuide.light_black,
+                              ),
+                            ),
+                            elevation: 5,
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 10),
+                                child: Text(
+                                  value.finalSelectedList.isEmpty
+                                      ? "Select Student"
+                                      : "${value.finalSelectedList.length} Student Selected",
+                                  style: const TextStyle(
+                                      color: UIGuide.BLACK,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ),
                             ),
                           ),
                         ),
                       ),
-                    ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      SizedBox(
+                        height: 38,
+                        child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              elevation: 3,
+                              foregroundColor: UIGuide.BLACK,
+                              backgroundColor: UIGuide.ButtonBlue,
+                              padding: const EdgeInsets.all(0),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                                side: const BorderSide(
+                                  color: UIGuide.light_black,
+                                ),
+                              ),
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const StudentListAnecdotalView()));
+                            },
+                            child: const Icon(Icons.list_alt)),
+                      )
+                    ],
                   ),
-                  const SizedBox(
-                    width: 5,
-                  ),
+                  kheight10,
                   SizedBox(
-                    height: 38,
+                    height: 40,
                     child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           elevation: 3,
                           foregroundColor: UIGuide.BLACK,
                           backgroundColor: UIGuide.ButtonBlue,
-                          padding: const EdgeInsets.all(0),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            side: const BorderSide(
-                              color: UIGuide.light_black,
-                            ),
-                          ),
-                        ),
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const StudentListAnecdotalView()));
-                        },
-                        child: const Icon(Icons.list_alt)),
-                  )
-                ],
-              ),
-              kheight10,
-              SizedBox(
-                height: 40,
-                child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      elevation: 3,
-                      foregroundColor: UIGuide.BLACK,
-                      backgroundColor: UIGuide.ButtonBlue,
-                      padding: const EdgeInsets.all(0),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          side: const BorderSide(
-                            color: UIGuide.light_black,
-                          )),
-                    ),
-                    onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return Dialog(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15)),
-                                child: LimitedBox(
-                                  maxHeight: size.height / 1.3,
-                                  child: ListView.builder(
-                                      shrinkWrap: true,
-                                      itemCount:
-                                          value.remarksCategoryList.length,
-                                      itemBuilder: (context, index) {
-                                        return ListTile(
-                                          onTap: () async {
-                                            Navigator.of(context).pop();
-
-                                            categoryController.text = value
-                                                    .remarksCategoryList[index]
-                                                    .text ??
-                                                '--';
-                                            categoryIDController.text = value
-                                                    .remarksCategoryList[index]
-                                                    .value ??
-                                                '--';
-                                          },
-                                          title: Text(
-                                            value.remarksCategoryList[index]
-                                                    .text ??
-                                                '--',
-                                            textAlign: TextAlign.start,
-                                          ),
-                                        );
-                                      }),
-                                ));
-                          });
-                    },
-                    child: TextField(
-                      style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: UIGuide.BLACK,
-                          overflow: TextOverflow.clip),
-                      // textAlign: TextAlign.center,
-                      controller: categoryController,
-                      decoration: const InputDecoration(
-                          contentPadding: EdgeInsets.only(left: 5, top: 0),
-                          floatingLabelBehavior: FloatingLabelBehavior.never,
-                          filled: true,
-                          fillColor: Colors.transparent,
-                          border: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(style: BorderStyle.none, width: 0),
-                          ),
-                          labelText: "  Select Remarks Category",
-                          labelStyle: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: UIGuide.BLACK,
-                          )),
-                      enabled: false,
-                    )),
-              ),
-              kheight10,
-              SizedBox(
-                height: 40,
-                child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      elevation: 3,
-                      foregroundColor: UIGuide.BLACK,
-                      backgroundColor: UIGuide.ButtonBlue,
-                      padding: const EdgeInsets.all(0),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          side: const BorderSide(
-                            color: UIGuide.light_black,
-                          )),
-                    ),
-                    onPressed: () {
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return Dialog(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(15)),
-                                child: LimitedBox(
-                                  maxHeight: size.height / 1.3,
-                                  child: ListView.builder(
-                                      shrinkWrap: true,
-                                      itemCount: value.dairySubjectList.length,
-                                      itemBuilder: (context, index) {
-                                        return ListTile(
-                                          onTap: () async {
-                                            Navigator.of(context).pop();
-
-                                            subjectController.text = value
-                                                    .dairySubjectList[index]
-                                                    .text ??
-                                                '--';
-                                            subjectIDController.text = value
-                                                    .dairySubjectList[index]
-                                                    .value ??
-                                                '--';
-                                          },
-                                          title: Text(
-                                            value.dairySubjectList[index]
-                                                    .text ??
-                                                '--',
-                                            textAlign: TextAlign.start,
-                                          ),
-                                        );
-                                      }),
-                                ));
-                          });
-                    },
-                    child: TextField(
-                      style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: UIGuide.BLACK,
-                          overflow: TextOverflow.clip),
-                      controller: subjectController,
-                      decoration: const InputDecoration(
-                          contentPadding: EdgeInsets.only(left: 5, top: 0),
-                          floatingLabelBehavior: FloatingLabelBehavior.never,
-                          filled: true,
-                          fillColor: Colors.transparent,
-                          border: OutlineInputBorder(
-                            borderSide:
-                                BorderSide(style: BorderStyle.none, width: 0),
-                          ),
-                          labelText: "  Select Dairy Subject",
-                          labelStyle: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: UIGuide.BLACK,
-                          )),
-                      enabled: false,
-                    )),
-              ),
-              kheight5,
-              Row(
-                children: [
-                  SizedBox(
-                    // width: size.width / 2.2,
-                    child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          elevation: 3,
-                          foregroundColor: UIGuide.BLACK,
-                          backgroundColor: UIGuide.ButtonBlue,
-                          padding: const EdgeInsets.all(0),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            side: const BorderSide(
-                              color: UIGuide.light_black,
-                            ),
-                          ),
-                        ),
-                        onPressed: () {},
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            '        ${value.formattedTime}          ',
-                          ),
-                        )),
-                  ),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        elevation: 3,
-                        foregroundColor: UIGuide.BLACK,
-                        backgroundColor: UIGuide.ButtonBlue,
-                        padding: const EdgeInsets.all(0),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            side: const BorderSide(
-                              color: UIGuide.light_black,
-                            )),
-                      ),
-                      onPressed: () {},
-                      child: const Icon(Icons.format_list_bulleted_rounded))
-                ],
-              ),
-              kheight10,
-              LimitedBox(
-                maxHeight: 180,
-                child: TextFormField(
-                  inputFormatters: [LengthLimitingTextInputFormatter(1000)],
-                  // controller: matterController,
-                  minLines: 1,
-                  maxLines: 15,
-                  keyboardType: TextInputType.multiline,
-                  decoration: const InputDecoration(
-                    labelText: 'Remarks',
-                    hintText: 'Enter Remarks',
-                    labelStyle: TextStyle(color: UIGuide.light_Purple),
-                    hintStyle: TextStyle(color: Colors.grey),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: UIGuide.light_Purple, width: 1.0),
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                    ),
-                  ),
-                ),
-              ),
-              kheight10,
-              Row(
-                children: [
-                  Expanded(
-                    child: InkWell(
-                        onTap: () async {
-                          value.isimportantCheckbox();
-                        },
-                        child: Row(
-                          children: [
-                            Checkbox(
-                              activeColor: UIGuide.light_Purple,
-                              value: value.isimportant,
-                              onChanged: (newValue) async {
-                                value.isimportantCheckbox();
-                              },
-                            ),
-                            const Expanded(
-                              //  width: size.width * .35,
-                              child: Text(
-                                "Is Important Entry",
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    color: UIGuide.BLACK, fontSize: 12),
-                              ),
-                            )
-                          ],
-                        )),
-                  ),
-                  // kWidth,
-                  Expanded(
-                    child: InkWell(
-                        onTap: () async {
-                          value.isShownToGuardian();
-                        },
-                        child: Row(
-                          children: [
-                            Checkbox(
-                              activeColor: UIGuide.light_Purple,
-                              value: value.showToGuardian,
-                              onChanged: (newValue) async {
-                                value.isShownToGuardian();
-                              },
-                            ),
-                            const Expanded(
-                              //  width: size.width * .35,
-                              child: Text(
-                                "Show In Guardian Login",
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    color: UIGuide.BLACK, fontSize: 12),
-                              ),
-                            )
-                          ],
-                        )),
-                  ),
-                ],
-              ),
-              kheight20,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(
-                    width: 150,
-                    child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          elevation: 3,
-                          foregroundColor: UIGuide.WHITE,
-                          backgroundColor: UIGuide.light_Purple,
                           padding: const EdgeInsets.all(0),
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
@@ -409,13 +130,370 @@ class _AnecdotalentryScreenState extends State<AnecdotalentryScreen> {
                                 color: UIGuide.light_black,
                               )),
                         ),
-                        onPressed: () {},
-                        child: const Text("Save")),
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return Dialog(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(15)),
+                                    child: LimitedBox(
+                                      maxHeight: size.height / 1.3,
+                                      child: ListView.builder(
+                                          shrinkWrap: true,
+                                          itemCount:
+                                              value.remarksCategoryList.length,
+                                          itemBuilder: (context, index) {
+                                            return ListTile(
+                                              onTap: () async {
+                                                Navigator.of(context).pop();
+
+                                                categoryController.text = value
+                                                        .remarksCategoryList[
+                                                            index]
+                                                        .text ??
+                                                    '--';
+                                                categoryIDController
+                                                    .text = value
+                                                        .remarksCategoryList[
+                                                            index]
+                                                        .value ??
+                                                    '--';
+                                              },
+                                              title: Text(
+                                                value.remarksCategoryList[index]
+                                                        .text ??
+                                                    '--',
+                                                textAlign: TextAlign.start,
+                                              ),
+                                            );
+                                          }),
+                                    ));
+                              });
+                        },
+                        child: TextField(
+                          style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: UIGuide.BLACK,
+                              overflow: TextOverflow.clip),
+                          // textAlign: TextAlign.center,
+                          controller: categoryController,
+                          decoration: const InputDecoration(
+                              contentPadding: EdgeInsets.only(left: 5, top: 0),
+                              floatingLabelBehavior:
+                                  FloatingLabelBehavior.never,
+                              filled: true,
+                              fillColor: Colors.transparent,
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    style: BorderStyle.none, width: 0),
+                              ),
+                              labelText: "  Select Remarks Category",
+                              labelStyle: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: UIGuide.BLACK,
+                              )),
+                          enabled: false,
+                        )),
                   ),
+                  kheight10,
+                  SizedBox(
+                    height: 40,
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          elevation: 3,
+                          foregroundColor: UIGuide.BLACK,
+                          backgroundColor: UIGuide.ButtonBlue,
+                          padding: const EdgeInsets.all(0),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              side: const BorderSide(
+                                color: UIGuide.light_black,
+                              )),
+                        ),
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (context) {
+                                return Dialog(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(15)),
+                                    child: LimitedBox(
+                                      maxHeight: size.height / 1.3,
+                                      child: ListView.builder(
+                                          shrinkWrap: true,
+                                          itemCount:
+                                              value.dairySubjectList.length,
+                                          itemBuilder: (context, index) {
+                                            return ListTile(
+                                              onTap: () async {
+                                                Navigator.of(context).pop();
+
+                                                subjectController.text = value
+                                                        .dairySubjectList[index]
+                                                        .text ??
+                                                    '--';
+                                                subjectIDController.text = value
+                                                        .dairySubjectList[index]
+                                                        .value ??
+                                                    '--';
+                                              },
+                                              title: Text(
+                                                value.dairySubjectList[index]
+                                                        .text ??
+                                                    '--',
+                                                textAlign: TextAlign.start,
+                                              ),
+                                            );
+                                          }),
+                                    ));
+                              });
+                        },
+                        child: TextField(
+                          style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: UIGuide.BLACK,
+                              overflow: TextOverflow.clip),
+                          controller: subjectController,
+                          decoration: const InputDecoration(
+                              contentPadding: EdgeInsets.only(left: 5, top: 0),
+                              floatingLabelBehavior:
+                                  FloatingLabelBehavior.never,
+                              filled: true,
+                              fillColor: Colors.transparent,
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    style: BorderStyle.none, width: 0),
+                              ),
+                              labelText: "  Select Dairy Subject",
+                              labelStyle: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: UIGuide.BLACK,
+                              )),
+                          enabled: false,
+                        )),
+                  ),
+                  kheight5,
+                  Row(
+                    children: [
+                      Expanded(
+                        child: SizedBox(
+                          width: size.width / 2.5,
+                          child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                elevation: 3,
+                                foregroundColor: UIGuide.BLACK,
+                                backgroundColor: UIGuide.ButtonBlue,
+                                padding: const EdgeInsets.all(0),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  side: const BorderSide(
+                                    color: UIGuide.light_black,
+                                  ),
+                                ),
+                              ),
+                              onPressed: () {},
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.schedule_outlined,
+                                      color: Colors.grey,
+                                    ),
+                                    kWidth,
+                                    Text(
+                                      value.formattedTime,
+                                    ),
+                                  ],
+                                ),
+                              )),
+                        ),
+                      ),
+                      kWidth,
+                      Expanded(
+                        child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              elevation: 3,
+                              foregroundColor: UIGuide.BLACK,
+                              backgroundColor: UIGuide.ButtonBlue,
+                              padding: const EdgeInsets.all(0),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  side: const BorderSide(
+                                    color: UIGuide.light_black,
+                                  )),
+                            ),
+                            onPressed: () {
+                              value.getDate(context);
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                Icon(
+                                  Icons.calendar_month_outlined,
+                                  color: Colors.grey,
+                                ),
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                                // Text("Date: "),
+                                Text(value.dateDisplay),
+                                kWidth,
+                                const SizedBox(
+                                  width: 5,
+                                ),
+                              ],
+                            )),
+                      )
+                    ],
+                  ),
+                  kheight10,
+                  LimitedBox(
+                    maxHeight: 180,
+                    child: TextFormField(
+                      inputFormatters: [LengthLimitingTextInputFormatter(1000)],
+                      controller: remarkController,
+                      minLines: 1,
+                      maxLines: 15,
+                      keyboardType: TextInputType.multiline,
+                      decoration: const InputDecoration(
+                        labelText: 'Remarks',
+                        hintText: 'Enter Remarks',
+                        labelStyle: TextStyle(color: UIGuide.light_Purple),
+                        hintStyle: TextStyle(color: Colors.grey),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                              color: UIGuide.light_Purple, width: 1.0),
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                        ),
+                      ),
+                    ),
+                  ),
+                  kheight10,
+                  Row(
+                    children: [
+                      Expanded(
+                        child: InkWell(
+                            onTap: () async {
+                              value.isimportantCheckbox();
+                            },
+                            child: Row(
+                              children: [
+                                Checkbox(
+                                  activeColor: UIGuide.light_Purple,
+                                  value: value.isimportant,
+                                  onChanged: (newValue) async {
+                                    value.isimportantCheckbox();
+                                  },
+                                ),
+                                const Expanded(
+                                  //  width: size.width * .35,
+                                  child: Text(
+                                    "Is Important Entry",
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        color: UIGuide.BLACK, fontSize: 12),
+                                  ),
+                                )
+                              ],
+                            )),
+                      ),
+                      // kWidth,
+                      Expanded(
+                        child: InkWell(
+                            onTap: () async {
+                              value.isShownToGuardian();
+                            },
+                            child: Row(
+                              children: [
+                                Checkbox(
+                                  activeColor: UIGuide.light_Purple,
+                                  value: value.showToGuardian,
+                                  onChanged: (newValue) async {
+                                    value.isShownToGuardian();
+                                  },
+                                ),
+                                const Expanded(
+                                  //  width: size.width * .35,
+                                  child: Text(
+                                    "Show In Guardian Login",
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        color: UIGuide.BLACK, fontSize: 12),
+                                  ),
+                                )
+                              ],
+                            )),
+                      ),
+                    ],
+                  ),
+                  kheight20,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: 150,
+                        child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              elevation: 3,
+                              foregroundColor: UIGuide.WHITE,
+                              backgroundColor: UIGuide.light_Purple,
+                              padding: const EdgeInsets.all(0),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  side: const BorderSide(
+                                    color: UIGuide.light_black,
+                                  )),
+                            ),
+                            onPressed: () async {
+                              if (value.finalSelectedList.isEmpty ||
+                                  categoryIDController.text.trim().isEmpty ||
+                                  subjectIDController.text.trim().isEmpty ||
+                                  remarkController.text.trim().isEmpty) {
+                                snackbarWidget(
+                                    3, "Select mandatory fields...", context);
+                              } else {
+                                await value.getSaveAnecdotal(
+                                    categoryIDController.text,
+                                    subjectIDController.text,
+                                    remarkController.text,
+                                    value.finalSelectedList,
+                                    context);
+                                if (value.status == 200) {
+                                  categoryController.clear();
+                                  categoryIDController.clear();
+                                  subjectIDController.clear();
+                                  subjectController.clear();
+                                  remarkController.clear();
+                                  value.finalSelectedList.clear();
+                                }
+                              }
+                            },
+                            child: const Text("Save")),
+                      ),
+                    ],
+                  )
                 ],
-              )
-            ],
-          ),
+              ),
+            ),
+            if (value.loading) pleaseWaitLoader()
+          ],
         ),
       ),
     );
@@ -439,6 +517,7 @@ class _StudentListAnecdotalViewState extends State<StudentListAnecdotalView> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       _scrollController.addListener(_scrollListener);
       var p = Provider.of<AnecdotalStaffProviders>(context, listen: false);
+      await p.setLoading(false);
       await p.clearAllDetails();
       await p.getStudentViewList(section, course, division);
       p.allSelected = false;

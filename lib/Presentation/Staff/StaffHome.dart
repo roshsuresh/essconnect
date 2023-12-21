@@ -3,6 +3,7 @@ import 'package:essconnect/Application/Module%20Providers.dart/SchoolNameProvide
 import 'package:essconnect/Application/Staff_Providers/NotificationCount.dart';
 import 'package:essconnect/Application/StudentProviders/CurriculamProviders.dart';
 import 'package:essconnect/Application/StudentProviders/InternetConnection.dart';
+import 'package:essconnect/Presentation/Admin/Birthday/InitialScreen.dart';
 import 'package:essconnect/Presentation/Admin/WebViewLogin.dart';
 import 'package:essconnect/Presentation/Staff/AbsenteesReport.dart';
 import 'package:essconnect/Presentation/Staff/Anecdotal/StudAnecdotal/AnecdotalInitialScreen.dart';
@@ -924,220 +925,91 @@ class _StaffHomeState extends State<StaffHome> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceEvenly,
                                       children: [
-                                        GestureDetector(
-                                          onTap: () async {
-                                            module.curiculam == true
-                                                ? await Navigator.push(
-                                                    context,
-                                                    PageTransition(
-                                                      type: PageTransitionType
-                                                          .rightToLeft,
-                                                      child: Staff_ToGuardian(),
-                                                      duration: const Duration(
-                                                          milliseconds: 300),
-                                                    ))
-                                                : _noAcess();
-                                          },
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 5, right: 5),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                Card(
-                                                  elevation: 10,
-                                                  color: Colors.white,
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            12.0),
-                                                  ),
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: Container(
-                                                      height: 38,
-                                                      width: 38,
-                                                      decoration:
-                                                          const BoxDecoration(
-                                                        image: DecorationImage(
-                                                          opacity: 20,
-                                                          image: AssetImage(
-                                                            'assets/01communicationto guardian.png',
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                kheight10,
-                                                const Text(
-                                                  'To Guardian',
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 11,
-                                                      color: Colors.black),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 5, right: 5),
+                                        Expanded(
                                           child: GestureDetector(
                                             onTap: () async {
-                                              await Navigator.push(
-                                                  context,
-                                                  PageTransition(
-                                                    type: PageTransitionType
-                                                        .rightToLeft,
-                                                    child: StaffNoticeBoard(),
-                                                    duration: const Duration(
-                                                        milliseconds: 300),
-                                                  ));
-                                            },
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                Card(
-                                                  elevation: 10,
-                                                  color: Colors.white,
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            12.0),
-                                                  ),
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: Container(
-                                                      height: 38,
-                                                      width: 38,
-                                                      decoration: BoxDecoration(
-                                                        image:
-                                                            const DecorationImage(
-                                                          opacity: 20,
-                                                          image: AssetImage(
-                                                            'assets/Noticeboard.png',
-                                                          ),
-                                                        ),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                kheight10,
-                                                const Text(
-                                                  'Notice Board',
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 11,
-                                                      color: Colors.black),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                        GestureDetector(
-                                          onTap: () async {
-                                            await Navigator.push(
-                                                context,
-                                                PageTransition(
-                                                  type: PageTransitionType
-                                                      .rightToLeft,
-                                                  child: const StaffGallery(),
-                                                  duration: const Duration(
-                                                      milliseconds: 300),
-                                                ));
-                                          },
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 5, right: 5),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                Card(
-                                                  elevation: 10,
-                                                  color: Colors.white,
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            12.0),
-                                                  ),
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: Container(
-                                                      height: 38,
-                                                      width: 38,
-                                                      decoration:
-                                                          const BoxDecoration(
-                                                        image: DecorationImage(
-                                                          opacity: 20,
-                                                          image: AssetImage(
-                                                            'assets/Gallery.png',
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                kheight10,
-                                                const Text(
-                                                  'Gallery',
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 11,
-                                                      color: Colors.black),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                        Consumer<Curriculamprovider>(
-                                          builder: (context, curri, child) =>
-                                              GestureDetector(
-                                            onTap: () async {
-                                              if (module.curiculam == true) {
-                                                await Provider.of<
-                                                            Curriculamprovider>(
-                                                        context,
-                                                        listen: false)
-                                                    .getCuriculamtoken();
-                                                String token =
-                                                    curri.token.toString();
-
-                                                await Navigator.push(
-                                                  context,
-                                                  PageTransition(
-                                                    type: PageTransitionType
-                                                        .rightToLeft,
-                                                    child: CurriculamPage(
-                                                      token: token,
-                                                    ),
-                                                    duration: const Duration(
-                                                        milliseconds: 300),
-                                                  ),
-                                                );
-                                              } else {
-                                                _noAcess();
-                                              }
+                                              module.curiculam == true
+                                                  ? await Navigator.push(
+                                                      context,
+                                                      PageTransition(
+                                                        type: PageTransitionType
+                                                            .rightToLeft,
+                                                        child:
+                                                            Staff_ToGuardian(),
+                                                        duration:
+                                                            const Duration(
+                                                                milliseconds:
+                                                                    300),
+                                                      ))
+                                                  : _noAcess();
                                             },
                                             child: Padding(
                                               padding: const EdgeInsets.only(
                                                   left: 5, right: 5),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
+                                                children: [
+                                                  Card(
+                                                    elevation: 10,
+                                                    color: Colors.white,
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              12.0),
+                                                    ),
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: Container(
+                                                        height: 38,
+                                                        width: 38,
+                                                        decoration:
+                                                            const BoxDecoration(
+                                                          image:
+                                                              DecorationImage(
+                                                            opacity: 20,
+                                                            image: AssetImage(
+                                                              'assets/01communicationto guardian.png',
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  kheight10,
+                                                  const Text(
+                                                    'To Guardian',
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontSize: 11,
+                                                        color: Colors.black),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 5, right: 5),
+                                            child: GestureDetector(
+                                              onTap: () async {
+                                                await Navigator.push(
+                                                    context,
+                                                    PageTransition(
+                                                      type: PageTransitionType
+                                                          .rightToLeft,
+                                                      child: StaffNoticeBoard(),
+                                                      duration: const Duration(
+                                                          milliseconds: 300),
+                                                    ));
+                                              },
                                               child: Column(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment
@@ -1165,7 +1037,7 @@ class _StaffHomeState extends State<StaffHome> {
                                                               const DecorationImage(
                                                             opacity: 20,
                                                             image: AssetImage(
-                                                              'assets/Curriculum.png',
+                                                              'assets/Noticeboard.png',
                                                             ),
                                                           ),
                                                           borderRadius:
@@ -1177,7 +1049,7 @@ class _StaffHomeState extends State<StaffHome> {
                                                   ),
                                                   kheight10,
                                                   const Text(
-                                                    'e-Class room',
+                                                    'Notice Board',
                                                     style: TextStyle(
                                                         fontWeight:
                                                             FontWeight.w600,
@@ -1188,7 +1060,226 @@ class _StaffHomeState extends State<StaffHome> {
                                               ),
                                             ),
                                           ),
-                                        )
+                                        ),
+                                        Expanded(
+                                          child: GestureDetector(
+                                            onTap: () async {
+                                              await Navigator.push(
+                                                  context,
+                                                  PageTransition(
+                                                    type: PageTransitionType
+                                                        .rightToLeft,
+                                                    child: const StaffGallery(),
+                                                    duration: const Duration(
+                                                        milliseconds: 300),
+                                                  ));
+                                            },
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 5, right: 5),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
+                                                children: [
+                                                  Card(
+                                                    elevation: 10,
+                                                    color: Colors.white,
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              12.0),
+                                                    ),
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: Container(
+                                                        height: 38,
+                                                        width: 38,
+                                                        decoration:
+                                                            const BoxDecoration(
+                                                          image:
+                                                              DecorationImage(
+                                                            opacity: 20,
+                                                            image: AssetImage(
+                                                              'assets/Gallery.png',
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  kheight10,
+                                                  const Text(
+                                                    'Gallery',
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontSize: 11,
+                                                        color: Colors.black),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Consumer<Curriculamprovider>(
+                                          builder: (context, curri, child) =>
+                                              Expanded(
+                                            child: GestureDetector(
+                                              onTap: () async {
+                                                if (module.curiculam == true) {
+                                                  await Provider.of<
+                                                              Curriculamprovider>(
+                                                          context,
+                                                          listen: false)
+                                                      .getCuriculamtoken();
+                                                  String token =
+                                                      curri.token.toString();
+
+                                                  await Navigator.push(
+                                                    context,
+                                                    PageTransition(
+                                                      type: PageTransitionType
+                                                          .rightToLeft,
+                                                      child: CurriculamPage(
+                                                        token: token,
+                                                      ),
+                                                      duration: const Duration(
+                                                          milliseconds: 300),
+                                                    ),
+                                                  );
+                                                } else {
+                                                  _noAcess();
+                                                }
+                                              },
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 5, right: 5),
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
+                                                  children: [
+                                                    Card(
+                                                      elevation: 10,
+                                                      color: Colors.white,
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(12.0),
+                                                      ),
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8.0),
+                                                        child: Container(
+                                                          height: 38,
+                                                          width: 38,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            image:
+                                                                const DecorationImage(
+                                                              opacity: 20,
+                                                              image: AssetImage(
+                                                                'assets/Curriculum.png',
+                                                              ),
+                                                            ),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    kheight10,
+                                                    const Text(
+                                                      'e-Class room',
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          fontSize: 11,
+                                                          color: Colors.black),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: GestureDetector(
+                                            onTap: () async {
+                                              module.curiculam == true
+                                                  ? await Navigator.push(
+                                                      context,
+                                                      PageTransition(
+                                                        type: PageTransitionType
+                                                            .rightToLeft,
+                                                        child:
+                                                            BirthdayInitialScreen(),
+                                                        duration:
+                                                            const Duration(
+                                                                milliseconds:
+                                                                    300),
+                                                      ))
+                                                  : _noAcess();
+                                            },
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 5, right: 5),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
+                                                children: [
+                                                  Card(
+                                                    elevation: 10,
+                                                    color: Colors.white,
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              12.0),
+                                                    ),
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: Container(
+                                                        height: 38,
+                                                        width: 38,
+                                                        decoration:
+                                                            const BoxDecoration(
+                                                          image:
+                                                              DecorationImage(
+                                                            opacity: 20,
+                                                            image: AssetImage(
+                                                              'assets/01communicationto guardian.png',
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  kheight10,
+                                                  const Text(
+                                                    'Birthday',
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontSize: 11,
+                                                        color: Colors.black),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ),

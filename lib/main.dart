@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:core';
 import 'dart:io';
 import 'package:essconnect/Application/AdminProviders/Attendanceprovider.dart';
+import 'package:essconnect/Application/AdminProviders/BirthdayListProviders.dart';
 import 'package:essconnect/Application/AdminProviders/ChatProviders.dart';
 import 'package:essconnect/Application/AdminProviders/ExamTTPtoviders.dart';
 import 'package:essconnect/Application/Module%20Providers.dart/MobileAppCheckin.dart';
@@ -303,6 +304,7 @@ class _GjInfoTechState extends State<GjInfoTech> {
         ChangeNotifierProvider(
             create: (context) => StudentReportProviderStaff()),
         ChangeNotifierProvider(create: (context) => AnecdotalStaffProviders()),
+        ChangeNotifierProvider(create: (context) => BirthdayListProviders()),
       ],
       child: MaterialApp(
         title: 'e-SS Connect',

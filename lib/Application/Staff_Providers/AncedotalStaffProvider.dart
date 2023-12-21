@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:essconnect/Constants.dart';
 import 'package:essconnect/Domain/Staff/Anecdotal/InitialSelectionModel.dart';
 import 'package:essconnect/Domain/Staff/Anecdotal/StudListviewAnectdotal.dart';
@@ -71,12 +72,18 @@ class AnecdotalStaffProviders with ChangeNotifier {
 
   DateTime _currentTime = DateTime.now();
   late Timer _timer;
-
+  int? hour;
+  int? minute;
+  int? second;
   String get formattedTime => DateFormat('hh:mm a').format(_currentTime);
 
   timeModel() {
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       _currentTime = DateTime.now();
+      hour = _currentTime.hour;
+      minute = _currentTime.minute;
+      second = _currentTime.second;
+
       notifyListeners();
     });
   }
@@ -88,6 +95,12 @@ class AnecdotalStaffProviders with ChangeNotifier {
   }
 
   //  category --  subject List
+
+  clearInitial() {
+    remarksCategoryList.clear();
+    dairySubjectList.clear();
+    finalSelectedList.clear();
+  }
 
   List<CategorySubjectModel> remarksCategoryList = [];
   List<CategorySubjectModel> dairySubjectList = [];
@@ -327,7 +340,7 @@ class AnecdotalStaffProviders with ChangeNotifier {
     notifyListeners();
   }
 
-  int currentPage = 0;
+  int currentPage = 2;
   int? pageSize;
   int? countStud;
 
@@ -344,7 +357,7 @@ class AnecdotalStaffProviders with ChangeNotifier {
       var request = http.Request(
           'GET',
           Uri.parse(
-              '${UIGuide.baseURL}/student-selector?filterStudyingStatus=studying&avoidRelievedStaff=all&searchOption=contains&page=$currentPage&$section&$course&$division'));
+              '${UIGuide.baseURL}/student-selector?filterStudyingStatus=studying&avoidRelievedStaff=all&searchOption=contains&page=1&$section&$course&$division'));
 
       request.headers.addAll(headers);
       print(request);
@@ -366,7 +379,7 @@ class AnecdotalStaffProviders with ChangeNotifier {
             PaginationStudentView.fromJson(data['pagination']);
         pageSize = pagenata.pageSize;
         countStud = pagenata.count;
-        //  currentPage++;
+
         print(countStud);
 
         setLoading(false);
@@ -578,8 +591,69 @@ class AnecdotalStaffProviders with ChangeNotifier {
   bool hasMoreData() {
     final totalCount = countStud;
     // print("studentView length :  ${studentViewList.length}");
-    // print("Total  :  $totalCount");
     notifyListeners();
     return studentViewList.length < totalCount!;
+  }
+
+  //  save anecdotal
+  int status = 0;
+  Future getSaveAnecdotal(String categoryID, String subjectID, String remarks,
+      List studList, BuildContext context) async {
+    status = 0;
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    setLoadingPage(true);
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+    };
+    //try {
+    var request =
+        http.Request('POST', Uri.parse('${UIGuide.baseURL}/anecdotal/create'));
+    request.body = json.encode({
+      "categoryId": categoryID,
+      "subject": subjectID,
+      "createdDate": dateSend,
+      "time": {"hour": hour, "minute": minute, "second": second},
+      "remarks": remarks,
+      "isImportant": isimportant,
+      "showInGuardianLogin": showToGuardian,
+      "studId": studList,
+      "studentId": studList,
+      "staffId": null
+    });
+
+    request.headers.addAll(headers);
+    print(request.body);
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      setLoadingPage(true);
+      await AwesomeDialog(
+              context: context,
+              dialogType: DialogType.success,
+              animType: AnimType.rightSlide,
+              headerAnimationLoop: false,
+              title: 'Success',
+              desc: 'Saved Successfully',
+              btnOkOnPress: () {},
+              btnOkIcon: Icons.cancel,
+              btnOkColor: Colors.green)
+          .show();
+      status = 200;
+
+      setLoadingPage(false);
+      notifyListeners();
+    } else if (response.statusCode == 422) {
+      snackbarWidget(3, 'Remarks already exists.', context);
+    } else {
+      setLoadingPage(false);
+      print('Error in getSaveAnecdotal stf');
+    }
+    // } catch (e) {
+    //   print(e.hashCode);
+    //   snackbarWidget(2, "Somethin went wrong", context);
+    //   print('Error in getSaveAnecdotal stf----------');
+    //   setLoadingPage(false);
+    // }
   }
 }
