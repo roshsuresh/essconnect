@@ -1,11 +1,14 @@
 import 'dart:async';
 
+import 'package:essconnect/Application/StudentProviders/StudLocationProvider.dart';
+import 'package:essconnect/Constants.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 
 import 'package:location/location.dart';
+import 'package:provider/provider.dart';
 
 class MapPage extends StatefulWidget {
   const MapPage({super.key});
@@ -20,8 +23,9 @@ class _MapPageState extends State<MapPage> {
   final Completer<GoogleMapController> _mapController =
       Completer<GoogleMapController>();
 
-  static const LatLng _pGooglePlex = LatLng(10.3457792, 76.2017075);
-  // static const LatLng _pApplePark = LatLng(10.3442014, 76.2120421);
+  LatLng _pGooglePlex = const LatLng(0, 0);
+  //= LatLng(010.947392, 075.917664);
+
   LatLng? _currentP = null;
 
   Map<PolylineId, Polyline> polylines = {};
@@ -30,9 +34,16 @@ class _MapPageState extends State<MapPage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      await delays();
+      //  await Future.delayed(Duration(seconds: 1));
       try {
+        var p = Provider.of<StudLocationProvider>(context, listen: false);
+        await p.getBusLocation();
         _getLocation();
+        Timer.periodic(const Duration(seconds: 15), (Timer timer) async {
+          await p.getBusLocation();
+          getLocationUpdates();
+        });
+        addCustomIcon();
         getLocationUpdates().then(
           (_) => {
             getPolylinePoints().then((coordinates) => {
@@ -47,22 +58,37 @@ class _MapPageState extends State<MapPage> {
     });
   }
 
-  Future delays() async {
-    await Future.delayed(Duration(seconds: 1));
-  }
-
   Location location = Location();
-  LocationData? currentLocation;
+  LocationData? currentLocatio;
   Future<void> _getLocation() async {
     try {
       var _currentLocation = await location.getLocation();
       setState(() {
-        currentLocation = _currentLocation;
+        currentLocatio = _currentLocation;
+        if (currentLocatio!.latitude != null &&
+            currentLocatio!.longitude != null) {
+          _pGooglePlex =
+              LatLng(currentLocatio!.latitude!, currentLocatio!.longitude!);
+        }
       });
-      print("currentLocation :   $currentLocation");
+      print("currentLocation :   $currentLocatio");
     } catch (e) {
       print("Error getting location: $e");
     }
+  }
+
+  BitmapDescriptor markerIcon = BitmapDescriptor.defaultMarker;
+
+  void addCustomIcon() {
+    BitmapDescriptor.fromAssetImage(
+            const ImageConfiguration(), "assets/Location_marker.png")
+        .then(
+      (icon) {
+        setState(() {
+          markerIcon = icon;
+        });
+      },
+    );
   }
 
   // Future<void> _getLocation() async {
@@ -111,12 +137,14 @@ class _MapPageState extends State<MapPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _currentP == null
-          ? Center(
+          ? const Center(
               child: LottieAminBus(),
             )
           : GoogleMap(
+              mapType: MapType.normal,
+              zoomControlsEnabled: false,
               myLocationButtonEnabled: true,
-              myLocationEnabled: true,
+              // myLocationEnabled: true,
               onMapCreated: ((GoogleMapController controller) =>
                   _mapController.complete(controller)),
               initialCameraPosition: CameraPosition(
@@ -124,11 +152,11 @@ class _MapPageState extends State<MapPage> {
                   _currentP!.latitude ?? 0.0,
                   _currentP!.longitude ?? 0.0,
                 ),
-                zoom: 15.0,
+                zoom: 10.0,
               ),
-              // initialCameraPosition: const CameraPosition(
+              // initialCameraPosition: CameraPosition(
               //   target: _pGooglePlex,
-              //   //zoom: 13,
+              //     zoom: 13,
               // ),
               markers: {
                 Marker(
@@ -137,16 +165,11 @@ class _MapPageState extends State<MapPage> {
                       BitmapDescriptor.hueGreen),
                   position: _currentP!,
                 ),
-                const Marker(
-                  markerId: MarkerId("_sourceLocation"),
+                Marker(
+                  markerId: const MarkerId("_sourceLocation"),
                   icon: BitmapDescriptor.defaultMarker,
                   position: _pGooglePlex,
                 ),
-                // Marker(
-                //     markerId: const MarkerId("_destionationLocation"),
-                //     icon: BitmapDescriptor.defaultMarkerWithHue(
-                //         BitmapDescriptor.hueViolet),
-                //     position: _pApplePark)
               },
               polylines: Set<Polyline>.of(polylines.values),
             ),
@@ -164,9 +187,11 @@ class _MapPageState extends State<MapPage> {
     );
   }
 
-  Future<void> getLocationUpdates() async {
+  Future getLocationUpdates() async {
     bool _serviceEnabled;
     PermissionStatus _permissionGranted;
+
+    // await p.getBusLocation();
 
     _serviceEnabled = await _locationController.serviceEnabled();
     if (_serviceEnabled) {
@@ -177,26 +202,33 @@ class _MapPageState extends State<MapPage> {
 
     _permissionGranted = await _locationController.hasPermission();
     if (_permissionGranted == PermissionStatus.denied) {
+      snackbarWidget(2, "Enable location to continue", context);
+
       _permissionGranted = await _locationController.requestPermission();
       if (_permissionGranted != PermissionStatus.granted) {
         return;
       }
     }
 
-    _locationController.onLocationChanged.listen(
-      (LocationData currentLocation) {
-        if (currentLocation.latitude != null &&
-            currentLocation.longitude != null) {
-          //  if (mounted)
-          //    setState(() {
-          _currentP =
-              LatLng(currentLocation.latitude!, currentLocation.longitude!);
-          print(currentLocation.latitude!);
-          //   _cameraToPosition(_currentP!);
-          //  });
-        }
-      },
-    );
+    // _locationController.onLocationChanged.listen(
+    //   (LocationData currentLocatio) {
+    //     if (currentLocatio.latitude != null &&
+    //         currentLocatio.longitude != null) {
+    if (mounted)
+      setState(() {
+        var p = Provider.of<StudLocationProvider>(context, listen: false);
+        String latitude = p.busLocationList[0].d!.latitude.toString();
+        double latitudeValue = double.parse(latitude);
+        String longitude = p.busLocationList[0].d!.longitude.toString();
+        double longitudeValue = double.parse(longitude);
+
+        _currentP = LatLng(latitudeValue, longitudeValue);
+        print(_currentP);
+        // _cameraToPosition(_currentP!);
+      });
+    //     }
+    //   },
+    // );
   }
 
   Future<List<LatLng>> getPolylinePoints() async {
@@ -204,8 +236,8 @@ class _MapPageState extends State<MapPage> {
     PolylinePoints polylinePoints = PolylinePoints();
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
       'AIzaSyDPKi7RHsv3jzTUZz_yooD08AOZIBrBu04',
-      PointLatLng(currentLocation!.latitude!, currentLocation!.longitude!),
-      //  PointLatLng(_currentP!.latitude, _currentP!.longitude),
+      // PointLatLng(currentLocation!.latitude!, currentLocation!.longitude!),
+      PointLatLng(_currentP!.latitude, _currentP!.longitude),
       PointLatLng(_pGooglePlex.latitude, _pGooglePlex.longitude),
       // PointLatLng(_pApplePark.latitude, _pApplePark.longitude),
       travelMode: TravelMode.driving,

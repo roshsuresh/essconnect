@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:essconnect/Constants.dart';
 import 'package:essconnect/Domain/Admin/Birthday/BirthdayListModel.dart';
 import 'package:essconnect/Presentation/Admin/Communication/ToGuardian.dart';
 import 'package:essconnect/utils/constants.dart';
@@ -149,7 +150,7 @@ class BirthdayListProviders with ChangeNotifier {
     selectedStaffList = staffBirthdayList
         .where((element) => element.selectedStaff == true)
         .toList();
-    if (selectedStudList.isEmpty) {
+    if (selectedStaffList.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         elevation: 10,
         shape: RoundedRectangleBorder(
@@ -163,19 +164,22 @@ class BirthdayListProviders with ChangeNotifier {
           textAlign: TextAlign.center,
         ),
       ));
-    } else {
+    }
+    //
+    else {
       print('selected.....');
       print(staffBirthdayList
           .where((element) => element.selectedStaff == true)
           .toList());
       Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => Text_Matter_NotificationAdmin(
-              toList: selectedStaffList.map((e) => e.staffId!).toList(),
-              type: "Staff",
-            ),
-          ));
+        context,
+        MaterialPageRoute(
+          builder: (context) => Text_Matter_NotificationAdmin(
+            toList: selectedStaffList.map((e) => e.staffId!).toList(),
+            type: "Staff",
+          ),
+        ),
+      );
     }
   }
 

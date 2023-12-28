@@ -82,23 +82,24 @@ class _SendNoticeBoardAdminState extends State<SendNoticeBoardAdmin> {
                   child: SizedBox(
                     height: 40,
                     child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          elevation: 3,
-                          foregroundColor: UIGuide.light_Purple,
-                          backgroundColor: UIGuide.ButtonBlue,
-                          padding: const EdgeInsets.all(0),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              side: const BorderSide(
-                                color: UIGuide.light_black,
-                              )),
-                        ),
-                        onPressed: () {},
-                        child: Text(
-                          '🗓️  ${datee.toString()}',
-                          style: const TextStyle(
-                              color: UIGuide.BLACK, fontSize: 14),
-                        )),
+                      style: ElevatedButton.styleFrom(
+                        elevation: 3,
+                        foregroundColor: UIGuide.light_Purple,
+                        backgroundColor: UIGuide.ButtonBlue,
+                        padding: const EdgeInsets.all(0),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            side: const BorderSide(
+                              color: UIGuide.light_black,
+                            )),
+                      ),
+                      onPressed: () {},
+                      child: Text(
+                        '🗓️  ${datee.toString()}',
+                        style:
+                            const TextStyle(color: UIGuide.BLACK, fontSize: 14),
+                      ),
+                    ),
                   ),
                 ),
                 kWidth,
@@ -580,6 +581,7 @@ class _SendNoticeBoardAdminState extends State<SendNoticeBoardAdmin> {
 
                             print("courseData${courseData}");
                             course = courseData.join(',');
+                            divisionData.clear();
 
                             await val.courseCounter(result.length);
 
@@ -718,7 +720,7 @@ class _SendNoticeBoardAdminState extends State<SendNoticeBoardAdmin> {
                             value.toggleVal,
                             courseData,
                             divisionData,
-                            null,
+                            subjectData,
                             categoryvalueController.text,
                             val.imageid ?? "");
                       }
@@ -750,8 +752,8 @@ class _SendNoticeBoardAdminState extends State<SendNoticeBoardAdmin> {
                             titleController.text,
                             mattercontroller.text,
                             value.toggleVal,
-                            null,
-                            null,
+                            courseData,
+                            divisionData,
                             subjectData,
                             categoryvalueController.text,
                             val.imageid ?? "");
@@ -784,9 +786,9 @@ class _SendNoticeBoardAdminState extends State<SendNoticeBoardAdmin> {
                             titleController.text,
                             mattercontroller.text,
                             value.toggleVal,
-                            null,
-                            null,
-                            null,
+                            courseData,
+                            divisionData,
+                            subjectData,
                             categoryvalueController.text,
                             val.imageid ?? "");
                       }

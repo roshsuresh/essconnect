@@ -349,10 +349,7 @@ class NoticeBoardAdminProvider with ChangeNotifier {
   }
 
   // save NoticeBoard
-
-  final List course = [];
-  final List section = [];
-  final List division = [];
+  String? noticeBoardId;
 
   Future noticeBoardSave(
       BuildContext context,
@@ -362,9 +359,9 @@ class NoticeBoardAdminProvider with ChangeNotifier {
       String Titlee,
       String Matter,
       String toggle,
-      course,
-      division,
-      section,
+      List course,
+      List division,
+      List section,
       String CategoryId,
       String AttachmentId) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
@@ -412,6 +409,26 @@ class NoticeBoardAdminProvider with ChangeNotifier {
     if (response.statusCode == 200) {
       print('Correct______..........______');
 
+      Map<String, dynamic> data =
+          jsonDecode(await response.stream.bytesToString());
+      print(data);
+      // NoticeSuccessModel notice = NoticeSuccessModel.fromJson(data);
+      // noticeBoardId = notice.noticeBoardId;
+
+      // await noticeBoardSendNotification(
+      //     entryDate,
+      //     DisplayStartDate,
+      //     DisplayEndDate,
+      //     Titlee,
+      //     Matter,
+      //     toggle,
+      //     course,
+      //     division,
+      //     section,
+      //     CategoryId,
+      //     AttachmentId,
+      //     noticeBoardId ?? "");
+
       AwesomeDialog(
               context: context,
               dialogType: DialogType.success,
@@ -443,6 +460,55 @@ class NoticeBoardAdminProvider with ChangeNotifier {
         ),
       ));
       print('Error Response notice send admin');
+    }
+  }
+
+  Future noticeBoardSendNotification(
+      String entryDate,
+      String DisplayStartDate,
+      String DisplayEndDate,
+      String Titlee,
+      String Matter,
+      String toggle,
+      List course,
+      List division,
+      List section,
+      String CategoryId,
+      String AttachmentId,
+      String noticeID) async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+    };
+    var request = http.Request('POST',
+        Uri.parse('${UIGuide.baseURL}/mobileapp/staffdet/notification'));
+
+    request.body = json.encode({
+      "entryDate": entryDate,
+      "DisplayStartDate": DisplayStartDate,
+      "DisplayEndDate": DisplayEndDate,
+      "Title": Titlee,
+      "Matter": Matter,
+      "displayTo": toggle,
+      "StaffRole": null,
+      "CourseId": course,
+      "DivisionId": division,
+      "SectionList": section,
+      "CategoryId": CategoryId,
+      "ForClassTeachersOnly": false,
+      "AttachmentId": AttachmentId
+    });
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      print('-Notification success-');
+    } else {
+      print("Error in notice send notification");
     }
   }
 

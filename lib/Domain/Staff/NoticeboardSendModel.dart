@@ -246,3 +246,24 @@ class NoticeBoardAttatchmentStaffReceived {
     return data;
   }
 }
+
+//Notice success reponse
+
+class NoticeSuccessModel {
+  String? state;
+  String? noticeBoardId;
+
+  NoticeSuccessModel({this.state, this.noticeBoardId});
+
+  NoticeSuccessModel.fromJson(Map<String, dynamic> json) {
+    state = json['state'];
+    noticeBoardId = json['noticeBoardId'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['state'] = this.state;
+    data['noticeBoardId'] = this.noticeBoardId;
+    return data;
+  }
+}

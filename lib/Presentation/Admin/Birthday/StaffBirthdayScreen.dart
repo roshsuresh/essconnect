@@ -67,47 +67,37 @@ class StaffBirthdayScreenAdmin extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: BottomAppBar(
-        child: Row(children: [
-          kWidth,
-          // Expanded(
-          //     child: ElevatedButton(
-          //   style: ElevatedButton.styleFrom(
-          //     elevation: 3,
-          //     foregroundColor: UIGuide.WHITE,
-          //     backgroundColor: UIGuide.light_Purple,
-          //     padding: const EdgeInsets.all(0),
-          //     shape: RoundedRectangleBorder(
-          //         borderRadius: BorderRadius.circular(10),
-          //         side: const BorderSide(
-          //           color: UIGuide.light_black,
-          //         )),
-          //   ),
-          //   onPressed: () {},
-          //   child: const Text("SMS"),
-          // )),
-          // kWidth,
-          Expanded(
-              child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              elevation: 3,
-              foregroundColor: UIGuide.WHITE,
-              backgroundColor: UIGuide.light_Purple,
-              padding: const EdgeInsets.all(0),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  side: const BorderSide(
-                    color: UIGuide.light_black,
+      bottomNavigationBar: Consumer<BirthdayListProviders>(
+        builder: (context, val, _) => val.staffBirthdayList.isEmpty
+            ? const SizedBox(
+                height: 0,
+                width: 0,
+              )
+            : BottomAppBar(
+                child: Row(children: [
+                  kWidth,
+                  Expanded(
+                      child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      elevation: 3,
+                      foregroundColor: UIGuide.WHITE,
+                      backgroundColor: UIGuide.light_Purple,
+                      padding: const EdgeInsets.all(0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        side: const BorderSide(
+                          color: UIGuide.light_black,
+                        ),
+                      ),
+                    ),
+                    onPressed: () async {
+                      await val.submitStaff(context);
+                    },
+                    child: const Text("Send Notification"),
                   )),
-            ),
-            onPressed: () async {
-              await Provider.of<BirthdayListProviders>(context, listen: false)
-                  .submitStaff(context);
-            },
-            child: const Text("Send Notification"),
-          )),
-          kWidth
-        ]),
+                  kWidth
+                ]),
+              ),
       ),
     );
   }

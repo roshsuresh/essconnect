@@ -4,6 +4,7 @@ import 'package:essconnect/Application/Staff_Providers/NotificationCount.dart';
 import 'package:essconnect/Application/StudentProviders/CurriculamProviders.dart';
 import 'package:essconnect/Application/StudentProviders/InternetConnection.dart';
 import 'package:essconnect/Application/StudentProviders/SiblingsProvider.dart';
+import 'package:essconnect/Presentation/Admin/Birthday/InitialScreen.dart';
 import 'package:essconnect/Presentation/Admin/WebViewLogin.dart';
 import 'package:essconnect/Presentation/Staff/AbsenteesReport.dart';
 import 'package:essconnect/Presentation/Staff/ExamTT.dart/ExamTTScreen.dart';
@@ -1568,6 +1569,66 @@ class _StaffHomeScreenState extends State<StaffHomeScreen> {
                                                 )
                                               ],
                                             ),
+                                          ),
+                                        ),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () async {
+                                          module.curiculam == true
+                                              ? await Navigator.push(
+                                                  context,
+                                                  PageTransition(
+                                                    type: PageTransitionType
+                                                        .rightToLeft,
+                                                    child:
+                                                        BirthdayInitialScreen(),
+                                                    duration: const Duration(
+                                                        milliseconds: 300),
+                                                  ))
+                                              : _noAcess();
+                                        },
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 5, right: 5),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Card(
+                                                elevation: 10,
+                                                color: Colors.white,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          12.0),
+                                                ),
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: Container(
+                                                    height: 38,
+                                                    width: 38,
+                                                    decoration:
+                                                        const BoxDecoration(
+                                                      image: DecorationImage(
+                                                        opacity: 20,
+                                                        image: AssetImage(
+                                                          'assets/birthdayIcon.png',
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              kheight10,
+                                              const Text(
+                                                'Birthday',
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 11,
+                                                    color: Colors.black),
+                                              )
+                                            ],
                                           ),
                                         ),
                                       ),

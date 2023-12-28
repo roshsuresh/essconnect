@@ -750,7 +750,7 @@ class AdminHomeContent extends StatelessWidget {
                                       image: DecorationImage(
                                         opacity: 20,
                                         image: AssetImage(
-                                          'assets/Noticeboard.png',
+                                          'assets/birthdayIcon.png',
                                         ),
                                       ),
                                     ),

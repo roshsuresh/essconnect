@@ -18,7 +18,7 @@ class StudentBirthdayScreenAdmin extends StatelessWidget {
         builder: (context, value, _) => Stack(
           children: [
             value.classStudentBirthList.isEmpty
-                ? const StudentBirthdayWidget()
+                ? StudentBirthdayWidget()
                 : ListView(
                     children: [
                       Row(
@@ -66,109 +66,102 @@ class StudentBirthdayScreenAdmin extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: BottomAppBar(
-        child: Row(children: [
-          // kWidth,
-          // Expanded(
-          //     child: ElevatedButton(
-          //   style: ElevatedButton.styleFrom(
-          //     elevation: 3,
-          //     foregroundColor: UIGuide.WHITE,
-          //     backgroundColor: UIGuide.light_Purple,
-          //     padding: const EdgeInsets.all(0),
-          //     shape: RoundedRectangleBorder(
-          //         borderRadius: BorderRadius.circular(10),
-          //         side: const BorderSide(
-          //           color: UIGuide.light_black,
-          //         )),
-          //   ),
-          //   onPressed: () async {
-          //     await Provider.of<BirthdayListProviders>(context, listen: false)
-          //         .submitStudent(context);
-          //   },
-          //   child: const Text("SMS"),
-          // )),
-          kWidth,
-          Expanded(
-              child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              elevation: 3,
-              foregroundColor: UIGuide.WHITE,
-              backgroundColor: UIGuide.light_Purple,
-              padding: const EdgeInsets.all(0),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  side: const BorderSide(
-                    color: UIGuide.light_black,
+      bottomNavigationBar: Consumer<BirthdayListProviders>(
+        builder: (context, val, _) => val.studentBirthdayList.isEmpty
+            ? SizedBox(
+                height: 0,
+                width: 0,
+              )
+            : BottomAppBar(
+                child: Row(children: [
+                  kWidth,
+                  Expanded(
+                      child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      elevation: 3,
+                      foregroundColor: UIGuide.WHITE,
+                      backgroundColor: UIGuide.light_Purple,
+                      padding: const EdgeInsets.all(0),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        side: const BorderSide(
+                          color: UIGuide.light_black,
+                        ),
+                      ),
+                    ),
+                    onPressed: () async {
+                      await val.submitStudent(context);
+                    },
+                    child: const Text("Send Notification"),
                   )),
-            ),
-            onPressed: () async {
-              await Provider.of<BirthdayListProviders>(context, listen: false)
-                  .submitStudent(context);
-            },
-            child: const Text("Send Notification"),
-          )),
-          kWidth
-        ]),
+                  kWidth
+                ]),
+              ),
       ),
     );
   }
 }
 
 class StudentBirthdayWidget extends StatelessWidget {
-  const StudentBirthdayWidget({
+  StudentBirthdayWidget({
     super.key,
   });
-
+  final ScrollController _scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     return Consumer<BirthdayListProviders>(
-      builder: (context, value, _) => ListView.builder(
-          itemCount: value.studentBirthdayList.length,
-          shrinkWrap: true,
-          itemBuilder: (context, index) {
-            return ListTile(
-              tileColor: index.isOdd
-                  ? const Color.fromARGB(255, 243, 243, 243)
-                  : UIGuide.WHITE,
-              leading: CircleAvatar(
-                backgroundColor: UIGuide.WHITE,
-                radius: 30,
-                backgroundImage: NetworkImage(value
-                        .studentBirthdayList[index].studentPhoto ??
-                    "https://gj-eschool-files-public.s3.ap-south-1.amazonaws.com/ess-connect/student/avathar-01.jpeg"),
-              ),
-              title: Text(
-                value.studentBirthdayList[index].studentName ?? "--",
-                style: const TextStyle(
-                    fontWeight: FontWeight.w600, color: UIGuide.light_Purple),
-              ),
-              subtitle: Row(
-                children: [
-                  Expanded(
-                      child: Text(
-                          "Roll no: ${value.studentBirthdayList[index].rollNo ?? "--"}")),
-                  kWidth,
-                  Expanded(
-                      child: Text(
-                          "Division: ${value.studentBirthdayList[index].division ?? "--"}")),
-                ],
-              ),
-              trailing: value.studentBirthdayList[index].selectedStud != null &&
-                      value.studentBirthdayList[index].selectedStud!
-                  ? SvgPicture.asset(
-                      UIGuide.check,
-                      color: UIGuide.light_Purple,
-                    )
-                  : SvgPicture.asset(
-                      UIGuide.notcheck,
-                      color: UIGuide.light_Purple,
-                    ),
-              onTap: () {
-                value.selectItem(value.studentBirthdayList[index]);
-              },
-            );
-          }),
+      builder: (context, value, _) => LimitedBox(
+        maxHeight: size.height - 250,
+        child: ListView.builder(
+            scrollDirection: Axis.vertical,
+            itemCount: value.studentBirthdayList.length,
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              return ListTile(
+                tileColor: index.isOdd
+                    ? const Color.fromARGB(255, 243, 243, 243)
+                    : UIGuide.WHITE,
+                leading: CircleAvatar(
+                  backgroundColor: UIGuide.WHITE,
+                  radius: 30,
+                  backgroundImage: NetworkImage(value
+                          .studentBirthdayList[index].studentPhoto ??
+                      "https://gj-eschool-files-public.s3.ap-south-1.amazonaws.com/ess-connect/student/avathar-01.jpeg"),
+                ),
+                title: Text(
+                  value.studentBirthdayList[index].studentName ?? "--",
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w600, color: UIGuide.light_Purple),
+                ),
+                subtitle: Row(
+                  children: [
+                    Expanded(
+                        child: Text(
+                            "Roll no: ${value.studentBirthdayList[index].rollNo ?? "--"}")),
+                    kWidth,
+                    Expanded(
+                        child: Text(
+                            "Division: ${value.studentBirthdayList[index].division ?? "--"}")),
+                  ],
+                ),
+                trailing:
+                    value.studentBirthdayList[index].selectedStud != null &&
+                            value.studentBirthdayList[index].selectedStud!
+                        ? SvgPicture.asset(
+                            UIGuide.check,
+                            color: UIGuide.light_Purple,
+                          )
+                        : SvgPicture.asset(
+                            UIGuide.notcheck,
+                            color: UIGuide.light_Purple,
+                          ),
+                onTap: () {
+                  value.selectItem(value.studentBirthdayList[index]);
+                },
+              );
+            }),
+      ),
     );
   }
 }
@@ -180,54 +173,60 @@ class ClassStudentBirthdayWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     return Consumer<BirthdayListProviders>(
-      builder: (context, value, _) => ListView.builder(
-          itemCount: value.classStudentBirthList.length,
-          shrinkWrap: true,
-          itemBuilder: (context, index) {
-            return ListTile(
-              tileColor: index.isOdd
-                  ? const Color.fromARGB(255, 243, 243, 243)
-                  : UIGuide.WHITE,
-              leading: CircleAvatar(
-                backgroundColor: UIGuide.WHITE,
-                radius: 30,
-                backgroundImage: NetworkImage(value
-                        .classStudentBirthList[index].studentPhoto ??
-                    "https://gj-eschool-files-public.s3.ap-south-1.amazonaws.com/ess-connect/student/avathar-01.jpeg"),
-              ),
-              title: Text(
-                value.classStudentBirthList[index].studentName ?? "--",
-                style: const TextStyle(
-                    fontWeight: FontWeight.w600, color: UIGuide.light_Purple),
-              ),
-              subtitle: Row(
-                children: [
-                  Expanded(
+      builder: (context, value, _) => LimitedBox(
+        maxHeight: size.height - 250,
+        child: ListView.builder(
+            itemCount: value.classStudentBirthList.length,
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              return ListTile(
+                tileColor: index.isOdd
+                    ? const Color.fromARGB(255, 243, 243, 243)
+                    : UIGuide.WHITE,
+                leading: CircleAvatar(
+                  backgroundColor: UIGuide.WHITE,
+                  radius: 30,
+                  backgroundImage: NetworkImage(value
+                          .classStudentBirthList[index].studentPhoto ??
+                      "https://gj-eschool-files-public.s3.ap-south-1.amazonaws.com/ess-connect/student/avathar-01.jpeg"),
+                ),
+                title: Text(
+                  value.classStudentBirthList[index].studentName ?? "--",
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w600, color: UIGuide.light_Purple),
+                ),
+                subtitle: Row(
+                  children: [
+                    Expanded(
                       child: Text(
-                          "Roll no: ${value.classStudentBirthList[index].rollNo ?? "--"}")),
-                  kWidth,
-                  Expanded(
+                          "Roll no: ${value.classStudentBirthList[index].rollNo ?? "--"}"),
+                    ),
+                    kWidth,
+                    Expanded(
                       child: Text(
-                          "Division: ${value.classStudentBirthList[index].division ?? "--"}")),
-                ],
-              ),
-              trailing:
-                  value.classStudentBirthList[index].selectedStud != null &&
-                          value.classStudentBirthList[index].selectedStud!
-                      ? SvgPicture.asset(
-                          UIGuide.check,
-                          color: UIGuide.light_Purple,
-                        )
-                      : SvgPicture.asset(
-                          UIGuide.notcheck,
-                          color: UIGuide.light_Purple,
-                        ),
-              onTap: () {
-                value.selectStudByClass(value.classStudentBirthList[index]);
-              },
-            );
-          }),
+                          "Division: ${value.classStudentBirthList[index].division ?? "--"}"),
+                    ),
+                  ],
+                ),
+                trailing:
+                    value.classStudentBirthList[index].selectedStud != null &&
+                            value.classStudentBirthList[index].selectedStud!
+                        ? SvgPicture.asset(
+                            UIGuide.check,
+                            color: UIGuide.light_Purple,
+                          )
+                        : SvgPicture.asset(
+                            UIGuide.notcheck,
+                            color: UIGuide.light_Purple,
+                          ),
+                onTap: () {
+                  value.selectStudByClass(value.classStudentBirthList[index]);
+                },
+              );
+            }),
+      ),
     );
   }
 }

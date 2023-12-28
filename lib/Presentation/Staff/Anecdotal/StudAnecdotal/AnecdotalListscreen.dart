@@ -1,3 +1,4 @@
+import 'package:essconnect/Constants.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:flutter/material.dart';
 
@@ -24,8 +25,11 @@ class AnectdotalListScreen extends StatelessWidget {
                     Row(
                       children: [
                         Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Text("Date : "),
                                 Text(
@@ -37,10 +41,11 @@ class AnectdotalListScreen extends StatelessWidget {
                               ],
                             ),
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                Text("Date : "),
+                                Text("Adm no: "),
                                 Text(
-                                  "12-545",
+                                  "32/Ab",
                                   style: TextStyle(
                                       fontWeight: FontWeight.w500,
                                       color: UIGuide.light_Purple),
