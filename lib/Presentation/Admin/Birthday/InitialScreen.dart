@@ -38,14 +38,14 @@ class _BirthdayInitialScreenState extends State<BirthdayInitialScreen> {
               const Text('Birthday'),
               const Spacer(),
               IconButton(
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                const BirthdayInitialScreen()));
-                  },
-                  icon: const Icon(Icons.refresh))
+                onPressed: () {
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const BirthdayInitialScreen()));
+                },
+                icon: const Icon(Icons.refresh),
+              )
             ],
           ),
           titleSpacing: 00.0,

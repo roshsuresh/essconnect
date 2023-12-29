@@ -1176,77 +1176,76 @@ class _StaffHomeState extends State<StaffHome> {
                                                     ),
                                                   ),
                                                 ),
-
-                                                // Expanded(
-                                                //   child: GestureDetector(
-                                                //     onTap: () async {
-                                                //       await Navigator.push(
-                                                //           context,
-                                                //           PageTransition(
-                                                //             type:
-                                                //                 PageTransitionType
-                                                //                     .rightToLeft,
-                                                //             child:
-                                                //                 const AnecdotalInitialScreen(),
-                                                //             duration:
-                                                //                 const Duration(
-                                                //                     milliseconds:
-                                                //                         300),
-                                                //           ));
-                                                //     },
-                                                //     child: Column(
-                                                //       mainAxisAlignment:
-                                                //           MainAxisAlignment
-                                                //               .spaceEvenly,
-                                                //       children: [
-                                                //         Card(
-                                                //           elevation: 10,
-                                                //           color: Colors.white,
-                                                //           shape:
-                                                //               RoundedRectangleBorder(
-                                                //             borderRadius:
-                                                //                 BorderRadius
-                                                //                     .circular(
-                                                //                         12.0),
-                                                //           ),
-                                                //           child: Padding(
-                                                //             padding:
-                                                //                 const EdgeInsets
-                                                //                     .all(8.0),
-                                                //             child: Container(
-                                                //               height: 38,
-                                                //               width: 38,
-                                                //               decoration:
-                                                //                   const BoxDecoration(
-                                                //                 image:
-                                                //                     DecorationImage(
-                                                //                   opacity: 20,
-                                                //                   image:
-                                                //                       AssetImage(
-                                                //                     'assets/Loginwebb.png',
-                                                //                   ),
-                                                //                 ),
-                                                //               ),
-                                                //             ),
-                                                //           ),
-                                                //         ),
-                                                //         kheight10,
-                                                //         const Text(
-                                                //           'Anecdotal',
-                                                //           textAlign:
-                                                //               TextAlign.center,
-                                                //           style: TextStyle(
-                                                //               fontWeight:
-                                                //                   FontWeight
-                                                //                       .bold,
-                                                //               fontSize: 11,
-                                                //               color: Colors
-                                                //                   .black87),
-                                                //         )
-                                                //       ],
-                                                //     ),
-                                                //   ),
-                                                // ),
+                                                Expanded(
+                                                  child: GestureDetector(
+                                                    onTap: () async {
+                                                      await Navigator.push(
+                                                          context,
+                                                          PageTransition(
+                                                            type:
+                                                                PageTransitionType
+                                                                    .rightToLeft,
+                                                            child:
+                                                                const AnecdotalInitialScreen(),
+                                                            duration:
+                                                                const Duration(
+                                                                    milliseconds:
+                                                                        300),
+                                                          ));
+                                                    },
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
+                                                      children: [
+                                                        Card(
+                                                          elevation: 10,
+                                                          color: Colors.white,
+                                                          shape:
+                                                              RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        12.0),
+                                                          ),
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
+                                                            child: Container(
+                                                              height: 38,
+                                                              width: 38,
+                                                              decoration:
+                                                                  const BoxDecoration(
+                                                                image:
+                                                                    DecorationImage(
+                                                                  opacity: 20,
+                                                                  image:
+                                                                      AssetImage(
+                                                                    'assets/Loginwebb.png',
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        kheight10,
+                                                        const Text(
+                                                          'Anecdotal',
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontSize: 11,
+                                                              color: Colors
+                                                                  .black87),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
                                                 kWidth
                                               ],
                                             ),
