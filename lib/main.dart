@@ -337,6 +337,7 @@ class _GjInfoTechState extends State<GjInfoTech> {
         ),
         home: SplashFuturePage(),
         debugShowCheckedModeBanner: false,
+        //debugShowCheckedModeBanner: false,
       ),
     );
   }
