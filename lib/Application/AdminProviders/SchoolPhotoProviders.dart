@@ -205,10 +205,6 @@ class SchoolPhotoProviders with ChangeNotifier {
   }
 
   //Division
-  divisionListClear() {
-    divisionlist.clear();
-    notifyListeners();
-  }
 
   bool _loadingDivision = false;
   bool get loadingDivision => _loadingDivision;

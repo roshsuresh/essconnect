@@ -40,6 +40,7 @@ import '../../Application/Staff_Providers/StaffProfile.dart';
 import '../../Constants.dart';
 import '../../utils/constants.dart';
 import '../Login_Activation/Login_page.dart';
+import '../Staff/CommunicationToGuardian.dart';
 import '../Student/PasswordChange.dart';
 
 class StaffHomeScreen extends StatefulWidget {
@@ -1313,7 +1314,7 @@ class _StaffHomeScreenState extends State<StaffHomeScreen> {
                                                   PageTransition(
                                                     type: PageTransitionType
                                                         .rightToLeft,
-                                                    child: Staff_ToGuardian(),
+                                                    child: StaffToGuardian(),
                                                     duration: const Duration(
                                                         milliseconds: 300),
                                                     // childCurrent:this

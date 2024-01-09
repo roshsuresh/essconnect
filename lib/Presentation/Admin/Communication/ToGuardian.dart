@@ -99,6 +99,7 @@ class _Notification_AdminToGuardainState
       p.courselist.clear();
       p.divisionlist.clear();
       p.courseCounter(0);
+
       p.divisionCounter(0);
       p.sectionCounter(0);
 
@@ -118,6 +119,7 @@ class _Notification_AdminToGuardainState
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Consumer<SchoolPhotoProviders>(
+
                   builder: (context, value, child) => value.loadingSection
                       ? const Expanded(child: Center(child: Text('Loading...')))
                       : Expanded(

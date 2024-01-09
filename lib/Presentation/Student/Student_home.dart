@@ -1,10 +1,12 @@
 import 'package:essconnect/Application/Module%20Providers.dart/SchoolNameProvider.dart';
 import 'package:essconnect/Application/StudentProviders/CurriculamProviders.dart';
 import 'package:essconnect/Application/StudentProviders/InternetConnection.dart';
+import 'package:essconnect/Application/StudentProviders/LoginProvider.dart';
 import 'package:essconnect/Application/StudentProviders/NotificationCountProviders.dart';
 import 'package:essconnect/Constants.dart';
 import 'package:essconnect/Presentation/Student/CurriculamScreen.dart';
 import 'package:essconnect/Presentation/Student/Diary.dart';
+import 'package:essconnect/Presentation/Student/FeeWebScreen.dart';
 import 'package:essconnect/Presentation/Student/MapScreen.dart';
 import 'package:essconnect/Presentation/Student/NoInternetScreen.dart';
 import 'package:essconnect/Presentation/Student/Offline/BusFeeInitial.dart';
@@ -48,6 +50,8 @@ class StudentHome extends StatefulWidget {
 
 class _StudentHomeState extends State<StudentHome> {
   var size, height, width, kheight, kheight20;
+  String? schoolid;
+  String? subDomain;
 
   @override
   void initState() {
@@ -64,6 +68,12 @@ class _StudentHomeState extends State<StudentHome> {
           .getModuleDetails();
       await Provider.of<SchoolNameProvider>(context, listen: false)
           .getSchoolname();
+      SharedPreferences _pref = await SharedPreferences.getInstance();
+      schoolid= _pref.getString('schoolId');
+      subDomain= _pref.getString('subDomain');
+      print("schooolllllllllll");
+      print(schoolid);
+      print(subDomain);
       //  showNotificationPermissionDialog();
     });
   }
@@ -73,6 +83,7 @@ class _StudentHomeState extends State<StudentHome> {
     size = MediaQuery.of(context).size;
     height = size.height;
     width = size.width;
+
     kheight = const SizedBox(
       height: 10,
     );
@@ -626,7 +637,9 @@ class _StudentHomeState extends State<StudentHome> {
                                                                           type:
                                                                               PageTransitionType.rightToLeft,
                                                                           child:
-                                                                              PayFee(),
+                                                                              schoolid=="3f04b045-8e5c-47b5-9961-d93e2ddec2b9"
+                                                                            ? FeeWebScreen(schdomain: subDomain!)
+                                                                              :PayFee(),
                                                                           duration:
                                                                               const Duration(milliseconds: 300),
                                                                         ))

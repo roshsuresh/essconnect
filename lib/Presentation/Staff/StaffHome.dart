@@ -33,6 +33,7 @@ import '../../Constants.dart';
 import '../../utils/constants.dart';
 import '../Login_Activation/Login_page.dart';
 import '../Student/PasswordChange.dart';
+import 'CommunicationToGuardian.dart';
 import 'GalleryUpload.dart';
 import 'NoticeBoard.dart';
 import 'RemarksEntry.dart';
@@ -1323,7 +1324,8 @@ class _StaffHomeState extends State<StaffHome> {
                                                         type: PageTransitionType
                                                             .rightToLeft,
                                                         child:
-                                                            Staff_ToGuardian(),
+                                                           // Staff_ToGuardian(),
+                                                        StaffToGuardian(),
                                                         duration:
                                                             const Duration(
                                                                 milliseconds:

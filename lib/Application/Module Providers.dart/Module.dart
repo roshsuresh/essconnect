@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:essconnect/utils/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ModuleProviders extends ChangeNotifier {
   bool fees = false;
@@ -14,6 +15,7 @@ class ModuleProviders extends ChangeNotifier {
   bool offlineFees = false;
   Future getModuleDetails() async {
     var parsedResponse = await parseJWT();
+
     final newParse = await parsedResponse['Modules'];
     print(newParse);
     String data = await newParse;

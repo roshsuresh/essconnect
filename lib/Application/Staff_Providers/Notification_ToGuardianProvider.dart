@@ -11,8 +11,10 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../Domain/Admin/AttendanceModel.dart';
+import '../../Domain/Admin/SchoolSettings.dart';
 import '../../Domain/Staff/NotifcationSendModel.dart';
 import '../../Domain/Staff/ToGuardian_TextSMS.dart';
+import '../../Presentation/Staff/CommunicationToGuardian.dart';
 
 class NotificationToGuardian_Providers with ChangeNotifier {
   bool _loading = false;
@@ -21,6 +23,7 @@ class NotificationToGuardian_Providers with ChangeNotifier {
     _loading = value;
     notifyListeners();
   }
+
 
 //course List
 

@@ -166,3 +166,252 @@ class SmsFormatsCompleteview {
     return data;
   }
 }
+//Communication Initial
+
+
+class CommunicationInitial {
+  bool? isTeacher;
+  List<SectionsforCommunication>? sections;
+  bool? isClassTeacher;
+  bool? showCommunication;
+  bool? showNotification;
+  bool? showEmail;
+  bool? showTextSMS;
+  bool? showVoiceSMS;
+
+  CommunicationInitial(
+      {this.isTeacher,
+        this.sections,
+
+        this.isClassTeacher,
+        this.showCommunication,
+        this.showNotification,
+        this.showEmail,
+        this.showTextSMS,
+        this.showVoiceSMS});
+
+  CommunicationInitial.fromJson(Map<String, dynamic> json) {
+    isTeacher = json['isTeacher'];
+    if (json['sections'] != null) {
+      sections = <SectionsforCommunication>[];
+      json['sections'].forEach((v) {
+        sections!.add(new SectionsforCommunication.fromJson(v));
+      });
+    }
+
+
+    isClassTeacher = json['isClassTeacher'];
+    showCommunication = json['showCommunication'];
+    showNotification = json['showNotification'];
+    showEmail = json['showEmail'];
+    showTextSMS = json['showTextSMS'];
+    showVoiceSMS = json['showVoiceSMS'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['isTeacher'] = this.isTeacher;
+    if (this.sections != null) {
+      data['sections'] = this.sections!.map((v) => v.toJson()).toList();
+    }
+
+    data['isClassTeacher'] = this.isClassTeacher;
+    data['showCommunication'] = this.showCommunication;
+    data['showNotification'] = this.showNotification;
+    data['showEmail'] = this.showEmail;
+    data['showTextSMS'] = this.showTextSMS;
+    data['showVoiceSMS'] = this.showVoiceSMS;
+    return data;
+  }
+}
+
+class SectionsforCommunication {
+  String? value;
+  String? text;
+  bool? selected;
+  bool? active;
+  String? order;
+
+  SectionsforCommunication({this.value, this.text, this.selected, this.active, this.order});
+
+  SectionsforCommunication.fromJson(Map<String, dynamic> json) {
+    value = json['value'];
+    text = json['text'];
+    selected = json['selected'];
+    active = json['active'];
+    order = json['order'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['value'] = this.value;
+    data['text'] = this.text;
+    data['selected'] = this.selected;
+    data['active'] = this.active;
+    data['order'] = this.order;
+    return data;
+  }
+}
+
+//course
+
+class CourseInCommnunication {
+  String? value;
+  String? text;
+  bool? selected;
+  bool? active;
+  String? order;
+
+  CourseInCommnunication(
+      {this.value, this.text, this.selected, this.active, this.order});
+
+  CourseInCommnunication.fromJson(Map<String, dynamic> json) {
+    value = json['value'];
+    text = json['text'];
+    selected = json['selected'];
+    active = json['active'];
+    order = json['order'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['value'] = this.value;
+    data['text'] = this.text;
+    data['selected'] = this.selected;
+    data['active'] = this.active;
+    data['order'] = this.order;
+    return data;
+  }
+}
+
+//division
+class DivisionInCommnunication {
+  String? value;
+  String? text;
+  bool? selected;
+  bool? active;
+  String? order;
+
+  DivisionInCommnunication(
+      {this.value, this.text, this.selected, this.active, this.order});
+
+  DivisionInCommnunication.fromJson(Map<String, dynamic> json) {
+    value = json['value'];
+    text = json['text'];
+    selected = json['selected'];
+    active = json['active'];
+    order = json['order'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['value'] = this.value;
+    data['text'] = this.text;
+    data['selected'] = this.selected;
+    data['active'] = this.active;
+    data['order'] = this.order;
+    return data;
+  }
+}
+
+//StudentData
+
+class StudentView {
+  String? id;
+  String studentId;
+  String? admNo;
+  String name;
+  String? course;
+  String? division;
+  String? rollNo;
+  String? guardianName;
+  String? guardianMobile;
+  String? guardianEmail;
+  String? fatherName;
+  String? fatherMobile;
+  String? fatherEmail;
+  String? motherName;
+  String? motherMobile;
+  String? motherEmail;
+  String? content;
+  String? todaysDate;
+  String? presentTime;
+  String? classTeacher;
+  bool? selected;
+
+  StudentView(
+      {this.id,
+        required this.studentId,
+        this.admNo,
+        required this.name,
+        this.course,
+        this.division,
+        this.rollNo,
+        this.guardianName,
+        this.guardianMobile,
+        this.guardianEmail,
+        this.fatherName,
+        this.fatherMobile,
+        this.fatherEmail,
+        this.motherName,
+        this.motherMobile,
+        this.motherEmail,
+        this.content,
+        this.todaysDate,
+        this.presentTime,
+        this.classTeacher,
+        this.selected
+      });
+
+  factory StudentView.fromJson(
+      Map<String, dynamic> json) =>
+      StudentView(
+
+    studentId : json['studentId'],
+    admNo : json['admNo'],
+    name : json['name'],
+    course : json['course'],
+    division : json['division'],
+    rollNo : json['rollNo'],
+    guardianName : json['guardianName'],
+    guardianMobile : json['guardianMobile'],
+    guardianEmail : json['guardianEmail'],
+    fatherName : json['fatherName'],
+    fatherMobile : json['fatherMobile'],
+    fatherEmail : json['fatherEmail'],
+    motherName : json['motherName'],
+    motherMobile : json['motherMobile'],
+    motherEmail : json['motherEmail'],
+    content : json['content'],
+    todaysDate : json['todaysDate'],
+    presentTime : json['presentTime'],
+    classTeacher : json['classTeacher'],
+      );
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['studentId'] = this.studentId;
+    data['admNo'] = this.admNo;
+    data['name'] = this.name;
+    data['course'] = this.course;
+    data['division'] = this.division;
+    data['rollNo'] = this.rollNo;
+    data['guardianName'] = this.guardianName;
+    data['guardianMobile'] = this.guardianMobile;
+    data['guardianEmail'] = this.guardianEmail;
+    data['fatherName'] = this.fatherName;
+    data['fatherMobile'] = this.fatherMobile;
+    data['fatherEmail'] = this.fatherEmail;
+    data['motherName'] = this.motherName;
+    data['motherMobile'] = this.motherMobile;
+    data['motherEmail'] = this.motherEmail;
+    data['content'] = this.content;
+    data['todaysDate'] = this.todaysDate;
+    data['presentTime'] = this.presentTime;
+    data['classTeacher'] = this.classTeacher;
+    return data;
+  }
+}
+
+

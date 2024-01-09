@@ -1273,10 +1273,10 @@ packages:
     dependency: "direct main"
     description:
       name: weipl_checkout_flutter
-      sha256: "42f1d3744ce06dc57d4f3f2fdde26275de73c716abf50b8675c8189a18b4dc49"
+      sha256: "7984224dd7680bd365dcdf6f62a4fc02bab76ca26bac9b0caf8b8e8d752252b8"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.1"
+    version: "1.0.2"
   win32:
     dependency: transitive
     description:

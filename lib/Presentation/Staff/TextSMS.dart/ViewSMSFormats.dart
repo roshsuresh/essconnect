@@ -59,7 +59,7 @@ class Text_Matter_SMS extends StatelessWidget {
                                   maxHeight: size.height - 300,
                                   child: ListView.builder(
                                       shrinkWrap: true,
-                                      itemCount: snapshot.smsFormatList.length,
+                                      itemCount: snapshot.formatlist.length,
                                       itemBuilder: (context, index) {
                                         // print(snapshot.attendenceInitialValues.length);// value.removeCourseAll();
                                         return ListTile(
@@ -71,20 +71,20 @@ class Text_Matter_SMS extends StatelessWidget {
                                           //     snapshot.smsFormats[index]),
                                           onTap: () async {
                                             smsFormats.text = snapshot
-                                                    .smsFormatList[index].id ??
+                                                    .formatlist[index].value ??
                                                 '--';
 
                                             print(smsFormats.text);
                                             smsFormats1.text = snapshot
-                                                    .smsFormatList[index]
-                                                    .name ??
+                                                    .formatlist[index]
+                                                    .text ??
                                                 '--';
 
                                             Navigator.of(context).pop();
                                           },
                                           title: Text(
-                                            snapshot.smsFormatList[index]
-                                                    .name ??
+                                            snapshot.formatlist[index]
+                                                    .text ??
                                                 '--',
                                             textAlign: TextAlign.center,
                                           ),

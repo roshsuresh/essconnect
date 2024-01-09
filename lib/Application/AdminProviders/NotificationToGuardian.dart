@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../Domain/Admin/AttendanceModel.dart';
+import '../../Domain/Admin/SchoolSettings.dart';
 import '../../Domain/Staff/ToGuardian_TextSMS.dart';
 import '../../Presentation/Admin/Communication/SmsFormatAdmin.dart';
 
@@ -65,6 +66,48 @@ class NotificationToGuardianAdmin with ChangeNotifier {
       setLoading(false);
     }
   }
+
+  //settings
+
+  bool? showCommunication;
+  bool? textSMS;
+  bool? email;
+  bool? notification;
+
+  Future<bool> getAdminSettings() async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    setLoading(true);
+
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+    };
+    var request = http.Request(
+        'GET',
+        Uri.parse(
+            '${UIGuide.baseURL}/school-settings'));
+    request.headers.addAll(headers);
+    http.StreamedResponse response = await request.send();
+    if (response.statusCode == 200) {
+      Map<String, dynamic> data =
+      jsonDecode(await response.stream.bytesToString());
+      Map<String, dynamic> settingsData = data['settings'];
+      Settings stns = Settings.fromJson(settingsData);
+      showCommunication = stns.showCommunication;
+      textSMS = stns.textSMS;
+      email = stns.email;
+      notification = stns.notification;
+      setLoading(false);
+      notifyListeners();
+      print("valueeeeeeeeeee");
+      print(showCommunication);
+    } else {
+      setLoading(false);
+      print('Error in Settings');
+    }
+    return true;
+  }
+
 
   clearStudentList() {
     notificationView.clear();
