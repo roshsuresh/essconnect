@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:essconnect/Application/StudentProviders/ProfileProvider.dart';
 import 'package:essconnect/Constants.dart';
@@ -6,6 +8,8 @@ import 'package:essconnect/utils/constants.dart';
 import 'package:essconnect/utils/spinkit.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import 'ProfileEditOld.dart';
 
 class Profile_Info extends StatelessWidget {
   Profile_Info({Key? key}) : super(key: key);
@@ -56,8 +60,21 @@ class Profile_Info extends StatelessWidget {
                           ),
                         ),
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
+
+                            IconButton(
+                              onPressed: (){
+                                Navigator.pop(context);
+                              },
+                                icon:
+                                Platform.isIOS?
+                                Icon(Icons.arrow_back_ios_new,color:
+                                Colors.white,size: 25.0):
+                                Icon(Icons.arrow_back_outlined,color:
+                                  Colors.white,size: 25.0),
+                                ),
+
                             provider.editProfile == true
                                 ? Padding(
                                     padding: const EdgeInsets.all(20.0),
@@ -68,7 +85,8 @@ class Profile_Info extends StatelessWidget {
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  const ProfileEdit()),
+                                                  const
+                                                  ProfileEdit()),
                                         );
                                       },
                                       child: const Icon(

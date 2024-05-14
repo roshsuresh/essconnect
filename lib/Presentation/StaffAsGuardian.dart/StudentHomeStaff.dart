@@ -6,6 +6,7 @@ import 'package:essconnect/Presentation/Student/Attendence.dart';
 import 'package:essconnect/Presentation/Student/CurriculamScreen.dart';
 import 'package:essconnect/Presentation/Student/Diary.dart';
 import 'package:essconnect/Presentation/Student/Gallery.dart';
+import 'package:essconnect/Presentation/Student/MarkSheet.dart';
 import 'package:essconnect/Presentation/Student/NoInternetScreen.dart';
 import 'package:essconnect/Presentation/Student/NoticeBoard.dart';
 import 'package:essconnect/Presentation/Student/Offline/BusFeeInitial.dart';
@@ -27,9 +28,11 @@ import 'package:badges/badges.dart' as badges;
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 import '../../Application/Module Providers.dart/Module.dart';
+import '../../Application/StudentProviders/LoginProvider.dart';
 import '../../Application/StudentProviders/ProfileProvider.dart';
 import '../../Application/StudentProviders/SiblingsProvider.dart';
 import '../../Application/StudentProviders/TimetableProvider.dart';
+import '../Student/Anecdotal.dart';
 
 class StudentHomeByStaff extends StatefulWidget {
   StudentHomeByStaff({Key? key}) : super(key: key);
@@ -46,7 +49,14 @@ class _StudentHomeByStaffState extends State<StudentHomeByStaff> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       Provider.of<ConnectivityProvider>(context, listen: false);
-
+      await Provider.of<LoginProvider>(context, listen: false)
+          .getToken(context);
+      await Provider.of<LoginProvider>(context, listen: false)
+          .getMobileViewerId();
+      await Provider.of<LoginProvider>(context, listen: false)
+          .getsavemobileViewer(context);
+      await Provider.of<LoginProvider>(context, listen: false)
+          .sendUserDetails(context);
       await Provider.of<ProfileProvider>(context, listen: false).profileData();
       await Provider.of<StudNotificationCountProviders>(context, listen: false)
           .getnotificationCount();
@@ -189,46 +199,50 @@ class _StudentHomeByStaffState extends State<StudentHomeByStaff> {
                                         ),
                                       ),
                                     ),
-                                    GestureDetector(
-                                      onTap: () async {
-                                        await Navigator.push(
-                                            context,
-                                            PageTransition(
-                                              type: PageTransitionType
-                                                  .rightToLeft,
-                                              child: const NoticeBoard(),
-                                              duration: const Duration(
-                                                  milliseconds: 300),
-                                            ));
-                                      },
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            left: 10, right: 10),
+                                    Consumer<StudNotificationCountProviders>(
+                                      builder: (context, count, child) =>
+                                      count.loading
+                                          ? Padding(
+                                        padding:
+                                        const EdgeInsets.only(
+                                            left: 10,
+                                            right: 10),
                                         child: Column(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
+                                          MainAxisAlignment
+                                              .spaceEvenly,
                                           children: [
                                             Card(
                                               elevation: 10,
                                               color: Colors.white,
-                                              shape: RoundedRectangleBorder(
+                                              shape:
+                                              RoundedRectangleBorder(
                                                 borderRadius:
-                                                    BorderRadius.circular(12.0),
+                                                BorderRadius
+                                                    .circular(
+                                                    12.0),
                                               ),
                                               child: Padding(
                                                 padding:
-                                                    const EdgeInsets.all(8.0),
+                                                const EdgeInsets
+                                                    .all(8.0),
                                                 child: Container(
                                                   height: 38,
                                                   width: 38,
                                                   decoration:
-                                                      const BoxDecoration(
-                                                    image: DecorationImage(
+                                                  BoxDecoration(
+                                                    image:
+                                                    const DecorationImage(
                                                       opacity: 20,
-                                                      image: AssetImage(
+                                                      image:
+                                                      AssetImage(
                                                         'assets/Noticeboard.png',
                                                       ),
                                                     ),
+                                                    borderRadius:
+                                                    BorderRadius
+                                                        .circular(
+                                                        10),
                                                   ),
                                                 ),
                                               ),
@@ -237,11 +251,124 @@ class _StudentHomeByStaffState extends State<StudentHomeByStaff> {
                                             const Text(
                                               'Notice Board',
                                               style: TextStyle(
-                                                  fontWeight: FontWeight.w600,
+                                                  fontWeight:
+                                                  FontWeight
+                                                      .w600,
                                                   fontSize: 11,
-                                                  color: Colors.black),
+                                                  color:
+                                                  Colors.black),
                                             )
                                           ],
+                                        ),
+                                      )
+                                          : badges.Badge(
+                                        showBadge: count.noticeCount == 0
+                                            ? false
+                                            : true,
+                                        badgeAnimation: const badges
+                                            .BadgeAnimation.rotation(
+                                          animationDuration:
+                                          Duration(seconds: 1),
+                                          colorChangeAnimationDuration:
+                                          Duration(seconds: 1),
+                                          loopAnimation: false,
+                                          curve:
+                                          Curves.fastOutSlowIn,
+                                          colorChangeAnimationCurve:
+                                          Curves.easeInCubic,
+                                        ),
+                                        position:
+                                        badges.BadgePosition
+                                            .topEnd(end: 9),
+                                        badgeContent: Text(
+                                          count.noticeCount == null
+                                              ? ''
+                                              : count.noticeCount
+                                              .toString(),
+                                          style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 10,
+                                              fontWeight:
+                                              FontWeight.bold),
+                                        ),
+                                        child: GestureDetector(
+                                          onTap: () async {
+                                            await Navigator.push(
+                                                context,
+                                                PageTransition(
+                                                  type: PageTransitionType
+                                                      .rightToLeft,
+                                                  child:
+                                                  const NoticeBoard(),
+                                                  duration:
+                                                  const Duration(
+                                                      milliseconds:
+                                                      300),
+                                                ));
+                                          },
+                                          child: Padding(
+                                            padding:
+                                            const EdgeInsets
+                                                .only(
+                                                left: 10,
+                                                right: 10),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment
+                                                  .spaceEvenly,
+                                              children: [
+                                                Card(
+                                                  elevation: 10,
+                                                  color:
+                                                  Colors.white,
+                                                  shape:
+                                                  RoundedRectangleBorder(
+                                                    borderRadius:
+                                                    BorderRadius
+                                                        .circular(
+                                                        12.0),
+                                                  ),
+                                                  child: Padding(
+                                                    padding:
+                                                    const EdgeInsets
+                                                        .all(
+                                                        8.0),
+                                                    child:
+                                                    Container(
+                                                      height: 38,
+                                                      width: 38,
+                                                      decoration:
+                                                      BoxDecoration(
+                                                        image:
+                                                        const DecorationImage(
+                                                          opacity:
+                                                          20,
+                                                          image:
+                                                          AssetImage(
+                                                            'assets/Noticeboard.png',
+                                                          ),
+                                                        ),
+                                                        borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                kheight,
+                                                const Text(
+                                                  'Notice Board',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                      FontWeight
+                                                          .w600,
+                                                      fontSize: 11,
+                                                      color: Colors
+                                                          .black),
+                                                )
+                                              ],
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -1174,6 +1301,183 @@ class _StudentHomeByStaffState extends State<StudentHomeByStaff> {
                                           ),
                                         ),
                                       ),
+                                      Consumer<StudNotificationCountProviders>(
+                                        builder: (context, count, child) =>
+                                        count.loading
+                                            ? Padding(
+                                          padding:
+                                          const EdgeInsets.only(
+                                              left: 10,
+                                              right: 10),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment
+                                                .spaceEvenly,
+                                            children: [
+                                              Card(
+                                                elevation: 10,
+                                                color: Colors.white,
+                                                shape:
+                                                RoundedRectangleBorder(
+                                                  borderRadius:
+                                                  BorderRadius
+                                                      .circular(
+                                                      12.0),
+                                                ),
+                                                child: Padding(
+                                                  padding:
+                                                  const EdgeInsets
+                                                      .all(8.0),
+                                                  child: Container(
+                                                    height: 38,
+                                                    width: 38,
+                                                    decoration:
+                                                    BoxDecoration(
+                                                      image:
+                                                      const DecorationImage(
+                                                        opacity: 20,
+                                                        image:
+                                                        AssetImage(
+                                                          'assets/anecdotal.png',
+                                                        ),
+                                                      ),
+                                                      borderRadius:
+                                                      BorderRadius
+                                                          .circular(
+                                                          10),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              kheight,
+                                              const Text(
+                                                'Anecdotal',
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                    FontWeight
+                                                        .w600,
+                                                    fontSize: 11,
+                                                    color:
+                                                    Colors.black),
+                                              )
+                                            ],
+                                          ),
+                                        )
+                                            : badges.Badge(
+                                          showBadge: count.anecdotalCount == 0
+                                              ? false
+                                              : true,
+                                          badgeAnimation: const badges
+                                              .BadgeAnimation.rotation(
+                                            animationDuration:
+                                            Duration(seconds: 1),
+                                            colorChangeAnimationDuration:
+                                            Duration(seconds: 1),
+                                            loopAnimation: false,
+                                            curve:
+                                            Curves.fastOutSlowIn,
+                                            colorChangeAnimationCurve:
+                                            Curves.easeInCubic,
+                                          ),
+                                          position:
+                                          badges.BadgePosition
+                                              .topEnd(end: 9),
+                                          badgeContent: Text(
+                                            count.anecdotalCount == null
+                                                ? ''
+                                                : count.anecdotalCount
+                                                .toString(),
+                                            style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 10,
+                                                fontWeight:
+                                                FontWeight.bold),
+                                          ),
+                                          child: GestureDetector(
+                                            onTap: () async {
+                                              module.curiculam == true
+                                                  ?
+                                              await Navigator.push(
+                                                  context,
+                                                  PageTransition(
+                                                    type: PageTransitionType
+                                                        .rightToLeft,
+                                                    child:
+                                                    const AnecDotal(),
+                                                    duration:
+                                                    const Duration(
+                                                        milliseconds:
+                                                        300),
+                                                  )):
+                                              _noAcess();
+
+                                            },
+                                            child: Padding(
+                                              padding:
+                                              const EdgeInsets
+                                                  .only(
+                                                  left: 10,
+                                                  right: 10),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                MainAxisAlignment
+                                                    .spaceEvenly,
+                                                children: [
+                                                  Card(
+                                                    elevation: 10,
+                                                    color:
+                                                    Colors.white,
+                                                    shape:
+                                                    RoundedRectangleBorder(
+                                                      borderRadius:
+                                                      BorderRadius
+                                                          .circular(
+                                                          12.0),
+                                                    ),
+                                                    child: Padding(
+                                                      padding:
+                                                      const EdgeInsets
+                                                          .all(
+                                                          8.0),
+                                                      child:
+                                                      Container(
+                                                        height: 38,
+                                                        width: 38,
+                                                        decoration:
+                                                        BoxDecoration(
+                                                          image:
+                                                          const DecorationImage(
+                                                            opacity:
+                                                            20,
+                                                            image:
+                                                            AssetImage(
+                                                              'assets/anecdotal.png',
+                                                            ),
+                                                          ),
+                                                          borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  kheight,
+                                                  const Text(
+                                                    'Anecdotal',
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                        FontWeight
+                                                            .w600,
+                                                        fontSize: 11,
+                                                        color: Colors
+                                                            .black),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ),
@@ -1251,6 +1555,68 @@ class _StudentHomeByStaffState extends State<StudentHomeByStaff> {
                                               kheight,
                                               const Text(
                                                 'Report Card',
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 11,
+                                                    color: Colors.black),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 10, right: 10),
+                                        child: GestureDetector(
+                                          onTap: () async {
+                                            module.offlineTab == true
+                                                ? await Navigator.push(
+                                                context,
+                                                PageTransition(
+                                                  type: PageTransitionType
+                                                      .rightToLeft,
+                                                  child: const MarkSheetView(),
+                                                  duration: const Duration(
+                                                      milliseconds: 300),
+                                                ))
+                                                : _noAcess();
+                                          },
+                                          child: Column(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Card(
+                                                elevation: 10,
+                                                color: Colors.white,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                  BorderRadius.circular(
+                                                      12.0),
+                                                ),
+                                                child: Padding(
+                                                  padding:
+                                                  const EdgeInsets.all(8.0),
+                                                  child: Container(
+                                                    height: 38,
+                                                    width: 38,
+                                                    decoration: BoxDecoration(
+                                                      image:
+                                                      const DecorationImage(
+                                                        opacity: 20,
+                                                        image: AssetImage(
+                                                          'assets/Marksheet.png',
+                                                        ),
+                                                      ),
+                                                      borderRadius:
+                                                      BorderRadius.circular(
+                                                          10),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                              kheight,
+                                              const Text(
+                                                'MarkSheet',
                                                 style: TextStyle(
                                                     fontWeight: FontWeight.w600,
                                                     fontSize: 11,

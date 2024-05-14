@@ -88,9 +88,10 @@ class MarkEntryNewProvider with ChangeNotifier {
         setLoading(true);
         Map<String, dynamic> data =
             jsonDecode(await response.stream.bytesToString());
-        MarkEntryDivisionInitailModel inita =
-            MarkEntryDivisionInitailModel.fromJson(data);
+        MarkEntryDivisionList inita =
+        MarkEntryDivisionList.fromJson(data);
         typeCode = inita.typeCode;
+        print("trypecode: $typeCode");
 
         log(data.toString());
 
@@ -141,6 +142,10 @@ class MarkEntryNewProvider with ChangeNotifier {
             jsonDecode(await response.stream.bytesToString());
 
         log(data.toString());
+        MarkEntryPartList inita =
+        MarkEntryPartList.fromJson(data);
+        typeCode = inita.typeCode;
+        print("last coe: $typeCode");
 
         List<MarkEntryPartList> templist = List<MarkEntryPartList>.from(
             data["parts"].map((x) => MarkEntryPartList.fromJson(x)));
@@ -390,6 +395,8 @@ class MarkEntryNewProvider with ChangeNotifier {
   String? teMax;
   String? peMax;
   String? ceMax;
+  bool? existPeAttendance;
+  bool? existCeAttendance;
   String? teCaptionUAS;
   String? peCaptionUAS;
   String? ceCaptionUAS;
@@ -477,6 +484,7 @@ class MarkEntryNewProvider with ChangeNotifier {
         isBlockedUAS = marku.isBlocked;
         examStatusUAS = marku.examStatus;
         updatedAtUAS = marku.updatedAt;
+        print("es=xisttttttttttttt $existCeAttendance ");
         setLoading(false);
         List<MarkEntryDetailsUAS> templist = List<MarkEntryDetailsUAS>.from(
             data['markEntry']["markEntryDetails"]
@@ -502,7 +510,7 @@ class MarkEntryNewProvider with ChangeNotifier {
   }
 
   //markEntry State View
-
+  List booleanList = [];
   Future getMarkEntrySTATEView(
       String course,
       String division,
@@ -550,7 +558,7 @@ class MarkEntryNewProvider with ChangeNotifier {
         print('---------------------correct-STATE-------------------------');
         Map<String, dynamic> data =
             jsonDecode(await response.stream.bytesToString());
-
+  log(data.toString());
         // log(data.toString());
         setLoading(true);
 
@@ -574,6 +582,8 @@ class MarkEntryNewProvider with ChangeNotifier {
         teMax = marku.teMax;
         peMax = marku.peMax;
         ceMax = marku.ceMax;
+        existPeAttendance=marku.existPeAttendance;
+        existCeAttendance=marku.existCeAttendance;
         teCaptionUAS = marku.teCaption;
         peCaptionUAS = marku.peCaption;
         ceCaptionUAS = marku.ceCaption;
@@ -585,6 +595,12 @@ class MarkEntryNewProvider with ChangeNotifier {
             data['markEntry']["markEntryDetails"]
                 .map((x) => MarkEntryDetailsUAS.fromJson(x)));
         studListUAS.addAll(templist);
+
+        for(int i=0;i<studListUAS.length;i++){
+          if(studListUAS.isNotEmpty){
+            booleanList.add(studListUAS[i].isEdited);
+          }
+        }
         if (data['markEntry']["gradeList"] != null) {
           List<GradeListUAS> templist1 = List<GradeListUAS>.from(
               data['markEntry']["gradeList"]
@@ -834,6 +850,8 @@ class MarkEntryNewProvider with ChangeNotifier {
         "entryMethod": entryMethod == "null" ? null : entryMethod,
         "exam": exam == "null" ? null : exam,
         "includeTerminatedStudents": includeTerminatedStudents,
+        "existPeAttendance": existPeAttendance,
+        "existCeAttendance": existCeAttendance,
         "teMax": teMax == "null" ? null : teMax,
         "peMax": peMax == "null" ? null : peMax,
         "ceMax": ceMax == "null" ? null : ceMax,
@@ -847,6 +865,8 @@ class MarkEntryNewProvider with ChangeNotifier {
         "gradeList": gradeListSave.isEmpty ? null : gradeListSave,
         "partItem": partItemm
       });
+
+      print("save dattttta");
       log(request.body);
       request.headers.addAll(headers);
 
@@ -858,7 +878,8 @@ class MarkEntryNewProvider with ChangeNotifier {
         setLoadSave(true);
         setLoadCommon(true);
 
-        print('Correct........______________________________');
+        print('Correct........______________________________State');
+        log(request.body.toString());
         print(await response.stream.bytesToString());
         await AwesomeDialog(
                 dismissOnTouchOutside: false,

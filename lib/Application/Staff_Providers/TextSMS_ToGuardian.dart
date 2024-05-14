@@ -10,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../Constants.dart';
 import '../../Domain/Admin/AttendanceModel.dart';
 import '../../Domain/Staff/NotifcationSendModel.dart';
+import '../../Presentation/Admin/Communication/FormatCreation.dart';
 import '../../Presentation/Staff/CommunicationToGuardian.dart';
 import '../../Presentation/Staff/SmsFormatGuardian.dart';
 
@@ -105,6 +106,17 @@ class TextSMS_ToGuardian_Providers with ChangeNotifier {
     divisionlist.clear();
     notifyListeners();
   }
+  clearSectionDivision() async {
+    divisionDrop.clear();
+    divisionSectionlist.clear();
+    notifyListeners();
+  }
+clearNotificationList(){
+    notificationFormats.clear();
+    notificationFormatList.clear();
+    notiformatname.clear();
+    notifyListeners();
+}
 
   List<TextSMSToGuardianCourseList> smsCourse = [];
   addSelectedCourse(TextSMSToGuardianCourseList item) {
@@ -174,6 +186,9 @@ class TextSMS_ToGuardian_Providers with ChangeNotifier {
   bool? showNotification;
   bool? empty;
   List checkType=[];
+  List<NotificationFormats> notificationFormats =[];
+
+
 
 
   Future<bool> getInitialCommunication() async {
@@ -195,16 +210,33 @@ class TextSMS_ToGuardian_Providers with ChangeNotifier {
       setloadingSection(true);
       Map<String, dynamic> data =
       jsonDecode(await response.stream.bytesToString());
+
       List<SectionsforCommunication> templist =
       List<SectionsforCommunication>.from(data["sections"]
           .map((x) => SectionsforCommunication.fromJson(x)));
       sectionList.addAll(templist);
 
 
+      List<CourseInCommnunication> templist2 = List<CourseInCommnunication>.from(data["courses"]
+          .map((x) => CourseInCommnunication.fromJson(x)));
+      courseList.addAll(templist2);
+
+      print(courseList.toList());
+
+
+      List<DivisionInCommnunication> templist3 = List<DivisionInCommnunication>.from(data["divisions"]
+          .map((x) => DivisionInCommnunication.fromJson(x)));
+      divisionSectionlist.addAll(templist3);
+      print(divisionSectionlist.toList());
+
+      List<NotificationFormats> templist4 = List<NotificationFormats>.from(data["notificationFormats"]
+          .map((x) => NotificationFormats.fromJson(x)));
+      notificationFormats.addAll(templist4);
+
+
       dropDown = sectionList.map((subjectdata) {
         return MultiSelectItem(subjectdata, subjectdata.text!);
       }).toList();
-      print("lissstttt $empty");
       showCommunication= data['showCommunication'];
       showNotification= data['showNotification'];
       showEmail= data['showEmail'];
@@ -249,6 +281,7 @@ class TextSMS_ToGuardian_Providers with ChangeNotifier {
 
       List<DivisionInCommnunication> templist = List<DivisionInCommnunication>.from(
           data.map((x) => DivisionInCommnunication.fromJson(x)));
+      divisionSectionlist.clear();
       divisionSectionlist.addAll(templist);
       divisionDrop = divisionSectionlist.map((subjectdata) {
         return MultiSelectItem(subjectdata, subjectdata.text ?? "");
@@ -513,12 +546,219 @@ class TextSMS_ToGuardian_Providers with ChangeNotifier {
   }
 //send notification
 
-  // bool _load = false;
-  // bool get load => _load;
-  // setLoad(bool value) {
-  //   _load = value;
-  //   notifyListeners();
-  // }
+  //
+
+  //getnotificationList
+    List<NotificationAllFormats> notificationFormatList=[];
+  List notiformatname = [];
+  Future<bool> getNotificationFormatList() async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+    };
+    var request = http.Request('GET',
+        Uri.parse('${UIGuide.baseURL}/notification/common/get-formats/guardianGeneralNotifications'));
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> data =
+      jsonDecode(await response.stream.bytesToString());
+      log(data.toString());
+
+      List<NotificationAllFormats> templist = List<NotificationAllFormats>.from(
+          data["notificationFormats"].map((x) => NotificationAllFormats.fromJson(x)));
+      notificationFormatList.addAll(templist);
+
+      for(int i=0;i<notificationFormatList.length;i++){
+        if(notificationFormatList.isNotEmpty){
+          notiformatname.add(notificationFormatList[i].notificationFormatName);
+        }
+      }
+      print("formatnames");
+      print(notiformatname);
+
+      notifyListeners();
+    } else {
+      print('Error in smsformat stf');
+    }
+    return true;
+  }
+
+  //getnotificationcontent
+  String? notificationTitle;
+  String? notificationMatter;
+  Future getNotificationContent(String idd) async {
+    setLoading(true);
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+    };
+    try {
+      var response = await http.get(
+          Uri.parse(
+              "${UIGuide.baseURL}/notification/common/get-formats-by-id/$idd"),
+          headers: headers);
+      print("${UIGuide.baseURL}/notification/common/get-formats-by-id/$idd");
+      if (response.statusCode == 200) {
+        setLoading(true);
+        Map<String, dynamic> data = json.decode(response.body);
+        NotificationFormatContent ac = NotificationFormatContent.fromJson(data['notificationFormat']);
+
+        notificationTitle = ac.notificationTitle;
+        notificationMatter = ac.notificationDescription;
+        print("rosssssss");
+        print(notificationTitle);
+        setLoading(false);
+        notifyListeners();
+      } else {
+        setLoading(false);
+        print('Error in dashboard');
+      }
+    } catch (e) {
+      setLoading(false);
+    }
+  }
+
+  //save notification format
+  Future notificationFormatSave(BuildContext context,String formatname,String title,String description
+      ) async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+    };
+    var request = http.Request('POST',
+        Uri.parse('${UIGuide.baseURL}/notification/common/save-new-format'));
+    print(request);
+    request.body = json.encode(
+        {
+          "group": "guardianGeneralNotifications",
+          "notificationFormatName": formatname,
+          "notificationTitle": title,
+          "notificationDescription": description,
+          "notificationFormat": formatname,
+          "formatType": "Notification"
+        }
+    );
+    print("notice---------");
+    print(request.body = json.encode({
+      "group": "guardianGeneralNotifications",
+      "notificationFormatName": formatname,
+      "notificationTitle": title,
+      "notificationDescription": description,
+      "notificationFormat": formatname,
+      "formatType": "Notification"
+    }));
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      print('Correct______..........______');
+
+      Map<String, dynamic> data =
+      jsonDecode(await response.stream.bytesToString());
+      print(data);
+      // NoticeSuccessModel notice = NoticeSuccessModel.fromJson(data);
+      // noticeBoardId = notice.noticeBoardId;
+
+
+      AwesomeDialog(
+          context: context,
+          dialogType: DialogType.success,
+          animType: AnimType.rightSlide,
+          headerAnimationLoop: false,
+          title: 'Success',
+          desc: 'Uploaded Successfully',
+          btnOkOnPress: () {
+            Navigator.pop(context);
+            // Navigator.pushReplacement(
+            //     context,
+            //     MaterialPageRoute(
+            //         builder: (context) => FormatCreation()));
+          },
+          btnOkIcon: Icons.cancel,
+          btnOkColor: Colors.green)
+          .show();
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        elevation: 10,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+        ),
+        duration: Duration(seconds: 1),
+        margin: EdgeInsets.only(bottom: 80, left: 30, right: 30),
+        behavior: SnackBarBehavior.floating,
+        content: Text(
+          'Something Went Wrong....',
+          textAlign: TextAlign.center,
+        ),
+      ));
+      print('Error Response notice send admin');
+    }
+  }
+
+
+  //notificationformat delete
+
+  Future notificationFormatlDelete(
+      BuildContext context, String eventID) async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+    };
+    var request = http.Request('DELETE',
+        Uri.parse('${UIGuide.baseURL}/notification/common/delete/$eventID'));
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 204) {
+
+      print(await response.stream.bytesToString());
+      print('correct');
+      await AwesomeDialog(
+          dismissOnTouchOutside: false,
+          dismissOnBackKeyPress: false,
+          context: context,
+          dialogType: DialogType.error,
+          animType: AnimType.rightSlide,
+          headerAnimationLoop: false,
+          title: 'Deleted Successfully',
+
+          btnOkOnPress: () async {
+            Navigator.pop(context);
+          },
+          btnOkColor: Color.fromRGBO(
+              217,62,71,5))
+          .show();
+
+      notifyListeners();
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        elevation: 10,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+        ),
+        duration: Duration(seconds: 1),
+        margin: EdgeInsets.only(bottom: 80, left: 30, right: 30),
+        behavior: SnackBarBehavior.floating,
+        content: Text(
+          'Something Went Wrong....',
+          textAlign: TextAlign.center,
+        ),
+      ));
+      print('Error in format Delete');
+    }
+  }
 
   sendNotification(
       BuildContext context, String body, String content, List<String> to,
@@ -745,10 +985,12 @@ class TextSMS_ToGuardian_Providers with ChangeNotifier {
           headers: headers);
       if (response.statusCode == 200) {
         setLoading(true);
+        print("roshhhhh");
         print('correct');
         Map<String, dynamic> dashboard = json.decode(response.body);
         SmsFormatList ac = SmsFormatList.fromJson(dashboard);
         smsBody = ac.smsBody;
+
         setLoading(false);
         notifyListeners();
       } else {

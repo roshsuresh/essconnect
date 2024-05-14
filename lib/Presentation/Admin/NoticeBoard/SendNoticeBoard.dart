@@ -48,7 +48,7 @@ class _SendNoticeBoardAdminState extends State<SendNoticeBoardAdmin> {
       await p.getCourseList();
       await p.noticeboardCategory();
 
-      p.stdReportSectionStaff();
+      p.stdReportSectionStaff();  
       await p.sectionCounter(0);
       await p.courseCounter(0);
       await p.divisionCounter(0);
@@ -493,6 +493,10 @@ class _SendNoticeBoardAdminState extends State<SendNoticeBoardAdmin> {
                               .sectionCounter(results.length);
                           print("data $section");
 
+                          print("sectionnnnnnn");
+                          print(subjectData);
+                          print(section);
+
                           print(subjectData.join(','));
                         },
                       ),
@@ -723,6 +727,19 @@ class _SendNoticeBoardAdminState extends State<SendNoticeBoardAdmin> {
                             subjectData,
                             categoryvalueController.text,
                             val.imageid ?? "");
+                        await val.noticeBoardSendNotification(datee.toString(),
+                            val.fromDateDis,
+                            val.toDateDis,
+                            titleController.text,
+                            mattercontroller.text,
+                            value.toggleVal,
+                            courseData,
+                            divisionData,
+                            subjectData,
+                            categoryvalueController.text,
+                            val.imageid ?? "",
+                            val.noticeBoardId.toString()
+                            );
                       }
                     } else if (value.toggleVal == "staff") {
                       if (titleController.text.trim().isEmpty ||
@@ -757,6 +774,19 @@ class _SendNoticeBoardAdminState extends State<SendNoticeBoardAdmin> {
                             subjectData,
                             categoryvalueController.text,
                             val.imageid ?? "");
+                        await val.noticeBoardSendNotification(datee.toString(),
+                          val.fromDateDis,
+                          val.toDateDis,
+                          titleController.text,
+                          mattercontroller.text,
+                          value.toggleVal,
+                          courseData,
+                          divisionData,
+                          subjectData,
+                          categoryvalueController.text,
+                          val.imageid ?? "",
+                            val.noticeBoardId.toString()
+                        );
                       }
                     } else {
                       if (titleController.text.trim().isEmpty ||
@@ -791,6 +821,19 @@ class _SendNoticeBoardAdminState extends State<SendNoticeBoardAdmin> {
                             subjectData,
                             categoryvalueController.text,
                             val.imageid ?? "");
+                        await val.noticeBoardSendNotification(datee.toString(),
+                          val.fromDateDis,
+                          val.toDateDis,
+                          titleController.text,
+                          mattercontroller.text,
+                          value.toggleVal,
+                          courseData,
+                          divisionData,
+                          subjectData,
+                          categoryvalueController.text,
+                          val.imageid ?? "",
+                          val.noticeBoardId.toString()
+                        );
                       }
                     }
                   }),

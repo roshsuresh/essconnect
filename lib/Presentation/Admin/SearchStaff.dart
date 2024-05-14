@@ -155,7 +155,7 @@ class _SearchStaffState extends State<SearchStaff> {
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
                                           builder: (context) => StaffInfo(
-                                                index: index,
+                                                staff:  value.staffReportList[index],
                                               )),
                                     );
                                   },

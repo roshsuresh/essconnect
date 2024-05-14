@@ -7,13 +7,31 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import '../../Application/Staff_Providers/NotificationCount.dart';
 import '../../Constants.dart';
 import '../../utils/constants.dart';
 
-class StaffNoticeBoard extends StatelessWidget {
+class StaffNoticeBoard extends StatefulWidget {
   StaffNoticeBoard({Key? key}) : super(key: key);
 
   @override
+  State<StaffNoticeBoard> createState() => _StaffNoticeBoardState();
+}
+
+class _StaffNoticeBoardState extends State<StaffNoticeBoard> {
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+     await Provider.of<StaffNoticeboardSendProviders>(context, listen: false)
+          .seeNoticeBoardStaff();
+    await Provider.of<StaffNotificationCountProviders>(context, listen: false)
+         .getnotificationCount();
+    });
+  }
+  @override
+
   Widget build(BuildContext context) {
     return DefaultTabController(
         length: 3,

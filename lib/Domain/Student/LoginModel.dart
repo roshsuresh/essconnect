@@ -13,3 +13,20 @@ class LoginModel {
         "access_token": accessToken,
       };
 }
+
+
+class GetUserMobielViewId {
+  String? viewId;
+
+  GetUserMobielViewId({this.viewId});
+
+  GetUserMobielViewId.fromJson(Map<String, dynamic> json) {
+    viewId = json['viewId'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['viewId'] = this.viewId;
+    return data;
+  }
+}

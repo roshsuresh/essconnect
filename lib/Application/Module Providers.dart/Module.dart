@@ -13,6 +13,7 @@ class ModuleProviders extends ChangeNotifier {
   bool offlineTab = false;
   bool attendenceEntry = false;
   bool offlineFees = false;
+  bool mobileApp =false;
   Future getModuleDetails() async {
     var parsedResponse = await parseJWT();
 
@@ -57,6 +58,11 @@ class ModuleProviders extends ChangeNotifier {
     if (data.contains('OFFLINE_FEES')) {
       offlineFees = true;
       notifyListeners();
+    }
+    if (data.contains('MOB_APP')) {
+      mobileApp = await true;
+      notifyListeners();
+      print('Mobile App not provided');
     }
 
     log('Module Checked '.toString());

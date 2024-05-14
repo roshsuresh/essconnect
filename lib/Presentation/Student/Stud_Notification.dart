@@ -9,23 +9,37 @@ import 'package:provider/provider.dart';
 import '../../utils/TextWrap(moreOption).dart';
 import '../../utils/constants.dart';
 
-class Stud_Notification extends StatelessWidget {
+class Stud_Notification extends StatefulWidget {
   Stud_Notification({Key? key}) : super(key: key);
+
+  @override
+  State<Stud_Notification> createState() => _Stud_NotificationState();
+}
+
+class _Stud_NotificationState extends State<Stud_Notification> {
   var kheight = const SizedBox(
     height: 8,
   );
-  @override
-  Widget build(BuildContext context) {
+   @override
+   void initState() {
+    // TODO: implement initState
+    super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       var p = Provider.of<NotificationReceivedProviderStudent>(context,
           listen: false);
+      var c = Provider.of<StudNotificationCountProviders>(context,
+          listen: false);
       await p.clearReceivedList();
       await p.getNotificationReceived();
-      await Provider.of<StudNotificationCountProviders>(context, listen: false)
+      await c
           .seeNotification();
-      await Provider.of<StudNotificationCountProviders>(context, listen: false)
+      await c
           .getnotificationCount();
     });
+  }
+  @override
+  Widget build(BuildContext context) {
+
     var size = MediaQuery.of(context).size;
 
     return Scaffold(

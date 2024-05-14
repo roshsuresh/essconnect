@@ -14,6 +14,7 @@ import '../../Domain/Staff/NoticeboardSendModel.dart';
 
 Map? noticeboardInitialaAdmin;
 
+
 List? noticeCategoryAdmin;
 
 class NoticeBoardAdminProvider with ChangeNotifier {
@@ -365,13 +366,14 @@ class NoticeBoardAdminProvider with ChangeNotifier {
       String CategoryId,
       String AttachmentId) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
-
+    setLoadddd(true);
     var headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
     var request = http.Request('POST',
         Uri.parse('${UIGuide.baseURL}/mobileapp/staffdet/noticeboard/save'));
+    print(request);
     request.body = json.encode({
       "entryDate": entryDate,
       "DisplayStartDate": DisplayStartDate,
@@ -380,13 +382,14 @@ class NoticeBoardAdminProvider with ChangeNotifier {
       "Matter": Matter,
       "displayTo": 'all',
       "StaffRole": null,
-      "CourseId": course,
-      "DivisionId": division,
-      "SectionList": section,
+      "CourseId": course.isEmpty?null:course,
+      "DivisionId": division.isEmpty?null:division,
+      "SectionId": section.isEmpty?null:section,
       "CategoryId": CategoryId,
       "ForClassTeachersOnly": false,
       "AttachmentId": AttachmentId
     });
+    print("notice---------");
     print(request.body = json.encode({
       "entryDate": entryDate,
       "DisplayStartDate": DisplayStartDate,
@@ -395,9 +398,9 @@ class NoticeBoardAdminProvider with ChangeNotifier {
       "Matter": Matter,
       "displayTo": toggle,
       "StaffRole": null,
-      "CourseId": course,
-      "DivisionId": division,
-      "SectionList": section,
+      "CourseId": course.isEmpty?null:course,
+      "DivisionId": division.isEmpty?null:division,
+      "SectionId": section.isEmpty?null:section,
       "CategoryId": CategoryId,
       "ForClassTeachersOnly": false,
       "AttachmentId": AttachmentId
@@ -412,8 +415,9 @@ class NoticeBoardAdminProvider with ChangeNotifier {
       Map<String, dynamic> data =
           jsonDecode(await response.stream.bytesToString());
       print(data);
-      // NoticeSuccessModel notice = NoticeSuccessModel.fromJson(data);
-      // noticeBoardId = notice.noticeBoardId;
+      NoticeSuccessModel notice = NoticeSuccessModel.fromJson(data);
+      noticeBoardId = notice.noticeBoardId;
+      print("noticeid  $noticeBoardId");
 
       // await noticeBoardSendNotification(
       //     entryDate,
@@ -445,6 +449,8 @@ class NoticeBoardAdminProvider with ChangeNotifier {
               btnOkIcon: Icons.cancel,
               btnOkColor: Colors.green)
           .show();
+      setLoadddd(false);
+      notifyListeners();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         elevation: 10,
@@ -459,6 +465,8 @@ class NoticeBoardAdminProvider with ChangeNotifier {
           textAlign: TextAlign.center,
         ),
       ));
+      setLoadddd(false);
+      notifyListeners();
       print('Error Response notice send admin');
     }
   }
@@ -477,14 +485,14 @@ class NoticeBoardAdminProvider with ChangeNotifier {
       String AttachmentId,
       String noticeID) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
-
     var headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
     var request = http.Request('POST',
-        Uri.parse('${UIGuide.baseURL}/mobileapp/staffdet/notification'));
-
+        Uri.parse('${UIGuide.baseURL}/notice-board/sentNotification/$noticeBoardId'));
+    print("notifffff");
+    print(request);
     request.body = json.encode({
       "entryDate": entryDate,
       "DisplayStartDate": DisplayStartDate,
@@ -493,13 +501,72 @@ class NoticeBoardAdminProvider with ChangeNotifier {
       "Matter": Matter,
       "displayTo": toggle,
       "StaffRole": null,
-      "CourseId": course,
-      "DivisionId": division,
-      "SectionList": section,
+      "CourseId": course.isEmpty?null:course,
+      "DivisionId": division.isEmpty?null:division,
+      "SectionId": section.isEmpty?null:section,
       "CategoryId": CategoryId,
       "ForClassTeachersOnly": false,
       "AttachmentId": AttachmentId
     });
+    print(request.body);
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+
+      print('-Notification success-');
+
+      notifyListeners();
+    } else {
+
+      print("Error in notice send notification");
+    }
+  }
+
+  //approve notoifcation
+
+  Future noticeBoardApproveNotification(
+      String eventId,
+      String entryDate,
+      String DisplayStartDate,
+      String DisplayEndDate,
+      String Titlee,
+      String Matter,
+      String toggle,
+      List course,
+      List division,
+      String CategoryId,
+      String AttachmentId,
+      String noticeID) async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+    };
+    var request = http.Request('POST',
+        Uri.parse('${UIGuide.baseURL}/notice-board/sentNotification/$eventId'));
+
+    print("notifffff");
+    print(request);
+    request.body = json.encode({
+      "entryDate": entryDate,
+      "DisplayStartDate": DisplayStartDate,
+      "DisplayEndDate": DisplayEndDate,
+      "Title": Titlee,
+      "Matter": Matter,
+      "displayTo": toggle,
+      "StaffRole": null,
+      "CourseId": course.isEmpty?null:course,
+      "DivisionId": division.isEmpty?null:division,
+      "SectionId": null,
+      "CategoryId": CategoryId,
+      "ForClassTeachersOnly": false,
+      "AttachmentId": AttachmentId=="null"?"":AttachmentId,
+    });
+    print(request.body);
 
     request.headers.addAll(headers);
 
@@ -507,6 +574,8 @@ class NoticeBoardAdminProvider with ChangeNotifier {
 
     if (response.statusCode == 200) {
       print('-Notification success-');
+
+
     } else {
       print("Error in notice send notification");
     }

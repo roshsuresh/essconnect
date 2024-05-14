@@ -119,6 +119,7 @@ class NoticeBoardListAdminProvider with ChangeNotifier {
 
   //edit notice
 
+  String? id;
   String? title;
   String? matter;
   String? displayStartDate;
@@ -127,8 +128,13 @@ class NoticeBoardListAdminProvider with ChangeNotifier {
   bool? cancelled;
   bool? approved;
   String? url;
+  String? categoryId;
+  String? attachmentId;
   bool _load = false;
   bool get load => _load;
+  List<String>  course=[];
+  List<String> divisions=[];
+    String? sections;
   setLoad(bool value) {
     _load = value;
     notifyListeners();
@@ -155,6 +161,8 @@ class NoticeBoardListAdminProvider with ChangeNotifier {
       Map<String, dynamic> data =
           jsonDecode(await response.stream.bytesToString());
       NoticeEditAdmin notice = NoticeEditAdmin.fromJson(data);
+
+      id = notice.id;
       title = notice.title;
       matter = notice.matter;
       displayEndDate = notice.displayEndDate;
@@ -162,6 +170,13 @@ class NoticeBoardListAdminProvider with ChangeNotifier {
       createdDate = notice.createdDate;
       cancelled = notice.cancelled;
       approved = notice.approved;
+      course =notice.courseId!;
+      divisions =notice.divisionId!;
+      categoryId =notice.categoryId;
+      attachmentId =notice.attachmentId;
+      sections =notice.sectionId;
+      print("attachment $attachmentId");
+
 
       // Map<String, dynamic> attachment = data['attachment'];
       // AttachmentNoticeAdmin att = AttachmentNoticeAdmin.fromJson(attachment);
@@ -180,7 +195,7 @@ class NoticeBoardListAdminProvider with ChangeNotifier {
 
   Future noticeAproove(BuildContext context, String eventID) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
-
+    setLoad(true);
     var headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
@@ -210,6 +225,7 @@ class NoticeBoardListAdminProvider with ChangeNotifier {
           textAlign: TextAlign.center,
         ),
       ));
+      setLoad(false);
       notifyListeners();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -226,6 +242,7 @@ class NoticeBoardListAdminProvider with ChangeNotifier {
         ),
       ));
       print('Error in galleryApprove');
+      setLoad(false);
     }
   }
 }

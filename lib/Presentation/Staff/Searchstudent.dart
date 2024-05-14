@@ -887,7 +887,7 @@ class _StudProfileViewBySearch_StaffState
                       color: UIGuide.light_Purple,
                     ),
                     Text(
-                      "  Gaurdian Details",
+                      "  Guardian Details",
                       style: TextStyle(
                           color: UIGuide.light_Purple,
                           fontWeight: FontWeight.bold),

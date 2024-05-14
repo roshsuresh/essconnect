@@ -144,7 +144,7 @@ class _TeachingStaffState extends State<TeachingStaff> {
                                                     MaterialPageRoute(
                                                       builder: (context) =>
                                                           StaffInfo(
-                                                        index: index,
+                                                       staff: value.staffReportList[index],
                                                       ),
                                                     ),
                                                   );
@@ -515,7 +515,7 @@ class _NonTeachingStaffState extends State<NonTeachingStaff> {
                                                   MaterialPageRoute(
                                                     builder: (context) =>
                                                         StaffInfo(
-                                                      index: index,
+                                                        staff:  value.staffReportList[index],
                                                     ),
                                                   ),
                                                 );
@@ -883,7 +883,7 @@ class _BothStaffState extends State<BothStaff> {
                                                 MaterialPageRoute(
                                                   builder: (context) =>
                                                       StaffInfo(
-                                                    index: index,
+                                                    staff: value.staffReportList[index],
                                                   ),
                                                 ),
                                               );

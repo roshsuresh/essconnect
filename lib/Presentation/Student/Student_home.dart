@@ -1,17 +1,15 @@
 import 'package:essconnect/Application/Module%20Providers.dart/SchoolNameProvider.dart';
 import 'package:essconnect/Application/StudentProviders/CurriculamProviders.dart';
 import 'package:essconnect/Application/StudentProviders/InternetConnection.dart';
-import 'package:essconnect/Application/StudentProviders/LoginProvider.dart';
 import 'package:essconnect/Application/StudentProviders/NotificationCountProviders.dart';
 import 'package:essconnect/Constants.dart';
 import 'package:essconnect/Presentation/Student/CurriculamScreen.dart';
 import 'package:essconnect/Presentation/Student/Diary.dart';
 import 'package:essconnect/Presentation/Student/FeeWebScreen.dart';
-import 'package:essconnect/Presentation/Student/MapScreen.dart';
+import 'package:essconnect/Presentation/Student/MarkSheet.dart';
 import 'package:essconnect/Presentation/Student/NoInternetScreen.dart';
 import 'package:essconnect/Presentation/Student/Offline/BusFeeInitial.dart';
 import 'package:essconnect/Presentation/Student/Offline/FeeInitialScreen.dart';
-import 'package:essconnect/Presentation/Student/StudFeedbackForm.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -30,15 +28,17 @@ import '../../Application/StudentProviders/ProfileProvider.dart';
 import '../../Application/StudentProviders/SiblingsProvider.dart';
 import '../../Application/StudentProviders/TimetableProvider.dart';
 import '../Login_Activation/Login_page.dart';
+import 'Anecdotal.dart';
 import 'Attendence.dart';
-import 'Gallery.dart';
 import 'NoticeBoard.dart';
 import 'PasswordChange.dart';
 import 'PayFee.dart';
 import 'PaymentHistory.dart';
+import 'PortionView.dart';
 import 'Profile_Info.dart';
 import 'Reportcard.dart';
 import 'Stud_Notification.dart';
+import 'TimeLine.dart';
 import 'TimeTable.dart';
 
 class StudentHome extends StatefulWidget {
@@ -52,6 +52,7 @@ class _StudentHomeState extends State<StudentHome> {
   var size, height, width, kheight, kheight20;
   String? schoolid;
   String? subDomain;
+  String? userId;
 
   @override
   void initState() {
@@ -71,9 +72,11 @@ class _StudentHomeState extends State<StudentHome> {
       SharedPreferences _pref = await SharedPreferences.getInstance();
       schoolid= _pref.getString('schoolId');
       subDomain= _pref.getString('subDomain');
+      userId =_pref.getString('userId');
       print("schooolllllllllll");
       print(schoolid);
       print(subDomain);
+
       //  showNotificationPermissionDialog();
     });
   }
@@ -255,47 +258,51 @@ class _StudentHomeState extends State<StudentHome> {
                                           ),
                                         ),
                                       ),
-                                      GestureDetector(
-                                        onTap: () async {
-                                          await Navigator.push(
-                                              context,
-                                              PageTransition(
-                                                type: PageTransitionType
-                                                    .rightToLeft,
-                                                child: const NoticeBoard(),
-                                                duration: const Duration(
-                                                    milliseconds: 300),
-                                              ));
-                                        },
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 10, right: 10),
+
+                                      Consumer<StudNotificationCountProviders>(
+                                        builder: (context, count, child) =>
+                                        count.loading
+                                            ? Padding(
+                                          padding:
+                                          const EdgeInsets.only(
+                                              left: 10,
+                                              right: 10),
                                           child: Column(
                                             mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
+                                            MainAxisAlignment
+                                                .spaceEvenly,
                                             children: [
                                               Card(
                                                 elevation: 10,
                                                 color: Colors.white,
-                                                shape: RoundedRectangleBorder(
+                                                shape:
+                                                RoundedRectangleBorder(
                                                   borderRadius:
-                                                      BorderRadius.circular(
-                                                          12.0),
+                                                  BorderRadius
+                                                      .circular(
+                                                      12.0),
                                                 ),
                                                 child: Padding(
                                                   padding:
-                                                      const EdgeInsets.all(8.0),
+                                                  const EdgeInsets
+                                                      .all(8.0),
                                                   child: Container(
                                                     height: 38,
                                                     width: 38,
                                                     decoration:
-                                                        const BoxDecoration(
-                                                      image: DecorationImage(
+                                                    BoxDecoration(
+                                                      image:
+                                                      const DecorationImage(
                                                         opacity: 20,
-                                                        image: AssetImage(
+                                                        image:
+                                                        AssetImage(
                                                           'assets/Noticeboard.png',
                                                         ),
                                                       ),
+                                                      borderRadius:
+                                                      BorderRadius
+                                                          .circular(
+                                                          10),
                                                     ),
                                                   ),
                                                 ),
@@ -304,11 +311,124 @@ class _StudentHomeState extends State<StudentHome> {
                                               const Text(
                                                 'Notice Board',
                                                 style: TextStyle(
-                                                    fontWeight: FontWeight.w600,
+                                                    fontWeight:
+                                                    FontWeight
+                                                        .w600,
                                                     fontSize: 11,
-                                                    color: Colors.black),
+                                                    color:
+                                                    Colors.black),
                                               )
                                             ],
+                                          ),
+                                        )
+                                            : badges.Badge(
+                                          showBadge: count.noticeCount == 0
+                                              ? false
+                                              : true,
+                                          badgeAnimation: const badges
+                                              .BadgeAnimation.rotation(
+                                            animationDuration:
+                                            Duration(seconds: 1),
+                                            colorChangeAnimationDuration:
+                                            Duration(seconds: 1),
+                                            loopAnimation: false,
+                                            curve:
+                                            Curves.fastOutSlowIn,
+                                            colorChangeAnimationCurve:
+                                            Curves.easeInCubic,
+                                          ),
+                                          position:
+                                          badges.BadgePosition
+                                              .topEnd(end: 9),
+                                          badgeContent: Text(
+                                            count.noticeCount == null
+                                                ? ''
+                                                : count.noticeCount
+                                                .toString(),
+                                            style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 10,
+                                                fontWeight:
+                                                FontWeight.bold),
+                                          ),
+                                          child: GestureDetector(
+                                            onTap: () async {
+                                              await Navigator.push(
+                                                  context,
+                                                  PageTransition(
+                                                    type: PageTransitionType
+                                                        .rightToLeft,
+                                                    child:
+                                                    const NoticeBoard(),
+                                                    duration:
+                                                    const Duration(
+                                                        milliseconds:
+                                                        300),
+                                                  ));
+                                            },
+                                            child: Padding(
+                                              padding:
+                                              const EdgeInsets
+                                                  .only(
+                                                  left: 10,
+                                                  right: 10),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                MainAxisAlignment
+                                                    .spaceEvenly,
+                                                children: [
+                                                  Card(
+                                                    elevation: 10,
+                                                    color:
+                                                    Colors.white,
+                                                    shape:
+                                                    RoundedRectangleBorder(
+                                                      borderRadius:
+                                                      BorderRadius
+                                                          .circular(
+                                                          12.0),
+                                                    ),
+                                                    child: Padding(
+                                                      padding:
+                                                      const EdgeInsets
+                                                          .all(
+                                                          8.0),
+                                                      child:
+                                                      Container(
+                                                        height: 38,
+                                                        width: 38,
+                                                        decoration:
+                                                        BoxDecoration(
+                                                          image:
+                                                          const DecorationImage(
+                                                            opacity:
+                                                            20,
+                                                            image:
+                                                            AssetImage(
+                                                              'assets/Noticeboard.png',
+                                                            ),
+                                                          ),
+                                                          borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  kheight,
+                                                  const Text(
+                                                    'Notice Board',
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                        FontWeight
+                                                            .w600,
+                                                        fontSize: 11,
+                                                        color: Colors
+                                                            .black),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -317,12 +437,20 @@ class _StudentHomeState extends State<StudentHome> {
                                             left: 10, right: 10),
                                         child: GestureDetector(
                                           onTap: () async {
+                                            await Provider.of<
+                                                Curriculamprovider>(
+                                                context,
+                                                listen: false)
+                                                .getCuriculamtoken();
                                             await Navigator.push(
                                               context,
                                               PageTransition(
                                                 type: PageTransitionType
                                                     .rightToLeft,
-                                                child: Gallery(),
+                                                child:
+                                                PortionView(),
+                                               // StudentPortions(),
+                                                //Gallery(),
                                                 duration: const Duration(
                                                     milliseconds: 300),
                                               ),
@@ -1223,7 +1351,10 @@ class _StudentHomeState extends State<StudentHome> {
                                                 PageTransition(
                                                   type: PageTransitionType
                                                       .rightToLeft,
-                                                  child: const Diary(),
+                                                  child:
+                                                  const Diary(),
+                                                // const AnecDotal(),
+                                                 // MyTimeline(),
                                                   duration: const Duration(
                                                       milliseconds: 300),
                                                 ));
@@ -1275,6 +1406,251 @@ class _StudentHomeState extends State<StudentHome> {
                                             ),
                                           ),
                                         ),
+                                        Consumer<StudNotificationCountProviders>(
+                                          builder: (context, count, child) =>
+                                          count.loading
+                                              ? Padding(
+                                            padding:
+                                            const EdgeInsets.only(
+                                                left: 10,
+                                                right: 10),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment
+                                                  .spaceEvenly,
+                                              children: [
+                                                Card(
+                                                  elevation: 10,
+                                                  color: Colors.white,
+                                                  shape:
+                                                  RoundedRectangleBorder(
+                                                    borderRadius:
+                                                    BorderRadius
+                                                        .circular(
+                                                        12.0),
+                                                  ),
+                                                  child: Padding(
+                                                    padding:
+                                                    const EdgeInsets
+                                                        .all(8.0),
+                                                    child: Container(
+                                                      height: 38,
+                                                      width: 38,
+                                                      decoration:
+                                                      BoxDecoration(
+                                                        image:
+                                                        const DecorationImage(
+                                                          opacity: 20,
+                                                          image:
+                                                          AssetImage(
+                                                            'assets/anecdotal.png',
+                                                          ),
+                                                        ),
+                                                        borderRadius:
+                                                        BorderRadius
+                                                            .circular(
+                                                            10),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                kheight,
+                                                const Text(
+                                                  'Anecdotal',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                      FontWeight
+                                                          .w600,
+                                                      fontSize: 11,
+                                                      color:
+                                                      Colors.black),
+                                                )
+                                              ],
+                                            ),
+                                          )
+                                              : badges.Badge(
+                                            showBadge: count.anecdotalCount == 0
+                                                ? false
+                                                : true,
+                                            badgeAnimation: const badges
+                                                .BadgeAnimation.rotation(
+                                              animationDuration:
+                                              Duration(seconds: 1),
+                                              colorChangeAnimationDuration:
+                                              Duration(seconds: 1),
+                                              loopAnimation: false,
+                                              curve:
+                                              Curves.fastOutSlowIn,
+                                              colorChangeAnimationCurve:
+                                              Curves.easeInCubic,
+                                            ),
+                                            position:
+                                            badges.BadgePosition
+                                                .topEnd(end: 9),
+                                            badgeContent: Text(
+                                              count.anecdotalCount == null
+                                                  ? ''
+                                                  : count.anecdotalCount
+                                                  .toString(),
+                                              style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 10,
+                                                  fontWeight:
+                                                  FontWeight.bold),
+                                            ),
+                                            child: GestureDetector(
+                                              onTap: () async {
+                                                module.curiculam == true
+                                                        ?
+                                                await Navigator.push(
+                                                    context,
+                                                    PageTransition(
+                                                      type: PageTransitionType
+                                                          .rightToLeft,
+                                                      child:
+                                                      const AnecDotal(),
+                                                      duration:
+                                                      const Duration(
+                                                          milliseconds:
+                                                          300),
+                                                    )):
+                                                _noAcess();
+
+                                              },
+                                              child: Padding(
+                                                padding:
+                                                const EdgeInsets
+                                                    .only(
+                                                    left: 10,
+                                                    right: 10),
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceEvenly,
+                                                  children: [
+                                                    Card(
+                                                      elevation: 10,
+                                                      color:
+                                                      Colors.white,
+                                                      shape:
+                                                      RoundedRectangleBorder(
+                                                        borderRadius:
+                                                        BorderRadius
+                                                            .circular(
+                                                            12.0),
+                                                      ),
+                                                      child: Padding(
+                                                        padding:
+                                                        const EdgeInsets
+                                                            .all(
+                                                            8.0),
+                                                        child:
+                                                        Container(
+                                                          height: 38,
+                                                          width: 38,
+                                                          decoration:
+                                                          BoxDecoration(
+                                                            image:
+                                                            const DecorationImage(
+                                                              opacity:
+                                                              20,
+                                                              image:
+                                                              AssetImage(
+                                                                'assets/anecdotal.png',
+                                                              ),
+                                                            ),
+                                                            borderRadius:
+                                                            BorderRadius.circular(
+                                                                10),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    kheight,
+                                                    const Text(
+                                                      'Anecdotal',
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                          FontWeight
+                                                              .w600,
+                                                          fontSize: 11,
+                                                          color: Colors
+                                                              .black),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        // GestureDetector(
+                                        //   onTap: () async {
+                                        //
+                                        //     module.curiculam == true
+                                        //         ?
+                                        //         await Navigator.push(
+                                        //             context,
+                                        //             PageTransition(
+                                        //               type:
+                                        //               PageTransitionType
+                                        //                   .rightToLeft,
+                                        //               child:
+                                        //               const AnecDotal(),
+                                        //               duration:
+                                        //               const Duration(
+                                        //                   milliseconds:
+                                        //                   300),
+                                        //             ))
+                                        //
+                                        //         : _noAcess();
+                                        //   },
+                                        //   child: Padding(
+                                        //     padding: const EdgeInsets.only(
+                                        //         left: 10, right: 10),
+                                        //     child: Column(
+                                        //       mainAxisAlignment:
+                                        //       MainAxisAlignment.spaceEvenly,
+                                        //       children: [
+                                        //         Card(
+                                        //           elevation: 10,
+                                        //           color: Colors.white,
+                                        //           shape: RoundedRectangleBorder(
+                                        //             borderRadius:
+                                        //             BorderRadius.circular(
+                                        //                 12.0),
+                                        //           ),
+                                        //           child: Padding(
+                                        //             padding:
+                                        //             const EdgeInsets.all(
+                                        //                 8.0),
+                                        //             child: Container(
+                                        //               height: 38,
+                                        //               width: 38,
+                                        //               decoration:
+                                        //               const BoxDecoration(
+                                        //                 image: DecorationImage(
+                                        //                   opacity: 20,
+                                        //                   image: AssetImage(
+                                        //                     'assets/Loginwebb.png',
+                                        //                   ),
+                                        //                 ),
+                                        //               ),
+                                        //             ),
+                                        //           ),
+                                        //         ),
+                                        //         kheight,
+                                        //         const Text(
+                                        //           'Anecdotal',
+                                        //           style: TextStyle(
+                                        //               fontWeight:
+                                        //               FontWeight.w600,
+                                        //               fontSize: 11,
+                                        //               color: Colors.black),
+                                        //         )
+                                        //       ],
+                                        //     ),
+                                        //   ),
+                                        // ),
                                       ],
                                     ),
                                   ),
@@ -1367,6 +1743,74 @@ class _StudentHomeState extends State<StudentHome> {
                                             ),
                                           ),
                                         ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 10, right: 10),
+                                          child: GestureDetector(
+                                            onTap: () async {
+                                              module.offlineTab == true
+                                                  ? await Navigator.push(
+                                                  context,
+                                                  PageTransition(
+                                                    type: PageTransitionType
+                                                        .rightToLeft,
+                                                    child:
+                                                    //const MapPage(),
+                                                    const  MarkSheetView(),
+                                                    duration:
+                                                    const Duration(
+                                                        milliseconds:
+                                                        300),
+                                                  ))
+                                                  : _noAcess();
+                                            },
+                                            child: Column(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                Card(
+                                                  elevation: 10,
+                                                  color: Colors.white,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                    BorderRadius.circular(
+                                                        12.0),
+                                                  ),
+                                                  child: Padding(
+                                                    padding:
+                                                    const EdgeInsets.all(
+                                                        8.0),
+                                                    child: Container(
+                                                      height: 38,
+                                                      width: 38,
+                                                      decoration: BoxDecoration(
+                                                        image:
+                                                        const DecorationImage(
+                                                          opacity: 20,
+                                                          image: AssetImage(
+                                                            'assets/Marksheet.png',
+                                                          ),
+                                                        ),
+                                                        borderRadius:
+                                                        BorderRadius
+                                                            .circular(10),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                kheight,
+                                                const Text(
+                                                  'Mark Sheet',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                      FontWeight.w600,
+                                                      fontSize: 11,
+                                                      color: Colors.black),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        ),
                                         Consumer<Curriculamprovider>(
                                           builder: (context, curri, child) =>
                                               GestureDetector(
@@ -1449,246 +1893,193 @@ class _StudentHomeState extends State<StudentHome> {
                                             ),
                                           ),
                                         ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 10, right: 10),
-                                          child: GestureDetector(
-                                            onTap: () async {
-                                              module.offlineTab == true
-                                                  ? await Navigator.push(
-                                                      context,
-                                                      PageTransition(
-                                                        type: PageTransitionType
-                                                            .rightToLeft,
-                                                        child: const MapPage(),
-                                                        duration:
-                                                            const Duration(
-                                                                milliseconds:
-                                                                    300),
-                                                      ))
-                                                  : _noAcess();
-                                            },
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                Card(
-                                                  elevation: 10,
-                                                  color: Colors.white,
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            12.0),
-                                                  ),
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: Container(
-                                                      height: 38,
-                                                      width: 38,
-                                                      decoration: BoxDecoration(
-                                                        image:
-                                                            const DecorationImage(
-                                                          opacity: 20,
-                                                          image: AssetImage(
-                                                            'assets/Reportcard.png',
-                                                          ),
-                                                        ),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                kheight,
-                                                const Text(
-                                                  'Feedback Form',
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 11,
-                                                      color: Colors.black),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        ),
+
                                       ],
                                     ),
                                   ),
                                 ),
                               ),
                             ),
-                            kheight20,
-                            Row(children: <Widget>[
-                              const Text(
-                                "──   ",
-                                style: TextStyle(color: Colors.black26),
-                              ),
-                              const Text(
-                                "Change Password | Sign Out",
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                    color: UIGuide.light_Purple,
-                                    fontWeight: FontWeight.w900),
-                              ),
-                              Expanded(
-                                child: Container(
-                                    margin: const EdgeInsets.only(
-                                        left: 16.0, right: 10.0),
-                                    child: const Divider(
-                                      color: Colors.black45,
-                                      height: 36,
-                                    )),
-                              ),
-                            ]),
-                            kheight,
+                            kheight10,
+                            Container(
+                                margin: const EdgeInsets.only(
+                                    left: 10.0, right: 10.0),
+                                child: const Divider(
+                                  color: Colors.black45,
+                                  height: 36,
+                                )),
+                            kheight10,
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                MaterialButton(
-                                  elevation: 10,
-                                  minWidth: 50,
-                                  color: UIGuide.THEME_LIGHT,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(30.0)),
-                                  onPressed: () async {
-                                    await Navigator.push(
-                                      context,
-                                      PageTransition(
-                                        type: PageTransitionType.rightToLeft,
-                                        child: PasswordChange(),
-                                        duration:
-                                            const Duration(milliseconds: 300),
+                                Column(
+                                  children: [
+                                    MaterialButton(
+                                      elevation: 10,
+                                      minWidth: 50,
+                                      color: UIGuide.THEME_LIGHT,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(30.0)),
+                                      onPressed: () async {
+                                        await Navigator.push(
+                                          context,
+                                          PageTransition(
+                                            type: PageTransitionType.rightToLeft,
+                                            child: PasswordChange(),
+                                            duration:
+                                                const Duration(milliseconds: 300),
+                                          ),
+                                        );
+                                      },
+                                      child: const Icon(
+                                        Icons.key_sharp,
+                                        color: UIGuide.light_Purple,
                                       ),
-                                    );
-                                  },
-                                  child: const Icon(
-                                    Icons.key_sharp,
-                                    color: UIGuide.light_Purple,
-                                  ),
+                                    ),
+                                    kheight5,
+                                    const Text(
+                                      'Change Password',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 11,
+                                          color: Colors.black87),
+                                    )
+                                  ],
                                 ),
-                                MaterialButton(
-                                    elevation: 10,
-                                    minWidth: 50,
-                                    color: UIGuide.THEME_LIGHT,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(30.0)),
-                                    onPressed: () async {
-                                      showCupertinoDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return Container(
-                                            color:
-                                                Colors.black.withOpacity(0.5),
-                                            child: CupertinoAlertDialog(
-                                              title: const Text("Logout"),
-                                              content: const Text(
-                                                  "Are you sure you want to log out?"),
-                                              actions: <Widget>[
-                                                CupertinoDialogAction(
-                                                  child: const Text(
-                                                    "Cancel",
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color: UIGuide
-                                                            .light_Purple),
-                                                  ),
-                                                  onPressed: () {
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                ),
-                                                CupertinoDialogAction(
-                                                  child: const Text("Logout",
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          color: UIGuide
-                                                              .light_Purple)),
-                                                  onPressed: () async {
-                                                    SharedPreferences prefs =
-                                                        await SharedPreferences
-                                                            .getInstance();
-                                                    print(
-                                                        "accesstoken  $prefs");
-                                                    await prefs
-                                                        .remove("accesstoken");
-                                                    print("username  $prefs");
-                                                    await prefs
-                                                        .remove("username");
-                                                    print("password  $prefs");
-                                                    await prefs
-                                                        .remove("password");
+                                Column(
+                                  children: [
+                                    MaterialButton(
+                                        elevation: 10,
+                                        minWidth: 50,
+                                        color: UIGuide.THEME_LIGHT,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(30.0)),
+                                        onPressed: () async {
+                                          showCupertinoDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return Container(
+                                                color:
+                                                    Colors.black.withOpacity(0.5),
+                                                child: CupertinoAlertDialog(
+                                                  title: const Text("Logout"),
+                                                  content: const Text(
+                                                      "Are you sure you want to log out?"),
+                                                  actions: <Widget>[
+                                                    CupertinoDialogAction(
+                                                      child: const Text(
+                                                        "Cancel",
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            color: UIGuide
+                                                                .light_Purple),
+                                                      ),
+                                                      onPressed: () {
+                                                        Navigator.of(context).pop();
+                                                      },
+                                                    ),
+                                                    CupertinoDialogAction(
+                                                      child: const Text("Logout",
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight.w500,
+                                                              color: UIGuide
+                                                                  .light_Purple)),
+                                                      onPressed: () async {
+                                                        SharedPreferences prefs =
+                                                            await SharedPreferences
+                                                                .getInstance();
+                                                        print(
+                                                            "accesstoken  $prefs");
+                                                        await prefs
+                                                            .remove("accesstoken");
+                                                        print("username  $prefs");
+                                                        await prefs
+                                                            .remove("username");
+                                                        print("password  $prefs");
+                                                        await prefs
+                                                            .remove("password");
 
-                                                    Navigator.of(context)
-                                                        .pushAndRemoveUntil(
-                                                            MaterialPageRoute(
-                                                                builder:
-                                                                    (context) =>
-                                                                        LoginPage()),
-                                                            (Route<dynamic>
-                                                                    route) =>
-                                                                false);
-                                                  },
+                                                        Navigator.of(context)
+                                                            .pushAndRemoveUntil(
+                                                                MaterialPageRoute(
+                                                                    builder:
+                                                                        (context) =>
+                                                                            LoginPage()),
+                                                                (Route<dynamic>
+                                                                        route) =>
+                                                                    false);
+                                                      },
+                                                    ),
+                                                  ],
                                                 ),
-                                              ],
-                                            ),
+                                              );
+                                            },
                                           );
+
+                                          // AwesomeDialog(
+                                          //         context: context,
+                                          //         dialogType: DialogType.noHeader,
+                                          //         // borderSide: const BorderSide(
+                                          //         //     color: UIGuide.light_Purple,
+                                          //         //     width: 2),
+                                          //         buttonsBorderRadius:
+                                          //             const BorderRadius.all(
+                                          //                 Radius.circular(2)),
+                                          //         animType: AnimType.bottomSlide,
+                                          //         title: 'SignOut?',
+                                          //         desc:
+                                          //             'Are you sure want to sign out?',
+                                          //         showCloseIcon: false,
+                                          //         btnCancelColor: UIGuide.button2,
+                                          //         btnOkColor: UIGuide.button1,
+                                          //         btnCancelOnPress: () {
+                                          //           return;
+                                          //         },
+                                          //         btnOkOnPress: () async {
+                                          //           SharedPreferences prefs =
+                                          //               await SharedPreferences
+                                          //                   .getInstance();
+                                          //           print("accesstoken  $prefs");
+                                          //           await prefs.remove("accesstoken");
+                                          //           print("username  $prefs");
+                                          //           await prefs.remove("username");
+                                          //           print("password  $prefs");
+                                          //           await prefs.remove("password");
+
+                                          //           Navigator.of(context)
+                                          //               .pushAndRemoveUntil(
+                                          //                   MaterialPageRoute(
+                                          //                       builder: (context) =>
+                                          //                           LoginPage()),
+                                          //                   (Route<dynamic> route) =>
+                                          //                       false);
+                                          //         },
+                                          //         buttonsTextStyle: const TextStyle(
+                                          //             color: Colors.white))
+                                          //     .show();
                                         },
-                                      );
+                                        child: const Icon(
+                                          Icons.logout_outlined,
+                                          color: UIGuide.light_Purple,
+                                        )),
 
-                                      // AwesomeDialog(
-                                      //         context: context,
-                                      //         dialogType: DialogType.noHeader,
-                                      //         // borderSide: const BorderSide(
-                                      //         //     color: UIGuide.light_Purple,
-                                      //         //     width: 2),
-                                      //         buttonsBorderRadius:
-                                      //             const BorderRadius.all(
-                                      //                 Radius.circular(2)),
-                                      //         animType: AnimType.bottomSlide,
-                                      //         title: 'SignOut?',
-                                      //         desc:
-                                      //             'Are you sure want to sign out?',
-                                      //         showCloseIcon: false,
-                                      //         btnCancelColor: UIGuide.button2,
-                                      //         btnOkColor: UIGuide.button1,
-                                      //         btnCancelOnPress: () {
-                                      //           return;
-                                      //         },
-                                      //         btnOkOnPress: () async {
-                                      //           SharedPreferences prefs =
-                                      //               await SharedPreferences
-                                      //                   .getInstance();
-                                      //           print("accesstoken  $prefs");
-                                      //           await prefs.remove("accesstoken");
-                                      //           print("username  $prefs");
-                                      //           await prefs.remove("username");
-                                      //           print("password  $prefs");
-                                      //           await prefs.remove("password");
-
-                                      //           Navigator.of(context)
-                                      //               .pushAndRemoveUntil(
-                                      //                   MaterialPageRoute(
-                                      //                       builder: (context) =>
-                                      //                           LoginPage()),
-                                      //                   (Route<dynamic> route) =>
-                                      //                       false);
-                                      //         },
-                                      //         buttonsTextStyle: const TextStyle(
-                                      //             color: Colors.white))
-                                      //     .show();
-                                    },
-                                    child: const Icon(
-                                      Icons.logout_outlined,
-                                      color: UIGuide.light_Purple,
-                                    )),
+                                    kheight5,
+                                    const Text(
+                                      'SignOut',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 11,
+                                          color: Colors.black87),
+                                    )
+                                  ],
+                                ),
                               ],
                             ),
                             kheight20,
@@ -1724,8 +2115,7 @@ class _StudentHomeState extends State<StudentHome> {
                             ),
                             kheight20,
                             kheight20,
-                            kheight20,
-                            kheight20,
+                            kheight10
                           ],
                         ),
                       ),
@@ -1935,7 +2325,9 @@ class ProfileHome extends StatelessWidget {
                               var currentname = value.studName;
                               await value.siblingsAPI();
                               await _displayNameOfSiblings(contex, currentname);
-                            },
+
+
+                              },
                             icon: const Icon(
                               Icons.switch_account_outlined,
                               size: 30,
@@ -1998,9 +2390,15 @@ class ProfileHome extends StatelessWidget {
                               var idd = siblinggResponse![index]['id'] == null
                                   ? '--'
                                   : siblinggResponse![index]['id'].toString();
+
+                              print("sibbbbsssssssssss");
                               await Provider.of<SibingsProvider>(context,
                                       listen: false)
                                   .getSibling(context, idd);
+
+                              print("sibbbbsssssssssss");
+
+
                             },
                             title: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -2059,10 +2457,21 @@ class ProfileHome extends StatelessWidget {
         return Center(
           child: Dialog(
             shape: const CircleBorder(),
-            child: CircleAvatar(
-              radius: 100,
-              backgroundImage: NetworkImage(studPhoto),
-            ),
+            child:Container(
+                width: 200.0,
+                height: 200.0,
+                decoration:  BoxDecoration(
+                    shape: BoxShape.circle,
+                    image:  DecorationImage(
+                        fit: BoxFit.contain,
+                        image: NetworkImage(studPhoto)
+                    )
+                )),
+
+            // CircleAvatar(
+            //   radius: 100,
+            //   backgroundImage: NetworkImage(studPhoto),
+            // ),
           ),
         );
       },

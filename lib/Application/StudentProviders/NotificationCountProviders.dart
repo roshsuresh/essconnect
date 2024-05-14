@@ -27,7 +27,7 @@ class StudNotificationCountProviders with ChangeNotifier {
         'POST',
         Uri.parse(
             '${UIGuide.baseURL}/mobileapp/token/updateWebStatus?studentId=$studId'));
-    request.body = json.encode({"IsSeen": true, "Type": "Parent"});
+    request.body = json.encode({"IsSeen": true, "Type": "Student"});
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
@@ -45,6 +45,9 @@ class StudNotificationCountProviders with ChangeNotifier {
   }
 
   int? count;
+  int? noticeCount;
+  int? anecdotalCount;
+  int? homeworkcount;
   Future getnotificationCount() async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoading(true);
@@ -56,7 +59,7 @@ class StudNotificationCountProviders with ChangeNotifier {
     final studID = await parsedResponse['ChildId'];
     var response = await http.get(
         Uri.parse(
-            "${UIGuide.baseURL}/mobileapp/parent/initial-Web-Notification-Count?Type=Parent&StudentId=$studID"),
+            "${UIGuide.baseURL}/mobileapp/parent/initial-Web-Notification-Count?Type=Student&StudentId=$studID"),
         headers: headers);
 
     try {
@@ -66,6 +69,9 @@ class StudNotificationCountProviders with ChangeNotifier {
         log(data.toString());
         CountmodelNotification not = CountmodelNotification.fromJson(data);
         count = not.totalCount;
+        noticeCount = not.noticeboardCount;
+        anecdotalCount= not.anecdotalCount;
+        homeworkcount=not.homeworkcount;
         print("Notification Count = $count");
 
         setLoading(false);

@@ -1,23 +1,23 @@
-import 'package:essconnect/Presentation/Staff/Anecdotal/StudAnecdotal/AnecdotalEntryScreen.dart';
-import 'package:essconnect/Presentation/Staff/Anecdotal/StudAnecdotal/AnecdotalListscreen.dart';
+import 'package:essconnect/Presentation/Admin/FeeCollectionReport/Offline/OfflineBusFeesCollection.dart';
+import 'package:essconnect/Presentation/Admin/FeeCollectionReport/Offline/OfflineFeesCollection.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:flutter/material.dart';
 
-import 'AnecdotalReport.dart';
 
-class AnecdotalInitialScreen extends StatelessWidget {
-  const AnecdotalInitialScreen({super.key});
+
+class OfflineFeeInitial extends StatelessWidget {
+  const OfflineFeeInitial({super.key});
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 2,
       child: Scaffold(
         appBar: AppBar(
           title: Row(
             children: [
               const Spacer(),
-              const Text('Anecdotal'),
+              const Text('Offline Fees Collection'),
               const Spacer(),
               IconButton(
                   onPressed: () {
@@ -25,7 +25,7 @@ class AnecdotalInitialScreen extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                const AnecdotalInitialScreen()));
+                                const OfflineFeeInitial()));
                   },
                   icon: const Icon(Icons.refresh))
             ],
@@ -44,12 +44,10 @@ class AnecdotalInitialScreen extends StatelessWidget {
             indicatorWeight: 5,
             tabs: [
               Tab(
-                text: "Entry",
+                text: "School Fees",
               ),
-              Tab(text: "List"),
-              Tab(
-                text: "Report",
-              ),
+              Tab(text: "Bus Fees"),
+
             ],
           ),
           backgroundColor: UIGuide.light_Purple,
@@ -57,9 +55,9 @@ class AnecdotalInitialScreen extends StatelessWidget {
         body: TabBarView(
           physics: NeverScrollableScrollPhysics(),
           children: [
-            AnecdotalentryScreen(),
-            AnectdotalListScreen(),
-            AnecdotalReport(),
+            OfflineFeeCollection(),
+            OfflineBusFeeCollection(),
+
           ],
         ),
       ),

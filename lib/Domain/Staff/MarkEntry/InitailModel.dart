@@ -83,13 +83,15 @@ class MarkEntryDivisionInitailModel {
 }
 
 class MarkEntryDivisionList {
+  String? typeCode;
   String? value;
   String? text;
   int? order;
 
-  MarkEntryDivisionList({this.value, this.text, this.order});
+  MarkEntryDivisionList({this.typeCode,this.value, this.text, this.order});
 
   MarkEntryDivisionList.fromJson(Map<String, dynamic> json) {
+    typeCode =json['typeCode'];
     value = json['value'];
     text = json['text'];
     order = json['order'];
@@ -97,6 +99,7 @@ class MarkEntryDivisionList {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    data['typeCode'] = typeCode;
     data['value'] = value;
     data['text'] = text;
     data['order'] = order;
@@ -105,6 +108,7 @@ class MarkEntryDivisionList {
 }
 
 class MarkEntryPartList {
+  String? typeCode;
   String? value;
   String? text;
   String? selected;
@@ -112,9 +116,10 @@ class MarkEntryPartList {
   int? order;
 
   MarkEntryPartList(
-      {this.value, this.text, this.selected, this.active, this.order});
+      {this.typeCode,this.value, this.text, this.selected, this.active, this.order});
 
   MarkEntryPartList.fromJson(Map<String, dynamic> json) {
+    typeCode = json['typeCode'];
     value = json['value'];
     text = json['text'];
     selected = json['selected'];
@@ -124,6 +129,7 @@ class MarkEntryPartList {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    data['typeCode'] = typeCode;
     data['value'] = value;
     data['text'] = text;
     data['selected'] = selected;

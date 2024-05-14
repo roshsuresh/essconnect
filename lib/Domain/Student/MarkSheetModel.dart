@@ -28,8 +28,8 @@ class MarksheetList {
   String? uploadedDate;
   String? examName;
   int? examRank;
-  int? totalMark;
-  int? totalPercentage;
+  double? totalMark;
+  double? totalPercentage;
   String? totalGrade;
 
   MarksheetList(
@@ -66,12 +66,13 @@ class MarksheetList {
     return data;
   }
 }
+
 //view
 
 class MarkSheetValues {
   List<MarksheetList>? marksheetList;
   bool? showMaxmarekWithHeading;
-  int? maxScore;
+  double? maxScore;
 
   MarkSheetValues(
       {this.marksheetList, this.showMaxmarekWithHeading, this.maxScore});
@@ -102,13 +103,14 @@ class MarkSheetValues {
 class MarksheetListView {
   String? marksheetId;
   String? subject;
-  int? maxScore;
-  int? score;
-  int? convertedScore;
-  int? percentage;
+  double? maxScore;
+  double? score;
+  double? convertedScore;
+  double? percentage;
   String? grade;
   int? subjectRank;
   String? attendance;
+  double? convertedMaxScore;
 
   MarksheetListView(
       {this.marksheetId,
@@ -119,7 +121,8 @@ class MarksheetListView {
         this.percentage,
         this.grade,
         this.subjectRank,
-        this.attendance});
+        this.attendance,
+      this.convertedMaxScore});
 
   MarksheetListView.fromJson(Map<String, dynamic> json) {
     marksheetId = json['marksheetId'];
@@ -131,6 +134,7 @@ class MarksheetListView {
     grade = json['grade'];
     subjectRank = json['subjectRank'];
     attendance = json['attendance'];
+    convertedMaxScore = json['convertedMaxScore'];
   }
 
   Map<String, dynamic> toJson() {
@@ -144,6 +148,7 @@ class MarksheetListView {
     data['grade'] = this.grade;
     data['subjectRank'] = this.subjectRank;
     data['attendance'] = this.attendance;
+    data['convertedMaxScore'] = this.convertedMaxScore;
     return data;
   }
 }

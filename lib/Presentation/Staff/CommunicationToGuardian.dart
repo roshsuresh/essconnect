@@ -1,5 +1,3 @@
-
-
 import 'package:essconnect/Constants.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:essconnect/utils/spinkit.dart';
@@ -10,134 +8,128 @@ import 'package:lottie/lottie.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:provider/provider.dart';
 import '../../../Application/Staff_Providers/Notification_ToGuardianProvider.dart';
-
 import '../../Application/Staff_Providers/TextSMS_ToGuardian.dart';
 import '../../Domain/Staff/ToGuardian_TextSMS.dart';
+import '../Admin/Communication/FormatCreation.dart';
 
-class StaffToGuardian extends StatefulWidget {
-  StaffToGuardian({Key? key}) : super(key: key);
-
-  @override
-  State<StaffToGuardian> createState() => _StaffToGuardianState();
-}
-
-class _StaffToGuardianState extends State<StaffToGuardian> {
-  String? valuee;
-
-  bool checked = true;
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      var p = await Provider.of<TextSMS_ToGuardian_Providers>(context, listen: false);
-
-
-
-     p.sectionList.clear();
-      p.getInitialCommunication();
-
-
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          children: [
-            const Spacer(),
-            const Text(
-              'Communication to Guardian',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 19),
-            ),
-            const Spacer(),
-            Consumer<TextSMS_ToGuardian_Providers>(
-              builder: (context, value, child) => value.loading
-                  ? const SizedBox(
-                height: 0,
-                width: 0,
-              )
-                  : IconButton(
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => StaffToGuardian()));
-                  },
-                  icon: const Icon(Icons.refresh_outlined)),
-            ),
-            kWidth
-          ],
-        ),
-        titleSpacing: 00.0,
-        centerTitle: true,
-        toolbarHeight: 60,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-              bottomRight: Radius.circular(25),
-              bottomLeft: Radius.circular(25)),
-        ),
-        backgroundColor: UIGuide.light_Purple,
-      ),
-      body: Consumer<TextSMS_ToGuardian_Providers>(
-        builder: (context, value, child) {
-          print("valu check");
-          print(value.showCommunication);
-          print("demoooooooooooooo");
-
-
-
-
-          if (value.isClassTeacher != false || value.showCommunication == true && value.sectionList.isNotEmpty)  {
-            return Notification_StaffToGuardain(
-                size: size, valuee: valuee, checked: checked);
-          }
-
-
-          else{
-            return const Center(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.sentiment_dissatisfied_outlined,
-                    size: 60,
-                    color: Colors.grey,
-                  ),
-                  kheight10,
-                  Text(
-                    "Sorry you don't have access",
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.grey),
-                  ),
-                ],
-              ),
-            );
-          }
-        },
-      ),
-    );
-  }
-}
+// class StaffToGuardian extends StatefulWidget {
+//   StaffToGuardian({Key? key}) : super(key: key);
+//
+//   @override
+//   State<StaffToGuardian> createState() => _StaffToGuardianState();
+// }
+//
+// class _StaffToGuardianState extends State<StaffToGuardian> {
+//   String? valuee;
+//
+//   bool checked = true;
+//   @override
+//   void initState() {
+//     super.initState();
+//     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+//       var p = await Provider.of<TextSMS_ToGuardian_Providers>(context, listen: false);
+//
+//       p.getInitialCommunication();
+//       p.sectionList.clear();
+//       p.dropDown.clear();
+//
+//
+//
+//     });
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     final size = MediaQuery.of(context).size;
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Row(
+//           children: [
+//             const Spacer(),
+//             const Text(
+//               'Communication to Guardian',
+//               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 19),
+//             ),
+//             const Spacer(),
+//             Consumer<TextSMS_ToGuardian_Providers>(
+//               builder: (context, value, child) => value.loading
+//                   ? const SizedBox(
+//                 height: 0,
+//                 width: 0,
+//               )
+//                   : IconButton(
+//                   onPressed: () {
+//                     Navigator.pushReplacement(
+//                         context,
+//                         MaterialPageRoute(
+//                             builder: (context) => StaffToGuardian()));
+//                   },
+//                   icon: const Icon(Icons.refresh_outlined)),
+//             ),
+//             kWidth
+//           ],
+//         ),
+//         titleSpacing: 00.0,
+//         centerTitle: true,
+//         toolbarHeight: 60,
+//         shape: const RoundedRectangleBorder(
+//           borderRadius: BorderRadius.only(
+//               bottomRight: Radius.circular(25),
+//               bottomLeft: Radius.circular(25)),
+//         ),
+//         backgroundColor: UIGuide.light_Purple,
+//       ),
+//       body: Consumer<TextSMS_ToGuardian_Providers>(
+//         builder: (context, value, child) {
+//           print("valu check");
+//           print(value.showCommunication);
+//           print("demoooooooooooooo");
+//
+//
+//           if (value.isClassTeacher != false || value.showCommunication == true && value.sectionList.isNotEmpty)  {
+//             return Notification_StaffToGuardain(
+//                 size: size, valuee: valuee, checked: checked);
+//           }
+//
+//
+//           else{
+//             return const Center(
+//               child: Column(
+//                 crossAxisAlignment: CrossAxisAlignment.center,
+//                 mainAxisAlignment: MainAxisAlignment.center,
+//                 children: [
+//                   Icon(
+//                     Icons.sentiment_dissatisfied_outlined,
+//                     size: 60,
+//                     color: Colors.grey,
+//                   ),
+//                   kheight10,
+//                   Text(
+//                     "Sorry you don't have access",
+//                     style: TextStyle(
+//                         fontSize: 20,
+//                         fontWeight: FontWeight.w600,
+//                         color: Colors.grey),
+//                   ),
+//                 ],
+//               ),
+//             );
+//           }
+//         },
+//       ),
+//     );
+//   }
+// }
 
 //Notification To guard
 
 class Notification_StaffToGuardain extends StatefulWidget {
   Notification_StaffToGuardain({
     Key? key,
-    required this.size,
-    required this.valuee,
-    required this.checked,
+
   }) : super(key: key);
 
-  final Size size;
-  final String? valuee;
-  final bool checked;
+
 
   @override
   State<Notification_StaffToGuardain> createState() =>
@@ -160,6 +152,10 @@ class _Notification_StaffToGuardainState
   int length = 0;
   String division = '';
 
+  String courseSection = '';
+  String sectionData = '';
+  String divisionSection = '';
+
   String? types ;
 
   divClearr() {
@@ -174,21 +170,27 @@ class _Notification_StaffToGuardainState
     // p.stdReportSectionStaff();
 
      // p.sectionList.clear();
-     //  p.getInitialCommunication();
 
      p.courseDrop.clear();
       p.divisionDrop.clear();
-      p.dropDown.clear();
       types='';
-      // p.sectionList.clear();
+      p.sectionList.clear();
     p.courseList.clear();
     p.divisionlist.clear();
+    p.divisionSectionlist.clear();
       p.isselectAll=false;
       p.courseCounter(0);
       p.notificationView.clear();
       p.divisionCounter(0);
       p.sectionCounter(0);
-      // p.getInitialCommunication();
+      section='';
+      division = '';
+      course = '';
+     courseSection = '';
+     sectionData = '';
+     divisionSection = '';
+  p.getInitialCommunication();
+
 
       await Provider.of<TextSMS_ToGuardian_Providers>(context, listen: false)
           .clearStudentList();
@@ -199,9 +201,52 @@ class _Notification_StaffToGuardainState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Consumer<TextSMS_ToGuardian_Providers>(
-        builder: (context, val, _) => Column(
+            appBar: AppBar(
+        title: Row(
           children: [
+            const Spacer(),
+            const Text(
+              'Communication to Guardian',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 19),
+            ),
+            const Spacer(),
+            Consumer<TextSMS_ToGuardian_Providers>(
+              builder: (context, value, child) => value.loading
+                  ? const SizedBox(
+                height: 0,
+                width: 0,
+              )
+                  : IconButton(
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Notification_StaffToGuardain()));
+                  },
+                  icon: const Icon(Icons.refresh_outlined)),
+            ),
+            kWidth
+          ],
+        ),
+        titleSpacing: 00.0,
+        centerTitle: true,
+        toolbarHeight: 60,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              bottomRight: Radius.circular(25),
+              bottomLeft: Radius.circular(25)),
+        ),
+        backgroundColor: UIGuide.light_Purple,
+      ),
+
+      body: Consumer<TextSMS_ToGuardian_Providers>(
+        builder: (context, val, _) =>
+
+
+
+          ((val.showCommunication == true ||val.isClassTeacher != false ) && val.sectionList.isNotEmpty)?
+            Column(
+                      children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -269,11 +314,21 @@ class _Notification_StaffToGuardainState
                           ),
                           chipDisplay: MultiSelectChipDisplay.none(),
                           onConfirm: (results) async {
+                           val.setLoading(true);
+                           value.divisionlist.clear();
+                           division='';
+                           course='';
+
+
+                           val.courseDrop.clear();
+                           val.divisionDrop.clear();
                             subjectData = [];
-                            diviData.clear();
                             courseData.clear();
+                            diviData.clear();
+
                             value.courseLen = 0;
                             value.divisionLen = 0;
+
                             await Provider.of<TextSMS_ToGuardian_Providers>(
                                 context,
                                 listen: false)
@@ -282,12 +337,17 @@ class _Notification_StaffToGuardainState
                                 context,
                                 listen: false)
                                 .clearDivision();
+                           await Provider.of<TextSMS_ToGuardian_Providers>(
+                               context,
+                               listen: false)
+                               .clearSectionDivision();
 
                             await Provider.of<
                                 TextSMS_ToGuardian_Providers>(
                                 context,
                                 listen: false)
                                 .clearStudentList();
+
 
                             for (var i = 0; i < results.length; i++) {
                               SectionsforCommunication data =
@@ -299,6 +359,7 @@ class _Notification_StaffToGuardainState
                               print(
                                   "${subjectData.map((e) => data.value)}");
                             }
+                            section='';
                             section = subjectData.join(',');
                             await Provider.of<TextSMS_ToGuardian_Providers>(
                                 context,
@@ -309,41 +370,52 @@ class _Notification_StaffToGuardainState
                                 context,
                                 listen: false)
                                 .getCourseList(section);
+
+
                             await Provider.of<TextSMS_ToGuardian_Providers>(
                                 context,
                                 listen: false)
                                 .getDivisonSectionList(section);
+
                             List crs=[];
-                            for (var i = 0; i < value.courseList.length; i++) {
+                            for (var k = 0; k < value.courseList.length; k++) {
 
-                              crs.add(value.courseList[i].value);
+                              crs.add(value.courseList[k].value);
 
-                              print(diviData);
                             }
-
+                            print(crs);
                             course='';
-                            division = crs.join(',');
-                            List dvns=[];
-                            for (var j = 0; j < value.divisionSectionlist.length; j++) {
+                            course = crs.join(',');
+                            print(course);
 
-                              dvns.add(value.divisionSectionlist[j].value);
 
-                              print(diviData);
+                            List dvnss=[];
+                            dvnss.clear();
+                            print('linniiiii');
+                            print(dvnss);
+                            print(value.divisionSectionlist.length);
+
+                            for (var j = 0; j < value.divisionSectionlist.length; j++)
+                            {
+
+                              dvnss.add(value.divisionSectionlist[j].value);
+
                             }
                             print("rossshhh");
-                            print(dvns);
+                            print(dvnss);
                             division='';
-                            division = dvns.join(',');
+                            division = dvnss.join(',');
                             print(division);
 
-                            print("data $section");
 
                             print(subjectData.join(','));
+                           val.setLoading(false);
                           },
                         ),
                       ),
                     ),
                   ),
+
                 ),
                 // kWidth,
                 Consumer<TextSMS_ToGuardian_Providers>(
@@ -420,6 +492,10 @@ class _Notification_StaffToGuardainState
                                 context,
                                 listen: false)
                                 .clearDivision();
+                            await Provider.of<TextSMS_ToGuardian_Providers>(
+                                context,
+                                listen: false)
+                                .clearSectionDivision();
 
                             await Provider.of<
                                 TextSMS_ToGuardian_Providers>(
@@ -434,7 +510,7 @@ class _Notification_StaffToGuardainState
                               diviData.map((e) => data.value);
                               print("${diviData.map((e) => data.value)}");
 
-                              print("rossshhh");
+                              print("rossshhhsur");
                               print(courseData);
                             }
                             print('diviData course== $diviData');
@@ -452,13 +528,14 @@ class _Notification_StaffToGuardainState
                             print("lineeee");
                             print(value.divisionlist.length);
                             List dvn=[];
+                            dvn.clear();
                             for (var i = 0; i < value.divisionlist.length; i++) {
 
                            dvn.add(value.divisionlist[i].value);
 
                               print(courseData);
                             }
-                            print("rossshhh");
+                            print("rossshhhsuresh");
                             print(dvn);
                             division='';
                             division = dvn.join(',');
@@ -601,24 +678,75 @@ class _Notification_StaffToGuardainState
                                 )),
                           ),
                           onPressed: () async {
+
                             if(val.showTextSMS==true){
                               types='sms';
                             }
-                            else if(val.showNotification==true){
-                              types='notification';
+                            else if(val.showEmail==true){
+                              types="email";
                             }
                             else{
-                              types="email";
+                              types='notification';
                             }
 
                             await val.clearStudentList();
-                            await val.getStudentsView(
-                              section.toLowerCase(),
-                                course.toLowerCase(),
-                                division.toLowerCase(),
-                                types!,
-                              ""
-                            );
+                            if(section ==''){
+
+                              List secs=[];
+                                for (var i = 0; i < val.sectionList.length; i++) {
+
+                                  secs.add(val.sectionList[i].value);
+
+                                }
+                                print(secs);
+                                sectionData='';
+                                sectionData = secs.join(',');
+                                print(sectionData);
+
+                                //course
+
+                                List crss=[];
+                                for (var j= 0; j < val.courseList.length; j++) {
+
+                                crss.add(val.courseList[j].value);
+
+                                }
+                                print(crss);
+                                courseSection='';
+                                courseSection = crss.join(',');
+                                print(courseSection);
+
+                                //divison
+                              List divss=[];
+                              for (var k= 0; k < val.divisionSectionlist.length; k++) {
+
+                              divss.add(val.divisionSectionlist[k].value);
+
+                              }
+                              print(divss);
+                              divisionSection='';
+                                    divisionSection = divss.join(',');
+                              print(divisionSection);
+
+                              //view
+                              await val.getStudentsView(
+                                  sectionData.toLowerCase(),
+                                  courseSection.toLowerCase(),
+                                  divisionSection.toLowerCase(),
+                                  types!,
+                                  ""
+                              );
+
+                            }
+                            else {
+                              await val.getStudentsView(
+                                  section.toLowerCase(),
+                                  course.toLowerCase(),
+                                  division.toLowerCase(),
+                                  types!,
+                                  ""
+                              );
+                            }
                             val.isselectAll=false;
                             if (val.notificationView.isEmpty) {
                               ScaffoldMessenger.of(context).showSnackBar(
@@ -880,8 +1008,30 @@ class _Notification_StaffToGuardainState
                 );
               },
             ),
-          ],
-        ),
+                      ],
+                    ):
+         const Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.sentiment_dissatisfied_outlined,
+                  size: 60,
+                  color: Colors.grey,
+                ),
+                kheight10,
+                Text(
+                  "Sorry you don't have access",
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.grey),
+                ),
+              ],
+            ),
+          ),
+
       ),
       bottomNavigationBar: BottomAppBar(
         elevation: 3.0,
@@ -1193,16 +1343,46 @@ class Text_Matter_NotificationAdmin extends StatelessWidget {
     );
   }
 }
-class Text_Matter_Notification extends StatelessWidget {
+class Text_Matter_Notification extends StatefulWidget {
   final List<String> toList;
   final String type;
   Text_Matter_Notification({Key? key, required this.toList, required this.type})
       : super(key: key);
-  final titleController = TextEditingController();
-  final matterController = TextEditingController();
 
   @override
+  State<Text_Matter_Notification> createState() => _Text_Matter_NotificationState();
+}
+
+class _Text_Matter_NotificationState extends State<Text_Matter_Notification> {
+  final titleController = TextEditingController();
+  final formatController = TextEditingController();
+  final formatControllerId = TextEditingController();
+  final matterController = TextEditingController();
+  final formatnamecontroller = TextEditingController();
+  final formattitlecontroller = TextEditingController();
+  final formatmattercontroller = TextEditingController();
+  String mattervalue = '';
+
+  String? type;
+  String? _selectedOption;
+  List<String> countries = [
+    'Bahrain',
+    'India',
+    'Iraq',
+    'America',
+  ];
+
+  String? dropdownvalue ;
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+
+    });
+  }
+  @override
   Widget build(BuildContext context) {
+    var size =MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Send Notification'),
@@ -1226,77 +1406,271 @@ class Text_Matter_Notification extends StatelessWidget {
                   LottieBuilder.network(
                       'https://assets10.lottiefiles.com/private_files/lf30_kBx3K1.json'),
                   kheight20,
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: LimitedBox(
-                      maxHeight: 80,
-                      child: TextFormField(
-                        inputFormatters: [LengthLimitingTextInputFormatter(50)],
-                        controller: titleController,
-                        minLines: 1,
-                        maxLines: 4,
-                        keyboardType: TextInputType.multiline,
-                        decoration: const InputDecoration(
-                          labelText: 'Title*',
-                          hintText: 'Enter Title',
-                          labelStyle: TextStyle(color: UIGuide.light_Purple),
-                          hintStyle: TextStyle(color: Colors.grey),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                topRight: Radius.circular(0),
-                                bottomLeft: Radius.circular(0),
-                                bottomRight: Radius.circular(20)),
+              Padding(
+                padding: const EdgeInsets.only(left:15.0),
+                child: Row(
+                  children: [
+                    Text("Format"),
+                  ],
+                ),
+              ),
+              Consumer<TextSMS_ToGuardian_Providers>(
+                builder: (context, val, _) =>
+             Row(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 8.0,bottom: 8),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        elevation: 3,
+                        foregroundColor: UIGuide.light_Purple,
+                        backgroundColor:
+                        const Color.fromARGB(255, 255, 255, 255),
+                        padding: const EdgeInsets.all(0),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0),bottomLeft:Radius.circular(10.0)),
+                            side: const BorderSide(
+                              color: UIGuide.light_black,
+                            )),
+                      ),
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return Dialog(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                      BorderRadius.circular(15)),
+                                  child: LimitedBox(
+                                    maxHeight: size.height / 1.5,
+                                    child: ListView.builder(
+                                        shrinkWrap: true,
+                                        itemCount: val
+                                            .notificationFormats.isEmpty
+                                            ? 0
+                                            : val.notificationFormats.length,
+                                        itemBuilder: (context, index) {
+                                          return ListTile(
+                                            onTap: () async {
+
+                                              formatController.clear();
+                                              formatControllerId
+                                                  .text = await val
+                                                  .notificationFormats[index]
+                                                  .value ??
+                                                  '--';
+                                              formatController
+                                                  .text = await val
+                                                  .notificationFormats[index]
+                                                  .text ??
+                                                  '--';
+                                              await val
+                                                  .getNotificationContent(
+                                                  formatControllerId
+                                                      .text);
+
+
+
+
+                                              Navigator.of(context).pop();
+                                            },
+                                            title: Text(
+                                              val.notificationFormats[index]
+                                                  .text ??
+                                                  '--',
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          );
+                                        }),
+                                  ));
+
+
+                            });
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(left:15.0),
+                        child: TextField(
+
+                          style: const TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: UIGuide.BLACK,
+                              overflow: TextOverflow.clip),
+                          textAlign: TextAlign.left,
+                          controller: formatController,
+                          decoration:  InputDecoration(
+                            contentPadding:
+                            EdgeInsets.only(left: 0, top: 0),
+                            floatingLabelBehavior:
+                            FloatingLabelBehavior.never,
+                            filled: true,
+                            fillColor: Colors.transparent,
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  style: BorderStyle.none, width: 0),
+                            ),
+                            labelText: formatController.text.isEmpty?"Select Format":
+                                     formatController.text,
+
+                            hintText: "Format",
+                            alignLabelWithHint: true,
                           ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: UIGuide.light_Purple, width: 1.0),
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                topRight: Radius.circular(0),
-                                bottomLeft: Radius.circular(0),
-                                bottomRight: Radius.circular(20)),
-                          ),
+                          enabled: false,
+
                         ),
                       ),
+
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: LimitedBox(
-                      maxHeight: 150,
-                      child: TextFormField(
-                        inputFormatters: [
-                          LengthLimitingTextInputFormatter(1000)
-                        ],
-                        controller: matterController,
-                        minLines: 1,
-                        maxLines: 15,
-                        keyboardType: TextInputType.multiline,
-                        decoration: const InputDecoration(
-                          labelText: 'Matter*',
-                          hintText: 'Enter Matter',
-                          labelStyle: TextStyle(color: UIGuide.light_Purple),
-                          hintStyle: TextStyle(color: Colors.grey),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                topRight: Radius.circular(0),
-                                bottomLeft: Radius.circular(0),
-                                bottomRight: Radius.circular(20)),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 8.0,bottom: 8),
+                  child: SizedBox(
+                    height: 48,
+                    width: 40,
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          elevation: 3,
+                          foregroundColor: UIGuide.BLACK,
+                          backgroundColor: UIGuide.ButtonBlue,
+                          padding: const EdgeInsets.all(0),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(topRight: Radius.circular(10.0),bottomRight:Radius.circular(10.0)),
+                            side: const BorderSide(
+                              color: UIGuide.light_black,
+                            ),
                           ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: UIGuide.light_Purple, width: 1.0),
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                topRight: Radius.circular(0),
-                                bottomLeft: Radius.circular(0),
-                                bottomRight: Radius.circular(20)),
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            formatController.clear();
+                            formatControllerId.clear();
+                            titleController.clear();
+                            matterController.clear();
+                          });
+
+
+                        },
+                        child: const Icon(Icons.clear)),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 8.0,bottom: 8),
+                  child: SizedBox(
+                    height: 48,
+                    width: 40,
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          elevation: 3,
+                          foregroundColor: UIGuide.BLACK,
+                          backgroundColor: UIGuide.ButtonBlue,
+                          padding: const EdgeInsets.all(0),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            side: const BorderSide(
+                              color: UIGuide.light_black,
+                            ),
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                  const FormatCreation()));
+
+                        },
+                        child: const Icon(Icons.list_alt)),
+                  ),
+                )
+              ],
+            ),
+          ),
+                  Consumer<TextSMS_ToGuardian_Providers>(
+                  builder: (context, val, _) {
+                  formatControllerId.text.isNotEmpty? titleController.text=val.notificationTitle.toString():
+                  formattitlecontroller;
+                   return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: LimitedBox(
+                        maxHeight: 80,
+                        child: TextFormField(
+                          inputFormatters: [LengthLimitingTextInputFormatter(50)],
+                          controller: titleController,
+                          minLines: 1,
+                          maxLines: 4,
+                          keyboardType: TextInputType.multiline,
+                          decoration: const InputDecoration(
+                            labelText: 'Title*',
+                            hintText: 'Enter Title',
+                            labelStyle: TextStyle(color: UIGuide.light_Purple),
+                            hintStyle: TextStyle(color: Colors.grey),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(20),
+                                  topRight: Radius.circular(0),
+                                  bottomLeft: Radius.circular(0),
+                                  bottomRight: Radius.circular(20)),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: UIGuide.light_Purple, width: 1.0),
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(20),
+                                  topRight: Radius.circular(0),
+                                  bottomLeft: Radius.circular(0),
+                                  bottomRight: Radius.circular(20)),
+                            ),
                           ),
                         ),
                       ),
-                    ),
+                    );
+    }
+                  ),
+                  Consumer<TextSMS_ToGuardian_Providers>(
+                  builder: (context, val, _) {
+                    formatControllerId.text.isNotEmpty ?
+                    matterController.text = val.notificationMatter.toString() :
+                    matterController;
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: LimitedBox(
+                        maxHeight: 150,
+                        child: TextFormField(
+                          inputFormatters: [
+                            LengthLimitingTextInputFormatter(1000)
+                          ],
+                          controller: matterController,
+                          minLines: 1,
+                          maxLines: 15,
+                          keyboardType: TextInputType.multiline,
+                          decoration: const InputDecoration(
+                            labelText: 'Matter*',
+                            hintText: 'Enter Matter',
+                            labelStyle: TextStyle(color: UIGuide.light_Purple),
+                            hintStyle: TextStyle(color: Colors.grey),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(20),
+                                  topRight: Radius.circular(0),
+                                  bottomLeft: Radius.circular(0),
+                                  bottomRight: Radius.circular(20)),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: UIGuide.light_Purple, width: 1.0),
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(20),
+                                  topRight: Radius.circular(0),
+                                  bottomLeft: Radius.circular(0),
+                                  bottomRight: Radius.circular(20)),
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  }
                   ),
                   kheight20,
                   Consumer<NotificationToGuardian_Providers>(
@@ -1311,8 +1685,8 @@ class Text_Matter_Notification extends StatelessWidget {
                                 context,
                                 listen: false)
                                 .sendNotification(context, titleController.text,
-                                matterController.text, toList,
-                                sentTo: type);
+                                matterController.text, widget.toList,
+                                sentTo: widget.type);
                             titleController.clear();
                             matterController.clear();
                           } else {

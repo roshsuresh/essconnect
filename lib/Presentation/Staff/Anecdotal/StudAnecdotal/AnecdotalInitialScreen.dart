@@ -3,13 +3,15 @@ import 'package:essconnect/Presentation/Staff/Anecdotal/StudAnecdotal/AnecdotalL
 import 'package:essconnect/utils/constants.dart';
 import 'package:flutter/material.dart';
 
+import 'AnecdotalReport.dart';
+
 class AnecdotalInitialScreen extends StatelessWidget {
   const AnecdotalInitialScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Scaffold(
         appBar: AppBar(
           title: Row(
@@ -45,12 +47,20 @@ class AnecdotalInitialScreen extends StatelessWidget {
                 text: "Entry",
               ),
               Tab(text: "List"),
+              Tab(
+                text: "Report",
+              ),
             ],
           ),
           backgroundColor: UIGuide.light_Purple,
         ),
         body: TabBarView(
-          children: [AnecdotalentryScreen(), AnectdotalListScreen()],
+          physics: NeverScrollableScrollPhysics(),
+          children: [
+            AnecdotalentryScreen(),
+            AnectdotalListScreen(),
+            AnecdotalReport(),
+          ],
         ),
       ),
     );

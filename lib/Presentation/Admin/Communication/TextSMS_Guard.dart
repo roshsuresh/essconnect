@@ -11,6 +11,10 @@ class TextSMSGuardian extends StatelessWidget {
   List subjectData = [];
   List diviData = [];
   List courseData = [];
+  String course = '';
+
+  String section = '';
+  String division = '';
 
   String courseId = '';
   @override
@@ -81,9 +85,8 @@ class TextSMSGuardian extends StatelessWidget {
                       await Provider.of<SchoolPhotoProviders>(context,
                               listen: false)
                           .getCourseList(section);
-                      print("data $subjectData");
 
-                      print(subjectData.join(','));
+
                     },
                   ),
                 ),

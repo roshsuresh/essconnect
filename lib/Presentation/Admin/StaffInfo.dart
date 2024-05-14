@@ -2,12 +2,19 @@ import 'package:essconnect/Application/AdminProviders/StaffReportProviders.dart'
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../Constants.dart';
+import '../../Domain/Admin/StaffReportModel.dart';
 import '../../utils/constants.dart';
 
-class StaffInfo extends StatelessWidget {
-  int index;
-  StaffInfo({Key? key, required this.index}) : super(key: key);
+class StaffInfo extends StatefulWidget {
 
+  StaffReportByAdmin staff;
+   StaffInfo({Key? key, required this.staff}) : super(key: key);
+
+  @override
+  State<StaffInfo> createState() => _StaffInfoState();
+}
+
+class _StaffInfoState extends State<StaffInfo> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -56,13 +63,11 @@ class StaffInfo extends StatelessWidget {
                                 color: Colors.white,
                                 image: DecorationImage(
                                     fit: BoxFit.cover,
-                                    image: NetworkImage(value
-                                                .staffReportList[index]
+                                    image: NetworkImage(widget.staff
                                                 .staffPhoto ==
                                             null
                                         ? 'https://gj-eschool-files-public.s3.ap-south-1.amazonaws.com/ess-connect/student/avathar-01.jpeg'
-                                        : value
-                                            .staffReportList[index].staffPhoto
+                                        : widget.staff.staffPhoto
                                             .toString())),
                                 borderRadius: const BorderRadius.all(
                                     Radius.circular(10))),
@@ -113,7 +118,7 @@ class StaffInfo extends StatelessWidget {
                                       fontWeight: FontWeight.w700,
                                       fontSize: 15,
                                       color: Color.fromARGB(255, 44, 43, 43)),
-                                  text: value.staffReportList[index].name ??
+                                  text: widget.staff.name ??
                                       '--'),
                             ),
                           ),
@@ -131,7 +136,7 @@ class StaffInfo extends StatelessWidget {
                           ),
                           const Text('Designation : '),
                           Text(
-                            value.staffReportList[index].designation ?? '--',
+                            widget.staff.designation ?? '--',
                             style: const TextStyle(fontWeight: FontWeight.w500),
                           )
                         ],
@@ -148,7 +153,7 @@ class StaffInfo extends StatelessWidget {
                           ),
                           const Text('Mobile Number : '),
                           Text(
-                            value.staffReportList[index].mobileNo ?? '--',
+                           widget.staff.mobileNo ?? '--',
                             style: const TextStyle(fontWeight: FontWeight.w500),
                           )
                         ],
@@ -165,7 +170,7 @@ class StaffInfo extends StatelessWidget {
                           ),
                           const Text('Email : '),
                           Text(
-                            value.staffReportList[index].emailId ?? '--',
+                          widget.staff.emailId ?? '--',
                             style: const TextStyle(fontWeight: FontWeight.w500),
                           )
                         ],
@@ -182,7 +187,7 @@ class StaffInfo extends StatelessWidget {
                           ),
                           const Text('Section : '),
                           Text(
-                            value.staffReportList[index].section ?? '--',
+                           widget.staff.section ?? '--',
                             style: const TextStyle(fontWeight: FontWeight.w500),
                           )
                         ],
@@ -199,7 +204,7 @@ class StaffInfo extends StatelessWidget {
                           ),
                           const Text('Birthday : '),
                           Text(
-                            value.staffReportList[index].dateOfBirth ?? '--',
+                            widget.staff.dateOfBirth ?? '--',
                             style: const TextStyle(fontWeight: FontWeight.w500),
                           )
                         ],
@@ -216,7 +221,7 @@ class StaffInfo extends StatelessWidget {
                           ),
                           const Text('Gender : '),
                           Text(
-                            value.staffReportList[index].gender ?? '--',
+                           widget.staff.gender ?? '--',
                             style: const TextStyle(fontWeight: FontWeight.w500),
                           )
                         ],
@@ -242,7 +247,7 @@ class StaffInfo extends StatelessWidget {
                                     fontWeight: FontWeight.w500,
                                     fontSize: 15,
                                     color: Color.fromARGB(255, 44, 43, 43)),
-                                text: value.staffReportList[index].address ??
+                                text: widget.staff.address ??
                                     '--',
                               ),
                             ),

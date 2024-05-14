@@ -26,10 +26,11 @@ class _SmsFormatToStaffState extends State<SmsFormatToStaff> {
           listen: false);
       await p.clearSMSList();
       await p.viewSMSFormat();
+      p.extractedValuesStaff.clear();
       p.smsBody = '';
     });
   }
-
+  List<TextEditingController> _controllers = [];
   final formatController = TextEditingController();
   final formatController1 = TextEditingController();
   bool provcheck = false;
@@ -161,9 +162,217 @@ class _SmsFormatToStaffState extends State<SmsFormatToStaff> {
                           );
                         }),
                       ),
+
                     ],
                   ),
-                  kheight5,
+                  kheight10,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      InkWell(
+                          onTap: (){
+
+                            value.extractedValuesStaff.isEmpty?
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(
+                              const SnackBar(
+                                elevation: 10,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(10)),
+                                ),
+                                duration: Duration(seconds: 1),
+                                margin: EdgeInsets.only(
+                                    bottom: 80,
+                                    left: 30,
+                                    right: 30),
+                                behavior: SnackBarBehavior.floating,
+                                content: Text(
+                                  'Nothing to edit.....!',
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ):
+
+                            showModalBottomSheet(
+
+                              context: context,
+                              isScrollControlled: true,
+                              backgroundColor: Colors.white,
+                              builder: (context) {
+                                return Padding(
+                                  padding: MediaQuery.of(context).viewInsets,
+                                  child: Wrap(
+                                      children: [
+                                        LimitedBox(
+                                          maxHeight: size.height*0.40,
+                                          child: Column(
+                                            children: [
+
+                                              ListTile(
+
+                                                title: const Text("Edit Content"),
+                                                titleTextStyle: const TextStyle(
+                                                  fontSize: 16,
+                                                  color: UIGuide.light_Purple,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                                leadingAndTrailingTextStyle:
+                                                const TextStyle(),
+                                                trailing: TextButton(
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                    child: const Text(
+                                                      " ❌ ",
+                                                      style: TextStyle(
+                                                          color: Colors.black87,
+                                                          fontSize: 10,
+                                                          fontWeight: FontWeight.w600),
+                                                    )),
+                                              ),
+
+
+                                              const Divider(
+                                                height: 5,
+                                                color: Colors.grey,
+                                                thickness: 1,
+                                              ),
+
+
+                                              Expanded(
+                                                child: ListView(
+                                                  children: [
+                                                    Padding(
+                                                      padding: const EdgeInsets.all(4.0),
+                                                      child: ListView.builder(
+                                                          shrinkWrap: true,
+                                                          physics: NeverScrollableScrollPhysics(),
+                                                          itemCount: value.extractedValuesStaff.length,
+                                                          itemBuilder: ((context, index) {
+
+                                                            _controllers.add(TextEditingController());
+
+
+                                                            _controllers[index].text = value
+                                                                .extractedValuesStaff[index] ;
+                                                            print("length");
+                                                            print(value.extractedValuesStaff.length);
+
+                                                            return Column(
+
+                                                              children: [
+
+                                                                Padding(
+                                                                  padding: const EdgeInsets.all( 4),
+                                                                  child: SizedBox(
+                                                                      height:50,
+                                                                      width:size.width,
+                                                                      child: TextField(
+
+                                                                        decoration:  InputDecoration(
+
+                                                                          enabledBorder:  OutlineInputBorder(
+                                                                            borderRadius: BorderRadius.circular(10.0),
+                                                                            borderSide: const BorderSide(
+                                                                                color: UIGuide.light_Purple,
+                                                                                width: 1.0),
+                                                                          ),
+                                                                          focusedBorder: OutlineInputBorder(
+                                                                            borderSide: const BorderSide(color:UIGuide.light_Purple, width: 1.0),
+                                                                            borderRadius: BorderRadius.circular(10.0),
+                                                                          ),
+                                                                        ),
+                                                                        controller: _controllers[index],
+                                                                        onChanged: (value1){
+                                                                          _controllers[index]
+                                                                              .addListener(() {
+                                                                            value1;
+                                                                          });
+                                                                          value
+                                                                              .extractedValuesStaff[
+                                                                          index] =_controllers[index].text;
+
+
+                                                                        },
+
+
+                                                                      )),
+                                                                ),
+
+                                                              ],
+                                                            );
+                                                          })),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.all(4.0),
+                                                child: SizedBox(
+                                                  height:40,
+                                                  width: size.width*.30 ,
+                                                  child: ElevatedButton(
+
+                                                    onPressed: (){
+                                                      List changes=[];
+                                                      changes.clear();
+                                                      for(int i=0;i< value.extractedValuesStaff.length;i++){
+                                                        changes.add(
+                                                            {
+                                                              "changeableText" : value.extractedValuesStaff[i]
+                                                            }
+                                                        );
+
+                                                      }
+
+                                                      value.replaceValuesInsideDoubleBrackets(value.smsBody!, value.extractedValuesStaff);
+
+
+                                                      value.smsformatedit(context,
+                                                          value.smsBody!,
+                                                          formatController1.text,
+                                                          value.smsBody!,
+                                                          provcheck,
+                                                          changes,
+                                                          formatController.text);
+
+                                                    },
+
+
+                                                    child: Text("Set"),
+                                                    style: ElevatedButton.styleFrom(
+                                                        backgroundColor: UIGuide.light_Purple
+                                                    ),
+                                                  ),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        )
+                                      ]
+                                  ),
+                                );
+                              },
+                            );
+
+                          },
+                          child: Container(
+                            child: Row(
+                              children: [
+                                Text("Edit Content ",style: TextStyle(
+                                  color: UIGuide.light_Purple,
+                                ),),
+
+                                Icon(Icons.edit_sharp,size: 15,color: UIGuide.light_Purple,)
+
+                              ],
+                            ),
+                          )
+                      ),
+                    ],
+                  ),
+
                   Consumer<NotificationToStaffAdminProviders>(
                     builder: (context, value, child) => value.smsBody == null ||
                             value.smsBody == ""

@@ -14,6 +14,7 @@ import 'package:essconnect/Presentation/Student/Student_home.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../Domain/Student/activation_model.dart';
@@ -106,6 +107,9 @@ class LoginProvider with ChangeNotifier {
       await pass.setString('password', password);
 
       await getToken(context);
+      await getMobileViewerId();
+      await getsavemobileViewer(context);
+      await sendUserDetails(context);
       var parsedResponse = await parseJWT();
       List<dynamic> roleList = [];
       print(parsedResponse['role'] is List);
@@ -220,15 +224,17 @@ class LoginProvider with ChangeNotifier {
           )));
     }
   }
-
+  String? token;
   Future getToken(BuildContext context) async {
     Map<String, dynamic> data = await parseJWT();
+    print("roleeeeeeee");
+    print(data['role']);
     SharedPreferences _pref = await SharedPreferences.getInstance();
     var headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
-    String? token = await FirebaseMessaging.instance.getToken();
+    token = await FirebaseMessaging.instance.getToken();
     print("firebase token");
     print(token);
     var request = http.Request(
@@ -336,4 +342,118 @@ class LoginProvider with ChangeNotifier {
       setLoad(false);
     }
   }
+
+
+  //App Review
+
+  //get id
+  String? currentMobileViewID;
+
+  Future getMobileViewerId() async {
+    Map<String, dynamic> data = await parseJWT();
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+    };
+    var response = await http.get(
+        Uri.parse("${UIGuide.baseURL}/mobileapp/installedUser/getViewId?studentId=${data['ChildId']}"),
+        headers: headers);
+    try {
+      if (response.statusCode == 200) {
+        setLoading(true);
+        final data = json.decode(response.body);
+        log(data.toString());
+        GetUserMobielViewId mob = GetUserMobielViewId.fromJson(data);
+       currentMobileViewID =mob.viewId;
+        print("Current mobileviewid  = $currentMobileViewID");
+
+        setLoading(false);
+        notifyListeners();
+      } else {
+        setLoading(false);
+        print(response.statusCode);
+        print("Error in Notification Response");
+      }
+    } catch (e) {
+    setLoading(false);
+    print(e);
+    }
+  }
+
+
+
+   String? mobileAppViewersId;
+  Future getsavemobileViewer(BuildContext context) async {
+    Map<String, dynamic> data = await parseJWT();
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+    };
+    String? token = await FirebaseMessaging.instance.getToken();
+    print("firebase token");
+    print(token);
+    var request = http.Request(
+        'POST', Uri.parse('${UIGuide.baseURL}/mobileapp/installedUser/savemobileViewer'));
+    request.body = json.encode(
+        {    "StudentId": data['ChildId'],
+          "MobileToken": token
+        }
+
+    );
+    print('Responde body  ${request.body}');
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      final String dataa = await response.stream.bytesToString();
+      print(dataa);
+      mobileAppViewersId = dataa.replaceAll('"', '');
+      print(mobileAppViewersId);
+      print("student added");
+    } else {
+      log("student not added.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-!");
+      debugPrint(response.reasonPhrase);
+    }
+  }
+
+  String formattedDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
+  Future sendUserDetails(BuildContext context) async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+    };
+    String? token = await FirebaseMessaging.instance.getToken();
+    print("firebase token");
+    print(token);
+    var request = http.Request(
+        'POST', Uri.parse('${UIGuide.baseURL}/mobileapp/installedUser/savemobileViewerDetails'));
+    request.body = json.encode(
+        {
+          "MobileAppViewersId": currentMobileViewID=="00000000-0000-0000-0000-000000000000" ?(mobileAppViewersId=="00000000-0000-0000-0000-000000000000"?
+                               null:mobileAppViewersId):currentMobileViewID,
+          "ModifiedAt":formattedDate
+        }
+    );
+    print('Responde body  ${request.body}');
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      print("student details send");
+    } else {
+      log("student details not send.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-!");
+      debugPrint(response.reasonPhrase);
+    }
+  }
+
+
+
 }
+
+
+

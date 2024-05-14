@@ -34,8 +34,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:upgrader/upgrader.dart';
 import '../../Application/StudentProviders/InternetConnection.dart';
 import '../../Constants.dart';
+import '../Admin/AppReview.dart';
 import '../Admin/AttendanceTaken/AbsentReport.dart';
 import '../Login_Activation/Login_page.dart';
+import '../Staff/Anecdotal/StudAnecdotal/AnecdotalInitialScreen.dart';
 import '../Student/PasswordChange.dart';
 
 class SchoolHeadHomeScreen extends StatefulWidget {
@@ -455,7 +457,7 @@ class SchoolHeadHomeScreenContents extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => AdminToGuardian()),
+                              builder: (context) => Notification_AdminToGuardain()),
                         );
                       },
                       child: Padding(
@@ -496,6 +498,81 @@ class SchoolHeadHomeScreenContents extends StatelessWidget {
                             )
                           ],
                         ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () async {
+
+                        module.curiculam == true
+                            ? await Navigator.push(
+                          context,
+                            await Navigator.push(
+                                context,
+                                PageTransition(
+                                  type:
+                                  PageTransitionType
+                                      .rightToLeft,
+                                  child:
+                                  const AnecdotalInitialScreen(),
+                                  duration:
+                                  const Duration(
+                                      milliseconds:
+                                      300),
+                                ))
+                        )
+                            : _noAcess(context);
+
+                      },
+                      child: Column(
+                        mainAxisAlignment:
+                        MainAxisAlignment
+                            .spaceEvenly,
+                        children: [
+                          Card(
+                            elevation: 10,
+                            color: Colors.white,
+                            shape:
+                            RoundedRectangleBorder(
+                              borderRadius:
+                              BorderRadius
+                                  .circular(
+                                  12.0),
+                            ),
+                            child: Padding(
+                              padding:
+                              const EdgeInsets
+                                  .all(8.0),
+                              child: Container(
+                                height: 38,
+                                width: 38,
+                                decoration:
+                                const BoxDecoration(
+                                  image:
+                                  DecorationImage(
+                                    opacity: 20,
+                                    image:
+                                    AssetImage(
+                                      'assets/Loginwebb.png',
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          kheight10,
+                          const Text(
+                            'Anecdotal',
+                            textAlign:
+                            TextAlign.center,
+                            style: TextStyle(
+                                fontWeight:
+                                FontWeight
+                                    .bold,
+                                fontSize: 11,
+                                color: Colors
+                                    .black87),
+                          )
+                        ],
                       ),
                     ),
                     GestureDetector(
@@ -549,66 +626,7 @@ class SchoolHeadHomeScreenContents extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Consumer<Curriculamprovider>(
-                      builder: (context, curri, child) => GestureDetector(
-                        onTap: () async {
-                          if (module.curiculam == true) {
-                            await Provider.of<Curriculamprovider>(context,
-                                    listen: false)
-                                .getCuriculamtoken();
-                            String token = await curri.token.toString();
-                            await Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => CurriculamPage(
-                                        token: token,
-                                      )),
-                            );
-                          } else {
-                            _noAcess(context);
-                          }
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 10, right: 10),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Card(
-                                elevation: 10,
-                                color: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12.0),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Container(
-                                    height: 38,
-                                    width: 38,
-                                    decoration: BoxDecoration(
-                                      image: const DecorationImage(
-                                        opacity: 20,
-                                        image: AssetImage(
-                                          'assets/Curriculum.png',
-                                        ),
-                                      ),
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              kheight10,
-                              const Text(
-                                'e-Classroom',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 11,
-                                    color: Colors.black87),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    )
+
                   ],
                 ),
               ),
@@ -1159,114 +1177,237 @@ class SchoolHeadHomeScreenContents extends StatelessWidget {
                         ),
                       ),
                     ),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () async {
+                          module.mobileApp == true
+                              ? await Navigator.push(
+                              context,
+                              PageTransition(
+                                  type: PageTransitionType.rightToLeft,
+                                  child:
+                                  const AppReviewInitial(),
+                                  duration:
+                                  const Duration(milliseconds: 200),
+                                  childCurrent: this))
+                              : _noAcess(context);
+                        },
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Card(
+                              elevation: 10,
+                              color: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12.0),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  height: 38,
+                                  width: 38,
+                                  decoration: const BoxDecoration(
+                                    image: DecorationImage(
+                                      opacity: 20,
+                                      image: AssetImage(
+                                        'assets/appstatistics.png',
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            kheight10,
+                            const Text(
+                              'App User Statistics',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 11,
+                                  color: Colors.black87,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Consumer<Curriculamprovider>(
+                      builder: (context, curri, child) => GestureDetector(
+                        onTap: () async {
+                          if (module.curiculam == true) {
+                            await Provider.of<Curriculamprovider>(context,
+                                listen: false)
+                                .getCuriculamtoken();
+                            String token = await curri.token.toString();
+                            await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => CurriculamPage(
+                                    token: token,
+                                  )),
+                            );
+                          } else {
+                            _noAcess(context);
+                          }
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10, right: 10),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Card(
+                                elevation: 10,
+                                color: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12.0),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Container(
+                                    height: 38,
+                                    width: 38,
+                                    decoration: BoxDecoration(
+                                      image: const DecorationImage(
+                                        opacity: 20,
+                                        image: AssetImage(
+                                          'assets/Curriculum.png',
+                                        ),
+                                      ),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              kheight10,
+                              const Text(
+                                'e-Classroom',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 11,
+                                    color: Colors.black87),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    )
                   ],
                 ),
               ),
               kheight10,
+
+              Container(
+                  margin: const EdgeInsets.only(left: 10.0, right: 10.0),
+                  child: const Divider(
+                    color: UIGuide.light_Purple,
+                    height: 36,
+                  )),
               kheight10,
-              Row(children: <Widget>[
-                const Text(
-                  ' ──  ',
-                  style: TextStyle(
-                    color: Colors.black26,
-                  ),
-                ),
-                const Text(
-                  "Change Password | SignOut",
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                      color: UIGuide.light_Purple, fontWeight: FontWeight.w900),
-                ),
-                Expanded(
-                  child: Container(
-                      margin: const EdgeInsets.only(left: 20.0, right: 10.0),
-                      child: const Divider(
-                        color: Colors.black45,
-                        height: 36,
-                      )),
-                ),
-              ]),
-              kheight20,
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  MaterialButton(
-                      elevation: 10,
-                      minWidth: 50,
-                      color: UIGuide.THEME_LIGHT,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0)),
-                      onPressed: () async {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                              builder: (context) => PasswordChange()),
-                        );
-                      },
-                      child: const Icon(
-                        Icons.key_sharp,
-                        color: UIGuide.light_Purple,
-                      )),
-                  MaterialButton(
-                      minWidth: 50,
-                      elevation: 10,
-                      color: UIGuide.THEME_LIGHT,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0)),
-                      onPressed: () async {
-                        showCupertinoDialog(
-                          context: context,
-                          builder: (context) {
-                            return Container(
-                              color: Colors.black.withOpacity(0.5),
-                              child: CupertinoAlertDialog(
-                                title: const Text("Logout"),
-                                content: const Text(
-                                    "Are you sure you want to log out?"),
-                                actions: <Widget>[
-                                  CupertinoDialogAction(
-                                    child: const Text(
-                                      "Cancel",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          color: UIGuide.light_Purple),
-                                    ),
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                  ),
-                                  CupertinoDialogAction(
-                                    child: const Text("Logout",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w500,
-                                            color: UIGuide.light_Purple)),
-                                    onPressed: () async {
-                                      SharedPreferences prefs =
-                                          await SharedPreferences.getInstance();
-                                      print("accesstoken  $prefs");
-                                      await prefs.remove("accesstoken");
-                                      print("username  $prefs");
-                                      await prefs.remove("username");
-                                      print("password  $prefs");
-                                      await prefs.remove("password");
-
-                                      Navigator.of(context).pushAndRemoveUntil(
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  LoginPage()),
-                                          (Route<dynamic> route) => false);
-                                    },
-                                  ),
-                                ],
-                              ),
+                  Column(
+                    children: [
+                      MaterialButton(
+                          elevation: 10,
+                          minWidth: 50,
+                          color: UIGuide.THEME_LIGHT,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0)),
+                          onPressed: () async {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) => PasswordChange()),
                             );
                           },
-                        );
-                      },
-                      child: const Icon(
-                        Icons.logout_outlined,
-                        color: UIGuide.light_Purple,
-                      )),
+                          child: const Icon(
+                            Icons.key_sharp,
+                            color: UIGuide.light_Purple,
+                          )),
+                      kheight5,
+                      const Text(
+                        'Change Password',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 11,
+                            color: Colors.black87),
+                      )
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      MaterialButton(
+                          minWidth: 50,
+                          elevation: 10,
+                          color: UIGuide.THEME_LIGHT,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0)),
+                          onPressed: () async {
+                            showCupertinoDialog(
+                              context: context,
+                              builder: (context) {
+                                return Container(
+                                  color: Colors.black.withOpacity(0.5),
+                                  child: CupertinoAlertDialog(
+                                    title: const Text("Logout"),
+                                    content: const Text(
+                                        "Are you sure you want to log out?"),
+                                    actions: <Widget>[
+                                      CupertinoDialogAction(
+                                        child: const Text(
+                                          "Cancel",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w500,
+                                              color: UIGuide.light_Purple),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                      CupertinoDialogAction(
+                                        child: const Text("Logout",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w500,
+                                                color: UIGuide.light_Purple)),
+                                        onPressed: () async {
+                                          SharedPreferences prefs =
+                                              await SharedPreferences.getInstance();
+                                          print("accesstoken  $prefs");
+                                          await prefs.remove("accesstoken");
+                                          print("username  $prefs");
+                                          await prefs.remove("username");
+                                          print("password  $prefs");
+                                          await prefs.remove("password");
+
+                                          Navigator.of(context).pushAndRemoveUntil(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      LoginPage()),
+                                              (Route<dynamic> route) => false);
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                          child: const Icon(
+                            Icons.logout_outlined,
+                            color: UIGuide.light_Purple,
+                          )),
+                      kheight5,
+                      const Text(
+                        'SignOut',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 11,
+                            color: Colors.black87),
+                      )
+                    ],
+                  ),
                 ],
               ),
               kheight20,
@@ -1281,10 +1422,8 @@ class SchoolHeadHomeScreenContents extends StatelessWidget {
               ),
               kheight20,
               kheight20,
-              kheight20,
-              kheight20,
-              kheight20,
-              kheight20
+              kheight10,
+
             ],
           ),
         ),

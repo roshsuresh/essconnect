@@ -81,8 +81,7 @@ class _AbsenteesReportStaffState extends State<AbsenteesReportStaff> {
         backgroundColor: UIGuide.light_Purple,
       ),
       body: Consumer<AttendanceReportProvider>(
-        builder: (context, snap, child) => Stack(
-          children: [
+        builder: (context, snap, child) =>
             Column(
               children: [
                 kheight10,
@@ -95,20 +94,18 @@ class _AbsenteesReportStaffState extends State<AbsenteesReportStaff> {
                         child: Consumer<AttendenceStaffProvider>(
                             builder: (context, snapshot, child) {
                           return snapshot.load
-                              ? Expanded(
-                                  child: Container(
-                                    height: 45,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(
-                                          color: UIGuide.light_Purple,
-                                          width: 1),
-                                    ),
-                                    child: const Center(
-                                      child: Text("Loading..."),
-                                    ),
-                                  ),
-                                )
+                              ? Container(
+                                height: 45,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                      color: UIGuide.light_Purple,
+                                      width: 1),
+                                ),
+                                child: const Center(
+                                  child: Text("Loading..."),
+                                ),
+                              )
                               : ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                     elevation: 3,
@@ -234,20 +231,18 @@ class _AbsenteesReportStaffState extends State<AbsenteesReportStaff> {
                         child: Consumer<AttendenceStaffProvider>(
                             builder: (context, snapshot, child) {
                           return snapshot.loadDivision
-                              ? Expanded(
-                                  child: Container(
-                                    height: 45,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      border: Border.all(
-                                          color: UIGuide.light_Purple,
-                                          width: 1),
-                                    ),
-                                    child: const Center(
-                                      child: Text("Loading..."),
-                                    ),
-                                  ),
-                                )
+                              ? Container(
+                                height: 45,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                      color: UIGuide.light_Purple,
+                                      width: 1),
+                                ),
+                                child: const Center(
+                                  child: Text("Loading..."),
+                                ),
+                              )
                               : ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                     elevation: 3,
@@ -766,8 +761,7 @@ class _AbsenteesReportStaffState extends State<AbsenteesReportStaff> {
                     );
                   },
                 ),
-              ],
-            ),
+
             if (snap.loading) pleaseWaitLoader()
           ],
         ),

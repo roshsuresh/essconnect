@@ -340,6 +340,7 @@ class StaffNoticeboardSendProviders with ChangeNotifier {
         behavior: SnackBarBehavior.floating,
         content: Text(
           'Something Went Wrong....',
+
           textAlign: TextAlign.center,
         ),
       ));
@@ -525,6 +526,38 @@ class StaffNoticeboardSendProviders with ChangeNotifier {
         ),
       ));
       print('Error in Notice Delete stf');
+    }
+  }
+
+  //update count
+
+  Future seeNoticeBoardStaff() async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    setLoadingg(true);
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+    };
+    var parsedResponse = await parseJWT();
+    final staffId = await parsedResponse['StaffId'];
+    var request = http.Request(
+        'POST',
+        Uri.parse(
+            '${UIGuide.baseURL}/mobileapp/token/updateNoticeboardStatus?Type=Staff&StaffId=$staffId'));
+    request.body = json.encode({"IsSeen": true, "Type": "Staff"});
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      setLoadingg(true);
+      print(
+          '_ _ _ _ _ _ _ _ _ _ _ _   Correct   _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _');
+      setLoadingg(false);
+    } else {
+      setLoadingg(false);
+      print(response.statusCode);
+      print('Error in noticecount respo');
     }
   }
 }

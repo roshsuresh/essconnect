@@ -15,13 +15,27 @@ import 'package:photo_view/photo_view.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
-class StaffNoticeBoardReceived extends StatelessWidget {
+import '../../Application/Staff_Providers/NotificationCount.dart';
+
+class StaffNoticeBoardReceived extends StatefulWidget {
   StaffNoticeBoardReceived({Key? key}) : super(key: key);
+
+  @override
+  State<StaffNoticeBoardReceived> createState() => _StaffNoticeBoardReceivedState();
+}
+
+class _StaffNoticeBoardReceivedState extends State<StaffNoticeBoardReceived> {
   bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     Provider.of<StaffNoticeboardSendProviders>(context, listen: false)
         .getnoticeList();
+    // Provider.of<StaffNoticeboardSendProviders>(context, listen: false)
+    //     .seeNoticeBoardStaff();
+    // Provider.of<StaffNotificationCountProviders>(context, listen: false)
+    //    .getnotificationCount();
+
     var size = MediaQuery.of(context).size;
     var width = size.width;
     return Consumer<StaffNoticeboardSendProviders>(builder: (_, value, child) {

@@ -281,8 +281,10 @@ class MarkEntryReportProvider_stf with ChangeNotifier {
   }
 
   //view
-
+ String? tabmethod;
+  String? entrymethod;
   List meList = [];
+  List headerList=[];
   List studList = [];
   List<MarkReportStudentList> markReportStudList = [];
 
@@ -321,12 +323,19 @@ class MarkEntryReportProvider_stf with ChangeNotifier {
     log(request.body.toString());
     if (response.statusCode == 200) {
       setLoading(true);
-      // Map<String, dynamic> data =
-      //     jsonDecode(await response.stream.bytesToString());
+      Map<String, dynamic> data =
+          jsonDecode(await response.stream.bytesToString());
+      MarkEntryReport mark =
+      MarkEntryReport.fromJson(data);
 
-      // meList = data['meList'];
-      // studList = meList[0]['studentList'];
-      // print(studList);
+      meList = data['meList'];
+      print(meList);
+      headerList =data['headingList'];
+      print(headerList);
+   studList = meList[0]['studentList'];
+       print(studList);
+       tabmethod= mark.tabulationTypeCode;
+       entrymethod= mark.entryMethod;
       // List<MarkReportStudentList> templist = List<MarkReportStudentList>.from(
       //     meList[0]['studentList']
       //         .map((x) => MarkReportStudentList.fromJson(x)));
@@ -337,6 +346,63 @@ class MarkEntryReportProvider_stf with ChangeNotifier {
     } else {
       setLoading(false);
       print(" Error in markReportView");
+    }
+  }
+
+  //download
+  String? id;
+  String? name;
+  String? extension;
+  String? path;
+  String? url;
+  Future markReportViewDownload() async{
+
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    setLoading(true);
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+    };
+
+    var request = http.Request(
+        'POST', Uri.parse('${UIGuide.baseURL}/markentryReport/export-pdf'));
+    request.body = json.encode({
+    "studentMEViewModelList":meList,
+      "headingMarkList": headerList,
+      "filter": {},
+      "pdf": false,
+      "entryMethod": entrymethod,
+      "tabulationTypeCode": tabmethod
+    });
+    print("dddddddddddd");
+    log(request.body);
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+    log(request.body.toString());
+    if (response.statusCode == 200) {
+      setLoading(true);
+      Map<String, dynamic> data =
+      jsonDecode(await response.stream.bytesToString());
+      MarkReportDownload markfile =
+      MarkReportDownload.fromJson(data);
+      id= markfile.id;
+      name= markfile.name;
+      extension= markfile.extension;
+      path= markfile.path;
+      url= markfile.url;
+      print("llllllllll");
+      print(url);
+      print(path);
+
+
+
+    print("Correct");
+    setLoading(false);
+    notifyListeners();
+    } else {
+    setLoading(false);
+    print(" Error in download");
     }
   }
 }

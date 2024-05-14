@@ -6,15 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../../utils/constants.dart';
-
-class ProfileEdit extends StatefulWidget {
-  const ProfileEdit({Key? key}) : super(key: key);
+import 'package:image_picker/image_picker.dart';
+import 'package:image_cropper/image_cropper.dart';
+class ProfileEditNew extends StatefulWidget {
+  const ProfileEditNew({Key? key}) : super(key: key);
 
   @override
-  State<ProfileEdit> createState() => _ProfileEditState();
+  State<ProfileEditNew> createState() => _ProfileEditNewState();
 }
 
-class _ProfileEditState extends State<ProfileEdit> {
+class _ProfileEditNewState extends State<ProfileEditNew> {
   final _guardiancontroller = TextEditingController();
   final _emailcontroller = TextEditingController();
   final _mobilecontroller = TextEditingController();
@@ -65,6 +66,44 @@ class _ProfileEditState extends State<ProfileEdit> {
   }
 
   bool load = false;
+   int? sizee;
+  File? _imageFile;
+  CroppedFile? croppedFile;
+
+  Future<void> _pickFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      allowCompression: true
+    );
+
+    if (result != null)
+    {
+        _imageFile = File(result.files.single.path!);
+        final file = result.files.first;
+       sizee = file.size;
+         croppedFile = await ImageCropper().cropImage(
+          sourcePath: _imageFile!.path,
+          aspectRatioPresets: [CropAspectRatioPreset.ratio5x3],
+          uiSettings: [
+            AndroidUiSettings(
+                toolbarTitle: 'Cropper',
+                toolbarColor: Colors.deepOrange,
+                toolbarWidgetColor: Colors.white,
+                initAspectRatio: CropAspectRatioPreset.ratio5x3,
+                lockAspectRatio: true),
+            IOSUiSettings(
+              title: 'Cropper',
+            ),
+          ],
+
+        );
+
+      }
+
+    }
+
+
+
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -202,35 +241,37 @@ class _ProfileEditState extends State<ProfileEdit> {
                                                               children: [
                                                                 InkWell(
                                                                     onTap:
-                                                                        () async {
-                                                                      final result = await FilePicker.platform.pickFiles(
-                                                                          type:
-                                                                              FileType.custom,
-                                                                          allowMultiple: false,
-                                                                          allowedExtensions: [
-                                                                            'jpeg',
-                                                                            'jpg',
-                                                                            'jfif'
-                                                                          ]);
+                                                                         () async {
+                                                                           _pickFile();
 
-                                                                      if (result ==
-                                                                          null) {
-                                                                        return;
-                                                                      }
-
-                                                                      final file = result
-                                                                          .files
-                                                                          .first;
-                                                                      int sizee =
-                                                                          file.size;
-                                                                      print(
-                                                                          sizee);
-
-                                                                      if (sizee <=
+                                                                      // final result = await FilePicker.platform.pickFiles(
+                                                                      //     type:
+                                                                      //         FileType.custom,
+                                                                      //     allowMultiple: false,
+                                                                      //     allowedExtensions: [
+                                                                      //       'jpeg',
+                                                                      //       'jpg',
+                                                                      //       'jfif'
+                                                                      //     ]);
+                                                                      //
+                                                                      // if (result ==
+                                                                      //     null) {
+                                                                      //   return;
+                                                                      // }
+                                                                      //
+                                                                      // final file = result
+                                                                      //     .files
+                                                                      //     .first;
+                                                                      // int sizee =
+                                                                      //     file.size;
+                                                                      // print(
+                                                                      //     sizee);
+                                                                      //
+                                                                      if (sizee! <=
                                                                           200000) {
                                                                         await value.studentImageSave(
                                                                             context,
-                                                                            file.path!);
+                                                                            croppedFile!.path);
 
                                                                         _photoIDcontroller
                                                                             .text = (value.attachmentid ==
@@ -241,7 +282,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                                                                         setState(
                                                                             () {
                                                                           value.selectedImage =
-                                                                              File(file.path!);
+                                                                              File(croppedFile!.path);
                                                                         });
                                                                       } else {
                                                                         print(

@@ -1,8 +1,10 @@
 import 'package:essconnect/Application/Staff_Providers/Attendencestaff.dart';
+import 'package:essconnect/Presentation/Staff/TextSMS.dart/AbsenteesReportDirect.dart';
 import 'package:essconnect/utils/spinkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import '../../Application/AdminProviders/Attendanceprovider.dart';
 import '../../Constants.dart';
 import '../../utils/constants.dart';
 
@@ -1392,25 +1394,42 @@ class _AttendenceEntryState extends State<AttendenceEntry> {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
+
                           kWidth,
+                          Consumer<AttendenceStaffProvider>(
+                              builder: (context, value, child) =>
+
+                               value.
+                               studentsAttendenceView[0].studAttId==null?
+
+                                    SizedBox(height: 0,width: 0,):
+
+
+                                  TextButton(
+                                    onPressed: (){
+                                      Navigator.push(context, MaterialPageRoute(builder: (context)=>AbsenteesReportDirectStaff(course: courseId, division: divisionId, date:value.dateSend,coursename: markEntryInitialValuesController1.text,divname: markEntryDivisionListController1.text,datedisplay: value.dateDisplay,)));
+
+
+
+                                    },
+                                   //color: UIGuide.ButtonBlue,
+                                    // shape: RoundedRectangleBorder(
+                                    //   borderRadius: BorderRadius.circular(10.0),
+                                    // ),
+                                    child: const Text(
+                                      'Send Sms/Notification',
+                                      style: TextStyle(color: UIGuide.light_Purple,
+
+                                      ),
+
+                                    ),
+                                  )
+                              ),
                           const Spacer(),
                           Consumer<AttendenceStaffProvider>(
                               builder: (context, value, child) {
                             return
-                                //  value.loading
-                                //     ? MaterialButton(
-                                //         minWidth: 100,
-                                //         shape: RoundedRectangleBorder(
-                                //           borderRadius: BorderRadius.circular(10.0),
-                                //         ),
-                                //         onPressed: () async {},
-                                //         color: UIGuide.WHITE,
-                                //         child: const Text(
-                                //           'Saving....',
-                                //           style: TextStyle(color: UIGuide.light_Purple),
-                                //         ),
-                                //       )
-                                //     :
+
                                 MaterialButton(
                               minWidth: 100,
                               onPressed: value.loading
@@ -1509,6 +1528,94 @@ class _AttendenceEntryState extends State<AttendenceEntry> {
                                             value.dateSend,
                                             forecount,
                                             aftcount);
+
+                                      await  showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: const Center(
+                                                child: Text(
+                                                  "Do you want to send Sms/Notification",
+                                                  style: TextStyle(
+                                                    fontSize: 15,
+                                                  ),
+                                                ),
+                                              ),
+                                              actions: <Widget>[
+                                                Row(
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceEvenly,
+                                                  children: [
+                                                    Padding(
+                                                      padding:
+                                                      const EdgeInsets
+                                                          .only(
+                                                          left: 8.0),
+                                                      child: OutlinedButton(
+                                                        onPressed: () {
+                                                          Navigator.of(
+                                                              context)
+                                                              .pop();
+                                                        },
+                                                        style: ButtonStyle(
+                                                            side: MaterialStateProperty.all(const BorderSide(
+                                                                color: UIGuide
+                                                                    .light_Purple,
+                                                                width: 1.0,
+                                                                style: BorderStyle
+                                                                    .solid))),
+                                                        child: const Text(
+                                                          '  Cancel  ',
+                                                          style: TextStyle(
+                                                            color: Color
+                                                                .fromARGB(
+                                                                255,
+                                                                201,
+                                                                13,
+                                                                13),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    OutlinedButton(
+                                                      onPressed: () async {
+                                                       await
+                                                       Navigator.push(context, MaterialPageRoute(builder: (context)=>AbsenteesReportDirectStaff(course: courseId, division: divisionId, date:value.dateSend,coursename: markEntryInitialValuesController1.text,divname: markEntryDivisionListController1.text,datedisplay: value.dateDisplay,)));
+                                                       Navigator.pop(context);
+                                                       },
+                                                      style: ButtonStyle(
+                                                          side: MaterialStateProperty.all(const BorderSide(
+                                                              color: UIGuide
+                                                                  .light_Purple,
+                                                              width: 1.0,
+                                                              style: BorderStyle
+                                                                  .solid))),
+                                                      child: const Text(
+                                                        'Confirm',
+                                                        style: TextStyle(
+                                                          color: Color
+                                                              .fromARGB(
+                                                              255,
+                                                              12,
+                                                              162,
+                                                              46),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                )
+                                              ],
+                                            );
+                                          },
+                                        );
+
+
+                                        await value
+                                            .getstudentsAttendenceView(
+                                            value.dateSend,
+                                            divisionId);
+
                                       }
                                     },
                               color: UIGuide.light_Purple,

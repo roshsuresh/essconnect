@@ -3,12 +3,14 @@ import 'dart:developer';
 import 'package:essconnect/Presentation/StaffAsGuardian.dart/StudentHomeStaff.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import '../../Domain/Student/SiblingsNameModel.dart';
 import '../../Domain/Student/SiblingsTokenModel.dart';
 import '../../Presentation/Student/Student_home.dart';
 import '../../utils/constants.dart';
+import 'LoginProvider.dart';
 
 class SibingsProvider with ChangeNotifier {
   bool isLoading = false;
@@ -57,7 +59,7 @@ class SibingsProvider with ChangeNotifier {
       "StaffId": data.containsKey('StaffId') ? data['StaffId'] : null,
       "GuardianId": data['GuardianId'],
       "StudentId": childId,
-      "Type": data['role'] == "Guardian" ? "Student" : "Staff"
+      "Type": "Student"
     });
     print('Responde body  ${request.body}');
 
@@ -83,6 +85,7 @@ class SibingsProvider with ChangeNotifier {
         Uri.parse('${UIGuide.baseURL}/user/load-new-token-guardian/$childId'));
     request.headers.addAll(headers);
     print(request);
+    print("rrrrrrrrrrr");
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200 || response.statusCode == 201) {
@@ -91,6 +94,15 @@ class SibingsProvider with ChangeNotifier {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString('accesstoken', respo.accessToken);
       print('accessToken ${respo.accessToken}');
+      await Provider.of<LoginProvider>(context, listen: false)
+          .getToken(context);
+      await Provider.of<LoginProvider>(context, listen: false)
+          .getMobileViewerId();
+      await Provider.of<LoginProvider>(context, listen: false)
+          .getsavemobileViewer(context);
+      await Provider.of<LoginProvider>(context, listen: false)
+          .sendUserDetails(context);
+      print("ddddddddddddd");
       await Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => StudentHome()),

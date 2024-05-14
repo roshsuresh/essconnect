@@ -172,6 +172,51 @@ class MarkReportSubjectList {
 ////////////////                  view markReport                  ///////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
 
+
+class MarkEntryReport {
+  List<MarkEntryReportView>? meList;
+  List<HeadingList>? headingList;
+  String? entryMethod;
+  String? tabulationTypeCode;
+
+  MarkEntryReport(
+      {this.meList,
+        this.headingList,
+        this.entryMethod,
+        this.tabulationTypeCode});
+
+  MarkEntryReport.fromJson(Map<String, dynamic> json) {
+    if (json['meList'] != null) {
+      meList = <MarkEntryReportView>[];
+      json['meList'].forEach((v) {
+        meList!.add(new MarkEntryReportView.fromJson(v));
+      });
+    }
+    if (json['headingList'] != null) {
+      headingList = <HeadingList>[];
+      json['headingList'].forEach((v) {
+        headingList!.add(new HeadingList.fromJson(v));
+      });
+    }
+    entryMethod = json['entryMethod'];
+    tabulationTypeCode = json['tabulationTypeCode'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.meList != null) {
+      data['meList'] = this.meList!.map((v) => v.toJson()).toList();
+    }
+    if (this.headingList != null) {
+      data['headingList'] = this.headingList!.map((v) => v.toJson()).toList();
+    }
+    data['entryMethod'] = this.entryMethod;
+    data['tabulationTypeCode'] = this.tabulationTypeCode;
+    return data;
+  }
+}
+
+
 class MarkEntryReportView {
   String? divisionId;
   String? division;
@@ -366,7 +411,7 @@ class HeadingList {
   double? peMax;
   double? ceMax;
   double? course;
-  double? count;
+  int? count;
   double? totalTeMaxMark;
   double? totalPeMaxMark;
   double? totalCeMaxMark;
@@ -417,6 +462,56 @@ class HeadingList {
     data['totalTeMaxMark'] = this.totalTeMaxMark;
     data['totalPeMaxMark'] = this.totalPeMaxMark;
     data['totalCeMaxMark'] = this.totalCeMaxMark;
+    return data;
+  }
+}
+//download
+
+class MarkReportDownload {
+  String? name;
+  String? extension;
+  String? path;
+  String? url;
+  bool? isTemporary;
+  bool? isDeleted;
+  String? images;
+  String? createdAt;
+  String? id;
+
+  MarkReportDownload(
+      {this.name,
+        this.extension,
+        this.path,
+        this.url,
+        this.isTemporary,
+        this.isDeleted,
+        this.images,
+        this.createdAt,
+        this.id});
+
+  MarkReportDownload.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    extension = json['extension'];
+    path = json['path'];
+    url = json['url'];
+    isTemporary = json['isTemporary'];
+    isDeleted = json['isDeleted'];
+    images = json['images'];
+    createdAt = json['createdAt'];
+    id = json['id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['name'] = this.name;
+    data['extension'] = this.extension;
+    data['path'] = this.path;
+    data['url'] = this.url;
+    data['isTemporary'] = this.isTemporary;
+    data['isDeleted'] = this.isDeleted;
+    data['images'] = this.images;
+    data['createdAt'] = this.createdAt;
+    data['id'] = this.id;
     return data;
   }
 }

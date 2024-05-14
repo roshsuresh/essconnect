@@ -6,16 +6,32 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
-class NoticeBoardListAdmin extends StatelessWidget {
+import '../../../Application/AdminProviders/NoticeBoardadmin.dart';
+
+class NoticeBoardListAdmin extends StatefulWidget {
   const NoticeBoardListAdmin({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  State<NoticeBoardListAdmin> createState() => _NoticeBoardListAdminState();
+}
+
+class _NoticeBoardListAdminState extends State<NoticeBoardListAdmin> {
+
+  @override
+  void initState() {
+    super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       var p = Provider.of<NoticeBoardListAdminProvider>(context, listen: false);
       p.getNoticeListView(context);
       p.noticeList.clear();
+      p.setLoad(false);
+
     });
+  }
+  List sections=[];
+
+  @override
+  Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Consumer<NoticeBoardListAdminProvider>(
       builder: (context, provider, child) {
@@ -74,6 +90,7 @@ class NoticeBoardListAdmin extends StatelessWidget {
                                     children: [
                                       GestureDetector(
                                         onTap: () async {
+
                                           provider.editNoticeList(even);
                                           showModalBottomSheet(
                                               context: context,
@@ -301,77 +318,133 @@ class NoticeBoardListAdmin extends StatelessWidget {
                                                           ],
                                                         ),
                                                       ),
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(8.0),
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .end,
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .end,
-                                                          children: [
-                                                            MaterialButton(
-                                                              shape:
-                                                                  RoundedRectangleBorder(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            8.0),
-                                                                side: const BorderSide(
-                                                                    color: UIGuide
-                                                                        .light_Purple),
+                                                          Consumer<NoticeBoardListAdminProvider>(
+                                                          builder: (context, value, _) =>
+                                                     Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                          child: Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .end,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .end,
+                                                            children: [
+                                                              MaterialButton(
+                                                                shape:
+                                                                    RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              8.0),
+                                                                  side: const BorderSide(
+                                                                      color: UIGuide
+                                                                          .light_Purple),
+                                                                ),
+                                                                onPressed:
+                                                                    () async {
+                                                                  Navigator.pop(
+                                                                      context);
+                                                                },
+                                                                color: UIGuide
+                                                                    .ButtonBlue,
+                                                                child: const Text(
+                                                                    'Cancel'),
                                                               ),
-                                                              onPressed:
-                                                                  () async {
-                                                                Navigator.pop(
-                                                                    context);
-                                                              },
-                                                              color: UIGuide
-                                                                  .ButtonBlue,
-                                                              child: const Text(
-                                                                  'Cancel'),
-                                                            ),
-                                                            kWidth,
-                                                            MaterialButton(
-                                                              onPressed:
-                                                                  () async {
-                                                                await provider
-                                                                    .noticeAproove(
-                                                                        context,
-                                                                        even);
+                                                              kWidth,
 
-                                                                Navigator.pop(
-                                                                    context);
-                                                                provider
-                                                                    .noticeList
-                                                                    .clear();
-                                                                await provider
-                                                                    .getNoticeListView(
+                                                              SizedBox(
+                                                                width: 150,
+                                                                child: value.load
+                                                                    ? Container(
+                                                                    height: 40,
+                                                                    decoration: BoxDecoration(
+                                                                      borderRadius:
+                                                                      BorderRadius.circular(10),
+                                                                      border: Border.all(
+                                                                          color: UIGuide.light_Purple,
+                                                                          width: 1),
+                                                                    ),
+                                                                    child: const Center(
+                                                                        child: Text(
+                                                                          "Loading...",
+                                                                          style: TextStyle(
+                                                                              color: UIGuide.light_Purple,
+                                                                              fontSize: 15,
+                                                                              fontWeight: FontWeight.bold),
+                                                                        )))
+                                                                  :
+                                                                MaterialButton(
+                                                                  onPressed:
+                                                                      () async {
+                                                                    await provider
+                                                                        .noticeAproove(
+                                                                            context,
+                                                                            even);
+                                                                    Navigator.pop(
                                                                         context);
-                                                              },
-                                                              shape:
-                                                                  RoundedRectangleBorder(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            8.0),
-                                                                side: const BorderSide(
-                                                                    color: UIGuide
-                                                                        .light_Purple),
-                                                              ),
-                                                              color: UIGuide
-                                                                  .light_Purple,
-                                                              child: const Text(
-                                                                'Approve',
-                                                                style: TextStyle(
-                                                                    color: UIGuide
-                                                                        .WHITE),
-                                                              ),
-                                                            )
-                                                          ],
+                                                                    await Provider.of<NoticeBoardAdminProvider>(context,listen: false).
+                                                                    noticeBoardApproveNotification(
+                                                                        provider.id.toString(),
+                                                                        provider.createdDate.toString(),
+                                                                        provider.displayStartDate.toString(),
+                                                                        provider.displayEndDate.toString(),
+                                                                        provider.title.toString(),
+                                                                        provider.matter.toString(),
+                                                                        'student',
+                                                                        provider.course,
+                                                                        provider.divisions,
+                                                                        provider.categoryId.toString(),
+                                                                        provider.attachmentId.toString(),
+                                                                        provider.id.toString());
+                                                                    //
+                                                                    // await Provider.of<NoticeBoardAdminProvider>(context,listen: false).noticeBoardSendNotification(
+                                                                    //     provider.noticeList[index].entryDate.toString(),
+                                                                    //     provider.noticeList[index].startDate.toString(),
+                                                                    //     provider.noticeList[index].endDate.toString(),
+                                                                    //     provider.noticeList[index].title.toString(),
+                                                                    //     provider.noticeList[index].title.toString(),
+                                                                    //     'student',
+                                                                    //     provider.noticeList[index].,
+                                                                    //     division,
+                                                                    //     section,
+                                                                    //     CategoryId,
+                                                                    //     AttachmentId)
+
+
+                                                                    provider
+                                                                        .noticeList
+                                                                        .clear();
+                                                                    await provider
+                                                                        .getNoticeListView(
+                                                                            context);
+
+
+                                                                  },
+                                                                  shape:
+                                                                      RoundedRectangleBorder(
+                                                                    borderRadius:
+                                                                        BorderRadius
+                                                                            .circular(
+                                                                                8.0),
+                                                                    side: const BorderSide(
+                                                                        color: UIGuide
+                                                                            .light_Purple),
+                                                                  ),
+                                                                  color: UIGuide
+                                                                      .light_Purple,
+                                                                  child: const Text(
+                                                                    'Approve',
+                                                                    style: TextStyle(
+                                                                        color: UIGuide
+                                                                            .WHITE),
+                                                                  ),
+                                                                )
+                                                              ,
+                                                            )],
+                                                          ),
                                                         ),
                                                       )
                                                     ],

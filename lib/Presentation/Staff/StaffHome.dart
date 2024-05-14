@@ -3,6 +3,7 @@ import 'package:essconnect/Application/Module%20Providers.dart/SchoolNameProvide
 import 'package:essconnect/Application/Staff_Providers/NotificationCount.dart';
 import 'package:essconnect/Application/StudentProviders/CurriculamProviders.dart';
 import 'package:essconnect/Application/StudentProviders/InternetConnection.dart';
+import 'package:essconnect/Presentation/Admin/AdminLinks.dart';
 import 'package:essconnect/Presentation/Admin/Birthday/InitialScreen.dart';
 import 'package:essconnect/Presentation/Admin/WebViewLogin.dart';
 import 'package:essconnect/Presentation/Staff/AbsenteesReport.dart';
@@ -10,6 +11,7 @@ import 'package:essconnect/Presentation/Staff/Anecdotal/StudAnecdotal/AnecdotalI
 import 'package:essconnect/Presentation/Staff/ExamTT.dart/ExamTTScreen.dart';
 import 'package:essconnect/Presentation/Staff/MarkEntryNew.dart';
 import 'package:essconnect/Presentation/Staff/MissingReport.dart';
+import 'package:essconnect/Presentation/Staff/Portion/Portions.dart';
 import 'package:essconnect/Presentation/Staff/ScreenNotification.dart';
 import 'package:essconnect/Presentation/Staff/StudentReportNew/InitialScreen.dart';
 import 'package:essconnect/Presentation/Staff/ToolMarkEntry.dart';
@@ -32,16 +34,18 @@ import '../../Application/Staff_Providers/StaffProfile.dart';
 import '../../Constants.dart';
 import '../../utils/constants.dart';
 import '../Login_Activation/Login_page.dart';
+import '../Student/HomeWork.dart';
 import '../Student/PasswordChange.dart';
+import '../Student/PortionView.dart';
 import 'CommunicationToGuardian.dart';
 import 'GalleryUpload.dart';
 import 'NoticeBoard.dart';
 import 'RemarksEntry.dart';
-import 'StaffProfile.dart';
 import 'StaffTimeTable.dart';
 import 'StudAttendenceEntry.dart';
 import 'StudReport.dart';
-import 'ToGuardian.dart';
+import 'demooo.dart';
+
 
 class StaffHome extends StatefulWidget {
   StaffHome({Key? key}) : super(key: key);
@@ -163,12 +167,20 @@ class _StaffHomeState extends State<StaffHome> {
                                     children: [
                                       GestureDetector(
                                         onTap: () async {
+                                          await Provider.of<
+                                              Curriculamprovider>(
+                                              context,
+                                              listen: false)
+                                              .getCuriculamtoken();
                                           await Navigator.push(
                                               context,
                                               PageTransition(
                                                 type: PageTransitionType
                                                     .rightToLeft,
-                                                child: const StaffProfileView(),
+                                                child:
+                                                //const StaffProfileView(),
+                                           PortionScreen(),
+                                             //   MyHomePage(title: "demoo"),
                                                 duration: const Duration(
                                                     milliseconds: 300),
                                               ));
@@ -393,7 +405,11 @@ class _StaffHomeState extends State<StaffHome> {
                                                                 PageTransitionType
                                                                     .rightToLeft,
                                                             child:
-                                                                const Staff_Timetable(),
+                                                              const
+                                                      Staff_Timetable(),
+
+                                                             // AdminLinks(),
+                                                           // PortionScreen(),
                                                             duration:
                                                                 const Duration(
                                                                     milliseconds:
@@ -956,7 +972,10 @@ class _StaffHomeState extends State<StaffHome> {
                                                               type: PageTransitionType
                                                                   .rightToLeft,
                                                               child:
-                                                                  const StudReportStaff(),
+                                                                  const
+                                                          //  StudReportStaff(),
+                                                              //HomeWorkInbox(),
+                                                                  PortionView(),
                                                               duration:
                                                                   const Duration(
                                                                       milliseconds:
@@ -1180,19 +1199,25 @@ class _StaffHomeState extends State<StaffHome> {
                                                 Expanded(
                                                   child: GestureDetector(
                                                     onTap: () async {
-                                                      await Navigator.push(
+
+                                                      module.curiculam == true
+                                                          ? await Navigator.push(
                                                           context,
-                                                          PageTransition(
-                                                            type:
+                                                          await Navigator.push(
+                                                              context,
+                                                              PageTransition(
+                                                                type:
                                                                 PageTransitionType
                                                                     .rightToLeft,
-                                                            child:
+                                                                child:
                                                                 const AnecdotalInitialScreen(),
-                                                            duration:
+                                                                duration:
                                                                 const Duration(
                                                                     milliseconds:
-                                                                        300),
-                                                          ));
+                                                                    300),
+                                                              ))
+                                                      )
+                                                          : _noAcess();
                                                     },
                                                     child: Column(
                                                       mainAxisAlignment:
@@ -1325,7 +1350,7 @@ class _StaffHomeState extends State<StaffHome> {
                                                             .rightToLeft,
                                                         child:
                                                            // Staff_ToGuardian(),
-                                                        StaffToGuardian(),
+                                                        Notification_StaffToGuardain(),
                                                         duration:
                                                             const Duration(
                                                                 milliseconds:
@@ -1384,10 +1409,92 @@ class _StaffHomeState extends State<StaffHome> {
                                             ),
                                           ),
                                         ),
-                                        Expanded(
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
+                                        Consumer<StaffNotificationCountProviders>(
+                                          builder: (context, count, child) =>
+                                          count.loading
+                                              ? Padding(
+                                            padding:
+                                            const EdgeInsets.only(
                                                 left: 5, right: 5),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment
+                                                  .spaceEvenly,
+                                              children: [
+                                                Card(
+                                                  elevation: 10,
+                                                  color: Colors.white,
+                                                  shape:
+                                                  RoundedRectangleBorder(
+                                                    borderRadius:
+                                                    BorderRadius
+                                                        .circular(
+                                                        12.0),
+                                                  ),
+                                                  child: Padding(
+                                                    padding:
+                                                    const EdgeInsets
+                                                        .all(8.0),
+                                                    child: Container(
+                                                      height: 38,
+                                                      width: 38,
+                                                      decoration:
+                                                      const BoxDecoration(
+                                                        image:
+                                                        DecorationImage(
+                                                          image:
+                                                          AssetImage(
+                                                            'assets/Noticeboard.png',
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                kheight10,
+                                                const Text(
+                                                  'Notice Boatrd',
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                      FontWeight
+                                                          .w600,
+                                                      fontSize: 11,
+                                                      color:
+                                                      Colors.black),
+                                                )
+                                              ],
+                                            ),
+                                          )
+                                              : badges.Badge(
+                                            showBadge: count.noticecount == 0
+                                                ? false
+                                                : true,
+                                            badgeAnimation: const badges
+                                                .BadgeAnimation.rotation(
+                                              animationDuration:
+                                              Duration(seconds: 1),
+                                              colorChangeAnimationDuration:
+                                              Duration(seconds: 1),
+                                              loopAnimation: false,
+                                              curve:
+                                              Curves.fastOutSlowIn,
+                                              colorChangeAnimationCurve:
+                                              Curves.easeInCubic,
+                                            ),
+                                            position:
+                                            badges.BadgePosition
+                                                .topEnd(end: 9),
+                                            badgeContent: Text(
+                                              count.noticecount == null
+                                                  ? ''
+                                                  : count.noticecount
+                                                  .toString(),
+                                              style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 10,
+                                                  fontWeight:
+                                                  FontWeight.bold),
+                                            ),
                                             child: GestureDetector(
                                               onTap: () async {
                                                 await Navigator.push(
@@ -1395,58 +1502,71 @@ class _StaffHomeState extends State<StaffHome> {
                                                     PageTransition(
                                                       type: PageTransitionType
                                                           .rightToLeft,
-                                                      child: StaffNoticeBoard(),
-                                                      duration: const Duration(
-                                                          milliseconds: 300),
+                                                      child:
+                                                      StaffNoticeBoard(),
+                                                      duration:
+                                                      const Duration(
+                                                          milliseconds:
+                                                          300),
                                                     ));
                                               },
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceEvenly,
-                                                children: [
-                                                  Card(
-                                                    elevation: 10,
-                                                    color: Colors.white,
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              12.0),
-                                                    ),
-                                                    child: Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              8.0),
-                                                      child: Container(
-                                                        height: 38,
-                                                        width: 38,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          image:
-                                                              const DecorationImage(
-                                                            opacity: 20,
-                                                            image: AssetImage(
-                                                              'assets/Noticeboard.png',
+                                              child: Padding(
+                                                padding:
+                                                const EdgeInsets
+                                                    .only(
+                                                    left: 5,
+                                                    right: 5),
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceEvenly,
+                                                  children: [
+                                                    Card(
+                                                      elevation: 10,
+                                                      color:
+                                                      Colors.white,
+                                                      shape:
+                                                      RoundedRectangleBorder(
+                                                        borderRadius:
+                                                        BorderRadius
+                                                            .circular(
+                                                            12.0),
+                                                      ),
+                                                      child: Padding(
+                                                        padding:
+                                                        const EdgeInsets
+                                                            .all(
+                                                            8.0),
+                                                        child:
+                                                        Container(
+                                                          height: 38,
+                                                          width: 38,
+                                                          decoration:
+                                                          const BoxDecoration(
+                                                            image:
+                                                            DecorationImage(
+                                                              image:
+                                                              AssetImage(
+                                                                'assets/Noticeboard.png',
+                                                              ),
                                                             ),
                                                           ),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(10),
                                                         ),
                                                       ),
                                                     ),
-                                                  ),
-                                                  kheight10,
-                                                  const Text(
-                                                    'Notice Board',
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        fontSize: 11,
-                                                        color: Colors.black),
-                                                  )
-                                                ],
+                                                    kheight10,
+                                                    const Text(
+                                                      'Notice Board',
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                          FontWeight
+                                                              .w600,
+                                                          fontSize: 11,
+                                                          color: Colors
+                                                              .black),
+                                                    )
+                                                  ],
+                                                ),
                                               ),
                                             ),
                                           ),
@@ -1733,173 +1853,142 @@ class _StaffHomeState extends State<StaffHome> {
                               ),
                             ),
                             kheight10,
-                            kheight20,
-                            Row(children: <Widget>[
-                              const Text(
-                                ' ──  ',
-                                style: TextStyle(
-                                  color: Colors.black26,
-                                ),
-                              ),
-                              const Text(
-                                "Change Password/ SignOut",
-                                textAlign: TextAlign.left,
-                                style: TextStyle(
-                                    color: UIGuide.light_Purple,
-                                    fontWeight: FontWeight.w900),
-                              ),
-                              Expanded(
-                                child: Container(
-                                    margin: const EdgeInsets.only(
-                                        left: 20.0, right: 10.0),
-                                    child: const Divider(
-                                      color: Colors.black,
-                                      height: 36,
-                                    )),
-                              ),
-                            ]),
+                            Container(
+                                margin: const EdgeInsets.only(
+                                    left: 10.0, right: 10.0),
+                                child: const Divider(
+                                  color: UIGuide.light_Purple,
+                                  height: 36,
+                                )),
                             kheight10,
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                MaterialButton(
-                                    elevation: 10,
-                                    minWidth: 50,
-                                    color: UIGuide.THEME_LIGHT,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(30.0)),
-                                    onPressed: () async {
-                                      await Navigator.push(
-                                          context,
-                                          PageTransition(
-                                            type:
-                                                PageTransitionType.rightToLeft,
-                                            child: PasswordChange(),
-                                            duration: const Duration(
-                                                milliseconds: 300),
-                                          ));
-                                    },
-                                    child: const Icon(
-                                      Icons.key_sharp,
-                                      color: UIGuide.light_Purple,
-                                    )),
-                                MaterialButton(
-                                    minWidth: 50,
-                                    elevation: 10,
-                                    color: UIGuide.THEME_LIGHT,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(30.0)),
-                                    onPressed: () async {
-                                      showCupertinoDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return Container(
-                                            color:
-                                                Colors.black.withOpacity(0.5),
-                                            child: CupertinoAlertDialog(
-                                              title: const Text("Logout"),
-                                              content: const Text(
-                                                  "Are you sure you want to log out?"),
-                                              actions: <Widget>[
-                                                CupertinoDialogAction(
-                                                  child: const Text(
-                                                    "Cancel",
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        color: UIGuide
-                                                            .light_Purple),
-                                                  ),
-                                                  onPressed: () {
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                ),
-                                                CupertinoDialogAction(
-                                                  child: const Text("Logout",
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          color: UIGuide
-                                                              .light_Purple)),
-                                                  onPressed: () async {
-                                                    SharedPreferences prefs =
-                                                        await SharedPreferences
-                                                            .getInstance();
-                                                    print(
-                                                        "accesstoken  $prefs");
-                                                    await prefs
-                                                        .remove("accesstoken");
-                                                    print("username  $prefs");
-                                                    await prefs
-                                                        .remove("username");
-                                                    print("password  $prefs");
-                                                    await prefs
-                                                        .remove("password");
-
-                                                    Navigator.of(context)
-                                                        .pushAndRemoveUntil(
-                                                            MaterialPageRoute(
-                                                                builder:
-                                                                    (context) =>
-                                                                        LoginPage()),
-                                                            (Route<dynamic>
-                                                                    route) =>
-                                                                false);
-                                                  },
-                                                ),
-                                              ],
-                                            ),
-                                          );
+                                Column(
+                                  children: [
+                                    MaterialButton(
+                                        elevation: 10,
+                                        minWidth: 50,
+                                        color: UIGuide.THEME_LIGHT,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(30.0)),
+                                        onPressed: () async {
+                                          await Navigator.push(
+                                              context,
+                                              PageTransition(
+                                                type:
+                                                    PageTransitionType.rightToLeft,
+                                                child: PasswordChange(),
+                                                duration: const Duration(
+                                                    milliseconds: 300),
+                                              ));
                                         },
-                                      );
+                                        child: const Icon(
+                                          Icons.key_sharp,
+                                          color: UIGuide.light_Purple,
+                                        )),
+                                    kheight5,
+                                    const Text(
+                                      'Change Password',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 11,
+                                          color: Colors.black87),
+                                    )
+                                  ],
+                                ),
+                                Column(
+                                  children: [
+                                    MaterialButton(
+                                        minWidth: 50,
+                                        elevation: 10,
+                                        color: UIGuide.THEME_LIGHT,
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(30.0)),
+                                        onPressed: () async {
+                                          showCupertinoDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return Container(
+                                                color:
+                                                    Colors.black.withOpacity(0.5),
+                                                child: CupertinoAlertDialog(
+                                                  title: const Text("Logout"),
+                                                  content: const Text(
+                                                      "Are you sure you want to log out?"),
+                                                  actions: <Widget>[
+                                                    CupertinoDialogAction(
+                                                      child: const Text(
+                                                        "Cancel",
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.w500,
+                                                            color: UIGuide
+                                                                .light_Purple),
+                                                      ),
+                                                      onPressed: () {
+                                                        Navigator.of(context).pop();
+                                                      },
+                                                    ),
+                                                    CupertinoDialogAction(
+                                                      child: const Text("Logout",
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight.w500,
+                                                              color: UIGuide
+                                                                  .light_Purple)),
+                                                      onPressed: () async {
+                                                        SharedPreferences prefs =
+                                                            await SharedPreferences
+                                                                .getInstance();
+                                                        print(
+                                                            "accesstoken  $prefs");
+                                                        await prefs
+                                                            .remove("accesstoken");
+                                                        print("username  $prefs");
+                                                        await prefs
+                                                            .remove("username");
+                                                        print("password  $prefs");
+                                                        await prefs
+                                                            .remove("password");
 
-                                      // AwesomeDialog(
-                                      //   context: context,
-                                      //   dialogType: DialogType.info,
-                                      //   borderSide: const BorderSide(
-                                      //       color: UIGuide.light_Purple,
-                                      //       width: 2),
-                                      //   buttonsBorderRadius:
-                                      //       const BorderRadius.all(
-                                      //           Radius.circular(2)),
-                                      //   headerAnimationLoop: false,
-                                      //   animType: AnimType.bottomSlide,
-                                      //   title: 'SignOut',
-                                      //   desc: 'Are you sure want to sign out',
-                                      //   showCloseIcon: true,
-                                      //   btnOkColor: UIGuide.button1,
-                                      //   btnCancelColor: UIGuide.button2,
-                                      //   btnCancelOnPress: () {
-                                      //     return;
-                                      //   },
-                                      //   btnOkOnPress: () async {
-                                      //     SharedPreferences prefs =
-                                      //         await SharedPreferences
-                                      //             .getInstance();
-                                      //     print("accesstoken  $prefs");
-                                      //     await prefs.remove("accesstoken");
-                                      //     print("username  $prefs");
-                                      //     await prefs.remove("username");
-                                      //     print("password  $prefs");
-                                      //     await prefs.remove("password");
+                                                        Navigator.of(context)
+                                                            .pushAndRemoveUntil(
+                                                                MaterialPageRoute(
+                                                                    builder:
+                                                                        (context) =>
+                                                                            LoginPage()),
+                                                                (Route<dynamic>
+                                                                        route) =>
+                                                                    false);
+                                                      },
+                                                    ),
+                                                  ],
+                                                ),
+                                              );
+                                            },
+                                          );
 
-                                      //     Navigator.of(context)
-                                      //         .pushAndRemoveUntil(
-                                      //             MaterialPageRoute(
-                                      //                 builder: (context) =>
-                                      //                     LoginPage()),
-                                      //             (Route<dynamic> route) =>
-                                      //                 false);
-                                      //   },
-                                      // ).show();
-                                    },
-                                    child: const Icon(
-                                      Icons.logout_outlined,
-                                      color: UIGuide.light_Purple,
-                                    )),
+                                        },
+                                        child: const Icon(
+                                          Icons.logout_outlined,
+                                          color: UIGuide.light_Purple,
+                                        )),
+                                    kheight5,
+                                    const Text(
+                                      'SignOut',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 11,
+                                          color: Colors.black87),
+                                    )
+                                  ],
+                                ),
                               ],
                             ),
                             kheight20,
@@ -1915,10 +2004,7 @@ class _StaffHomeState extends State<StaffHome> {
                             kheight20,
                             kheight10,
                             kheight20,
-                            kheight10,
-                            kheight10,
-                            kheight20,
-                            kheight20,
+
                           ],
                         ),
                       ),

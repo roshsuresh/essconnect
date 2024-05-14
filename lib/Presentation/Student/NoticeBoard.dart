@@ -13,6 +13,7 @@ import 'package:photo_view/photo_view.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import '../../Application/StudentProviders/NoticProvider.dart';
+import '../../Application/StudentProviders/NotificationCountProviders.dart';
 import '../../Constants.dart';
 import '../../utils/TextWrap(moreOption).dart';
 import '../../utils/constants.dart';
@@ -22,9 +23,22 @@ class NoticeBoard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Provider.of<NoticeProvider>(context, listen: false).getnoticeList();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      var p = Provider.of<NoticeProvider>(context,
+          listen: false);
+
+      await p.getnoticeList();
+      await Provider.of<NoticeProvider>(context, listen: false)
+          .seeNoticeBoard();
+      await Provider.of<StudNotificationCountProviders>(context, listen: false)
+          .getnotificationCount();
     });
+    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    //   Provider.of<NoticeProvider>(context, listen: false).getnoticeList();
+    //   Provider.of<NoticeProvider>(context, listen: false).seeNoticeBoard();
+    //    Provider.of<StudNotificationCountProviders>(context, listen: false)
+    //       .getnotificationCount();
+    // });
     var size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(

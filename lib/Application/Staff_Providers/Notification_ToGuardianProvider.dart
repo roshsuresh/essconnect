@@ -18,6 +18,10 @@ import '../../Presentation/Staff/CommunicationToGuardian.dart';
 
 class NotificationToGuardian_Providers with ChangeNotifier {
   bool _loading = false;
+
+  String? replacementValue;
+
+  String? replacedString;
   bool get loading => _loading;
   setLoading(bool value) {
     _loading = value;
@@ -221,7 +225,7 @@ class NotificationToGuardian_Providers with ChangeNotifier {
   // }
 
   sendNotification(
-      BuildContext context, String body, String content, List<String> to,
+      BuildContext context, String body, String content, List to,
       {required String sentTo}) async {
     Map<String, dynamic> data = await parseJWT();
     SharedPreferences _pref = await SharedPreferences.getInstance();
@@ -293,6 +297,63 @@ class NotificationToGuardian_Providers with ChangeNotifier {
             ),
           ),
         );
+      }
+    } catch (e) {
+      setLoading(false);
+
+      snackbarWidget(3, "Something Went Wrong", context);
+    }
+  }
+//Send common notification
+
+  sendCommonNotification(
+      BuildContext context, String body, String content, List to,
+      {required String sentTo}) async {
+    Map<String, dynamic> data = await parseJWT();
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    setLoading(true);
+
+    print(_pref.getString('accesstoken'));
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+    };
+    try {
+      var request = http.Request('POST',
+          Uri.parse('${UIGuide.baseURL}/mobileapp/token/saveusernotification'));
+      print(
+          Uri.parse('${UIGuide.baseURL}/mobileapp/token/saveusernotification'));
+      request.body = json.encode({
+        "Title": body,
+        "Body": content,
+        "FromStaffId":
+        data['role'] == "Guardian" ? data['StudentId'] : data["StaffId"],
+        "SentTo": sentTo,
+        "ToId": to,
+        "IsSeen": false
+      });
+      print({
+        "Title-": body,
+        "Body": content,
+        "FromStaffId":
+        data['role'] == "Guardian" ? data['StudentId'] : data["StaffId"],
+        "SentTo": sentTo,
+        "ToId": to,
+        "IsSeen": false
+      });
+
+      request.headers.addAll(headers);
+
+      http.StreamedResponse response = await request.send();
+
+      if (response.statusCode == 200) {
+        setLoading(true);
+        print(await response.stream.bytesToString());
+
+        setLoading(false);
+        notifyListeners();
+      } else {
+        setLoading(false);
       }
     } catch (e) {
       setLoading(false);
@@ -404,6 +465,7 @@ class NotificationToGuardian_Providers with ChangeNotifier {
         setLoading(true);
         var data = jsonDecode(await response.stream.bytesToString());
         print(data);
+        print("bimalll");
         Map<String, dynamic> smsfor = data["smsSettings"];
         List<SmsFormatByStaff> templist = List<SmsFormatByStaff>.from(
             smsfor["smsFormat"].map((x) => SmsFormatByStaff.fromJson(x)));
@@ -429,7 +491,47 @@ class NotificationToGuardian_Providers with ChangeNotifier {
   }
 
   //sms format list
+String? replacednewString;
+  List<String> extractedValues=[];
+  List<String> extractValuesInDoubleBrackets(String input) {
+    RegExp regExp = RegExp(r'\[\[(.*?)\]\]');
+    Iterable<Match> matches = regExp.allMatches(input);
 
+    List<String> extractedValues =
+    matches.map((match) => match.group(1)!).toList();
+
+    return extractedValues;
+  }
+
+    //replace
+  void main() {
+
+    String replacedString = replaceValuesInsideDoubleBrackets(smsBody!, extractedValues);
+
+    print(replacedString);
+  }
+
+  String replaceValuesInsideDoubleBrackets(String originalString, List<String> replacementList) {
+    int index = 0;
+
+     replacedString = originalString.replaceAllMapped(
+      RegExp(r'\[\[(.*?)\]\]'),
+          (Match match) {
+        // Get the replacement value from the list.
+         replacementValue = replacementList.length > index ? '[[${replacementList[index]}]]' : '';
+
+        index++;
+
+        return replacementValue!;
+      },
+    );
+    print("roooooooo");
+  print(replacedString);
+    return replacedString!;
+  }
+
+
+  //smscontent
   String? smsBody;
   Future getSMSContent(String idd) async {
     setLoading(true);
@@ -445,10 +547,17 @@ class NotificationToGuardian_Providers with ChangeNotifier {
           headers: headers);
       if (response.statusCode == 200) {
         setLoading(true);
+        print("roshh");
         print('correct');
         Map<String, dynamic> dashboard = json.decode(response.body);
         SmsFormatList ac = SmsFormatList.fromJson(dashboard);
         smsBody = ac.smsBody;
+
+       extractedValues = extractValuesInDoubleBrackets(smsBody!);
+        print("binithaaaa");
+        print(extractedValues);
+        print(extractedValues.length);
+
         setLoading(false);
         notifyListeners();
       } else {
@@ -459,6 +568,8 @@ class NotificationToGuardian_Providers with ChangeNotifier {
       setLoading(false);
     }
   }
+
+
 
   //sms balance
 
@@ -531,6 +642,93 @@ class NotificationToGuardian_Providers with ChangeNotifier {
       setLoading(false);
     }
   }
+
+
+  //sms format edit
+
+
+  Future smsformatedit(BuildContext context,String smsbody,String name,String smsBodyold,bool isapproved,List changable,String formatid) async {
+    setLoading(true);
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+    };
+    try {
+      var request = http.Request(
+          'POST',
+          Uri.parse(
+              '${UIGuide.baseURL}/sms-to-guardian/save-format/$formatid'));
+      print(Uri.parse(
+          '${UIGuide.baseURL}/sms-to-guardian/save-format/$formatid'));
+      request.body = json.encode({
+        "smsBody": replacedString,
+        "content": null,
+        "formatName": {
+          "id":formatid,
+          "name": name,
+          "smsBody": smsBodyold,
+          "content": null,
+          "isApproved": isapproved
+        },
+        "changeableText": changable
+      }
+      );
+
+      print("edittttttt");
+      print(json.encode({
+        "smsBody": replacedString,
+        "content": null,
+        "formatName": {
+          "id":formatid,
+          "name": name,
+          "smsBody": smsBodyold,
+          "content": null,
+          "isApproved": isapproved
+        },
+        "changeableText": changable
+      }
+      ));
+      request.headers.addAll(headers);
+
+      http.StreamedResponse response = await request.send();
+      if (response.statusCode == 200) {
+        print('correct');
+        Map<String, dynamic> data =
+        jsonDecode(await response.stream.bytesToString());
+        SmsFormatEdit editFormt = SmsFormatEdit.fromJson(data);
+
+        smsBody = editFormt.smsBody;
+
+        await AwesomeDialog(
+            dismissOnTouchOutside: false,
+            dismissOnBackKeyPress: false,
+            context: context,
+            dialogType: DialogType.success,
+            animType: AnimType.rightSlide,
+            headerAnimationLoop: false,
+            title: 'SMS Format Updated Successfully',
+            titleTextStyle: TextStyle(
+              fontSize: 16
+            ),
+            btnOkOnPress: () async {
+             Navigator.pop(context);
+            },
+            btnOkColor: Colors.green)
+            .show();
+
+
+        setLoading(false);
+        notifyListeners();
+      } else {
+        setLoading(true);
+        print('Error in response');
+      }
+    } catch (e) {
+      setLoading(false);
+    }
+  }
+
 
   // //sendsms
   // bool _loadsendSms = false;

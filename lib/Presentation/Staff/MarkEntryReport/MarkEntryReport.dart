@@ -1,14 +1,19 @@
+import 'dart:developer';
+import 'dart:io';
+import 'dart:isolate';
+import 'dart:ui';
 import 'package:essconnect/Application/Staff_Providers/MarkReportProvider.dart';
 import 'package:essconnect/Domain/Staff/MarkEntryReport.dart';
-import 'package:essconnect/utils/spinkit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import '../../../Constants.dart';
 import '../../../utils/constants.dart';
-import 'UASmarkEntry.dart';
+import 'package:http/http.dart' as http;
 
 class MarkEntryReport extends StatefulWidget {
   MarkEntryReport({Key? key}) : super(key: key);
@@ -43,7 +48,7 @@ class _MarkEntryReportState extends State<MarkEntryReport> {
   List subjectData = [];
 
   String subject = '';
-
+  final ReceivePort _port = ReceivePort();
   @override
   void initState() {
     super.initState();
@@ -70,8 +75,69 @@ class _MarkEntryReportState extends State<MarkEntryReport> {
       examController1.clear();
 
       await p.markReportcourse();
+
+      IsolateNameServer.registerPortWithName(_port.sendPort, 'downloader_send_port');
+      _port.listen((dynamic data) {
+        String id = data[0];
+        // DownloadTaskStatus status = DownloadTaskStatus(data[1]);
+        int progress = data[2];
+        setState((){ });
+
+      });
+
+      FlutterDownloader.registerCallback(downloadCallback);
+
     });
+
   }
+
+  @pragma('vm:entry-point')
+  static void downloadCallback(String id, int status, int progress) {
+    print('Download task ($id) is in status ($status) and $progress% complete');
+  }
+
+  @override
+  void dispose() {
+    IsolateNameServer.removePortNameMapping('downloader_send_port');
+    super.dispose();
+  }
+
+  Future<void> requestDownload(String _url, String _name,String _id) async {
+    var _localPath;
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text('Downloading file...'),
+      duration: Duration(seconds: 1), // Adjust duration as needed
+    ));
+
+    if (Platform.isAndroid) {
+      _localPath = '/storage/emulated/0/Download';
+    } else if (Platform.isIOS) {
+      final dir = await getApplicationDocumentsDirectory();
+
+      _localPath = dir.path;
+    }
+
+    print("pathhhh  $_localPath");
+    final savedDir = Directory(_localPath);
+    await savedDir.create(recursive: true).then((value) async {
+      String? _taskid = await FlutterDownloader.enqueue(
+        savedDir: _localPath,
+        url: _url,
+        fileName: " $_name$_id.xlsx",
+        showNotification: true,
+        openFileFromNotification: true,
+      );
+      log("nweurll $_url");
+
+      print(_taskid);
+    });
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text('Download complete'),
+      duration: Duration(seconds: 1), // Adjust duration as needed
+    ));
+  }
+
+
 
   Future<void> refresh() async {
     await Future.delayed(const Duration(seconds: 1));
@@ -769,9 +835,11 @@ class _MarkEntryReportState extends State<MarkEntryReport> {
                                       listen: false)
                                   .markReportView(courseId, division, partId,
                                       examId, subject, subText, divText);
-                            },
+                              await value.markReportViewDownload();
+                            requestDownload(value.url.toString(),value.name.toString(),value.id.toString());
+                                                        },
                             child: const Text(
-                              'View',
+                              'Download',
                               style: TextStyle(
                                   letterSpacing: 2,
                                   color: UIGuide.WHITE,

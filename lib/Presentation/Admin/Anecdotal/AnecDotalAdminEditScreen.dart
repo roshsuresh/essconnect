@@ -2,6 +2,8 @@
 import 'package:essconnect/Application/Staff_Providers/Anecdotal/AnecdotalStaffListProvider.dart';
 import 'package:essconnect/Constants.dart';
 import 'package:essconnect/Domain/Staff/Anecdotal/InitialSelectionModel.dart';
+import 'package:essconnect/Domain/Staff/Anecdotal/StudListviewAnectdotal.dart';
+import 'package:essconnect/Presentation/Admin/Anecdotal/AnecdotalInitialScreenAdmin.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:essconnect/utils/spinkit.dart';
 import 'package:flutter/material.dart';
@@ -13,20 +15,17 @@ import 'package:multi_select_flutter/chip_display/multi_select_chip_display.dart
 import 'package:multi_select_flutter/dialog/multi_select_dialog_field.dart';
 import 'package:multi_select_flutter/util/multi_select_list_type.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../Application/Staff_Providers/Anecdotal/AncedotalStaffProvider.dart';
 import '../../../../Debouncer.dart';
-import '../../../../Domain/Staff/Anecdotal/StudListviewAnectdotal.dart';
-import 'AnecdotalInitialScreen.dart';
-class AnecdotalEditScreen extends StatefulWidget {
+class AnecdotalAdminEditScreen extends StatefulWidget {
   String id;
-  AnecdotalEditScreen({super.key,required this.id});
+  AnecdotalAdminEditScreen({super.key,required this.id});
 
   @override
-  State<AnecdotalEditScreen> createState() => _AnecdotalEditScreenState();
+  State<AnecdotalAdminEditScreen> createState() => _AnecdotalAdminEditScreenState();
 }
 
-class _AnecdotalEditScreenState extends State<AnecdotalEditScreen> {
+class _AnecdotalAdminEditScreenState extends State<AnecdotalAdminEditScreen> {
   final categoryController = TextEditingController();
 
   final categoryIDController = TextEditingController();
@@ -115,7 +114,7 @@ class _AnecdotalEditScreenState extends State<AnecdotalEditScreen> {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                          const AnecdotalInitialScreen()));
+                          const AnecdotalInitialScreenAdmin()));
                 },
                 icon: const Icon(Icons.refresh))
           ],
@@ -779,12 +778,33 @@ class _AnecdotalEditScreenState extends State<AnecdotalEditScreen> {
                                           listen: false)
                                           .staffId,
                                       context);
-                                 if(value.status==200){
-
-                                  await Navigator.pushReplacement(context,
-                                      MaterialPageRoute(builder: (context) =>
-                                          AnecdotalInitialScreen()));
-                                  }
+                                  value.status==200?
+                                  value.showGuardian==true?
+                                  await value.sendanecdotalUpdateNotiication(
+                                      widget.id,
+                                      categoryIDController.text,
+                                      subjectIDController.text,
+                                      remarkController.text,
+                                      value.studId.toString(),
+                                      value.studId.toString(),
+                                      Provider
+                                          .of<AnecdotalStaffProviders>(context,
+                                          listen: false)
+                                          .staffId == '' ? staffId :
+                                      Provider
+                                          .of<AnecdotalStaffProviders>(context,
+                                          listen: false)
+                                          .staffId,
+                                      context)
+                                      :
+                                  print("not send"):
+                                  print("error");
+                                 // if(value.status==200){
+                                 //
+                                 //  await Navigator.pushReplacement(context,
+                                 //      MaterialPageRoute(builder: (context) =>
+                                 //          AnecdotalInitialScreenAdmin()));
+                                 //  }
 
                               }
 

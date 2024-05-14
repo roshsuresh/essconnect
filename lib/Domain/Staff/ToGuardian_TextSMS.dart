@@ -139,6 +139,123 @@ class SmsFormatByStaff {
   }
 }
 
+//Notification format
+
+class NotificationFormats {
+  String? text;
+  String? value;
+  bool? isApproved;
+
+  NotificationFormats({this.text, this.value, this.isApproved});
+
+  NotificationFormats.fromJson(Map<String, dynamic> json) {
+    text = json['text'];
+    value = json['value'];
+    isApproved = json['isApproved'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['text'] = this.text;
+    data['value'] = this.value;
+    data['isApproved'] = this.isApproved;
+    return data;
+  }
+}
+//NotificationList
+
+class NotificationAllFormats {
+  String? id;
+  String? schoolId;
+  Null? notificationFormatGroupId;
+  String? notificationFormatName;
+  String? notificationTitle;
+  String? notificationDescription;
+  String? formName;
+  String? createStaffId;
+
+  NotificationAllFormats(
+      {this.id,
+        this.schoolId,
+        this.notificationFormatGroupId,
+        this.notificationFormatName,
+        this.notificationTitle,
+        this.notificationDescription,
+        this.formName,
+        this.createStaffId});
+
+  NotificationAllFormats.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    schoolId = json['schoolId'];
+    notificationFormatGroupId = json['notificationFormatGroupId'];
+    notificationFormatName = json['notificationFormatName'];
+    notificationTitle = json['notificationTitle'];
+    notificationDescription = json['notificationDescription'];
+    formName = json['formName'];
+    createStaffId = json['createStaffId'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['schoolId'] = this.schoolId;
+    data['notificationFormatGroupId'] = this.notificationFormatGroupId;
+    data['notificationFormatName'] = this.notificationFormatName;
+    data['notificationTitle'] = this.notificationTitle;
+    data['notificationDescription'] = this.notificationDescription;
+    data['formName'] = this.formName;
+    data['createStaffId'] = this.createStaffId;
+    return data;
+  }
+}
+
+
+//getnotificationcount
+class NotificationFormatContent {
+  String? id;
+  String? schoolId;
+  String? notificationFormatGroupId;
+  String? notificationFormatName;
+  String? notificationTitle;
+  String? notificationDescription;
+  String? formName;
+  String? createStaffId;
+
+  NotificationFormatContent(
+      {this.id,
+        this.schoolId,
+        this.notificationFormatGroupId,
+        this.notificationFormatName,
+        this.notificationTitle,
+        this.notificationDescription,
+        this.formName,
+        this.createStaffId});
+
+  NotificationFormatContent.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    schoolId = json['schoolId'];
+    notificationFormatGroupId = json['notificationFormatGroupId'];
+    notificationFormatName = json['notificationFormatName'];
+    notificationTitle = json['notificationTitle'];
+    notificationDescription = json['notificationDescription'];
+    formName = json['formName'];
+    createStaffId = json['createStaffId'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['schoolId'] = this.schoolId;
+    data['notificationFormatGroupId'] = this.notificationFormatGroupId;
+    data['notificationFormatName'] = this.notificationFormatName;
+    data['notificationTitle'] = this.notificationTitle;
+    data['notificationDescription'] = this.notificationDescription;
+    data['formName'] = this.formName;
+    data['createStaffId'] = this.createStaffId;
+    return data;
+  }
+}
+
 //sms formats complete view
 
 class SmsFormatsCompleteview {

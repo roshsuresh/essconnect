@@ -53,6 +53,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
       await p.removeAllSubjectClear();
       await p.removeAllOptionSubjectListClear();
       await p.removeAllExamClear();
+       p.booleanList.clear();
       await p.clearStudentMEList();
       await p.getMarkEntryInitialValues(context);
       p.isTerminated = false;
@@ -66,6 +67,8 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
   String divisionId = '';
   String exam = '';
   String? attendancee;
+  String? peAttendance;
+  String? ceAttendance;
 
   final markEntryInitialValuesController = TextEditingController();
   final markEntryInitialValuesController1 = TextEditingController();
@@ -1168,6 +1171,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
 
                                       value.studListUAS.clear();
                                       value.gradeListUAS.clear();
+                                      value.booleanList.clear();
 
                                       if (course.isEmpty ||
                                           division.isEmpty ||
@@ -2302,7 +2306,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                     .toString()
                                             : ceMarkController[index].text;
 
-                                        print('fn called------------');
+                                        print('fn called------------ffff');
 
                                         return Padding(
                                           padding: const EdgeInsets.all(4.0),
@@ -2401,7 +2405,12 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                 left: 10.0),
                                                         child: GestureDetector(
                                                           onTap: () async {
+                                                            value.booleanList[index]=true;
+                                                            print("ssassasasasasasaasaa");
+                                                            print(value.booleanList);
+
                                                             setState(() {
+
                                                               if (value
                                                                       .studListUAS[
                                                                           index]
@@ -2420,23 +2429,28 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                     .studListUAS[
                                                                         index]
                                                                     .teMark = null;
+
+                                                                value.existCeAttendance==false?
                                                                 value
                                                                     .studListUAS[
                                                                         index]
-                                                                    .ceMark = null;
+                                                                    .ceMark = null:"";
+                                                                value.existPeAttendance==false?
                                                                 value
                                                                     .studListUAS[
                                                                         index]
-                                                                    .peMark = null;
+                                                                    .peMark = null:"";
                                                                 teMarkController[
                                                                         index]
                                                                     .clear();
+                                                                value.existPeAttendance==false?
                                                                 practicalMarkController[
                                                                         index]
-                                                                    .clear();
+                                                                    .clear():"";
+                                                                value.existCeAttendance==false?
                                                                 ceMarkController[
                                                                         index]
-                                                                    .clear();
+                                                                    .clear():"";
                                                               }
                                                               attendancee = value
                                                                   .studListUAS[
@@ -2445,6 +2459,8 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
 
                                                               print(
                                                                   "attendace   $attendancee");
+
+
                                                             });
                                                           },
                                                           child: Container(
@@ -2470,7 +2486,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                         ),
                                                       ),
                                                       kWidth,
-                                                      kWidth,
+
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
@@ -2628,10 +2644,12 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                       .teMark =
                                                                   double.tryParse(
                                                                       resultt);
+                                                              value.booleanList[index]=true;
                                                             },
                                                           ),
                                                         ),
                                                       ),
+
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
@@ -2650,7 +2668,68 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                             ))),
                                                       ),
                                                       kWidth,
-                                                      kWidth,
+                                                      value.existPeAttendance==false ?
+                                                          SizedBox(height: 0,width: 0,):
+                                                      Padding(
+                                                        padding:
+                                                        const EdgeInsets.only(
+                                                            left: 10.0),
+                                                        child: GestureDetector(
+                                                          onTap: () {
+                                                            setState(() {
+                                                              value.booleanList[index]=true;
+                                                              if (value
+                                                                  .studListUAS[
+                                                              index]
+                                                                  .peAttendance ==
+                                                                  'A') {
+                                                                value
+                                                                    .studListUAS[
+                                                                index]
+                                                                    .peAttendance = 'P';
+                                                              } else {
+                                                                value
+                                                                    .studListUAS[
+                                                                index]
+                                                                    .peAttendance = 'A';
+                                                                value
+                                                                    .studListUAS[
+                                                                index]
+                                                                    .peMark = null;
+
+                                                                practicalMarkController[
+                                                                index]
+                                                                    .clear();
+
+                                                              }
+                                                              peAttendance = value
+                                                                  .studListUAS[
+                                                              index]
+                                                                  .peAttendance;
+
+                                                              print(
+                                                                  "peattendace   $peAttendance");
+                                                            });
+                                                          },
+                                                          child: Container(
+                                                            color: Colors
+                                                                .transparent,
+                                                            width: 28,
+                                                            height: 26,
+                                                            child: SizedBox(
+                                                                width: 28,
+                                                                height: 26,
+                                                                child: value.studListUAS[index].peAttendance ==
+                                                                    'A'
+                                                                    ? SvgPicture
+                                                                    .asset(UIGuide
+                                                                    .absent)
+                                                                    : SvgPicture
+                                                                    .asset(UIGuide
+                                                                    .present)),
+                                                          ),
+                                                        ),
+                                                      ),
                                                       Padding(
                                                         padding:
                                                             const EdgeInsets
@@ -2666,14 +2745,24 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                 practicalMarkController[
                                                                     index],
                                                             //  focusNode: FocusNode(),
-                                                            enabled: value
-                                                                            .studListUAS[
-                                                                                index]
-                                                                            .attendance ==
-                                                                        'A' ||
-                                                                    value.examStatusUAS ==
-                                                                        'Synchronized'
+                                                            enabled: value.existPeAttendance==true?
+                                                            value
+                                                                .studListUAS[
+                                                            index]
+                                                                .peAttendance ==
+                                                                'A' ||
+                                                                value.examStatusUAS ==
+                                                                    'Synchronized'
                                                                 ? false
+                                                                : true
+                                                                :
+                                                            value
+                                                                .studListUAS[
+                                                            index]
+                                                                .attendance ==
+                                                                'A' ||
+                                                                value.examStatusUAS ==
+                                                                    'Synchronized' ? false
                                                                 : true,
                                                             cursorColor: UIGuide
                                                                 .light_Purple,
@@ -2808,6 +2897,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                       .peMark =
                                                                   double.tryParse(
                                                                       resultt);
+                                                              value.booleanList[index]=true;
                                                             },
                                                           ),
                                                         ),
@@ -2834,9 +2924,73 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                 ),
                                                 Row(
                                                   children: [
-                                                    const SizedBox(
-                                                      width: 58,
+                                                    // const SizedBox(
+                                                    //   width: 58,
+                                                    // ),
+                                                    value.existCeAttendance==false ?
+                                                    SizedBox(height: 0,width: 38,):
+                                                    Padding(
+                                                      padding:
+                                                      const EdgeInsets.only(
+                                                          left: 10.0),
+                                                      child: GestureDetector(
+                                                        onTap: () {
+                                                          setState(() {
+                                                            value.booleanList[index]=true;
+                                                            if (value
+                                                                .studListUAS[
+                                                            index]
+                                                                .ceAttendance ==
+                                                                'A') {
+                                                              value
+                                                                  .studListUAS[
+                                                              index]
+                                                                  .ceAttendance = 'P';
+                                                            } else {
+                                                              value
+                                                                  .studListUAS[
+                                                              index]
+                                                                  .ceAttendance = 'A';
+                                                              value
+                                                                  .studListUAS[
+                                                              index]
+                                                                  .ceMark = null;
+
+                                                              ceMarkController[
+                                                              index]
+                                                                  .clear();
+
+                                                            }
+                                                            ceAttendance = value
+                                                                .studListUAS[
+                                                            index]
+                                                                .ceAttendance;
+
+                                                            print(
+                                                                "ceattendace   $ceAttendance");
+                                                          });
+                                                        },
+                                                        child: Container(
+                                                          color: Colors
+                                                              .transparent,
+                                                          width: 28,
+                                                          height: 26,
+                                                          child: SizedBox(
+                                                              width: 28,
+                                                              height: 26,
+                                                              child: value.studListUAS[index].ceAttendance ==
+                                                                  'A'
+                                                                  ? SvgPicture
+                                                                  .asset(UIGuide
+                                                                  .absent)
+                                                                  : SvgPicture
+                                                                  .asset(UIGuide
+                                                                  .present)),
+                                                        ),
+                                                      ),
                                                     ),
+                                                    kWidth,
+
                                                     Padding(
                                                       padding:
                                                           const EdgeInsets.all(
@@ -2852,14 +3006,24 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                               ceMarkController[
                                                                   index],
                                                           //   focusNode: FocusNode(),
-                                                          enabled: value
-                                                                          .studListUAS[
-                                                                              index]
-                                                                          .attendance ==
-                                                                      'A' ||
-                                                                  value.examStatusUAS ==
-                                                                      'Synchronized'
+                                                          enabled: value.existCeAttendance==true?
+                                                          value
+                                                              .studListUAS[
+                                                          index]
+                                                              .ceAttendance ==
+                                                              'A' ||
+                                                              value.examStatusUAS ==
+                                                                  'Synchronized'
                                                               ? false
+                                                              : true
+                                                              :
+                                                          value
+                                                              .studListUAS[
+                                                          index]
+                                                              .attendance ==
+                                                              'A' ||
+                                                              value.examStatusUAS ==
+                                                                  'Synchronized' ? false
                                                               : true,
                                                           cursorColor: UIGuide
                                                               .light_Purple,
@@ -2993,6 +3157,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                     .ceMark =
                                                                 double.tryParse(
                                                                     resultt);
+                                                            value.booleanList[index]=true;
                                                           },
                                                         ),
                                                       ),
@@ -3169,6 +3334,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                               left: 10.0),
                                                       child: GestureDetector(
                                                         onTap: () {
+                                                          value.booleanList[index]=true;
                                                           setState(() {
                                                             if (value
                                                                     .studListUAS[
@@ -3189,16 +3355,20 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                       index]
                                                                   .teMark = null;
 
-                                                              value
-                                                                  .studListUAS[
-                                                                      index]
-                                                                  .peMark = null;
                                                               teMarkController[
                                                                       index]
                                                                   .clear();
-                                                              practicalMarkController[
-                                                                      index]
-                                                                  .clear();
+
+                                                              value.existPeAttendance==false?
+                                                              value.studListUAS[
+                                                              index]
+                                                                  .teMark = null:"";
+
+                                                              value.existPeAttendance==false?
+                                                              teMarkController[
+                                                              index]
+                                                                  .clear():"";
+
                                                             }
                                                             attendancee = value
                                                                 .studListUAS[
@@ -3229,7 +3399,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                       ),
                                                     ),
                                                     kWidth,
-                                                    kWidth,
+
                                                     Padding(
                                                       padding:
                                                           const EdgeInsets.all(
@@ -3386,10 +3556,12 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                     .teMark =
                                                                 double.tryParse(
                                                                     resultt);
+                                                            value.booleanList[index]=true;
                                                           },
                                                         ),
                                                       ),
                                                     ),
+
                                                     Padding(
                                                       padding:
                                                           const EdgeInsets.only(
@@ -3407,6 +3579,68 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                           ))),
                                                     ),
                                                     kWidth,
+                                                    value.existPeAttendance==false ?
+                                                    SizedBox(height: 0,width: 0,):
+                                                    Padding(
+                                                      padding:
+                                                      const EdgeInsets.only(
+                                                          left: 10.0),
+                                                      child: GestureDetector(
+                                                        onTap: () {
+                                                          value.booleanList[index]=true;
+                                                          setState(() {
+                                                            if (value
+                                                                .studListUAS[
+                                                            index]
+                                                                .peAttendance ==
+                                                                'A') {
+                                                              value
+                                                                  .studListUAS[
+                                                              index]
+                                                                  .peAttendance = 'P';
+                                                            } else {
+                                                              value
+                                                                  .studListUAS[
+                                                              index]
+                                                                  .peAttendance = 'A';
+                                                              value
+                                                                  .studListUAS[
+                                                              index]
+                                                                  .peMark = null;
+
+                                                              practicalMarkController[
+                                                              index]
+                                                                  .clear();
+
+                                                            }
+                                                            peAttendance = value
+                                                                .studListUAS[
+                                                            index]
+                                                                .peAttendance;
+
+                                                            print(
+                                                                "peattendace   $peAttendance");
+                                                          });
+                                                        },
+                                                        child: Container(
+                                                          color: Colors
+                                                              .transparent,
+                                                          width: 28,
+                                                          height: 26,
+                                                          child: SizedBox(
+                                                              width: 28,
+                                                              height: 26,
+                                                              child: value.studListUAS[index].peAttendance ==
+                                                                  'A'
+                                                                  ? SvgPicture
+                                                                  .asset(UIGuide
+                                                                  .absent)
+                                                                  : SvgPicture
+                                                                  .asset(UIGuide
+                                                                  .present)),
+                                                        ),
+                                                      ),
+                                                    ),
                                                     kWidth,
                                                     Padding(
                                                       padding:
@@ -3423,14 +3657,24 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                               practicalMarkController[
                                                                   index],
                                                           //  focusNode: FocusNode(),
-                                                          enabled: value
-                                                                          .studListUAS[
-                                                                              index]
-                                                                          .attendance ==
-                                                                      'A' ||
-                                                                  value.examStatusUAS ==
-                                                                      'Synchronized'
+                                                          enabled:  value.existPeAttendance==true?
+                                                          value
+                                                              .studListUAS[
+                                                          index]
+                                                              .peAttendance ==
+                                                              'A' ||
+                                                              value.examStatusUAS ==
+                                                                  'Synchronized'
                                                               ? false
+                                                              : true
+                                                              :
+                                                          value
+                                                              .studListUAS[
+                                                          index]
+                                                              .attendance ==
+                                                              'A' ||
+                                                              value.examStatusUAS ==
+                                                                  'Synchronized' ? false
                                                               : true,
                                                           cursorColor: UIGuide
                                                               .light_Purple,
@@ -3565,6 +3809,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                     .peMark =
                                                                 double.tryParse(
                                                                     resultt);
+                                                            value.booleanList[index]=true;
                                                           },
                                                         ),
                                                       ),
@@ -3740,6 +3985,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                               left: 10.0),
                                                       child: GestureDetector(
                                                         onTap: () {
+                                                          value.booleanList[index]=true;
                                                           setState(() {
                                                             if (value
                                                                     .studListUAS[
@@ -3760,17 +4006,22 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                   .studListUAS[
                                                                       index]
                                                                   .teMark = null;
-                                                              value
-                                                                  .studListUAS[
-                                                                      index]
-                                                                  .ceMark = null;
 
                                                               teMarkController[
                                                                       index]
                                                                   .clear();
+
+
+                                                              value.existCeAttendance==false?
+                                                              value.studListUAS[
+                                                              index]
+                                                                  .ceMark = null:"";
+
+                                                              value.existCeAttendance==false?
                                                               ceMarkController[
-                                                                      index]
-                                                                  .clear();
+                                                              index]
+                                                                  .clear():"";
+
                                                             }
                                                             attendancee = value
                                                                 .studListUAS[
@@ -3800,7 +4051,6 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                         ),
                                                       ),
                                                     ),
-                                                    kWidth,
                                                     kWidth,
                                                     Padding(
                                                       padding:
@@ -3960,6 +4210,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                     .teMark =
                                                                 double.tryParse(
                                                                     resultt);
+                                                            value.booleanList[index]=true;
                                                           },
                                                         ),
                                                       ),
@@ -3981,6 +4232,68 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                           ))),
                                                     ),
                                                     kWidth,
+                                                    value.existCeAttendance==false ?
+                                                    SizedBox(height: 0,width: 0,):
+                                                    Padding(
+                                                      padding:
+                                                      const EdgeInsets.only(
+                                                          left: 10.0),
+                                                      child: GestureDetector(
+                                                        onTap: () {
+                                                          value.booleanList[index]=true;
+                                                          setState(() {
+                                                            if (value
+                                                                .studListUAS[
+                                                            index]
+                                                                .ceAttendance ==
+                                                                'A') {
+                                                              value
+                                                                  .studListUAS[
+                                                              index]
+                                                                  .ceAttendance = 'P';
+                                                            } else {
+                                                              value
+                                                                  .studListUAS[
+                                                              index]
+                                                                  .ceAttendance = 'A';
+                                                              value
+                                                                  .studListUAS[
+                                                              index]
+                                                                  .ceMark = null;
+
+                                                              ceMarkController[
+                                                              index]
+                                                                  .clear();
+
+                                                            }
+                                                            ceAttendance = value
+                                                                .studListUAS[
+                                                            index]
+                                                                .ceAttendance;
+
+                                                            print(
+                                                                "ceattendace   $ceAttendance");
+                                                          });
+                                                        },
+                                                        child: Container(
+                                                          color: Colors
+                                                              .transparent,
+                                                          width: 28,
+                                                          height: 26,
+                                                          child: SizedBox(
+                                                              width: 28,
+                                                              height: 26,
+                                                              child: value.studListUAS[index].ceAttendance ==
+                                                                  'A'
+                                                                  ? SvgPicture
+                                                                  .asset(UIGuide
+                                                                  .absent)
+                                                                  : SvgPicture
+                                                                  .asset(UIGuide
+                                                                  .present)),
+                                                        ),
+                                                      ),
+                                                    ),
                                                     kWidth,
                                                     Padding(
                                                       padding:
@@ -3997,15 +4310,27 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                               ceMarkController[
                                                                   index],
                                                           //   focusNode: FocusNode(),
-                                                          enabled: value
+                                                          enabled:
+                                                          value.existCeAttendance==true?
+                                                          value
                                                                           .studListUAS[
                                                                               index]
-                                                                          .attendance ==
+                                                                          .ceAttendance ==
                                                                       'A' ||
                                                                   value.examStatusUAS ==
                                                                       'Synchronized'
                                                               ? false
-                                                              : true,
+                                                              : true
+                                                          :
+                                                          value
+                                                              .studListUAS[
+                                                          index]
+                                                              .attendance ==
+                                                              'A' ||
+                                                              value.examStatusUAS ==
+                                                                  'Synchronized' ? false
+                                                              : true
+                                                          ,
                                                           cursorColor: UIGuide
                                                               .light_Purple,
                                                           keyboardType:
@@ -4139,6 +4464,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                     .ceMark =
                                                                 double.tryParse(
                                                                     resultt);
+                                                            value.booleanList[index]=true;
                                                           },
                                                         ),
                                                       ),
@@ -4318,33 +4644,35 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                               left: 10.0),
                                                       child: GestureDetector(
                                                         onTap: () {
+                                                          value.booleanList[index]=true;
                                                           setState(() {
                                                             if (value
                                                                     .studListUAS[
                                                                         index]
-                                                                    .attendance ==
+                                                                    .peAttendance ==
                                                                 'A') {
                                                               value
                                                                   .studListUAS[
                                                                       index]
-                                                                  .attendance = 'P';
+                                                                  .peAttendance = 'P';
                                                             } else {
                                                               value
                                                                   .studListUAS[
                                                                       index]
                                                                   .attendance = 'A';
 
-                                                              value
+                                                            value.existCeAttendance==false ?value
                                                                   .studListUAS[
                                                                       index]
-                                                                  .ceMark = null;
+                                                                  .ceMark = null:"";
                                                               value
                                                                   .studListUAS[
                                                                       index]
                                                                   .peMark = null;
+                                                              value.existPeAttendance==false?
                                                               ceMarkController[
                                                                       index]
-                                                                  .clear();
+                                                                  .clear():"";
                                                               practicalMarkController[
                                                                       index]
                                                                   .clear();
@@ -4535,6 +4863,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                     .peMark =
                                                                 double.tryParse(
                                                                     resultt);
+                                                            value.booleanList[index]=true;
                                                           },
                                                         ),
                                                       ),
@@ -4556,6 +4885,68 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                           ))),
                                                     ),
                                                     kWidth,
+                                                    value.existCeAttendance==false ?
+                                                    SizedBox(height: 0,width: 0,):
+                                                    Padding(
+                                                      padding:
+                                                      const EdgeInsets.only(
+                                                          left: 10.0),
+                                                      child: GestureDetector(
+                                                        onTap: () {
+                                                          value.booleanList[index]=true;
+                                                          setState(() {
+                                                            if (value
+                                                                .studListUAS[
+                                                            index]
+                                                                .ceAttendance ==
+                                                                'A') {
+                                                              value
+                                                                  .studListUAS[
+                                                              index]
+                                                                  .ceAttendance = 'P';
+                                                            } else {
+                                                              value
+                                                                  .studListUAS[
+                                                              index]
+                                                                  .ceAttendance = 'A';
+                                                              value
+                                                                  .studListUAS[
+                                                              index]
+                                                                  .ceMark = null;
+
+                                                              ceMarkController[
+                                                              index]
+                                                                  .clear();
+
+                                                            }
+                                                            ceAttendance = value
+                                                                .studListUAS[
+                                                            index]
+                                                                .ceAttendance;
+
+                                                            print(
+                                                                "ceattendace   $ceAttendance");
+                                                          });
+                                                        },
+                                                        child: Container(
+                                                          color: Colors
+                                                              .transparent,
+                                                          width: 28,
+                                                          height: 26,
+                                                          child: SizedBox(
+                                                              width: 28,
+                                                              height: 26,
+                                                              child: value.studListUAS[index].ceAttendance ==
+                                                                  'A'
+                                                                  ? SvgPicture
+                                                                  .asset(UIGuide
+                                                                  .absent)
+                                                                  : SvgPicture
+                                                                  .asset(UIGuide
+                                                                  .present)),
+                                                        ),
+                                                      ),
+                                                    ),
                                                     kWidth,
                                                     Padding(
                                                       padding:
@@ -4575,7 +4966,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                           enabled: value
                                                                           .studListUAS[
                                                                               index]
-                                                                          .attendance ==
+                                                                          .ceAttendance ==
                                                                       'A' ||
                                                                   value.examStatusUAS ==
                                                                       'Synchronized'
@@ -4714,6 +5105,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                     .ceMark =
                                                                 double.tryParse(
                                                                     resultt);
+                                                            value.booleanList[index]=true;
                                                           },
                                                         ),
                                                       ),
@@ -4877,6 +5269,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                               left: 10.0),
                                                       child: GestureDetector(
                                                         onTap: () {
+                                                          value.booleanList[index]=true;
                                                           setState(() {
                                                             if (value
                                                                     .studListUAS[
@@ -5087,6 +5480,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                     .teMark =
                                                                 double.tryParse(
                                                                     resultt);
+                                                            value.booleanList[index]=true;
                                                           },
                                                         ),
                                                       ),
@@ -5254,6 +5648,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                               left: 10.0),
                                                       child: GestureDetector(
                                                         onTap: () {
+                                                          value.booleanList[index]=true;
                                                           setState(() {
                                                             if (value
                                                                     .studListUAS[
@@ -5464,6 +5859,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                     .peMark =
                                                                 double.tryParse(
                                                                     resultt);
+                                                            value.booleanList[index]=true;
                                                           },
                                                         ),
                                                       ),
@@ -5629,6 +6025,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                               left: 10.0),
                                                       child: GestureDetector(
                                                         onTap: () {
+                                                          value.booleanList[index]=true;
                                                           setState(() {
                                                             if (value
                                                                     .studListUAS[
@@ -5840,6 +6237,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                     .ceMark =
                                                                 double.tryParse(
                                                                     resultt);
+                                                            value.booleanList[index]=true;
                                                           },
                                                         ),
                                                       ),
@@ -9463,65 +9861,76 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                         value
                                                             .studListUAS.length;
                                                     i++) {
-                                                  obj.add(
-                                                    {
-                                                      "attendance": value
-                                                          .studListUAS[i]
-                                                          .attendance,
-                                                      "studentName": value
-                                                          .studListUAS[i]
-                                                          .studentName,
-                                                      "rollNo": value
-                                                          .studListUAS[i]
-                                                          .rollNo,
-                                                      "studentId": value
-                                                          .studListUAS[i]
-                                                          .studentId,
-                                                      "markEntryDetId": value
-                                                          .studListUAS[i]
-                                                          .markEntryDetId,
-                                                      "teMark": teMarkController[
-                                                                  i]
-                                                              .text
-                                                              .isEmpty
-                                                          ? null
-                                                          : teMarkController[i]
-                                                              .text
-                                                              .toString(),
-                                                      "peMark":
-                                                          practicalMarkController[
-                                                                      i]
-                                                                  .text
-                                                                  .isEmpty
-                                                              ? null
-                                                              : practicalMarkController[
-                                                                      i]
-                                                                  .text
-                                                                  .toString(),
-                                                      "ceMark": ceMarkController[
-                                                                  i]
-                                                              .text
-                                                              .isEmpty
-                                                          ? null
-                                                          : ceMarkController[i]
-                                                              .text
-                                                              .toString(),
-                                                      "teGrade": value
-                                                          .studListUAS[i]
-                                                          .teGrade,
-                                                      "peGrade": null,
-                                                      "ceGrade": null,
-                                                      "total": "",
-                                                      "teGradeId": null,
-                                                      "peGradeId": null,
-                                                      "ceGradeId": null,
-                                                      "tabMarkEntryId": value
-                                                          .studListUAS[i]
-                                                          .tabMarkEntryId,
-                                                      "isEdited": false,
-                                                      "isDisabled": false
-                                                    },
-                                                  );
+
+                                                  if(value.booleanList[i]==true) {
+                                                    obj.add(
+                                                      {
+                                                        "attendance": value
+                                                            .studListUAS[i]
+                                                            .attendance,
+                                                        "ceAttendance": value
+                                                            .studListUAS[i]
+                                                            .ceAttendance,
+                                                        "peAttendance": value
+                                                            .studListUAS[i]
+                                                            .peAttendance,
+                                                        "studentName": value
+                                                            .studListUAS[i]
+                                                            .studentName,
+                                                        "rollNo": value
+                                                            .studListUAS[i]
+                                                            .rollNo,
+                                                        "studentId": value
+                                                            .studListUAS[i]
+                                                            .studentId,
+                                                        "markEntryDetId": value
+                                                            .studListUAS[i]
+                                                            .markEntryDetId,
+                                                        "teMark": teMarkController[
+                                                        i]
+                                                            .text
+                                                            .isEmpty
+                                                            ? null
+                                                            : teMarkController[i]
+                                                            .text
+                                                            .toString(),
+                                                        "peMark":
+                                                        practicalMarkController[
+                                                        i]
+                                                            .text
+                                                            .isEmpty
+                                                            ? null
+                                                            : practicalMarkController[
+                                                        i]
+                                                            .text
+                                                            .toString(),
+                                                        "ceMark": ceMarkController[
+                                                        i]
+                                                            .text
+                                                            .isEmpty
+                                                            ? null
+                                                            : ceMarkController[i]
+                                                            .text
+                                                            .toString(),
+                                                        "teGrade": value
+                                                            .studListUAS[i]
+                                                            .teGrade,
+                                                        "peGrade": null,
+                                                        "ceGrade": null,
+                                                        "total": "",
+                                                        "teGradeId": null,
+                                                        "peGradeId": null,
+                                                        "ceGradeId": null,
+                                                        "tabMarkEntryId": value
+                                                            .studListUAS[i]
+                                                            .tabMarkEntryId,
+                                                        "isEdited": value
+                                                            .booleanList[i],
+                                                        "isDisabled": false
+                                                      },
+                                                    );
+                                                  }
+
                                                 }
                                               } else if ((value
                                                           .tabulationTypeCode ==
@@ -9769,6 +10178,7 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                           value.partsUAS);
                                                   value.examStatusUAS =
                                                       "Entered";
+                                                  value.booleanList.clear();
                                                 }
                                               }
                                             } catch (e) {
@@ -9918,6 +10328,8 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                         "attendance": value
                                                                             .studListUAS[i]
                                                                             .attendance,
+                                                                        "ceAttendance": value.studListUAS[i].ceAttendance,
+                                                                        "peAttendance": value.studListUAS[i].peAttendance,
                                                                         "studentName": value
                                                                             .studListUAS[i]
                                                                             .studentName,
@@ -9966,7 +10378,10 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                         "isEdited":
                                                                             false,
                                                                         "isDisabled":
-                                                                            false
+                                                                            false,
+                                                                        "isPeDisabled": value.existPeAttendance,
+                                                                        "isCeDisabled": value.existCeAttendance,
+                                                                        "isAttendanceDisabled": false
                                                                       },
                                                                     );
                                                                   }

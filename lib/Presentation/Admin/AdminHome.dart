@@ -4,6 +4,7 @@ import 'package:essconnect/Application/AdminProviders/dashboardProvider.dart';
 import 'package:essconnect/Application/Module%20Providers.dart/Module.dart';
 import 'package:essconnect/Application/Module%20Providers.dart/SchoolNameProvider.dart';
 import 'package:essconnect/Application/StudentProviders/CurriculamProviders.dart';
+import 'package:essconnect/Presentation/Admin/Anecdotal/AnecdotalInitialScreenAdmin.dart';
 import 'package:essconnect/Presentation/Admin/AttendanceTaken/AbsentReport.dart';
 import 'package:essconnect/Presentation/Admin/AttendanceTaken/Takenornot.dart';
 import 'package:essconnect/Presentation/Admin/Birthday/InitialScreen.dart';
@@ -12,7 +13,9 @@ import 'package:essconnect/Presentation/Admin/ExamTimetable/ExamScreen.dart';
 import 'package:essconnect/Presentation/Admin/History/NotificationHistoryStaff.dart';
 import 'package:essconnect/Presentation/Admin/MarkEntryMissingReportAdmin.dart';
 import 'package:essconnect/Presentation/Admin/StudentStatistiics.dart';
+import 'package:essconnect/Presentation/Admin/TimeTableUpload.dart';
 import 'package:essconnect/Presentation/Admin/WebViewLogin.dart';
+import 'package:essconnect/Presentation/Staff/LessonPlan.dart';
 import 'package:essconnect/Presentation/Staff/MarkEntryNew.dart';
 import 'package:essconnect/Presentation/Staff/RemarksEntry.dart';
 import 'package:essconnect/Presentation/Staff/StudAttendenceEntry.dart';
@@ -32,9 +35,14 @@ import 'package:upgrader/upgrader.dart';
 import '../../Application/StudentProviders/InternetConnection.dart';
 import '../../Constants.dart';
 import '../Login_Activation/Login_page.dart';
+import '../Staff/MarkEntryReport/MarkEntryReport.dart';
 import '../Student/PasswordChange.dart';
+import 'AppReview.dart';
 import 'Communication/ToGuardian.dart';
 import 'FeeCollectionReport/FeeReport.dart';
+
+import 'FeeCollectionReport/Offline/OfflineFeeReportInitial.dart';
+import 'FeeCollectionReport/Offline/OfflineFeesCollection.dart';
 import 'FlashNews/FlashnewsScreen.dart';
 import 'Gallery/GalleryScreen.dart';
 import 'NoticeBoard/NoticeboardScreen.dart';
@@ -186,7 +194,11 @@ class AdminHomeContent extends StatelessWidget {
                               context,
                               PageTransition(
                                   type: PageTransitionType.rightToLeft,
-                                  child: const StudReport(),
+                                  child:
+                               const StudReport(),
+                              // const   OfflineFeeInitial(),
+
+                                //  MarkEntryReport(),
                                   duration: const Duration(milliseconds: 200),
                                   childCurrent: this));
                         },
@@ -237,7 +249,9 @@ class AdminHomeContent extends StatelessWidget {
                               context,
                               PageTransition(
                                   type: PageTransitionType.rightToLeft,
-                                  child: Student_statistics_admin(),
+                                  child:
+                                  //Student_statistics_admin(),
+                                  LessonPlan(),
                                   duration: const Duration(milliseconds: 200),
                                   childCurrent: this));
                         },
@@ -289,7 +303,9 @@ class AdminHomeContent extends StatelessWidget {
                               context,
                               PageTransition(
                                   type: PageTransitionType.rightToLeft,
-                                  child: const StaffReport(),
+                                  child:
+                              const StaffReport(),
+
                                   duration: const Duration(milliseconds: 200),
                                   childCurrent: this));
                         },
@@ -383,6 +399,7 @@ class AdminHomeContent extends StatelessWidget {
                         ),
                       ),
                     ),
+
                   ],
                 ),
               ),
@@ -471,7 +488,7 @@ class AdminHomeContent extends StatelessWidget {
                             context,
                             PageTransition(
                                 type: PageTransitionType.rightToLeft,
-                                child: AdminToGuardian(),
+                                child: Notification_AdminToGuardain(),
                                 duration: const Duration(milliseconds: 200),
                                 childCurrent: this));
                       },
@@ -838,6 +855,139 @@ class AdminHomeContent extends StatelessWidget {
                   ],
                 ),
               ),
+                    kheight10,
+    Consumer<ModuleProviders>(
+    builder: (context, module, child) => Row(
+    // crossAxisAlignment: CrossAxisAlignment.start,
+    // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    children: [
+    Expanded(
+    child: GestureDetector(
+    onTap: () {
+    Navigator.push(
+    context,
+    PageTransition(
+    type: PageTransitionType.rightToLeft,
+    child: const TimeTableUplaod(),
+    duration: const Duration(milliseconds: 200),
+    childCurrent: this));
+    },
+    child: Column(
+    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    children: [
+    Card(
+    elevation: 10,
+    color: Colors.white,
+    shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(12.0),
+    ),
+    child: Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: Container(
+    height: 38,
+    width: 38,
+    decoration: const BoxDecoration(
+    image: DecorationImage(
+    opacity: 20,
+    image: AssetImage(
+    'assets/Timetable.png',
+    ),
+    ),
+    ),
+    ),
+    ),
+    ),
+    kheight10,
+    const Text(
+    'Time Table',
+    style: TextStyle(
+    fontSize: 11,
+    color: Colors.black87,
+    fontWeight: FontWeight.bold),
+    )
+    ],
+    ),
+    ),
+    ),
+      Expanded(
+        child: GestureDetector(
+          onTap: () async {
+
+            module.curiculam == true
+                ?
+                await Navigator.push(
+                    context,
+                    PageTransition(
+                      type:
+                      PageTransitionType
+                          .rightToLeft,
+                      child:
+                      const AnecdotalInitialScreenAdmin(),
+                      duration:
+                      const Duration(
+                          milliseconds:
+                          300),
+                    )
+                )
+
+                : _noAcess(context);
+          },
+          child: Column(
+            mainAxisAlignment:
+            MainAxisAlignment
+                .spaceEvenly,
+            children: [
+              Card(
+                elevation: 10,
+                color: Colors.white,
+                shape:
+                RoundedRectangleBorder(
+                  borderRadius:
+                  BorderRadius
+                      .circular(
+                      12.0),
+                ),
+                child: Padding(
+                  padding:
+                  const EdgeInsets
+                      .all(8.0),
+                  child: Container(
+                    height: 38,
+                    width: 38,
+                    decoration:
+                    const BoxDecoration(
+                      image:
+                      DecorationImage(
+                        opacity: 20,
+                        image:
+                        AssetImage(
+                          'assets/Loginwebb.png',
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              kheight10,
+              const Text(
+                'Anecdotal',
+                textAlign:
+                TextAlign.center,
+                style: TextStyle(
+                    fontWeight:
+                    FontWeight
+                        .bold,
+                    fontSize: 11,
+                    color: Colors
+                        .black87),
+              )
+            ],
+          ),
+        ),
+      ),
+
+
+    ],),),
               kheight20,
               Row(children: <Widget>[
                 const Text(
@@ -1444,13 +1594,75 @@ class AdminHomeContent extends StatelessWidget {
                         ),
                       ),
                     ),
+                  ],
+                ),
+              ),
+              kheight5,
+              Consumer<ModuleProviders>(
+                builder: (context, module, child) => Row(
+                 // crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () async {
+                          module.mobileApp == true
+                              ? await Navigator.push(
+                              context,
+                              PageTransition(
+                                  type: PageTransitionType.rightToLeft,
+                                  child:
+                                  const AppReviewInitial(),
+                                  duration:
+                                  const Duration(milliseconds: 200),
+                                  childCurrent: this))
+                              : _noAcess(context);
+                        },
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Card(
+                              elevation: 10,
+                              color: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12.0),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  height: 38,
+                                  width: 38,
+                                  decoration: const BoxDecoration(
+                                    image: DecorationImage(
+                                      opacity: 20,
+                                      image: AssetImage(
+                                        'assets/appstatistics.png',
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            kheight10,
+                            const Text(
+                              'App User\nStatistics',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 11,
+                                  color: Colors.black87,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                     Expanded(
                       child: GestureDetector(
                         onTap: () async {
                           SharedPreferences _pref =
-                              await SharedPreferences.getInstance();
+                          await SharedPreferences.getInstance();
                           String schdomain =
-                              await _pref.getString("subDomain").toString();
+                          await _pref.getString("subDomain").toString();
                           print(schdomain);
                           await Navigator.push(
                               context,
@@ -1504,110 +1716,119 @@ class AdminHomeContent extends StatelessWidget {
                 ),
               ),
               kheight10,
+              Container(
+                  margin: const EdgeInsets.only(left: 10.0, right: 10.0),
+                  child: const Divider(
+                    color: UIGuide.light_Purple,
+                    height: 36,
+                  )),
               kheight10,
-              Row(children: <Widget>[
-                const Text(
-                  ' ──  ',
-                  style: TextStyle(
-                    color: Colors.black26,
-                  ),
-                ),
-                const Text(
-                  "Change Password | SignOut",
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                      color: UIGuide.light_Purple, fontWeight: FontWeight.w900),
-                ),
-                Expanded(
-                  child: Container(
-                      margin: const EdgeInsets.only(left: 20.0, right: 10.0),
-                      child: const Divider(
-                        color: Colors.black45,
-                        height: 36,
-                      )),
-                ),
-              ]),
-              kheight20,
               Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  MaterialButton(
-                      elevation: 10,
-                      minWidth: 50,
-                      color: UIGuide.THEME_LIGHT,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0)),
-                      onPressed: () async {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                              builder: (context) => PasswordChange()),
-                        );
-                      },
-                      child: const Icon(
-                        Icons.key_sharp,
-                        color: UIGuide.light_Purple,
-                      )),
-                  MaterialButton(
-                      minWidth: 50,
-                      elevation: 10,
-                      color: UIGuide.THEME_LIGHT,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30.0)),
-                      onPressed: () async {
-                        showCupertinoDialog(
-                          context: context,
-                          builder: (context) {
-                            return Container(
-                              color: Colors.black.withOpacity(0.5),
-                              child: CupertinoAlertDialog(
-                                title: const Text("Logout"),
-                                content: const Text(
-                                    "Are you sure you want to log out?"),
-                                actions: <Widget>[
-                                  CupertinoDialogAction(
-                                    child: const Text(
-                                      "Cancel",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                          color: UIGuide.light_Purple),
-                                    ),
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                  ),
-                                  CupertinoDialogAction(
-                                    child: const Text("Logout",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w500,
-                                            color: UIGuide.light_Purple)),
-                                    onPressed: () async {
-                                      SharedPreferences prefs =
-                                          await SharedPreferences.getInstance();
-                                      print("accesstoken  $prefs");
-                                      await prefs.remove("accesstoken");
-                                      print("username  $prefs");
-                                      await prefs.remove("username");
-                                      print("password  $prefs");
-                                      await prefs.remove("password");
-
-                                      Navigator.of(context).pushAndRemoveUntil(
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  LoginPage()),
-                                          (Route<dynamic> route) => false);
-                                    },
-                                  ),
-                                ],
-                              ),
+                  Column(
+                    children: [
+                      MaterialButton(
+                          elevation: 10,
+                          minWidth: 50,
+                          color: UIGuide.THEME_LIGHT,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0)),
+                          onPressed: () async {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (context) => PasswordChange()),
                             );
                           },
-                        );
-                      },
-                      child: const Icon(
-                        Icons.logout_outlined,
-                        color: UIGuide.light_Purple,
-                      )),
+                          child: const Icon(
+                            Icons.key_sharp,
+                            color: UIGuide.light_Purple,
+                          )),
+                      kheight5,
+                      const Text(
+                        'Change Password',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 11,
+                            color: Colors.black87),
+                      )
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      MaterialButton(
+                          minWidth: 50,
+                          elevation: 10,
+                          color: UIGuide.THEME_LIGHT,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30.0)),
+                          onPressed: () async {
+                            showCupertinoDialog(
+                              context: context,
+                              builder: (context) {
+                                return Container(
+                                  color: Colors.black.withOpacity(0.5),
+                                  child: CupertinoAlertDialog(
+                                    title: const Text("Logout"),
+                                    content: const Text(
+                                        "Are you sure you want to log out?"),
+                                    actions: <Widget>[
+                                      CupertinoDialogAction(
+                                        child: const Text(
+                                          "Cancel",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w500,
+                                              color: UIGuide.light_Purple),
+                                        ),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                      CupertinoDialogAction(
+                                        child: const Text("Logout",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w500,
+                                                color: UIGuide.light_Purple)),
+                                        onPressed: () async {
+                                          SharedPreferences prefs =
+                                              await SharedPreferences.getInstance();
+                                          print("accesstoken  $prefs");
+                                          await prefs.remove("accesstoken");
+                                          print("username  $prefs");
+                                          await prefs.remove("username");
+                                          print("password  $prefs");
+                                          await prefs.remove("password");
+
+                                          Navigator.of(context).pushAndRemoveUntil(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      LoginPage()),
+                                              (Route<dynamic> route) => false);
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                          child: const Icon(
+                            Icons.logout_outlined,
+                            color: UIGuide.light_Purple,
+                          )),
+                      kheight5,
+                      const Text(
+                        'SignOut',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 11,
+                            color: Colors.black87),
+                      )
+                    ],
+                  ),
                 ],
               ),
               kheight20,
@@ -1622,10 +1843,7 @@ class AdminHomeContent extends StatelessWidget {
               ),
               kheight20,
               kheight20,
-              kheight20,
-              kheight20,
-              kheight20,
-              kheight20
+              kheight10,
             ],
           ),
         ),

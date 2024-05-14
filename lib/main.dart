@@ -5,19 +5,22 @@ import 'package:essconnect/Application/AdminProviders/Attendanceprovider.dart';
 import 'package:essconnect/Application/AdminProviders/BirthdayListProviders.dart';
 import 'package:essconnect/Application/AdminProviders/ChatProviders.dart';
 import 'package:essconnect/Application/AdminProviders/ExamTTPtoviders.dart';
+import 'package:essconnect/Application/AdminProviders/TimeTableProvider.dart';
 import 'package:essconnect/Application/Module%20Providers.dart/MobileAppCheckin.dart';
 import 'package:essconnect/Application/Module%20Providers.dart/SchoolNameProvider.dart';
-import 'package:essconnect/Application/Staff_Providers/AncedotalStaffProvider.dart';
 import 'package:essconnect/Application/Staff_Providers/ExamTTProviderStaff.dart';
 import 'package:essconnect/Application/Staff_Providers/MarkEntryNewProvider.dart';
 import 'package:essconnect/Application/Staff_Providers/MissingReportProviders.dart';
 import 'package:essconnect/Application/Staff_Providers/NotificationCount.dart';
+import 'package:essconnect/Application/Staff_Providers/PortionProvider.dart';
 import 'package:essconnect/Application/Staff_Providers/StudentReportProvidersStaff.dart';
 import 'package:essconnect/Application/Staff_Providers/TimetableProvider.dart';
 import 'package:essconnect/Application/Staff_Providers/ToolMarkProvider.dart';
+import 'package:essconnect/Application/StudentProviders/AnecDotalProvider.dart';
 import 'package:essconnect/Application/StudentProviders/DiaryProviders.dart';
 import 'package:essconnect/Application/StudentProviders/NotificationCountProviders.dart';
 import 'package:essconnect/Application/StudentProviders/OfflineFeeProviders.dart';
+import 'package:essconnect/Application/StudentProviders/PortionProvider.dart';
 import 'package:essconnect/Application/StudentProviders/StudLocationProvider.dart';
 import 'package:essconnect/Application/StudentProviders/TokenCheckProviders.dart';
 import 'package:essconnect/Application/SuperAdminProviders/NoticeBoardProvidersSA.dart';
@@ -35,14 +38,17 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'Application/AdminProviders/AppReviewProvider.dart';
 import 'Application/AdminProviders/FeeDetailsProvider.dart';
 import 'Application/AdminProviders/FeeReportProvider.dart';
 import 'Application/AdminProviders/FlashNewsProviders.dart';
+import 'Application/AdminProviders/FormatCreationProvider.dart';
 import 'Application/AdminProviders/GalleryProviders.dart';
 import 'Application/AdminProviders/NoticeBoardList.dart';
 import 'Application/AdminProviders/NoticeBoardadmin.dart';
 import 'Application/AdminProviders/NotificationStaff.dart';
 import 'Application/AdminProviders/NotificationToGuardian.dart';
+import 'Application/AdminProviders/OfflineFeesCollectionProvider.dart';
 import 'Application/AdminProviders/SchoolPhotoProviders.dart';
 import 'Application/AdminProviders/SearchstaffProviders.dart';
 import 'Application/AdminProviders/StaffReportProviders.dart';
@@ -51,6 +57,8 @@ import 'Application/AdminProviders/TimeTableProviders.dart';
 import 'Application/AdminProviders/TimeTableStaff.dart';
 import 'Application/AdminProviders/dashboardProvider.dart';
 import 'Application/Module Providers.dart/Module.dart';
+import 'Application/Staff_Providers/Anecdotal/AncedotalStaffProvider.dart';
+import 'Application/Staff_Providers/Anecdotal/AnecdotalStaffListProvider.dart';
 import 'Application/Staff_Providers/Attendencestaff.dart';
 import 'Application/Staff_Providers/GallerySendProviderStaff.dart';
 import 'Application/Staff_Providers/MarkReportProvider.dart';
@@ -70,6 +78,7 @@ import 'Application/StudentProviders/FinalStatusProvider.dart';
 import 'Application/StudentProviders/GalleryProvider.dart';
 import 'Application/StudentProviders/InternetConnection.dart';
 import 'Application/StudentProviders/LoginProvider.dart';
+import 'Application/StudentProviders/MarkSheetProvider.dart';
 import 'Application/StudentProviders/NoticProvider.dart';
 import 'Application/StudentProviders/NotificationReceived.dart';
 import 'Application/StudentProviders/PasswordChangeProvider.dart';
@@ -181,6 +190,7 @@ class _GjInfoTechState extends State<GjInfoTech> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     if (prefs.getBool('activated') != null) {
+
       activated = true;
     }
   }
@@ -307,11 +317,22 @@ class _GjInfoTechState extends State<GjInfoTech> {
         ChangeNotifierProvider(create: (context) => AnecdotalStaffProviders()),
         ChangeNotifierProvider(create: (context) => BirthdayListProviders()),
         ChangeNotifierProvider(create: (context) => StudLocationProvider()),
+        ChangeNotifierProvider(create: (context) => MarksheetProvider()),
+        ChangeNotifierProvider(create: (context) => AnecDotalStudViewProvider()),
+        ChangeNotifierProvider(create: (context) => AnecdotalStaffListProviders()),
+        ChangeNotifierProvider(create: (context) => TimeTableUploadProvider()),
+        ChangeNotifierProvider(create: (context) => OffflineFeesProvider()),
+        ChangeNotifierProvider(create: (context) => AppReviewProvider()),
+        ChangeNotifierProvider(create: (context) => PortionProvider()),
+        ChangeNotifierProvider(create: (context) => StudentPortionProvider()),
+        //ChangeNotifierProvider(create: (context) => FormatCreationProvider()),
       ],
+
       child: MaterialApp(
         title: 'e-SS Connect',
         themeMode: ThemeMode.light,
         theme: ThemeData(
+
           useMaterial3: false,
           textTheme: const TextTheme(
             displayLarge: TextStyle(fontSize: 14),
@@ -325,6 +346,7 @@ class _GjInfoTechState extends State<GjInfoTech> {
             accentColor: const Color.fromARGB(255, 219, 235, 250),
           ),
           primaryColor: UIGuide.light_Purple,
+
           textSelectionTheme: const TextSelectionThemeData(
             cursorColor: UIGuide.light_Purple,
             selectionColor: Color.fromARGB(255, 211, 225, 238),
@@ -470,6 +492,16 @@ class _SplashFuturePageState extends State<SplashFuturePage>
     Timer(const Duration(seconds: 3), () async {
       await Provider.of<TokenExpiryCheckProviders>(context, listen: false)
           .checkTokenExpired(context);
+      //democode 20-02-2024
+      await Provider.of<LoginProvider>(context, listen: false)
+          .getToken(context);
+      await Provider.of<LoginProvider>(context, listen: false)
+          .getMobileViewerId();
+      await Provider.of<LoginProvider>(context, listen: false)
+          .getsavemobileViewer(context);
+      await Provider.of<LoginProvider>(context, listen: false)
+          .sendUserDetails(context);
+
       await _checkSession();
     });
   }

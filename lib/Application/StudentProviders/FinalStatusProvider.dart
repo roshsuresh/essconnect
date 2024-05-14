@@ -47,7 +47,7 @@ class FinalStatusProvider with ChangeNotifier {
   }
 
   String? reponseMsgRazor;
-  Future transactionStatusRazorPay(String orderID) async {
+  Future transactionStatusRazorPay(String orderID,String gatewayResponse) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
 
     var headers = {
@@ -57,10 +57,10 @@ class FinalStatusProvider with ChangeNotifier {
     // print(headers);
     var response = await http.get(
         Uri.parse(
-            "${UIGuide.baseURL}/online-payment/razor-pay/verify-status-app?orderid=$orderID"),
+            "${UIGuide.baseURL}/online-payment/razor-pay/verify-status-app?orderid=$orderID&gatewayResponse=$gatewayResponse"),
         headers: headers);
     print(
-        "${UIGuide.baseURL}/online-payment/razor-pay/verify-status-app?orderid=$orderID");
+        "${UIGuide.baseURL}/online-payment/razor-pay/verify-status-app?orderid=$orderID&gatewayResponse=$gatewayResponse");
     try {
       if (response.statusCode == 200) {
         Map<String, dynamic> data = await json.decode(response.body);
@@ -79,7 +79,9 @@ class FinalStatusProvider with ChangeNotifier {
   }
 
   String? reponseCodeWorldLine;
-  Future transactionStatusWorldLine(String orderID, String pgTraID) async {
+  Future transactionStatusWorldLine(String orderID, String pgTraID,
+     String gatewayresponse
+      ) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
 
     var headers = {
@@ -88,8 +90,19 @@ class FinalStatusProvider with ChangeNotifier {
     };
     var response = await http.get(
         Uri.parse(
-            "${UIGuide.baseURL}/online-payment/world-line/verify-status-app?orderid=$orderID&PaymentGatewayTransactionId=$pgTraID"),
+            "${UIGuide.baseURL}/online-payment/world-line/verify-status-app?orderid=$orderID&PaymentGatewayTransactionId=$pgTraID&gatewayResponse=$gatewayresponse"),
         headers: headers);
+    // var response = await http.get(
+    //     Uri.parse(
+    //         "${UIGuide.baseURL}/online-payment/world-line/verify-status-app?orderid=$orderID&PaymentGatewayTransactionId=$pgTraID"),
+    //     headers: headers);
+    print("rsponssssssssssssssss");
+    log(
+      "${UIGuide.baseURL}/online-payment/world-line/verify-status-app?orderid=$orderID&PaymentGatewayTransactionId=$pgTraID",
+    );
+    // log(
+    //         "${UIGuide.baseURL}/online-payment/world-line/verify-status-app?orderid=$orderID&PaymentGatewayTransactionId=$pgTraID&gatewayResponse=$gatewayresponse",
+    //     );
 
     try {
       if (response.statusCode == 200) {

@@ -15,6 +15,7 @@ import '../../Presentation/Admin/Communication/SmsFormatToStaff.dart';
 
 class NotificationToStaffAdminProviders with ChangeNotifier {
   bool _loading = false;
+
   bool get loading => _loading;
   setLoading(bool value) {
     _loading = value;
@@ -367,6 +368,151 @@ class NotificationToStaffAdminProviders with ChangeNotifier {
     return true;
   }
 
+
+  //sms format list
+  String? replacedString;
+  String? replacementValue;
+  String? replacednewString;
+  List<String> extractedValuesStaff=[];
+  List<String> extractValuesInDoubleBrackets(String input) {
+    RegExp regExp = RegExp(r'\[\[(.*?)\]\]');
+    Iterable<Match> matches = regExp.allMatches(input);
+
+    List<String> extractedValuesStaff =
+    matches.map((match) => match.group(1)!).toList();
+
+    return extractedValuesStaff;
+  }
+
+  //replace
+  void main() {
+
+    String replacedString = replaceValuesInsideDoubleBrackets(smsBody!, extractedValuesStaff);
+
+    print(replacedString);
+  }
+
+  String replaceValuesInsideDoubleBrackets(String originalString, List<String> replacementList) {
+    int index = 0;
+
+    replacedString = originalString.replaceAllMapped(
+      RegExp(r'\[\[(.*?)\]\]'),
+          (Match match) {
+        // Get the replacement value from the list.
+        replacementValue = replacementList.length > index ? '[[${replacementList[index]}]]' : '';
+
+        index++;
+
+        return replacementValue!;
+      },
+    );
+    print("roooooooo");
+    print(replacedString);
+    return replacedString!;
+  }
+//sms format edit
+  Future smsformatedit(BuildContext context,String smsbody,String name,String smsBodyold,bool isapproved,List changable,String formatid) async {
+    setLoading(true);
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+    };
+    try {
+      var request = http.Request(
+          'POST',
+          Uri.parse(
+              '${UIGuide.baseURL}/sendsmstostaff/save-format/$formatid'));
+      print(Uri.parse(
+          '${UIGuide.baseURL}/sendsmstostaff/save-format/$formatid'));
+      request.body = json.encode({
+      "group": "guardianGeneralSMS",
+        "name": {
+          "id":formatid,
+          "name": name,
+          "smsBody": smsBodyold,
+          "content": "",
+          "isApproved": isapproved
+        },
+        "smsBody": replacedString,
+        "content": "",
+        "isApproved": isapproved,
+        "formatName": {
+          "id":formatid,
+          "name": name,
+          "smsBody": smsBodyold,
+          "content": "",
+          "isApproved": isapproved
+        },
+        "changeableText": changable
+      }
+      );
+
+      print("edittttttt");
+      print(json.encode({
+        "group": "guardianGeneralSMS",
+        "name": {
+          "id":formatid,
+          "name": name,
+          "smsBody": smsBodyold,
+          "content": "",
+          "isApproved": isapproved
+        },
+        "smsBody": replacedString,
+        "content": "",
+        "isApproved": isapproved,
+        "formatName": {
+          "id":formatid,
+          "name": name,
+          "smsBody": smsBodyold,
+          "content": "",
+          "isApproved": isapproved
+        },
+        "changeableText": changable
+      }
+      ));
+      request.headers.addAll(headers);
+
+      http.StreamedResponse response = await request.send();
+      if (response.statusCode == 200) {
+        print('correct');
+        Map<String, dynamic> data =
+        jsonDecode(await response.stream.bytesToString());
+        SmsFormatEdit editFormt = SmsFormatEdit.fromJson(data);
+
+        smsBody = editFormt.smsBody;
+
+        await AwesomeDialog(
+            dismissOnTouchOutside: false,
+            dismissOnBackKeyPress: false,
+            context: context,
+            dialogType: DialogType.success,
+            animType: AnimType.rightSlide,
+            headerAnimationLoop: false,
+            title: 'SMS Format Updated Successfully',
+            titleTextStyle: TextStyle(
+                fontSize: 16
+            ),
+            btnOkOnPress: () async {
+              Navigator.pop(context);
+            },
+            btnOkColor: Colors.green)
+            .show();
+
+
+        setLoading(false);
+        notifyListeners();
+      } else {
+        setLoading(true);
+        print('Error in response');
+      }
+    } catch (e) {
+      setLoading(false);
+    }
+  }
+
+
+
   //select format
 
   String? smsBody;
@@ -385,6 +531,10 @@ class NotificationToStaffAdminProviders with ChangeNotifier {
       SmsFormatsAdminCompleteview ac =
           SmsFormatsAdminCompleteview.fromJson(dashboard);
       smsBody = ac.smsBody;
+      extractedValuesStaff = extractValuesInDoubleBrackets(smsBody!);
+      print("binithaaaa");
+      print(extractedValuesStaff);
+      print(extractedValuesStaff.length);
 
       notifyListeners();
     } else {
@@ -392,6 +542,10 @@ class NotificationToStaffAdminProviders with ChangeNotifier {
     }
     return response.statusCode;
   }
+
+
+  //format edit
+
 
 //sendsms
   bool _loadSMS = false;

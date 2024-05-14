@@ -1,12 +1,16 @@
-import 'package:essconnect/Presentation/Staff/Anecdotal/StudAnecdotal/AnecdotalEntryScreen.dart';
+
+import 'package:essconnect/Presentation/Admin/Anecdotal/AnecdotalentryScreenAdmin.dart';
 import 'package:essconnect/Presentation/Staff/Anecdotal/StudAnecdotal/AnecdotalListscreen.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:flutter/material.dart';
 
-import 'AnecdotalReport.dart';
+import '../../Staff/Anecdotal/StudAnecdotal/AnecdotalReport.dart';
+import 'AnecdotalListAdminscreen.dart';
 
-class AnecdotalInitialScreen extends StatelessWidget {
-  const AnecdotalInitialScreen({super.key});
+
+
+class AnecdotalInitialScreenAdmin extends StatelessWidget {
+  const AnecdotalInitialScreenAdmin({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +29,7 @@ class AnecdotalInitialScreen extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                const AnecdotalInitialScreen()));
+                                const AnecdotalInitialScreenAdmin()));
                   },
                   icon: const Icon(Icons.refresh))
             ],
@@ -39,6 +43,8 @@ class AnecdotalInitialScreen extends StatelessWidget {
                 bottomLeft: Radius.circular(25)),
           ),
           bottom: const TabBar(
+
+
             indicatorSize: TabBarIndicatorSize.label,
             indicatorColor: Colors.white,
             indicatorWeight: 5,
@@ -55,9 +61,10 @@ class AnecdotalInitialScreen extends StatelessWidget {
           backgroundColor: UIGuide.light_Purple,
         ),
         body: TabBarView(
+          physics: NeverScrollableScrollPhysics(),
           children: [
-            AnecdotalentryScreen(),
-            AnectdotalListScreen(),
+            AnecdotalentryScreenAdmin(),
+            AnectdotalListAdminScreen(),
             AnecdotalReport(),
           ],
         ),

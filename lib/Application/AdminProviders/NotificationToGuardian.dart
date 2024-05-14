@@ -23,49 +23,102 @@ class NotificationToGuardianAdmin with ChangeNotifier {
     notifyListeners();
   }
 
-  List<StudentViewbyCourseDivision_notification_Stf> notificationView = [];
-  Future getNotificationView(String course, String division) async {
-    setLoading(true);
+  List<StudentView> notificationView = [];
+
+  Future getNotificationView(
+      String section,
+      String course,
+      String division,
+      String type,
+      String formatid,
+      ) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
-    notifyListeners();
+    setLoading(true);
+
     var headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
+    setLoading(true);
     try {
       var request = http.Request(
-          'GET',
-          Uri.parse(
-              '${UIGuide.baseURL}/mobileapp/staffdet/studentlistbycoursedivision?courseId=$course&divisionId=$division'));
-      print(http.Request(
-          'GET',
-          Uri.parse(
-              '${UIGuide.baseURL}/mobileapp/staffdet/studentlistbycoursedivision?courseId=$course&divisionId=$division')));
+          'POST', Uri.parse('${UIGuide.baseURL}/sms-to-guardian/viewData/?sectionId=$section&courseId=$course&divisionId=$division&filterStudyingStatus=studying&sendType=$type&reportFormatId=$formatid'));
+      request.body = json.encode({
+        "userIds": []
+      });
+      print("stud view.................");
+      print(request);
+
       request.headers.addAll(headers);
-
+      setLoading(true);
       http.StreamedResponse response = await request.send();
-
+      print(request.body);
       if (response.statusCode == 200) {
         setLoading(true);
-        Map<String, dynamic> data =
-            jsonDecode(await response.stream.bytesToString());
-        List<StudentViewbyCourseDivision_notification_Stf> templist =
-            List<StudentViewbyCourseDivision_notification_Stf>.from(
-                data["studentViewbyCourseDivision"].map((x) =>
-                    StudentViewbyCourseDivision_notification_Stf.fromJson(x)));
-        notificationView.addAll(templist);
 
-        print('correct');
+        print('---------------------correct--------------------------');
+        List<dynamic> data =
+        jsonDecode(await response.stream.bytesToString());
+
+        List<StudentView> templist1 = List<StudentView>.from(
+            data.map((x) => StudentView.fromJson(x)));
+        notificationView.addAll(templist1);
+
         setLoading(false);
         notifyListeners();
       } else {
         setLoading(false);
-        print('Error in notificationView stf');
+        print('Error in StudentView');
       }
     } catch (e) {
       setLoading(false);
     }
   }
+
+
+
+  // Future getNotificationView(String course, String division) async {
+  //   setLoading(true);
+  //   SharedPreferences _pref = await SharedPreferences.getInstance();
+  //   notifyListeners();
+  //   var headers = {
+  //     'Content-Type': 'application/json',
+  //     'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+  //   };
+  //   try {
+  //     var request = http.Request(
+  //         'GET',
+  //         Uri.parse(
+  //             '${UIGuide.baseURL}/mobileapp/staffdet/studentlistbycoursedivision?courseId=$course&divisionId=$division'));
+  //     print(http.Request(
+  //         'GET',
+  //         Uri.parse(
+  //             '${UIGuide.baseURL}/mobileapp/staffdet/studentlistbycoursedivision?courseId=$course&divisionId=$division')));
+  //     request.headers.addAll(headers);
+  //
+  //     http.StreamedResponse response = await request.send();
+  //
+  //     if (response.statusCode == 200) {
+  //       setLoading(true);
+  //       Map<String, dynamic> data =
+  //           jsonDecode(await response.stream.bytesToString());
+  //       List<StudentViewbyCourseDivision_notification_Stf> templist =
+  //           List<StudentViewbyCourseDivision_notification_Stf>.from(
+  //               data["studentViewbyCourseDivision"].map((x) =>
+  //                   StudentViewbyCourseDivision_notification_Stf.fromJson(x)));
+  //       notificationView.addAll(templist);
+  //
+  //       print('correct');
+  //       setLoading(false);
+  //       notifyListeners();
+  //     } else {
+  //       setLoading(false);
+  //       print('Error in notificationView stf');
+  //     }
+  //   } catch (e) {
+  //     setLoading(false);
+  //   }
+  // }
 
   //settings
 
@@ -116,15 +169,15 @@ class NotificationToGuardianAdmin with ChangeNotifier {
   }
 
 //selelct............
-  bool isSelected(StudentViewbyCourseDivision_notification_Stf model) {
-    StudentViewbyCourseDivision_notification_Stf selected = notificationView
-        .firstWhere((element) => element.admnNo == model.admnNo);
+  bool isSelected(StudentView model) {
+    StudentView selected = notificationView
+        .firstWhere((element) => element.admNo == model.admNo);
     return selected.selected!;
   }
 
-  void selectItem(StudentViewbyCourseDivision_notification_Stf model) {
-    StudentViewbyCourseDivision_notification_Stf selected = notificationView
-        .firstWhere((element) => element.admnNo == model.admnNo);
+  void selectItem(StudentView model) {
+    StudentView selected = notificationView
+        .firstWhere((element) => element.admNo == model.admNo);
     selected.selected ??= false;
     selected.selected = !selected.selected!;
     print(selected.toJson());
@@ -238,7 +291,7 @@ class NotificationToGuardianAdmin with ChangeNotifier {
     }
   }
 
-  List<StudentViewbyCourseDivision_notification_Stf> selectedList = [];
+  List<StudentView> selectedList = [];
   submitStudent(BuildContext context) {
     selectedList.clear();
     selectedList =
@@ -422,7 +475,15 @@ class NotificationToGuardianAdmin with ChangeNotifier {
   }
 
   //sms format list
-
+  // List<String> extractValuesInDoubleBrackets(String input) {
+  //   RegExp regExp = RegExp(r'\[\[(.*?)\]\]');
+  //   Iterable<Match> matches = regExp.allMatches(input);
+  //
+  //   List<String> extractedValues =
+  //   matches.map((match) => match.group(1)!).toList();
+  //
+  //   return extractedValues;
+  // }
   String? smsBody;
   Future getSMSContent(String idd) async {
     setLoading(true);
@@ -436,12 +497,17 @@ class NotificationToGuardianAdmin with ChangeNotifier {
           Uri.parse(
               "${UIGuide.baseURL}/sms-to-guardian/get-formats-by-id/$idd"),
           headers: headers);
+
       if (response.statusCode == 200) {
         setLoading(true);
         print('correct');
         Map<String, dynamic> dashboard = json.decode(response.body);
         SmsFormatList ac = SmsFormatList.fromJson(dashboard);
         smsBody = ac.smsBody;
+        //
+        // List<String> extractedValues = extractValuesInDoubleBrackets(smsBody!);
+        // print("binithaaaa");
+        // print(extractedValues);
         setLoading(false);
         notifyListeners();
       } else {
@@ -630,7 +696,7 @@ class NotificationToGuardianAdmin with ChangeNotifier {
     }
   }
 
-  List<StudentViewbyCourseDivision_notification_Stf> selectedSmsList = [];
+  List<StudentView> selectedSmsList = [];
   submitSmsStudent(BuildContext context) {
     selectedSmsList.clear();
     selectedSmsList =

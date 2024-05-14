@@ -202,6 +202,34 @@ class SmsBalance {
     return data;
   }
 }
+
+//smsformat edit
+
+class SmsFormatEdit {
+  String? id;
+  String? smsBody;
+  String? content;
+  bool? isApproved;
+
+  SmsFormatEdit({this.id, this.smsBody, this.content, this.isApproved});
+
+  SmsFormatEdit.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    smsBody = json['smsBody'];
+    content = json['content'];
+    isApproved = json['isApproved'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['smsBody'] = this.smsBody;
+    data['content'] = this.content;
+    data['isApproved'] = this.isApproved;
+    return data;
+  }
+}
+
 //sms response
 class SmsResult {
   String? typeSend;

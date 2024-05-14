@@ -6,6 +6,7 @@ import 'package:essconnect/Constants.dart';
 import 'package:essconnect/Presentation/Student/Attendence.dart';
 import 'package:essconnect/Presentation/Student/CurriculamScreen.dart';
 import 'package:essconnect/Presentation/Student/Gallery.dart';
+import 'package:essconnect/Presentation/Student/MarkSheet.dart';
 import 'package:essconnect/Presentation/Student/NoInternetScreen.dart';
 import 'package:essconnect/Presentation/Student/NoticeBoard.dart';
 import 'package:essconnect/Presentation/Student/PasswordChange.dart';
@@ -460,130 +461,116 @@ class _ChildHomeState extends State<ChildHome> {
                                           ),
                                         ),
                                       ),
-                                module.curiculam == true
-                                    ? Consumer<Curriculamprovider>(
-                                        builder: (context, curri, child) =>
-                                            GestureDetector(
-                                          onTap: () async {
-                                            await Provider.of<
-                                                        Curriculamprovider>(
-                                                    context,
-                                                    listen: false)
-                                                .getCuriculamtoken();
-                                            String token =
-                                                await curri.token.toString();
-                                            await Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      CurriculamPage(
-                                                        token: token,
-                                                      )),
-                                            );
-                                          },
+                                module.offlineTab == true
+                                    ? Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 10, right: 10),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                            const MarkSheetView()),
+                                      );
+                                    },
+                                    child: Column(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Card(
+                                          elevation: 10,
+                                          color: Colors.white,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                            BorderRadius.circular(
+                                                12.0),
+                                          ),
                                           child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 10, right: 10),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                Card(
-                                                  elevation: 10,
-                                                  color: Colors.white,
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            12.0),
-                                                  ),
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: Container(
-                                                      height: 38,
-                                                      width: 38,
-                                                      decoration: BoxDecoration(
-                                                        image:
-                                                            const DecorationImage(
-                                                          opacity: 20,
-                                                          image: AssetImage(
-                                                            'assets/Curriculum.png',
-                                                          ),
-                                                        ),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10),
-                                                      ),
-                                                    ),
+                                            padding:
+                                            const EdgeInsets.all(8.0),
+                                            child: Container(
+                                              height: 38,
+                                              width: 38,
+                                              decoration: BoxDecoration(
+                                                image:
+                                                const DecorationImage(
+                                                  opacity: 20,
+                                                  image: AssetImage(
+                                                    'assets/Marksheet.png',
                                                   ),
                                                 ),
-                                                kheight,
-                                                const Text(
-                                                  'e-Classroom',
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      fontSize: 11,
-                                                      color: Colors.black),
-                                                )
-                                              ],
+                                                borderRadius:
+                                                BorderRadius.circular(
+                                                    10),
+                                              ),
                                             ),
                                           ),
                                         ),
-                                      )
-                                    : GestureDetector(
-                                        onTap: () async {
-                                          _noAcess();
-                                        },
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 10, right: 10),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              Card(
-                                                elevation: 10,
-                                                color: Colors.white,
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          12.0),
-                                                ),
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: Container(
-                                                    height: 38,
-                                                    width: 38,
-                                                    decoration: BoxDecoration(
-                                                      image:
-                                                          const DecorationImage(
-                                                        opacity: 20,
-                                                        image: AssetImage(
-                                                          'assets/Curriculum.png',
-                                                        ),
-                                                      ),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                    ),
+                                        kheight,
+                                        const Text(
+                                          'Mark Sheet',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 11,
+                                              color: Colors.black),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                )
+                                    : Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 10, right: 10),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      _noAcess();
+                                    },
+                                    child: Column(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Card(
+                                          elevation: 10,
+                                          color: Colors.white,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                            BorderRadius.circular(
+                                                12.0),
+                                          ),
+                                          child: Padding(
+                                            padding:
+                                            const EdgeInsets.all(8.0),
+                                            child: Container(
+                                              height: 38,
+                                              width: 38,
+                                              decoration: BoxDecoration(
+                                                image:
+                                                const DecorationImage(
+                                                  opacity: 20,
+                                                  image: AssetImage(
+                                                    'assets/Marksheet.png',
                                                   ),
                                                 ),
+                                                borderRadius:
+                                                BorderRadius.circular(
+                                                    10),
                                               ),
-                                              kheight,
-                                              const Text(
-                                                'e-Classroom',
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w400,
-                                                    fontSize: 11,
-                                                    color: Colors.black),
-                                              )
-                                            ],
+                                            ),
                                           ),
                                         ),
-                                      ),
+                                        kheight,
+                                        const Text(
+                                          'Mark Sheet',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w400,
+                                              fontSize: 11,
+                                              color: Colors.black),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
                               ],
                             ),
                           ),
@@ -824,6 +811,130 @@ class _ChildHomeState extends State<ChildHome> {
                                                   ],
                                                 ),
                                               ),
+                                            ),
+                                          ),
+                                        ),
+                                        module.curiculam == true
+                                            ? Consumer<Curriculamprovider>(
+                                          builder: (context, curri, child) =>
+                                              GestureDetector(
+                                                onTap: () async {
+                                                  await Provider.of<
+                                                      Curriculamprovider>(
+                                                      context,
+                                                      listen: false)
+                                                      .getCuriculamtoken();
+                                                  String token =
+                                                  await curri.token.toString();
+                                                  await Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            CurriculamPage(
+                                                              token: token,
+                                                            )),
+                                                  );
+                                                },
+                                                child: Padding(
+                                                  padding: const EdgeInsets.only(
+                                                      left: 10, right: 10),
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                    MainAxisAlignment.spaceEvenly,
+                                                    children: [
+                                                      Card(
+                                                        elevation: 10,
+                                                        color: Colors.white,
+                                                        shape: RoundedRectangleBorder(
+                                                          borderRadius:
+                                                          BorderRadius.circular(
+                                                              12.0),
+                                                        ),
+                                                        child: Padding(
+                                                          padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                          child: Container(
+                                                            height: 38,
+                                                            width: 38,
+                                                            decoration: BoxDecoration(
+                                                              image:
+                                                              const DecorationImage(
+                                                                opacity: 20,
+                                                                image: AssetImage(
+                                                                  'assets/Curriculum.png',
+                                                                ),
+                                                              ),
+                                                              borderRadius:
+                                                              BorderRadius
+                                                                  .circular(10),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      kheight,
+                                                      const Text(
+                                                        'e-Classroom',
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                            FontWeight.w400,
+                                                            fontSize: 11,
+                                                            color: Colors.black),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                        )
+                                            : GestureDetector(
+                                          onTap: () async {
+                                            _noAcess();
+                                          },
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 10, right: 10),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                Card(
+                                                  elevation: 10,
+                                                  color: Colors.white,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                    BorderRadius.circular(
+                                                        12.0),
+                                                  ),
+                                                  child: Padding(
+                                                    padding:
+                                                    const EdgeInsets.all(8.0),
+                                                    child: Container(
+                                                      height: 38,
+                                                      width: 38,
+                                                      decoration: BoxDecoration(
+                                                        image:
+                                                        const DecorationImage(
+                                                          opacity: 20,
+                                                          image: AssetImage(
+                                                            'assets/Curriculum.png',
+                                                          ),
+                                                        ),
+                                                        borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                kheight,
+                                                const Text(
+                                                  'e-Classroom',
+                                                  style: TextStyle(
+                                                      fontWeight: FontWeight.w400,
+                                                      fontSize: 11,
+                                                      color: Colors.black),
+                                                )
+                                              ],
                                             ),
                                           ),
                                         ),

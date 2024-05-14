@@ -42,6 +42,7 @@ class StaffNotificationCountProviders with ChangeNotifier {
   }
 
   int? count;
+  int? noticecount;
   Future getnotificationCount() async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoading(true);
@@ -61,7 +62,10 @@ class StaffNotificationCountProviders with ChangeNotifier {
         final data = json.decode(response.body);
         CountmodelNotification not = CountmodelNotification.fromJson(data);
         count = not.totalCount;
+        noticecount =not.noticeboardCount;
+
         print("Notification Count = $count");
+        print("Notice Count = $noticecount");
         setLoading(false);
         notifyListeners();
       } else {

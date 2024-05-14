@@ -10,7 +10,7 @@ class RazorPayModel {
   bool? retry;
   bool? redirect;
   Prefill? prefill;
-  // Notes? notes;
+   Notes? notes;
   // Theme? theme;
 
   RazorPayModel({
@@ -25,7 +25,7 @@ class RazorPayModel {
     this.retry,
     this.redirect,
     this.prefill,
-    // this.notes,
+    this.notes,
     // this.theme
   });
 
@@ -42,7 +42,7 @@ class RazorPayModel {
     redirect = json['redirect'];
     prefill =
         json['prefill'] != null ? new Prefill.fromJson(json['prefill']) : null;
-    // notes = json['notes'] != null ? new Notes.fromJson(json['notes']) : null;
+   notes = json['notes'] != null ? new Notes.fromJson(json['notes']) : null;
     // theme = json['theme'] != null ? new Theme.fromJson(json['theme']) : null;
   }
 
@@ -61,9 +61,9 @@ class RazorPayModel {
     if (this.prefill != null) {
       data['prefill'] = this.prefill!.toJson();
     }
-    // if (this.notes != null) {
-    //   data['notes'] = this.notes!.toJson();
-    // }
+    if (this.notes != null) {
+      data['notes'] = this.notes!.toJson();
+    }
     // if (this.theme != null) {
     //   data['theme'] = this.theme!.toJson();
     // }

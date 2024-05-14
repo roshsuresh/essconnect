@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:essconnect/utils/spinkit.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -36,8 +38,10 @@ class StaffProfileView extends StatelessWidget {
             : ListView(
                 physics: const BouncingScrollPhysics(),
                 children: [
+
                   Stack(
                     children: [
+
                       Container(
                         height: 210,
                         width: size.width,
@@ -49,6 +53,17 @@ class StaffProfileView extends StatelessWidget {
                             begin: Alignment.topCenter,
                           ),
                         ),
+                      ),
+                      IconButton(
+                        onPressed: (){
+                          Navigator.pop(context);
+                        },
+                        icon:
+                        Platform.isIOS?
+                        Icon(Icons.arrow_back_ios_new,color:
+                        Colors.white,size: 25.0):
+                        Icon(Icons.arrow_back_outlined,color:
+                        Colors.white,size: 25.0),
                       ),
                       Positioned(
                         top: 70,

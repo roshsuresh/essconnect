@@ -10,11 +10,9 @@ import '../../utils/constants.dart';
 //List reportResponse = [];
 
 class MarksheetProvider with ChangeNotifier {
-  String? name;
-  String? extension;
+
   bool isLoading = false;
-  String? url;
-  String? id;
+
 
   bool _loading = false;
   bool get loading => _loading;
@@ -24,12 +22,12 @@ class MarksheetProvider with ChangeNotifier {
   }
 
   List<MarksheetList> marksheetList = [];
-  clearReportCard() {
+  clearMarksheet() {
     marksheetList.clear();
     notifyListeners();
   }
 
-  bool? isLocked;
+
   Future getMarkLit() async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoading(true);
@@ -42,12 +40,10 @@ class MarksheetProvider with ChangeNotifier {
         Uri.parse(
             "${UIGuide.baseURL}/marksheet/initvalues"),
         headers: headers);
-    try {
+
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        ReportModel repo = ReportModel.fromJson(data);
-        isLocked = repo.isLocked;
-        // reportResponse = data['reportCardList'];
+        MarksheetList repo = MarksheetList.fromJson(data);
         List<MarksheetList> templist = List<MarksheetList>.from(
             data['marksheetList'].map((x) => MarksheetList.fromJson(x)));
         marksheetList.addAll(templist);
@@ -57,38 +53,35 @@ class MarksheetProvider with ChangeNotifier {
         setLoading(false);
         print("Error in response");
       }
-    } catch (e) {
-      setLoading(false);
-      print(e);
-    }
-  }
 
-  Future reportCardAttachment(String fileId) async {
+  }
+  List<MarksheetListView> marksheetValues = [];
+  Future markSheetView(String marksheetid) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     var headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
-    String file = fileId.toString();
     var response = await http.get(
-        Uri.parse("${UIGuide.baseURL}/parent-report-card/preview/$file"),
+        Uri.parse("${UIGuide.baseURL}/marksheet/subMarkList/$marksheetid"),
         headers: headers);
     print(response);
     try {
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
-        ReportAttachment reattach = ReportAttachment.fromJson(data);
-        name = reattach.name;
-        url = reattach.url;
-        extension = reattach.extension;
-        id = reattach.id;
-        log('.................$url');
-        print(data);
+       // MarkSheetValues repo = MarkSheetValues.fromJson(data);
+
+        List<MarksheetListView> templist1= List<MarksheetListView>.from(
+            data['marksheetList'].map((x) => MarksheetListView.fromJson(x)));
+        marksheetValues.addAll(templist1);
+        setLoading(false);
         notifyListeners();
       } else {
+        setLoading(false);
         print("Error in response");
       }
     } catch (e) {
+      setLoading(false);
       print(e);
     }
   }

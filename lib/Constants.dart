@@ -2,6 +2,9 @@ import 'dart:core';
 import 'package:flutter/material.dart';
 
 //sized box
+const kWidth5 = SizedBox(
+  width: 5,
+);
 const kWidth = SizedBox(
   width: 10,
 );

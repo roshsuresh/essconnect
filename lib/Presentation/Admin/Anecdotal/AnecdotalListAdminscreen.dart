@@ -1,5 +1,6 @@
 import 'package:essconnect/Application/Staff_Providers/Anecdotal/AncedotalStaffProvider.dart';
 import 'package:essconnect/Constants.dart';
+import 'package:essconnect/Presentation/Admin/Anecdotal/AnecDotalAdminEditScreen.dart';
 import 'package:essconnect/Presentation/Staff/Anecdotal/StudAnecdotal/AnecDotalEditScreen.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:essconnect/utils/spinkit.dart';
@@ -11,14 +12,14 @@ import 'package:provider/provider.dart';
 import '../../../../Application/Staff_Providers/Anecdotal/AnecdotalStaffListProvider.dart';
 import '../../../../Debouncer.dart';
 
-class AnectdotalListScreen extends StatefulWidget {
-  const AnectdotalListScreen({super.key});
+class AnectdotalListAdminScreen extends StatefulWidget {
+  const AnectdotalListAdminScreen({super.key});
 
   @override
-  State<AnectdotalListScreen> createState() => _AnectdotalListScreenState();
+  State<AnectdotalListAdminScreen> createState() => _AnectdotalListAdminScreenState();
 }
 
-class _AnectdotalListScreenState extends State<AnectdotalListScreen> {
+class _AnectdotalListAdminScreenState extends State<AnectdotalListAdminScreen> {
   final controller = TextEditingController();
   final _debouncer = Debouncer(milliseconds: 1000);
 
@@ -31,29 +32,70 @@ class _AnectdotalListScreenState extends State<AnectdotalListScreen> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       var p = Provider.of<AnecdotalStaffListProviders>(context, listen: false);
       _scrollController.addListener(_scrollListener);
+
       await p.setLoading(false);
       p.anecDotalList.clear();
-      p.currentPage = 1;
+      p.currentPage=2;
       await p.getAnecdotalList();
+
       await p.getId();
       userId=p.userId;
 
   }
     );
         }
+
+  Future<void> _refresh() async {
+    // Simulate fetching new data
+    await Future.delayed(Duration(seconds: 2));
+    setState(() {
+      Provider.of<AnecdotalStaffListProviders>(context, listen: false).anecDotalList.clear();
+    });
+  }
   String? userId;
   void _scrollListener() async {
     final provider =
     Provider.of<AnecdotalStaffListProviders>(context, listen: false);
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
-      if (provider.hasMoreData()) {
+      if (provider.hasMoreListData()) {
         print("object");
+        provider.loadingPage
+            ? const Padding(
+          padding: EdgeInsets.all(15.0),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                width: 30,
+                height: 30,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: UIGuide.light_Purple,
+                ),
+              ),
+              kWidth,
+              Text(
+                "Please Wait...",
+                style: TextStyle(
+                    color: UIGuide.light_Purple,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 16),
+              )
+            ],
+          ),
+        ):
+       controller.text.isEmpty?
+        await provider.getAnecdotalListPagination():
 
-        await provider.getAnecdotalList();
+        await provider.getAnecdotalListPaginationByName();
+
       }
     }
   }
+
+
   final ScrollController _scrollController = ScrollController();
 
   @override
@@ -79,15 +121,16 @@ class _AnectdotalListScreenState extends State<AnectdotalListScreen> {
                                 focusNode: FocusNode(),
 
                                 controller: controller,
-                                onChanged: (value) {
+                                onChanged: (value1) {
                                   _debouncer.run(() async {
                                     await Provider.of<AnecdotalStaffListProviders>(context,
                                         listen: false)
                                         .clearAnecdotal();
+                                    value.currentPage=2;
                                     await Provider.of<AnecdotalStaffListProviders>(context,
                                         listen: false)
-                                        .getAnecdotalListbyName(value);
-                                    print('-***--**-*-*-*-*-*');
+                                        .getAnecdotalListbyName(value1);
+                                    print('-***--**-*-*-*-*-');
                                   });
                                 },
                                 decoration: InputDecoration(
@@ -107,9 +150,11 @@ class _AnectdotalListScreenState extends State<AnectdotalListScreen> {
                                           await Provider.of<AnecdotalStaffListProviders>(context,
                                               listen: false)
                                               .clearAnecdotal();
+                                          value.currentPage=2;
                                           await Provider.of<AnecdotalStaffListProviders>(context,
                                               listen: false)
                                               .getAnecdotalListbyName('');
+
                                         }),
                                       ),
                                     ],
@@ -144,243 +189,372 @@ class _AnectdotalListScreenState extends State<AnectdotalListScreen> {
                         child: Consumer<AnecdotalStaffListProviders>(
                           builder: (context, provider, child) {
 
-                            if (provider.anecDotalList.isEmpty) {
-                              Future.delayed(const Duration(seconds: 2));
+                       if (value.anecDotalList.isNotEmpty) {
+                         return
 
-                              return provider.loading
-                                  ? spinkitLoader()
-                                  : Center(
-                                child: LottieBuilder.network(
-                                    'https://assets2.lottiefiles.com/private_files/lf30_lkquf6qz.json'),
-                              );
-                            }
-                            return
+                           ListView.builder(
+                               controller: _scrollController,
+                               itemCount: value.anecDotalList.length,
+                               shrinkWrap: true,
+                               itemBuilder: (context, index) {
+                                 DateTime dateTime = DateTime.parse(
+                                     value.anecDotalList[index].date!);
+                                 String formattedDate = DateFormat("dd-MM-yyyy")
+                                     .format(dateTime);
+                                 return Padding(
+                                   padding: const EdgeInsets.all(4.0),
+                                   child: Container(
+                                     decoration: BoxDecoration(
 
-                      ListView.builder(
-                          controller: _scrollController,
-                          itemCount: value.anecDotalList.length,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            DateTime dateTime = DateTime.parse(value.anecDotalList[index].date!);
-                            String formattedDate = DateFormat("dd-MM-yyyy").format(dateTime);
-                            return Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: Container(
-                                decoration: BoxDecoration(
-                      
-                                  color:
-                                      const Color.fromARGB(
-                                      255, 241, 243, 245),
-                                  border: Border.all(
-                      
-                                      color: UIGuide.light_black, width: 1),
-                                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                                ),
-                                child: Column(
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(4.0),
-                                      child: Row(
-                                        children: [
-                                          Container(
+                                       color:
+                                       const Color.fromARGB(
+                                           255, 241, 243, 245),
+                                       border: Border.all(
 
-                                            child:Padding(
-                                              padding: const EdgeInsets.all(2.0),
-                                              child: Text(
-                                                (index + 1).toString(),),
-                                            ),
-                                            decoration: BoxDecoration(
+                                           color: UIGuide.light_black,
+                                           width: 1),
+                                       borderRadius: BorderRadius.all(
+                                           Radius.circular(10.0)),
+                                     ),
+                                     child: Column(
+                                       children: [
+                                         Padding(
+                                           padding: const EdgeInsets.all(4.0),
+                                           child: Row(
+                                             children: [
+                                               Container(
 
-                                              color: UIGuide.THEME_LIGHT
-                                            ),
-                                            ),
+                                                 child: Padding(
+                                                   padding: const EdgeInsets
+                                                       .all(2.0),
+                                                   child: Text(
+                                                     (index + 1).toString(),),
+                                                 ),
+                                                 decoration: BoxDecoration(
+
+                                                     color: UIGuide.THEME_LIGHT
+                                                 ),
+                                               ),
 
 
-                                          Text("  Name : "),
-                                          Text(value.anecDotalList[index].name.toString(),
-                                          style: TextStyle(
-                                            color: UIGuide.light_Purple
-                                          ),)
-                                        ],
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(4.0),
-                                      child: Row(
-                                        children: [
-                                          Text("Admn No : "),
-                                          Text(value.anecDotalList[index].admissionNo.toString(),style: TextStyle(
-                                            color: UIGuide.light_Purple
-                                          ),)
-                                        ],
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(4.0),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Text("Date : "),
-                                              Text(formattedDate,
-                                              style: TextStyle(
-                                                color: UIGuide.light_Purple
-                                              ),
-                                              )
-                                            ],
-                                          ),
-                                          Row(
-                                            mainAxisAlignment: MainAxisAlignment.end,
-                                            children: [
-                                              Text("Created By : "),
-                                              SizedBox(
-                      
-                                                width:size.width*0.40,
-                      
-                                                child: Text(
-                                                  value.anecDotalList[index].createdBy.toString(),
-                      
-                                                  overflow: TextOverflow.visible, // or TextOverflow.ellipsis, etc.
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                      
-                                        ],
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 4.0,bottom: 4.0,left: 4.0,right: 14),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Text("Remark Category: "),
-                                              SizedBox(
-                                                width: size.width*0.5,
-                                                child: Text(
-                                                 "${value.anecDotalList[index].remarksCategory.toString()} - ${value.anecDotalList[index].subject==null?"":value.anecDotalList[index].subject.toString()}",
-                                                  softWrap: true,
-                                                  overflow: TextOverflow.visible, // or TextOverflow.ellipsis, etc.
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          Row(
+                                               Text("  Name : "),
+                                               Text(
+                                                 value.anecDotalList[index].name
+                                                     .toString(),
+                                                 style: TextStyle(
+                                                     color: UIGuide.light_Purple
+                                                 ),)
+                                             ],
+                                           ),
+                                         ),
+                                         Padding(
+                                           padding: const EdgeInsets.all(4.0),
+                                           child: Row(
+                                             children: [
+                                               Text("Admn No : "),
+                                               Text(value.anecDotalList[index]
+                                                   .admissionNo.toString(),
+                                                 style: TextStyle(
+                                                     color: UIGuide.light_Purple
+                                                 ),)
+                                             ],
+                                           ),
+                                         ),
+                                         Padding(
+                                           padding: const EdgeInsets.all(4.0),
+                                           child: Row(
+                                             mainAxisAlignment: MainAxisAlignment
+                                                 .spaceBetween,
+                                             children: [
+                                               Row(
+                                                 children: [
+                                                   Text("Date : "),
+                                                   Text(formattedDate,
+                                                     style: TextStyle(
+                                                         color: UIGuide
+                                                             .light_Purple
+                                                     ),
+                                                   )
+                                                 ],
+                                               ),
+                                               kWidth,
 
-                                            children: [
+                                               Row(
+                                                 children: [
+                                                   Text("Created By : "),
+                                                   SizedBox(
 
-                                            InkWell(
-                                                onTap: (){
-                                                 Navigator.push(context, MaterialPageRoute(builder: (context)=>AnecdotalEditScreen(id: value.anecDotalList[index].id.toString())));
+                                                     width: size.width * 0.40,
 
-                                                },
-                                                child: Icon(Icons.edit_sharp,color:UIGuide.button1,)
-                                            ),
-                                             // kWidth,
-                                              value.anecDotalList[index].createStaffId!= userId?
-                                                  InkWell(
-                                                    onTap: (){},
-                                                    child: Icon(Icons.delete_forever_sharp,color: UIGuide.button2,)
-                                                  ):
+                                                     child: Text(
+                                                       value
+                                                           .anecDotalList[index]
+                                                           .createdBy
+                                                           .toString(),
 
-                                              InkWell(onTap:(){
+                                                       overflow: TextOverflow
+                                                           .visible, // or TextOverflow.ellipsis, etc.
+                                                     ),
+                                                   ),
+                                                 ],
+                                               ),
 
-                                                print(userId);
-                                                print(value.anecDotalList[index].createStaffId);
+                                             ],
+                                           ),
+                                         ),
+                                         Padding(
+                                           padding: const EdgeInsets.only(
+                                               top: 4.0,
+                                               bottom: 4.0,
+                                               left: 4.0,
+                                               right: 16),
+                                           child: Row(
+                                             mainAxisAlignment: MainAxisAlignment
+                                                 .spaceBetween,
+                                             children: [
+                                               Row(
+                                                 children: [
+                                                   Text("Category: "),
+                                                   SizedBox(
+                                                     width: size.width * 0.5,
+                                                     child: Text(
+                                                       "${value
+                                                           .anecDotalList[index]
+                                                           .remarksCategory
+                                                           .toString()} - ${value
+                                                           .anecDotalList[index]
+                                                           .subject == null
+                                                           ? ""
+                                                           : value
+                                                           .anecDotalList[index]
+                                                           .subject
+                                                           .toString()}",
+                                                       softWrap: true,
+                                                       overflow: TextOverflow
+                                                           .visible, // or TextOverflow.ellipsis, etc.
+                                                     ),
+                                                   ),
+                                                 ],
+                                               ),
+                                               Row(
 
+                                                 children: [
 
-                                                showDialog(
-                                                  context: context,
-                                                  builder: (BuildContext context) {
-                                                    return AlertDialog(
-                                                      title: Text('Are you sure want to delete'),
-                                                      content: Text('You wont be able to revert this!'),
-                                                      actions: <Widget>[
-                                                        Row(
-                                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                                          children: [
+                                                   InkWell(
+                                                       onTap: () {
+                                                         Navigator.push(context,
+                                                             MaterialPageRoute(
+                                                                 builder: (
+                                                                     context) =>
+                                                                     AnecdotalAdminEditScreen(
+                                                                         id: value
+                                                                             .anecDotalList[index]
+                                                                             .id
+                                                                             .toString())));
+                                                       },
+                                                       child: Icon(
+                                                         Icons.edit_sharp,
+                                                         color: UIGuide
+                                                             .button1,)
+                                                   ),
+                                                   kWidth,
+                                                   value.anecDotalList[index]
+                                                       .createStaffId != userId
+                                                       ?
+                                                   InkWell(
+                                                       onTap: () {},
+                                                       child: const Icon(Icons
+                                                           .delete_forever_sharp,
+                                                         color: Color.fromARGB(
+                                                             100, 136, 47, 56),)
+                                                   )
+                                                       :
 
-                                                            TextButton(
-                                                              onPressed: () {
-                                                                // Close the dialog
-                                                                Navigator.of(context).pop();
-                                                              },
-
-                                                              child: Text('Cancel',style: TextStyle(
-                                                                  color: UIGuide.light_Purple
-                                                              ),),
-                                                              style: ButtonStyle(
-                                                                backgroundColor: MaterialStateProperty.all(UIGuide.THEME_LIGHT),
-                                                                padding: MaterialStateProperty.all(
-                                                                  EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                                                                ),
-                                                                textStyle: MaterialStateProperty.all(
-                                                                  TextStyle(fontSize: 12.0),
-                                                                ),
-
-                                                                shape: MaterialStateProperty.all(
-                                                                  RoundedRectangleBorder(
-                                                                    borderRadius: BorderRadius.circular(8.0),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                            TextButton(
-                                                              onPressed: () {
-
-                                                                value.anecdotalDelete(context, value.anecDotalList[index].id.toString(), index);
-
-                                                              },
-
-                                                              child: Text('OK',style: TextStyle(
-                                                                  color: UIGuide.light_Purple
-                                                              ),),
-                                                              style: ButtonStyle(
-                                                                backgroundColor: MaterialStateProperty.all(UIGuide.THEME_LIGHT),
-                                                                padding: MaterialStateProperty.all(
-                                                                  EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                                                                ),
-                                                                textStyle: MaterialStateProperty.all(
-                                                                  TextStyle(fontSize: 12.0),
-                                                                ),
-
-                                                                shape: MaterialStateProperty.all(
-                                                                  RoundedRectangleBorder(
-                                                                    borderRadius: BorderRadius.circular(8.0),
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ],
-                                                    );
-                                                  },
-                                                );
-                            },
-                            child: Icon(Icons.delete_forever_sharp,color: UIGuide.button2,)),
+                                                   InkWell(onTap: () {
+                                                     print(userId);
+                                                     print(value
+                                                         .anecDotalList[index]
+                                                         .createStaffId);
 
 
-                                            ],
-                                          ),
-                      
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            );
-                          }
-                          );
+                                                     showDialog(
+                                                       context: context,
+                                                       builder: (
+                                                           BuildContext context) {
+                                                         return AlertDialog(
+                                                           title: Text(
+                                                               'Are you sure want to delete'),
+                                                           content: Text(
+                                                               'You wont be able to revert this!'),
+                                                           actions: <Widget>[
+                                                             Row(
+                                                               mainAxisAlignment: MainAxisAlignment
+                                                                   .spaceAround,
+                                                               children: [
+
+                                                                 TextButton(
+                                                                   onPressed: () {
+                                                                     // Close the dialog
+                                                                     Navigator
+                                                                         .of(
+                                                                         context)
+                                                                         .pop();
+                                                                   },
+
+                                                                   child: Text(
+                                                                     'Cancel',
+                                                                     style: TextStyle(
+                                                                         color: UIGuide
+                                                                             .light_Purple
+                                                                     ),),
+                                                                   style: ButtonStyle(
+                                                                     backgroundColor: MaterialStateProperty
+                                                                         .all(
+                                                                         UIGuide
+                                                                             .THEME_LIGHT),
+                                                                     padding: MaterialStateProperty
+                                                                         .all(
+                                                                       EdgeInsets
+                                                                           .symmetric(
+                                                                           horizontal: 20.0,
+                                                                           vertical: 10.0),
+                                                                     ),
+                                                                     textStyle: MaterialStateProperty
+                                                                         .all(
+                                                                       TextStyle(
+                                                                           fontSize: 12.0),
+                                                                     ),
+
+                                                                     shape: MaterialStateProperty
+                                                                         .all(
+                                                                       RoundedRectangleBorder(
+                                                                         borderRadius: BorderRadius
+                                                                             .circular(
+                                                                             8.0),
+                                                                       ),
+                                                                     ),
+                                                                   ),
+                                                                 ),
+                                                                 TextButton(
+                                                                   onPressed: () {
+                                                                     value
+                                                                         .anecdotalDelete(
+                                                                         context,
+                                                                         value
+                                                                             .anecDotalList[index]
+                                                                             .id
+                                                                             .toString(),
+                                                                         index);
+                                                                   },
+
+                                                                   child: Text(
+                                                                     'OK',
+                                                                     style: TextStyle(
+                                                                         color: UIGuide
+                                                                             .light_Purple
+                                                                     ),),
+                                                                   style: ButtonStyle(
+                                                                     backgroundColor: MaterialStateProperty
+                                                                         .all(
+                                                                         UIGuide
+                                                                             .THEME_LIGHT),
+                                                                     padding: MaterialStateProperty
+                                                                         .all(
+                                                                       EdgeInsets
+                                                                           .symmetric(
+                                                                           horizontal: 20.0,
+                                                                           vertical: 10.0),
+                                                                     ),
+                                                                     textStyle: MaterialStateProperty
+                                                                         .all(
+                                                                       TextStyle(
+                                                                           fontSize: 12.0),
+                                                                     ),
+
+                                                                     shape: MaterialStateProperty
+                                                                         .all(
+                                                                       RoundedRectangleBorder(
+                                                                         borderRadius: BorderRadius
+                                                                             .circular(
+                                                                             8.0),
+                                                                       ),
+                                                                     ),
+                                                                   ),
+                                                                 ),
+                                                               ],
+                                                             ),
+                                                           ],
+                                                         );
+                                                       },
+                                                     );
+                                                   },
+                                                       child: Icon(Icons
+                                                           .delete_forever_sharp,
+                                                         color: UIGuide
+                                                             .button2,)),
+
+
+                                                 ],
+                                               ),
+
+                                             ],
+                                           ),
+                                         ),
+                                       ],
+                                     ),
+                                   ),
+                                 );
+                               }
+                           );
+                       }
+
+                       else {
+                         Future.delayed(const Duration(seconds: 2));
+
+                         return provider.loadingPage
+                             ? spinkitLoader()
+                             : Center(
+                           child: LottieBuilder.network(
+                               'https://assets2.lottiefiles.com/private_files/lf30_lkquf6qz.json'),
+                         );
+                       }
   },
   )
                     ),
+
+                    value.loadingPage
+                        ? const Padding(
+                      padding: EdgeInsets.all(15.0),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            width: 30,
+                            height: 30,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: UIGuide.light_Purple,
+                            ),
+                          ),
+                          kWidth,
+                          Text(
+                            "Please Wait...",
+                            style: TextStyle(
+                                color: UIGuide.light_Purple,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 16),
+                          )
+                        ],
+                      ),
+                    )
+                        : const SizedBox(
+                      height: 0,
+                    )
+
                   ],
                 ),
+
         ));
   }
 }

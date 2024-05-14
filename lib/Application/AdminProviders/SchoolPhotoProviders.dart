@@ -53,40 +53,99 @@ class SchoolPhotoProviders with ChangeNotifier {
   List<MultiSelectItem> dropDown = [];
   Future stdReportSectionStaff() async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
-    setloadingSection(true);
+   setloadingSection(true);
     var headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
 
-    var response = await http.get(
+    var request = http.Request(
+        'GET',
         Uri.parse(
-            "${UIGuide.baseURL}/mobileapp/staffdet/studentreportinitialvalues"),
-        headers: headers);
+            '${UIGuide.baseURL}/sms-to-guardian/initialvalues'));
+    request.headers.addAll(headers);
+    http.StreamedResponse response = await request.send();
+    print(request);
 
-    try {
+
       if (response.statusCode == 200) {
         print("corect");
         setloadingSection(true);
-        final data = json.decode(response.body);
-        log(data.toString());
-        Map<String, dynamic> stl = data['studentReportInitialValues'];
-        List<StudReportSectionList> templist = List<StudReportSectionList>.from(
-            stl["sectionList"].map((x) => StudReportSectionList.fromJson(x)));
+        Map<String, dynamic> data =
+        jsonDecode(await response.stream.bytesToString());
+
+       // List<StudReportSectionList> templist = List<StudReportSectionList>.from(
+       //      data["sectionList"].map((x) => StudReportSectionList.fromJson(x)));
+       //   stdReportInitialValues.addAll(templist);
+        List<StudReportSectionList> templist =
+        List<StudReportSectionList>.from(data["sections"]
+            .map((x) => StudReportSectionList.fromJson(x)));
         stdReportInitialValues.addAll(templist);
+
+
         dropDown = stdReportInitialValues.map((subjectdata) {
           return MultiSelectItem(subjectdata, subjectdata.text!);
         }).toList();
+        List<StudReportCourse> templist2 = List<StudReportCourse>.from(data["courses"]
+            .map((x) => StudReportCourse.fromJson(x)));
+        courselist.addAll(templist2);
+
+        print(courselist.toList());
+
+
+        List<StudReportDivision> templist3 = List<StudReportDivision>.from(data["divisions"]
+            .map((x) => StudReportDivision.fromJson(x)));
+        divisionSectionlist.addAll(templist3);
+        print(divisionSectionlist.toList());
+
         setloadingSection(false);
         notifyListeners();
       } else {
         setloadingSection(false);
         print("Error in notification response");
       }
-    } catch (e) {
-      print(e);
-    }
+
   }
+
+  //divisionsetion
+
+  List<StudReportDivision> divisionSectionlist = [];
+  Future getDivisonSectionList(String sectionId) async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+    };
+
+    var request = http.Request(
+        'GET',
+        Uri.parse(
+            '${UIGuide.baseURL}/sms-to-guardian/divisionsection/$sectionId'));
+    request.body = json.encode({"SchoolId": _pref.getString('schoolId')});
+    request.headers.addAll(headers);
+    print("____________");
+    http.StreamedResponse response = await request.send();
+    if (response.statusCode == 200) {
+      setloadingDivision(true);
+      List<dynamic> data =
+      jsonDecode(await response.stream.bytesToString());
+
+      List<StudReportDivision> templist = List<StudReportDivision>.from(
+          data.map((x) => StudReportDivision.fromJson(x)));
+      divisionSectionlist.clear();
+      divisionSectionlist.addAll(templist);
+      divisionDrop = divisionSectionlist.map((subjectdata) {
+        return MultiSelectItem(subjectdata, subjectdata.text ?? "");
+      }).toList();
+      setloadingDivision(false);
+      notifyListeners();
+    } else {
+      print('Error in Notice stf');
+    }
+    return true;
+  }
+
 
   //course
   courseListClear() {

@@ -6,6 +6,7 @@ import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 import '../../Application/Staff_Providers/Notification_ToGuardianProvider.dart';
+import '../../Application/Staff_Providers/TextSMS_ToGuardian.dart';
 
 class SmsFormatGuardian extends StatefulWidget {
   final List<String> toList;
@@ -19,6 +20,8 @@ class SmsFormatGuardian extends StatefulWidget {
 }
 
 class _SmsFormatGuardianState extends State<SmsFormatGuardian> {
+  bool _validate=false;
+
   @override
   void initState() {
     super.initState();
@@ -26,6 +29,7 @@ class _SmsFormatGuardianState extends State<SmsFormatGuardian> {
       var p =
           Provider.of<NotificationToGuardian_Providers>(context, listen: false);
       p.smsBody = '';
+      p.extractedValues.clear();
 
       formatController.clear();
       formatController1.clear();
@@ -33,7 +37,8 @@ class _SmsFormatGuardianState extends State<SmsFormatGuardian> {
       await p.viewSMSFormat();
     });
   }
-
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  List<TextEditingController> _controllers = [];
   final formatController = TextEditingController();
   final formatController1 = TextEditingController();
   bool provcheck = false;
@@ -232,10 +237,238 @@ class _SmsFormatGuardianState extends State<SmsFormatGuardian> {
                           });
                         },
                       ),
+                      kWidth20,
+                      InkWell(
+                        onTap: (){
+
+
+                          value.extractedValues.isEmpty?
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(
+                            const SnackBar(
+                              elevation: 10,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(
+                                    Radius.circular(10)),
+                              ),
+                              duration: Duration(seconds: 1),
+                              margin: EdgeInsets.only(
+                                  bottom: 80,
+                                  left: 30,
+                                  right: 30),
+                              behavior: SnackBarBehavior.floating,
+                              content: Text(
+                                'Nothing to edit.....!',
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ):
+
+                          showModalBottomSheet(
+
+                            context: context,
+                            isScrollControlled: true,
+                            backgroundColor: Colors.white,
+                            builder: (context) {
+                              return Padding(
+                                padding: MediaQuery.of(context).viewInsets,
+                                child: Wrap(
+                                    children: [
+                                      LimitedBox(
+                                        maxHeight: size.height*0.40,
+                                        child: Form(
+                                          key: _formKey,
+                                          child: Column(
+                                            children: [
+
+                                              ListTile(
+
+                                                title: const Text("Edit Content"),
+                                                titleTextStyle: const TextStyle(
+                                                  fontSize: 16,
+                                                  color: UIGuide.light_Purple,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                                leadingAndTrailingTextStyle:
+                                                const TextStyle(),
+                                                trailing: TextButton(
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+
+                                                    },
+                                                    child: const Text(
+                                                      " ❌ ",
+                                                      style: TextStyle(
+                                                          color: Colors.black87,
+                                                          fontSize: 10,
+                                                          fontWeight: FontWeight.w600),
+                                                    )),
+                                              ),
+
+
+                                              const Divider(
+                                                height: 5,
+                                                color: Colors.grey,
+                                                thickness: 1,
+                                              ),
+
+
+                                              Expanded(
+                                                child: ListView(
+                                                  children: [
+                                                    Padding(
+                                                      padding: const EdgeInsets.all(4.0),
+                                                      child: ListView.builder(
+                                                          shrinkWrap: true,
+                                                          physics: NeverScrollableScrollPhysics(),
+                                                          itemCount: value.extractedValues.length,
+                                                          itemBuilder: ((context, index) {
+
+                                                            _controllers.add(TextEditingController());
+
+
+                                                                 _controllers[index].text = value
+                                                                .extractedValues[index] ;
+                                                            print("length");
+                                                            print(value.extractedValues.length);
+
+                                                            return Column(
+
+                                                              children: [
+
+                                                                Padding(
+                                                                  padding: const EdgeInsets.all( 4),
+                                                                  child: LimitedBox(
+                                                                     maxHeight: 100,
+                                                                      maxWidth:size.width,
+                                                                      child: TextFormField(
+                                                                        validator: (value) {
+                                                                          if (value == null || value.isEmpty) {
+                                                                            return 'Required';
+                                                                          }
+                                                                          return null;
+                                                                        },
+
+
+                                                            decoration:  InputDecoration(
+
+                                                            enabledBorder:  OutlineInputBorder(
+                                                              borderRadius: BorderRadius.circular(10.0),
+                                                            borderSide: const BorderSide(
+                                                                color: UIGuide.light_Purple,
+                                                                width: 1.0),
+                                                            ),
+                                                            focusedBorder: OutlineInputBorder(
+                                                            borderSide: const BorderSide(color:UIGuide.light_Purple, width: 1.0),
+                                                            borderRadius: BorderRadius.circular(10.0),
+                                                            ),
+
+                                                            ),
+                                                                        controller: _controllers[index],
+                                                                        onChanged: (value1){
+                                                                          _controllers[index]
+                                                                              .addListener(() {
+                                                                            value1;
+                                                                          });
+                                                                          value
+                                                                              .extractedValues[
+                                                                          index] =_controllers[index].text;
+
+
+                                                                        },
+
+
+                                                                      )),
+                                                                ),
+
+                                                              ],
+                                                            );
+
+                                                          })),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.all(4.0),
+                                                child: SizedBox(
+                                                  height:40,
+                                                  width: size.width*.30 ,
+                                                  child: ElevatedButton(
+
+                                                    onPressed: (){
+
+                                                      List changes=[];
+                                                      List data=[];
+                                                      changes.clear();
+                                                   for(int i=0;i< value.extractedValues.length;i++){
+                                                     changes.add(
+                                                       {
+                                                         "changeableText" : value.extractedValues[i]
+                                                       }
+                                                     );
+
+                                                          data.add(value.extractedValues[i]);
+                                                   }
+                                                   print("exxxxxxxxxxx");
+                                                   print(value.extractedValues);
+                                                   print(changes);
+                                                   print(data);
+
+
+                                                      value.replaceValuesInsideDoubleBrackets(value.smsBody!, value.extractedValues);
+                                                  //*****
+                                                      if (_formKey.currentState!
+                                                          .validate()) {
+                                                     value.smsformatedit(
+                                                         context,
+                                                         value.smsBody!,
+                                                         formatController1.text,
+                                                         value.smsBody!,
+                                                         provcheck,
+                                                         changes,
+                                                         formatController.text);
+                                                   }
+
+                                                    },
+
+
+
+                                                    child: Text("Set"),
+                                                    style: ElevatedButton.styleFrom(
+                                                      backgroundColor: UIGuide.light_Purple
+                                                    ),
+                                                  ),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      )
+                                    ]
+                                ),
+                              );
+                            },
+                          );
+
+                        },
+                          child: Container(
+                            child: Row(
+                              children: [
+                                Text("Edit Content ",style: TextStyle(
+                                  color: UIGuide.light_Purple,
+
+                                ),),
+                                Icon(Icons.edit_sharp,size: 15,color: UIGuide.light_Purple,)
+
+                              ],
+                            ),
+                          )
+                      ),
                     ],
                   ),
                   Center(
-                    child: Consumer<NotificationToGuardian_Providers>(
+                    child: Consumer<TextSMS_ToGuardian_Providers>(
                         builder: (context, value, child) {
                       return Column(
                         children: [

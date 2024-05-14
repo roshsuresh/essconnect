@@ -17,6 +17,8 @@ class MarkEntryUASModel {
   String? teMax;
   String? peMax;
   String? ceMax;
+  bool? existPeAttendance;
+  bool? existCeAttendance;
   String? teCaption;
   String? peCaption;
   String? ceCaption;
@@ -46,6 +48,8 @@ class MarkEntryUASModel {
       this.teMax,
       this.peMax,
       this.ceMax,
+      this.existPeAttendance,
+      this.existCeAttendance,
       this.teCaption,
       this.peCaption,
       this.ceCaption,
@@ -75,6 +79,8 @@ class MarkEntryUASModel {
     teMax = json['teMax'];
     peMax = json['peMax'];
     ceMax = json['ceMax'];
+    existPeAttendance= json['existPeAttendance'];
+    existCeAttendance =json['existCeAttendance'];
     teCaption = json['teCaption'];
     peCaption = json['peCaption'];
     ceCaption = json['ceCaption'];
@@ -118,6 +124,8 @@ class MarkEntryUASModel {
     data['teMax'] = this.teMax;
     data['peMax'] = this.peMax;
     data['ceMax'] = this.ceMax;
+    data['existPeAttendance']=this.existPeAttendance;
+    data['existCeAttendance']=this.existCeAttendance;
     data['teCaption'] = this.teCaption;
     data['peCaption'] = this.peCaption;
     data['ceCaption'] = this.ceCaption;
@@ -140,6 +148,8 @@ class MarkEntryUASModel {
 
 class MarkEntryDetailsUAS {
   String? attendance;
+  String? ceAttendance;
+  String? peAttendance;
   String? studentName;
   int? rollNo;
   String? studentId;
@@ -161,6 +171,8 @@ class MarkEntryDetailsUAS {
 
   MarkEntryDetailsUAS(
       {this.attendance,
+        this.peAttendance,
+        this.ceAttendance,
       this.studentName,
       this.rollNo,
       this.studentId,
@@ -182,6 +194,8 @@ class MarkEntryDetailsUAS {
 
   MarkEntryDetailsUAS.fromJson(Map<String, dynamic> json) {
     attendance = json['attendance'];
+    peAttendance = json['peAttendance'];
+    ceAttendance = json['ceAttendance'];
     studentName = json['studentName'];
     rollNo = json['rollNo'];
     studentId = json['studentId'];
@@ -205,6 +219,8 @@ class MarkEntryDetailsUAS {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['attendance'] = this.attendance;
+    data['peAttendance'] = this.peAttendance;
+    data['ceAttendance'] = this.ceAttendance;
     data['studentName'] = this.studentName;
     data['rollNo'] = this.rollNo;
     data['studentId'] = this.studentId;

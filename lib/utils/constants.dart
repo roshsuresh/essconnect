@@ -7,10 +7,16 @@ class UIGuide {
   static const String notcheck = "assets/square.svg";
   static const String check = "assets/check-square.svg";
 
+  static const String curriculamUrl =
+  "https://api.curriculumtestonline.in";
+
+
   static const String baseURL =
-      // "https://api.essuatonline.in";
-      "https://api.esstestonline.in";
-  //   "https://api.eschoolweb.org";
+  "https://api.esstestonline.in";
+
+  // "https://api.essuatonline.in";
+
+    //"https://api.eschoolweb.org";
 
   static const String absent = "assets/aa.svg";
   static const String present = "assets/ppp.svg";
@@ -18,7 +24,6 @@ class UIGuide {
   static const String failed = "assets/failed.svg";
   static const String pending = "assets/pending.svg";
   static const String somethingWentWrong = "assets/somethingWentWrong.svg";
-
   static const Color WHITE = Colors.white;
   static const Color BLACK = Colors.black;
   static const Color THEME_PRIMARY = Color(0XFF575C79);
@@ -28,8 +33,8 @@ class UIGuide {
   static const Color light_black = Color.fromARGB(255, 228, 229, 230);
   static const Color light_Purple = Color.fromARGB(255, 7, 68, 126);
   static const Color custom_blue = Color.fromARGB(255, 44, 127, 238);
-  static const Color button1 = Color.fromARGB(255, 166, 232, 161);
-  static const Color button2 = Color.fromARGB(255, 241, 135, 118);
+  static const Color button1 = Color.fromARGB(255, 117, 185, 112);
+  static const Color button2 = Color.fromARGB(255, 213, 99, 82);
   static const Color LightBlue = Color.fromARGB(255, 233, 233, 233);
   static const Color ButtonBlue = Color.fromARGB(255, 255, 255, 255);
 }
