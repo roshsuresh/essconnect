@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../Application/StudentProviders/LoginProvider.dart';
+import '../Application/StudentProviders/NoticProvider.dart';
+import '../Application/StudentProviders/ProfileProvider.dart';
 
 class UIGuide {
   static const String notcheck = "assets/square.svg";
@@ -37,6 +42,17 @@ class UIGuide {
   static const Color button2 = Color.fromARGB(255, 213, 99, 82);
   static const Color LightBlue = Color.fromARGB(255, 233, 233, 233);
   static const Color ButtonBlue = Color.fromARGB(255, 255, 255, 255);
+
+ List providers=[
+
+   ChangeNotifierProvider(create: (context) => LoginProvider()),
+   ChangeNotifierProvider(create: (context) => ProfileProvider()),
+   ChangeNotifierProvider(create: (context) => NoticeProvider()),
+
+ ];
+
+
+
 }
 
 Future<Map<String, dynamic>> parseJWT() async {
