@@ -3147,7 +3147,7 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
     print("------------correct-------------");
     print("----------------------$response");
     await showAlertWORLDLine(context, txnId, response.toString());
-    print("woe=rldddddddd");
+    print("worldddddddd");
     print(response);
   }
 
