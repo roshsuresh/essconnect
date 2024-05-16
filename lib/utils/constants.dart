@@ -42,8 +42,8 @@ class UIGuide {
   static const Color button2 = Color.fromARGB(255, 213, 99, 82);
   static const Color LightBlue = Color.fromARGB(255, 233, 233, 233);
   static const Color ButtonBlue = Color.fromARGB(255, 255, 255, 255);
-
- List providers=[
+  String failed1="vallllle";
+    List providers=[
 
    ChangeNotifierProvider(create: (context) => LoginProvider()),
    ChangeNotifierProvider(create: (context) => ProfileProvider()),
