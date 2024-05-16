@@ -42,7 +42,7 @@ import 'Application/AdminProviders/AppReviewProvider.dart';
 import 'Application/AdminProviders/FeeDetailsProvider.dart';
 import 'Application/AdminProviders/FeeReportProvider.dart';
 import 'Application/AdminProviders/FlashNewsProviders.dart';
-import 'Application/AdminProviders/FormatCreationProvider.dart';
+
 import 'Application/AdminProviders/GalleryProviders.dart';
 import 'Application/AdminProviders/NoticeBoardList.dart';
 import 'Application/AdminProviders/NoticeBoardadmin.dart';
