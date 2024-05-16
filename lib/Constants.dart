@@ -1,5 +1,10 @@
 import 'dart:core';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'Application/StudentProviders/LoginProvider.dart';
+import 'Application/StudentProviders/NoticProvider.dart';
+import 'Application/StudentProviders/ProfileProvider.dart';
 
 //sized box
 const kWidth5 = SizedBox(
@@ -38,6 +43,12 @@ snackbarWidget(int second, content, BuildContext context) {
     ),
   );
 }
+
+List<ChangeNotifierProvider> providers = [
+  ChangeNotifierProvider<LoginProvider>(create: (_) => LoginProvider()),
+  ChangeNotifierProvider<ProfileProvider>(create: (_) => ProfileProvider()),
+  ChangeNotifierProvider<NoticeProvider>(create: (_) => NoticeProvider()),
+];
 
 snackbarCenterWidget(int second, content, BuildContext context) {
   var size = MediaQuery.of(context).size;
