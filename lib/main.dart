@@ -87,6 +87,7 @@ import 'Application/StudentProviders/ProfileProvider.dart';
 import 'Application/StudentProviders/ReportCardProvider.dart';
 import 'Application/StudentProviders/SiblingsProvider.dart';
 import 'Application/StudentProviders/TimetableProvider.dart';
+import 'Constants.dart';
 import 'Firebase_options.dart';
 import 'Presentation/Admin/AdminHome.dart';
 import 'Presentation/Login_Activation/ActivatePage.dart';
@@ -175,103 +176,14 @@ Future<void> main() async {
   //
   await Permission.storage.request();
   await Permission.accessMediaLocation.request();
-  void setupEssConnectProviders() {
-    runApp(
-      MultiProvider(
-        providers: [
-          ChangeNotifierProvider(create: (context) => LoginProvider()),
-          ChangeNotifierProvider(create: (context) => ProfileProvider()),
-          ChangeNotifierProvider(create: (context) => NoticeProvider()),
-          ChangeNotifierProvider(create: (context) => AttendenceProvider()),
-          ChangeNotifierProvider(create: (context) => FeesProvider()),
-          ChangeNotifierProvider(create: (context) => GalleryProvider()),
-          ChangeNotifierProvider(create: (context) => ReportCardProvider()),
-          ChangeNotifierProvider(create: (context) => Timetableprovider()),
-          ChangeNotifierProvider(create: (context) => PasswordChangeprovider()),
-          ChangeNotifierProvider(create: (context) => SibingsProvider()),
-          ChangeNotifierProvider(create: (context) => StaffProfileProvider()),
-          ChangeNotifierProvider(
-              create: (context) => StudReportListProvider_stf()),
-          // ChangeNotifierProvider(create: (context) => MarkEntryProvider()),
-          ChangeNotifierProvider(create: (context) => StaffTimetableProvider()),
-          ChangeNotifierProvider(create: (context) => AttendenceStaffProvider()),
-          ChangeNotifierProvider(create: (context) => FlashnewsProvider()),
-          ChangeNotifierProvider(
-              create: (context) => StaffNoticeboardSendProviders()),
-          ChangeNotifierProvider(create: (context) => Screen_Search_Providers()),
-          ChangeNotifierProvider(
-              create: (context) => NotificationToGuardian_Providers()),
-          ChangeNotifierProvider(
-              create: (context) => TextSMS_ToGuardian_Providers()),
-          ChangeNotifierProvider(create: (context) => GallerySendProvider_Stf()),
-          ChangeNotifierProvider(
-              create: (context) => MarkEntryReportProvider_stf()),
-          ChangeNotifierProvider(create: (context) => StaffReportProviders()),
-          ChangeNotifierProvider(create: (context) => DashboardAdmin()),
-          ChangeNotifierProvider(create: (context) => SearchStaffProviders()),
-          ChangeNotifierProvider(create: (context) => SchoolPhotoProviders()),
-          ChangeNotifierProvider(create: (context) => GalleryProviderAdmin()),
-          ChangeNotifierProvider(create: (context) => PaymentHistoryProvider()),
-          ChangeNotifierProvider(create: (context) => NoticeBoardAdminProvider()),
-          ChangeNotifierProvider(
-              create: (context) => NotificationReceivedProviderStudent()),
-          ChangeNotifierProvider(
-              create: (context) => StaffNotificationScreenProvider()),
-          ChangeNotifierProvider(
-              create: (context) => NotificationToGuardianAdmin()),
-          ChangeNotifierProvider(
-              create: (context) => NotificationToStaffAdminProviders()),
-          ChangeNotifierProvider(create: (context) => FeeReportProvider()),
-          ChangeNotifierProvider(
-              create: (context) => NoticeBoardListAdminProvider()),
-          ChangeNotifierProvider(create: (context) => FlashNewsProviderAdmin()),
-          ChangeNotifierProvider(
-              create: (context) => TimeTableClassProvidersAdmin()),
-          ChangeNotifierProvider(create: (context) => TimetableStaffProviders()),
-          ChangeNotifierProvider(create: (context) => FeeDetailsProvider()),
-          ChangeNotifierProvider(create: (context) => StudStatiticsProvider()),
-          ChangeNotifierProvider(create: (context) => ConnectivityProvider()),
-          ChangeNotifierProvider(create: (context) => FinalStatusProvider()),
-          ChangeNotifierProvider(create: (context) => ModuleProviders()),
-          ChangeNotifierProvider(create: (context) => Curriculamprovider()),
-          ChangeNotifierProvider(
-              create: (context) => StudNotificationCountProviders()),
-          ChangeNotifierProvider(
-              create: (context) => StaffNotificationCountProviders()),
-          ChangeNotifierProvider(create: (context) => DiaryProvidersstud()),
-          ChangeNotifierProvider(create: (context) => ExamTTAdmProviders()),
-          ChangeNotifierProvider(create: (context) => ExamTTAdmProvidersStaff()),
-          ChangeNotifierProvider(create: (context) => AttendanceReportProvider()),
-          ChangeNotifierProvider(
-              create: (context) => NoticeBoardProvidersSAdmin()),
-          ChangeNotifierProvider(create: (context) => MobileAppCheckinProvider()),
-          ChangeNotifierProvider(
-              create: (context) => TokenExpiryCheckProviders()),
-          ChangeNotifierProvider(create: (context) => ChatProviders()),
-          ChangeNotifierProvider(create: (context) => ToolMarkEntryProviders()),
-          ChangeNotifierProvider(create: (context) => MissingReportProviders()),
-          ChangeNotifierProvider(create: (context) => MarkEntryNewProvider()),
-          ChangeNotifierProvider(create: (context) => RemarksEntryProvider()),
-          ChangeNotifierProvider(create: (context) => OfflineFeeProviders()),
-          ChangeNotifierProvider(create: (context) => SchoolNameProvider()),
-          ChangeNotifierProvider(
-              create: (context) => StudentReportProviderStaff()),
-          ChangeNotifierProvider(create: (context) => AnecdotalStaffProviders()),
-          ChangeNotifierProvider(create: (context) => BirthdayListProviders()),
-          ChangeNotifierProvider(create: (context) => StudLocationProvider()),
-          ChangeNotifierProvider(create: (context) => MarksheetProvider()),
-          ChangeNotifierProvider(create: (context) => AnecDotalStudViewProvider()),
-          ChangeNotifierProvider(create: (context) => AnecdotalStaffListProviders()),
-          ChangeNotifierProvider(create: (context) => TimeTableUploadProvider()),
-          ChangeNotifierProvider(create: (context) => OffflineFeesProvider()),
-          ChangeNotifierProvider(create: (context) => AppReviewProvider()),
-          ChangeNotifierProvider(create: (context) => PortionProvider()),
-          ChangeNotifierProvider(create: (context) => StudentPortionProvider()),
-        ],
-        child: GjInfoTech(),
-      ),
-    );
-  }
+  runApp(setupProviders(GjInfoTech()));
+}
+
+Widget setupProviders(Widget child) {
+  return MultiProvider(
+    providers:getProviders(),
+    child: child,
+  );
 }
 
 class GjInfoTech extends StatefulWidget {
@@ -331,49 +243,47 @@ class _GjInfoTechState extends State<GjInfoTech> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: UIGuide.providersvalues,
+    return MaterialApp(
+      title: 'e-SS Connect',
+      themeMode: ThemeMode.light,
+      theme: ThemeData(
 
-        //ChangeNotifierProvider(create: (context) => FormatCreationProvider()),
-
-
-      child: MaterialApp(
-        title: 'e-SS Connect',
-        themeMode: ThemeMode.light,
-        theme: ThemeData(
-
-          useMaterial3: false,
-          textTheme: const TextTheme(
-            displayLarge: TextStyle(fontSize: 14),
-            bodyLarge: TextStyle(fontSize: 14.0),
-            bodyMedium: TextStyle(fontSize: 14.0),
-            labelLarge: TextStyle(fontSize: 14.0),
-            headlineLarge: TextStyle(fontSize: 14),
-            headlineSmall: TextStyle(fontSize: 14),
-          ),
-          colorScheme: ColorScheme.fromSwatch(
-            accentColor: const Color.fromARGB(255, 219, 235, 250),
-          ),
-          primaryColor: UIGuide.light_Purple,
-
-          textSelectionTheme: const TextSelectionThemeData(
-            cursorColor: UIGuide.light_Purple,
-            selectionColor: Color.fromARGB(255, 211, 225, 238),
-            selectionHandleColor: Colors.transparent,
-          ),
-          inputDecorationTheme: InputDecorationTheme(
-              border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15),
-                  borderSide: const BorderSide(color: Colors.black))),
+        useMaterial3: false,
+        textTheme: const TextTheme(
+          displayLarge: TextStyle(fontSize: 14),
+          bodyLarge: TextStyle(fontSize: 14.0),
+          bodyMedium: TextStyle(fontSize: 14.0),
+          labelLarge: TextStyle(fontSize: 14.0),
+          headlineLarge: TextStyle(fontSize: 14),
+          headlineSmall: TextStyle(fontSize: 14),
         ),
-        home: SplashFuturePage(),
-        debugShowCheckedModeBanner: false,
-        //debugShowCheckedModeBanner: false,
+        colorScheme: ColorScheme.fromSwatch(
+          accentColor: const Color.fromARGB(255, 219, 235, 250),
+        ),
+        primaryColor: UIGuide.light_Purple,
+
+        textSelectionTheme: const TextSelectionThemeData(
+          cursorColor: UIGuide.light_Purple,
+          selectionColor: Color.fromARGB(255, 211, 225, 238),
+          selectionHandleColor: Colors.transparent,
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+                borderSide: const BorderSide(color: Colors.black))),
       ),
+      home: SplashFuturePage(),
+      debugShowCheckedModeBanner: false,
+      //debugShowCheckedModeBanner: false,
     );
   }
 }
-
+// Widget setupProviders(Widget child) {
+//   return MultiProvider(
+//     providers: UIGuide.providersvalues,
+//     child: child,
+//   );
+// }
 class SplashFuturePage extends StatefulWidget {
   SplashFuturePage({Key? key}) : super(key: key);
 
