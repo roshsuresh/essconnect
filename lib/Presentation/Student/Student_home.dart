@@ -491,7 +491,7 @@ class _StudentHomeState extends State<StudentHome> {
                                               ),
                                               kheight,
                                               const Text(
-                                                'Gallery',
+                                                'Gallerydemooo',
                                                 style: TextStyle(
                                                     fontWeight: FontWeight.w600,
                                                     fontSize: 11,
