@@ -83,6 +83,7 @@ import 'Application/StudentProviders/ProfileProvider.dart';
 import 'Application/StudentProviders/ReportCardProvider.dart';
 import 'Application/StudentProviders/SiblingsProvider.dart';
 import 'Application/StudentProviders/TimetableProvider.dart';
+import 'Constants.dart';
 import 'Firebase_options.dart';
 import 'Presentation/Admin/AdminHome.dart';
 import 'Presentation/Login_Activation/ActivatePage.dart';
@@ -171,7 +172,14 @@ Future<void> main() async {
   //
   await Permission.storage.request();
   await Permission.accessMediaLocation.request();
-  runApp(GjInfoTech());
+  runApp(setupProviders(GjInfoTech()));
+}
+
+Widget setupProviders(Widget child) {
+  return MultiProvider(
+    providers:getProviders(),
+    child: child,
+  );
 }
 
 class GjInfoTech extends StatefulWidget {
