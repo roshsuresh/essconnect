@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "462880464068",
+    "project_id": "e-schoolsolutionconnect",
+    "storage_bucket": "e-schoolsolutionconnect.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:462880464068:android:4529d2a23c38bfac61fd91",
+        "android_client_info": {
+          "package_name": "com.gjinfotech.essconnect"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "462880464068-6e1fn0tr27eea8ai52bqlml587tgpn32.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDPKi7RHsv3jzTUZz_yooD08AOZIBrBu04"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "462880464068-6e1fn0tr27eea8ai52bqlml587tgpn32.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
