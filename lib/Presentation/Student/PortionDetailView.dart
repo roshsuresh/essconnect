@@ -5,23 +5,27 @@ import 'dart:ui';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:timeline_tile/timeline_tile.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-
+import '../../Application/StudentProviders/CurriculamProviders.dart';
 import '../../Application/StudentProviders/PortionProvider.dart';
 import '../../Constants.dart';
 import '../../Domain/Student/PortionModel.dart';
 import '../../utils/TextWrap(moreOption).dart';
 import 'package:dots_indicator/dots_indicator.dart';
-
+import 'package:fluttertoast/fluttertoast.dart';
 import '../../utils/spinkit.dart';
 class StudentPortions extends StatefulWidget {
-   StudentPortions({super.key,required this.date});
+   StudentPortions({super.key,required this.date,required this.status,this.viewPrev});
   String date;
+  String status;
+  String? viewPrev;
 
   @override
   State<StudentPortions> createState() => _StudentPortionsState();
@@ -41,16 +45,20 @@ class _StudentPortionsState extends State<StudentPortions> {
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       var p = Provider.of<StudentPortionProvider>(context, listen: false);
-      // await Provider.of<
-      //     Curriculamprovider>(
-      //     context,
-      //     listen: false)
-      //     .getCuriculamAceesstoken();
+      await Provider.of<
+          Curriculamprovider>(
+          context,
+          listen: false)
+          .getCuriculamAceesstoken();
       await p.setLoading(false);
       p.studportionDetailList.clear();
       p.photoList.clear();
-      await p.getStudentPortionDetailList(widget.date);
+      await p.getStudentPortionDetailList(widget.date,widget.status);
       print("dateeeedee");
+      p.studportionList.clear();
+      p.studportionListpre.clear();
+      await p.getStudentPortionList();
+      await p.getStudentPortionListPrevious(widget.viewPrev!);
       //print(p.studportionDetailList[0].date);
 
       IsolateNameServer.registerPortWithName(
@@ -81,9 +89,15 @@ class _StudentPortionsState extends State<StudentPortions> {
 
   Future<void> downloadFiles(List<String> fileUrls,List<String> fileName) async {
     var _localPath;
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text('Downloading Started..'),
-    ));
+    Fluttertoast.showToast(
+      msg: "Downloading Started..",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.black54,
+      textColor: Colors.white,
+      fontSize: 14.0,
+    );
 
 
       if (Platform.isAndroid) {
@@ -107,10 +121,15 @@ class _StudentPortionsState extends State<StudentPortions> {
       });
     }
 
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text('Files downloaded successfully'),
-    ));
-
+    Fluttertoast.showToast(
+      msg: "Downloaded Successfully..",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.black54,
+      textColor: Colors.white,
+      fontSize: 14.0,
+    );
 
     // Show a snackbar to indicate all files are downloaded
     }
@@ -169,7 +188,7 @@ class _StudentPortionsState extends State<StudentPortions> {
                             ),
                           ),
                           alignment: TimelineAlign.manual,
-                          lineXY: 0.25,
+                          lineXY: 0.30,
                           isFirst: index == 0,
                           isLast: index == 20,
                           indicatorStyle: IndicatorStyle(
@@ -274,6 +293,9 @@ class _StudentPortionsState extends State<StudentPortions> {
                                                   )
                                                 ],
                                               ),
+
+                                              value.studportionDetailList[index].photoList!.isEmpty?
+                                                  SizedBox(height: 0,width: 0,):
                                               Row(
                                                 children: [
                                                   InkWell(
@@ -290,27 +312,8 @@ class _StudentPortionsState extends State<StudentPortions> {
 
                                                         }
                                                       }
-                                                      photoList.isEmpty?
-                                                      ScaffoldMessenger.of(context)
-                                                          .showSnackBar(
-                                                        const SnackBar(
-                                                          elevation: 10,
-                                                          shape: RoundedRectangleBorder(
-                                                            borderRadius: BorderRadius.all(
-                                                                Radius.circular(10)),
-                                                          ),
-                                                          duration: Duration(seconds: 1),
-                                                          margin: EdgeInsets.only(
-                                                              bottom: 80,
-                                                              left: 30,
-                                                              right: 30),
-                                                          behavior: SnackBarBehavior.floating,
-                                                          content: Text(
-                                                            'No Attachments Found..',
-                                                            textAlign: TextAlign.center,
-                                                          ),
-                                                        ),
-                                                      ):
+
+
                                                       showDialog(
                                                         context: context,
                                                         builder: (BuildContext context) {
@@ -459,10 +462,15 @@ class _CarouselDialogState extends State<CarouselDialog> {
 
   Future<void> requestDownload(String _url, String _name) async {
     var _localPath;
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text('Downloading file...'),
-      duration: Duration(seconds: 2), // Adjust duration as needed
-    ));
+    Fluttertoast.showToast(
+      msg: "Downloading Started..",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.black54,
+      textColor: Colors.white,
+      fontSize: 14.0,
+    );
 
     if (Platform.isAndroid) {
       _localPath = '/storage/emulated/0/Download';
@@ -483,10 +491,15 @@ class _CarouselDialogState extends State<CarouselDialog> {
 
       print(_taskid);
     });
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text('Download complete'),
-      duration: Duration(seconds: 1), // Adjust duration as needed
-    ));
+    Fluttertoast.showToast(
+      msg: "Downloading Finished..",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.black54,
+      textColor: Colors.white,
+      fontSize: 14.0,
+    );
   }
   int _currentIndex = 0;
 
@@ -511,19 +524,10 @@ class _CarouselDialogState extends State<CarouselDialog> {
                 final content = widget.urlImages[index];
                 if (widget.ext[index]=='.pdf') {
                   // Display PDF
-                  return InkWell(
-                    onLongPress: (){
-                      requestDownload(widget.urlImages[index], widget.imageName[index]);
-                    },
-
-                      child: Image.asset('assets/images1.png'));
+                  return SfPdfViewer.network(content);
                 } else  {
                   // Display image from URL
-                  return InkWell(
-                    onLongPress: (){
-                      requestDownload(widget.urlImages[index], widget.imageName[index]);
-                    },
-                      child: Image.network(content));
+                  return Image.network(content);
                 }
               },
               options: CarouselOptions(
@@ -550,7 +554,19 @@ class _CarouselDialogState extends State<CarouselDialog> {
               ),
             ),
             kheight5,
-            Text('Long Press to Download File')
+            GestureDetector(
+                onTap: ()async{
+                  await requestDownload(widget.urlImages[_currentIndex], widget.imageName[_currentIndex]);
+                },
+                child: Container(
+                    color: UIGuide.THEME_LIGHT,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('Press here to Download File '),
+                        Icon(Icons.download)
+                      ],
+                    )))
           ],
         ),
       ),

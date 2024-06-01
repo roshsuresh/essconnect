@@ -14,10 +14,11 @@ import 'package:multi_select_flutter/chip_display/multi_select_chip_display.dart
 import 'package:multi_select_flutter/dialog/multi_select_dialog_field.dart';
 import 'package:multi_select_flutter/util/multi_select_list_type.dart';
 import 'package:provider/provider.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 import '../../../Constants.dart';
 import '../../../utils/constants.dart';
-
+import 'package:fluttertoast/fluttertoast.dart';
 class PortionApproval extends StatefulWidget {
   const PortionApproval({super.key});
 
@@ -70,13 +71,14 @@ class _PortionApprovalState extends State<PortionApproval> {
     });
   }
 
-  Future showPhotoDialog(BuildContext context,String photo) async {
+  Future showPhotoDialog(BuildContext context,String photo,String ext) async {
     // Sample photo URL
 
 
     showDialog(
       context: context,
       builder: (BuildContext context) {
+        var size= MediaQuery.of(context).size;
         return Dialog(
           child: Container(
 
@@ -84,11 +86,16 @@ class _PortionApprovalState extends State<PortionApproval> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                // Image widget to display the photo
-              Image.network(
-              photo,
-              fit: BoxFit.cover,
-            ),
+            ext==".pdf"?
+            SizedBox(
+                height:size.height*0.6 ,
+                child: SfPdfViewer.network(photo)):
+              SizedBox(
+                height:size.height*0.6 ,
+                child: Image.network(
+                photo,
+                ),
+              ),
               //  SizedBox(height: size),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
@@ -668,23 +675,26 @@ class _PortionApprovalState extends State<PortionApproval> {
                             SizedBox(
                               width: 150,
                               child: value.loading
-                                  ? Container(
-                                  height: 40,
-                                  decoration: BoxDecoration(
-                                    borderRadius:
-                                    BorderRadius.circular(10),
-                                    border: Border.all(
-                                        color: UIGuide.light_Purple,
-                                        width: 1),
-                                  ),
-                                  child: const Center(
-                                      child: Text(
-                                        "Loading...",
-                                        style: TextStyle(
-                                            color: UIGuide.light_Purple,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold),
-                                      )))
+                                  ? Padding(
+                                    padding: const EdgeInsets.only(top:8.0),
+                                    child: Container(
+                                    height: 40,
+                                    decoration: BoxDecoration(
+                                      borderRadius:
+                                      BorderRadius.circular(10),
+                                      border: Border.all(
+                                          color: UIGuide.light_Purple,
+                                          width: 1),
+                                    ),
+                                    child: const Center(
+                                        child: Text(
+                                          "Loading...",
+                                          style: TextStyle(
+                                              color: UIGuide.light_Purple,
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold),
+                                        ))),
+                                  )
                                   : ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                     elevation: 3,
@@ -698,27 +708,17 @@ class _PortionApprovalState extends State<PortionApproval> {
                                         )),
                                   ),
                                   onPressed: () async {
+
                                      value.reportView.clear();
                                      if(courseIDController.text.isEmpty){
-                                       ScaffoldMessenger.of(context)
-                                           .showSnackBar(
-                                         const SnackBar(
-                                           elevation: 10,
-                                           shape: RoundedRectangleBorder(
-                                             borderRadius: BorderRadius.all(
-                                                 Radius.circular(10)),
-                                           ),
-                                           duration: Duration(seconds: 1),
-                                           margin: EdgeInsets.only(
-                                               bottom: 80,
-                                               left: 30,
-                                               right: 30),
-                                           behavior: SnackBarBehavior.floating,
-                                           content: Text(
-                                             'Please Select Course..!',
-                                             textAlign: TextAlign.center,
-                                           ),
-                                         ),
+                                       Fluttertoast.showToast(
+                                         msg: "Please Select Any Course..",
+                                         toastLength: Toast.LENGTH_SHORT,
+                                         gravity: ToastGravity.BOTTOM,
+                                         timeInSecForIosWeb: 1,
+                                         backgroundColor: Colors.black54,
+                                         textColor: Colors.white,
+                                         fontSize: 14.0,
                                        );
 
                                      }
@@ -732,26 +732,14 @@ class _PortionApprovalState extends State<PortionApproval> {
                                            types.toString());
 
                                        if (value.reportView.isEmpty) {
-                                         ScaffoldMessenger.of(context)
-                                             .showSnackBar(
-                                           const SnackBar(
-                                             elevation: 10,
-                                             shape: RoundedRectangleBorder(
-                                               borderRadius: BorderRadius.all(
-                                                   Radius.circular(10)),
-                                             ),
-                                             duration: Duration(seconds: 1),
-                                             margin: EdgeInsets.only(
-                                                 bottom: 80,
-                                                 left: 30,
-                                                 right: 30),
-                                             behavior: SnackBarBehavior
-                                                 .floating,
-                                             content: Text(
-                                               'No data for specified condition..!',
-                                               textAlign: TextAlign.center,
-                                             ),
-                                           ),
+                                         Fluttertoast.showToast(
+                                           msg: "No Data found..",
+                                           toastLength: Toast.LENGTH_SHORT,
+                                           gravity: ToastGravity.BOTTOM,
+                                           timeInSecForIosWeb: 1,
+                                           backgroundColor: Colors.black54,
+                                           textColor: Colors.white,
+                                           fontSize: 14.0,
                                          );
                                        }
                                      }
@@ -857,7 +845,7 @@ class _PortionApprovalState extends State<PortionApproval> {
                                                               Row(
                                                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                                 children: [
-                                                                Text("Portion Entry Detials",style:
+                                                                Text("Portion Entry Details",style:
                                                                   TextStyle(
                                                                     fontWeight: FontWeight.w500,
                                                                     color: UIGuide.light_Purple
@@ -945,11 +933,77 @@ class _PortionApprovalState extends State<PortionApproval> {
                                                                   )
                                                                 ],
                                                               ),
-                                                              kheight5,
+                                                              kheight10,
+                                                              Row(
+                                                                children: [
+                                                                  Text("Description  : ",
+
+                                                                  ),
+                                                                  Flexible(
+                                                                    child: Text(
+
+                                                                      "${provider.portionDescription==null?"":
+                                                                      provider.portionDescription
+                                                                      }",
+                                                                      style: TextStyle(
+                                                                          color: UIGuide.light_Purple
+                                                                      ),
+                                                                      maxLines: 5,
+                                                                      overflow: TextOverflow.ellipsis,
+
+                                                                    ),
+                                                                  )
+                                                                ],
+                                                              ),
+                                                              kheight10,
+                                                              Row(
+                                                                children: [
+                                                                  Text("Details  : ",
+
+                                                                  ),
+                                                                  Flexible(
+                                                                    child: Text(
+
+                                                                      "${provider.portionDetails==null?"":
+                                                                      provider.portionDetails
+                                                                      }",
+                                                                      style: TextStyle(
+                                                                          color: UIGuide.light_Purple
+                                                                      ),
+                                                                      maxLines: 5,
+                                                                      overflow: TextOverflow.ellipsis,
+
+                                                                    ),
+                                                                  )
+                                                                ],
+                                                              ),
+                                                              kheight10,
+                                                              Row(
+                                                                children: [
+                                                                  Text("Assignment  : ",
+
+                                                                  ),
+                                                                  Flexible(
+                                                                    child: Text(
+
+                                                                      "${provider.portionAssignment==null?"":
+                                                                      provider.portionAssignment
+                                                                      }",
+                                                                      style: TextStyle(
+                                                                          color: UIGuide.light_Purple
+                                                                      ),
+                                                                      maxLines: 5,
+                                                                      overflow: TextOverflow.ellipsis,
+
+                                                                    ),
+                                                                  )
+                                                                ],
+                                                              ),
+                                                              kheight10,
                                                               provider.photoList1.isNotEmpty?
                                                               Row(
                                                                 children: [
-                                                                  Text("Attachments:"),
+                                                                  Text("Attachments :"),
                                                                 ],
                                                               ):
                                                               SizedBox(height: 0,width: 0),
@@ -1006,7 +1060,7 @@ class _PortionApprovalState extends State<PortionApproval> {
                                                                                   ),
                                                                                   child: InkWell(
                                                                                     onTap:() async{
-                                                                                   await showPhotoDialog(context,  provider.photoList1[index]['file']['url']);
+                                                                                   await showPhotoDialog(context,  provider.photoList1[index]['file']['url'],provider.photoList1[index]['file']['extension']);
                                                                                      print("------url----");
                                                                                       log( provider.photoList1[index]['file']['url']);
                                                                                     },
@@ -1029,7 +1083,7 @@ class _PortionApprovalState extends State<PortionApproval> {
                                                                                   ),
                                                                                   child: InkWell(
                                                                                     onTap:() {
-                                                                                      showPhotoDialog(context,  provider.photoList1[index]['file']['url']);
+                                                                                      showPhotoDialog(context,  provider.photoList1[index]['file']['url'],provider.photoList1[index]['file']['extension']);
 
                                                                                     },
 
@@ -1050,6 +1104,8 @@ class _PortionApprovalState extends State<PortionApproval> {
                                                               ):SizedBox(height: 0,width: 0),
 
                                                               kheight10,
+
+                                                              value.isApproval==false?
                                                               Padding(
                                                                 padding: const EdgeInsets.all(4.0),
                                                                 child: SizedBox(
@@ -1081,6 +1137,10 @@ class _PortionApprovalState extends State<PortionApproval> {
                                                                     ),
                                                                   ),
                                                                 ),
+                                                              ):
+                                                              SizedBox(
+                                                                height: 0,
+                                                                width: 0,
                                                               ),
                                                               kheight10,
 
@@ -1088,6 +1148,7 @@ class _PortionApprovalState extends State<PortionApproval> {
                                                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                                 children: [
 
+                                                                  value.isApproval==true?
                                                                   TextButton(
                                                                     onPressed: () async {
                                                                       provider.portionStatus!.isNotEmpty?
@@ -1114,7 +1175,13 @@ class _PortionApprovalState extends State<PortionApproval> {
                                                                     child: Text('Reject',style: TextStyle(
                                                                       color: UIGuide.button2
                                                                     ),),
+                                                                  ):
+                                                                  SizedBox(
+                                                                    height: 0,
+                                                                    width: 0,
                                                                   ),
+
+                                                                  value.isApproval==true?
                                                                   TextButton(
                                                                     onPressed: () async {
 
@@ -1142,7 +1209,11 @@ class _PortionApprovalState extends State<PortionApproval> {
                                                                     child: Text('Approve',style: TextStyle(
                                                       color: UIGuide.button1),
                                                                   ),
-                                                                  ),
+                                                                  ):
+                                                                      SizedBox(
+                                                                        height: 0,
+                                                                        width: 0,
+                                                                      )
                                                                 ],
                                                               ),
 

@@ -200,8 +200,8 @@ class _CurriculamPageState extends State<CurriculamPage> {
                               key: webViewKey,
                               // contextMenu: contextMenu,
                               initialUrlRequest: URLRequest(url: Uri.parse(
-                                  //   'https://curriculumtestonline.in/login-via-token?token=${widget.token}'
-                                  'https://esscurriculum.in/login-via-token?token=${widget.token}')),
+                                    'https://curriculumtestonline.in/login-via-token?token=${widget.token}')),
+                                  //'https://esscurriculum.in/login-via-token?token=${widget.token}')),
                               // initialFile: "assets/index.html",
                               initialUserScripts:
                                   UnmodifiableListView<UserScript>([]),

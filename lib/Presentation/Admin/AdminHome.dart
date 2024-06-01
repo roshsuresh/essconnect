@@ -250,8 +250,8 @@ class AdminHomeContent extends StatelessWidget {
                               PageTransition(
                                   type: PageTransitionType.rightToLeft,
                                   child:
-                                  //Student_statistics_admin(),
-                                  LessonPlan(),
+                                  Student_statistics_admin(),
+                                  //LessonPlan(),
                                   duration: const Duration(milliseconds: 200),
                                   childCurrent: this));
                         },

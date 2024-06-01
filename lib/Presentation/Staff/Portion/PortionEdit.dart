@@ -9,6 +9,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:essconnect/utils/spinkit.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import '../../../../Debouncer.dart';
 import 'package:image/image.dart' as img;
@@ -36,6 +37,7 @@ class _PortionEditScreenState extends State<PortionEditScreen> {
   final subSubjectController = TextEditingController();
   final subSubjectIDController = TextEditingController();
   final topicController = TextEditingController();
+  final assignmentController = TextEditingController();
   final chapterController = TextEditingController();
   final detailsController = TextEditingController();
   final descriptionController = TextEditingController();
@@ -52,6 +54,9 @@ class _PortionEditScreenState extends State<PortionEditScreen> {
   List multiFiles=[];
   List<Map<String, dynamic>> filesss=[];
   List studIds=[];
+  double? roundeSize;
+  double roundedNumber=0;
+  String optionOrsub='';
   @override
   void initState() {
     super.initState();
@@ -79,11 +84,25 @@ class _PortionEditScreenState extends State<PortionEditScreen> {
       subSubjectController.text=p.optionalSubjectName.toString();
       subSubjectIDController.text=p.optionalSubjectId.toString();
       chapterController.text=p.chapter.toString();
+      assignmentController.text=p.assignment==null?'':p.assignment.toString();
       topicController.text=p.topic==null?'':p.topic.toString();
       descriptionController.text=p.description==null?'':p.description.toString();
       detailsController.text=p.details.toString();
+      optionOrsub = p.subOrOptionalType=="0"?"option":"";
       print("subbbb  ${subSubjectIDController.text}");
 
+
+      if(p.subOrOptionalType == "O"){
+        optionOrsub="option";
+      }
+      else if(p.subOrOptionalType == "S"){
+        optionOrsub="sub";
+
+      }
+      else
+      {
+        optionOrsub="";
+      }
 
       if(p.mobFile.isNotEmpty){
       for(int i=0;i<p.mobFile.length;i++){
@@ -93,6 +112,7 @@ class _PortionEditScreenState extends State<PortionEditScreen> {
             "name": p.mobFile[i].name,
             "extension": p.mobFile[i].extension,
             "path": p.mobFile[i].path,
+            "size":p.mobFile[i].size,
             "url": p.mobFile[i].url,
             "isTemporary": false,
             "isDeleted": false,
@@ -100,7 +120,10 @@ class _PortionEditScreenState extends State<PortionEditScreen> {
             "createdAt": p.mobFile[i].createdAt,
             "id": p.mobFile[i].id
           });
+
+       mutableList.add(double.parse(p.mobFile[i].size!));
         }
+      await getTotal();
 
       }
 
@@ -141,8 +164,9 @@ class _PortionEditScreenState extends State<PortionEditScreen> {
 
   List<File> _selectedFiles=[];
   List<int> _originalSizes=[];
-  List<int> _reducedSizes=[];
-  int total = 0;
+  List<double> _reducedSizes=[];
+  List<double> mutableList=[];
+  double total = 0;
 
   String getImageNameFromPath(String imagePath) {
     return path.basename(imagePath);
@@ -161,7 +185,7 @@ class _PortionEditScreenState extends State<PortionEditScreen> {
         _selectedFiles =
             result.paths.map((path) => File(path!)).toList();
         _originalSizes = List<int>.filled(_selectedFiles.length, -1);
-        _reducedSizes = List<int>.filled(_selectedFiles.length, -1);
+        _reducedSizes = List<double>.filled(_selectedFiles.length, -1);
       });
 
       _getOriginalSizes();
@@ -189,37 +213,54 @@ class _PortionEditScreenState extends State<PortionEditScreen> {
   }
 
   Future<void> _reduceFileSizes() async {
-    if (_selectedFiles == null) return;
-
     for (int i = 0; i < _selectedFiles.length; i++) {
       if (_selectedFiles[i].path.toLowerCase().endsWith('.jpg') ||
-          _selectedFiles[i].path.toLowerCase().endsWith('.jpeg')) {
+          _selectedFiles[i].path.toLowerCase().endsWith('.jpeg')||
+          _selectedFiles[i].path.toLowerCase().endsWith('.png')
+      ) {
         img.Image image =
         img.decodeImage(_selectedFiles[i].readAsBytesSync())!;
-        img.Image resizedImage = img.copyResize(image, width:200 ,maintainAspect: true);
+        img.Image resizedImage = img.copyResize(image, width:1200 ,maintainAspect: true);
 
         File reducedFile = File('${_selectedFiles[i].path}_reduced.jpg')
           ..writeAsBytesSync(img.encodeJpg(resizedImage));
 
         int reducedFileSize = await reducedFile.length();
+        double reducedfile =reducedFileSize/(1024 * 1024).toDouble();
+        roundeSize= double.parse(reducedfile.toStringAsFixed(2));
         setState(() {
           _selectedFiles[i] = reducedFile;
-          _reducedSizes[i] = reducedFileSize;
+          _reducedSizes[i] = roundeSize!;
 
-          total=0;
-          for (int i = 0; i < _reducedSizes.length; i++) {
-            total += _reducedSizes[i];
-          }
+          // total=0;
 
+
+          // percent = roundedNumber! /5*100;
+          // percentConverted=double.parse(percent!.toStringAsFixed(2));
         });
         print("reduced size");
         print(_reducedSizes);
-        print("total size  $total");
+
       } else {
-        // Handle other file types
-        // You can also display a message informing the user that the selected file type is not supported for reduction.
+        _reducedSizes[i]=double.parse((_originalSizes[i]/(1024 * 1024)).toStringAsFixed(2));
       }
+
+
+      mutableList.add(_reducedSizes[i]);
+      print("mutable $mutableList");
+
+
+
     }
+  }
+  getTotal(){
+    total=0;
+    for (int i = 0; i < mutableList.length; i++) {
+      total += mutableList[i];
+    }
+
+    roundedNumber = double.parse(total.toStringAsFixed(2));
+    print("rounded $roundedNumber");
   }
 
 
@@ -639,6 +680,8 @@ class _PortionEditScreenState extends State<PortionEditScreen> {
                                                             value.subjectList[index].subSubjectId.toString(),
                                                             value.subjectList[index].courseSubjectId.toString(),
                                                             divisionIDController.text);
+                                                        optionOrsub= value.subjectList[index].optionSubjectId!=""?"option":"sub";
+                                                        print("suboroptionnnnnnnEdittttttt  $optionOrsub");
 
                                                         print(value.subSubjectList);
 
@@ -849,7 +892,8 @@ class _PortionEditScreenState extends State<PortionEditScreen> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            StudentListPortionView(divisonId: divisionIDController.text,stduIds: studIds,)));
+                                            StudentListPortionView(divisonId: divisionIDController.text,stduIds: studIds,
+                                              subId: optionOrsub=="option"?subSubjectIDController.text:"")));
                               },
                               child: const Icon(Icons.list_alt)),
                         )
@@ -864,7 +908,7 @@ class _PortionEditScreenState extends State<PortionEditScreen> {
                     child: SizedBox(
                       height: 40,
                       child: TextFormField(
-                        inputFormatters: [LengthLimitingTextInputFormatter(1000)],
+                        inputFormatters: [LengthLimitingTextInputFormatter(50)],
                         controller: chapterController,
                         minLines: 1,
                         //maxLines: 2,
@@ -895,7 +939,7 @@ class _PortionEditScreenState extends State<PortionEditScreen> {
                     child: SizedBox(
                       height: 40,
                       child: TextFormField(
-                        inputFormatters: [LengthLimitingTextInputFormatter(1000)],
+                        inputFormatters: [LengthLimitingTextInputFormatter(50)],
                         controller: topicController,
                         minLines: 1,
                         // maxLines: 2,
@@ -927,7 +971,7 @@ class _PortionEditScreenState extends State<PortionEditScreen> {
                       height: 40,
                       child: TextFormField(
 
-                        inputFormatters: [LengthLimitingTextInputFormatter(1000)],
+                        inputFormatters: [LengthLimitingTextInputFormatter(200)],
                         controller: descriptionController,
                         minLines: 1,
                         //  maxLines: 2,
@@ -960,7 +1004,7 @@ class _PortionEditScreenState extends State<PortionEditScreen> {
                     child: LimitedBox(
                       maxHeight: 180,
                       child: TextFormField(
-                        inputFormatters: [LengthLimitingTextInputFormatter(1000)],
+                        inputFormatters: [LengthLimitingTextInputFormatter(500)],
                         controller:detailsController ,
                         minLines: 1,
                         maxLines: 15,
@@ -971,6 +1015,37 @@ class _PortionEditScreenState extends State<PortionEditScreen> {
                           labelStyle: TextStyle(fontWeight: FontWeight.w500,
                               color: UIGuide.BLACK,fontSize: 14),
                           hintStyle: TextStyle(color: Colors.grey),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: UIGuide.light_Purple, width: 1.0),
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  kheight10,
+                  Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: LimitedBox(
+                      maxHeight: 60,
+                      child: TextFormField(
+                        inputFormatters: [LengthLimitingTextInputFormatter(200)],
+                        controller: assignmentController,
+                        minLines: 1,
+                     maxLines: 2,
+                        keyboardType: TextInputType.multiline,
+                        decoration: const InputDecoration(
+                          contentPadding: EdgeInsets.fromLTRB(12.0, 10.0, 20.0, 10.0),
+                          labelText: 'Assignment',
+                          hintText: 'Enter Assignment',
+                          labelStyle: TextStyle(fontWeight: FontWeight.w500,
+                              color: UIGuide.BLACK,fontSize: 14),
+                          hintStyle: TextStyle(color: Colors.grey),
+                          helperStyle: TextStyle(color: UIGuide.light_Purple),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(10)),
                           ),
@@ -1040,6 +1115,7 @@ class _PortionEditScreenState extends State<PortionEditScreen> {
                                   }
                               );
                             }
+                            await getTotal();
                             print("multifissssssssssssss  $multiFiles");
 
                             print("fileeeee  $filesss");
@@ -1059,12 +1135,19 @@ class _PortionEditScreenState extends State<PortionEditScreen> {
 
                           }),
                           child:
-                          Text(_selectedFiles.isEmpty?"Choose File": "${
-                              _selectedFiles.length} files selected",
+                          Text(multiFiles.isEmpty?"Choose File": "${
+                              multiFiles.length} files selected",
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
                       ),
+
+                      filesss.isNotEmpty?
+
+
+                      Text(" ${roundedNumber==null?0:roundedNumber} MB"):
+                      Text(""),
+
 
                     ],
                   ),
@@ -1086,7 +1169,8 @@ class _PortionEditScreenState extends State<PortionEditScreen> {
                           columnWidths: const {
                             0: FlexColumnWidth(0.5),
                             1: FlexColumnWidth(2),
-                            2: FlexColumnWidth(0.8),
+                            2: FlexColumnWidth(0.6),
+                            3: FlexColumnWidth(0.6),
                           //  3: FlexColumnWidth(0.5),
                           },
                           border: TableBorder.all(
@@ -1131,16 +1215,16 @@ class _PortionEditScreenState extends State<PortionEditScreen> {
                                       ),
                                     ),
                                   ),
-                                  // TableCell(
-                                  //   verticalAlignment:
-                                  //   TableCellVerticalAlignment.middle,
-                                  //   child: Text(
-                                  //     'Size',
-                                  //     style: TextStyle(
-                                  //         fontWeight: FontWeight.w600),
-                                  //     textAlign: TextAlign.center,
-                                  //   ),
-                                  // ),
+                                  TableCell(
+                                    verticalAlignment:
+                                    TableCellVerticalAlignment.middle,
+                                    child: Text(
+                                      'Size',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
                                   TableCell(
                                     verticalAlignment:
                                     TableCellVerticalAlignment.middle,
@@ -1180,8 +1264,8 @@ class _PortionEditScreenState extends State<PortionEditScreen> {
                             columnWidths: const {
                               0: FlexColumnWidth(0.5),
                               1: FlexColumnWidth(2),
-                              2: FlexColumnWidth(0.8),
-                             // 3: FlexColumnWidth(0.5),
+                              2: FlexColumnWidth(0.6),
+                             3: FlexColumnWidth(0.6),
                             },
                             border: TableBorder.all(
                                 borderRadius: BorderRadius.only(
@@ -1226,28 +1310,38 @@ class _PortionEditScreenState extends State<PortionEditScreen> {
                                         ),
                                       ),
                                     ),
-                                    // TableCell(
-                                    //   verticalAlignment:
-                                    //   TableCellVerticalAlignment.middle,
-                                    //   child: Text(
-                                    //     "${mutableList[index].toString()} MB",
-                                    //     style: TextStyle(
-                                    //         fontWeight: FontWeight.w400),
-                                    //     textAlign: TextAlign.center,
-                                    //   ),
-                                    // ),
+                                    TableCell(
+                                      verticalAlignment:
+                                      TableCellVerticalAlignment.middle,
+                                      child: Text(
+                                        "${ mutableList[index]} MB",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w400),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
                                     TableCell(
                                       verticalAlignment:
                                       TableCellVerticalAlignment.middle,
                                       child:  InkWell(
                                         onTap: () async{
 
-                                        //  await _selectedFiles.removeAt(index);
+
+                                          //await _selectedFiles.removeAt(index);
+                                         // await mutableList.removeAt(index);
                                           await multiFiles.removeAt(index);
                                         await filesss.removeAt(index);
+                                        await mutableList.removeAt(index);
+
+                                        // if(_selectedFiles.isNotEmpty){
+                                        //   _selectedFiles.removeAt(index);
+                                        // }
                                  //await value.portionfileDelete(context,filesss[index]['id']);
 
                                           print("multifilesss deletd $multiFiles");
+                                          print("length  ${mutableList.length}");
+                                          print("multilength  ${multiFiles.length}");
+                                          await getTotal();
                                         },
                                         child: Icon(Icons.delete_forever_outlined,color: UIGuide.button2),
                                       ),
@@ -1308,8 +1402,15 @@ class _PortionEditScreenState extends State<PortionEditScreen> {
                                 chapterController.text.trim().isEmpty||
                                 detailsController.text.trim().isEmpty
                             ) {
-                              snackbarWidget(
-                                  3, "Select mandatory fields...", context);
+                              Fluttertoast.showToast(
+                                msg:"Select Mandatory Fields..",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.black54,
+                                textColor: Colors.white,
+                                fontSize: 14.0,
+                              );
                             }
 
                             // else if(roundedNumber>=5){
@@ -1328,12 +1429,16 @@ class _PortionEditScreenState extends State<PortionEditScreen> {
                                   divisionIDController.text,
                                   subjectIDController.text,
                                   subSubjectIDController.text,
+                                  optionOrsub=="option"? "O":"S",
                                   chapterController.text,
                                   topicController.text,
                                   descriptionController.text,
+                                  assignmentController.text,
                                   detailsController.text,
                                   value.finalSelectedList,
                                   multiFiles);
+
+                              await value.getPortionList();
 
                               // value.showToGuardian==true?
                               // await Provider.of<NotificationToGuardian_Providers>(context,
@@ -1359,9 +1464,11 @@ class _PortionEditScreenState extends State<PortionEditScreen> {
                                 value.finalSelectedList.clear();
                                 chapterController.clear();
                                 topicController.clear();
+                                assignmentController.clear();
                                 descriptionController.clear();
                                 detailsController.clear();
                               }
+
 
                               Navigator.pop(context);
 
@@ -1391,9 +1498,10 @@ class _PortionEditScreenState extends State<PortionEditScreen> {
 }
 
 class StudentListPortionView extends StatefulWidget {
-  StudentListPortionView({super.key,this.courseId,this.divisonId,required this.stduIds});
+  StudentListPortionView({super.key,this.courseId,this.divisonId,required this.stduIds,this.subId});
   String? courseId;
   String? divisonId;
+  String? subId;
   List stduIds;
 
   @override
@@ -1456,7 +1564,7 @@ class _StudentListPortionViewState extends State<StudentListPortionView> {
       if (provider.hasMoreData()) {
         print("object");
 
-        await provider.getStudentViewByPagination(widget.divisonId!);
+        await provider.getStudentViewByPagination(widget.divisonId!,widget.subId!);
       }
     }
   }
@@ -1588,7 +1696,7 @@ class _StudentListPortionViewState extends State<StudentListPortionView> {
                           child: InkWell(
                             onTap: () async {
                               await value.selectAll(
-                                  widget.divisonId!);
+                                  widget.divisonId!,widget.subId!);
                               controller.clear();
                               // await value.getSelectAllStudents(
                               //     section, course, division);
@@ -1692,7 +1800,7 @@ class _StudentListPortionViewState extends State<StudentListPortionView> {
                     ? Expanded(
                   child: GestureDetector(
                     onTap: () async {
-                      await value.selectAll(widget.divisonId!);
+                      await value.selectAll(widget.divisonId!,widget.subId!);
                     },
                     child: Center(
                       child: Card(

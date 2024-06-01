@@ -48,13 +48,16 @@ class PortionScreen extends StatelessWidget {
                     text: "List",
                   ),
                   Tab(
-                    text: "Report",
+                    text:
+                    "Report",
                   ),
                 ],
               ),
               backgroundColor: UIGuide.light_Purple,
             ),
-            body: TabBarView(children: [
+            body: TabBarView(
+                physics: NeverScrollableScrollPhysics(),
+                children: [
               PortionEntryScreen(),
                PortionList(),
               PortionApproval()

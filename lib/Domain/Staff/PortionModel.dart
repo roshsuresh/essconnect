@@ -271,6 +271,7 @@ class PortionFiles {
   String? name;
   String? extension;
   String? path;
+  String? size;
   String? url;
   bool? isTemporary;
   bool? isDeleted;
@@ -282,6 +283,7 @@ class PortionFiles {
       {this.name,
         this.extension,
         this.path,
+        this.size,
         this.url,
         this.isTemporary,
         this.isDeleted,
@@ -293,6 +295,7 @@ class PortionFiles {
     name = json['name'];
     extension = json['extension'];
     path = json['path'];
+    size = json['size'];
     url = json['url'];
     isTemporary = json['isTemporary'];
     isDeleted = json['isDeleted'];
@@ -306,6 +309,7 @@ class PortionFiles {
     data['name'] = this.name;
     data['extension'] = this.extension;
     data['path'] = this.path;
+    data['size'] = this.size;
     data['url'] = this.url;
     data['isTemporary'] = this.isTemporary;
     data['isDeleted'] = this.isDeleted;
@@ -315,6 +319,26 @@ class PortionFiles {
     return data;
   }
 
+}
+//Notification
+//-----------------------
+class PortionResponse {
+  String? classTeacherApproval;
+  String? portionEntryId;
+
+  PortionResponse({this.classTeacherApproval, this.portionEntryId});
+
+  PortionResponse.fromJson(Map<String, dynamic> json) {
+    classTeacherApproval = json['classTeacherApproval'];
+    portionEntryId = json['portionEntryId'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['classTeacherApproval'] = this.classTeacherApproval;
+    data['portionEntryId'] = this.portionEntryId;
+    return data;
+  }
 }
 
 //---------------List---------------
@@ -328,7 +352,10 @@ class PortionList {
   String? chapter;
   String? courseSubjectId;
   String? status;
-
+  int? seenCount;
+  int? unSeenCount;
+  List<StudViewedorNotList>? viewedList;
+  List<StudViewedorNotList>? notViewedList;
   PortionList(
       {this.tblId,
         this.date,
@@ -337,7 +364,12 @@ class PortionList {
         this.topic,
         this.chapter,
         this.courseSubjectId,
-      this.status});
+      this.status,
+      this.seenCount,
+        this.unSeenCount,
+        this.viewedList,
+        this.notViewedList
+      });
 
   PortionList.fromJson(Map<String, dynamic> json) {
     tblId = json['tblId'];
@@ -348,6 +380,20 @@ class PortionList {
     chapter = json['chapter'];
     courseSubjectId = json['courseSubjectId'];
     status = json['status'];
+    seenCount = json['seenCount'];
+    unSeenCount = json['unSeenCount'];
+    if (json['viewedList'] != null) {
+      viewedList = <StudViewedorNotList>[];
+      json['viewedList'].forEach((v) {
+        viewedList!.add(new StudViewedorNotList.fromJson(v));
+      });
+    }
+    if (json['notViewedList'] != null) {
+      notViewedList = <StudViewedorNotList>[];
+      json['notViewedList'].forEach((v) {
+        notViewedList!.add(new StudViewedorNotList.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -360,9 +406,43 @@ class PortionList {
     data['chapter'] = this.chapter;
     data['courseSubjectId'] = this.courseSubjectId;
     data['status'] = this.status;
+    data['seenCount'] = this.seenCount;
+    data['unSeenCount'] = this.unSeenCount;
+    if (this.viewedList != null) {
+      data['viewedList'] = this.viewedList!.map((v) => v.toJson()).toList();
+    }
+    if (this.notViewedList != null) {
+      data['notViewedList'] =
+          this.notViewedList!.map((v) => v.toJson()).toList();
+    }
     return data;
   }
 }
+
+
+class StudViewedorNotList {
+  String? id;
+  String? name;
+  String? mobile;
+
+  StudViewedorNotList({this.id, this.name, this.mobile});
+
+  StudViewedorNotList.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    mobile = json['mobile'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['mobile'] = this.mobile;
+    return data;
+  }
+}
+
+
 //--Update----
 
 class PortionUpdateRow {
@@ -390,7 +470,9 @@ class PortionUpdateRow {
   String? details;
   String? description;
   String? chapter;
+  String? assignment;
   String? actualStudCount;
+
 
   PortionUpdateRow(
       {this.id,
@@ -417,6 +499,7 @@ class PortionUpdateRow {
         this.details,
         this.description,
         this.chapter,
+        this.assignment,
         this.actualStudCount});
 
   PortionUpdateRow.fromJson(Map<String, dynamic> json) {
@@ -469,6 +552,7 @@ class PortionUpdateRow {
     details = json['details'];
     description = json['description'];
     chapter = json['chapter'];
+    assignment = json['assignment'];
     actualStudCount = json['actualStudCount'];
   }
 
@@ -510,6 +594,7 @@ class PortionUpdateRow {
     data['details'] = this.details;
     data['description'] = this.description;
     data['chapter'] = this.chapter;
+    data['assignment'] = this.assignment;
     data['actualStudCount'] = this.actualStudCount;
     return data;
   }
@@ -695,6 +780,9 @@ class ApprovalDetails {
   String? topic;
   String? status;
   String? remarks;
+  String? description;
+  String? details;
+  String? assignment;
   bool? allowApproval;
   List<PortionFiles>? photoList;
 
@@ -705,6 +793,9 @@ class ApprovalDetails {
     this.topic,
     this.status,
     this.remarks,
+    this.description,
+    this.details,
+    this.assignment,
     this.allowApproval,
     this.photoList});
 
@@ -716,6 +807,9 @@ class ApprovalDetails {
     topic = json['topic'];
     status = json['status'];
     remarks = json['remarks'];
+    details = json['details'];
+    description = json['description'];
+    assignment = json['assignment'];
     allowApproval = json['allowApproval'];
     if (json['photoList'] != null) {
       photoList = <PortionFiles>[];

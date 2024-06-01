@@ -23,10 +23,11 @@ class StudentPortionProvider with ChangeNotifier{
     notifyListeners();
   }
   List<StudPortionList> studportionList=[];
+  List<StudPortionList> studportionListpre=[];
 
   Future getStudentPortionList() async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
-    setLoading(true);
+ setLoading(true);
     var headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${_pref.getString('curiaccesstoken')}'
@@ -59,12 +60,51 @@ class StudentPortionProvider with ChangeNotifier{
     }
   }
 
+  //previous sata
+
+  Future getStudentPortionListPrevious(String status) async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    setLoadingPage(true);
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('curiaccesstoken')}'
+    };
+    try {
+      var response = await http.get(
+          Uri.parse(
+              "${UIGuide.curriculamUrl}/portionentry/$status"),
+          headers: headers);
+
+      if (response.statusCode == 200) {
+        print("corect");
+        setLoadingPage(true);
+        final data = json.decode(response.body);
+        log(data.toString());
+
+        List<StudPortionList> templist = List<StudPortionList>.from(
+            data["portionList"].map((x) => StudPortionList.fromJson(x)));
+        studportionListpre.addAll(templist);
+
+        setLoadingPage(false);
+        notifyListeners();
+      } else {
+        setLoadingPage(false);
+        print("Error in studPortionList response");
+      }
+    } catch (e) {
+      setLoadingPage(false);
+      print(e);
+    }
+  }
+
+
+
   List<StudPortionDetials> studportionDetailList=[];
   List<PhotoList> photoList=[];
   List<String> imageUrls = [];
   List<String> imageName = [];
 
-  Future getStudentPortionDetailList(String date) async {
+  Future getStudentPortionDetailList(String date,String status) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoading(true);
     var headers = {
@@ -74,13 +114,13 @@ class StudentPortionProvider with ChangeNotifier{
     try {
       var response = await http.get(
           Uri.parse(
-              "${UIGuide.curriculamUrl}/portionentry/getportions/$date"),
+              "${UIGuide.curriculamUrl}/portionentry/getportions/$date/$status"),
           headers: headers);
       print(response);
-      print( "${UIGuide.curriculamUrl}/portionentry/getportions/$date");
+      print( "${UIGuide.curriculamUrl}/portionentry/getportions/$date/$status");
 
       if (response.statusCode == 200) {
-        print("corect");
+        print("correct");
         setLoading(true);
         final data = json.decode(response.body);
         log(data.toString());

@@ -82,6 +82,8 @@ class UIGuide {
 
   static const String curriculamUrl =
   "https://api.curriculumtestonline.in";
+ // "https://api.uatcurriculum.in";
+ // "https://api.esscurriculum.in";
 
 
   static const String baseURL =

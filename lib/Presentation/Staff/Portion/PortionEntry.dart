@@ -9,6 +9,7 @@ import 'package:flutter/widgets.dart';
 import 'package:essconnect/utils/spinkit.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import '../../../../Debouncer.dart';
 import 'package:image/image.dart' as img;
@@ -34,6 +35,7 @@ class _PortionEntryScreenState extends State<PortionEntryScreen> {
   final subSubjectController = TextEditingController();
   final subSubjectIDController = TextEditingController();
   final topicController = TextEditingController();
+  final assignmentController = TextEditingController();
   final chapterController = TextEditingController();
   final detailsController = TextEditingController();
   final descriptionController = TextEditingController();
@@ -46,6 +48,8 @@ class _PortionEntryScreenState extends State<PortionEntryScreen> {
   String? subsubjectId;
   List filesss=[];
   List imges=[];
+
+  String suboroption='';
 
 
 
@@ -578,6 +582,8 @@ class _PortionEntryScreenState extends State<PortionEntryScreen> {
                                                             value.subjectList[index].subSubjectId.toString(),
                                                             value.subjectList[index].courseSubjectId.toString(),
                                                             divisionIDController.text);
+                                                             suboroption= value.subjectList[index].optionSubjectId!=""?"option":"sub";
+                                                             print("suboroptionnnnnnnnnnnnnnnnnnnnnnn  $suboroption");
                                                         print(value.subSubjectList);
 
 
@@ -671,6 +677,7 @@ class _PortionEntryScreenState extends State<PortionEntryScreen> {
                                                         index]
                                                             .value ??
                                                             '--';
+
                                                         print("not subsubject");
                                                       },
                                                       title: Text(
@@ -787,7 +794,9 @@ class _PortionEntryScreenState extends State<PortionEntryScreen> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            StudentListPortionView(divisonId: divisionIDController.text,)));
+                                            StudentListPortionView(
+                                              divisonId: divisionIDController.text,
+                                              subId: suboroption=="option"? subSubjectIDController.text:"",)));
                               },
                               child: const Icon(Icons.list_alt)),
                         )
@@ -802,7 +811,7 @@ class _PortionEntryScreenState extends State<PortionEntryScreen> {
                     child: SizedBox(
                       height: 40,
                       child: TextFormField(
-                        inputFormatters: [LengthLimitingTextInputFormatter(1000)],
+                        inputFormatters: [LengthLimitingTextInputFormatter(50)],
                         controller: chapterController,
                         minLines: 1,
                         //maxLines: 2,
@@ -833,7 +842,7 @@ class _PortionEntryScreenState extends State<PortionEntryScreen> {
                     child: SizedBox(
                       height: 40,
                       child: TextFormField(
-                        inputFormatters: [LengthLimitingTextInputFormatter(1000)],
+                        inputFormatters: [LengthLimitingTextInputFormatter(50)],
                         controller: topicController,
                         minLines: 1,
                         // maxLines: 2,
@@ -865,7 +874,7 @@ class _PortionEntryScreenState extends State<PortionEntryScreen> {
                       height: 40,
                       child: TextFormField(
 
-                        inputFormatters: [LengthLimitingTextInputFormatter(1000)],
+                        inputFormatters: [LengthLimitingTextInputFormatter(200)],
                         controller: descriptionController,
                         minLines: 1,
                         //  maxLines: 2,
@@ -898,7 +907,7 @@ class _PortionEntryScreenState extends State<PortionEntryScreen> {
                     child: LimitedBox(
                       maxHeight: 180,
                       child: TextFormField(
-                        inputFormatters: [LengthLimitingTextInputFormatter(1000)],
+                        inputFormatters: [LengthLimitingTextInputFormatter(500)],
                         controller:detailsController ,
                         minLines: 1,
                         maxLines: 15,
@@ -909,6 +918,37 @@ class _PortionEntryScreenState extends State<PortionEntryScreen> {
                           labelStyle: TextStyle(fontWeight: FontWeight.w500,
                               color: UIGuide.BLACK,fontSize: 14),
                           hintStyle: TextStyle(color: Colors.grey),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: UIGuide.light_Purple, width: 1.0),
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  kheight10,
+                  Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: LimitedBox(
+                      maxHeight: 60,
+                      child: TextFormField(
+                        inputFormatters: [LengthLimitingTextInputFormatter(200)],
+                        controller: assignmentController,
+                        minLines: 1,
+                        maxLines: 2,
+                        keyboardType: TextInputType.multiline,
+                        decoration: const InputDecoration(
+                          contentPadding: EdgeInsets.fromLTRB(12.0, 10.0, 20.0, 10.0),
+                          labelText: 'Assignment',
+                          hintText: 'Enter Assignment',
+                          labelStyle: TextStyle(fontWeight: FontWeight.w500,
+                              color: UIGuide.BLACK,fontSize: 14),
+                          hintStyle: TextStyle(color: Colors.grey),
+                          helperStyle: TextStyle(color: UIGuide.light_Purple),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(10)),
                           ),
@@ -974,30 +1014,52 @@ class _PortionEntryScreenState extends State<PortionEntryScreen> {
 
                               print("fileeeee  $filesss");
                               print("imggg $imges");
-                              ScaffoldMessenger.of(context).showSnackBar( SnackBar(
-                                elevation: 10,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.all(Radius.circular(20)),
-                                ),
-                                duration: Duration(seconds: 1),
-                                margin: EdgeInsets.only(bottom: 80, left: 30, right: 30),
-                                behavior: SnackBarBehavior.floating,
-                                content:
-                                filesss.isNotEmpty?
-                                    roundedNumber<=5?
-                                Text(
-                                  'Files added...',
-                                  textAlign: TextAlign.center,
-                                ):Text(
-                                      'File Size Exeeded...',
-                                      textAlign: TextAlign.center,
-                                    ):
-                                Text(
-                                  'No Files added...',
-                                  textAlign: TextAlign.center,
-                                )
-                                ,
-                              ));
+                              // ScaffoldMessenger.of(context).showSnackBar( SnackBar(
+                              //   elevation: 10,
+                              //   shape: RoundedRectangleBorder(
+                              //     borderRadius: BorderRadius.all(Radius.circular(20)),
+                              //   ),
+                              //   duration: Duration(seconds: 1),
+                              //   margin: EdgeInsets.only(bottom: 80, left: 30, right: 30),
+                              //   behavior: SnackBarBehavior.floating,
+                              //   content:
+                              //   filesss.isNotEmpty?
+                              //       roundedNumber<=5?
+                              //   Text(
+                              //     'Files added...',
+                              //     textAlign: TextAlign.center,
+                              //   ):Text(
+                              //         'File Size Exeeded...',
+                              //         textAlign: TextAlign.center,
+                              //       ):
+                              //   Text(
+                              //     'No Files added...',
+                              //     textAlign: TextAlign.center,
+                              //   )
+                              //   ,
+                              // )
+                              // );
+
+                              Fluttertoast.showToast(
+                                msg: filesss.isNotEmpty?
+                                roundedNumber<=5?
+                                'Files added...'
+
+                                :
+                                'File Size Exeeded...'
+
+                                :
+                                'No Files added...',
+
+
+
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.black54,
+                                textColor: Colors.white,
+                                fontSize: 14.0,
+                              );
 
                             }),
                             child:
@@ -1356,13 +1418,28 @@ class _PortionEntryScreenState extends State<PortionEntryScreen> {
                                 chapterController.text.trim().isEmpty||
                                 detailsController.text.trim().isEmpty
                             ) {
-                              snackbarWidget(
-                                  3, "Select mandatory fields...", context);
+
+                              Fluttertoast.showToast(
+                                msg:"Select Mandatory Fields..",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.black54,
+                                textColor: Colors.white,
+                                fontSize: 14.0,
+                              );
                             }
 
                             else if(roundedNumber>=5){
-                              snackbarWidget(
-                                  2, "File Size Exceed...", context);
+                              Fluttertoast.showToast(
+                                msg:"File Size Exceed..",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.black54,
+                                textColor: Colors.white,
+                                fontSize: 14.0,
+                              );
                             }
                             else {
                               print("ddddnoooo");
@@ -1374,13 +1451,33 @@ class _PortionEntryScreenState extends State<PortionEntryScreen> {
                                   courseIDController.text,
                                   divisionIDController.text,
                                   coursesubjectIdController.text,
-                                  subSubjectIDController.text,
+                                  subSubjectIDController.text ,
+                                  suboroption=="option"? "O":"S",
                                   chapterController.text,
                                   topicController.text,
                                   descriptionController.text,
                                   detailsController.text,
+                                  assignmentController.text,
                                   value.finalSelectedList,
                                   filesss);
+
+
+                              await value.portionsendNotification(
+                                  value.fromdateSend,
+                                  courseIDController.text,
+                                  divisionIDController.text,
+                                  coursesubjectIdController.text,
+                                  subSubjectIDController.text,
+                                  suboroption=="option"? "O":"S",
+                                  chapterController.text,
+                                  topicController.text,
+                                  descriptionController.text,
+                                  detailsController.text,
+                                  assignmentController.text,
+                                  value.finalSelectedList,
+                                  filesss);
+
+
 
                               // value.showToGuardian==true?
                               // await Provider.of<NotificationToGuardian_Providers>(context,
@@ -1405,6 +1502,7 @@ class _PortionEntryScreenState extends State<PortionEntryScreen> {
                                 descriptionController.clear();
                                 value.finalSelectedList.clear();
                                 chapterController.clear();
+                                assignmentController.clear();
                                 topicController.clear();
                                 descriptionController.clear();
                                 detailsController.clear();
@@ -1436,10 +1534,10 @@ class _PortionEntryScreenState extends State<PortionEntryScreen> {
 }
 
 class StudentListPortionView extends StatefulWidget {
-  StudentListPortionView({super.key,this.courseId,this.divisonId});
+  StudentListPortionView({super.key,this.courseId,this.divisonId,this.subId});
   String? courseId;
   String? divisonId;
-
+  String? subId;
   @override
   State<StudentListPortionView> createState() =>
       _StudentListPortionViewState();
@@ -1459,7 +1557,7 @@ class _StudentListPortionViewState extends State<StudentListPortionView> {
       await p.setLoading(false);
       p.studentViewList.clear();
       p.currentPage=2;
-      await p.getStudentViewList(widget.divisonId! );
+      await p.getStudentViewList(widget.divisonId! ,widget.subId!);
       p.allSelected = false;
 
 
@@ -1474,7 +1572,7 @@ class _StudentListPortionViewState extends State<StudentListPortionView> {
       if (provider.hasMoreData()) {
         print("object");
 
-        await provider.getStudentViewByPagination(widget.divisonId!);
+        await provider.getStudentViewByPagination(widget.divisonId!,widget.subId!);
       }
     }
   }
@@ -1605,7 +1703,7 @@ class _StudentListPortionViewState extends State<StudentListPortionView> {
                           child: InkWell(
                             onTap: () async {
                               await value.selectAll(
-                                  widget.divisonId!);
+                                  widget.divisonId!,widget.subId!);
                               controller.clear();
                               // await value.getSelectAllStudents(
                               //     section, course, division);
@@ -1708,7 +1806,7 @@ class _StudentListPortionViewState extends State<StudentListPortionView> {
                     ? Expanded(
                   child: GestureDetector(
                     onTap: () async {
-                      await value.selectAll(widget.divisonId!);
+                      await value.selectAll(widget.divisonId!,widget.subId!);
                     },
                     child: Center(
                       child: Card(

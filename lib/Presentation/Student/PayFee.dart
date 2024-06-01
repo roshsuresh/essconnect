@@ -23,6 +23,7 @@ import 'package:weipl_checkout_flutter/weipl_checkout_flutter.dart';
 import '../../Application/StudentProviders/FeesProvider.dart';
 import '../../Constants.dart';
 import '../../utils/constants.dart';
+import 'PaymentPolicy.dart';
 
 class PayFee extends StatelessWidget {
   PayFee({Key? key}) : super(key: key);
@@ -1072,6 +1073,21 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                     ),
                   ],
                 ),
+                kheight20,
+                Center(
+                  child: InkWell(
+                      onTap: (){
+
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>PaymentPolicy()));
+                      },
+                      child: Text("Fees Payment Policies",
+                      style: TextStyle(
+                        color: UIGuide.light_Purple,
+
+                      ),
+                      )),
+                ),
+
                 const SizedBox(
                   height: 100,
                 ),
@@ -1141,12 +1157,16 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
 
 
                       else {
+                        print("demmmooo");
                         if (trans.existMap == true) {
+                          print("demoooo1");
                           if (trans.lastOrderStatus == 'Success' ||
                               trans.lastOrderStatus == 'Failed' ||
                               trans.lastOrderStatus == 'Cancelled' ||
-                            //  trans.lastOrderStatus == 'Processing' ||
+                             // trans.lastOrderStatus == 'Processing' ||
+                             // trans.lastOrderStatus == 'Pending' ||
                               trans.lastOrderStatus == null) {
+                            print("demoooo2");
                             if (trans.total != 0) {
                               List transactionList = [];
                               transactionList.clear();
@@ -1203,6 +1223,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
 //  --------------------------------------------------------------------------------------------------------------   //
 
                                   if (trans.gateway == 'Paytm') {
+                                    print("gateway paytmmmm");
                                     await Provider.of<FeesProvider>(
                                         context,
                                         listen: false)
@@ -1655,8 +1676,28 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                               );
                             }
                           }
+                          else  {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                elevation: 10,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(20)),
+                                ),
+                                duration: Duration(seconds: 5),
+                                margin: EdgeInsets.only(
+                                    bottom: 80, left: 30, right: 30),
+                                behavior: SnackBarBehavior.floating,
+                                content: Text(
+                                  'Please wait for 30 minutes...\n Your payment is  𝐏𝐞𝐧𝐝𝐢𝐧𝐠',
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            );
+                          }
                         }
                       else {
+                        print("vendor issur");
                       ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                       elevation: 10,
@@ -1675,7 +1716,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                       ),
                       );
                       }
-                        
+
                       }
                     },
    

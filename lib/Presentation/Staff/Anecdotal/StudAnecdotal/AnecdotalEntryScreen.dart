@@ -280,7 +280,7 @@ class _AnecdotalentryScreenState extends State<AnecdotalentryScreen> {
                                 borderSide: BorderSide(
                                     style: BorderStyle.none, width: 0),
                               ),
-                              labelText: "  Select Dairy Subject",
+                              labelText: "  Select Diary Subject",
                               labelStyle: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,

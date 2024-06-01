@@ -35,7 +35,7 @@ class Curriculamprovider with ChangeNotifier {
         CurriculamModel prev = CurriculamModel.fromJson(data);
         token = prev.results;
 
-        print(token);
+        print("token  : $token");
         setLoading(false);
         notifyListeners();
       } else {
@@ -58,6 +58,7 @@ class Curriculamprovider with ChangeNotifier {
     setLoading(true);
     var response = await http.get(Uri.parse("${UIGuide.curriculamUrl}/login?token=$token"),
         headers: headers);
+    print("${UIGuide.curriculamUrl}/login?token=$token");
     setLoading(true);
     try {
       if (response.statusCode == 200) {

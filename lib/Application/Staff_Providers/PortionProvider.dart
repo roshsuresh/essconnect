@@ -20,6 +20,13 @@ class PortionProvider with ChangeNotifier{
     notifyListeners();
   }
 
+  bool _loadingPage = false;
+  bool get loadingPage => _loadingPage;
+  setLoadingPage(bool value) {
+    _loadingPage = value;
+    notifyListeners();
+  }
+
   DateTime? fromdateselect;
   String fromdateDisplay = '';
   String fromdateSend = '';
@@ -53,7 +60,7 @@ class PortionProvider with ChangeNotifier{
       context: context,
       initialDate: fromdateselect ?? DateTime.now(),
       firstDate: DateTime(2022),
-      lastDate: DateTime.now(),
+      lastDate:DateTime(9999, 12, 31),
       builder: (context, child) {
         return Theme(
             data: ThemeData.light().copyWith(
@@ -81,7 +88,7 @@ class PortionProvider with ChangeNotifier{
       context: context,
       initialDate: todateselect ?? DateTime.now(),
       firstDate: DateTime(2022),
-      lastDate:DateTime.now(),
+      lastDate:DateTime(9999, 12, 31),
       builder: (context, child) {
         return Theme(
             data: ThemeData.light().copyWith(
@@ -184,9 +191,6 @@ class PortionProvider with ChangeNotifier{
         List<PortionCourse> templist = List<PortionCourse>.from(
             data['staffDivisionList']["course"].map((x) => PortionCourse.fromJson(x)));
         courseList.addAll(templist);
-
-
-
 
         setLoading(false);
         notifyListeners();
@@ -317,7 +321,7 @@ class PortionProvider with ChangeNotifier{
   List? myList;
   List<StudentListPortions> studentViewList = [];
   Future getStudentViewList(
-      String division) async {
+      String division,String subId) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoading(true);
     var headers = {
@@ -331,7 +335,7 @@ class PortionProvider with ChangeNotifier{
       http.Request(
           'GET',
           Uri.parse(
-              '${UIGuide.curriculamUrl}/student-selector?filterStudyingStatus=studying&divisionId=$division&page=1&'));
+              '${UIGuide.curriculamUrl}/student-selector?filterStudyingStatus=studying&divisionId=$division&optionSubId=$subId&page=1'));
 
       request.headers.addAll(headers);
       print(request);
@@ -423,7 +427,7 @@ class PortionProvider with ChangeNotifier{
     }
   }
 
-  Future getStudentViewByPagination(String division) async {
+  Future getStudentViewByPagination(String division, String subId) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoading(true);
     print("Paginationnew");
@@ -435,7 +439,7 @@ class PortionProvider with ChangeNotifier{
       var request = http.Request(
           'GET',
           Uri.parse(
-              '${UIGuide.curriculamUrl}/student-selector?filterStudyingStatus=studying&divisionId=$division&page=$currentPage&'));
+              '${UIGuide.curriculamUrl}/student-selector?filterStudyingStatus=studying&divisionId=$division&optionSubId=$subId&page=$currentPage&'));
 
       request.headers.addAll(headers);
       print(request);
@@ -486,13 +490,13 @@ class PortionProvider with ChangeNotifier{
   List allStudentID = [];
   bool allSelected = false;
 
-  selectAll(String division) async {
+  selectAll(String division,String optionSubId) async {
     if (allSelected == true) {
       allStudentID.clear();
       allSelected = false;
       isselectAll = false;
     } else {
-      await getSelectAllStudents(division);
+      await getSelectAllStudents(division,optionSubId);
       allSelected = true;
       isselectAll = true;
     }
@@ -500,7 +504,7 @@ class PortionProvider with ChangeNotifier{
   }
 
   Future getSelectAllStudents(
-       String division) async {
+       String division,String optionSubId) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoading(true);
     var headers = {
@@ -511,7 +515,7 @@ class PortionProvider with ChangeNotifier{
       var request = http.Request(
           'GET',
           Uri.parse(
-              '${UIGuide.curriculamUrl}/student-selector?filterStudyingStatus=studying&divisionId=$division&page=1&fetchAllIds=1&'));
+              '${UIGuide.curriculamUrl}/student-selector?filterStudyingStatus=studying&divisionId=$division&optionSubId=$optionSubId&page=1&fetchAllIds=1&'));
 
       request.headers.addAll(headers);
       print(request);
@@ -850,6 +854,7 @@ class PortionProvider with ChangeNotifier{
 
   //save
 int status=0;
+  String? portionResponseId;
   Future portionsend(
       BuildContext context,
       String entryDate,
@@ -857,10 +862,12 @@ int status=0;
       String divisionId,
       String subjectId,
       String subSubjectId,
+      String subSubjectOrOptional,
       String chapter,
       String topic,
       String description,
       String details,
+      String assignment,
       List? studList,
       List? attachmentId) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
@@ -873,18 +880,20 @@ int status=0;
         Uri.parse('${UIGuide.curriculamUrl}/portionentry/save'));
     print(request);
     request.body = json.encode(
-        {"courseId": courseId,
+        {
+          "courseId": courseId,
           "divisionId":divisionId,
           "subjectId":subjectId,
           "subsubjectId":subSubjectId.isEmpty?null:subSubjectId,
+          "assignment":assignment.isEmpty?null:assignment,
           "chapter":chapter,
-          "topicId":topic,
-          "description":description,
+          "topicId":topic.isEmpty?null:topic,
+          "description":description.isEmpty?null:description,
           "details":details,
           "entryDate":entryDate,
           "photoList":attachmentId,
           "studentIds":studList,
-          "subSubjectOrOptional":subSubjectId.isEmpty?"":"S"
+          "subSubjectOrOptional":subSubjectId.isEmpty?"": subSubjectOrOptional
         }
     );
     log(request.body = json.encode({
@@ -892,22 +901,30 @@ int status=0;
       "divisionId":divisionId,
       "subjectId":subjectId,
       "subsubjectId":subSubjectId.isEmpty?null:subSubjectId,
+      "assignment":assignment.isEmpty?null:assignment,
       "chapter":chapter,
-      "topicId":topic,
-      "description":description,
+      "topicId":topic.isEmpty?null:topic,
+      "description":description.isEmpty?null:description,
       "details":details,
       "entryDate":entryDate,
       "photoList":attachmentId,
       "studentIds":studList,
-      "subSubjectOrOptional":""
-    }));
+      "subSubjectOrOptional":subSubjectId.isEmpty?"": subSubjectOrOptional
+    }
+    ));
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
       print('Correct........______________________________');
-      print(await response.stream.bytesToString());
+      Map<String, dynamic> data =
+      jsonDecode(await response.stream.bytesToString());
+      print(data);
+      PortionResponse portion = PortionResponse.fromJson(data);
+      portionResponseId = portion.portionEntryId;
+      print("portionId  $portionResponseId");
+
       await AwesomeDialog(
           context: context,
           dialogType: DialogType.success,
@@ -945,9 +962,83 @@ int status=0;
     }
   }
 
+  //--------Notification------------
+
+  Future portionsendNotification(
+      String entryDate,
+      String courseId,
+      String divisionId,
+      String subjectId,
+      String subSubjectId,
+      String subSubjectOrOptional,
+      String chapter,
+      String topic,
+      String description,
+      String details,
+      String assignment,
+      List? studList,
+      List? attachmentId) async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('curiaccesstoken')}'
+    };
+    var request = http.Request('POST',
+        Uri.parse('${UIGuide.curriculamUrl}/portionentry/sentNotification/$portionResponseId'));
+    print(request);
+    request.body = json.encode(
+        {
+          "courseId": courseId,
+          "divisionId":divisionId,
+          "subjectId":subjectId,
+          "subsubjectId":subSubjectId.isEmpty?null:subSubjectId,
+          "assignment":assignment.isEmpty?null:assignment,
+          "chapter":chapter,
+          "topicId":topic.isEmpty?null:topic,
+          "description":description.isEmpty?null:description,
+          "details":details,
+          "entryDate":entryDate,
+          "photoList":attachmentId,
+          "studentIds":studList,
+          "subSubjectOrOptional":subSubjectId.isEmpty?"": subSubjectOrOptional
+        }
+    );
+    log(request.body = json.encode({
+      "courseId": courseId,
+      "divisionId":divisionId,
+      "subjectId":subjectId,
+      "subsubjectId":subSubjectId.isEmpty?null:subSubjectId,
+      "assignment":assignment.isEmpty?null:assignment,
+      "chapter":chapter,
+      "topicId":topic.isEmpty?null:topic,
+      "description":description.isEmpty?null:description,
+      "details":details,
+      "entryDate":entryDate,
+      "photoList":attachmentId,
+      "studentIds":studList,
+      "subSubjectOrOptional":subSubjectId.isEmpty?"": subSubjectOrOptional
+    }));
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+
+      print('-Notification success-');
+
+      notifyListeners();
+    } else {
+
+      print("Error in portion send notification");
+    }
+  }
+
+
    //---------------List-------------
 
   List<PortionList> portionList = [];
+  List<StudViewedorNotList> viewList=[];
+  List<StudViewedorNotList> notViewList=[];
   Future getPortionList() async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoading(true);
@@ -980,6 +1071,17 @@ int status=0;
             .map((x) => PortionList.fromJson(x)));
         portionList.addAll(templist);
 
+        // List<StudViewedorNotList> templist1 =
+        // List<StudViewedorNotList>.from(data["results"]["viewedList"]
+        //     .map((x) => StudViewedorNotList.fromJson(x)));
+        // viewList.addAll(templist1);
+        //
+        // List<StudViewedorNotList> templist3 =
+        // List<StudViewedorNotList>.from(data["results"]["notViewedList"]
+        //     .map((x) => StudViewedorNotList.fromJson(x)));
+        // notViewList.addAll(templist3);
+
+
         Pagination pagenata =
         Pagination.fromJson(data['pagination']);
         pageSize = pagenata.pageSize;
@@ -1000,7 +1102,7 @@ int status=0;
   }
   Future getPortionListBypagination() async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
-    setLoading(true);
+    setLoadingPage(true);
     var headers = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${_pref.getString('curiaccesstoken')}'
@@ -1019,7 +1121,7 @@ int status=0;
       http.StreamedResponse response = await request.send();
 
       if (response.statusCode == 200) {
-        setLoading(true);
+        setLoadingPage(true);
 
         Map<String, dynamic> data =
         jsonDecode(await response.stream.bytesToString());
@@ -1030,22 +1132,26 @@ int status=0;
             .map((x) => PortionList.fromJson(x)));
         portionList.addAll(templist);
 
+
+
         Pagination pagenata =
         Pagination.fromJson(data['pagination']);
         pageSize = pagenata.pageSize;
         countStud = pagenata.count;
+        currentPage++;
+
 
         print(countStud);
 
-        setLoading(false);
+        setLoadingPage(false);
         notifyListeners();
       } else {
-        setLoading(false);
+        setLoadingPage(false);
         print('Error in PortionList stf');
       }
     } catch (e) {
       print('Error in PortionList stf');
-      setLoading(false);
+      setLoadingPage(false);
     }
   }
 
@@ -1065,6 +1171,7 @@ int status=0;
   String? course;
   String? courseId;
   String? topic;
+  String? assignment;
   List file=[];
   List<PortionFiles> mobFile=[];
   List<String>? studentIds;
@@ -1134,6 +1241,8 @@ int status=0;
       chapter= ur.chapter;
       actualStudCount =ur.actualStudCount;
       topic= ur.topicId;
+      assignment=ur.assignment;
+      subOrOptionalType=ur.subOrOptionalType;
       setLoading(false);
       notifyListeners();
     } else {
@@ -1154,9 +1263,11 @@ int status=0;
       String divisionId,
       String subjectId,
       String subSubjectId,
+      String subSubjectOrOptional,
       String chapter,
       String topic,
       String description,
+      String assignment,
       String details,
       List? studList,
       List? attachmentId) async {
@@ -1174,14 +1285,15 @@ int status=0;
           "divisionId":divisionId,
           "subjectId":subjectId,
           "subsubjectId":subSubjectId.isEmpty||subSubjectId=="null"?null:subSubjectId,
+        "assignment":assignment.isEmpty?null:assignment,
           "chapter":chapter,
-          "topicId":topic,
-          "description":description,
+          "topicId":topic.isEmpty?null:topic,
+          "description":description.isEmpty?null:description,
           "details":details,
           "entryDate":entryDate,
           "photoList":attachmentId,
           "studentIds":studList,
-          "subSubjectOrOptional":subSubjectId.isEmpty?"":"S"
+          "subSubjectOrOptional":subSubjectId.isEmpty?"": subSubjectOrOptional
         }
     );
     log(request.body = json.encode({
@@ -1189,6 +1301,7 @@ int status=0;
       "divisionId":divisionId,
       "subjectId":subjectId,
       "subsubjectId":subSubjectId.isEmpty||subSubjectId=="null"?null:subSubjectId,
+      "assignment":assignment,
       "chapter":chapter,
       "topicId":topic,
       "description":description,
@@ -1196,7 +1309,7 @@ int status=0;
       "entryDate":entryDate,
       "photoList":attachmentId,
       "studentIds":studList,
-      "subSubjectOrOptional":""
+      "subSubjectOrOptional":subSubjectId.isEmpty?"": subSubjectOrOptional
     }));
     request.headers.addAll(headers);
 
@@ -1527,6 +1640,9 @@ int status=0;
   String? portionChapter;
   String? portionTopic;
   String? portionStatus;
+  String? portionDetails;
+  String? portionDescription;
+  String? portionAssignment;
   bool? allowApproval;
   List<dynamic> photoList1=[];
   Future getApprovalReportDetailView(String portionId) async {
@@ -1564,6 +1680,9 @@ int status=0;
         portionTopic= ad.topic;
         portionStatus= ad.status;
         allowApproval= ad.allowApproval;
+        portionDetails=ad.details;
+        portionDescription=ad.description;
+        portionAssignment= ad.assignment;
 
           photoList1 = data['photoList'];
 
