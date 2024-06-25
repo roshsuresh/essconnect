@@ -22,7 +22,7 @@ class ModuleProviders extends ChangeNotifier {
     String data = await newParse;
 
     if (data.contains('FEE')) {
-      fees = await true;
+      fees =  true;
       notifyListeners();
       print('Fees Module Provided');
     }
@@ -64,7 +64,7 @@ class ModuleProviders extends ChangeNotifier {
       notifyListeners();
       print('Mobile App not provided');
     }
-
+    print("fesssssssss  $fees");
     log('Module Checked '.toString());
 
     notifyListeners();

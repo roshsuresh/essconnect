@@ -43,6 +43,7 @@ class SibingsProvider with ChangeNotifier {
   }
 
   Future getToken(String childId) async {
+
     Map<String, dynamic> data = await parseJWT();
     SharedPreferences _pref = await SharedPreferences.getInstance();
     var headers = {
@@ -95,22 +96,19 @@ class SibingsProvider with ChangeNotifier {
       prefs.setString('accesstoken', respo.accessToken);
       print('accessToken ${respo.accessToken}');
       await Provider.of<LoginProvider>(context, listen: false)
-          .getToken(context);
+          .getToken();
       await Provider.of<LoginProvider>(context, listen: false)
           .getMobileViewerId();
       await Provider.of<LoginProvider>(context, listen: false)
-          .getsavemobileViewer(context);
+          .getsavemobileViewer();
       await Provider.of<LoginProvider>(context, listen: false)
-          .sendUserDetails(context);
+          .sendUserDetails();
       print("ddddddddddddd");
-      await Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => StudentHome()),
-        (Route<dynamic> route) => false,
-      );
+
       isLoading = false;
       notifyListeners();
     } else {
+      isLoading= false;
       print('something went wrong in siblings list provider');
     }
   }
@@ -145,6 +143,7 @@ class SibingsProvider with ChangeNotifier {
       isLoading = false;
       notifyListeners();
     } else {
+      isLoading=false;
       print('something went wrong in siblings list provider');
     }
   }

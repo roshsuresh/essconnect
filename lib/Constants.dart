@@ -1,4 +1,5 @@
 import 'dart:core';
+import 'package:essconnect/Application/StudentProviders/FeesWiseProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
@@ -116,6 +117,8 @@ snackbarWidget(int second, content, BuildContext context) {
 
 List<SingleChildWidget> getProviders() {
   return [
+    ChangeNotifierProvider(
+        create: (context) => TokenExpiryCheckProviders()),
     ChangeNotifierProvider(create: (context) => LoginProvider()),
     ChangeNotifierProvider(create: (context) => ProfileProvider()),
     ChangeNotifierProvider(create: (context) => NoticeProvider()),
@@ -182,8 +185,7 @@ List<SingleChildWidget> getProviders() {
     ChangeNotifierProvider(
         create: (context) => NoticeBoardProvidersSAdmin()),
     ChangeNotifierProvider(create: (context) => MobileAppCheckinProvider()),
-    ChangeNotifierProvider(
-        create: (context) => TokenExpiryCheckProviders()),
+
     ChangeNotifierProvider(create: (context) => ChatProviders()),
     ChangeNotifierProvider(create: (context) => ToolMarkEntryProviders()),
     ChangeNotifierProvider(create: (context) => MissingReportProviders()),
@@ -204,7 +206,7 @@ List<SingleChildWidget> getProviders() {
     ChangeNotifierProvider(create: (context) => AppReviewProvider()),
     ChangeNotifierProvider(create: (context) => PortionProvider()),
     ChangeNotifierProvider(create: (context) => StudentPortionProvider()),
-
+    ChangeNotifierProvider(create: (context) => FeeWiseProvider()),
 
     ChangeNotifierProvider(
         create: (context) => TokenExpiryCheckProviders()),

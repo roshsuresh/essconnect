@@ -57,6 +57,8 @@ class _PortionEditScreenState extends State<PortionEditScreen> {
   double? roundeSize;
   double roundedNumber=0;
   String optionOrsub='';
+
+  bool subvalue=false;
   @override
   void initState() {
     super.initState();
@@ -80,7 +82,7 @@ class _PortionEditScreenState extends State<PortionEditScreen> {
       divisionIDController.text=p.divisionId.toString();
       subjectController.text=p.subjectName.toString();
       subjectIDController.text=p.subjectId.toString();
-      coursesubjectIdController.text=p.courseSubjectId.toString();
+      coursesubjectIdController.text=p.subjectId.toString();
       subSubjectController.text=p.optionalSubjectName.toString();
       subSubjectIDController.text=p.optionalSubjectId.toString();
       chapterController.text=p.chapter.toString();
@@ -94,6 +96,7 @@ class _PortionEditScreenState extends State<PortionEditScreen> {
 
       if(p.subOrOptionalType == "O"){
         optionOrsub="option";
+
       }
       else if(p.subOrOptionalType == "S"){
         optionOrsub="sub";
@@ -178,6 +181,9 @@ class _PortionEditScreenState extends State<PortionEditScreen> {
 
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       allowMultiple: true,
+        type: FileType.custom,
+        allowedExtensions: ['jpg','jpeg','png','pdf'],
+      allowCompression: true
     );
 
     if (result != null) {
@@ -643,7 +649,11 @@ class _PortionEditScreenState extends State<PortionEditScreen> {
                                                         value.subSubjectList.clear();
                                                         subSubjectController.clear();
                                                         subSubjectIDController.clear();
+
+                                                        value.finalSelectedList.clear();
                                                         subjectController.text = value
+
+
                                                             .subjectList[
                                                         index]
                                                             .text ??
@@ -672,7 +682,8 @@ class _PortionEditScreenState extends State<PortionEditScreen> {
 
                                                          value.subSubjectList.clear();
                                                          value.optionalSubjectId='';
-
+                                                         print("subjectttttttttttttt  ${subjectIDController.text}");
+                                                        print("coursesubjectttttttttttttt  ${coursesubjectIdController.text}");
 
                                                         await   value.getsubSubjectList(subjectIDController.text,
                                                             subjectController.text,
@@ -680,8 +691,21 @@ class _PortionEditScreenState extends State<PortionEditScreen> {
                                                             value.subjectList[index].subSubjectId.toString(),
                                                             value.subjectList[index].courseSubjectId.toString(),
                                                             divisionIDController.text);
-                                                        optionOrsub= value.subjectList[index].optionSubjectId!=""?"option":"sub";
+                                                        if(value.subjectList[index].optionSubjectId!="")
+                                                        {
+                                                          optionOrsub="option";
+
+                                                        }
+                                                        else if(value.subjectList[index].subSubjectId!="")
+                                                        {
+                                                          optionOrsub="sub";
+
+                                                        }
+                                                        else{
+                                                          optionOrsub="";
+                                                        }
                                                         print("suboroptionnnnnnnEdittttttt  $optionOrsub");
+                                                        subvalue=false;
 
                                                         print(value.subSubjectList);
 
@@ -764,6 +788,9 @@ class _PortionEditScreenState extends State<PortionEditScreen> {
                                                     return ListTile(
                                                       onTap: () async {
                                                         Navigator.of(context).pop();
+                                                        optionOrsub=="option"?subvalue=true:false;
+                                                    value.finalSelectedList.clear();
+                                                        value.getStudentAllViewList(divisionIDController.text, subSubjectIDController.text);
 
                                                         subSubjectController.text = value
                                                             .subSubjectList[
@@ -808,8 +835,8 @@ class _PortionEditScreenState extends State<PortionEditScreen> {
                                             style: BorderStyle.none, width: 0),
                                       ),
                                       labelText:
-                                      subsubjectId==""?"  Select Option":
-                                      "  Select Sub Subject"
+                                      subsubjectId==""?"  Select Option *":
+                                      "  Select Sub Subject *"
                                       ,
                                       alignLabelWithHint: true,
                                       labelStyle: TextStyle(
@@ -858,7 +885,7 @@ class _PortionEditScreenState extends State<PortionEditScreen> {
                                 child: Padding(
                                   padding: const EdgeInsets.only(left: 10),
                                   child: Text(
-                                    value.finalSelectedList.isEmpty
+                                    value.finalSelectedList.isEmpty||subvalue==true
                                         ? "All"
                                         : "${value.finalSelectedList.length} Student Selected",
                                     style: const TextStyle(
@@ -888,6 +915,7 @@ class _PortionEditScreenState extends State<PortionEditScreen> {
                                 ),
                               ),
                               onPressed: () {
+                                subvalue=false;
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -1329,6 +1357,8 @@ class _PortionEditScreenState extends State<PortionEditScreen> {
 
                                           //await _selectedFiles.removeAt(index);
                                          // await mutableList.removeAt(index);
+                                          await value.portionfileDelete(filesss[index]['id']);
+                                          await value.getPortionFileDelete(widget.id, filesss[index]['id']);
                                           await multiFiles.removeAt(index);
                                         await filesss.removeAt(index);
                                         await mutableList.removeAt(index);
@@ -1336,7 +1366,7 @@ class _PortionEditScreenState extends State<PortionEditScreen> {
                                         // if(_selectedFiles.isNotEmpty){
                                         //   _selectedFiles.removeAt(index);
                                         // }
-                                 //await value.portionfileDelete(context,filesss[index]['id']);
+
 
                                           print("multifilesss deletd $multiFiles");
                                           print("length  ${mutableList.length}");
@@ -1400,7 +1430,9 @@ class _PortionEditScreenState extends State<PortionEditScreen> {
                                 divisionIDController.text.trim().isEmpty ||
                                 subjectIDController.text.trim().isEmpty ||
                                 chapterController.text.trim().isEmpty||
-                                detailsController.text.trim().isEmpty
+                                detailsController.text.trim().isEmpty||
+                                (optionOrsub!=""
+                                    &&subSubjectIDController.text.trim().isEmpty )
                             ) {
                               Fluttertoast.showToast(
                                 msg:"Select Mandatory Fields..",
@@ -1413,13 +1445,33 @@ class _PortionEditScreenState extends State<PortionEditScreen> {
                               );
                             }
 
-                            // else if(roundedNumber>=5){
-                            //   snackbarWidget(
-                            //       2, "File Size Exceed...", context);
-                            // }
+                            else if(roundedNumber>=5){
+                              Fluttertoast.showToast(
+                                msg:"File Size Exceeds..",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.black54,
+                                textColor: Colors.white,
+                                fontSize: 14.0,
+                              );
+                            }
                             else {
                               print("ddddnoooo");
                            //   print(roundedNumber);
+                              if(optionOrsub=="option"){
+                                optionOrsub="O";
+
+                              }
+                              else if(
+                              optionOrsub=="sub"
+                              ){
+                                optionOrsub="S";
+
+                              }
+                              else{
+                                optionOrsub="";
+                              }
 
                               await value.portionUpdate(
                                   widget.id,
@@ -1427,16 +1479,36 @@ class _PortionEditScreenState extends State<PortionEditScreen> {
                                   value.fromdateSend,
                                   courseIDController.text,
                                   divisionIDController.text,
-                                  subjectIDController.text,
+                                  coursesubjectIdController.text,
                                   subSubjectIDController.text,
-                                  optionOrsub=="option"? "O":"S",
+                                  optionOrsub,
                                   chapterController.text,
                                   topicController.text,
                                   descriptionController.text,
                                   assignmentController.text,
                                   detailsController.text,
                                   value.finalSelectedList,
-                                  multiFiles);
+                                  multiFiles
+                              );
+
+
+                              value.portionResponseId=widget.id;
+                              await value.portionsendNotification(
+
+                                  value.fromdateSend,
+                                  courseIDController.text,
+                                  divisionIDController.text,
+                                  coursesubjectIdController.text,
+                                  subSubjectIDController.text,
+                                  optionOrsub,
+                                  chapterController.text,
+                                  topicController.text,
+                                  descriptionController.text,
+                                  detailsController.text,
+                                  assignmentController.text,
+                                  value.finalSelectedList,
+                                  multiFiles
+                              );
 
                               await value.getPortionList();
 
@@ -1523,7 +1595,7 @@ class _StudentListPortionViewState extends State<StudentListPortionView> {
       await p.setLoading(false);
      p.studentViewList.clear();
       p.currentPage=2;
-      await p.getStudentAllViewList(widget.divisonId!);
+      await p.getStudentAllViewList(widget.divisonId!,widget.subId!);
       // await p.getStudentViewList(widget.divisonId! );
       // await p.getStudentViewByPagination(widget.divisonId! );
      // await p.getSelectAllStudents(widget.divisonId!);

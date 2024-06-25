@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:multi_select_flutter/util/multi_select_item.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -214,19 +215,29 @@ class TimeTableUploadProvider with ChangeNotifier {
       imageid = idd.id;
       print(path);
       print('...............   $imageid');
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        elevation: 10,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(20)),
-        ),
-        duration: Duration(seconds: 1),
-        margin: EdgeInsets.only(bottom: 80, left: 30, right: 30),
-        behavior: SnackBarBehavior.floating,
-        content: Text(
-          'File added...',
-          textAlign: TextAlign.center,
-        ),
-      ));
+      Fluttertoast.showToast(
+        msg:'File added...',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.black54,
+        textColor: Colors.white,
+        fontSize: 14.0,
+
+      );
+      // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      //   elevation: 10,
+      //   shape: RoundedRectangleBorder(
+      //     borderRadius: BorderRadius.all(Radius.circular(20)),
+      //   ),
+      //   duration: Duration(seconds: 1),
+      //   margin: EdgeInsets.only(bottom: 80, left: 30, right: 30),
+      //   behavior: SnackBarBehavior.floating,
+      //   content: Text(
+      //     'File added...',
+      //     textAlign: TextAlign.center,
+      //   ),
+      // ));
       setLoading(false);
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

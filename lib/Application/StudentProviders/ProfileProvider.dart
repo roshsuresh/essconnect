@@ -51,6 +51,8 @@ class ProfileProvider with ChangeNotifier {
   String? guardianName;
   String? guardianMobile;
   String? guardianEmail;
+  bool? bankIntegrationSettings;
+  String? bankAdmissionNo;
 
   bool _loading = false;
   bool get loading => _loading;
@@ -110,6 +112,8 @@ class ProfileProvider with ChangeNotifier {
         editProfile = std.editProfile;
         guardianMobile = std.guardianMobile;
         guardianEmail = std.guardianEmail;
+        bankIntegrationSettings=std.bankIntegrationSettings;
+        bankAdmissionNo=std.bankAdmissionNo;
         setLoading(false);
         notifyListeners();
       } else {

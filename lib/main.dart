@@ -227,7 +227,7 @@ class _SplashFuturePageState extends State<SplashFuturePage>
   double _containerSize = 1.5;
   double _textOpacity = 0.0;
   double _containerOpacity = 0.0;
-
+  Timer? _timer;
   late AnimationController _controller;
   late Animation<double> animation1;
 
@@ -311,7 +311,7 @@ class _SplashFuturePageState extends State<SplashFuturePage>
   @override
   void initState() {
     super.initState();
-
+    _startTimer();
     _controller =
         AnimationController(vsync: this, duration: const Duration(seconds: 3));
 
@@ -326,39 +326,66 @@ class _SplashFuturePageState extends State<SplashFuturePage>
     _controller.forward();
 
     Timer(const Duration(seconds: 2), () {
-      setState(() {
+
         _fontSize = 1.06;
-      });
+
     });
 
     Timer(const Duration(seconds: 2), () {
-      setState(() {
+
         _containerSize = 2;
         _containerOpacity = 1;
-      });
+
     });
 
-    Timer(const Duration(seconds: 3), () async {
-      await Provider.of<TokenExpiryCheckProviders>(context, listen: false)
-          .checkTokenExpired(context);
-      //democode 20-02-2024
-      await Provider.of<LoginProvider>(context, listen: false)
-          .getToken(context);
-      await Provider.of<LoginProvider>(context, listen: false)
-          .getMobileViewerId();
-      await Provider.of<LoginProvider>(context, listen: false)
-          .getsavemobileViewer(context);
-      await Provider.of<LoginProvider>(context, listen: false)
-          .sendUserDetails(context);
+    // Timer( const Duration(seconds: 3), ()  {
+    //   WidgetsBinding.instance.addPostFrameCallback((timeStamp) async{
+    //
+    //     await Provider.of<TokenExpiryCheckProviders>(context, listen: false)
+    //         .checkTokenExpired(context);
+    //     //democode 20-02-2024
+    //     // await Provider.of<LoginProvider>(context, listen: false)
+    //     //     .getToken();
+    //     // await Provider.of<LoginProvider>(context, listen: false)
+    //     //     .getMobileViewerId();
+    //     // await Provider.of<LoginProvider>(context, listen: false)
+    //     //     .getsavemobileViewer();
+    //     // await Provider.of<LoginProvider>(context, listen: false)
+    //     //     .sendUserDetails();
+    //     await _checkSession();
+    //   });
+    //
+    //
+    // }
+    // );
+  }
+  void _startTimer() {
+    _timer = Timer(const Duration(seconds: 3), _handleTimer);
+  }
+  Future<void> _handleTimer() async {
+    if (!mounted) return;
 
-      await _checkSession();
-    }
-    );
+    await Provider.of<TokenExpiryCheckProviders>(context, listen: false)
+        .checkTokenExpired(context);
+    await Provider.of<LoginProvider>(context, listen: false).getToken();
+
+    if (!mounted) return;
+    await Provider.of<LoginProvider>(context, listen: false).getMobileViewerId();
+
+    if (!mounted) return;
+    await Provider.of<LoginProvider>(context, listen: false).getsavemobileViewer();
+
+    if (!mounted) return;
+    await Provider.of<LoginProvider>(context, listen: false).sendUserDetails();
+
+    if (!mounted) return;
+    await _checkSession();
   }
 
   @override
   void dispose() {
     _controller.dispose();
+    _timer?.cancel();
     super.dispose();
   }
 

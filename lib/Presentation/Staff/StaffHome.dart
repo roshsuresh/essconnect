@@ -13,7 +13,6 @@ import 'package:essconnect/Presentation/Staff/MarkEntryNew.dart';
 import 'package:essconnect/Presentation/Staff/MissingReport.dart';
 import 'package:essconnect/Presentation/Staff/Portion/Portions.dart';
 import 'package:essconnect/Presentation/Staff/ScreenNotification.dart';
-import 'package:essconnect/Presentation/Staff/StudentReportNew/InitialScreen.dart';
 import 'package:essconnect/Presentation/Staff/ToolMarkEntry.dart';
 import 'package:essconnect/Presentation/Student/CurriculamScreen.dart';
 import 'package:essconnect/Presentation/Student/NoInternetScreen.dart';
@@ -34,7 +33,6 @@ import '../../Application/Staff_Providers/StaffProfile.dart';
 import '../../Constants.dart';
 import '../../utils/constants.dart';
 import '../Login_Activation/Login_page.dart';
-import '../Student/HomeWork.dart';
 import '../Student/PasswordChange.dart';
 import '../Student/PortionView.dart';
 import 'CommunicationToGuardian.dart';
@@ -45,6 +43,7 @@ import 'StaffProfile.dart';
 import 'StaffTimeTable.dart';
 import 'StudAttendenceEntry.dart';
 import 'StudReport.dart';
+import 'StudentReportNew/InitialScreen.dart';
 import 'demooo.dart';
 
 
@@ -974,9 +973,9 @@ class _StaffHomeState extends State<StaffHome> {
                                                                   .rightToLeft,
                                                               child:
                                                                   const
-                                                          //  StudReportStaff(),
+                                                        StudReportStaff(),
                                                               //HomeWorkInbox(),
-                                                                  PortionView(),
+                                                                 // PortionView(),
                                                               duration:
                                                                   const Duration(
                                                                       milliseconds:

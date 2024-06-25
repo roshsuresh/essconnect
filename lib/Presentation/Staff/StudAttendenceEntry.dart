@@ -4,7 +4,6 @@ import 'package:essconnect/utils/spinkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import '../../Application/AdminProviders/Attendanceprovider.dart';
 import '../../Constants.dart';
 import '../../utils/constants.dart';
 
@@ -81,7 +80,8 @@ class _AttendenceEntryState extends State<AttendenceEntry> {
             : WillPopScope(
                 onWillPop: () async {
                   if (value.studentsAttendenceView.isNotEmpty) {
-                    bool result = await showDialog(
+                    bool result =
+                    await showDialog(
                       context: context,
                       barrierDismissible: false,
                       builder: (BuildContext context) {
@@ -155,6 +155,7 @@ class _AttendenceEntryState extends State<AttendenceEntry> {
                                       onPressed: () async {
                                         if (value.studentsAttendenceView
                                             .isNotEmpty) {
+
                                           await showDialog(
                                             context: context,
                                             barrierDismissible: false,

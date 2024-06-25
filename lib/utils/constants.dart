@@ -81,15 +81,17 @@ class UIGuide {
   static const String check = "assets/check-square.svg";
 
   static const String curriculamUrl =
-  "https://api.curriculumtestonline.in";
- // "https://api.uatcurriculum.in";
+ "https://api.curriculumtestonline.in";
+
+  //"https://api.uatcurriculum.in";
+
  // "https://api.esscurriculum.in";
 
 
   static const String baseURL =
   "https://api.esstestonline.in";
 
-  // "https://api.essuatonline.in";
+  //"https://api.essuatonline.in";
 
     //"https://api.eschoolweb.org";
 

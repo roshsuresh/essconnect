@@ -170,6 +170,7 @@ class FeeFeesInstallments {
   bool? enableInstallment;
   bool? checkedFees;
   double? totalPaidAmount;
+  int? installmentOrder;
   bool? enabled;
   bool? selected;
 
@@ -186,6 +187,7 @@ class FeeFeesInstallments {
       this.enableInstallment,
       this.checkedFees,
       this.totalPaidAmount,
+        this.installmentOrder,
       this.enabled,
       this.selected});
 
@@ -202,6 +204,7 @@ class FeeFeesInstallments {
     enableInstallment = json['enableInstallment'];
     checkedFees = json['checkedFees'];
     totalPaidAmount = json['totalPaidAmount'];
+    installmentOrder = json['installmentOrder'];
   }
 
   Map<String, dynamic> toJson() {
@@ -218,6 +221,7 @@ class FeeFeesInstallments {
     data['enableInstallment'] = this.enableInstallment;
     data['checkedFees'] = this.checkedFees;
     data['totalPaidAmount'] = this.totalPaidAmount;
+    data['installmentOrder'] = this.installmentOrder;
     return data;
   }
 }
@@ -235,6 +239,7 @@ class FeeBusInstallments {
   bool? enableInstallment;
   bool? checkedFees;
   double? totalPaidAmount;
+  int? installmentOrder;
   bool? enabled;
   bool? selected;
 
@@ -251,6 +256,7 @@ class FeeBusInstallments {
       this.enableInstallment,
       this.checkedFees,
       this.totalPaidAmount,
+        this.installmentOrder,
       this.enabled,
       this.selected});
 
@@ -267,6 +273,7 @@ class FeeBusInstallments {
     enableInstallment = json['enableInstallment'];
     checkedFees = json['checkedFees'];
     totalPaidAmount = json['totalPaidAmount'];
+    installmentOrder = json['installmentOrder'];
   }
 
   Map<String, dynamic> toJson() {
@@ -283,6 +290,7 @@ class FeeBusInstallments {
     data['enableInstallment'] = this.enableInstallment;
     data['checkedFees'] = this.checkedFees;
     data['totalPaidAmount'] = this.totalPaidAmount;
+    data['installmentOrder'] = this.installmentOrder;
     return data;
   }
 }
@@ -517,3 +525,20 @@ class VendorMapModel {
     return data;
   }
 }
+
+class VendorMapFeeWiseModel {
+  bool? existMapFeesWise;
+
+  VendorMapFeeWiseModel({this.existMapFeesWise});
+
+  VendorMapFeeWiseModel.fromJson(Map<String, dynamic> json) {
+    existMapFeesWise = json['existMapFeesWise'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['existMapFeesWise'] = this.existMapFeesWise;
+    return data;
+  }
+}
+

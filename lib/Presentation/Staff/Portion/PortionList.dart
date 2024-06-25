@@ -7,9 +7,7 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import '../../../Application/Staff_Providers/PortionProvider.dart';
-import '../../../Application/StudentProviders/CurriculamProviders.dart';
 import '../../../Constants.dart';
 import '../../../utils/TextWrap(moreOption).dart';
 import '../../../utils/constants.dart';
@@ -112,6 +110,11 @@ class _PortionListState extends State<PortionList> {
 
           provider.loading?
               Center(child: spinkitLoader()):
+              provider.portionList.isEmpty?
+                  Center(child: Text("No Data Found",style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600
+                  ),)):
               Column(
 
                 children: [
@@ -376,7 +379,8 @@ class _PortionListState extends State<PortionList> {
                                             kheight5,
                                             Padding(
                                               padding: const EdgeInsets.only(left:4.0,right: 4),
-                                              child: TextWrapper(
+                                              child:
+                                              TextWrapper(
                                                 text:  provider.portionList[index].topic==null ?'':provider.portionList[index].topic.toString() ,
                                                 fSize: 14,
                                               ),

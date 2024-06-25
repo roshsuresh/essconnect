@@ -30,6 +30,8 @@ class StudentProfileModel {
   String? guardianName;
   String? guardianMobile;
   String? guardianEmail;
+  bool? bankIntegrationSettings;
+  String? bankAdmissionNo;
 
   StudentProfileModel(
       {this.studentName,
@@ -62,7 +64,10 @@ class StudentProfileModel {
       this.editProfile,
       this.guardianName,
       this.guardianMobile,
-      this.guardianEmail});
+      this.guardianEmail,
+      this.bankIntegrationSettings,
+        this.bankAdmissionNo
+      });
 
   StudentProfileModel.fromJson(Map<String, dynamic> json) {
     studentName = json['studentName'];
@@ -96,6 +101,8 @@ class StudentProfileModel {
     guardianName = json['guardianName'];
     guardianMobile = json['guardianMobile'];
     guardianEmail = json['guardianEmail'];
+    bankIntegrationSettings = json['bankIntegrationSettings'];
+    bankAdmissionNo = json['bankAdmissionNo'];
   }
 
   Map<String, dynamic> toJson() {
@@ -131,6 +138,8 @@ class StudentProfileModel {
     data['guardianName'] = guardianName;
     data['guardianMobile'] = guardianMobile;
     data['guardianEmail'] = guardianEmail;
+    data['bankIntegrationSettings'] = bankIntegrationSettings;
+    data['bankAdmissionNo'] = bankAdmissionNo;
     return data;
   }
 }

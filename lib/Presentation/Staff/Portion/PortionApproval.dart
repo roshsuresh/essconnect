@@ -1,4 +1,5 @@
 
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:essconnect/Application/Staff_Providers/PortionProvider.dart';
@@ -71,49 +72,157 @@ class _PortionApprovalState extends State<PortionApproval> {
     });
   }
 
-  Future showPhotoDialog(BuildContext context,String photo,String ext) async {
-    // Sample photo URL
+  Future<Image> _loadImage(BuildContext context, String imageUrl) async {
+    // Simulate a network request to load the image
+    final Image image = Image.network(imageUrl);
+    final Completer<void> completer = Completer();
+    final ImageStreamListener listener = ImageStreamListener(
+          (ImageInfo info, bool _) {
+        completer.complete();
+      },
+      onError: (dynamic error, StackTrace? stackTrace) {
+        completer.completeError(error);
+      },
+    );
 
+    image.image.resolve(ImageConfiguration()).addListener(listener);
+    await completer.future;
+    return image;
+  }
 
+  Future<void> showPhotoDialog(BuildContext context,String photo,String ext) async {
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (BuildContext context) {
         var size= MediaQuery.of(context).size;
-        return Dialog(
-          child: Container(
+        return AlertDialog(
+          content: Container(
 
-            padding: EdgeInsets.all(4.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-            ext==".pdf"?
-            SizedBox(
-                height:size.height*0.6 ,
-                child: SfPdfViewer.network(photo)):
-              SizedBox(
-                height:size.height*0.6 ,
-                child: Image.network(
-                photo,
-                ),
+            height:size.height*0.6,
+            child: Center(
+              child: CircularProgressIndicator(
+                color: UIGuide.light_Purple,
               ),
-              //  SizedBox(height: size),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: UIGuide.light_Purple,
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-
-                  },
-                  child: Text('Close'),
-                ),
-              ],
             ),
           ),
         );
       },
     );
+
+    try {
+      Image image = await _loadImage(context, photo);
+      Navigator.of(context).pop(); // Remove the loading dialog
+
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          var size= MediaQuery.of(context).size;
+          return AlertDialog(
+            content: Container(
+
+              height: size.height*0.6,
+              child: image,
+            ),
+          );
+        },
+      );
+    } catch (e) {
+      Navigator.of(context).pop(); // Remove the loading dialog
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            var size= MediaQuery.of(context).size;
+
+            return
+                 Dialog(
+                child: Container(
+                  padding: EdgeInsets.all(4.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                  ext==".pdf"?
+                  SizedBox(
+                      height:size.height*0.6 ,
+                      child: SfPdfViewer.network(photo)):
+                    SizedBox(
+                      height:size.height*0.6 ,
+                      child: Image.network(
+                      photo,
+                      ),
+                    ),
+                    //  SizedBox(height: size),
+                    //   ElevatedButton(
+                    //     style: ElevatedButton.styleFrom(
+                    //       backgroundColor: UIGuide.light_Purple,
+                    //     ),
+                    //     onPressed: () {
+                    //       Navigator.of(context).pop();
+                    //
+                    //     },
+                    //     child: Text('Close'),
+                    //   ),
+                    ],
+                  ),
+                ),
+              );
+
+          },
+        );
+    }
   }
+
+  // Future showPhotoDialog(BuildContext context,String photo,String ext) async {
+  //   // Sample photo URL
+  //
+  //
+  //   showDialog(
+  //     context: context,
+  //     builder: (BuildContext context) {
+  //       var size= MediaQuery.of(context).size;
+  //
+  //       return Consumer<PortionProvider>(
+  //         builder: (context, value, _) =>
+  //         value.loading?
+  //             CircularProgressIndicator(
+  //               color: UIGuide.light_Purple,
+  //             ):
+  //            Dialog(
+  //           child: Container(
+  //
+  //             padding: EdgeInsets.all(4.0),
+  //             child: Column(
+  //               mainAxisSize: MainAxisSize.min,
+  //               children: [
+  //             ext==".pdf"?
+  //             SizedBox(
+  //                 height:size.height*0.6 ,
+  //                 child: SfPdfViewer.network(photo)):
+  //               SizedBox(
+  //                 height:size.height*0.6 ,
+  //                 child: Image.network(
+  //                 photo,
+  //                 ),
+  //               ),
+  //               //  SizedBox(height: size),
+  //                 ElevatedButton(
+  //                   style: ElevatedButton.styleFrom(
+  //                     backgroundColor: UIGuide.light_Purple,
+  //                   ),
+  //                   onPressed: () {
+  //                     Navigator.of(context).pop();
+  //
+  //                   },
+  //                   child: Text('Close'),
+  //                 ),
+  //               ],
+  //             ),
+  //           ),
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -708,6 +817,10 @@ class _PortionApprovalState extends State<PortionApproval> {
                                         )),
                                   ),
                                   onPressed: () async {
+                                    print("from date");
+                                   print( value.fromdateselect);
+                                    print("To date");
+                                    print( value.todateselect);
 
                                      value.reportView.clear();
                                      if(courseIDController.text.isEmpty){
@@ -721,6 +834,17 @@ class _PortionApprovalState extends State<PortionApproval> {
                                          fontSize: 14.0,
                                        );
 
+                                     }
+                                     else if(value.fromdateselect!.isAfter(value.todateselect!)){
+                                       Fluttertoast.showToast(
+                                         msg: "Invalid Date Range...",
+                                         toastLength: Toast.LENGTH_SHORT,
+                                         gravity: ToastGravity.BOTTOM,
+                                         timeInSecForIosWeb: 1,
+                                         backgroundColor: Colors.black54,
+                                         textColor: Colors.white,
+                                         fontSize: 14.0,
+                                       );
                                      }
                                      else {
                                        await value.getApprovalReport(
@@ -743,61 +867,7 @@ class _PortionApprovalState extends State<PortionApproval> {
                                          );
                                        }
                                      }
-                                    // value.currentPage = 2;
-                                    //
-                                    // if( value.showDate ==true)
-                                    // {
-                                    //   if(value.fromdateselect!.isAfter(value.todateselect!))
-                                    //   {
-                                    //     ScaffoldMessenger.of(context)
-                                    //         .showSnackBar(
-                                    //       const SnackBar(
-                                    //         elevation: 10,
-                                    //         shape: RoundedRectangleBorder(
-                                    //           borderRadius: BorderRadius.all(
-                                    //               Radius.circular(20)),
-                                    //         ),
-                                    //         duration: Duration(seconds: 2),
-                                    //         margin: EdgeInsets.only(
-                                    //             bottom: 80,
-                                    //             left: 30,
-                                    //             right: 30),
-                                    //         behavior: SnackBarBehavior.floating,
-                                    //         content: Text(
-                                    //           'Invalid Date Range...',
-                                    //           textAlign: TextAlign.center,
-                                    //         ),
-                                    //       ),
-                                    //     );
-                                    //   }
-                                    //   else {
-                                    //     await value.getReportViewByDate(
-                                    //         section,
-                                    //         course,
-                                    //         division,
-                                    //         value.childId,
-                                    //         category,
-                                    //         value.fromdateSend,
-                                    //         value.todateSend,
-                                    //         value.isimportant,
-                                    //         value.includeterminated);
-                                    //   }
-                                    //
-                                    // }
-                                    // else{
-                                    //
-                                    //   await    value.getReportView(
-                                    //       section,
-                                    //       course,
-                                    //       division,
-                                    //       value.childId,
-                                    //       category,
-                                    //       value.isimportant,
-                                    //       value.includeterminated
-                                    //   );
-                                    // }
-                                    //
-                                    //
+
 
 
 
@@ -1060,8 +1130,10 @@ class _PortionApprovalState extends State<PortionApproval> {
                                                                                   ),
                                                                                   child: InkWell(
                                                                                     onTap:() async{
+
                                                                                    await showPhotoDialog(context,  provider.photoList1[index]['file']['url'],provider.photoList1[index]['file']['extension']);
-                                                                                     print("------url----");
+
+                                                                                   print("------url----");
                                                                                       log( provider.photoList1[index]['file']['url']);
                                                                                     },
                                                                                     child: Text(

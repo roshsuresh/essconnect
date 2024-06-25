@@ -2,12 +2,14 @@ import 'dart:io';
 import 'dart:isolate';
 import 'dart:ui';
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:essconnect/Application/StudentProviders/FeesWiseProvider.dart';
 import 'package:essconnect/Application/StudentProviders/FinalStatusProvider.dart';
 import 'package:essconnect/Application/StudentProviders/InternetConnection.dart';
 import 'package:essconnect/Presentation/Student/NoInternetScreen.dart';
 import 'package:essconnect/Presentation/Student/PartialPay.dart';
 import 'package:essconnect/Presentation/Student/Student_home.dart';
 import 'package:essconnect/utils/ProgressBarFee.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
@@ -21,13 +23,13 @@ import 'package:provider/provider.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:weipl_checkout_flutter/weipl_checkout_flutter.dart';
-import '../../Application/StudentProviders/FeesProvider.dart';
+
 import '../../Constants.dart';
 import '../../utils/constants.dart';
 import 'PaymentPolicy.dart';
 
-class PayFee extends StatelessWidget {
-  PayFee({Key? key}) : super(key: key);
+class PayFeeWise extends StatelessWidget {
+  PayFeeWise({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +40,7 @@ class PayFee extends StatelessWidget {
       builder: (context, connection, child) => connection.isOnline == false
           ? const NoInternetConnection()
           : DefaultTabController(
-        length: 2,
+        length: 1,
         child: Scaffold(
             appBar: AppBar(
               title: Row(
@@ -46,7 +48,7 @@ class PayFee extends StatelessWidget {
                   const Spacer(),
                   const Text('Payment'),
                   const Spacer(),
-                  Provider.of<FeesProvider>(context).loading
+                  Provider.of<FeeWiseProvider>(context).loading
                       ? const Text(
                     'Loading...',
                     style: TextStyle(
@@ -57,7 +59,7 @@ class PayFee extends StatelessWidget {
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => PayFee()));
+                                builder: (context) => PayFeeWise()));
                       },
                       icon: const Icon(Icons.refresh_outlined))
                 ],
@@ -72,37 +74,13 @@ class PayFee extends StatelessWidget {
                     bottomLeft: Radius.circular(25)),
               ),
               backgroundColor: UIGuide.light_Purple,
-              bottom: TabBar(
-                indicatorSize: TabBarIndicatorSize.label,
-                indicatorColor: UIGuide.light_Purple,
-                indicatorWeight: 0.1,
-                tabs: [
-                  const Tab(
-                    text: "Installment",
-                  ),
-                  Consumer<FeesProvider>(builder: ((context, pro, child) {
-                    print(pro.allowPartialPayment);
-                    print("-****************************-");
-                    if (pro.allowPartialPayment == true) {
-                      print(pro.allowPartialPayment);
-                      print(
-                          "---------------------------------------------------");
-                      return const Tab(
-                        text: 'Partial',
-                      );
-                    } else {
-                      return const Text('');
-                    }
-                  }))
-                ],
-              ),
+
             ),
-            body: Consumer<FeesProvider>(
+            body: Consumer<FeeWiseProvider>(
               builder: (context, snap, child) => TabBarView(
                 physics: const NeverScrollableScrollPhysics(),
                 children: [
                   const FeePayInstallment(),
-                  FeePartialPayment()
                 ],
               ),
             )),
@@ -149,26 +127,25 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      var p = Provider.of<FeesProvider>(context, listen: false);
-      p.selecteCategorys.clear();
-      p.selectedBusFee.clear();
+      var p = Provider.of<FeeWiseProvider>(context, listen: false);
+      var c = Provider.of<FeeWiseProvider>(context, listen: false);
+
       p.storeCategory.clear();
-      p.busLisssssss.clear();
-      p.newList.clear();
-      p.notMatchingValues.clear();
       p.busFeeList.clear();
-      p.feeList.clear();
-      p.storeFeeList.clear();
       p.totalFees = 0;
-      p.total = 0;
       p.totalStoreFees=0;
       p.totalBusFee = 0;
       p.transactionList.clear();
       await p.vendorMapping();
       await p.gatewayName();
-      await p.feesData();
+      //await p.feesData();
+      c.feeWiseDataList.clear();
+      c.feeWiseData();
+      c.busFeeList.clear();
 
-      print("togetehr  :  ${ p.isBusFeeGeneralFeeTogether}");
+      c.resetTotalSelectedFees();
+
+
     });
   }
 
@@ -185,7 +162,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
       key: _scaffoldKey,
       body: Stack(
         children: [
-          Consumer<FeesProvider>(
+          Consumer<FeeWiseProvider>(
             builder: (context, value, child) => value.loading
                 ? const ProgressBarFee()
                 : value.isLocked == true
@@ -194,7 +171,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
               physics: const BouncingScrollPhysics(),
               children: [
                 kheight20,
-                value.feeList.isEmpty
+                value.generalFeesList.isEmpty
                     ? const SizedBox(
                   height: 0,
                   width: 0,
@@ -204,9 +181,8 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                     const Padding(
                       padding:
                       EdgeInsets.only(left: 20, bottom: 10),
-                      child: Row(
-                        mainAxisAlignment:
-                        MainAxisAlignment.spaceBetween,
+                      child: Column(
+
                         children: [
                           Text(
                             'Installment',
@@ -225,135 +201,146 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                         thumbVisibility: true,
                         thickness: 6,
                         radius: const Radius.circular(20),
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              left: 12.0, right: 5),
-                          child: LimitedBox(
-                              maxHeight: 160,
-                              child: Consumer<FeesProvider>(
-                                builder: (context, value,
-                                    child) =>
-                                    ListView.builder(
-                                        physics:
-                                        const BouncingScrollPhysics(),
-                                        shrinkWrap: true,
-                                        controller: _controller,
-                                        itemCount:
-                                        value.feeList.isEmpty
-                                            ? 0
-                                            : value.feeList
-                                            .length,
-                                        itemBuilder:
-                                            (BuildContext context,
-                                            int index) {
-                                          print(value
-                                              .feeList.length);
-                                          return CheckboxListTile(
-                                            activeColor:
-                                            const Color
-                                                .fromARGB(
-                                                255,
-                                                243,
-                                                243,
-                                                243),
+                        child: LimitedBox(
+                            maxHeight: size.height*0.25,
+                            child:  Consumer<FeeWiseProvider>(
+                              builder: (context, value, child) => ListView.builder(
+                                physics: const BouncingScrollPhysics(),
+                                shrinkWrap: true,
+                                controller: _controller,
+                                itemCount: value.generalFeesList.length,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Padding(
+                                    padding: const EdgeInsets.only(left: 4.0,right: 4.0),
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        CheckboxListTile(
 
-                                            checkColor: UIGuide
-                                                .light_Purple,
-                                            selectedTileColor:
-                                            UIGuide
-                                                .light_Purple,
-                                            value:
-                                            value.isBusFeeGeneralFeeTogether==true ?
-                                            value.feeList[index].checkedInstallment:
-                                            value
-                                                .selecteCategorys
-                                                .contains(value
-                                                .feeList[
-                                            index]
-                                                .installmentName ??
-                                                '--'),
-                                            onChanged: (bool?
-                                            selected) async {
-                                              value.isBusFeeGeneralFeeTogether==true?
-                                              value.onFeeSelectedTog(
-                                                  selected!,
-                                                index,
+                                          activeColor: const Color.fromARGB(255, 243, 243, 243),
+                                          checkColor: UIGuide.light_Purple,
+                                          value: value.generalFeesList[index].checkedInstallment,
+                                          onChanged: (bool? selected) {
 
-                                              )
-                                                  :
+                                          value.instWiseForfeesWise==true?
+                                              value.onFeeSelected(selected!, index):
+                                           value.existFeeOrderWisePayment==true?
+                                           value.onFeeSelectedOrder(selected!, value.generalFeesList[index].installmentName!, value.generalFeesList[index].netDue!, index)
+                                            :
+                                            value.onFeeSelectedRandom(selected!, value.generalFeesList[index].installmentName!, value.generalFeesList[index].netDue!, index);
+                                          },
+                                          title: Text(
+                                            value.generalFeesList[index].netDue.toString(),
+                                            textAlign: TextAlign.end,
+                                            style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 16),
+                                          ),
+                                          // subtitle:   value.generalFeesList[index].fineAmount! > 0 ?
+                                          // Text(
+                                          //   'Fine: ${value.generalFeesList[index].fineAmount!.toStringAsFixed(2)}',
+                                          //   style: TextStyle(color: Colors.red, fontSize: 14),
+                                          // ):
+                                          // SizedBox(height: 0,width: 0),
+                                          secondary: Text(
+                                            value.generalFeesList[index].installmentName!,
+                                            style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 16),
+                                          ),
+                                        ),
 
 
-                                              value.onFeeSelected(
-                                                  selected!,
-                                                  value
-                                                      .feeList[
-                                                  index]
-                                                      .installmentName,
-                                                  index,
-                                                  value
-                                                      .feeList[
-                                                  index]
-                                                      .netDue);
-                                            },
-                                            title: Text(
-                                              value.feeList[index]
-                                                  .netDue ==
-                                                  null
-                                                  ? '--'
-                                                  : value
-                                                  .feeList[
-                                              index]
-                                                  .netDue
-                                                  .toString(),
-                                              textAlign:
-                                              TextAlign.end,
-                                              style: const TextStyle(
-                                                  fontWeight:
-                                                  FontWeight
-                                                      .w500,
-                                                  fontSize: 15),
-                                            ),
-                                            secondary: SizedBox(
-                                              width: size.width /
-                                                  2.5,
-                                              child: Text(
-                                                value
-                                                    .feeList[
-                                                index]
-                                                    .installmentName ??
-                                                    '--',
-                                                style: const TextStyle(
-                                                    fontWeight:
-                                                    FontWeight
-                                                        .w500,
-                                                    fontSize: 15),
-                                              ),
-                                            ),
-                                          );
-                                        }),
-                              )),
+                                       
+                                       value.generalFeesList[index].fineAmount! > 0 ?
+                                        Padding(
+                                          padding: const EdgeInsets.only(left: 18.0),
+                                          child: Text(
+                                            'Fine: ${value.generalFeesList[index].fineAmount!.toStringAsFixed(2)}',
+                                            style: TextStyle(color: Colors.red, fontSize: 15,fontWeight: FontWeight.w500),
+                                          ),
+                                        ):
+                                        SizedBox(height: 0,width: 0),
+
+
+                                        value.instWiseForfeesWise==false?
+                                        Padding(
+                                          padding: const EdgeInsets.only(left: 16.0),
+                                          child:  Column(
+                                            children: value.generalFeesList[index].feesDetails!.map((feeDetail) {
+                                              int feeIndex = value.generalFeesList[index].feesDetails!.indexOf(feeDetail);
+                                              return CheckboxListTile(
+                                                activeColor: const Color.fromARGB(255, 243, 243, 243),
+                                                checkColor:UIGuide.light_Purple,
+                                                value: feeDetail.checkedFees,
+                                                onChanged: (bool? selected) {
+
+                                                  value.existFeeOrderWisePayment ==true?
+                                                  value.onSubFeeSelectedOrder(selected!,value.generalFeesList[index].installmentName!, index,feeDetail.feesNetDue!, feeIndex)
+                                                :
+                                                   value.onSubFeeSelectedRandom(selected!,value.generalFeesList[index].installmentName!, index,feeDetail.feesNetDue!, feeIndex);
+                                                  },
+                                                title: Text(
+                                                  feeDetail.feesNetDue.toString(),
+                                                  textAlign: TextAlign.end,
+                                                  style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
+                                                ),
+                                                secondary: SizedBox(
+                                                  width: MediaQuery.of(context).size.width / 2.5,
+                                                  child: Text(
+                                                    feeDetail.feesName.toString(),
+                                                    style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
+                                                  ),
+                                                ),
+                                              );
+                                            }).toList(),
+                                          ),
+                                        )  :
+                                        Padding(
+                                          padding: const EdgeInsets.only(left: 16.0),
+                                          child:  Column(
+                                            children: value.generalFeesList[index].feesDetails!.map((feeDetail) {
+                                              return ListTile(
+                                                dense: true, // Add this property to reduce the gap
+                                               horizontalTitleGap: 1.0,
+
+                                                leading: Text(
+                                                  feeDetail.feesName.toString(),
+                                                  style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
+                                                ),
+                                                trailing: Text(
+                                                  feeDetail.feesNetDue.toString(),
+                                                  textAlign: TextAlign.end,
+                                                  style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 15),
+                                                ),
+                                              );
+                                            }).toList(),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
                         ),
                       ),
                     ),
-                    Consumer<FeesProvider>(
+                    Consumer<FeeWiseProvider>(
                       builder: (context, value, child) =>
                           Center(
                             child: Text(
-                              'TotalFee:  ${value.totalFees}',
-                              style: const TextStyle(
-                                  fontSize: 12,
-                                  color: Colors.black45),
+                              'Total Fee: ${value.totalSelectedFees.toStringAsFixed(2)}',
+                              style: const TextStyle( fontSize: 14,color: Colors.black54),
                             ),
                           ),
                     ),
                   ],
                 ),
-                Consumer<FeesProvider>(
+                  value.hideBusFeesPayment==true?
+                  SizedBox(height: 0,width: 0):
+                Consumer<FeeWiseProvider>(
                   builder: (context, bus, child) {
                     if (bus.busFeeList.isNotEmpty) {
                       return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
+                        // crossAxisAlignment: CrossAxisAlignment.start,
+                        // mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           const Padding(
                             padding: EdgeInsets.only(
@@ -367,7 +354,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(right:10.0),
+                            padding: const EdgeInsets.only(right: 10.0),
                             child: Scrollbar(
                               controller: _controller2,
                               thumbVisibility: true,
@@ -377,8 +364,8 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                                 padding: const EdgeInsets.only(
                                     left: 12, right: 5),
                                 child: LimitedBox(
-                                    maxHeight: 160,
-                                    child: Consumer<FeesProvider>(
+                                    maxHeight: size.height*0.25,
+                                    child: Consumer<FeeWiseProvider>(
                                       builder: (context, value,
                                           child) =>
                                           ListView.builder(
@@ -396,142 +383,41 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                                                   (BuildContext context,
                                                   int index) {
                                                 return CheckboxListTile(
-                                                  activeColor:
-                                                  const Color
-                                                      .fromARGB(
-                                                      255,
-                                                      238,
-                                                      236,
-                                                      236),
-                                                  checkColor: UIGuide
-                                                      .light_Purple,
-                                                  selectedTileColor:
-                                                  UIGuide
-                                                      .light_Purple,
-                                                  value:
-                                                  value.isBusFeeGeneralFeeTogether==true?
-                                                  value.busFeeList[index].checkedInstallment :
-                                                  value
-                                                      .selectedBusFee
-                                                      .contains(value
-                                                      .busFeeList[
-                                                  index]
-                                                      .installmentName),
-                                                  onChanged:
-                                                      (bool? selected) {
-                                                         if(value.isBusFeeGeneralFeeTogether==true) {
-                                                      value
-                                                          .onBusFeeSelectedTog(
-                                                        selected!,
-                                                       index,
-                                                      );
-                                                    }
 
-                                                       else   if (value
-                                                              .isExistFeegroup ==
-                                                              true) {
-                                                            print("pp");
-                                                            index ==
-                                                                (value.busFeeList
-                                                                    .length) - 1 ?
-                                                            value
-                                                                .onBusSelectedGroup(
-                                                                selected!,
-                                                                value
-                                                                    .busFeeList[
-                                                                index]
-                                                                    .installmentName,
-
-                                                                index,
-                                                                value
-                                                                    .busFeeList[
-                                                                index]
-                                                                    .netDue) :
-                                                            value
-                                                                .busFeeList[
-                                                            index + 1]
-                                                                .selected == true
-                                                                ? ""
-                                                                :
-                                                            value
-                                                                .onBusSelectedGroup(
-                                                                selected!,
-                                                                value
-                                                                    .busFeeList[
-                                                                index]
-                                                                    .installmentName,
-
-                                                                index,
-                                                                value
-                                                                    .busFeeList[
-                                                                index]
-                                                                    .netDue);
-                                                          }
-
-
-
-                                                        else  {
-                                                          value.onBusSelected(
-                                                              selected!,
-                                                              value
-                                                                  .busFeeList[
-                                                              index]
-                                                                  .installmentName,
-                                                              index,
-                                                              value
-                                                                  .busFeeList[
-                                                              index]
-                                                                  .netDue);
-
-                                                          print(selected);
-                                                        }
-
-                                                      },
-
+                                                  activeColor: const Color.fromARGB(255, 243, 243, 243),
+                                                  checkColor: UIGuide.light_Purple,
+                                                  value: value.busFeeList[index].checkedInstallment,
+                                                  onChanged: (bool? selected) {
+                                                    value.onBusFeeSelected(selected!, index);
+                                                  },
                                                   title: Text(
-                                                    value
-                                                        .busFeeList[
-                                                    index]
-                                                        .netDue
-                                                        .toString(),
-                                                    textAlign:
-                                                    TextAlign.end,
-                                                    style: const TextStyle(
-                                                        fontWeight:
-                                                        FontWeight
-                                                            .w500,
-                                                        fontSize: 15),
+                                                    value.busFeeList[index].netDue.toString(),
+                                                    textAlign: TextAlign.end,
+                                                    style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
                                                   ),
-                                                  secondary: SizedBox(
-                                                    width: size.width /
-                                                        2.5,
-                                                    child: Text(
-                                                      value
-                                                          .busFeeList[
-                                                      index]
-                                                          .installmentName ??
-                                                          '--',
-                                                      style: const TextStyle(
-                                                          fontWeight:
-                                                          FontWeight
-                                                              .w500,
-                                                          fontSize: 15),
-                                                    ),
+                                                  // subtitle:   value.generalFeesList[index].fineAmount! > 0 ?
+                                                  // Text(
+                                                  //   'Fine: ${value.generalFeesList[index].fineAmount!.toStringAsFixed(2)}',
+                                                  //   style: TextStyle(color: Colors.red, fontSize: 14),
+                                                  // ):
+                                                  // SizedBox(height: 0,width: 0),
+                                                  secondary: Text(
+                                                    value.busFeeList[index].installmentName!,
+                                                    style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
                                                   ),
                                                 );
-                                              }),
+
+                                                  }),
                                     )),
                               ),
                             ),
                           ),
-                          Consumer<FeesProvider>(
+                          Consumer<FeeWiseProvider>(
                             builder: (context, value, child) =>
                                 Center(
                                   child: Text(
-                                    'TotalBus fee :  ${value.totalBusFee}',
-                                    style: const TextStyle(
-                                        fontSize: 12,
-                                        color: Colors.black45),
+                                    'Total Bus Fee : ${value.totalBusFees.toStringAsFixed(2)}',
+                                    style: const TextStyle( fontSize: 14,color: Colors.black54),
                                   ),
                                 ),
                           ),
@@ -545,135 +431,135 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                     }
                   },
                 ),
-                Consumer<FeesProvider>(
-                  builder: (context, bus, child) {
-                    if (bus.storeFeeList.isNotEmpty) {
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          const Padding(
-                            padding: EdgeInsets.only(
-                                left: 20, bottom: 10, top: 10),
-                            child: Text(
-                              'Store Fee',
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w900,
-                                  color: UIGuide.light_Purple),
-                            ),
-                          ),
-                          Scrollbar(
-                            controller: _controller3,
-                            thumbVisibility: true,
-                            thickness: 8,
-                            radius: const Radius.circular(10),
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 12, right: 5),
-                              child: LimitedBox(
-                                  maxHeight: 160,
-                                  child: Consumer<FeesProvider>(
-                                    builder: (context, value,
-                                        child) =>
-                                        ListView.builder(
-                                            physics:
-                                            const BouncingScrollPhysics(),
-                                            shrinkWrap: true,
-                                            controller: _controller3,
-                                            itemCount: value
-                                                .storeFeeList
-                                                .isEmpty
-                                                ? 0
-                                                : value.storeFeeList
-                                                .length,
-                                            itemBuilder:
-                                                (BuildContext context,
-                                                int index) {
-                                              return CheckboxListTile(
-                                                activeColor:
-                                                const Color
-                                                    .fromARGB(
-                                                    255,
-                                                    238,
-                                                    236,
-                                                    236),
-                                                checkColor: UIGuide
-                                                    .light_Purple,
-                                                selectedTileColor:
-                                                UIGuide
-                                                    .light_Purple,
-                                                value: value
-                                                    .storeCategory
-                                                    .contains(value
-                                                    .storeFeeList[
-                                                index]
-                                                    .feesName),
-                                                onChanged:
-                                                    (bool? selected) {
-
-                                                      value.onStoreFeeSelected(
-                                                          selected!,
-                                                          value
-                                                              .storeFeeList[
-                                                          index]
-                                                              .feesName,
-                                                          index,
-                                                          value
-                                                              .storeFeeList[
-                                                          index]
-                                                              .amount);
-
-                                                    print(selected);
-
-
-                                                },
-
-                                                title: Text(
-                                                  value
-                                                      .storeFeeList[
-                                                  index]
-                                                      .amount
-                                                      .toString(),
-                                                  textAlign:
-                                                  TextAlign.end,
-                                                  style: const TextStyle(
-                                                      fontWeight:
-                                                      FontWeight
-                                                          .w500,
-                                                      fontSize: 15),
-                                                ),
-                                                secondary: SizedBox(
-                                                  width: size.width /
-                                                      2.5,
-                                                  child: Text(
-                                                    value
-                                                        .storeFeeList[
-                                                    index]
-                                                        .feesName ??
-                                                        '--',
-                                                    style: const TextStyle(
-                                                        fontWeight:
-                                                        FontWeight
-                                                            .w500,
-                                                        fontSize: 15),
-                                                  ),
-                                                ),
-                                              );
-                                            }),
-                                  )),
-                            ),
-                          ),
-                        ],
-                      );
-                    } else {
-                      return Container(
-                        height: 0,
-                        width: 0,
-                      );
-                    }
-                  },
-                ),
+                // Consumer<FeeWiseProvider>(
+                //   builder: (context, bus, child) {
+                //     if (bus.storeFeeList.isNotEmpty) {
+                //       return Column(
+                //         crossAxisAlignment: CrossAxisAlignment.start,
+                //         mainAxisAlignment: MainAxisAlignment.start,
+                //         children: [
+                //           const Padding(
+                //             padding: EdgeInsets.only(
+                //                 left: 20, bottom: 10, top: 10),
+                //             child: Text(
+                //               'Store Fee',
+                //               style: TextStyle(
+                //                   fontSize: 18,
+                //                   fontWeight: FontWeight.w900,
+                //                   color: UIGuide.light_Purple),
+                //             ),
+                //           ),
+                //           Scrollbar(
+                //             controller: _controller3,
+                //             thumbVisibility: true,
+                //             thickness: 8,
+                //             radius: const Radius.circular(10),
+                //             child: Padding(
+                //               padding: const EdgeInsets.only(
+                //                   left: 12, right: 5),
+                //               child: LimitedBox(
+                //                   maxHeight: 160,
+                //                   child: Consumer<FeeWiseProvider>(
+                //                     builder: (context, value,
+                //                         child) =>
+                //                         ListView.builder(
+                //                             physics:
+                //                             const BouncingScrollPhysics(),
+                //                             shrinkWrap: true,
+                //                             controller: _controller3,
+                //                             itemCount: value
+                //                                 .storeFeeList
+                //                                 .isEmpty
+                //                                 ? 0
+                //                                 : value.storeFeeList
+                //                                 .length,
+                //                             itemBuilder:
+                //                                 (BuildContext context,
+                //                                 int index) {
+                //                               return CheckboxListTile(
+                //                                 activeColor:
+                //                                 const Color
+                //                                     .fromARGB(
+                //                                     255,
+                //                                     238,
+                //                                     236,
+                //                                     236),
+                //                                 checkColor: UIGuide
+                //                                     .light_Purple,
+                //                                 selectedTileColor:
+                //                                 UIGuide
+                //                                     .light_Purple,
+                //                                 value: value
+                //                                     .storeCategory
+                //                                     .contains(value
+                //                                     .storeFeeList[
+                //                                 index]
+                //                                     .feesName),
+                //                                 onChanged:
+                //                                     (bool? selected) {
+                //
+                //                                   value.onStoreFeeSelected(
+                //                                       selected!,
+                //                                       value
+                //                                           .storeFeeList[
+                //                                       index]
+                //                                           .feesName,
+                //                                       index,
+                //                                       value
+                //                                           .storeFeeList[
+                //                                       index]
+                //                                           .amount);
+                //
+                //                                   print(selected);
+                //
+                //
+                //                                 },
+                //
+                //                                 title: Text(
+                //                                   value
+                //                                       .storeFeeList[
+                //                                   index]
+                //                                       .amount
+                //                                       .toString(),
+                //                                   textAlign:
+                //                                   TextAlign.end,
+                //                                   style: const TextStyle(
+                //                                       fontWeight:
+                //                                       FontWeight
+                //                                           .w500,
+                //                                       fontSize: 15),
+                //                                 ),
+                //                                 secondary: SizedBox(
+                //                                   width: size.width /
+                //                                       2.5,
+                //                                   child: Text(
+                //                                     value
+                //                                         .storeFeeList[
+                //                                     index]
+                //                                         .feesName ??
+                //                                         '--',
+                //                                     style: const TextStyle(
+                //                                         fontWeight:
+                //                                         FontWeight
+                //                                             .w500,
+                //                                         fontSize: 15),
+                //                                   ),
+                //                                 ),
+                //                               );
+                //                             }),
+                //                   )),
+                //             ),
+                //           ),
+                //         ],
+                //       );
+                //     } else {
+                //       return Container(
+                //         height: 0,
+                //         width: 0,
+                //       );
+                //     }
+                //   },
+                // ),
                 kheight20,
                 kheight20,
                 Center(
@@ -688,9 +574,9 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                             fontWeight: FontWeight.w700),
                       ),
                       // totalFee()
-                      Consumer<FeesProvider>(
+                      Consumer<FeeWiseProvider>(
                         builder: (context, value, child) =>
-                            Text(value.total.toString()),
+                            Text('${value.grandTotal.toStringAsFixed(2)}'),
                       ),
                     ],
                   ),
@@ -727,7 +613,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                                 shape: RoundedRectangleBorder(
                                     borderRadius:
                                     BorderRadius.circular(15)),
-                                child: Consumer<FeesProvider>(builder:
+                                child: Consumer<FeeWiseProvider>(builder:
                                     (context, provider, child) {
                                   String finalDate = "";
 
@@ -842,7 +728,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                                                       fontSize: 13),
                                                 ),
                                                 Consumer<
-                                                    FeesProvider>(
+                                                    FeeWiseProvider>(
                                                   builder: (context,
                                                       value, child) {
                                                     String stats = provider
@@ -940,7 +826,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                                               ],
                                             ),
                                           ),
-                                          Consumer<FeesProvider>(
+                                          Consumer<FeeWiseProvider>(
                                             builder: (context, value,
                                                 child) {
                                               String status = provider
@@ -976,7 +862,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                                                               .orderId
                                                               .toString();
 
-                                                          await Provider.of<FeesProvider>(
+                                                          await Provider.of<FeeWiseProvider>(
                                                               context,
                                                               listen:
                                                               false)
@@ -1073,10 +959,10 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                         Navigator.push(context, MaterialPageRoute(builder: (context)=>PaymentPolicy()));
                       },
                       child: Text("Fees Payment Policies",
-                      style: TextStyle(
-                        color: UIGuide.light_Purple,
+                        style: TextStyle(
+                          color: UIGuide.light_Purple,
 
-                      ),
+                        ),
                       )),
                 ),
 
@@ -1093,7 +979,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
             child: Padding(
               padding:
               const EdgeInsets.only(top: 0, left: 10, right: 10, bottom: 5),
-              child: Consumer<FeesProvider>(
+              child: Consumer<FeeWiseProvider>(
                 builder: (_, trans, child) {
                   return trans.loading
                       ? const SizedBox(
@@ -1126,36 +1012,36 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                       }
 
 
-                      else if (trans.notMatchingValues.isNotEmpty) {
-                      showDialog(
-                      context: context,
-                      builder: (BuildContext context)
-                      {
-                        return AlertDialog(
-                          title: Text("Please select following Installments!",style:
-                            TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.normal
-                            ),),
-                          content: Text('${trans.gruopmonth}',style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 17
-                          ),),
-                          actions: <Widget>[
-                            TextButton(
-                              child: Text('OK',style: TextStyle(
-                                color: UIGuide.light_Purple,
-                                fontSize: 16
-                              ),),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                          ],
-                        );
-                      }
-                      );//  _showToast(context,'Select following Installments \n ${trans.gruopmonth}');
-                      }
+                      // else if (trans.notMatchingValues.isNotEmpty) {
+                      //   showDialog(
+                      //       context: context,
+                      //       builder: (BuildContext context)
+                      //       {
+                      //         return AlertDialog(
+                      //           title: Text("Please select following Installments!",style:
+                      //           TextStyle(
+                      //               fontSize: 16,
+                      //               fontWeight: FontWeight.normal
+                      //           ),),
+                      //           content: Text('${trans.gruopmonth}',style: TextStyle(
+                      //               fontWeight: FontWeight.w600,
+                      //               fontSize: 17
+                      //           ),),
+                      //           actions: <Widget>[
+                      //             TextButton(
+                      //               child: Text('OK',style: TextStyle(
+                      //                   color: UIGuide.light_Purple,
+                      //                   fontSize: 16
+                      //               ),),
+                      //               onPressed: () {
+                      //                 Navigator.of(context).pop();
+                      //               },
+                      //             ),
+                      //           ],
+                      //         );
+                      //       }
+                      //   );//  _showToast(context,'Select following Installments \n ${trans.gruopmonth}');
+                      // }
 
 
                       else {
@@ -1165,12 +1051,12 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                           if (trans.lastOrderStatus == 'Success' ||
                               trans.lastOrderStatus == 'Failed' ||
                               trans.lastOrderStatus == 'Cancelled' ||
-                             // trans.lastOrderStatus == 'Processing' ||
-                             // trans.lastOrderStatus == 'Pending' ||
+                            // trans.lastOrderStatus == 'Processing' ||
+                              // trans.lastOrderStatus == 'Pending' ||
                               trans.lastOrderStatus == null) {
                             print("demoooo2");
                             print(  trans.transactionList);
-                            if (trans.total != 0) {
+                            if (trans.grandTotal != 0) {
                               List transactionList = [];
                               transactionList.clear();
                               String amount = '';
@@ -1179,12 +1065,12 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                                 if (
                                 trans.transactionList[i].name == "FEES"
                                 ) {
-                                  amount = trans.totalFees.toString();
+                                  amount = trans.totalSelectedFees.toString();
                                 }
                                 else if (
                                 trans.transactionList[i].name == "BUS FEES"
                                 ) {
-                                  amount = trans.totalBusFee.toString();
+                                  amount = trans.totalBusFees.toString();
                                 }
                                 else {
                                   amount = trans.totalStoreFees.toString();
@@ -1209,8 +1095,8 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                               String transId1 =
                                   trans.transactionList[0].id ?? '--';
                               String gateWay = trans.gateway ?? '--';
-                             print(transType);
-                             print(transId1);
+                              print(transType);
+                              print(transId1);
 
                               await AwesomeDialog(
                                 context: cont,
@@ -1227,12 +1113,13 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
 
                                   if (trans.gateway == 'Paytm') {
                                     print("gateway paytmmmm");
-                                    await Provider.of<FeesProvider>(
+                                    await Provider.of<FeeWiseProvider>(
                                         context,
                                         listen: false)
                                         .getDataOne(
                                         transactionList,
-                                        trans.total.toString(),
+                                        trans.grandTotal.toString(),
+                                        trans.selectedInstallments,
                                         gateWay);
 
                                     String mid1 = trans.mid1 ?? '--';
@@ -1288,12 +1175,13 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
 //  -----------------------------------------------------------------------------------------------------------------  //
                                   else if (trans.gateway ==
                                       'RazorPay') {
-                                    await Provider.of<FeesProvider>(
+                                    await Provider.of<FeeWiseProvider>(
                                         context,
                                         listen: false)
                                         .getDataOneRAZORPAY(
                                         transactionList,
-                                        trans.total.toString(),
+                                        trans.grandTotal.toString(),
+                                        trans.selectedInstallments,
                                         gateWay);
 
                                     String key1 = trans.key1Razo ?? '';
@@ -1366,12 +1254,12 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
 //  -----------------------------------------------------------------------------------------------------------------  //
                                   else if (trans.gateway ==
                                       'TrakNPayyyy') {
-                                    await Provider.of<FeesProvider>(
+                                    await Provider.of<FeeWiseProvider>(
                                         context,
                                         listen: false)
                                         .getDataOneTpay(
                                         transactionList,
-                                        trans.total.toString(),
+                                        trans.grandTotal.toString(),
                                         gateWay);
 
                                     String orderId =
@@ -1466,12 +1354,12 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                                   else if (trans.gateway ==
                                       'WorldLine' ||
                                       trans.gateway == "SibWorldLine") {
-                                    await Provider.of<FeesProvider>(
+                                    await Provider.of<FeeWiseProvider>(
                                         context,
                                         listen: false)
                                         .getDataOneWORLDLINE(
                                         transactionList,
-                                        trans.total.toString(),
+                                        trans.grandTotal.toString(),
                                         gateWay);
 
                                     String token = trans.token1WL ?? '';
@@ -1597,7 +1485,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                                 ),
                               );
                             }
-                            else if(trans.total==0){
+                            else if(trans.grandTotal==0){
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   elevation: 10,
@@ -1699,30 +1587,30 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
                             );
                           }
                         }
-                      else {
-                        print("vendor issur");
-                      ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                      elevation: 10,
-                      shape: RoundedRectangleBorder(
-                      borderRadius:
-                      BorderRadius.all(Radius.circular(20)),
-                      ),
-                      duration: Duration(seconds: 5),
-                      margin: EdgeInsets.only(
-                      bottom: 80, left: 30, right: 30),
-                      behavior: SnackBarBehavior.floating,
-                      content: Text(
-                      'Issue in Vendor Mapping..!,\n Please contact School...',
-                      textAlign: TextAlign.center,
-                      ),
-                      ),
-                      );
-                      }
+                        else {
+                          print("vendor issur");
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              elevation: 10,
+                              shape: RoundedRectangleBorder(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(20)),
+                              ),
+                              duration: Duration(seconds: 5),
+                              margin: EdgeInsets.only(
+                                  bottom: 80, left: 30, right: 30),
+                              behavior: SnackBarBehavior.floating,
+                              content: Text(
+                                'Issue in Vendor Mapping..!,\n Please contact School...',
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          );
+                        }
 
                       }
                     },
-   
+
                     color: UIGuide.light_Purple,
                     child: const Text(
                       'Proceed to Pay',
@@ -2772,13 +2660,13 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
 
     print(cutString);
 
-    await Provider.of<FeesProvider>(context, listen: false)
+    await Provider.of<FeeWiseProvider>(context, listen: false)
         .payStatusButton(cutString);
 
     await showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (context) => Consumer<FeesProvider>(
+        builder: (context) => Consumer<FeeWiseProvider>(
           builder: (contex, trak, child) {
             print(trak.statusss);
             print('----------');
@@ -3762,7 +3650,7 @@ class _FeePayInstallmentState extends State<FeePayInstallment> {
       SnackBar(
         duration: Duration(seconds: 2),
         content:  Text(title),
-       // action: SnackBarAction(label: 'UNDO', onPressed: scaffold.hideCurrentSnackBar),
+        // action: SnackBarAction(label: 'UNDO', onPressed: scaffold.hideCurrentSnackBar),
       ),
     );
   }
@@ -3837,7 +3725,7 @@ class _PdfDownloadState extends State<PdfDownload> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<FeesProvider>(
+    return Consumer<FeeWiseProvider>(
       builder: (context, value, child) => Scaffold(
           appBar: AppBar(
             title: const Text('Payment Reciept'),

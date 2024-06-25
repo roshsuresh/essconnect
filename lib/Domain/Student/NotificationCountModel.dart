@@ -21,14 +21,15 @@ class CountmodelNotification {
   int? noticeboardCount;
   int? anecdotalCount;
   int? homeworkcount;
-
-  CountmodelNotification({this.totalCount,this.noticeboardCount,this.anecdotalCount,this.homeworkcount});
+  int? portionCount;
+  CountmodelNotification({this.totalCount,this.noticeboardCount,this.anecdotalCount,this.homeworkcount,this.portionCount});
 
   CountmodelNotification.fromJson(Map<String, dynamic> json) {
     totalCount = json['totalCount'];
     noticeboardCount = json['noticeboardCount'];
     anecdotalCount = json['anecdotalCount'];
     homeworkcount =  json['homeworkcount'];
+    portionCount =  json['portionCount'];
   }
 
   Map<String, dynamic> toJson() {
@@ -37,6 +38,7 @@ class CountmodelNotification {
     data['noticeboardCount'] = this.noticeboardCount;
     data['anecdotalCount'] = this.anecdotalCount;
     data['homeworkcount'] = this.homeworkcount;
+    data['portionCount'] = this.portionCount;
     return data;
 
   }

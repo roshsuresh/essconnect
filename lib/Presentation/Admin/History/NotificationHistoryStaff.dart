@@ -126,8 +126,9 @@ class StudentNotificationHistory extends StatelessWidget {
                                             SizedBox(
                                               height: 25,
                                               width: 25,
-                                              child: LottieBuilder.network(
-                                                  'https://assets7.lottiefiles.com/private_files/lf30_ggnpo3y5.json'),
+                                              child: Icon(Icons.notifications,
+                                                color: Color.fromARGB(
+                                                    213, 231, 210, 30),),
                                             ),
                                             SizedBox(
                                               width: size.width - 90,

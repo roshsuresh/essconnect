@@ -51,7 +51,7 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
       partialBUS = 0;
       partialFee = 0;
       p.transactionList.clear();
-      await p.gatewayName(context);
+      await p.gatewayName();
       await p.feesData();
     });
   }
@@ -545,7 +545,7 @@ class _FeePartialPaymentState extends State<FeePartialPayment> {
                                         DateTime.parse(
                                             createddate);
                                         finalDate = DateFormat(
-                                            'dd-MMM-yyyy')
+                                            'dd-MMM-yyyy hh.mm a')
                                             .format(parsedDateTime);
                                       }
 

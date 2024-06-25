@@ -10333,6 +10333,9 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                         "studentName": value
                                                                             .studListUAS[i]
                                                                             .studentName,
+                                                                        "admissionNo": value
+                                                                            .studListUAS[i]
+                                                                            .admissionNo,
                                                                         "rollNo": value
                                                                             .studListUAS[i]
                                                                             .rollNo,
@@ -10379,8 +10382,10 @@ class _MarkEntryNewState extends State<MarkEntryNew> {
                                                                             false,
                                                                         "isDisabled":
                                                                             false,
-                                                                        "isPeDisabled": value.existPeAttendance,
-                                                                        "isCeDisabled": value.existCeAttendance,
+                                                                        "isPeDisabled": value
+                                                                            .studListUAS[i].isPeDisabled,
+                                                                        "isCeDisabled":value
+                                                                            .studListUAS[i].isCeDisabled,
                                                                         "isAttendanceDisabled": false
                                                                       },
                                                                     );

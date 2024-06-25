@@ -1,11 +1,13 @@
 import 'package:essconnect/Application/Module%20Providers.dart/SchoolNameProvider.dart';
 import 'package:essconnect/Application/StudentProviders/CurriculamProviders.dart';
+import 'package:essconnect/Application/StudentProviders/FeesProvider.dart';
 import 'package:essconnect/Application/StudentProviders/InternetConnection.dart';
 import 'package:essconnect/Application/StudentProviders/NotificationCountProviders.dart';
 import 'package:essconnect/Constants.dart';
 import 'package:essconnect/Presentation/Student/CurriculamScreen.dart';
 import 'package:essconnect/Presentation/Student/Diary.dart';
 import 'package:essconnect/Presentation/Student/FeeWebScreen.dart';
+import 'package:essconnect/Presentation/Student/FeeWisepayment.dart';
 import 'package:essconnect/Presentation/Student/MarkSheet.dart';
 import 'package:essconnect/Presentation/Student/NoInternetScreen.dart';
 import 'package:essconnect/Presentation/Student/Offline/BusFeeInitial.dart';
@@ -24,6 +26,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:upgrader/upgrader.dart';
 import '../../Application/Module Providers.dart/Module.dart';
+import '../../Application/StudentProviders/FeesWiseProvider.dart';
 import '../../Application/StudentProviders/ProfileProvider.dart';
 import '../../Application/StudentProviders/SiblingsProvider.dart';
 import '../../Application/StudentProviders/TimetableProvider.dart';
@@ -53,7 +56,10 @@ class _StudentHomeState extends State<StudentHome> {
   String? schoolid;
   String? subDomain;
   String? userId;
-  int hwcount=0;
+
+  bool? status;
+
+
 
   @override
   void initState() {
@@ -63,9 +69,7 @@ class _StudentHomeState extends State<StudentHome> {
       await Provider.of<ProfileProvider>(context, listen: false).profileData();
       await Provider.of<StudNotificationCountProviders>(context, listen: false)
           .getnotificationCount();
-      hwcount=   Provider.of<StudNotificationCountProviders>(context, listen: false).homeworkcount!;
 
-      print("hoewrok count  $hwcount");
 
       // Provider.of<SibingsProvider>(context, listen: false).siblingList.clear();
       // await Provider.of<SibingsProvider>(context, listen: false)
@@ -74,10 +78,14 @@ class _StudentHomeState extends State<StudentHome> {
           .getModuleDetails();
       await Provider.of<SchoolNameProvider>(context, listen: false)
           .getSchoolname();
+
       SharedPreferences _pref = await SharedPreferences.getInstance();
       schoolid= _pref.getString('schoolId');
       subDomain= _pref.getString('subDomain');
       userId =_pref.getString('userId');
+
+
+
       print("schooolllllllllll");
       print(schoolid);
       print(subDomain);
@@ -759,6 +767,10 @@ class _StudentHomeState extends State<StudentHome> {
                                                       Expanded(
                                                         child: GestureDetector(
                                                           onTap: () async {
+                                                            await Provider.of<FeeWiseProvider>(context, listen: false)
+                                                                .getFeeWiseStatus(context);
+                                                            status=  Provider.of<FeeWiseProvider>(context, listen: false).existFeeWise;
+                                                            print("modulee ${module.fees}");
                                                             module.fees ==
                                                                         true ||
                                                                     module.feesOnly ==
@@ -772,7 +784,10 @@ class _StudentHomeState extends State<StudentHome> {
                                                                           child:
                                                                               schoolid=="3f04b045-8e5c-47b5-9961-d93e2ddec2b9"
                                                                             ? FeeWebScreen(schdomain: subDomain!)
-                                                                              :PayFee(),
+                                                                              :
+                                                                              status==false?
+                                                                              PayFee():
+                                                                              PayFeeWise(),
                                                                           duration:
                                                                               const Duration(milliseconds: 300),
                                                                         ))
@@ -1817,199 +1832,234 @@ class _StudentHomeState extends State<StudentHome> {
                                           ),
                                         ),
 
-                                              Consumer<Curriculamprovider>(
-                                       builder: (context, curri, child) =>
-                                           GestureDetector(
-                                            onTap: () async {
-                                              if (module.curiculam == true) {
-                                                await Provider.of<
-                                                    Curriculamprovider>(
-                                                    context,
-                                                    listen: false)
-                                                    .getCuriculamtoken();
-                                                String token = await curri.token
-                                                    .toString();
-                                          
-                                                await Navigator.push(
-                                                    context,
-                                                    PageTransition(
-                                                      type: PageTransitionType
-                                                          .rightToLeft,
-                                                      child: PortionView(),
-                                                      duration: const Duration(
-                                                          milliseconds: 300),
-                                                    ));
-                                              } else {
-                                                _noAcess();
-                                              }
-                                            },
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 10, right: 10),
-                                              child: Column(
-                                                mainAxisAlignment:
-                                                MainAxisAlignment
-                                                    .spaceEvenly,
-                                                children: [
-                                                  Card(
-                                                    elevation: 10,
-                                                    color: Colors.white,
-                                                    shape:
-                                                    RoundedRectangleBorder(
-                                                      borderRadius:
-                                                      BorderRadius.circular(
-                                                          12.0),
-                                                    ),
+                                        Consumer<Curriculamprovider>(
+                                          builder: (context, curri, child) =>
+                                      Consumer<StudNotificationCountProviders>(
+                                      builder: (context, count, child) =>
+                                            badges.Badge(
+                                                  showBadge: count.portionCount == 0||count.portionCount==null
+                                                      ? false
+                                                      : true,
+                                                  badgeAnimation: const badges
+                                                      .BadgeAnimation.rotation(
+                                                    animationDuration:
+                                                    Duration(seconds: 1),
+                                                    colorChangeAnimationDuration:
+                                                    Duration(seconds: 1),
+                                                    loopAnimation: false,
+                                                    curve:
+                                                    Curves.fastOutSlowIn,
+                                                    colorChangeAnimationCurve:
+                                                    Curves.easeInCubic,
+                                                  ),
+                                                  position:
+                                                  badges.BadgePosition
+                                                      .topEnd(end: 9),
+                                                  badgeContent: Text(
+                                                    count.portionCount == null||count.portionCount==0
+                                                        ? ''
+                                                        :count.portionCount
+                                                        .toString(),
+                                                    style: const TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 10,
+                                                        fontWeight:
+                                                        FontWeight.bold),
+                                                  ),
+                                                  child: GestureDetector(
+                                                    onTap: () async {
+                                                      if (module.curiculam == true) {
+                                                        await Provider.of<
+                                                            Curriculamprovider>(
+                                                            context,
+                                                            listen: false)
+                                                            .getCuriculamtoken();
+                                                        String token = await curri.token
+                                                            .toString();
+
+                                                        await Navigator.push(
+                                                            context,
+                                                            PageTransition(
+                                                              type: PageTransitionType
+                                                                  .rightToLeft,
+                                                              child: PortionView(),
+                                                              duration: const Duration(
+                                                                  milliseconds: 300),
+                                                            ));
+                                                      } else {
+                                                        _noAcess();
+                                                      }
+                                                    },
                                                     child: Padding(
-                                                      padding:
-                                                      const EdgeInsets.all(
-                                                          8.0),
-                                                      child: Container(
-                                                        height: 38,
-                                                        width: 38,
-                                                        decoration:
-                                                        BoxDecoration(
-                                                          image:
-                                                          const DecorationImage(
-                                                            opacity: 20,
-                                                            image: AssetImage(
-                                                              'assets/PortionEntryReport.png',
+                                                      padding: const EdgeInsets.only(
+                                                          left: 10, right: 10),
+                                                      child: Column(
+                                                        mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
+                                                        children: [
+                                                          Card(
+                                                            elevation: 10,
+                                                            color: Colors.white,
+                                                            shape:
+                                                            RoundedRectangleBorder(
+                                                              borderRadius:
+                                                              BorderRadius.circular(
+                                                                  12.0),
+                                                            ),
+                                                            child: Padding(
+                                                              padding:
+                                                              const EdgeInsets.all(
+                                                                  8.0),
+                                                              child: Container(
+                                                                height: 38,
+                                                                width: 38,
+                                                                decoration:
+                                                                BoxDecoration(
+                                                                  image:
+                                                                  const DecorationImage(
+                                                                    opacity: 20,
+                                                                    image: AssetImage(
+                                                                      'assets/PortionEntryReport.png',
+                                                                    ),
+                                                                  ),
+                                                                  borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(10),
+                                                                ),
+                                                              ),
                                                             ),
                                                           ),
-                                                          borderRadius:
-                                                          BorderRadius
-                                                              .circular(10),
-                                                        ),
+                                                          kheight,
+                                                          const Text(
+                                                            'portion',
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                FontWeight.w600,
+                                                                fontSize: 11,
+                                                                color: Colors.black),
+                                                          )
+                                                        ],
                                                       ),
                                                     ),
                                                   ),
-                                                  kheight,
-                                                  const Text(
-                                                    'Portion',
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                        FontWeight.w600,
-                                                        fontSize: 11,
-                                                        color: Colors.black),
-                                                  )
-                                                ],
+                                                ),
                                               ),
-                                            ),
-                                          ),
                                         ),
-                                        
                                         
                                         
                                         Consumer<Curriculamprovider>(
                                           builder: (context, curri, child) =>
-                                              badges.Badge(
-                                                showBadge: hwcount == 0
-                                                    ? false
-                                                    : true,
-                                                badgeAnimation: const badges
-                                                    .BadgeAnimation.rotation(
-                                                  animationDuration:
-                                                  Duration(seconds: 1),
-                                                  colorChangeAnimationDuration:
-                                                  Duration(seconds: 1),
-                                                  loopAnimation: false,
-                                                  curve:
-                                                  Curves.fastOutSlowIn,
-                                                  colorChangeAnimationCurve:
-                                                  Curves.easeInCubic,
-                                                ),
-                                                position:
-                                                badges.BadgePosition
-                                                    .topEnd(end: 9),
-                                                badgeContent: Text(
-                                                  hwcount == null
-                                                      ? ''
-                                                      :hwcount
-                                                      .toString(),
-                                                  style: const TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 10,
-                                                      fontWeight:
-                                                      FontWeight.bold),
-                                                ),
-                                                child: GestureDetector(
-                                                                                            onTap: () async {
-                                                if (module.curiculam == true) {
-                                                  await Provider.of<
-                                                              Curriculamprovider>(
-                                                          context,
-                                                          listen: false)
-                                                      .getCuriculamtoken();
-                                                  String token = await curri.token
-                                                      .toString();
+                                              Consumer<StudNotificationCountProviders>(
+                                                builder: (context, count, child) => badges.Badge(
+                                                  showBadge:count.homeworkcount == 0||count.homeworkcount==null
+                                                      ? false
+                                                      : true,
+                                                  badgeAnimation: const badges
+                                                      .BadgeAnimation.rotation(
+                                                    animationDuration:
+                                                    Duration(seconds: 1),
+                                                    colorChangeAnimationDuration:
+                                                    Duration(seconds: 1),
+                                                    loopAnimation: false,
+                                                    curve:
+                                                    Curves.fastOutSlowIn,
+                                                    colorChangeAnimationCurve:
+                                                    Curves.easeInCubic,
+                                                  ),
+                                                  position:
+                                                  badges.BadgePosition
+                                                      .topEnd(end: 9),
+                                                  badgeContent: Text(
+                                                    count.homeworkcount == null||count.homeworkcount==0
+                                                        ? ''
+                                                        :count.homeworkcount
+                                                        .toString(),
+                                                    style: const TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 10,
+                                                        fontWeight:
+                                                        FontWeight.bold),
+                                                  ),
+                                                  child: GestureDetector(
+                                                                                              onTap: () async {
+                                                  if (module.curiculam == true) {
+                                                    await Provider.of<
+                                                                Curriculamprovider>(
+                                                            context,
+                                                            listen: false)
+                                                        .getCuriculamtoken();
+                                                    String token = await curri.token
+                                                        .toString();
 
-                                                  await Navigator.push(
-                                                      context,
-                                                      PageTransition(
-                                                        type: PageTransitionType
-                                                            .rightToLeft,
-                                                        child: CurriculamPage(
-                                                          token: token,
+                                                    await Navigator.push(
+                                                        context,
+                                                        PageTransition(
+                                                          type: PageTransitionType
+                                                              .rightToLeft,
+                                                          child: CurriculamPage(
+                                                            token: token,
+                                                          ),
+                                                          duration: const Duration(
+                                                              milliseconds: 300),
+                                                        ));
+                                                  } else {
+                                                    _noAcess();
+                                                  }
+                                                                                              },
+                                                                                              child: Padding(
+                                                  padding: const EdgeInsets.only(
+                                                      left: 10, right: 10),
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
+                                                    children: [
+                                                      Card(
+                                                        elevation: 10,
+                                                        color: Colors.white,
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius.circular(
+                                                                  12.0),
                                                         ),
-                                                        duration: const Duration(
-                                                            milliseconds: 300),
-                                                      ));
-                                                } else {
-                                                  _noAcess();
-                                                }
-                                                                                            },
-                                                                                            child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    left: 10, right: 10),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceEvenly,
-                                                  children: [
-                                                    Card(
-                                                      elevation: 10,
-                                                      color: Colors.white,
-                                                      shape:
-                                                          RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.circular(
-                                                                12.0),
-                                                      ),
-                                                      child: Padding(
-                                                        padding:
-                                                            const EdgeInsets.all(
-                                                                8.0),
-                                                        child: Container(
-                                                          height: 38,
-                                                          width: 38,
-                                                          decoration:
-                                                              BoxDecoration(
-                                                            image:
-                                                                const DecorationImage(
-                                                              opacity: 20,
-                                                              image: AssetImage(
-                                                                'assets/Curriculum.png',
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets.all(
+                                                                  8.0),
+                                                          child: Container(
+                                                            height: 38,
+                                                            width: 38,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              image:
+                                                                  const DecorationImage(
+                                                                opacity: 20,
+                                                                image: AssetImage(
+                                                                  'assets/Curriculum.png',
+                                                                ),
                                                               ),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(10),
                                                             ),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(10),
                                                           ),
                                                         ),
                                                       ),
-                                                    ),
-                                                    kheight,
-                                                    const Text(
-                                                      'e-Classroom',
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          fontSize: 11,
-                                                          color: Colors.black),
-                                                    )
-                                                  ],
-                                                ),
-                                                                                            ),
+                                                      kheight,
+                                                      const Text(
+                                                        'e-Classroom',
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            fontSize: 11,
+                                                            color: Colors.black),
+                                                      )
+                                                    ],
+                                                  ),
+                                                                                              ),
+                                                  ),
                                                 ),
                                               ),
                                         ),
@@ -2324,7 +2374,8 @@ class ProfileHome extends StatelessWidget {
       padding: const EdgeInsets.only(left: 15.0, right: 15, top: 5, bottom: 15),
       child: Consumer<ProfileProvider>(
         builder: (contex, value, child) => Container(
-          height: 110,
+          height:
+          value.bankIntegrationSettings==false? 110:120,
           width: size.width,
           decoration: const BoxDecoration(
               boxShadow: [
@@ -2395,9 +2446,7 @@ class ProfileHome extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(
-                        height: 15,
-                      ),
+                    kheight10,
                       Row(
                         children: [
                           const Text(
@@ -2456,8 +2505,30 @@ class ProfileHome extends StatelessWidget {
                           ),
                         ],
                       ),
+
+
+                        value.bankIntegrationSettings==true?
+                        Row(
+                          children: [
+                            Text(
+                              "${value.bankAdmissionNo}",
+                              style: TextStyle(
+                                  color: Colors.orange,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w800),
+                            ),
+                            Text("  (Only For Direct Bank Payment)",style: TextStyle(
+                              fontSize: 11,color: Colors.white70,
+                            ),)
+                          ],
+                        )
+                      :SizedBox(height: 0,width: 0,)
+
+
                     ],
+
                   ),
+
                 )
               ],
             ),
@@ -2472,98 +2543,126 @@ class ProfileHome extends StatelessWidget {
         context: context,
         barrierDismissible: true,
         builder: (BuildContext context) {
+
           return Dialog(
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(32.0))),
-            child: Stack(
-              clipBehavior: Clip.none,
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                      border: Border.all(color: UIGuide.light_Purple, width: 2),
-                      borderRadius: BorderRadius.circular(32)),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: siblinggResponse == null
-                            ? 0
-                            : siblinggResponse!.length,
-                        itemBuilder: (context, index) {
-                          bool same = false;
-                          studName == siblinggResponse![index]['name']
-                              ? same = true
-                              : same = false;
-                          print(studName);
-                          print(siblinggResponse![index]['name']);
+            child:  Consumer<SibingsProvider>(builder:(context,value,_)=>
+         Stack(
+                clipBehavior: Clip.none,
+                children: [
 
-                          return ListTile(
-                            focusColor: UIGuide.light_Purple,
-                            hoverColor: UIGuide.light_Purple,
-                            selectedTileColor: UIGuide.THEME_LIGHT,
-                            selectedColor: UIGuide.THEME_LIGHT,
-                            selected: same,
-                            onTap: () async {
-                              var idd = siblinggResponse![index]['id'] == null
-                                  ? '--'
-                                  : siblinggResponse![index]['id'].toString();
+                  Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(color: UIGuide.light_Purple, width: 2),
+                        borderRadius: BorderRadius.circular(32)),
+                    child:
 
-                              print("sibbbbsssssssssss");
-                              await Provider.of<SibingsProvider>(context,
-                                      listen: false)
-                                  .getSibling(context, idd);
-
-                              print("sibbbbsssssssssss");
+                    value.isLoading==true?
+                    Container(
+                      child: Text("dsdsdds"),
+                    ):
 
 
-                            },
-                            title: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                kheight20,
-                                Center(
-                                    child: InkWell(
-                                        splashColor: UIGuide.light_Purple,
-                                        child: Text(
-                                          siblinggResponse![index]['name'] ==
-                                                  null
-                                              ? '--'
-                                              : siblinggResponse![index]['name']
-                                                  .toString(),
-                                          textAlign: TextAlign.center,
-                                          style: const TextStyle(
-                                              color: UIGuide.light_Purple,
-                                              fontSize: 16),
-                                        ))),
-                                kheight20,
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                      kheight20
-                    ],
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+
+
+                        ListView.builder(
+                         shrinkWrap: true,
+                         itemCount: siblinggResponse == null
+                             ? 0
+                             : siblinggResponse!.length,
+                         itemBuilder: (context, index) {
+                           bool same = false;
+                           studName == siblinggResponse![index]['name']
+                               ? same = true
+                               : same = false;
+                           print(studName);
+                           print(siblinggResponse![index]['name']);
+
+                           return ListTile(
+                             focusColor: UIGuide.light_Purple,
+                             hoverColor: UIGuide.light_Purple,
+                             selectedTileColor: UIGuide.THEME_LIGHT,
+                             selectedColor: UIGuide.THEME_LIGHT,
+                             selected: same,
+                             onTap: () async {
+
+                               print("loadig valueeeee");
+                               print(value.isLoading);
+
+                               print("siblinggggg");
+
+                               var idd = siblinggResponse![index]['id'] == null
+                                   ? '--'
+                                   : siblinggResponse![index]['id'].toString();
+
+                               print("sibbbbsssssssssss");
+
+                               await value
+                                   .getSibling(context, idd);
+                               print("loadig valueeeee afterrrrr");
+                               print(value.isLoading);
+                               await Navigator.pushAndRemoveUntil(
+                                 context,
+                                 MaterialPageRoute(builder: (context) => StudentHome()),
+                                     (Route<dynamic> route) => false,
+                               );
+
+
+                               print("sibbbbsssssssssss");
+
+
+                             },
+                             title: Column(
+                               crossAxisAlignment: CrossAxisAlignment.start,
+                               mainAxisAlignment: MainAxisAlignment.start,
+                               children: [
+                                 kheight20,
+                                 Center(
+                                     child: InkWell(
+                                         splashColor: UIGuide.light_Purple,
+                                         child: Text(
+                                           siblinggResponse![index]['name'] ==
+                                                   null
+                                               ? '--'
+                                               : siblinggResponse![index]['name']
+                                                   .toString(),
+                                           textAlign: TextAlign.center,
+                                           style: const TextStyle(
+                                               color: UIGuide.light_Purple,
+                                               fontSize: 16),
+                                         ))),
+                                 kheight20,
+                               ],
+                             ),
+                           );
+                         },
+                                                ),
+                        kheight20
+                      ],
+                    ),
                   ),
-                ),
-                Positioned(
-                  left: 60,
-                  right: 60,
-                  top: -80,
-                  child: Center(
-                    child: CircleAvatar(
-                      radius: 60,
-                      backgroundColor: Colors.white,
-                      child: LottieBuilder.asset(
-                        'assets/lf30_editor_4qdhnu8u.json',
+                  Positioned(
+                    left: 60,
+                    right: 60,
+                    top: -80,
+                    child: Center(
+                      child: CircleAvatar(
+                        radius: 60,
+                        backgroundColor: Colors.white,
+                        child: LottieBuilder.asset(
+                          'assets/lf30_editor_4qdhnu8u.json',
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         });

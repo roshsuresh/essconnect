@@ -201,7 +201,7 @@ class StaffProfileView extends StatelessWidget {
                             kheight10,
                             GestureDetector(
                               onTap: () {
-                                _makingPhoneCall();
+                                _makingPhoneCall(value.mobileNo.toString());
                               },
                               child: Row(
                                 children: [
@@ -315,8 +315,8 @@ class StaffProfileView extends StatelessWidget {
     );
   }
 
-  _makingPhoneCall() async {
-    var url = Uri.parse("tel:807812564");
+  _makingPhoneCall(String phn) async {
+    var url = Uri.parse("tel:$phn");
     if (await canLaunchUrl(url)) {
       await launchUrl(url);
     } else {

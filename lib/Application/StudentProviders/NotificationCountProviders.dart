@@ -48,6 +48,7 @@ class StudNotificationCountProviders with ChangeNotifier {
   int? noticeCount;
   int? anecdotalCount;
   int? homeworkcount;
+  int? portionCount;
   Future getnotificationCount() async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoading(true);
@@ -72,6 +73,7 @@ class StudNotificationCountProviders with ChangeNotifier {
         noticeCount = not.noticeboardCount;
         anecdotalCount= not.anecdotalCount;
         homeworkcount=not.homeworkcount;
+        portionCount=not.portionCount;
         print("Notification Count = $count");
 
         setLoading(false);

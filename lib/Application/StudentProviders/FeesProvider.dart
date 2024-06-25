@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'package:essconnect/Domain/Student/FeeWiseDomain.dart';
 import 'package:essconnect/Domain/Student/RazorPayModel.dart';
 import 'package:essconnect/Domain/Student/TrakNpayModel.dart';
 import 'package:essconnect/Domain/Student/TransactionModel.dart';
@@ -30,6 +31,8 @@ class FeesProvider with ChangeNotifier {
   List<FeeBusInstallments> busFeeList = [];
   List<FeesStore> storeFeeList=[];
   List<Transactiontype> transactionList = [];
+
+  List<GeneralFeesList> feeWiseList = [];
 
   String? lastOrderStatus;
   String? lastTransactionStartDate;
@@ -88,21 +91,22 @@ class FeesProvider with ChangeNotifier {
                 .map((x) => FeeBusInstallments.fromJson(x)));
         busFeeList.addAll(templistt);
         setLoading(true);
-        print("ssssssssssssssss");
-        List<FeesStore> templist3= List<FeesStore>.from(
-            feeinitial['storeFees']
-                .map((x) => FeesStore.fromJson(x)));
-        storeFeeList.addAll(templist3);
-        print("ssssssssssssssssttttttttttttt");
-        print("store length");
-        print(storeFeeList.length);
+
 
         List<Transactiontype> templis = List<Transactiontype>.from(
             feeinitial['transactiontype']
                 .map((x) => Transactiontype.fromJson(x)));
         transactionList.addAll(templis);
         print("transactionList length");
-        print(transactionList.length);
+        // print(transactionList.length);
+        // print("ssssssssssssssss");
+        // List<FeesStore> templist3= List<FeesStore>.from(
+        //     feeinitial['storeFees']
+        //         .map((x) => FeesStore.fromJson(x)));
+        // storeFeeList.addAll(templist3);
+        // print("ssssssssssssssssttttttttttttt");
+        // print("store length");
+        // print(storeFeeList.length);
 
         setLoading(false);
         notifyListeners();
@@ -116,6 +120,12 @@ class FeesProvider with ChangeNotifier {
     }
     return true;
   }
+
+  ///Fees -Wiseeee
+
+
+
+
 
   //select all fees
   bool isselectAll = false;
@@ -458,6 +468,222 @@ class FeesProvider with ChangeNotifier {
   }
 
   ///-----------Together---------------------///
+  ///
+  ///
+  void onFeeSelectedTog(bool selected, int index) {
+
+    if (selected) {
+      // Ensure the previous installments are selected before allowing this installment
+      for (var i = 0; i < index; i++) {
+        if (!feeList[i].checkedInstallment!) {
+          return;
+        }
+      }
+
+      // Get the installment group of the selected installment
+      var selectedInstallmentGroup = feeList[index].installmentGroup;
+
+      // Select all installments in the same group in feeList
+      for (var i = 0; i < feeList.length; i++) {
+        if (feeList[i].installmentGroup == selectedInstallmentGroup) {
+          feeList[i].checkedInstallment = true;
+          feeList[i].enableInstallment = true;
+        }
+      }
+
+      // Select all installments in the same group in busFeeList
+      for (var i = 0; i < busFeeList.length; i++) {
+        if (busFeeList[i].installmentGroup == selectedInstallmentGroup) {
+          busFeeList[i].checkedInstallment = true;
+          busFeeList[i].enableInstallment = true;
+          for(int j=0;j< busFeeList.length;j++){
+            if(busFeeList[j].installmentOrder! <= busFeeList[i].installmentOrder!){
+              busFeeList[j].checkedInstallment = true;
+              busFeeList[j].enableInstallment = true;
+            }
+          }
+        }
+
+      }
+
+      // Enable the next installment if it exists
+      if (index < feeList.length - 1) {
+        feeList[index + 1].enableInstallment = true;
+      }
+    } else {
+      // Get the installment group of the deselected installment
+      var deselectedInstallmentGroup = feeList[index].installmentGroup;
+
+      // Deselect all installments in the same group in feeList
+      for (var i = 0; i < feeList.length; i++) {
+        if (feeList[i].installmentGroup == deselectedInstallmentGroup) {
+          feeList[i].checkedInstallment = false;
+          feeList[i].enableInstallment = false;
+        }
+      }
+
+      // Deselect all installments in the same group in busFeeList
+      for (var i = 0; i < busFeeList.length; i++) {
+        if (busFeeList[i].installmentGroup == deselectedInstallmentGroup) {
+          busFeeList[i].checkedInstallment = false;
+          busFeeList[i].enableInstallment = false;
+        }
+      }
+
+      // Deselect subsequent installments in feeList
+      for (var i = index + 1; i < feeList.length; i++) {
+        feeList[i].checkedInstallment = false;
+        feeList[i].enableInstallment = false;
+      }
+
+
+      for (var i = 0; i < busFeeList.length; i++) {
+        if(busFeeList[i].checkedInstallment==false && i<busFeeList.length-1)
+          if(busFeeList[i+1].checkedInstallment==true) {
+            busFeeList[i+1].checkedInstallment = false;
+            busFeeList[i+1].enableInstallment = false;
+          }
+      }
+    // Deselect subsequent installments in busFeeList
+    //   for (var i = index + 1; i < busFeeList.length; i++) {
+    //     busFeeList[i].checkedInstallment = false;
+    //     busFeeList[i].enableInstallment = false;
+    //   }
+
+      for (var i = 0; i < feeList.length; i++) {
+        for (var j = 0; j < busFeeList.length; j++) {
+          if (feeList[i].installmentGroup == busFeeList[j].installmentGroup) {
+            busFeeList[j].checkedInstallment = feeList[i].checkedInstallment;
+          }
+        }
+      }
+    }
+    calculateTotalGeneralFees();
+    calculateTotalBusFees();
+    calculateGrandTotal();
+    notifyListeners();
+  }
+
+  void onBusFeeSelectedTog(bool selected, int index) {
+
+    if (selected) {
+      // Ensure the previous installments are selected before allowing this installment
+      for (var i = 0; i < index; i++) {
+        if (!busFeeList[i].checkedInstallment!) {
+          return;
+        }
+      }
+
+      // Get the installment group of the selected installment
+      var selectedInstallmentGroup = busFeeList[index].installmentGroup;
+
+      // Select all installments in the same group in busFeeList
+      for (var i = 0; i < busFeeList.length; i++) {
+        if (busFeeList[i].installmentGroup == selectedInstallmentGroup) {
+          busFeeList[i].checkedInstallment = true;
+          busFeeList[i].enableInstallment = true;
+        }
+      }
+
+      // Select all installments in the same group in feeList
+      for (var i = 0; i < feeList.length; i++) {
+        if (feeList[i].installmentGroup == selectedInstallmentGroup) {
+          feeList[i].checkedInstallment = true;
+          feeList[i].enableInstallment = true;
+        }
+      }
+
+      // Enable the next installment if it exists
+      if (index < busFeeList.length - 1) {
+        busFeeList[index + 1].enableInstallment = true;
+      }
+    } else {
+      // Get the installment group of the deselected installment
+      var deselectedInstallmentGroup = busFeeList[index].installmentGroup;
+
+      // Deselect all installments in the same group in busFeeList
+      for (var i = 0; i < busFeeList.length; i++) {
+        if (busFeeList[i].installmentGroup == deselectedInstallmentGroup) {
+          busFeeList[i].checkedInstallment = false;
+          busFeeList[i].enableInstallment = false;
+        }
+      }
+
+      // Deselect all installments in the same group in feeList
+      for (var i = 0; i < feeList.length; i++) {
+        if (feeList[i].installmentGroup == deselectedInstallmentGroup) {
+          feeList[i].checkedInstallment = false;
+          feeList[i].enableInstallment = false;
+        }
+      }
+
+      // Deselect subsequent installments in busFeeList
+      for (var i = index + 1; i < busFeeList.length; i++) {
+        busFeeList[i].checkedInstallment = false;
+        busFeeList[i].enableInstallment = false;
+      }
+      ///
+      ///
+      for (var i = 0; i < feeList.length; i++) {
+        if(feeList[i].checkedInstallment==false && i<feeList.length-1)
+          if(feeList[i+1].checkedInstallment==true) {
+            feeList[i+1].checkedInstallment = false;
+            feeList[i+1].enableInstallment = false;
+          }
+      }
+
+      // Deselect subsequent installments in feeList
+      // for (var i = index + 1; i < feeList.length; i++) {
+      //   feeList[i].checkedInstallment = false;
+      //   feeList[i].enableInstallment = false;
+      // }
+
+      for (var i = 0; i < busFeeList.length; i++) {
+        for (var j = 0; j < feeList.length; j++) {
+          if (busFeeList[i].installmentGroup == feeList[j].installmentGroup) {
+            feeList[j].checkedInstallment = busFeeList[i].checkedInstallment;
+          }
+        }
+      }
+    }
+    calculateTotalGeneralFees();
+    calculateTotalBusFees();
+    calculateGrandTotal();
+    notifyListeners();
+  }
+  //Total GenFee
+  double calculateTotalGeneralFees() {
+    double total = 0.0;
+    for (var fee in feeList) {
+      if (fee.checkedInstallment!) {
+        total += fee.netDue!;
+      }
+    }
+    totalFees=total;
+    return total;
+  }
+
+// Function to calculate the total of selected bus fees
+  double calculateTotalBusFees() {
+    double total = 0.0;
+    for (var busFee in busFeeList) {
+      if (busFee.checkedInstallment!) {
+        total += busFee.netDue!;
+      }
+    }
+    totalBusFee=total;
+    return total;
+  }
+
+// Function to calculate the grand total
+  double calculateGrandTotal() {
+    double grandTotal=0.0;
+    grandTotal=totalFees+totalBusFee;
+    total=grandTotal;
+    return grandTotal;
+  }
+
+
 
   void onFeeSelectedTogether(bool selected, feeName, int index, feeNetDue,int instaGroup) {
     feeList[0].enabled = true;
@@ -1176,8 +1402,8 @@ class FeesProvider with ChangeNotifier {
   //////////////////////        gateway NAME          /////////////////////////
 
   ////////////////////////////////////////////////////////////////////////////
-  String? gateway;
-  Future gatewayName(BuildContext context) async {
+  String gateway="";
+  Future gatewayName() async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoading(true);
     var headers = {
@@ -1195,7 +1421,7 @@ class FeesProvider with ChangeNotifier {
 
         GateWayName att = GateWayName.fromJson(data);
 
-        gateway = att.gateway;
+        gateway = att.gateway!;
         print('gateway  $gateway');
         setLoading(false);
         // if (gateway == 'TrakNPay') {

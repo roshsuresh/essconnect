@@ -151,6 +151,7 @@ class MarkEntryDetailsUAS {
   String? ceAttendance;
   String? peAttendance;
   String? studentName;
+  String? admissionNo;
   int? rollNo;
   String? studentId;
   String? markEntryDetId;
@@ -167,6 +168,8 @@ class MarkEntryDetailsUAS {
   String? tabMarkEntryId;
   bool? isEdited;
   bool? isDisabled;
+  bool? isPeDisabled;
+  bool? isCeDisabled;
   bool? isAttendanceDisabled;
 
   MarkEntryDetailsUAS(
@@ -174,6 +177,7 @@ class MarkEntryDetailsUAS {
         this.peAttendance,
         this.ceAttendance,
       this.studentName,
+        this.admissionNo,
       this.rollNo,
       this.studentId,
       this.markEntryDetId,
@@ -190,6 +194,8 @@ class MarkEntryDetailsUAS {
       this.tabMarkEntryId,
       this.isEdited,
       this.isDisabled,
+        this.isPeDisabled,
+        this.isCeDisabled,
       this.isAttendanceDisabled});
 
   MarkEntryDetailsUAS.fromJson(Map<String, dynamic> json) {
@@ -197,6 +203,7 @@ class MarkEntryDetailsUAS {
     peAttendance = json['peAttendance'];
     ceAttendance = json['ceAttendance'];
     studentName = json['studentName'];
+    admissionNo = json['admissionNo'];
     rollNo = json['rollNo'];
     studentId = json['studentId'];
     markEntryDetId = json['markEntryDetId'];
@@ -213,6 +220,8 @@ class MarkEntryDetailsUAS {
     tabMarkEntryId = json['tabMarkEntryId'];
     isEdited = json['isEdited'];
     isDisabled = json['isDisabled'];
+    isPeDisabled = json['isPeDisabled'];
+    isCeDisabled = json['isCeDisabled'];
     isAttendanceDisabled = json['isAttendanceDisabled'];
   }
 
@@ -222,6 +231,7 @@ class MarkEntryDetailsUAS {
     data['peAttendance'] = this.peAttendance;
     data['ceAttendance'] = this.ceAttendance;
     data['studentName'] = this.studentName;
+    data['admissionNo'] = this.admissionNo;
     data['rollNo'] = this.rollNo;
     data['studentId'] = this.studentId;
     data['markEntryDetId'] = this.markEntryDetId;
@@ -238,6 +248,8 @@ class MarkEntryDetailsUAS {
     data['tabMarkEntryId'] = this.tabMarkEntryId;
     data['isEdited'] = this.isEdited;
     data['isDisabled'] = this.isDisabled;
+    data['isPeDisabled'] = this.isPeDisabled;
+    data['isCeDisabled'] = this.isCeDisabled;
     data['isAttendanceDisabled'] = this.isAttendanceDisabled;
     return data;
   }

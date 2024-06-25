@@ -106,10 +106,10 @@ class LoginProvider with ChangeNotifier {
       SharedPreferences pass = await SharedPreferences.getInstance();
       await pass.setString('password', password);
 
-      await getToken(context);
+      await getToken();
       await getMobileViewerId();
-      await getsavemobileViewer(context);
-      await sendUserDetails(context);
+      await getsavemobileViewer();
+      await sendUserDetails();
       var parsedResponse = await parseJWT();
       List<dynamic> roleList = [];
       print(parsedResponse['role'] is List);
@@ -225,7 +225,7 @@ class LoginProvider with ChangeNotifier {
     }
   }
   String? token;
-  Future getToken(BuildContext context) async {
+  Future getToken() async {
     Map<String, dynamic> data = await parseJWT();
     print("roleeeeeeee");
     print(data['role']);
@@ -384,7 +384,7 @@ class LoginProvider with ChangeNotifier {
 
 
    String? mobileAppViewersId;
-  Future getsavemobileViewer(BuildContext context) async {
+  Future getsavemobileViewer() async {
     Map<String, dynamic> data = await parseJWT();
     SharedPreferences _pref = await SharedPreferences.getInstance();
     var headers = {
@@ -420,7 +420,7 @@ class LoginProvider with ChangeNotifier {
   }
 
   String formattedDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(DateTime.now());
-  Future sendUserDetails(BuildContext context) async {
+  Future sendUserDetails() async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     var headers = {
       'Content-Type': 'application/json',

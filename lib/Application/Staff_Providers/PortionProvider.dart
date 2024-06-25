@@ -379,7 +379,7 @@ class PortionProvider with ChangeNotifier{
   //All student
 
   Future getStudentAllViewList(
-      String division) async {
+      String division,String optionSubId) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoading(true);
     var headers = {
@@ -393,7 +393,7 @@ class PortionProvider with ChangeNotifier{
       http.Request(
           'GET',
           Uri.parse(
-              '${UIGuide.curriculamUrl}/student-selector/student-det?filterStudyingStatus=studying&divisionId=$division'));
+              '${UIGuide.curriculamUrl}/student-selector/student-det?filterStudyingStatus=studying&divisionId=$division&optionSubId=$optionSubId'));
 
       request.headers.addAll(headers);
       print(request);
@@ -544,7 +544,7 @@ class PortionProvider with ChangeNotifier{
   }
 
   //by name
-  Future getPortionListbyName(String name,String division) async {
+  Future getPortionListbyName(String name,String division,String optSubID) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     var parsedResponse =await parseJWT();
     setLoading(true);
@@ -556,7 +556,7 @@ class PortionProvider with ChangeNotifier{
       var request = http.Request(
           'GET',
           Uri.parse(
-              '${UIGuide.curriculamUrl}/student-selector?filterStudyingStatus=studying&name=$name&divisionId=$division'));
+              '${UIGuide.curriculamUrl}/student-selector?filterStudyingStatus=studying&name=$name&divisionId=$division&optionSubId=$optSubID'));
 
       request.headers.addAll(headers);
       print(request);
@@ -852,6 +852,38 @@ class PortionProvider with ChangeNotifier{
     }
   }
 
+
+  Future getPortionFileDelete(String id,String fileId) async {
+
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+
+    setLoading(true);
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('curiaccesstoken')}'
+    };
+    try {
+      var response = await http.get(
+          Uri.parse("${UIGuide.curriculamUrl}/portionentry/delete-file/$id/$fileId"),
+          headers: headers);
+      print("${UIGuide.curriculamUrl}/portionentry/delete-file/$id/$fileId");
+
+      if (response.statusCode == 200) {
+        print("corect");
+        setLoading(false);
+        notifyListeners();
+      } else {
+        setLoading(false);
+        print("Error in delete file");
+      }
+    } catch (e) {
+      print("Error in deleet file response");
+      setLoading(false);
+      print(e);
+    }
+  }
+
+
   //save
 int status=0;
   String? portionResponseId;
@@ -991,7 +1023,7 @@ int status=0;
           "courseId": courseId,
           "divisionId":divisionId,
           "subjectId":subjectId,
-          "subsubjectId":subSubjectId.isEmpty?null:subSubjectId,
+          "subsubjectId":subSubjectId.isEmpty||subSubjectId=="null"?null:subSubjectId,
           "assignment":assignment.isEmpty?null:assignment,
           "chapter":chapter,
           "topicId":topic.isEmpty?null:topic,
@@ -1007,7 +1039,7 @@ int status=0;
       "courseId": courseId,
       "divisionId":divisionId,
       "subjectId":subjectId,
-      "subsubjectId":subSubjectId.isEmpty?null:subSubjectId,
+      "subsubjectId":subSubjectId.isEmpty||subSubjectId=="null"?null:subSubjectId,
       "assignment":assignment.isEmpty?null:assignment,
       "chapter":chapter,
       "topicId":topic.isEmpty?null:topic,
@@ -1034,7 +1066,80 @@ int status=0;
   }
 
 
-   //---------------List-------------
+  //Notificationin update
+
+  // Future portionupdateNotification(
+  //     String id,
+  //     String entryDate,
+  //     String courseId,
+  //     String divisionId,
+  //     String subjectId,
+  //     String subSubjectId,
+  //     String subSubjectOrOptional,
+  //     String chapter,
+  //     String topic,
+  //     String description,
+  //     String details,
+  //     String assignment,
+  //     List? studList,
+  //     List? attachmentId) async {
+  //   SharedPreferences _pref = await SharedPreferences.getInstance();
+  //   var headers = {
+  //     'Content-Type': 'application/json',
+  //     'Authorization': 'Bearer ${_pref.getString('curiaccesstoken')}'
+  //   };
+  //   var request = http.Request('POST',
+  //       Uri.parse('${UIGuide.curriculamUrl}/portionentry/sentNotification/$id'));
+  //   print(request);
+  //   request.body = json.encode(
+  //       {
+  //         "courseId": courseId,
+  //         "divisionId":divisionId,
+  //         "subjectId":subjectId,
+  //         "subsubjectId":subSubjectId.isEmpty?null:subSubjectId,
+  //         "assignment":assignment.isEmpty?null:assignment,
+  //         "chapter":chapter,
+  //         "topicId":topic.isEmpty?null:topic,
+  //         "description":description.isEmpty?null:description,
+  //         "details":details,
+  //         "entryDate":entryDate,
+  //         "photoList":attachmentId,
+  //         "studentIds":studList,
+  //         "subSubjectOrOptional":subSubjectId.isEmpty?"": subSubjectOrOptional
+  //       }
+  //   );
+  //   log(request.body = json.encode({
+  //     "courseId": courseId,
+  //     "divisionId":divisionId,
+  //     "subjectId":subjectId,
+  //     "subsubjectId":subSubjectId.isEmpty?null:subSubjectId,
+  //     "assignment":assignment.isEmpty?null:assignment,
+  //     "chapter":chapter,
+  //     "topicId":topic.isEmpty?null:topic,
+  //     "description":description.isEmpty?null:description,
+  //     "details":details,
+  //     "entryDate":entryDate,
+  //     "photoList":attachmentId,
+  //     "studentIds":studList,
+  //     "subSubjectOrOptional":subSubjectId.isEmpty?"": subSubjectOrOptional
+  //   }));
+  //   request.headers.addAll(headers);
+  //
+  //   http.StreamedResponse response = await request.send();
+  //
+  //   if (response.statusCode == 200) {
+  //
+  //     print('-Notification success-');
+  //
+  //     notifyListeners();
+  //   } else {
+  //
+  //     print("Error in portion send notification");
+  //   }
+  // }
+
+
+  //---------------List-------------
 
   List<PortionList> portionList = [];
   List<StudViewedorNotList> viewList=[];
@@ -1334,6 +1439,7 @@ int status=0;
 
       status=response.statusCode;
       setLoading(false);
+
       //getVariables();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

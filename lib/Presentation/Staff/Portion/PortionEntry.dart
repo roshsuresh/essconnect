@@ -8,15 +8,25 @@ import 'package:flutter/widgets.dart';
 
 import 'package:essconnect/utils/spinkit.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_sound/flutter_sound.dart';
+import 'package:flutter_sound/public/flutter_sound_player.dart';
+import 'package:flutter_sound/public/flutter_sound_recorder.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:social_media_recorder/widgets/show_mic_with_text.dart';
 import '../../../../Debouncer.dart';
 import 'package:image/image.dart' as img;
 import 'package:path/path.dart' as path;
-
+import 'package:audioplayers/audioplayers.dart';
 import '../../../Application/StudentProviders/CurriculamProviders.dart';
 import '../../../utils/constants.dart';
+import 'package:social_media_recorder/audio_encoder_type.dart';
+import 'package:social_media_recorder/screen/social_media_recorder.dart';
+import 'package:uuid/uuid.dart';
+
 class PortionEntryScreen extends StatefulWidget {
   PortionEntryScreen({super.key});
 
@@ -48,13 +58,15 @@ class _PortionEntryScreenState extends State<PortionEntryScreen> {
   String? subsubjectId;
   List filesss=[];
   List imges=[];
-
   String suboroption='';
 
 
 
-
-
+  FlutterSoundRecorder? _recorder;
+  FlutterSoundPlayer? _player;
+  String _recordingPath = '';
+  bool _isRecording = false;
+  final _uuid = Uuid();
 
 
   @override
@@ -75,10 +87,33 @@ class _PortionEntryScreenState extends State<PortionEntryScreen> {
       await p.getDateNow();
       optId='';
       subsubjectId='';
-
+      _recorder = FlutterSoundRecorder();
+      _player = FlutterSoundPlayer();
+      _requestPermission();
 
     });
   }
+  Future<void> _requestPermission() async {
+    await Permission.microphone.request();
+  }
+
+
+  void _startRecording() async {
+    if (_isRecording) return;
+    Directory tempDir = await getTemporaryDirectory();
+    _recordingPath = '${tempDir.path}/${_uuid.v4()}.aac';
+    await _recorder!.openRecorder();
+    await _recorder!.startRecorder(
+      toFile: _recordingPath,
+      codec: Codec.aacADTS,
+    );
+    setState(() {
+      _isRecording = true;
+    });
+  }
+
+
+
 
   List<File> _selectedFiles=[];
   List<int> _originalSizes=[];
@@ -100,6 +135,9 @@ class _PortionEntryScreenState extends State<PortionEntryScreen> {
     });
 
     FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['jpg','jpeg','png','pdf','mp3'],
+
       //withData: true,
       allowMultiple: true,
       allowCompression: true,
@@ -582,7 +620,21 @@ class _PortionEntryScreenState extends State<PortionEntryScreen> {
                                                             value.subjectList[index].subSubjectId.toString(),
                                                             value.subjectList[index].courseSubjectId.toString(),
                                                             divisionIDController.text);
-                                                             suboroption= value.subjectList[index].optionSubjectId!=""?"option":"sub";
+                                                           if(value.subjectList[index].optionSubjectId!="")
+                                                             {
+                                                               suboroption="option";
+
+                                                             }
+                                                       else if(value.subjectList[index].subSubjectId!="")
+                                                        {
+                                                          suboroption="sub";
+
+                                                        }
+                                                       else{
+                                                             suboroption="";
+                                                           }
+
+                                                            // suboroption= value.subjectList[index].optionSubjectId!=""?"option":"sub";
                                                              print("suboroptionnnnnnnnnnnnnnnnnnnnnnn  $suboroption");
                                                         print(value.subSubjectList);
 
@@ -665,6 +717,7 @@ class _PortionEntryScreenState extends State<PortionEntryScreen> {
                                                     return ListTile(
                                                       onTap: () async {
                                                         Navigator.of(context).pop();
+                                                        value.finalSelectedList.clear();
 
                                                         subSubjectController.text = value
                                                             .subSubjectList[
@@ -677,6 +730,7 @@ class _PortionEntryScreenState extends State<PortionEntryScreen> {
                                                         index]
                                                             .value ??
                                                             '--';
+
 
                                                         print("not subsubject");
                                                       },
@@ -710,8 +764,8 @@ class _PortionEntryScreenState extends State<PortionEntryScreen> {
                                             style: BorderStyle.none, width: 0),
                                       ),
                                       labelText:
-                                      subsubjectId==""?"  Select Option":
-                                      "  Select Sub Subject"
+                                      subsubjectId==""?"  Select Option *":
+                                      "  Select Sub Subject *"
                                       ,
                                       alignLabelWithHint: true,
                                       labelStyle: TextStyle(
@@ -962,6 +1016,24 @@ class _PortionEntryScreenState extends State<PortionEntryScreen> {
                     ),
                   ),
                   kheight10,
+             Row(
+               children: [
+                 SizedBox(
+                   width: size.width*0.9,
+                   child: SocialMediaRecorder(
+
+                     sendRequestFunction: (soundFile, _time) {
+
+                     },
+                     startRecording: _startRecording,
+                       recordIconBackGroundColor:UIGuide.light_Purple,
+                       recordIconWhenLockBackGroundColor:UIGuide.light_Purple,
+                   ),
+                 )
+
+
+               ],
+             ),
 
                   Padding(
                     padding: const EdgeInsets.only(left: 30.0),
@@ -1409,6 +1481,7 @@ class _PortionEntryScreenState extends State<PortionEntryScreen> {
                                 )),
                           ),
                           onPressed: () async {
+                            print("subbbbbbbbbbbbbbb  $suboroption");
 
 
                             if (
@@ -1416,7 +1489,10 @@ class _PortionEntryScreenState extends State<PortionEntryScreen> {
                                 divisionIDController.text.trim().isEmpty ||
                                 subjectIDController.text.trim().isEmpty ||
                                 chapterController.text.trim().isEmpty||
-                                detailsController.text.trim().isEmpty
+                                detailsController.text.trim().isEmpty||
+                            (suboroption!=""
+                                &&subSubjectIDController.text.trim().isEmpty )
+
                             ) {
 
                               Fluttertoast.showToast(
@@ -1428,7 +1504,24 @@ class _PortionEntryScreenState extends State<PortionEntryScreen> {
                                 textColor: Colors.white,
                                 fontSize: 14.0,
                               );
+                            //  if(suboroption=="option"||suboroption=="sub"){
+                            //   if(subSubjectIDController.text.trim().isEmpty) {
+                            //     Fluttertoast.showToast(
+                            //       msg: "Select Mandatory Fields...",
+                            //       toastLength: Toast.LENGTH_SHORT,
+                            //       gravity: ToastGravity.BOTTOM,
+                            //       timeInSecForIosWeb: 1,
+                            //       backgroundColor: Colors.black54,
+                            //       textColor: Colors.white,
+                            //       fontSize: 14.0,
+                            //     );
+                            //   }
+                            //
+                            // }
+
                             }
+
+
 
                             else if(roundedNumber>=5){
                               Fluttertoast.showToast(
@@ -1628,7 +1721,7 @@ class _StudentListPortionViewState extends State<StudentListPortionView> {
                                 value.currentPage=2;
                                 await Provider.of<PortionProvider>(context,
                                     listen: false)
-                                    .getPortionListbyName(value1,widget.divisonId!);
+                                    .getPortionListbyName(value1,widget.divisonId!,widget.subId!);
                                 print('-***--**-*-*-*-*-');
                               });
                             },
@@ -1652,7 +1745,7 @@ class _StudentListPortionViewState extends State<StudentListPortionView> {
                                       value.currentPage=2;
                                       await Provider.of<PortionProvider>(context,
                                           listen: false)
-                                          .getPortionListbyName('',widget.divisonId!);
+                                          .getPortionListbyName('',widget.divisonId!,widget.subId!);
 
                                     }),
                                   ),

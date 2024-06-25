@@ -214,7 +214,9 @@ class StudentReportProviderStaff with ChangeNotifier {
               '${UIGuide.baseURL}/mobileapp/staffdet/studentreport/viewStudentReport?section=$section&course=$course&division=$division'));
       request.body = json.encode({"SchoolId": _pref.getString('schoolId')});
       request.headers.addAll(headers);
+
       http.StreamedResponse response = await request.send();
+      print('${UIGuide.baseURL}/mobileapp/staffdet/studentreport/viewStudentReport?section=$section&course=$course&division=$division');
       log(request.toString());
       if (response.statusCode == 200) {
         Map<String, dynamic> data =

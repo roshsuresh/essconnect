@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:isolate';
 import 'dart:ui';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +28,7 @@ class StudentPortions extends StatefulWidget {
   String date;
   String status;
   String? viewPrev;
+
 
   @override
   State<StudentPortions> createState() => _StudentPortionsState();
@@ -57,8 +60,11 @@ class _StudentPortionsState extends State<StudentPortions> {
       print("dateeeedee");
       p.studportionList.clear();
       p.studportionListpre.clear();
+      p.studportionListByDate.clear();
+
       await p.getStudentPortionList();
       await p.getStudentPortionListPrevious(widget.viewPrev!);
+      await p.getStudentPortionListByDate();
       //print(p.studportionDetailList[0].date);
 
       IsolateNameServer.registerPortWithName(
@@ -76,6 +82,106 @@ class _StudentPortionsState extends State<StudentPortions> {
 
     });
   }
+
+  Future<Image> _loadImage(BuildContext context, String imageUrl) async {
+    // Simulate a network request to load the image
+    final Image image = Image.network(imageUrl);
+    final Completer<void> completer = Completer();
+    final ImageStreamListener listener = ImageStreamListener(
+          (ImageInfo info, bool _) {
+        completer.complete();
+      },
+      onError: (dynamic error, StackTrace? stackTrace) {
+        completer.completeError(error);
+      },
+    );
+
+    image.image.resolve(ImageConfiguration()).addListener(listener);
+    await completer.future;
+    return image;
+  }
+  Future<void> showPhotoDialog(BuildContext context,String photo,String ext) async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        var size= MediaQuery.of(context).size;
+        return AlertDialog(
+          content: Container(
+
+            height:size.height*0.6,
+            child: Center(
+              child: CircularProgressIndicator(
+                color: UIGuide.light_Purple,
+              ),
+            ),
+          ),
+        );
+      },
+    );
+
+    try {
+      Image image = await _loadImage(context, photo);
+      Navigator.of(context).pop(); // Remove the loading dialog
+
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          var size= MediaQuery.of(context).size;
+          return AlertDialog(
+            content: Container(
+
+              height: size.height*0.6,
+              child: image,
+            ),
+          );
+        },
+      );
+    } catch (e) {
+      Navigator.of(context).pop(); // Remove the loading dialog
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          var size= MediaQuery.of(context).size;
+
+          return
+            Dialog(
+              child: Container(
+                padding: EdgeInsets.all(4.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ext==".pdf"?
+                    SizedBox(
+                        height:size.height*0.6 ,
+                        child: SfPdfViewer.network(photo)):
+                    SizedBox(
+                      height:size.height*0.6 ,
+                      child: Image.network(
+                        photo,
+                      ),
+                    ),
+                    //  SizedBox(height: size),
+                    //   ElevatedButton(
+                    //     style: ElevatedButton.styleFrom(
+                    //       backgroundColor: UIGuide.light_Purple,
+                    //     ),
+                    //     onPressed: () {
+                    //       Navigator.of(context).pop();
+                    //
+                    //     },
+                    //     child: Text('Close'),
+                    //   ),
+                  ],
+                ),
+              ),
+            );
+
+        },
+      );
+    }
+  }
+
 
   static void downloadCallback(String id, int status, int progress) {
     print('Download task ($id) is in status ($status) and $progress% complete');
@@ -142,6 +248,20 @@ class _StudentPortionsState extends State<StudentPortions> {
   Widget build(BuildContext context) {
     var size= MediaQuery.of(context).size;
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Portion'),
+        titleSpacing: 00.0,
+        centerTitle: true,
+        toolbarHeight: 60.2,
+        toolbarOpacity: 0.8,
+        // shape: const RoundedRectangleBorder(
+        //   borderRadius: BorderRadius.only(
+        //       bottomRight: Radius.circular(25),
+        //       bottomLeft: Radius.circular(25)),
+        // ),
+        backgroundColor: UIGuide.light_Purple,
+      ),
+
       body:  Consumer<StudentPortionProvider>(
           builder: (context, value, _)=>
           value.loading
@@ -156,7 +276,8 @@ class _StudentPortionsState extends State<StudentPortions> {
                   ], colors: [
                     Color.fromARGB(255, 64, 107, 183),
                     Color.fromARGB(255, 137, 157, 194),
-                  ])),
+                  ])
+              ),
               child: Padding(
                 padding: const EdgeInsets.only(top: 25.0,bottom: 10),
                 child: AnimationLimiter(
@@ -457,7 +578,34 @@ class _CarouselDialogState extends State<CarouselDialog> {
   @override
   void dispose() {
     IsolateNameServer.removePortNameMapping('downloader_send_port');
+    _audioPlayer.dispose();
     super.dispose();
+  }
+
+
+  final AudioPlayer _audioPlayer = AudioPlayer();
+  bool _isPlaying = false;
+
+  Future<void> playAudio(String file) async {
+     // Replace with your audio URL
+    await _audioPlayer.play(UrlSource(file));
+    setState(() {
+      _isPlaying = true;
+    });
+  }
+
+  void _pauseAudio() async {
+    await _audioPlayer.pause();
+    setState(() {
+      _isPlaying = false;
+    });
+  }
+
+  void _stopAudio() async {
+    await _audioPlayer.stop();
+    setState(() {
+      _isPlaying = false;
+    });
   }
 
   Future<void> requestDownload(String _url, String _name) async {
@@ -525,9 +673,45 @@ class _CarouselDialogState extends State<CarouselDialog> {
                 if (widget.ext[index]=='.pdf') {
                   // Display PDF
                   return SfPdfViewer.network(content);
-                } else  {
+                }
+                else if(widget.ext[index]=='.mp3'){
+                return  Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        ElevatedButton(
+                          onPressed: () async{
+                            await playAudio(content);
+                          },
+                          child: Text(_isPlaying ? 'Pause' : 'Play'),
+                        ),
+                        ElevatedButton(
+                          onPressed: _stopAudio,
+                          child: Text('Stop'),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+                else  {
                   // Display image from URL
-                  return Image.network(content);
+                  return Image.network(content,
+
+                    loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                      if (loadingProgress == null) {
+                        return child;
+                      } else {
+                        return Center(
+                          child: CircularProgressIndicator(
+                            color: UIGuide.light_Purple,
+                            value: loadingProgress.expectedTotalBytes != null
+                                ? loadingProgress.cumulativeBytesLoaded / (loadingProgress.expectedTotalBytes ?? 1)
+                                : null,
+                          ),
+                        );
+                      }
+                    },
+                  );
                 }
               },
               options: CarouselOptions(

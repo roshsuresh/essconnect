@@ -17,6 +17,7 @@ import 'package:essconnect/Presentation/Admin/TimeTableUpload.dart';
 import 'package:essconnect/Presentation/Admin/WebViewLogin.dart';
 import 'package:essconnect/Presentation/Staff/LessonPlan.dart';
 import 'package:essconnect/Presentation/Staff/MarkEntryNew.dart';
+import 'package:essconnect/Presentation/Staff/Portion/Portions.dart';
 import 'package:essconnect/Presentation/Staff/RemarksEntry.dart';
 import 'package:essconnect/Presentation/Staff/StudAttendenceEntry.dart';
 import 'package:essconnect/Presentation/Staff/StudReport.dart';
@@ -861,6 +862,70 @@ class AdminHomeContent extends StatelessWidget {
     // crossAxisAlignment: CrossAxisAlignment.start,
     // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
     children: [
+      Consumer<Curriculamprovider>(
+        builder: (context, curri, child) => Expanded(
+          child: GestureDetector(
+            onTap: () async {
+              if (module.curiculam == true) {
+                await Provider.of<Curriculamprovider>(context,
+                    listen: false)
+                    .getCuriculamtoken();
+                String token = await curri.token.toString();
+                await Navigator.push(
+                    context,
+                    PageTransition(
+                        type: PageTransitionType.rightToLeft,
+                        child: PortionScreen(),
+                        duration:
+                        const Duration(milliseconds: 200),
+                        childCurrent: this));
+              } else {
+                _noAcess(context);
+              }
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(left: 10, right: 10),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Card(
+                    elevation: 10,
+                    color: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        height: 38,
+                        width: 38,
+                        decoration: BoxDecoration(
+                          image: const DecorationImage(
+                            opacity: 20,
+                            image: AssetImage(
+                              'assets/Portion Entry.png',
+                            ),
+                          ),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
+                    ),
+                  ),
+                  kheight10,
+                  const Text(
+                    'Portion',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 11,
+                        color: Colors.black87),
+                  )
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+
     Expanded(
     child: GestureDetector(
     onTap: () {
