@@ -1,11 +1,13 @@
 import 'package:essconnect/Application/StudentProviders/NotificationCountProviders.dart';
 import 'package:essconnect/Application/StudentProviders/NotificationReceived.dart';
 import 'package:essconnect/utils/spinkit.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../utils/TextWrap(moreOption).dart';
 import '../../utils/constants.dart';
 
@@ -140,16 +142,27 @@ class Stud_Notification extends StatelessWidget {
                                               ],
                                             ),
                                             kheight,
-                                            TextWrapper(
-                                              text: value.receivedList[index]
-                                                          .message ==
-                                                      null
+                                            LinkTextWidget(
+                                              text:  value.receivedList[index]
+                                                  .message ==
+                                                  null
                                                   ? '--'
                                                   : value.receivedList[index]
-                                                      .message
-                                                      .toString(),
-                                              fSize: 14,
+                                                  .message
+                                                  .toString(),
+
                                             ),
+
+                                            // TextWrapper(
+                                            //   text: value.receivedList[index]
+                                            //               .message ==
+                                            //           null
+                                            //       ? '--'
+                                            //       : value.receivedList[index]
+                                            //           .message
+                                            //           .toString(),
+                                            //   fSize: 14,
+                                            // ),
                                             kheight,
                                             Row(
                                               children: [
@@ -207,5 +220,63 @@ class Stud_Notification extends StatelessWidget {
                   ),
       ),
     );
+  }
+}
+
+
+class LinkTextWidget extends StatelessWidget {
+  final String text;
+
+  LinkTextWidget({required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    // Regular expression to find URLs starting with https
+    final RegExp urlRegExp = RegExp(r'(https:\/\/[^\s]+)');
+    final Iterable<Match> matches = urlRegExp.allMatches(text);
+
+    // Check if there is a URL match
+    if (matches.isEmpty) {
+      return Text(text);
+    } else {
+      final List<TextSpan> textSpans = [];
+      int lastMatchEnd = 0;
+
+      for (final Match match in matches) {
+        if (match.start > lastMatchEnd) {
+          textSpans.add(TextSpan(text: text.substring(lastMatchEnd, match.start)));
+        }
+
+        final String url = match.group(0)!;
+        textSpans.add(
+          TextSpan(
+            text: url,
+            style: TextStyle(color: Colors.blue),
+            recognizer: TapGestureRecognizer()
+              ..onTap = () async {
+                if (await canLaunch(url)) {
+                  await launch(url);
+                } else {
+                  throw 'Could not launch $url';
+                }
+              },
+          ),
+        );
+
+        lastMatchEnd = match.end;
+      }
+
+      // Add remaining text after the last match
+      if (lastMatchEnd < text.length) {
+        textSpans.add(TextSpan(text: text.substring(lastMatchEnd)));
+      }
+
+      return RichText(
+        text: TextSpan(
+          style: DefaultTextStyle.of(context).style,
+          children: textSpans,
+        ),
+      );
+    }
   }
 }

@@ -7,14 +7,20 @@ class UIGuide {
   static const String notcheck = "assets/square.svg";
   static const String check = "assets/check-square.svg";
 
-  static const String curiculamUrl =
-  "https://api.curriculumtestonline.in";
+  static const String curriculamUrl =
+      //"https://api.curriculumtestonline.in";
+
+  // "https://api.uatcurriculum.in";
+
+      "https://api.esscurriculum.in";
 
 
   static const String baseURL =
+     // "https://api.esstestonline.in";
+
   //"https://api.essuatonline.in";
-  "https://api.esstestonline.in";
-    //"https://api.eschoolweb.org";
+
+   "https://api.eschoolweb.org";
 
   static const String absent = "assets/aa.svg";
   static const String present = "assets/ppp.svg";

@@ -13,6 +13,7 @@ import 'package:photo_view/photo_view.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import '../../Application/StudentProviders/NoticProvider.dart';
+import '../../Application/StudentProviders/NotificationCountProviders.dart';
 import '../../Constants.dart';
 import '../../utils/TextWrap(moreOption).dart';
 import '../../utils/constants.dart';
@@ -22,9 +23,22 @@ class NoticeBoard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Provider.of<NoticeProvider>(context, listen: false).getnoticeList();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      var p = Provider.of<NoticeProvider>(context,
+          listen: false);
+
+      await p.getnoticeList();
+      await Provider.of<NoticeProvider>(context, listen: false)
+          .seeNoticeBoard();
+      await Provider.of<StudNotificationCountProviders>(context, listen: false)
+          .getnotificationCount();
     });
+    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    //   Provider.of<NoticeProvider>(context, listen: false).getnoticeList();
+    //   Provider.of<NoticeProvider>(context, listen: false).seeNoticeBoard();
+    //    Provider.of<StudNotificationCountProviders>(context, listen: false)
+    //       .getnotificationCount();
+    // });
     var size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
@@ -48,216 +62,220 @@ class NoticeBoard extends StatelessWidget {
           return value.loading
               ? spinkitLoader()
               : noticeresponse == null || noticeresponse!.isEmpty
-                  ? Container(
-                      child: LottieBuilder.network(
-                          'https://assets2.lottiefiles.com/private_files/lf30_lkquf6qz.json'),
-                    )
-                  : AnimationLimiter(
-                      child: ListView.builder(
-                        physics: const BouncingScrollPhysics(
-                            parent: AlwaysScrollableScrollPhysics()),
-                        itemCount:
-                            noticeresponse == null ? 0 : noticeresponse!.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          //created date
-                          String finalCreatedDate = "";
+              ? Container(
+            child: LottieBuilder.network(
+                'https://assets2.lottiefiles.com/private_files/lf30_lkquf6qz.json'),
+          )
+              : AnimationLimiter(
+            child: ListView.builder(
+              physics: const BouncingScrollPhysics(
+                  parent: AlwaysScrollableScrollPhysics()),
+              itemCount:
+              noticeresponse == null ? 0 : noticeresponse!.length,
+              itemBuilder: (BuildContext context, int index) {
+                //created date
+                String finalCreatedDate = "";
 
-                          if (noticeresponse![index]['entryDate'] != null) {
-                            String createddate =
-                                noticeresponse![index]['entryDate'] ?? '--';
-                            DateTime parsedDateTime =
-                                DateTime.parse(createddate);
-                            finalCreatedDate = DateFormat('dd-MMM-yyyy')
-                                .format(parsedDateTime);
-                          }
+                if (noticeresponse![index]['entryDate'] != null) {
+                  String createddate =
+                      noticeresponse![index]['entryDate'] ?? '--';
+                  DateTime parsedDateTime =
+                  DateTime.parse(createddate);
+                  finalCreatedDate = DateFormat('dd-MMM-yyyy')
+                      .format(parsedDateTime);
+                }
 
-                          var noticeattach = noticeresponse![index]['noticeId'];
-                          return AnimationConfiguration.staggeredList(
-                            position: index,
-                            delay: const Duration(milliseconds: 100),
-                            child: SlideAnimation(
-                              duration: const Duration(milliseconds: 2500),
-                              curve: Curves.fastLinearToSlowEaseIn,
-                              child: FadeInAnimation(
-                                curve: Curves.fastLinearToSlowEaseIn,
-                                duration: const Duration(milliseconds: 2500),
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 6.0, right: 6, bottom: 3, top: 3),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      color: const Color.fromARGB(
-                                          255, 234, 234, 236),
-                                      border: Border.all(
-                                        color: const Color.fromARGB(
-                                            255, 136, 187, 235),
-                                      ),
-                                      borderRadius: const BorderRadius.only(
-                                        topRight: Radius.circular(20),
-                                        bottomLeft: Radius.circular(20),
+                var noticeattach = noticeresponse![index]['noticeId'];
+                return AnimationConfiguration.staggeredList(
+                  position: index,
+                  delay: const Duration(milliseconds: 100),
+                  child: SlideAnimation(
+                    duration: const Duration(milliseconds: 2500),
+                    curve: Curves.fastLinearToSlowEaseIn,
+                    child: FadeInAnimation(
+                      curve: Curves.fastLinearToSlowEaseIn,
+                      duration: const Duration(milliseconds: 2500),
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            left: 6.0, right: 6, bottom: 3, top: 3),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: const Color.fromARGB(
+                                255, 234, 234, 236),
+                            border: Border.all(
+                              color: const Color.fromARGB(
+                                  255, 136, 187, 235),
+                            ),
+                            borderRadius: const BorderRadius.only(
+                              topRight: Radius.circular(20),
+                              bottomLeft: Radius.circular(20),
+                            ),
+                          ),
+                          width: size.width,
+                          child: Padding(
+                            padding: const EdgeInsets.all(6.0),
+                            child: Container(
+                              width: size.width - 4,
+                              decoration: const BoxDecoration(
+                                  color: Color.fromARGB(
+                                      255, 255, 255, 255),
+                                  borderRadius: BorderRadius.only(
+                                      topRight: Radius.circular(20),
+                                      bottomLeft:
+                                      Radius.circular(20))),
+                              child: Padding(
+                                padding: const EdgeInsets.all(6.0),
+                                child: Column(
+                                  crossAxisAlignment:
+                                  CrossAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding:
+                                      const EdgeInsets.all(4.0),
+                                      child: Row(
+                                        children: [
+                                          const Text('📌  '),
+                                          Flexible(
+                                            child: RichText(
+                                              overflow: TextOverflow
+                                                  .ellipsis,
+                                              maxLines: 2,
+                                              strutStyle:
+                                              const StrutStyle(
+                                                  fontSize: 14.0),
+                                              text: TextSpan(
+                                                style: const TextStyle(
+                                                    color: UIGuide
+                                                        .light_Purple,
+                                                    fontWeight:
+                                                    FontWeight
+                                                        .w500),
+                                                text: noticeresponse![
+                                                index]
+                                                [
+                                                'title'] ==
+                                                    null
+                                                    ? '---'
+                                                    : noticeresponse![
+                                                index]
+                                                ['title']
+                                                    .toString(),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                    width: size.width,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(6.0),
-                                      child: Container(
-                                        width: size.width - 4,
-                                        decoration: const BoxDecoration(
-                                            color: Color.fromARGB(
-                                                255, 255, 255, 255),
-                                            borderRadius: BorderRadius.only(
-                                                topRight: Radius.circular(20),
-                                                bottomLeft:
-                                                    Radius.circular(20))),
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(6.0),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(4.0),
-                                                child: Row(
-                                                  children: [
-                                                    const Text('📌  '),
-                                                    Flexible(
-                                                      child: RichText(
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                        maxLines: 2,
-                                                        strutStyle:
-                                                            const StrutStyle(
-                                                                fontSize: 14.0),
-                                                        text: TextSpan(
-                                                          style: const TextStyle(
-                                                              color: UIGuide
-                                                                  .light_Purple,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500),
-                                                          text: noticeresponse![
-                                                                          index]
-                                                                      [
-                                                                      'title'] ==
-                                                                  null
-                                                              ? '---'
-                                                              : noticeresponse![
-                                                                          index]
-                                                                      ['title']
-                                                                  .toString(),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              kheight10,
-                                              TextWrapper(
-                                                text: noticeresponse![index]
-                                                            ['matter'] ==
-                                                        null
-                                                    ? '------'
-                                                    : noticeresponse![index]
-                                                            ['matter']
-                                                        .toString(),
-                                                fSize: 16,
-                                              ),
-                                              kheight10,
-                                              Row(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.end,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceEvenly,
-                                                children: [
-                                                  kWidth,
-                                                  Text(
-                                                    finalCreatedDate,
-                                                    style: const TextStyle(
-                                                        fontSize: 12),
-                                                  ),
-                                                  const Spacer(),
-                                                  Row(
-                                                    children: [
-                                                      const Text(
-                                                        'Sent by: ',
-                                                        style: TextStyle(
-                                                            color: Colors.grey,
-                                                            fontSize: 12),
-                                                      ),
-                                                      Text(
-                                                        noticeresponse![index][
-                                                                    'staffName'] ==
-                                                                null
-                                                            ? '--'
-                                                            : noticeresponse![
-                                                                        index][
-                                                                    'staffName']
-                                                                .toString(),
-                                                        style: const TextStyle(
-                                                            fontSize: 12),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  const Spacer(),
-                                                  GestureDetector(
-                                                    onTap: () async {
-                                                      var newProvider =
-                                                          await Provider.of<
-                                                                      NoticeProvider>(
-                                                                  context,
-                                                                  listen: false)
-                                                              .noticeAttachement(
-                                                                  noticeattach);
-                                                      if (value.extension
-                                                              .toString() ==
-                                                          '.pdf') {
-                                                        final result = value.url
-                                                            .toString();
-                                                        final name = value.name
-                                                            .toString();
+                                    kheight10,
+                                    TextWrapper(
+                                      text: noticeresponse![index]
+                                      ['matter'] ==
+                                          null
+                                          ? '------'
+                                          : noticeresponse![index]
+                                      ['matter']
+                                          .toString(),
+                                      fSize: 16,
+                                    ),
+                                    kheight10,
+                                    Row(
+                                      crossAxisAlignment:
+                                      CrossAxisAlignment.end,
+                                      mainAxisAlignment:
+                                      MainAxisAlignment
+                                          .spaceEvenly,
+                                      children: [
+                                        kWidth,
+                                        Text(
+                                          finalCreatedDate,
+                                          style: const TextStyle(
+                                              fontSize: 12),
+                                        ),
+                                        const Spacer(),
+                                        Row(
+                                          children: [
+                                            const Text(
+                                              'Sent by: ',
+                                              style: TextStyle(
+                                                  color: Colors.grey,
+                                                  fontSize: 12),
+                                            ),
+                                            Text(
+                                              noticeresponse![index][
+                                              'staffName'] ==
+                                                  null
+                                                  ? '--'
+                                                  : noticeresponse![
+                                              index][
+                                              'staffName']
+                                                  .toString(),
+                                              style: const TextStyle(
+                                                  fontSize: 12),
+                                            ),
+                                          ],
+                                        ),
+                                        const Spacer(),
+                                        GestureDetector(
+                                          onTap: () async {
+                                            var newProvider =
+                                            await Provider.of<
+                                                NoticeProvider>(
+                                                context,
+                                                listen: false)
+                                                .noticeAttachement(
+                                                noticeattach);
+                                            if (value.extension
+                                                .toString() ==
+                                                '.pdf') {
+                                              final result = value.url
+                                                  .toString();
+                                              final name = value.name
+                                                  .toString();
 
-                                                        Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                const PDFDownload(),
-                                                          ),
-                                                        );
-                                                      } else {
-                                                        Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  const PdfViewPage()),
-                                                        );
-                                                      }
-                                                    },
-                                                    child: SizedBox(
-                                                      height: 25,
-                                                      width: 25,
-                                                      child: LottieBuilder.network(
-                                                              "https://assets2.lottiefiles.com/temp/lf20_D0nz3r.json") ?? const Icon(Icons
-                                                              .remove_red_eye_outlined),
-                                                    ),
-                                                  ),
-                                                  kWidth,
-                                                ],
-                                              )
-                                            ],
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      PDFDownload(),
+                                                ),
+                                              );
+                                            } else {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        PdfViewPage()),
+                                              );
+                                            }
+                                          },
+                                          child: Container(
+                                            height: 25,
+                                            width: 25,
+                                            child: LottieBuilder.network(
+                                                "https://assets2.lottiefiles.com/temp/lf20_D0nz3r.json") ==
+                                                null
+                                                ? Icon(Icons
+                                                .remove_red_eye_outlined)
+                                                : LottieBuilder.network(
+                                                "https://assets2.lottiefiles.com/temp/lf20_D0nz3r.json"),
                                           ),
                                         ),
-                                      ),
-                                    ),
-                                  ),
+                                        kWidth,
+                                      ],
+                                    )
+                                  ],
                                 ),
                               ),
                             ),
-                          );
-                        },
+                          ),
+                        ),
                       ),
-                    );
+                    ),
+                  ),
+                );
+              },
+            ),
+          );
         },
       ),
     );
@@ -265,13 +283,13 @@ class NoticeBoard extends StatelessWidget {
 }
 
 class PDFDownload extends StatefulWidget {
-  const PDFDownload({
+  PDFDownload({
     Key? key,
   }) : super(key: key);
   static void downloadCallback(
       String id, DownloadTaskStatus status, int progress) {
     final SendPort send =
-        IsolateNameServer.lookupPortByName('downloader_send_port')!;
+    IsolateNameServer.lookupPortByName('downloader_send_port')!;
     send.send([id, status, progress]);
   }
 
@@ -308,27 +326,27 @@ class _PDFDownloadState extends State<PDFDownload> {
     super.dispose();
   }
 
-  Future<void> requestDownload(String url, String name) async {
-    String? localPath;
+  Future<void> requestDownload(String _url, String _name) async {
+    var _localPath;
 
     if (Platform.isAndroid) {
-      localPath = '/storage/emulated/0/Download';
+      _localPath = '/storage/emulated/0/Download';
     } else if (Platform.isIOS) {
       final dir = await getApplicationDocumentsDirectory();
-      localPath = dir.path;
+      _localPath = dir.path;
     }
-    print("pathhhh  $localPath");
-    final savedDir = Directory(localPath!);
+    print("pathhhh  $_localPath");
+    final savedDir = Directory(_localPath);
     await savedDir.create(recursive: true).then((value) async {
-      String? taskid = await FlutterDownloader.enqueue(
-        savedDir: localPath!,
-        url: url,
-        fileName: name,
+      String? _taskid = await FlutterDownloader.enqueue(
+        savedDir: _localPath,
+        url: _url,
+        fileName: _name,
         showNotification: true,
         openFileFromNotification: true,
       );
 
-      print(taskid);
+      print(_taskid);
     });
   }
 
@@ -366,11 +384,11 @@ class _PDFDownloadState extends State<PDFDownload> {
 }
 
 class PdfViewPage extends StatefulWidget {
-  const PdfViewPage({Key? key}) : super(key: key);
+  PdfViewPage({Key? key}) : super(key: key);
   static void downloadCallback(
       String id, DownloadTaskStatus status, int progress) {
     final SendPort send =
-        IsolateNameServer.lookupPortByName('downloader_send_port')!;
+    IsolateNameServer.lookupPortByName('downloader_send_port')!;
     send.send([id, status, progress]);
   }
 
@@ -407,28 +425,28 @@ class _PdfViewPageState extends State<PdfViewPage> {
     super.dispose();
   }
 
-  Future<void> requestDownload(String url, String name) async {
-    String? localPath;
+  Future<void> requestDownload(String _url, String _name) async {
+    var _localPath;
 
     if (Platform.isAndroid) {
-      localPath = '/storage/emulated/0/Download';
+      _localPath = '/storage/emulated/0/Download';
     } else if (Platform.isIOS) {
       final dir = await getApplicationDocumentsDirectory();
-      localPath = dir.path;
+      _localPath = dir.path;
     }
-    print("pathhhh  $localPath");
-    final savedDir = Directory(localPath!);
+    print("pathhhh  $_localPath");
+    final savedDir = Directory(_localPath);
     await savedDir.create(recursive: true).then((value) async {
-      String? taskid = await FlutterDownloader.enqueue(
-        savedDir: localPath!,
-        url: url,
-        fileName: " $name",
+      String? _taskid = await FlutterDownloader.enqueue(
+        savedDir: _localPath,
+        url: _url,
+        fileName: " $_name",
         showNotification: true,
         openFileFromNotification: true,
       );
-      log("nweurlll $url");
+      log("nweurlll $_url");
 
-      print(taskid);
+      print(_taskid);
     });
   }
 
@@ -460,19 +478,19 @@ class _PdfViewPageState extends State<PdfViewPage> {
       body: isLoading
           ? spinkitLoader()
           : Center(
-              child: Container(
-                  child: PhotoView(
-                backgroundDecoration: const BoxDecoration(color: UIGuide.WHITE),
-                loadingBuilder: (context, event) {
-                  return spinkitLoader();
-                },
-                imageProvider: NetworkImage(
-                  result == null
-                      ? 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlmeGlXoJwwpbCE9jGgHgZ2XaE5nnPUSomkZz_vZT7&s'
-                      : result.toString(),
-                ),
-              )),
-            ),
+        child: Container(
+            child: PhotoView(
+              backgroundDecoration: BoxDecoration(color: UIGuide.WHITE),
+              loadingBuilder: (context, event) {
+                return spinkitLoader();
+              },
+              imageProvider: NetworkImage(
+                result == null
+                    ? 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlmeGlXoJwwpbCE9jGgHgZ2XaE5nnPUSomkZz_vZT7&s'
+                    : result.toString(),
+              ),
+            )),
+      ),
     );
   }
 

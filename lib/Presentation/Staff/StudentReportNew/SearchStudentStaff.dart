@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SearchStudentByStaff extends StatefulWidget {
-  const SearchStudentByStaff({Key? key}) : super(key: key);
+  SearchStudentByStaff({Key? key}) : super(key: key);
 
   @override
   State<SearchStudentByStaff> createState() => _SearchStudentByStaffState();

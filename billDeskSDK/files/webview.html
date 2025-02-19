@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+<title>WebView addJavascriptInterface Example</title>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>WebView addJavascriptInterface Example</title>
+</head>
+<script language="javascript">
+function sendToAndroid()
+{
+var str=document.getElementById('input').value;
+javascript_object.showToast(str);
+  document.getElementById("mylabel1").innerHTML=javascript_object.message;
+}
+function loadMsg(msg) {
+      document.getElementById("message").innerHTML = msg;
+}
+
+
+</script>
+<center>
+    <h2>Web view 1</h2>
+    <input id="input" type="text">
+    <button onclick="sendToAndroid()">show Toast</button>
+
+    <p id="message">...</p>
+</center>
+</html>

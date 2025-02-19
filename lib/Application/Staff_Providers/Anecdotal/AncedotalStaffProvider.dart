@@ -56,8 +56,8 @@ class AnecdotalStaffProviders with ChangeNotifier {
     fromdateSend = DateFormat('yyyy-MM-dd').format(currentDate!);
     print("dateDis:  $fromdateDisplay");
     print("dateS:  $fromdateSend");
-   todateDisplay = DateFormat('dd-MMM-yyyy').format(currentDate!);
-   todateSend = DateFormat('yyyy-MM-dd').format(currentDate!);
+    todateDisplay = DateFormat('dd-MMM-yyyy').format(currentDate!);
+    todateSend = DateFormat('yyyy-MM-dd').format(currentDate!);
     print("dateDis:  $todateDisplay");
     print("dateS:  $todateSend");
     notifyListeners();
@@ -81,7 +81,7 @@ class AnecdotalStaffProviders with ChangeNotifier {
                 primary: UIGuide.light_Purple,
               ),
               buttonTheme:
-                  const ButtonThemeData(textTheme: ButtonTextTheme.primary),
+              const ButtonThemeData(textTheme: ButtonTextTheme.primary),
             ),
             child: child!);
       },
@@ -150,11 +150,11 @@ class AnecdotalStaffProviders with ChangeNotifier {
     finalSelectedList.clear();
     staffId='';
     staffname='';
-     isimportant = false;
-     showToGuardian = false;
+    isimportant = false;
+    showToGuardian = false;
 
   }
-String? userName;
+  String? userName;
   String? userID;
   List<CategorySubjectModel> remarksCategoryList = [];
   List<MultiSelectItem> categorydropDown = [];
@@ -467,16 +467,16 @@ String? userName;
         setLoading(true);
 
         Map<String, dynamic> data =
-            jsonDecode(await response.stream.bytesToString());
+        jsonDecode(await response.stream.bytesToString());
         print(data);
 
         List<StudentViewAnecdotalModel> templist =
-            List<StudentViewAnecdotalModel>.from(data["results"]
-                .map((x) => StudentViewAnecdotalModel.fromJson(x)));
+        List<StudentViewAnecdotalModel>.from(data["results"]
+            .map((x) => StudentViewAnecdotalModel.fromJson(x)));
         studentViewList.addAll(templist);
 
         PaginationStudentView pagenata =
-            PaginationStudentView.fromJson(data['pagination']);
+        PaginationStudentView.fromJson(data['pagination']);
         pageSize = pagenata.pageSize;
         countStud = pagenata.count;
 
@@ -547,7 +547,7 @@ String? userName;
 
   bool hasMoreData() {
     final totalCount = countStud;
-  print("studentView length :  ${studentViewList.length}");
+    print("studentView length :  ${studentViewList.length}");
     notifyListeners();
     return studentViewList.length < totalCount!;
   }
@@ -615,7 +615,7 @@ String? userName;
 
   void selectItem(StudentViewAnecdotalModel model) {
     StudentViewAnecdotalModel selected =
-        studentViewList.firstWhere((element) => element.admNo == model.admNo);
+    studentViewList.firstWhere((element) => element.admNo == model.admNo);
     selected.selected ??= false;
     selected.selected = !selected.selected!;
     if (selected.selected == false) {
@@ -672,10 +672,10 @@ String? userName;
         Map<String, dynamic> data =
         jsonDecode(await response.stream.bytesToString());
         print(data);
-             templist1 =
+        templist1 =
         List<StaffList>.from(data["results"]
             .map((x) => StaffList.fromJson(x)));
-         staffList.addAll(templist1);
+        staffList.addAll(templist1);
 
         PaginationStaffView pagenata =
         PaginationStaffView.fromJson(data['pagination']);
@@ -826,16 +826,16 @@ String? userName;
 
 
   bool existsInList = false;
- void checkExist(Map<String, dynamic> targetMap,List<Map<String, dynamic>> listOfMaps){
+  void checkExist(Map<String, dynamic> targetMap,List<Map<String, dynamic>> listOfMaps){
 
-   for (var map in listOfMaps) {
-     if (mapsAreEqual(map, targetMap)) {
-       existsInList = true;
-       break;
-     }
-   }
+    for (var map in listOfMaps) {
+      if (mapsAreEqual(map, targetMap)) {
+        existsInList = true;
+        break;
+      }
+    }
 
-}
+  }
   bool mapsAreEqual(Map<String, dynamic> map1, Map<String, dynamic> map2) {
     if (map1.length != map2.length) {
       return false;
@@ -851,6 +851,7 @@ String? userName;
 
   //  save anecdotal
   int status = 0;
+  String? saveId;
   Future getSaveAnecdotal(String categoryID, String subjectID, String remarks,
       List studList,String staffID, BuildContext context) async {
     status = 0;
@@ -862,7 +863,7 @@ String? userName;
     };
     //try {
     var request =
-        http.Request('POST', Uri.parse('${UIGuide.baseURL}/anecdotal/create'));
+    http.Request('POST', Uri.parse('${UIGuide.baseURL}/anecdotal/create'));
     request.body = json.encode({
       "categoryId": categoryID,
       "subject": subjectID,
@@ -897,17 +898,22 @@ String? userName;
     if (response.statusCode == 200) {
       setLoadingPage(true);
       await AwesomeDialog(
-              context: context,
-              dialogType: DialogType.success,
-              animType: AnimType.rightSlide,
-              headerAnimationLoop: false,
-              title: 'Success',
-              desc: 'Saved Successfully',
-              btnOkOnPress: () {},
-              btnOkIcon: Icons.cancel,
-              btnOkColor: Colors.green)
+          context: context,
+          dialogType: DialogType.success,
+          animType: AnimType.rightSlide,
+          headerAnimationLoop: false,
+          title: 'Success',
+          desc: 'Saved Successfully',
+          btnOkOnPress: () {},
+          btnOkIcon: Icons.cancel,
+          btnOkColor: Colors.green)
           .show();
       status = 200;
+      String data =
+      jsonDecode(await response.stream.bytesToString());
+      saveId= data.toString();
+      print("idddddddddddd");
+      print(saveId);
 
       setLoadingPage(false);
       notifyListeners();
@@ -924,6 +930,64 @@ String? userName;
     //   setLoadingPage(false);
     // }
   }
+
+
+  //notification
+
+  Future sendanecdotalNotiication(String categoryID, String subjectID, String remarks,
+      List studList,String staffID, BuildContext context) async {
+    status = 0;
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    setLoadingPage(true);
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+    };
+    //try {
+    var request =
+    http.Request('POST', Uri.parse('${UIGuide.baseURL}/anecdotal/sentAnecdotalNotification/$saveId'));
+    print(request);
+    request.body = json.encode({
+      "categoryId": categoryID,
+      "subject": subjectID,
+      "createdDate": fromdateSend,
+      "remarks": remarks,
+      "isImportant": isimportant,
+      "showInGuardianLogin": showToGuardian,
+      "studId": studList,
+      "studentId": studList,
+      "staffId": staffID
+    });
+    print(
+        json.encode({
+          "categoryId": categoryID,
+          "subject": subjectID,
+          "createdDate": fromdateSend,
+          "time": {"hour": hour, "minute": minute, "second": second},
+          "remarks": remarks,
+          "isImportant": isimportant,
+          "showInGuardianLogin": showToGuardian,
+          "studId": studList,
+          "studentId": studList,
+          "staffId": staffID
+        })
+    );
+
+
+    request.headers.addAll(headers);
+    print(request.body);
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      print("success");
+      setLoadingPage(false);
+      notifyListeners();
+    } else {
+      setLoadingPage(false);
+      print('Error in send notification');
+    }
+  }
+
 
   //update
 
@@ -1310,7 +1374,7 @@ String? userName;
 
   List<StudentViewAnecdotalModel> studentViewListReport = [];
   Future getStudentReportViewList(
-     ) async {
+      ) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoading(true);
     var headers = {
@@ -1504,7 +1568,7 @@ String? userName;
           data.map((x) => AnecdotalCategory.fromJson(x)));
       categoryListt.addAll(templist);
 
-        lastNo= categoryListt.isEmpty? 1 :categoryListt.last.sortOrder! + 1;
+      lastNo= categoryListt.isEmpty? 1 :categoryListt.last.sortOrder! + 1;
 
       setLoading(false);
       notifyListeners();
@@ -1665,7 +1729,7 @@ String? userName;
   }
 
   List<AnecdotalSubjects> subjectList = [];
- int? subLastno;
+  int? subLastno;
   Future<bool> getsubjectList() async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoading(true);
@@ -1806,7 +1870,7 @@ String? userName;
       ));
       notifyListeners();
     }
-   else if (response.statusCode == 422) {
+    else if (response.statusCode == 422) {
       print(await response.stream.bytesToString());
       print('correct');
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -1825,7 +1889,7 @@ String? userName;
       notifyListeners();
     }
 
-      else {
+    else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         elevation: 10,
         shape: RoundedRectangleBorder(

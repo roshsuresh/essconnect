@@ -32,6 +32,7 @@ import 'package:upgrader/upgrader.dart';
 import '../../Application/StudentProviders/InternetConnection.dart';
 import '../../Constants.dart';
 import '../Login_Activation/Login_page.dart';
+import '../Staff/Portion/Portions.dart';
 import '../Student/PasswordChange.dart';
 import 'Anecdotal/AnecdotalInitialScreenAdmin.dart';
 import 'AppReview.dart';
@@ -570,85 +571,7 @@ class AdminHomeContent extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Consumer<ModuleProviders>(
-                    builder: (context, module, child) =>
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () async {
 
-                          module.curiculam == true
-                              ?
-                          await Navigator.push(
-                              context,
-                              PageTransition(
-                                type:
-                                PageTransitionType
-                                    .rightToLeft,
-                                child:
-                                const AnecdotalInitialScreenAdmin(),
-                                duration:
-                                const Duration(
-                                    milliseconds:
-                                    300),
-                              )
-                          )
-
-                              : _noAcess(context);
-                        },
-                        child: Column(
-                          mainAxisAlignment:
-                          MainAxisAlignment
-                              .spaceEvenly,
-                          children: [
-                            Card(
-                              elevation: 10,
-                              color: Colors.white,
-                              shape:
-                              RoundedRectangleBorder(
-                                borderRadius:
-                                BorderRadius
-                                    .circular(
-                                    12.0),
-                              ),
-                              child: Padding(
-                                padding:
-                                const EdgeInsets
-                                    .all(8.0),
-                                child: Container(
-                                  height: 38,
-                                  width: 38,
-                                  decoration:
-                                  const BoxDecoration(
-                                    image:
-                                    DecorationImage(
-                                      opacity: 20,
-                                      image:
-                                      AssetImage(
-                                        'assets/anecdotal.png',
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            kheight10,
-                            const Text(
-                              'Anecdotal',
-                              textAlign:
-                              TextAlign.center,
-                              style: TextStyle(
-                                  fontWeight:
-                                  FontWeight
-                                      .bold,
-                                  fontSize: 11,
-                                  color: Colors
-                                      .black87),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
 
                   Expanded(
                     child: GestureDetector(
@@ -699,108 +622,92 @@ class AdminHomeContent extends StatelessWidget {
                       ),
                     ),
                   ),
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            PageTransition(
-                                type: PageTransitionType.rightToLeft,
-                                child: const AdminGallery(),
-                                duration: const Duration(milliseconds: 200),
-                                childCurrent: this));
-                      },
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Card(
-                            elevation: 10,
-                            color: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12.0),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Container(
-                                height: 38,
-                                width: 38,
-                                decoration: const BoxDecoration(
-                                  image: DecorationImage(
-                                    opacity: 20,
-                                    image: AssetImage(
-                                      'assets/Gallery.png',
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          kheight10,
-                          const Text(
-                            'Gallery',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                fontSize: 11,
-                                color: Colors.black87,
-                                fontWeight: FontWeight.bold),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
+
                 ],
               ),
-              kheight10,
+              //////
+
               Consumer<ModuleProviders>(
                 builder: (context, module, child) => Row(
                   // crossAxisAlignment: CrossAxisAlignment.start,
                   // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Expanded(
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              PageTransition(
-                                  type: PageTransitionType.rightToLeft,
-                                  child: const ScreenFlashNews(),
-                                  duration: const Duration(milliseconds: 200),
-                                  childCurrent: this));
-                        },
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Card(
-                              elevation: 10,
-                              color: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12.0),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Container(
-                                  height: 38,
-                                  width: 38,
-                                  decoration: const BoxDecoration(
-                                    image: DecorationImage(
-                                      opacity: 20,
-                                      image: AssetImage(
-                                        'assets/01flashnews.png',
+                    Consumer<ModuleProviders>(
+                      builder: (context, module, child) =>
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () async {
+
+                            module.curiculam == true
+                                ?
+                            await Navigator.push(
+                                context,
+                                PageTransition(
+                                  type:
+                                  PageTransitionType
+                                      .rightToLeft,
+                                  child:
+                                  const AnecdotalInitialScreenAdmin(),
+                                  duration:
+                                  const Duration(
+                                      milliseconds:
+                                      300),
+                                )
+                            )
+
+                                : _noAcess(context);
+                          },
+                          child: Column(
+                            mainAxisAlignment:
+                            MainAxisAlignment
+                                .spaceEvenly,
+                            children: [
+                              Card(
+                                elevation: 10,
+                                color: Colors.white,
+                                shape:
+                                RoundedRectangleBorder(
+                                  borderRadius:
+                                  BorderRadius
+                                      .circular(
+                                      12.0),
+                                ),
+                                child: Padding(
+                                  padding:
+                                  const EdgeInsets
+                                      .all(8.0),
+                                  child: Container(
+                                    height: 38,
+                                    width: 38,
+                                    decoration:
+                                    const BoxDecoration(
+                                      image:
+                                      DecorationImage(
+                                        opacity: 20,
+                                        image:
+                                        AssetImage(
+                                          'assets/anecdotal.png',
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                            kheight10,
-                            const Text(
-                              'Flash News',
-                              style: TextStyle(
-                                  fontSize: 11,
-                                  color: Colors.black87,
-                                  fontWeight: FontWeight.bold),
-                            )
-                          ],
+                              kheight10,
+                              const Text(
+                                'Anecdotal',
+                                textAlign:
+                                TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight:
+                                    FontWeight
+                                        .bold,
+                                    fontSize: 11,
+                                    color: Colors
+                                        .black87),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -855,6 +762,210 @@ class AdminHomeContent extends StatelessWidget {
                         ),
                       ),
                     ),
+
+                    Consumer<Curriculamprovider>(
+                      builder: (context, curri, child) =>
+                          Expanded(
+                            child: GestureDetector(
+                              onTap: () async {
+                                if (module.curiculam == true) {
+                                  await Provider.of<
+                                      Curriculamprovider>(
+                                      context,
+                                      listen: false)
+                                      .getCuriculamtoken();
+                                  String token =
+                                  curri.token.toString();
+
+                                  await Navigator.push(
+                                    context,
+                                    PageTransition(
+                                      type: PageTransitionType
+                                          .rightToLeft,
+                                      child: PortionScreen(),
+                                      duration: const Duration(
+                                          milliseconds: 300),
+                                    ),
+                                  );
+                                } else {
+                                  _noAcess(context);
+                                }
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 5, right: 5),
+                                child: Column(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Card(
+                                      elevation: 10,
+                                      color: Colors.white,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                        BorderRadius.circular(
+                                            12.0),
+                                      ),
+                                      child: Padding(
+                                        padding:
+                                        const EdgeInsets.all(8.0),
+                                        child: Container(
+                                          height: 38,
+                                          width: 38,
+                                          decoration: BoxDecoration(
+                                            image:
+                                            const DecorationImage(
+                                              opacity: 20,
+                                              image: AssetImage(
+                                                'assets/Portion Entry.png',
+                                              ),
+                                            ),
+                                            borderRadius:
+                                            BorderRadius.circular(
+                                                10),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    kheight10,
+                                    const Text(
+                                      'Portion',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 11,
+                                          color: Colors.black),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                    ),
+
+                    Consumer<Curriculamprovider>(
+                      builder: (context, curri, child) => Expanded(
+                        child: GestureDetector(
+                          onTap: () async {
+                            if (module.curiculam == true) {
+                              await Provider.of<Curriculamprovider>(context,
+                                  listen: false)
+                                  .getCuriculamtoken();
+                              String token = curri.token.toString();
+                              await Navigator.push(
+                                  context,
+                                  PageTransition(
+                                      type: PageTransitionType.rightToLeft,
+                                      child: CurriculamPage(
+                                        token: token,
+                                      ),
+                                      duration:
+                                      const Duration(milliseconds: 200),
+                                      childCurrent: this));
+                            } else {
+                              _noAcess(context);
+                            }
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 10, right: 10),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Card(
+                                  elevation: 10,
+                                  color: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12.0),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Container(
+                                      height: 38,
+                                      width: 38,
+                                      decoration: BoxDecoration(
+                                        image: const DecorationImage(
+                                          opacity: 20,
+                                          image: AssetImage(
+                                            'assets/Curriculum.png',
+                                          ),
+                                        ),
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                kheight10,
+                                const Text(
+                                  'e-Classroom',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 11,
+                                      color: Colors.black87),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              kheight10,
+              Consumer<ModuleProviders>(
+                builder: (context, module, child) => Row(
+                  // crossAxisAlignment: CrossAxisAlignment.start,
+                  // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              PageTransition(
+                                  type: PageTransitionType.rightToLeft,
+                                  child: const ScreenFlashNews(),
+                                  duration: const Duration(milliseconds: 200),
+                                  childCurrent: this));
+                        },
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Card(
+                              elevation: 10,
+                              color: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12.0),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  height: 38,
+                                  width: 38,
+                                  decoration: const BoxDecoration(
+                                    image: DecorationImage(
+                                      opacity: 20,
+                                      image: AssetImage(
+                                        'assets/01flashnews.png',
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            kheight10,
+                            const Text(
+                              'Flash News',
+                              style: TextStyle(
+                                  fontSize: 11,
+                                  color: Colors.black87,
+                                  fontWeight: FontWeight.bold),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+
                     Expanded(
                       child: GestureDetector(
                         onTap: () {
@@ -906,68 +1017,52 @@ class AdminHomeContent extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Consumer<Curriculamprovider>(
-                      builder: (context, curri, child) => Expanded(
-                        child: GestureDetector(
-                          onTap: () async {
-                            if (module.curiculam == true) {
-                              await Provider.of<Curriculamprovider>(context,
-                                      listen: false)
-                                  .getCuriculamtoken();
-                              String token = curri.token.toString();
-                              await Navigator.push(
-                                  context,
-                                  PageTransition(
-                                      type: PageTransitionType.rightToLeft,
-                                      child: CurriculamPage(
-                                        token: token,
-                                      ),
-                                      duration:
-                                          const Duration(milliseconds: 200),
-                                      childCurrent: this));
-                            } else {
-                              _noAcess(context);
-                            }
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 10, right: 10),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Card(
-                                  elevation: 10,
-                                  color: Colors.white,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12.0),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Container(
-                                      height: 38,
-                                      width: 38,
-                                      decoration: BoxDecoration(
-                                        image: const DecorationImage(
-                                          opacity: 20,
-                                          image: AssetImage(
-                                            'assets/Curriculum.png',
-                                          ),
-                                        ),
-                                        borderRadius: BorderRadius.circular(10),
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              PageTransition(
+                                  type: PageTransitionType.rightToLeft,
+                                  child: const AdminGallery(),
+                                  duration: const Duration(milliseconds: 200),
+                                  childCurrent: this));
+                        },
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Card(
+                              elevation: 10,
+                              color: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12.0),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Container(
+                                  height: 38,
+                                  width: 38,
+                                  decoration: const BoxDecoration(
+                                    image: DecorationImage(
+                                      opacity: 20,
+                                      image: AssetImage(
+                                        'assets/Gallery.png',
                                       ),
                                     ),
                                   ),
                                 ),
-                                kheight10,
-                                const Text(
-                                  'e-Classroom',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 11,
-                                      color: Colors.black87),
-                                )
-                              ],
+                              ),
                             ),
-                          ),
+                            kheight10,
+                            const Text(
+                              'Gallery',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 11,
+                                  color: Colors.black87,
+                                  fontWeight: FontWeight.bold),
+                            )
+                          ],
                         ),
                       ),
                     ),

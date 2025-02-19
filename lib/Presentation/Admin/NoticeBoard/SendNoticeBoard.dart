@@ -761,6 +761,20 @@ class _SendNoticeBoardAdminState extends State<SendNoticeBoardAdmin> {
                                   subjectData,
                                   categoryvalueController.text,
                                   val.imageid ?? "");
+
+                              await val.noticeBoardSendNotification(datee.toString(),
+                                  val.fromDateDis,
+                                  val.toDateDis,
+                                  titleController.text,
+                                  mattercontroller.text,
+                                  value.toggleVal,
+                                  courseData,
+                                  divisionData,
+                                  subjectData,
+                                  categoryvalueController.text,
+                                  val.imageid ?? "",
+                                  val.noticeBoardId.toString()
+                              );
                             }
                           } else {
                             if (titleController.text.trim().isEmpty ||
@@ -796,6 +810,20 @@ class _SendNoticeBoardAdminState extends State<SendNoticeBoardAdmin> {
                                   subjectData,
                                   categoryvalueController.text,
                                   val.imageid ?? "");
+
+                              await val.noticeBoardSendNotification(datee.toString(),
+                                  val.fromDateDis,
+                                  val.toDateDis,
+                                  titleController.text,
+                                  mattercontroller.text,
+                                  value.toggleVal,
+                                  courseData,
+                                  divisionData,
+                                  subjectData,
+                                  categoryvalueController.text,
+                                  val.imageid ?? "",
+                                  val.noticeBoardId.toString()
+                              );
                             }
                           }
                         }),

@@ -487,16 +487,15 @@ class NoticeBoardAdminProvider with ChangeNotifier {
       String CategoryId,
       String AttachmentId,
       String noticeID) async {
-    setLoadSave(true);
-    SharedPreferences pref = await SharedPreferences.getInstance();
-
+    SharedPreferences _pref = await SharedPreferences.getInstance();
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
     var request = http.Request('POST',
-        Uri.parse('${UIGuide.baseURL}/mobileapp/staffdet/notification'));
-
+        Uri.parse('${UIGuide.baseURL}/notice-board/sentNotification/$noticeBoardId'));
+    print("notifffff");
+    print(request);
     request.body = json.encode({
       "entryDate": entryDate,
       "DisplayStartDate": DisplayStartDate,
@@ -505,27 +504,87 @@ class NoticeBoardAdminProvider with ChangeNotifier {
       "Matter": Matter,
       "displayTo": toggle,
       "StaffRole": null,
-      "CourseId": course,
-      "DivisionId": division,
-      "SectionList": section,
+      "CourseId": course.isEmpty?null:course,
+      "DivisionId": division.isEmpty?null:division,
+      "SectionId": section.isEmpty?null:section,
       "CategoryId": CategoryId,
       "ForClassTeachersOnly": false,
       "AttachmentId": AttachmentId
     });
     print(request.body);
+
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
 
     if (response.statusCode == 200) {
-      setLoadSave(false);
+
       print('-Notification success-');
+
+      notifyListeners();
     } else {
-      setLoadSave(false);
+
       print("Error in notice send notification");
     }
   }
 
+  //approve notoifcation
+
+  Future noticeBoardApproveNotification(
+      String eventId,
+      String entryDate,
+      String DisplayStartDate,
+      String DisplayEndDate,
+      String Titlee,
+      String Matter,
+      String toggle,
+      List course,
+      List division,
+      String CategoryId,
+      String AttachmentId,
+      String noticeID) async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+    };
+    var request = http.Request('POST',
+        Uri.parse('${UIGuide.baseURL}/notice-board/sentNotification/$eventId'));
+
+    print("notifffff");
+    print(request);
+    request.body = json.encode({
+      "entryDate": entryDate,
+      "DisplayStartDate": DisplayStartDate,
+      "DisplayEndDate": DisplayEndDate,
+      "Title": Titlee,
+      "Matter": Matter,
+      "displayTo": toggle,
+      "StaffRole": null,
+      "CourseId": course.isEmpty?null:course,
+      "DivisionId": division.isEmpty?null:division,
+      "SectionId": null,
+      "CategoryId": CategoryId,
+      "ForClassTeachersOnly": false,
+      "AttachmentId": AttachmentId=="null"?"":AttachmentId,
+    });
+    print(request.body);
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      print('-Notification success-');
+
+
+    } else {
+      print("Error in notice send notification");
+    }
+  }
+
+  //Notice
   //NoticeBoard category
 
   clearListcategoryListt() {

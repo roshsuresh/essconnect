@@ -64,15 +64,15 @@ class _StudReportStaffState extends State<StudReportStaff> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const SearchStudentByStaff()),
+                                  builder: (context) => SearchStudentByStaff()),
                             );
                           },
                           icon: const Icon(Icons.search)),
                 )
               ],
             ),
-            body: const TabBarView(
-                physics: NeverScrollableScrollPhysics(),
+            body: TabBarView(
+                physics: const NeverScrollableScrollPhysics(),
                 children: [
                   StudReportStaffScreen(),
                   StudReportTerminatedStaffScreen(),

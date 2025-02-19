@@ -305,7 +305,7 @@ class StudReportListProvider_stf with ChangeNotifier {
       request.body = json.encode({"SchoolId": pref.getString('schoolId')});
       request.headers.addAll(headers);
       http.StreamedResponse response = await request.send();
-
+   print(request);
       if (response.statusCode == 200) {
         Map<String, dynamic> data =
             jsonDecode(await response.stream.bytesToString());

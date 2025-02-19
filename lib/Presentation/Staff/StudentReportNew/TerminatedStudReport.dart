@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class StudReportTerminatedStaffScreen extends StatefulWidget {
-  const StudReportTerminatedStaffScreen({Key? key}) : super(key: key);
+  StudReportTerminatedStaffScreen({Key? key}) : super(key: key);
 
   @override
   State<StudReportTerminatedStaffScreen> createState() =>
@@ -49,7 +49,14 @@ class _StudReportTerminatedStaffScreenState
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Consumer<StudentReportProviderStaff>(
-      builder: (context, value, child) => Stack(
+      builder: (context, value, child) =>
+      value.sectionList.isEmpty?
+      Center(
+        child:Text("No Access ",style: TextStyle(
+            fontSize: 16,fontWeight: FontWeight.w500
+        ),) ,
+      ):
+          Stack(
         children: [
           Column(
             children: [
@@ -458,12 +465,12 @@ class _StudReportTerminatedStaffScreenState
                                     color: Colors.grey.withOpacity(0.5),
                                     spreadRadius: 0.5,
                                     blurRadius: 3,
-                                    offset: const Offset(0, 2),
+                                    offset: Offset(0, 2),
                                   ),
                                 ],
                                 color: UIGuide.light_Purple,
                                 borderRadius:
-                                    const BorderRadius.all(Radius.circular(10))),
+                                    BorderRadius.all(Radius.circular(10))),
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
@@ -502,7 +509,7 @@ class _StudReportTerminatedStaffScreenState
                                               width: 70,
                                               height: 70,
                                               decoration: BoxDecoration(
-                                                color: const Color.fromARGB(
+                                                color: Color.fromARGB(
                                                     255, 224, 224, 224),
                                                 image: DecorationImage(
                                                     fit: BoxFit.cover,

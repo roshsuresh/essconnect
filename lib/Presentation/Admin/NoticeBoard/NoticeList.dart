@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import '../../../Application/AdminProviders/NoticeBoardadmin.dart';
+
 class NoticeBoardListAdmin extends StatelessWidget {
   const NoticeBoardListAdmin({Key? key}) : super(key: key);
 
@@ -345,6 +347,20 @@ class NoticeBoardListAdmin extends StatelessWidget {
 
                                                                 Navigator.pop(
                                                                     context);
+                                                                await Provider.of<NoticeBoardAdminProvider>(context,listen: false).
+                                                                noticeBoardApproveNotification(
+                                                                    provider.id.toString(),
+                                                                    provider.createdDate.toString(),
+                                                                    provider.displayStartDate.toString(),
+                                                                    provider.displayEndDate.toString(),
+                                                                    provider.title.toString(),
+                                                                    provider.matter.toString(),
+                                                                    'student',
+                                                                    provider.course,
+                                                                    provider.divisions,
+                                                                    provider.categoryId.toString(),
+                                                                    provider.attachmentId.toString(),
+                                                                    provider.id.toString());
                                                                 provider
                                                                     .noticeList
                                                                     .clear();

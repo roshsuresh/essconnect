@@ -160,6 +160,7 @@ class StudentDetailsList {
 class FeeFeesInstallments {
   String? feesDetailsId;
   String? installmentName;
+  int? installmentGroup;
   double? installmentNetDue;
   double? concessionAmount;
   double? netDue;
@@ -175,6 +176,7 @@ class FeeFeesInstallments {
   FeeFeesInstallments(
       {this.feesDetailsId,
       this.installmentName,
+        this.installmentGroup,
       this.installmentNetDue,
       this.concessionAmount,
       this.netDue,
@@ -190,6 +192,7 @@ class FeeFeesInstallments {
   FeeFeesInstallments.fromJson(Map<String, dynamic> json) {
     feesDetailsId = json['feesDetailsId'];
     installmentName = json['installmentName'];
+    installmentGroup = json['installmentGroup'];
     installmentNetDue = json['installmentNetDue'];
     concessionAmount = json['concessionAmount'];
     netDue = json['netDue'];
@@ -205,6 +208,7 @@ class FeeFeesInstallments {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['feesDetailsId'] = this.feesDetailsId;
     data['installmentName'] = this.installmentName;
+    data['installmentGroup'] = this.installmentGroup;
     data['installmentNetDue'] = this.installmentNetDue;
     data['concessionAmount'] = this.concessionAmount;
     data['netDue'] = this.netDue;
@@ -221,6 +225,8 @@ class FeeFeesInstallments {
 class FeeBusInstallments {
   String? feesDetailsId;
   String? installmentName;
+  int? installmentGroup;
+  String? offlineBusGroupId;
   double? installmentNetDue;
   double? netDue;
   double? fineAmount;
@@ -235,6 +241,8 @@ class FeeBusInstallments {
   FeeBusInstallments(
       {this.feesDetailsId,
       this.installmentName,
+        this.installmentGroup,
+        this.offlineBusGroupId,
       this.installmentNetDue,
       this.netDue,
       this.fineAmount,
@@ -249,6 +257,8 @@ class FeeBusInstallments {
   FeeBusInstallments.fromJson(Map<String, dynamic> json) {
     feesDetailsId = json['feesDetailsId'];
     installmentName = json['installmentName'];
+    installmentGroup = json['installmentGroup'];
+    offlineBusGroupId = json['offlineBusGroupId'];
     installmentNetDue = json['installmentNetDue'];
     netDue = json['netDue'];
     fineAmount = json['fineAmount'];
@@ -263,6 +273,8 @@ class FeeBusInstallments {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['feesDetailsId'] = this.feesDetailsId;
     data['installmentName'] = this.installmentName;
+    data['installmentGroup'] = this.installmentGroup;
+    data['offlineBusGroupId'] = this.offlineBusGroupId;
     data['installmentNetDue'] = this.installmentNetDue;
     data['netDue'] = this.netDue;
     data['fineAmount'] = this.fineAmount;
@@ -271,6 +283,40 @@ class FeeBusInstallments {
     data['enableInstallment'] = this.enableInstallment;
     data['checkedFees'] = this.checkedFees;
     data['totalPaidAmount'] = this.totalPaidAmount;
+    return data;
+  }
+}
+
+class FeesStore {
+  String? storeFeesDetailsId;
+  String? feesName;
+  double? amount;
+  String? vendorCode;
+  bool? selected;
+  bool? enabled;
+
+  FeesStore(
+      {this.storeFeesDetailsId,
+        this.feesName,
+        this.amount,
+        this.vendorCode,
+       this.selected,
+        this.enabled
+      });
+
+  FeesStore.fromJson(Map<String, dynamic> json) {
+    storeFeesDetailsId = json['storeFeesDetailsId'];
+    feesName = json['feesName'];
+    amount = json['amount'];
+    vendorCode = json['vendorCode'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['storeFeesDetailsId'] = this.storeFeesDetailsId;
+    data['feesName'] = this.feesName;
+    data['amount'] = this.amount;
+    data['vendorCode'] = this.vendorCode;
     return data;
   }
 }

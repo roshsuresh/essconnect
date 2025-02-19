@@ -41,11 +41,14 @@ class _AnecdotalentryScreenState extends State<AnecdotalentryScreen> {
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       var p = Provider.of<AnecdotalStaffProviders>(context, listen: false);
+      var c = Provider.of<AnecdotalStaffListProviders>(context, listen: false);
       await p.setLoading(false);
       await p.clearInitial();
       await p.getCategorySubject();
       await p.getDateNow();
       await p.timeModel();
+      c.clearAnecdotal();
+      c.getAnecdotalList();
     });
   }
 
@@ -116,7 +119,7 @@ class _AnecdotalentryScreenState extends State<AnecdotalentryScreen> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          const StudentListAnecdotalView()));
+                                      const StudentListAnecdotalView()));
                             },
                             child: const Icon(Icons.list_alt)),
                       )
@@ -144,33 +147,33 @@ class _AnecdotalentryScreenState extends State<AnecdotalentryScreen> {
                                 return Dialog(
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
-                                            BorderRadius.circular(15)),
+                                        BorderRadius.circular(15)),
                                     child: LimitedBox(
                                       maxHeight: size.height / 1.3,
                                       child: ListView.builder(
                                           shrinkWrap: true,
                                           itemCount:
-                                              value.remarksCategoryList.length,
+                                          value.remarksCategoryList.length,
                                           itemBuilder: (context, index) {
                                             return ListTile(
                                               onTap: () async {
                                                 Navigator.of(context).pop();
 
                                                 categoryController.text = value
-                                                        .remarksCategoryList[
-                                                            index]
-                                                        .text ??
+                                                    .remarksCategoryList[
+                                                index]
+                                                    .text ??
                                                     '--';
                                                 categoryIDController
                                                     .text = value
-                                                        .remarksCategoryList[
-                                                            index]
-                                                        .value ??
+                                                    .remarksCategoryList[
+                                                index]
+                                                    .value ??
                                                     '--';
                                               },
                                               title: Text(
                                                 value.remarksCategoryList[index]
-                                                        .text ??
+                                                    .text ??
                                                     '--',
                                                 textAlign: TextAlign.start,
                                               ),
@@ -190,7 +193,7 @@ class _AnecdotalentryScreenState extends State<AnecdotalentryScreen> {
                           decoration: const InputDecoration(
                               contentPadding: EdgeInsets.only(left: 5, top: 0),
                               floatingLabelBehavior:
-                                  FloatingLabelBehavior.never,
+                              FloatingLabelBehavior.never,
                               filled: true,
                               fillColor: Colors.transparent,
                               border: OutlineInputBorder(
@@ -228,30 +231,30 @@ class _AnecdotalentryScreenState extends State<AnecdotalentryScreen> {
                                 return Dialog(
                                     shape: RoundedRectangleBorder(
                                         borderRadius:
-                                            BorderRadius.circular(15)),
+                                        BorderRadius.circular(15)),
                                     child: LimitedBox(
                                       maxHeight: size.height / 1.3,
                                       child: ListView.builder(
                                           shrinkWrap: true,
                                           itemCount:
-                                              value.dairySubjectList.length,
+                                          value.dairySubjectList.length,
                                           itemBuilder: (context, index) {
                                             return ListTile(
                                               onTap: () async {
                                                 Navigator.of(context).pop();
 
                                                 subjectController.text = value
-                                                        .dairySubjectList[index]
-                                                        .text ??
+                                                    .dairySubjectList[index]
+                                                    .text ??
                                                     '--';
                                                 subjectIDController.text = value
-                                                        .dairySubjectList[index]
-                                                        .value ??
+                                                    .dairySubjectList[index]
+                                                    .value ??
                                                     '--';
                                               },
                                               title: Text(
                                                 value.dairySubjectList[index]
-                                                        .text ??
+                                                    .text ??
                                                     '--',
                                                 textAlign: TextAlign.start,
                                               ),
@@ -270,14 +273,14 @@ class _AnecdotalentryScreenState extends State<AnecdotalentryScreen> {
                           decoration: const InputDecoration(
                               contentPadding: EdgeInsets.only(left: 5, top: 0),
                               floatingLabelBehavior:
-                                  FloatingLabelBehavior.never,
+                              FloatingLabelBehavior.never,
                               filled: true,
                               fillColor: Colors.transparent,
                               border: OutlineInputBorder(
                                 borderSide: BorderSide(
                                     style: BorderStyle.none, width: 0),
                               ),
-                              labelText: "  Select Dairy Subject",
+                              labelText: "  Select Diary Subject",
                               labelStyle: TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
@@ -354,30 +357,30 @@ class _AnecdotalentryScreenState extends State<AnecdotalentryScreen> {
                         width: 5,
                       ),
                       SizedBox(
-                        height: 38,
-                        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            elevation: 3,
-            foregroundColor: UIGuide.BLACK,
-            backgroundColor: UIGuide.ButtonBlue,
-            padding: const EdgeInsets.all(0),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-              side: const BorderSide(
-                color: UIGuide.light_black,
-              ),
-            ),
-          ),
-          onPressed: () {
-           Navigator.push(context, MaterialPageRoute(builder: (context)=> StaffSelection(staffId: value.staffname)));
-           print(value.staffname);
+                          height: 38,
+                          child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                elevation: 3,
+                                foregroundColor: UIGuide.BLACK,
+                                backgroundColor: UIGuide.ButtonBlue,
+                                padding: const EdgeInsets.all(0),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  side: const BorderSide(
+                                    color: UIGuide.light_black,
+                                  ),
+                                ),
+                              ),
+                              onPressed: () {
+                                Navigator.push(context, MaterialPageRoute(builder: (context)=> StaffSelection(staffId: value.staffname)));
+                                print(value.staffname);
 
 
-          },
-          child: const Icon(Icons.list_alt)
-      )
+                              },
+                              child: const Icon(Icons.list_alt)
+                          )
 
-                        ),
+                      ),
 
                     ],
                   ),
@@ -683,6 +686,18 @@ class _AnecdotalentryScreenState extends State<AnecdotalentryScreen> {
                                                     value.staffId==''?value.userID.toString()
                                                         :value.staffId.toString(),
                                                     context);
+                                                value.status==200?
+                                                value.showToGuardian?
+                                                await value.sendanecdotalNotiication(
+                                                    categoryIDController.text,
+                                                    subjectIDController.text,
+                                                    remarkController.text,
+                                                    value.finalSelectedList,
+                                                    value.staffId==''?value.userID.toString()
+                                                        :value.staffId.toString(),
+                                                    context):
+                                                print("not send"):
+                                                print("error");
                                                 Navigator.pop(context);
                                                 if (value.status == 200) {
                                                   categoryController.clear();
@@ -735,25 +750,33 @@ class _AnecdotalentryScreenState extends State<AnecdotalentryScreen> {
                                     value.staffId==""?value.userID.toString():
                                     value.staffId.toString(),
                                     context);
-                                // value.showToGuardian==true?
-                                // await Provider.of<NotificationToGuardian_Providers>(context,
-                                //     listen: false)
-                                //     .sendCommonNotification(context,
-                                //     categoryController.text,
-                                //     remarkController.text,
-                                //     value.finalSelectedList,
-                                //     sentTo: "Student"):"";
 
-                                if (value.status == 200) {
-                                  categoryController.clear();
-                                  categoryIDController.clear();
-                                  subjectIDController.clear();
-                                  subjectController.clear();
-                                  remarkController.clear();
-                                  value.staffname='';
-                                  value.staffId='';
-                                  value.finalSelectedList.clear();
-                                }
+                                value.status==200?
+                                value.showToGuardian?
+                                await value.sendanecdotalNotiication(
+                                    categoryIDController.text,
+                                    subjectIDController.text,
+                                    remarkController.text,
+                                    value.finalSelectedList,
+                                    value.staffId==''?value.userID.toString()
+                                        :value.staffId.toString(),
+                                    context):
+                                print("not send"):
+                                print("error");
+
+                                categoryController.clear();
+                                categoryIDController.clear();
+                                subjectIDController.clear();
+                                subjectController.clear();
+                                remarkController.clear();
+                                value.staffname='';
+                                value.staffId='';
+                                value.finalSelectedList.clear();
+                                value.showToGuardian=false;
+
+
+                                // Navigator.pop(context);
+
                               }
                             },
                             child: const Text("Save")),
@@ -799,7 +822,7 @@ class _StudentListAnecdotalViewState extends State<StudentListAnecdotalView> {
 
   void _scrollListener() async {
     final provider =
-        Provider.of<AnecdotalStaffProviders>(context, listen: false);
+    Provider.of<AnecdotalStaffProviders>(context, listen: false);
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
       if (provider.hasMoreData()) {
@@ -877,7 +900,7 @@ class _StudentListAnecdotalViewState extends State<StudentListAnecdotalView> {
                                 ),
                               ],
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
+                              BorderRadius.all(Radius.circular(10)),
                             ),
                             buttonIcon: const Icon(
                               Icons.arrow_drop_down_outlined,
@@ -885,19 +908,19 @@ class _StudentListAnecdotalViewState extends State<StudentListAnecdotalView> {
                             ),
                             buttonText: value.sectionLen == 0
                                 ? const Text(
-                                    "Select Section",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16,
-                                    ),
-                                  )
+                              "Select Section",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 16,
+                              ),
+                            )
                                 : Text(
-                                    "   ${value.sectionLen.toString()} Selected",
-                                    style: const TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16,
-                                    ),
-                                  ),
+                              "   ${value.sectionLen.toString()} Selected",
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 16,
+                              ),
+                            ),
                             chipDisplay: MultiSelectChipDisplay.none(),
                             onConfirm: (results) async {
                               sectionData = [];
@@ -908,7 +931,7 @@ class _StudentListAnecdotalViewState extends State<StudentListAnecdotalView> {
 
                               for (var i = 0; i < results.length; i++) {
                                 SectionsModel data =
-                                    results[i] as SectionsModel;
+                                results[i] as SectionsModel;
                                 print(data.name);
                                 print(data.id);
                                 sectionData.add(data.id);
@@ -969,7 +992,7 @@ class _StudentListAnecdotalViewState extends State<StudentListAnecdotalView> {
                                 ),
                               ],
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
+                              BorderRadius.all(Radius.circular(10)),
                             ),
                             buttonIcon: const Icon(
                               Icons.arrow_drop_down_outlined,
@@ -977,19 +1000,19 @@ class _StudentListAnecdotalViewState extends State<StudentListAnecdotalView> {
                             ),
                             buttonText: value.courseLen == 0
                                 ? const Text(
-                                    "Select Course",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16,
-                                    ),
-                                  )
+                              "Select Course",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 16,
+                              ),
+                            )
                                 : Text(
-                                    "   ${value.courseLen.toString()} Selected",
-                                    style: const TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16,
-                                    ),
-                                  ),
+                              "   ${value.courseLen.toString()} Selected",
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 16,
+                              ),
+                            ),
                             chipDisplay: MultiSelectChipDisplay.none(),
                             onConfirm: (results) async {
                               courseData = [];
@@ -998,7 +1021,7 @@ class _StudentListAnecdotalViewState extends State<StudentListAnecdotalView> {
 
                               for (var a = 0; a < results.length; a++) {
                                 SectionsModel data =
-                                    results[a] as SectionsModel;
+                                results[a] as SectionsModel;
 
                                 courseData.add(data.id);
                                 courseData.map((e) => data.id);
@@ -1068,7 +1091,7 @@ class _StudentListAnecdotalViewState extends State<StudentListAnecdotalView> {
                                 ),
                               ],
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
+                              BorderRadius.all(Radius.circular(10)),
                             ),
                             buttonIcon: const Icon(
                               Icons.arrow_drop_down_outlined,
@@ -1076,26 +1099,26 @@ class _StudentListAnecdotalViewState extends State<StudentListAnecdotalView> {
                             ),
                             buttonText: value.divisionLen == 0
                                 ? const Text(
-                                    "Select Division",
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16,
-                                    ),
-                                  )
+                              "Select Division",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 16,
+                              ),
+                            )
                                 : Text(
-                                    "   ${value.divisionLen.toString()} Selected",
-                                    style: const TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 16,
-                                    ),
-                                  ),
+                              "   ${value.divisionLen.toString()} Selected",
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 16,
+                              ),
+                            ),
                             chipDisplay: MultiSelectChipDisplay.none(),
                             onConfirm: (results) async {
                               divisionData = [];
 
                               for (var i = 0; i < results.length; i++) {
                                 SectionsModel data =
-                                    results[i] as SectionsModel;
+                                results[i] as SectionsModel;
 
                                 print(data.id);
                                 divisionData.add(data.id);
@@ -1152,254 +1175,254 @@ class _StudentListAnecdotalViewState extends State<StudentListAnecdotalView> {
                 ),
                 value.allSelected == true || value.studentViewList.isEmpty
                     ? const SizedBox(
-                        width: 0,
-                        height: 0,
-                      )
+                  width: 0,
+                  height: 0,
+                )
                     : Row(
-                        children: [
-                          const Expanded(
-                            child: SizedBox(height: 25),
-                          ),
-                          kWidth,
-                          Hero(
-                            tag: "tagSelect",
-                            child: SizedBox(
-                              height: 35,
-                              child: InkWell(
-                                onTap: () async {
-                                  await value.selectAll(
-                                      section, course, division);
-                                  // await value.getSelectAllStudents(
-                                  //     section, course, division);
-                                },
-                                child: Card(
-                                  elevation: 5,
-                                  child:
-                                      //  value.allSelected == true
-                                      //     ? Row(
-                                      //         mainAxisSize: MainAxisSize.min,
-                                      //         mainAxisAlignment: MainAxisAlignment.center,
-                                      //         children: [
-                                      //           Text(
-                                      //             ' ${value.allStudentID.length} ',
-                                      //             style: const TextStyle(
-                                      //                 color: UIGuide.light_Purple,
-                                      //                 fontWeight: FontWeight.w600),
-                                      //           ),
-                                      //           Text(" Students selected  "),
-                                      //         ],
-                                      //       )
-                                      //     :
-                                      Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    //mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      const Text("  Select all"),
-                                      Text(
-                                        ' ${value.countStud == null ? ' ' : value.countStud.toString()} ',
-                                        style: const TextStyle(
-                                            color: UIGuide.light_Purple,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                      const Text("students  "),
-                                      SvgPicture.asset(
-                                        UIGuide.notcheck,
-                                        color: UIGuide.light_Purple,
-                                      ),
-                                      kWidth
-                                    ],
-                                  ),
+                  children: [
+                    const Expanded(
+                      child: SizedBox(height: 25),
+                    ),
+                    kWidth,
+                    Hero(
+                      tag: "tagSelect",
+                      child: SizedBox(
+                        height: 35,
+                        child: InkWell(
+                          onTap: () async {
+                            await value.selectAll(
+                                section, course, division);
+                            // await value.getSelectAllStudents(
+                            //     section, course, division);
+                          },
+                          child: Card(
+                            elevation: 5,
+                            child:
+                            //  value.allSelected == true
+                            //     ? Row(
+                            //         mainAxisSize: MainAxisSize.min,
+                            //         mainAxisAlignment: MainAxisAlignment.center,
+                            //         children: [
+                            //           Text(
+                            //             ' ${value.allStudentID.length} ',
+                            //             style: const TextStyle(
+                            //                 color: UIGuide.light_Purple,
+                            //                 fontWeight: FontWeight.w600),
+                            //           ),
+                            //           Text(" Students selected  "),
+                            //         ],
+                            //       )
+                            //     :
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              //mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text("  Select all"),
+                                Text(
+                                  ' ${value.countStud == null ? ' ' : value.countStud.toString()} ',
+                                  style: const TextStyle(
+                                      color: UIGuide.light_Purple,
+                                      fontWeight: FontWeight.w600),
                                 ),
-                              ),
+                                const Text("students  "),
+                                SvgPicture.asset(
+                                  UIGuide.notcheck,
+                                  color: UIGuide.light_Purple,
+                                ),
+                                kWidth
+                              ],
                             ),
                           ),
-                        ],
+                        ),
                       ),
+                    ),
+                  ],
+                ),
                 value.allSelected == true || value.studentViewList.isEmpty
                     ? const SizedBox(
-                        width: 0,
-                        height: 0,
-                      )
+                  width: 0,
+                  height: 0,
+                )
                     : Container(
-                        decoration: BoxDecoration(
-                            color: const Color.fromARGB(255, 241, 243, 245),
-                            border: Border.all(
-                                color: UIGuide.light_black, width: 1)),
+                  decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 241, 243, 245),
+                      border: Border.all(
+                          color: UIGuide.light_black, width: 1)),
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 2.0, bottom: 2),
+                    child: Table(
+                      columnWidths: const {
+                        0: FlexColumnWidth(1.3),
+                        1: FlexColumnWidth(4),
+                        2: FlexColumnWidth(1),
+                      },
+                      children: const [
+                        TableRow(children: [
+                          Text(
+                            ' Sl.No.',
+                            style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          Center(
+                            child: Text(
+                              'Name',
+                              style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(right: 6),
+                            child: Text(
+                              'Select',
+                              textAlign: TextAlign.end,
+                              style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                  color: UIGuide.BLACK),
+                            ),
+                          )
+                        ])
+                      ],
+                    ),
+                  ),
+                ),
+                value.allSelected == true
+                    ? Expanded(
+                  child: GestureDetector(
+                    onTap: () async {
+                      await value.selectAll(section, course, division);
+                    },
+                    child: Center(
+                      child: Card(
+                        elevation: 5,
                         child: Padding(
-                          padding: const EdgeInsets.only(top: 2.0, bottom: 2),
-                          child: Table(
-                            columnWidths: const {
-                              0: FlexColumnWidth(1.3),
-                              1: FlexColumnWidth(4),
-                              2: FlexColumnWidth(1),
-                            },
-                            children: const [
-                              TableRow(children: [
-                                Text(
-                                  ' Sl.No.',
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Center(
-                                  child: Text(
-                                    'Name',
-                                    style: TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(right: 6),
-                                  child: Text(
-                                    'Select',
-                                    textAlign: TextAlign.end,
-                                    style: TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold,
-                                        color: UIGuide.BLACK),
-                                  ),
-                                )
-                              ])
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                ' ${value.allStudentID.length} ',
+                                style: const TextStyle(
+                                    color: UIGuide.light_Purple,
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w700),
+                              ),
+                              const Text(
+                                " Students selected  ",
+                                style: TextStyle(fontSize: 17),
+                              ),
+                              SvgPicture.asset(
+                                UIGuide.check,
+                                color: UIGuide.light_Purple,
+                              ),
                             ],
                           ),
                         ),
                       ),
-                value.allSelected == true
-                    ? Expanded(
-                        child: GestureDetector(
-                          onTap: () async {
-                            await value.selectAll(section, course, division);
-                          },
-                          child: Center(
-                            child: Card(
-                              elevation: 5,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      ' ${value.allStudentID.length} ',
-                                      style: const TextStyle(
-                                          color: UIGuide.light_Purple,
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.w700),
-                                    ),
-                                    const Text(
-                                      " Students selected  ",
-                                      style: TextStyle(fontSize: 17),
-                                    ),
-                                    SvgPicture.asset(
-                                      UIGuide.check,
-                                      color: UIGuide.light_Purple,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      )
+                    ),
+                  ),
+                )
                     : Expanded(
-                        child: Scrollbar(
-                          child: ListView.builder(
-                              controller: _scrollController,
-                              itemCount: value.studentViewList.length,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                return Container(
-                                  decoration: BoxDecoration(
-                                    color: index.isEven
-                                        ? Colors.white
-                                        : const Color.fromARGB(
-                                            255, 241, 243, 245),
-                                    border: Border.all(
-                                        color: UIGuide.light_black, width: 1),
+                  child: Scrollbar(
+                    child: ListView.builder(
+                        controller: _scrollController,
+                        itemCount: value.studentViewList.length,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            decoration: BoxDecoration(
+                              color: index.isEven
+                                  ? Colors.white
+                                  : const Color.fromARGB(
+                                  255, 241, 243, 245),
+                              border: Border.all(
+                                  color: UIGuide.light_black, width: 1),
+                            ),
+                            child: ListTile(
+                              dense: true,
+                              titleAlignment:
+                              ListTileTitleAlignment.center,
+                              shape: const RoundedRectangleBorder(),
+                              selectedColor: UIGuide.light_Purple,
+                              leading: Text(
+                                (index + 1).toString(),
+                                textAlign: TextAlign.center,
+                              ),
+                              onTap: () {
+                                value.selectItem(
+                                    value.studentViewList[index]);
+                              },
+                              selectedTileColor:
+                              const Color.fromARGB(255, 10, 27, 141),
+                              title: Text(
+                                value.studentViewList[index].name ?? "",
+                                style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w600,
+                                    color: UIGuide.BLACK),
+                              ),
+                              subtitle: Row(
+                                children: [
+                                  const Text("Adm no: "),
+                                  Expanded(
+                                    child: Text(
+                                      value.studentViewList[index]
+                                          .admNo ??
+                                          '---',
+                                    ),
                                   ),
-                                  child: ListTile(
-                                    dense: true,
-                                    titleAlignment:
-                                        ListTileTitleAlignment.center,
-                                    shape: const RoundedRectangleBorder(),
-                                    selectedColor: UIGuide.light_Purple,
-                                    leading: Text(
-                                      (index + 1).toString(),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    onTap: () {
-                                      value.selectItem(
-                                          value.studentViewList[index]);
-                                    },
-                                    selectedTileColor:
-                                        const Color.fromARGB(255, 10, 27, 141),
-                                    title: Text(
-                                      value.studentViewList[index].name ?? "",
-                                      style: const TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w600,
-                                          color: UIGuide.BLACK),
-                                    ),
-                                    subtitle: Row(
-                                      children: [
-                                        const Text("Adm no: "),
-                                        Expanded(
-                                          child: Text(
-                                            value.studentViewList[index]
-                                                    .admNo ??
-                                                '---',
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    trailing:
-                                        value.studentViewList[index].selected !=
-                                                    null &&
-                                                value.studentViewList[index]
-                                                    .selected!
-                                            ? SvgPicture.asset(
-                                                UIGuide.check,
-                                                color: UIGuide.light_Purple,
-                                              )
-                                            : SvgPicture.asset(
-                                                UIGuide.notcheck,
-                                                color: UIGuide.light_Purple,
-                                              ),
-                                  ),
-                                );
-                              }),
-                        ),
-                      ),
-                value.loadingPage
-                    ? const Padding(
-                        padding: EdgeInsets.all(15.0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              width: 30,
-                              height: 30,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
+                                ],
+                              ),
+                              trailing:
+                              value.studentViewList[index].selected !=
+                                  null &&
+                                  value.studentViewList[index]
+                                      .selected!
+                                  ? SvgPicture.asset(
+                                UIGuide.check,
+                                color: UIGuide.light_Purple,
+                              )
+                                  : SvgPicture.asset(
+                                UIGuide.notcheck,
                                 color: UIGuide.light_Purple,
                               ),
                             ),
-                            kWidth,
-                            Text(
-                              "Please Wait...",
-                              style: TextStyle(
-                                  color: UIGuide.light_Purple,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 16),
-                            )
-                          ],
+                          );
+                        }),
+                  ),
+                ),
+                value.loadingPage
+                    ? const Padding(
+                  padding: EdgeInsets.all(15.0),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: 30,
+                        height: 30,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: UIGuide.light_Purple,
                         ),
+                      ),
+                      kWidth,
+                      Text(
+                        "Please Wait...",
+                        style: TextStyle(
+                            color: UIGuide.light_Purple,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 16),
                       )
+                    ],
+                  ),
+                )
                     : const SizedBox(
-                        height: 0,
-                      )
+                  height: 0,
+                )
               ],
             ),
             if (value.loading) pleaseWaitLoader()
@@ -1409,38 +1432,38 @@ class _StudentListAnecdotalViewState extends State<StudentListAnecdotalView> {
       bottomNavigationBar: Consumer<AnecdotalStaffProviders>(
         builder: (context, snap, _) => snap.loading
             ? const SizedBox(
-                height: 0,
-                width: 0,
-              )
+          height: 0,
+          width: 0,
+        )
             : BottomAppBar(
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                      left: 10, right: 10, top: 5, bottom: 5),
-                  child: SizedBox(
-                    height: 35,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        elevation: 3,
-                        foregroundColor: UIGuide.WHITE,
-                        backgroundColor: UIGuide.light_Purple,
-                        padding: const EdgeInsets.all(0),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            side: const BorderSide(
-                              color: UIGuide.light_black,
-                            )),
-                      ),
-                      onPressed: () async {
-                        await snap.submitStudent(context);
-                      },
-                      child: const Text(
-                        "Proceed",
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ),
-                  ),
+          child: Padding(
+            padding: const EdgeInsets.only(
+                left: 10, right: 10, top: 5, bottom: 5),
+            child: SizedBox(
+              height: 35,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  elevation: 3,
+                  foregroundColor: UIGuide.WHITE,
+                  backgroundColor: UIGuide.light_Purple,
+                  padding: const EdgeInsets.all(0),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      side: const BorderSide(
+                        color: UIGuide.light_black,
+                      )),
+                ),
+                onPressed: () async {
+                  await snap.submitStudent(context);
+                },
+                child: const Text(
+                  "Proceed",
+                  style: TextStyle(fontSize: 16),
                 ),
               ),
+            ),
+          ),
+        ),
       ),
     );
   }
@@ -1448,7 +1471,7 @@ class _StudentListAnecdotalViewState extends State<StudentListAnecdotalView> {
 
 class StaffSelection extends StatefulWidget {
   String staffId;
-   StaffSelection({super.key,required this.staffId});
+  StaffSelection({super.key,required this.staffId});
 
   @override
   State<StaffSelection> createState() => _StaffSelectionState();
@@ -1464,8 +1487,8 @@ class _StaffSelectionState extends State<StaffSelection> {
       _scrollController.addListener(_scrollListener);
       var p = Provider.of<AnecdotalStaffProviders>(context, listen: false);
       p.currentPage=2;
-  p.getStaffList('');
-  p.staffList.clear();
+      p.getStaffList('');
+      p.staffList.clear();
     });
   }
   void _scrollListener() async {
@@ -1488,239 +1511,239 @@ class _StaffSelectionState extends State<StaffSelection> {
       child: Scaffold(
         body: Consumer<AnecdotalStaffProviders>(
           builder: (context,value,_)=>
-           Column(
-            children: [
-              kheight10,
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: const Icon(
-                          Icons.arrow_back_ios_new,
-                          color: Colors.grey,
-                        )),
-                    Expanded(
-                      child: SizedBox(
-                        height: 50,
-                        child: TextField(
-                          focusNode: FocusNode(),
-                          autofocus: true,
-                          controller: controller,
-                          onChanged: (value) {
-                            _debouncer.run(() async {
-                              await Provider.of<AnecdotalStaffProviders>(context,
-                                  listen: false)
-                                  .clearStaffList();
-                              await Provider.of<AnecdotalStaffProviders>(context,
-                                  listen: false)
-                                  .getStaffList(value);
-                              print('-***--**-*-*-*-*-*');
-                            });
-                          },
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20.0),
-                            ),
-                            suffixIcon: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                IconButton(
-                                  icon: const Icon(Icons.close),
-                                  color: Colors.grey,
-                                  onPressed: (() async{
-                                    controller.clear();
-
-                                    await Provider.of<AnecdotalStaffProviders>(context,
-                                        listen: false)
-                                      .clearStaffList();
-                                    await Provider.of<AnecdotalStaffProviders>(context,
-                                        listen: false)
-                                        .getStaffList('');
-                                  }),
-                                ),
-                              ],
-                            ),
-                            hintText: 'Search By Name',
-                            hintStyle: const TextStyle(
+              Column(
+                children: [
+                  kheight10,
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        IconButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            icon: const Icon(
+                              Icons.arrow_back_ios_new,
                               color: Colors.grey,
-                              fontSize: 20,
-                            ),
-                            fillColor: UIGuide.light_black,
-                            filled: true,
-                            //  contentPadding: EdgeInsets.only(left: 8),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide:
-                              const BorderSide(color: Colors.transparent),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            enabledBorder: UnderlineInputBorder(
-                              borderSide: const BorderSide(color: Colors.grey),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          style: const TextStyle(color: UIGuide.light_Purple),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Expanded(
-                flex: 1,
-                child: Consumer<AnecdotalStaffProviders>(
-                    builder: (context, provider, child) {
+                            )),
+                        Expanded(
+                          child: SizedBox(
+                            height: 50,
+                            child: TextField(
+                              focusNode: FocusNode(),
+                              autofocus: true,
+                              controller: controller,
+                              onChanged: (value) {
+                                _debouncer.run(() async {
+                                  await Provider.of<AnecdotalStaffProviders>(context,
+                                      listen: false)
+                                      .clearStaffList();
+                                  await Provider.of<AnecdotalStaffProviders>(context,
+                                      listen: false)
+                                      .getStaffList(value);
+                                  print('-***--**-*-*-*-*-*');
+                                });
+                              },
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                ),
+                                suffixIcon: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    IconButton(
+                                      icon: const Icon(Icons.close),
+                                      color: Colors.grey,
+                                      onPressed: (() async{
+                                        controller.clear();
 
-                      if (provider.staffList.isEmpty) {
-                        Future.delayed(const Duration(seconds: 2));
-
-                        return provider.loading
-                            ? spinkitLoader()
-                            : Center(
-                          child: LottieBuilder.network(
-                              'https://assets2.lottiefiles.com/private_files/lf30_lkquf6qz.json'),
-                        );
-                      }
-                      return provider.loading
-                          ? spinkitLoader()
-                          : ListView.builder(
-                        controller: _scrollController,
-                        physics: const BouncingScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: provider.staffList.isEmpty
-                            ? 0
-                            : provider.staffList.length,
-                        itemBuilder: (context, index) {
-                          return Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              kheight10,
-                              GestureDetector(
-                                onTap: () {
-                             widget.staffId=
-                             provider.staffList[index].id.toString();
-                             provider.staffId =  provider.staffList[index].id.toString();
-                             provider.staffname =  provider.staffList[index].name.toString();
-                             Navigator.pop(context);
-
-                                },
-                                child: Container(
-                                  width: size.width - 15,
-                                  decoration: const BoxDecoration(
-                                      color: UIGuide.light_black,
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(10))),
-                                  child: Row(
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.center,
-                                    children: [
-                                      kWidth,
-
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
-                                              children: [
-
-                                                RichText(
-                                                  overflow:
-                                                  TextOverflow.ellipsis,
-                                                  maxLines: 1,
-                                                  strutStyle: const StrutStyle(
-                                                      fontSize: 8.0),
-                                                  text: TextSpan(
-                                                      style: const TextStyle(
-                                                        fontSize: 13,
-                                                        color: UIGuide
-                                                            .light_Purple,
-                                                        fontWeight:
-                                                        FontWeight.w500,
-                                                      ),
-                                                      text: provider
-                                                          .staffList[
-                                                      index]
-                                                          .name ??
-                                                          '---'),
-                                                ),
-                                              ],
-                                            ),
-
-                                            Row(
-                                              children: [
-
-                                                RichText(
-                                                  overflow:
-                                                  TextOverflow.ellipsis,
-                                                  maxLines: 1,
-                                                  strutStyle: const StrutStyle(
-                                                      fontSize: 8.0),
-                                                  text: TextSpan(
-                                                    style: const TextStyle(
-                                                      fontSize: 11,
-                                                      fontWeight:
-                                                      FontWeight.w500,
-                                                      color: Colors.black,
-                                                    ),
-                                                    text: provider
-                                                        .staffList[
-                                                    index]
-                                                        .designation ??
-                                                        '---',
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      )
-                                    ],
-                                  ),
+                                        await Provider.of<AnecdotalStaffProviders>(context,
+                                            listen: false)
+                                            .clearStaffList();
+                                        await Provider.of<AnecdotalStaffProviders>(context,
+                                            listen: false)
+                                            .getStaffList('');
+                                      }),
+                                    ),
+                                  ],
+                                ),
+                                hintText: 'Search By Name',
+                                hintStyle: const TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 20,
+                                ),
+                                fillColor: UIGuide.light_black,
+                                filled: true,
+                                //  contentPadding: EdgeInsets.only(left: 8),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide:
+                                  const BorderSide(color: Colors.transparent),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: const BorderSide(color: Colors.grey),
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
                               ),
-                            ],
-                          );
-                        },
-                      );
-                    }),
-              ),
-              value.loadingPage
-                  ? const Padding(
-                padding: EdgeInsets.all(15.0),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      width: 30,
-                      height: 30,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        color: UIGuide.light_Purple,
-                      ),
+                              style: const TextStyle(color: UIGuide.light_Purple),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    kWidth,
-                    Text(
-                      "Please Wait...",
-                      style: TextStyle(
-                          color: UIGuide.light_Purple,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 16),
-                    )
-                  ],
-                ),
-              )
-                  : const SizedBox(
-                height: 0,
-              )
-            ],
-          ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: Consumer<AnecdotalStaffProviders>(
+                        builder: (context, provider, child) {
+
+                          if (provider.staffList.isEmpty) {
+                            Future.delayed(const Duration(seconds: 2));
+
+                            return provider.loading
+                                ? spinkitLoader()
+                                : Center(
+                              child: LottieBuilder.network(
+                                  'https://assets2.lottiefiles.com/private_files/lf30_lkquf6qz.json'),
+                            );
+                          }
+                          return provider.loading
+                              ? spinkitLoader()
+                              : ListView.builder(
+                            controller: _scrollController,
+                            physics: const BouncingScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: provider.staffList.isEmpty
+                                ? 0
+                                : provider.staffList.length,
+                            itemBuilder: (context, index) {
+                              return Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  kheight10,
+                                  GestureDetector(
+                                    onTap: () {
+                                      widget.staffId=
+                                          provider.staffList[index].id.toString();
+                                      provider.staffId =  provider.staffList[index].id.toString();
+                                      provider.staffname =  provider.staffList[index].name.toString();
+                                      Navigator.pop(context);
+
+                                    },
+                                    child: Container(
+                                      width: size.width - 15,
+                                      decoration: const BoxDecoration(
+                                          color: UIGuide.light_black,
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(10))),
+                                      child: Row(
+                                        crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                        children: [
+                                          kWidth,
+
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  children: [
+
+                                                    RichText(
+                                                      overflow:
+                                                      TextOverflow.ellipsis,
+                                                      maxLines: 1,
+                                                      strutStyle: const StrutStyle(
+                                                          fontSize: 8.0),
+                                                      text: TextSpan(
+                                                          style: const TextStyle(
+                                                            fontSize: 13,
+                                                            color: UIGuide
+                                                                .light_Purple,
+                                                            fontWeight:
+                                                            FontWeight.w500,
+                                                          ),
+                                                          text: provider
+                                                              .staffList[
+                                                          index]
+                                                              .name ??
+                                                              '---'),
+                                                    ),
+                                                  ],
+                                                ),
+
+                                                Row(
+                                                  children: [
+
+                                                    RichText(
+                                                      overflow:
+                                                      TextOverflow.ellipsis,
+                                                      maxLines: 1,
+                                                      strutStyle: const StrutStyle(
+                                                          fontSize: 8.0),
+                                                      text: TextSpan(
+                                                        style: const TextStyle(
+                                                          fontSize: 11,
+                                                          fontWeight:
+                                                          FontWeight.w500,
+                                                          color: Colors.black,
+                                                        ),
+                                                        text: provider
+                                                            .staffList[
+                                                        index]
+                                                            .designation ??
+                                                            '---',
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        }),
+                  ),
+                  value.loadingPage
+                      ? const Padding(
+                    padding: EdgeInsets.all(15.0),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: 30,
+                          height: 30,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: UIGuide.light_Purple,
+                          ),
+                        ),
+                        kWidth,
+                        Text(
+                          "Please Wait...",
+                          style: TextStyle(
+                              color: UIGuide.light_Purple,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 16),
+                        )
+                      ],
+                    ),
+                  )
+                      : const SizedBox(
+                    height: 0,
+                  )
+                ],
+              ),
         ),
       ),
     );

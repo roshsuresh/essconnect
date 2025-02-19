@@ -59,6 +59,7 @@ import 'Application/Staff_Providers/GallerySendProviderStaff.dart';
 import 'Application/Staff_Providers/MarkReportProvider.dart';
 import 'Application/Staff_Providers/NoticeboardSend.dart';
 import 'Application/Staff_Providers/Notification_ToGuardianProvider.dart';
+import 'Application/Staff_Providers/PortionProvider.dart';
 import 'Application/Staff_Providers/RemarksEntry.dart';
 import 'Application/Staff_Providers/SearchProvider.dart';
 import 'Application/Staff_Providers/StaffFlashnews.dart';
@@ -79,6 +80,7 @@ import 'Application/StudentProviders/NoticProvider.dart';
 import 'Application/StudentProviders/NotificationReceived.dart';
 import 'Application/StudentProviders/PasswordChangeProvider.dart';
 import 'Application/StudentProviders/PaymentHistory.dart';
+import 'Application/StudentProviders/PortionProvider.dart';
 import 'Application/StudentProviders/ProfileProvider.dart';
 import 'Application/StudentProviders/ReportCardProvider.dart';
 import 'Application/StudentProviders/SiblingsProvider.dart';
@@ -326,6 +328,8 @@ class _GjInfoTechState extends State<GjInfoTech> {
         ChangeNotifierProvider(create: (context) => AnecdotalStaffListProviders()),
         ChangeNotifierProvider(create: (context) => TimeTableUploadProvider()),
         ChangeNotifierProvider(create: (context) => AppReviewProvider()),
+        ChangeNotifierProvider(create: (context) => PortionProvider()),
+        ChangeNotifierProvider(create: (context) => StudentPortionProvider()),
 
       ],
 
@@ -379,7 +383,7 @@ class _SplashFuturePageState extends State<SplashFuturePage>
   double _containerSize = 1.5;
   double _textOpacity = 0.0;
   double _containerOpacity = 0.0;
-
+  Timer? _timer;
   late AnimationController _controller;
   late Animation<double> animation1;
 
@@ -463,7 +467,7 @@ class _SplashFuturePageState extends State<SplashFuturePage>
   @override
   void initState() {
     super.initState();
-
+    _startTimer();
     _controller =
         AnimationController(vsync: this, duration: const Duration(seconds: 3));
 
@@ -478,39 +482,64 @@ class _SplashFuturePageState extends State<SplashFuturePage>
     _controller.forward();
 
     Timer(const Duration(seconds: 2), () {
-      setState(() {
+
         _fontSize = 1.06;
-      });
+
     });
 
     Timer(const Duration(seconds: 2), () {
-      setState(() {
+
         _containerSize = 2;
         _containerOpacity = 1;
-      });
+
     });
 
-    Timer(const Duration(seconds: 3), () async {
-      await Provider.of<TokenExpiryCheckProviders>(context, listen: false)
-          .checkTokenExpired(context);
+    // Timer(const Duration(seconds: 3), () async {
+    //   await Provider.of<TokenExpiryCheckProviders>(context, listen: false)
+    //       .checkTokenExpired(context);
+    //
+    //   //democode 20-02-2024
+    //   await Provider.of<LoginProvider>(context, listen: false)
+    //       .getToken(context);
+    //   await Provider.of<LoginProvider>(context, listen: false)
+    //       .getMobileViewerId();
+    //   await Provider.of<LoginProvider>(context, listen: false)
+    //       .getsavemobileViewer(context);
+    //   await Provider.of<LoginProvider>(context, listen: false)
+    //       .sendUserDetails(context);
+    //
+    //   await _checkSession();
+    // }
+    //
+    // );
+  }
+  void _startTimer() {
+    _timer = Timer(const Duration(seconds: 3), _handleTimer);
+  }
+  Future<void> _handleTimer() async {
+    if (!mounted) return;
 
-      //democode 20-02-2024
-      await Provider.of<LoginProvider>(context, listen: false)
-          .getToken(context);
-      await Provider.of<LoginProvider>(context, listen: false)
-          .getMobileViewerId();
-      await Provider.of<LoginProvider>(context, listen: false)
-          .getsavemobileViewer(context);
-      await Provider.of<LoginProvider>(context, listen: false)
-          .sendUserDetails(context);
+    await Provider.of<TokenExpiryCheckProviders>(context, listen: false)
+        .checkTokenExpired(context);
+    await Provider.of<LoginProvider>(context, listen: false).getToken(context);
 
-      await _checkSession();
-    });
+    if (!mounted) return;
+    await Provider.of<LoginProvider>(context, listen: false).getMobileViewerId();
+
+    if (!mounted) return;
+    await Provider.of<LoginProvider>(context, listen: false).getsavemobileViewer(context);
+
+    if (!mounted) return;
+    await Provider.of<LoginProvider>(context, listen: false).sendUserDetails(context);
+
+    if (!mounted) return;
+    await _checkSession();
   }
 
   @override
   void dispose() {
     _controller.dispose();
+    _timer?.cancel();
     super.dispose();
   }
 

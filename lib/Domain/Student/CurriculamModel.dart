@@ -14,3 +14,19 @@ class CurriculamModel {
         "results": results,
       };
 }
+
+class CurriculamAccessToken {
+  CurriculamAccessToken({
+    required this.accessToken,
+  });
+
+  String accessToken;
+
+  factory CurriculamAccessToken.fromJson(Map<String, dynamic> json) => CurriculamAccessToken(
+    accessToken: json["access_token"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "access_token": accessToken,
+  };
+}

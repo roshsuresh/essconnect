@@ -26,11 +26,11 @@ class NoticeProvider with ChangeNotifier {
   }
 
   Future getnoticeList() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
+    SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoading(true);
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
 
     setLoading(true);
@@ -56,10 +56,10 @@ class NoticeProvider with ChangeNotifier {
   }
 
   Future noticeAttachement(String noticeId) async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
+    SharedPreferences _pref = await SharedPreferences.getInstance();
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
     final id = noticeId.toString();
 
@@ -86,4 +86,36 @@ class NoticeProvider with ChangeNotifier {
       print(e);
     }
   }
+
+  Future seeNoticeBoard() async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    setLoading(true);
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+    };
+    var parsedResponse = await parseJWT();
+    final studId = await parsedResponse['ChildId'];
+    var request = http.Request(
+        'POST',
+        Uri.parse(
+            '${UIGuide.baseURL}/mobileapp/token/updateNoticeboardStatus?Type=Student&StudentId=$studId'));
+    request.body = json.encode({"IsSeen": true, "Type": "Student"});
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      setLoading(true);
+      print(
+          '_ _ _ _ _ _ _ _ _ _ _ _   Correct   _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _');
+      setLoading(false);
+    } else {
+      setLoading(false);
+      print(response.statusCode);
+      print('Error in noticecount respo');
+    }
+  }
+
+
 }

@@ -36,6 +36,7 @@ import '../Student/PasswordChange.dart';
 import 'CommunicationToGuardian.dart';
 import 'GalleryUpload.dart';
 import 'NoticeBoard.dart';
+import 'Portion/Portions.dart';
 import 'RemarksEntry.dart';
 import 'StaffProfile.dart';
 import 'StaffTimeTable.dart';
@@ -1674,6 +1675,88 @@ class _StaffHomeState extends State<StaffHome> {
                                       ),
                                     ),
                                   ),
+
+
+                                  Consumer<Curriculamprovider>(
+                                    builder: (context, curri, child) =>
+                                        Expanded(
+                                          child: GestureDetector(
+                                            onTap: () async {
+                                              if (module.curiculam == true) {
+                                                await Provider.of<
+                                                    Curriculamprovider>(
+                                                    context,
+                                                    listen: false)
+                                                    .getCuriculamtoken();
+                                                String token =
+                                                curri.token.toString();
+
+                                                await Navigator.push(
+                                                  context,
+                                                  PageTransition(
+                                                    type: PageTransitionType
+                                                        .rightToLeft,
+                                                    child: PortionScreen(),
+                                                    duration: const Duration(
+                                                        milliseconds: 300),
+                                                  ),
+                                                );
+                                              } else {
+                                                _noAcess();
+                                              }
+                                            },
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 5, right: 5),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                                children: [
+                                                  Card(
+                                                    elevation: 10,
+                                                    color: Colors.white,
+                                                    shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                      BorderRadius.circular(
+                                                          12.0),
+                                                    ),
+                                                    child: Padding(
+                                                      padding:
+                                                      const EdgeInsets.all(8.0),
+                                                      child: Container(
+                                                        height: 38,
+                                                        width: 38,
+                                                        decoration: BoxDecoration(
+                                                          image:
+                                                          const DecorationImage(
+                                                            opacity: 20,
+                                                            image: AssetImage(
+                                                              'assets/Portion Entry.png',
+                                                            ),
+                                                          ),
+                                                          borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  kheight10,
+                                                  const Text(
+                                                    'Portion',
+                                                    style: TextStyle(
+                                                        fontWeight: FontWeight.w600,
+                                                        fontSize: 11,
+                                                        color: Colors.black),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                  ),
+
+
                                   Expanded(
                                     child: GestureDetector(
                                       onTap: () async {

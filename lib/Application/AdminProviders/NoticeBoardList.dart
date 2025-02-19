@@ -119,6 +119,7 @@ class NoticeBoardListAdminProvider with ChangeNotifier {
 
   //edit notice
 
+  String? id;
   String? title;
   String? matter;
   String? displayStartDate;
@@ -127,9 +128,13 @@ class NoticeBoardListAdminProvider with ChangeNotifier {
   bool? cancelled;
   bool? approved;
   String? url;
-
+  String? categoryId;
+  String? attachmentId;
   bool _load = false;
   bool get load => _load;
+  List<String>  course=[];
+  List<String> divisions=[];
+  String? sections;
   setLoad(bool value) {
     _load = value;
     notifyListeners();
@@ -137,11 +142,11 @@ class NoticeBoardListAdminProvider with ChangeNotifier {
 
   Future<bool> editNoticeList(String eventId) async {
     setLoad(true);
-    SharedPreferences pref = await SharedPreferences.getInstance();
+    SharedPreferences _pref = await SharedPreferences.getInstance();
     notifyListeners();
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
     var request = http.Request(
         'GET',
@@ -154,9 +159,10 @@ class NoticeBoardListAdminProvider with ChangeNotifier {
 
     if (response.statusCode == 200) {
       Map<String, dynamic> data =
-          jsonDecode(await response.stream.bytesToString());
-      print(data);
+      jsonDecode(await response.stream.bytesToString());
       NoticeEditAdmin notice = NoticeEditAdmin.fromJson(data);
+
+      id = notice.id;
       title = notice.title;
       matter = notice.matter;
       displayEndDate = notice.displayEndDate;
@@ -164,6 +170,13 @@ class NoticeBoardListAdminProvider with ChangeNotifier {
       createdDate = notice.createdDate;
       cancelled = notice.cancelled;
       approved = notice.approved;
+      course =notice.courseId!;
+      divisions =notice.divisionId!;
+      categoryId =notice.categoryId;
+      attachmentId =notice.attachmentId;
+      sections =notice.sectionId;
+      print("attachment $attachmentId");
+
 
       // Map<String, dynamic> attachment = data['attachment'];
       // AttachmentNoticeAdmin att = AttachmentNoticeAdmin.fromJson(attachment);
