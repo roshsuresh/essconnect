@@ -3,13 +3,15 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
-  awesome_notifications
+  audioplayers_windows
   connectivity_plus
+  file_selector_windows
   firebase_auth
   firebase_core
   flutter_inappwebview_windows
   geolocator_windows
   permission_handler_windows
+  record_windows
   rive_common
   syncfusion_pdfviewer_windows
   url_launcher_windows
