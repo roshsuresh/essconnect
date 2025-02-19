@@ -1,12 +1,13 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:essconnect/Domain/Staff/StudInformation.dart';
-import 'package:essconnect/Domain/Staff/StudentReport_staff.dart';
-import 'package:essconnect/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../Domain/Staff/StudInformation.dart';
+import '../../Domain/Staff/StudentReport_staff.dart';
+import '../../utils/constants.dart';
 
 class Screen_Search_Providers with ChangeNotifier {
   bool _loading = false;

@@ -1,9 +1,4 @@
-import 'package:essconnect/Application/Staff_Providers/Anecdotal/AncedotalStaffProvider.dart';
-import 'package:essconnect/Constants.dart';
-import 'package:essconnect/Presentation/Admin/Anecdotal/AnecDotalAdminEditScreen.dart';
-import 'package:essconnect/Presentation/Staff/Anecdotal/StudAnecdotal/AnecDotalEditScreen.dart';
-import 'package:essconnect/utils/constants.dart';
-import 'package:essconnect/utils/spinkit.dart';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
@@ -11,6 +6,10 @@ import 'package:provider/provider.dart';
 
 import '../../../../Application/Staff_Providers/Anecdotal/AnecdotalStaffListProvider.dart';
 import '../../../../Debouncer.dart';
+import '../../../Constants.dart';
+import '../../../utils/constants.dart';
+import '../../../utils/spinkit.dart';
+import 'AnecDotalAdminEditScreen.dart';
 
 class AnectdotalListAdminScreen extends StatefulWidget {
   const AnectdotalListAdminScreen({super.key});
@@ -47,7 +46,7 @@ class _AnectdotalListAdminScreenState extends State<AnectdotalListAdminScreen> {
 
   Future<void> _refresh() async {
     // Simulate fetching new data
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 2));
     setState(() {
       Provider.of<AnecdotalStaffListProviders>(context, listen: false).anecDotalList.clear();
     });
@@ -213,7 +212,7 @@ class _AnectdotalListAdminScreenState extends State<AnectdotalListAdminScreen> {
 
                                            color: UIGuide.light_black,
                                            width: 1),
-                                       borderRadius: BorderRadius.all(
+                                       borderRadius: const BorderRadius.all(
                                            Radius.circular(10.0)),
                                      ),
                                      child: Column(
@@ -224,24 +223,25 @@ class _AnectdotalListAdminScreenState extends State<AnectdotalListAdminScreen> {
                                              children: [
                                                Container(
 
+                                                 decoration: const BoxDecoration(
+
+                                                     color: UIGuide.THEME_LIGHT
+                                                 ),
+
                                                  child: Padding(
                                                    padding: const EdgeInsets
                                                        .all(2.0),
                                                    child: Text(
                                                      (index + 1).toString(),),
                                                  ),
-                                                 decoration: BoxDecoration(
-
-                                                     color: UIGuide.THEME_LIGHT
-                                                 ),
                                                ),
 
 
-                                               Text("  Name : "),
+                                               const Text("  Name : "),
                                                Text(
                                                  value.anecDotalList[index].name
                                                      .toString(),
-                                                 style: TextStyle(
+                                                 style: const TextStyle(
                                                      color: UIGuide.light_Purple
                                                  ),)
                                              ],
@@ -251,10 +251,10 @@ class _AnectdotalListAdminScreenState extends State<AnectdotalListAdminScreen> {
                                            padding: const EdgeInsets.all(4.0),
                                            child: Row(
                                              children: [
-                                               Text("Admn No : "),
+                                               const Text("Admn No : "),
                                                Text(value.anecDotalList[index]
                                                    .admissionNo.toString(),
-                                                 style: TextStyle(
+                                                 style: const TextStyle(
                                                      color: UIGuide.light_Purple
                                                  ),)
                                              ],
@@ -268,9 +268,9 @@ class _AnectdotalListAdminScreenState extends State<AnectdotalListAdminScreen> {
                                              children: [
                                                Row(
                                                  children: [
-                                                   Text("Date : "),
+                                                   const Text("Date : "),
                                                    Text(formattedDate,
-                                                     style: TextStyle(
+                                                     style: const TextStyle(
                                                          color: UIGuide
                                                              .light_Purple
                                                      ),
@@ -281,7 +281,7 @@ class _AnectdotalListAdminScreenState extends State<AnectdotalListAdminScreen> {
 
                                                Row(
                                                  children: [
-                                                   Text("Created By : "),
+                                                   const Text("Created By : "),
                                                    SizedBox(
 
                                                      width: size.width * 0.40,
@@ -314,7 +314,7 @@ class _AnectdotalListAdminScreenState extends State<AnectdotalListAdminScreen> {
                                              children: [
                                                Row(
                                                  children: [
-                                                   Text("Category: "),
+                                                   const Text("Category: "),
                                                    SizedBox(
                                                      width: size.width * 0.5,
                                                      child: Text(
@@ -352,7 +352,7 @@ class _AnectdotalListAdminScreenState extends State<AnectdotalListAdminScreen> {
                                                                              .id
                                                                              .toString())));
                                                        },
-                                                       child: Icon(
+                                                       child: const Icon(
                                                          Icons.edit_sharp,
                                                          color: UIGuide
                                                              .button1,)
@@ -382,9 +382,9 @@ class _AnectdotalListAdminScreenState extends State<AnectdotalListAdminScreen> {
                                                        builder: (
                                                            BuildContext context) {
                                                          return AlertDialog(
-                                                           title: Text(
+                                                           title: const Text(
                                                                'Are you sure want to delete'),
-                                                           content: Text(
+                                                           content: const Text(
                                                                'You wont be able to revert this!'),
                                                            actions: <Widget>[
                                                              Row(
@@ -400,32 +400,25 @@ class _AnectdotalListAdminScreenState extends State<AnectdotalListAdminScreen> {
                                                                          context)
                                                                          .pop();
                                                                    },
-
-                                                                   child: Text(
-                                                                     'Cancel',
-                                                                     style: TextStyle(
-                                                                         color: UIGuide
-                                                                             .light_Purple
-                                                                     ),),
                                                                    style: ButtonStyle(
-                                                                     backgroundColor: MaterialStateProperty
+                                                                     backgroundColor: WidgetStateProperty
                                                                          .all(
                                                                          UIGuide
                                                                              .THEME_LIGHT),
-                                                                     padding: MaterialStateProperty
+                                                                     padding: WidgetStateProperty
                                                                          .all(
-                                                                       EdgeInsets
+                                                                       const EdgeInsets
                                                                            .symmetric(
                                                                            horizontal: 20.0,
                                                                            vertical: 10.0),
                                                                      ),
-                                                                     textStyle: MaterialStateProperty
+                                                                     textStyle: WidgetStateProperty
                                                                          .all(
-                                                                       TextStyle(
+                                                                       const TextStyle(
                                                                            fontSize: 12.0),
                                                                      ),
 
-                                                                     shape: MaterialStateProperty
+                                                                     shape: WidgetStateProperty
                                                                          .all(
                                                                        RoundedRectangleBorder(
                                                                          borderRadius: BorderRadius
@@ -434,6 +427,13 @@ class _AnectdotalListAdminScreenState extends State<AnectdotalListAdminScreen> {
                                                                        ),
                                                                      ),
                                                                    ),
+
+                                                                   child: const Text(
+                                                                     'Cancel',
+                                                                     style: TextStyle(
+                                                                         color: UIGuide
+                                                                             .light_Purple
+                                                                     ),),
                                                                  ),
                                                                  TextButton(
                                                                    onPressed: () {
@@ -446,32 +446,25 @@ class _AnectdotalListAdminScreenState extends State<AnectdotalListAdminScreen> {
                                                                              .toString(),
                                                                          index);
                                                                    },
-
-                                                                   child: Text(
-                                                                     'OK',
-                                                                     style: TextStyle(
-                                                                         color: UIGuide
-                                                                             .light_Purple
-                                                                     ),),
                                                                    style: ButtonStyle(
-                                                                     backgroundColor: MaterialStateProperty
+                                                                     backgroundColor: WidgetStateProperty
                                                                          .all(
                                                                          UIGuide
                                                                              .THEME_LIGHT),
-                                                                     padding: MaterialStateProperty
+                                                                     padding: WidgetStateProperty
                                                                          .all(
-                                                                       EdgeInsets
+                                                                       const EdgeInsets
                                                                            .symmetric(
                                                                            horizontal: 20.0,
                                                                            vertical: 10.0),
                                                                      ),
-                                                                     textStyle: MaterialStateProperty
+                                                                     textStyle: WidgetStateProperty
                                                                          .all(
-                                                                       TextStyle(
+                                                                       const TextStyle(
                                                                            fontSize: 12.0),
                                                                      ),
 
-                                                                     shape: MaterialStateProperty
+                                                                     shape: WidgetStateProperty
                                                                          .all(
                                                                        RoundedRectangleBorder(
                                                                          borderRadius: BorderRadius
@@ -480,6 +473,13 @@ class _AnectdotalListAdminScreenState extends State<AnectdotalListAdminScreen> {
                                                                        ),
                                                                      ),
                                                                    ),
+
+                                                                   child: const Text(
+                                                                     'OK',
+                                                                     style: TextStyle(
+                                                                         color: UIGuide
+                                                                             .light_Purple
+                                                                     ),),
                                                                  ),
                                                                ],
                                                              ),
@@ -488,7 +488,7 @@ class _AnectdotalListAdminScreenState extends State<AnectdotalListAdminScreen> {
                                                        },
                                                      );
                                                    },
-                                                       child: Icon(Icons
+                                                       child: const Icon(Icons
                                                            .delete_forever_sharp,
                                                          color: UIGuide
                                                              .button2,)),

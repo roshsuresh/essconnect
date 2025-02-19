@@ -8,9 +8,14 @@ import 'package:provider/provider.dart';
 
 import '../../../Application/AdminProviders/NoticeBoardadmin.dart';
 
-class NoticeBoardListAdmin extends StatelessWidget {
+class NoticeBoardListAdmin extends StatefulWidget {
   const NoticeBoardListAdmin({Key? key}) : super(key: key);
 
+  @override
+  State<NoticeBoardListAdmin> createState() => _NoticeBoardListAdminState();
+}
+
+class _NoticeBoardListAdminState extends State<NoticeBoardListAdmin> {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -235,17 +240,25 @@ class NoticeBoardListAdmin extends StatelessWidget {
                                                                       .light_Purple),
                                                             ),
                                                             Expanded(
-                                                                child: Text(
-                                                                    snap.matter ??
-                                                                        '--',
-                                                                    style: const TextStyle(
-                                                                        fontSize:
-                                                                            15,
-                                                                        color: Color.fromARGB(
-                                                                            255,
-                                                                            44,
-                                                                            43,
-                                                                            43)))),
+                                                                child:
+                                                                LinkTextWidget(
+                                                                  text: snap.matter ??
+                                                                      '--',
+                                                                  font: 15,
+                                                                ),
+                                                                // Text(
+                                                                //     snap.matter ??
+                                                                //         '--',
+                                                                //     style: const TextStyle(
+                                                                //         fontSize:
+                                                                //             15,
+                                                                //         color: Color.fromARGB(
+                                                                //             255,
+                                                                //             44,
+                                                                //             43,
+                                                                //             43)))
+
+                                                            ),
                                                           ],
                                                         ),
                                                       ),
@@ -412,8 +425,11 @@ class NoticeBoardListAdmin extends StatelessWidget {
                                           String event = provider
                                               .noticeList[index].id
                                               .toString();
-                                          await provider.noticeDelete(
-                                              event, context, index);
+                                          setState(() async {
+                                            await provider.noticeDelete(
+                                                event, context, index);
+                                          });
+
                                         },
                                         child: const Padding(
                                           padding: EdgeInsets.only(

@@ -14,6 +14,7 @@ class FeeReport extends StatefulWidget {
   const FeeReport({Key? key}) : super(key: key);
 
   @override
+  @override
   State<FeeReport> createState() => _FeeReportState();
 }
 
@@ -22,10 +23,14 @@ class _FeeReportState extends State<FeeReport> {
   DateTime? _mydatetimeTo;
   List subjectData = [];
   List diviData = [];
+  List crs=[];
   String time = '--';
   String timeNow = '--';
   String course = '';
   String section = '';
+
+  String _selectedValue="All";
+  String category= "All";
 
   @override
   void initState() {
@@ -42,6 +47,7 @@ class _FeeReportState extends State<FeeReport> {
       p.courseCounter(0);
       c.allTotal = null;
       p.sectionCounter(0);
+
     });
   }
 
@@ -49,35 +55,6 @@ class _FeeReportState extends State<FeeReport> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          children: [
-            const Spacer(),
-            const Text(
-              'Fee Collection Report',
-            ),
-            const Spacer(),
-            IconButton(
-                onPressed: () {
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const FeeReport()));
-                },
-                icon: const Icon(Icons.refresh_outlined))
-          ],
-        ),
-        titleSpacing: 00.0,
-        centerTitle: true,
-        toolbarHeight: 60.2,
-        toolbarOpacity: 0.8,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-              bottomRight: Radius.circular(25),
-              bottomLeft: Radius.circular(25)),
-        ),
-        backgroundColor: UIGuide.light_Purple,
-      ),
       body: Consumer<FeeReportProvider>(
         builder: (context, val, _) => Stack(
           children: [
@@ -153,39 +130,30 @@ class _FeeReportState extends State<FeeReport> {
                                         ),
                                   chipDisplay: MultiSelectChipDisplay.none(),
                                   onConfirm: (results) async {
-                                    subjectData = [];
-                                    diviData.clear();
-                                    value.courseLen = 0;
-                                    value.divisionLen = 0;
-                                    await Provider.of<SchoolPhotoProviders>(
-                                            context,
-                                            listen: false)
-                                        .clearCourse();
-                                    await Provider.of<SchoolPhotoProviders>(
-                                            context,
-                                            listen: false)
-                                        .clearDivision();
 
-                                    Provider.of<FeeReportProvider>(
-                                            context,
-                                            listen: false)
-                                        .collectionList;
+                                    val.clearcollectionList();
+                                    subjectData.clear();
+                                    value.courselist.clear();
+                                    crs.clear();
+                                    diviData.clear();
+                                    crs.clear();
+                                    course="";
+                                    val.allTotal = null;
+                                    value.courseLen=0;
+
+
+
 
                                     for (var i = 0; i < results.length; i++) {
                                       StudReportSectionList data =
-                                          results[i] as StudReportSectionList;
-                                      print(data.text);
+                                      results[i] as StudReportSectionList;
+
                                       print(data.value);
                                       subjectData.add(data.value);
                                       subjectData.map((e) => data.value);
-                                      print(
-                                          "${subjectData.map((e) => data.value)}");
+                                      print("${subjectData.map((e) => data.value)}");
                                     }
-                                    setState(() {
-                                      value.courselist.clear();
-                                      value.courseDrop.clear();
-                                      value.courseLen = 0;
-                                    });
+                                    print("section data    $subjectData");
                                     section = subjectData.join(',');
                                     await Provider.of<SchoolPhotoProviders>(
                                             context,
@@ -195,9 +163,7 @@ class _FeeReportState extends State<FeeReport> {
                                             context,
                                             listen: false)
                                         .getCourseList(section);
-                                    print("data $subjectData");
 
-                                    print(subjectData.join('&'));
                                   },
                                 ),
                               ),
@@ -272,30 +238,61 @@ class _FeeReportState extends State<FeeReport> {
                                         ),
                                   chipDisplay: MultiSelectChipDisplay.none(),
                                   onConfirm: (results) async {
-                                    diviData = [];
-                                    for (var i = 0; i < results.length; i++) {
-                                      StudReportCourse data =
-                                          results[i] as StudReportCourse;
-                                      print(data.value);
-                                      print(data.text);
-                                      diviData.add(data.value);
-                                      diviData.map((e) => data.value);
-                                      print(
-                                          "${diviData.map((e) => data.value)}");
-                                    }
-                                    course = diviData.join(',');
-                                    await Provider.of<SchoolPhotoProviders>(
-                                            context,
-                                            listen: false)
-                                        .courseCounter(results.length);
-                                    results.clear();
-                                    await Provider.of<SchoolPhotoProviders>(
-                                            context,
-                                            listen: false)
-                                        .getDivisionList(course);
 
-                                    print(diviData.join(','));
-                                  },
+                                    crs= results;
+                                    diviData.clear();
+                                    print("cccccccccccc");
+                                    value.courselist.clear();
+                                    print("clearrrrrrrr");
+                                    val.clearcollectionList();
+                                    val.allTotal = null;
+
+
+                                    // results.clear();
+                                    for (var i = 0; i < results.length; i++) {
+                                  StudReportCourse data =
+                                    crs[i] as StudReportCourse;
+
+                                    print(data.value);
+                                    diviData.add(data.value);
+                                    diviData.map((e) => data.value);
+                                    print("${diviData.map((e) => data.value)}");
+                                    }
+                                    print("divisionDataaa    $diviData");
+                                    course = diviData
+                                        .map((id) => id)
+                                        .join(',');
+                                    print(course);
+                                    await value.courseCounter(diviData.length);
+                                    //value.studentViewList.clear();
+
+                                    print("data division  $course");
+                                    //  await value.getDivisionList(course);
+                                    },
+                                    //diviData = [];
+                                    // for (var i = 0; i < results.length; i++) {
+                                    //   StudReportCourse data =
+                                    //       results[i] as StudReportCourse;
+                                    //   print(data.value);
+                                    //   print(data.text);
+                                    //   diviData.add(data.value);
+                                    //   diviData.map((e) => data.value);
+                                    //   print(
+                                    //       "${diviData.map((e) => data.value)}");
+                                    // }
+                                    // course = diviData.join(',');
+                                    // await Provider.of<SchoolPhotoProviders>(
+                                    //         context,
+                                    //         listen: false)
+                                    //     .courseCounter(results.length);
+                                    // results.clear();
+                                    // await Provider.of<SchoolPhotoProviders>(
+                                    //         context,
+                                    //         listen: false)
+                                    //     .getDivisionList(course);
+                                    //
+                                    // print(diviData.join(','));
+                                 // },
                                 ),
                               ),
                             ),
@@ -337,6 +334,7 @@ class _FeeReportState extends State<FeeReport> {
                             ),
                             onPressed: (() async {
                               value.clearcollectionList();
+                              value.allTotal=null;
                               _mydatetimeFrom = await showDatePicker(
                                 context: context,
                                 initialDate: _mydatetimeFrom ?? DateTime.now(),
@@ -361,7 +359,7 @@ class _FeeReportState extends State<FeeReport> {
                                 print(time);
                               });
                             }),
-                            child: Center(child: Text('From $time')),
+                            child: Center(child: Text('From ${time}')),
                           ),
                         ),
                       ),
@@ -387,6 +385,7 @@ class _FeeReportState extends State<FeeReport> {
                             ),
                             onPressed: (() async {
                               value.clearcollectionList();
+                              value.allTotal=null;
                               _mydatetimeTo = await showDatePicker(
                                 context: context,
                                 initialDate: _mydatetimeTo ?? DateTime.now(),
@@ -424,49 +423,133 @@ class _FeeReportState extends State<FeeReport> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(
-                      width: 120,
-                      height: 40,
-                      child: Consumer<FeeReportProvider>(
-                        builder: (contexr, value, child) => value.loading
-                            ? const Center(
-                                child: Text(
-                                'Loading..',
-                                style: TextStyle(
-                                    color: UIGuide.light_Purple, fontSize: 16),
-                              ))
-                            : ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  elevation: 3,
-                                  foregroundColor: UIGuide.WHITE,
-                                  backgroundColor: UIGuide.light_Purple,
-                                  padding: const EdgeInsets.all(0),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      side: const BorderSide(
-                                        color: UIGuide.light_black,
-                                      )),
-                                ),
-                                onPressed: (() async {
-                                  if (time == "--" || timeNow == "--") {
-                                    snackbarWidget(
-                                        2, "Select From & To date ", context);
-                                  } else {
-                                    DateTime dt1 = _mydatetimeFrom!;
-                                    DateTime dt2 = _mydatetimeTo!;
-                                    Duration diff = dt2.difference(dt1);
-                                    if (diff.inDays >= 0 && diff.inDays <= 30) {
-                                      await Provider.of<FeeReportProvider>(
-                                              context,
-                                              listen: false)
-                                          .clearcollectionList();
-                                      await Provider.of<FeeReportProvider>(
-                                              context,
-                                              listen: false)
-                                          .getFeeReportView(
-                                              section, course, time, timeNow);
+                    Spacer(),
+                    Padding(
+                    padding:   const EdgeInsets.only(left: 10, right: 10),
+                      child: Container(
+                        width: size.width * .42,
+                        height: 40,
+                        padding: EdgeInsets.symmetric(horizontal: 12.0),
+                        decoration: BoxDecoration(
+                          color: Colors.white, // Background color of the box
+                          border: Border.all(color: UIGuide.light_Purple, width: 1), // Border color and width
+                          borderRadius: BorderRadius.circular(8), // Rounded corners
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black26, // Shadow color
+                              blurRadius: 6.0, // Shadow blur effect
+                              offset: Offset(0, 2), // Shadow position
+                            ),
+                          ],
+                        ),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            value: _selectedValue,
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                _selectedValue = newValue!;
+                                val.clearcollectionList();
+                                val.allTotal = null;
+                                if(_selectedValue=='School Fees')
+                                  {
+                                    category="SCHOOL%20FEES";
+                                  }
+                                else if(_selectedValue=='Bus Fees'){
+                                  category="BUS FEES";
+                                }
+                                else{
+                                  category="All";
+                                }
 
-                                      if (value.collectionList.isEmpty) {
+                              });
+                            },
+                            items: <String>['All','School Fees', 'Bus Fees']
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value,style: TextStyle(
+                                    fontWeight: FontWeight.w400
+                                ),),
+                              );
+                            }).toList(),
+                            isExpanded: true,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Spacer(),
+
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10, right: 10),
+                      child: SizedBox(
+                        width: size.width * .42,
+                        height: 40,
+                        child: Consumer<FeeReportProvider>(
+                          builder: (contexr, value, child) => value.loading
+                              ? const Center(
+                                  child: Text(
+                                  'Loading..',
+                                  style: TextStyle(
+                                      color: UIGuide.light_Purple, fontSize: 16),
+                                ))
+                              : ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 3,
+                                    foregroundColor: UIGuide.WHITE,
+                                    backgroundColor: UIGuide.light_Purple,
+                                    padding: const EdgeInsets.all(0),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        side: const BorderSide(
+                                          color: UIGuide.light_black,
+                                        )),
+                                  ),
+                                  onPressed: (() async {
+                                    if (time == "--" || timeNow == "--") {
+                                      snackbarWidget(
+                                          2, "Select From & To date ", context);
+                                    } else {
+                                      DateTime dt1 = _mydatetimeFrom!;
+                                      DateTime dt2 = _mydatetimeTo!;
+                                      Duration diff = dt2.difference(dt1);
+                                      if (diff.inDays >= 0 && diff.inDays <= 30) {
+                                        await Provider.of<FeeReportProvider>(
+                                                context,
+                                                listen: false)
+                                            .clearcollectionList();
+                                        await Provider.of<FeeReportProvider>(
+                                                context,
+                                                listen: false)
+                                            .getFeeReportView(
+                                               category,
+                                                section,
+                                                course,
+                                                time,
+                                                timeNow);
+
+                                        if (value.collectionList.isEmpty) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            const SnackBar(
+                                              elevation: 10,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(20)),
+                                              ),
+                                              duration: Duration(seconds: 3),
+                                              margin: EdgeInsets.only(
+                                                  bottom: 80,
+                                                  left: 30,
+                                                  right: 30),
+                                              behavior: SnackBarBehavior.floating,
+                                              content: Text(
+                                                'No Data For Specified Condition',
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                      } else if (diff.isNegative) {
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(
                                           const SnackBar(
@@ -477,67 +560,47 @@ class _FeeReportState extends State<FeeReport> {
                                             ),
                                             duration: Duration(seconds: 3),
                                             margin: EdgeInsets.only(
-                                                bottom: 80,
-                                                left: 30,
-                                                right: 30),
+                                                bottom: 80, left: 30, right: 30),
                                             behavior: SnackBarBehavior.floating,
                                             content: Text(
-                                              'No Data For Specified Condition',
+                                              'From date should be lesser than To date',
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                        );
+                                      } else {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                            elevation: 10,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.only(
+                                                  topLeft: Radius.circular(20),
+                                                  bottomRight:
+                                                      Radius.circular(20)),
+                                            ),
+                                            duration: Duration(seconds: 3),
+                                            margin: EdgeInsets.only(
+                                                bottom: 80, left: 30, right: 30),
+                                            behavior: SnackBarBehavior.floating,
+                                            content: Text(
+                                              'Please select date range between 30 days',
                                               textAlign: TextAlign.center,
                                             ),
                                           ),
                                         );
                                       }
-                                    } else if (diff.isNegative) {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        const SnackBar(
-                                          elevation: 10,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(20)),
-                                          ),
-                                          duration: Duration(seconds: 3),
-                                          margin: EdgeInsets.only(
-                                              bottom: 80, left: 30, right: 30),
-                                          behavior: SnackBarBehavior.floating,
-                                          content: Text(
-                                            'From date should be lesser than To date',
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        ),
-                                      );
-                                    } else {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        const SnackBar(
-                                          elevation: 10,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.only(
-                                                topLeft: Radius.circular(20),
-                                                bottomRight:
-                                                    Radius.circular(20)),
-                                          ),
-                                          duration: Duration(seconds: 3),
-                                          margin: EdgeInsets.only(
-                                              bottom: 80, left: 30, right: 30),
-                                          behavior: SnackBarBehavior.floating,
-                                          content: Text(
-                                            'Please select date range between 30 days',
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        ),
-                                      );
                                     }
-                                  }
-                                }),
-                                child: const Text(
-                                  'View',
-                                  style: TextStyle(color: Colors.white),
+                                  }),
+                                  child: const Text(
+                                    'View',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
                                 ),
-                              ),
+                        ),
                       ),
                     ),
+                    Spacer()
                   ],
                 ),
                 kheight20,
@@ -629,7 +692,9 @@ class _FeeReportState extends State<FeeReport> {
                 Consumer<FeeReportProvider>(
                   builder: (context, value, child) => Padding(
                     padding: const EdgeInsets.only(left: 3, right: 3),
-                    child: LimitedBox(
+                    child:
+                    value.collectionList.isNotEmpty?
+                    LimitedBox(
                       maxHeight: size.height / 1.8,
                       child: Scrollbar(
                         child: ListView.builder(
@@ -1280,39 +1345,79 @@ class _FeeReportState extends State<FeeReport> {
                               );
                             })),
                       ),
-                    ),
+                    ):
+                    SizedBox(height: 0,width: 0,),
                   ),
                 ),
-                Consumer<FeeReportProvider>(
-                  builder: (context, value, child) => Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      value.allTotal == null
-                          ? const Text('')
-                          : const Text(
-                              "Total:  ",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w700, fontSize: 16),
-                            ),
-                      value.allTotal == null
-                          ? const Text('')
-                          : Text(
-                              value.allTotal == null
-                                  ? '0.00'
-                                  : value.allTotal!.toStringAsFixed(2),
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.w900, fontSize: 16),
-                            ),
-                      kWidth20,
-                      kWidth20
-                    ],
-                  ),
-                )
+                // Consumer<FeeReportProvider>(
+                //   builder: (context, value, child) => Row(
+                //     crossAxisAlignment: CrossAxisAlignment.end,
+                //     mainAxisAlignment: MainAxisAlignment.end,
+                //     children: [
+                //       value.allTotal == null
+                //           ? const Text('')
+                //           : const Text(
+                //               "Total:  ",
+                //               style: TextStyle(
+                //                   fontWeight: FontWeight.w700, fontSize: 16),
+                //             ),
+                //       value.allTotal == null
+                //           ? const Text('')
+                //           : Text(
+                //               value.allTotal == null
+                //                   ? '0.00'
+                //                   : value.allTotal!.toStringAsFixed(2),
+                //               style: const TextStyle(
+                //                   fontWeight: FontWeight.w900, fontSize: 16),
+                //             ),
+                //       kWidth20,
+                //       kWidth20
+                //     ],
+                //   ),
+                // )
               ],
             ),
             if (val.loading) pleaseWaitLoader()
           ],
+        ),
+      ),
+      bottomNavigationBar: Consumer<FeeReportProvider>(
+        builder: (context, snap, _) => snap.loading
+            ? const SizedBox(
+          height: 0,
+          width: 0,
+        )
+            : BottomAppBar(
+          child: Padding(
+            padding: const EdgeInsets.only(
+                left: 10, right: 10, top: 5, bottom: 5),
+            child: SizedBox(
+              height: 35,
+              child:
+
+              // Text("Net Total: ${snap.netAmount}")
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  elevation: 3,
+                  foregroundColor: UIGuide.WHITE,
+                  backgroundColor: UIGuide.light_Purple,
+                  padding: const EdgeInsets.all(0),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      side: const BorderSide(
+                        color: UIGuide.light_black,
+                      )),
+                ),
+                onPressed: () async {
+                },
+                child:
+                Text(
+                  "Net Total: ${snap.allTotal==null?"":snap.allTotal.toString()}",
+                  style: TextStyle(fontSize: 16),
+                ),
+              ),
+            ),
+          ),
         ),
       ),
     );

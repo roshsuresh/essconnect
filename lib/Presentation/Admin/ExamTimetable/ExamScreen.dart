@@ -41,9 +41,9 @@ class ExamTimetable extends StatelessWidget {
             indicatorWeight: 5,
             tabs: [
               Tab(
-                text: "Upload",
+                text: "Entry",
               ),
-              Tab(text: "History"),
+              Tab(text: "List"),
             ],
           ),
           backgroundColor: UIGuide.light_Purple,

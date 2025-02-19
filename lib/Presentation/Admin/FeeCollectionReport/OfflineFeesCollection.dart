@@ -14,12 +14,8 @@ import 'package:provider/provider.dart';
 import '../../../Application/AdminProviders/OfflineFeesCollectionProvider.dart';
 import '../../../Constants.dart';
 import '../../../Debouncer.dart';
-
 import '../../../utils/TextWrap(moreOption).dart';
 import '../../../utils/constants.dart';
-
-
-
 
 class OfflineFeeCollection extends StatefulWidget {
   const OfflineFeeCollection({super.key});
@@ -79,8 +75,8 @@ class _OfflineFeeCollectionState extends State<OfflineFeeCollection> {
                   ),
                   SizedBox(height: 20),
                   Text('Please Wait...',style: TextStyle(
-                    fontSize: 14,
-                    color: UIGuide.ButtonBlue
+                      fontSize: 14,
+                      color: UIGuide.ButtonBlue
                   ),),
                 ],
               ),
@@ -159,6 +155,8 @@ class _OfflineFeeCollectionState extends State<OfflineFeeCollection> {
                             _selectedValue = newValue!;
                             value.collectionlList.clear();
                             value.buscollectionlList.clear();
+                            value.netAmount="";
+                            value.netAmountBus="";
                             print("seeleeeee $_selectedValue");
 
                           });
@@ -168,7 +166,7 @@ class _OfflineFeeCollectionState extends State<OfflineFeeCollection> {
                           return DropdownMenuItem<String>(
                             value: value,
                             child: Text(value,style: TextStyle(
-                              fontWeight: FontWeight.w600
+                                fontWeight: FontWeight.w600
                             ),),
                           );
                         }).toList(),
@@ -249,6 +247,8 @@ class _OfflineFeeCollectionState extends State<OfflineFeeCollection> {
                                 value.exportFeesList.clear();
                                 value.buscollectionlList.clear();
                                 value.exportBusFeesList.clear();
+                                value.netAmount="";
+                                value.netAmountBus="";
 
                                 for (var i = 0; i < results.length; i++) {
                                   OfflineCourse data =
@@ -340,6 +340,8 @@ class _OfflineFeeCollectionState extends State<OfflineFeeCollection> {
                                 value.exportFeesList.clear();
                                 value.buscollectionlList.clear();
                                 value.exportBusFeesList.clear();
+                                value.netAmount="";
+                                value.netAmountBus="";
                                 // results.clear();
                                 for (var i = 0; i < results.length; i++) {
                                   OfflineFeeDiv data =
@@ -359,7 +361,7 @@ class _OfflineFeeCollectionState extends State<OfflineFeeCollection> {
                                 //value.studentViewList.clear();
 
                                 print("data division  $division");
-                              //  await value.getDivisionList(course);
+                                //  await value.getDivisionList(course);
                               },
                             ),
                           ),
@@ -522,103 +524,103 @@ class _OfflineFeeCollectionState extends State<OfflineFeeCollection> {
                                     value.exportFeesList.clear();
                                     value.buscollectionlList.clear();
                                     value.exportBusFeesList.clear();
-                                  //  value.currentPage = 2;
+                                    //  value.currentPage = 2;
 
                                     print("daeeeeetee");
                                     print(value.fromdateselect);
                                     print(value.todateselect);
 
 
-                                      if(value.fromdateselect.isAfter(value.todateselect))
-                                      {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          const SnackBar(
-                                            elevation: 10,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(20)),
-                                            ),
-                                            duration: Duration(seconds: 2),
-                                            margin: EdgeInsets.only(
-                                                bottom: 80,
-                                                left: 30,
-                                                right: 30),
-                                            behavior: SnackBarBehavior.floating,
-                                            content: Text(
-                                              'Invalid Date Range...',
-                                              textAlign: TextAlign.center,
-                                            ),
+                                    if(value.fromdateselect.isAfter(value.todateselect))
+                                    {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        const SnackBar(
+                                          elevation: 10,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(20)),
                                           ),
-                                        );
-                                      }
-
-                                      else {
-
-                                    if(_selectedValue=="School Fees"){
-                                      await value.getFeeCollectionReport(
-                                          courseData,
-                                          divisionData,
-                                          value.fromdateSend,
-                                          value.todateSend
+                                          duration: Duration(seconds: 2),
+                                          margin: EdgeInsets.only(
+                                              bottom: 80,
+                                              left: 30,
+                                              right: 30),
+                                          behavior: SnackBarBehavior.floating,
+                                          content: Text(
+                                            'Invalid Date Range...',
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
                                       );
-
-                                      if (value.collectionlList.isEmpty) {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          const SnackBar(
-                                            elevation: 10,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(10)),
-                                            ),
-                                            duration: Duration(seconds: 1),
-                                            margin: EdgeInsets.only(
-                                                bottom: 80,
-                                                left: 30,
-                                                right: 30),
-                                            behavior: SnackBarBehavior.floating,
-                                            content: Text(
-                                              'No data for specified condition..!',
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ),
-                                        );
-                                      }
-                                    }
-                                    else{
-                                      await   value.getBusFeeCollectionReport(
-                                          courseData,
-                                          divisionData,
-                                          value.fromdateSend,
-                                          value.todateSend
-                                      );
-
-                                      if (value.buscollectionlList.isEmpty) {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          const SnackBar(
-                                            elevation: 10,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(10)),
-                                            ),
-                                            duration: Duration(seconds: 1),
-                                            margin: EdgeInsets.only(
-                                                bottom: 80,
-                                                left: 30,
-                                                right: 30),
-                                            behavior: SnackBarBehavior.floating,
-                                            content: Text(
-                                              'No data for specified condition..!',
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ),
-                                        );
-                                      }
                                     }
 
+                                    else {
+
+                                      if(_selectedValue=="School Fees"){
+                                        await value.getFeeCollectionReport(
+                                            courseData,
+                                            divisionData,
+                                            value.fromdateSend,
+                                            value.todateSend
+                                        );
+
+                                        if (value.collectionlList.isEmpty) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            const SnackBar(
+                                              elevation: 10,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(10)),
+                                              ),
+                                              duration: Duration(seconds: 1),
+                                              margin: EdgeInsets.only(
+                                                  bottom: 80,
+                                                  left: 30,
+                                                  right: 30),
+                                              behavior: SnackBarBehavior.floating,
+                                              content: Text(
+                                                'No data for specified condition..!',
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ),
+                                          );
+                                        }
                                       }
+                                      else{
+                                        await   value.getBusFeeCollectionReport(
+                                            courseData,
+                                            divisionData,
+                                            value.fromdateSend,
+                                            value.todateSend
+                                        );
+
+                                        if (value.buscollectionlList.isEmpty) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            const SnackBar(
+                                              elevation: 10,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(10)),
+                                              ),
+                                              duration: Duration(seconds: 1),
+                                              margin: EdgeInsets.only(
+                                                  bottom: 80,
+                                                  left: 30,
+                                                  right: 30),
+                                              behavior: SnackBarBehavior.floating,
+                                              content: Text(
+                                                'No data for specified condition..!',
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                      }
+
+                                    }
 
                                   },
                                   child: const Text("View")),
@@ -662,22 +664,22 @@ class _OfflineFeeCollectionState extends State<OfflineFeeCollection> {
                                   ),
                                   onPressed: () async {
                                     startLoading();
-                              if(_selectedValue=="School Fees") {
-                                await value.fesscollectionDownload();
-                                requestDownload(
-                                    value.url.toString(),
-                                    value.name.toString(),
-                                    value.id.toString());
-                              }
-                              else{
-                                await value.busfesscollectionDownload();
-                                requestDownload(
-                                    value.url.toString(),
-                                    value.name.toString(),
-                                    value.id.toString());
-                              }
+                                    if(_selectedValue=="School Fees") {
+                                      await value.fesscollectionDownload();
+                                      requestDownload(
+                                          value.url.toString(),
+                                          value.name.toString(),
+                                          value.id.toString());
+                                    }
+                                    else{
+                                      await value.busfesscollectionDownload();
+                                      requestDownload(
+                                          value.url.toString(),
+                                          value.name.toString(),
+                                          value.id.toString());
+                                    }
 
-                                  stopLoading();
+                                    stopLoading();
 
                                   },
                                   child: const Text("Export")),
@@ -699,318 +701,318 @@ class _OfflineFeeCollectionState extends State<OfflineFeeCollection> {
 
                       _selectedValue=="School Fees"?
                       Expanded(
-                            child:
-                                    ListView(
+                        child:
+                        ListView(
+                          children: [
+
+
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8.0,right: 8),
+                              child: Row(
+                                children: [
+                                  value.collectionlList.isEmpty?Text(""):
+                                  Container(
+
+                                    child: Row(
                                       children: [
-
-
-                                        Padding(
-                                          padding: const EdgeInsets.only(left: 8.0,right: 8),
-                                          child: Row(
-                                            children: [
-                                              value.collectionlList.isEmpty?Text(""):
-                                              Container(
-
-                                                  child: Row(
-                                                    children: [
-                                                      Text("  Last Updated Date: ${value.uploadedDate}",
-                                                      style: TextStyle(
-                                                        fontSize: 14,
-                                                        fontWeight: FontWeight.w500,
-                                                        color: UIGuide.light_Purple
-                                                      ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                     ),
-                                            ],
+                                        Text("  Last Updated Date: ${value.uploadedDate}",
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w500,
+                                              color: UIGuide.light_Purple
                                           ),
-                                        ),
-
-                                        ListView.builder(
-
-                                            shrinkWrap: true,
-                                            physics: NeverScrollableScrollPhysics(),
-                                            itemCount: provider.collectionlList.length,
-                                            itemBuilder: (context,index) {
-                                           //   var date= DateFormat('dd-MMM-yyyy').format(provider.collectionlList[index].billDate!);
-                                              DateTime dateTime = DateTime.parse(provider.collectionlList[index].billDate.toString());
-
-                                              String billDate = DateFormat('dd-MM-yyyy').format(dateTime);
-
-                                              return Padding(
-                                                padding:  EdgeInsets.all(4.0),
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-
-                                                      border: Border.all(
-                                                          width: 1,
-                                                          color: UIGuide.THEME_LIGHT
-                                                      ),
-                                                      borderRadius: BorderRadius
-                                                          .all(Radius.circular(8)),
-                                                      color: Colors.white
-                                                  ),
-
-                                                  child: Column(
-                                                    children: [
-                                                      Padding(
-                                                        padding: const EdgeInsets
-                                                            .all(4.0),
-                                                        child: Row(
-                                                          mainAxisAlignment: MainAxisAlignment
-                                                              .spaceBetween,
-                                                          children: [
-                                                            Row(
-
-                                                              children: [
-                                                                Container(
-
-                                                                  child: Padding(
-                                                                    padding: const EdgeInsets
-                                                                        .all(2.0),
-                                                                    child: Text(
-                                                                      (index + 1).toString(),),
-                                                                  ),
-                                                                  decoration: BoxDecoration(
-
-                                                                      color: UIGuide.THEME_LIGHT
-                                                                  ),
-                                                                ),
-
-                                                                Text("Bill No: "),
-                                                                Text(provider
-                                                                    .collectionlList[index]
-                                                                    .billNo
-                                                                    .toString(),
-                                                                  style: TextStyle(
-                                                                      color: UIGuide
-                                                                          .light_Purple
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                            Row(
-
-                                                              children: [
-                                                                Text("Date : "),
-                                                                Text(
-                                                                  billDate,
-                                                                  style: TextStyle(
-                                                                      color: UIGuide
-                                                                          .light_Purple
-                                                                  ),),
-                                                              ],
-                                                            ),
-
-                                                          ],
-                                                        ),
-                                                      ),
-
-                                                      Padding(
-                                                        padding: const EdgeInsets
-                                                            .only(left: 4.0),
-                                                        child: Row(
-
-                                                          children: [
-                                                            Text("Name : "),
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding: const EdgeInsets
-                                                                    .only(top: 4.0),
-                                                                child: TextWrapper(
-                                                                  text: provider
-                                                                      .collectionlList[index]
-                                                                      .studentName
-                                                                      .toString(),
-                                                                  fSize: 14,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      Padding(
-                                                        padding: const EdgeInsets
-                                                            .all(4.0),
-                                                        child: Row(
-                                                          mainAxisAlignment: MainAxisAlignment
-                                                              .spaceBetween,
-                                                          children: [
-                                                            Row(
-
-                                                              children: [
-
-                                                                Text("Admn No: "),
-                                                                Text(provider
-                                                                    .collectionlList[index]
-                                                                    .admnNo
-                                                                    .toString(),
-                                                                  style: TextStyle(
-                                                                      color: UIGuide
-                                                                          .light_Purple
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                            Row(
-
-                                                              children: [
-                                                                Text("Class : "),
-                                                                Text(
-                                                                  provider
-                                                                      .collectionlList[index]
-                                                                      .division ==
-                                                                      null ? "" :
-                                                                  provider
-                                                                      .collectionlList[index]
-                                                                      .division
-                                                                      .toString(),
-                                                                  style: TextStyle(
-                                                                      color: UIGuide
-                                                                          .light_Purple
-                                                                  ),),
-                                                              ],
-                                                            ),
-                                                            Row(
-
-                                                              children: [
-                                                                Text("Roll No : "),
-                                                                Text(
-                                                                  provider
-                                                                      .collectionlList[index]
-                                                                      .rollNo ==
-                                                                      null ? "" :
-                                                                  provider
-                                                                      .collectionlList[index]
-                                                                      .rollNo
-                                                                      .toString(),
-                                                                  style: TextStyle(
-                                                                      color: UIGuide
-                                                                          .light_Purple
-                                                                  ),),
-                                                              ],
-                                                            ),
-
-                                                          ],
-                                                        ),
-                                                      ),
-
-                                                      Padding(
-                                                        padding: const EdgeInsets
-                                                            .all(4.0),
-                                                        child: Row(
-                                                          mainAxisAlignment: MainAxisAlignment
-                                                              .spaceBetween,
-                                                          children: [
-                                                            Row(
-
-                                                              children: [
-
-                                                                Text("Amount : "),
-                                                                Text(provider
-                                                                    .collectionlList[index]
-                                                                    .amount
-                                                                    .toString(),
-                                                                  style: TextStyle(
-                                                                      color: UIGuide
-                                                                          .light_Purple
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                            Row(
-
-                                                              children: [
-                                                                Text("Fine : "),
-                                                                Text(
-                                                                  provider
-                                                                      .collectionlList[index]
-                                                                      .fine == null
-                                                                      ? ""
-                                                                      :
-                                                                  provider
-                                                                      .collectionlList[index]
-                                                                      .fine
-                                                                      .toString(),
-                                                                  style: TextStyle(
-                                                                      color: UIGuide
-                                                                          .light_Purple
-                                                                  ),),
-                                                              ],
-                                                            ),
-                                                            Row(
-
-                                                              children: [
-                                                                Text("Subsidy : "),
-                                                                Text(
-                                                                  provider
-                                                                      .collectionlList[index]
-                                                                      .discount ==
-                                                                      null ? "" :
-                                                                  provider
-                                                                      .collectionlList[index]
-                                                                      .discount
-                                                                      .toString(),
-                                                                  style: TextStyle(
-                                                                      color: UIGuide
-                                                                          .light_Purple
-                                                                  ),),
-                                                              ],
-                                                            ),
-
-                                                          ],
-                                                        ),
-                                                      ),
-
-                                                      Padding(
-                                                        padding: const EdgeInsets
-                                                            .only(left: 4.0),
-                                                        child:
-                                                        value.collectionlList[index].isCancelled==true ?
-                                                        Row(
-                                                          children: [
-                                                            Text("Cancelled",
-                                                              style:TextStyle(
-                                                                  color: Colors.red
-                                                              ) ,),
-                                                          ],
-                                                        ):
-                                                        Row(
-
-                                                          children: [
-
-                                                            Text("Total : "),
-                                                            Expanded(
-                                                              child: Padding(
-                                                                padding: const EdgeInsets
-                                                                    .only(top: 4.0),
-                                                                child: Text(
-                                                                  provider
-                                                                      .collectionlList[index]
-                                                                      .totalAmount
-                                                                      .toString(),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-
-
-                                                    ],
-                                                  ),
-                                                ),
-                                              );
-                                            }
-
                                         ),
                                       ],
                                     ),
+                                  ),
+                                ],
+                              ),
+                            ),
+
+                            ListView.builder(
+
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemCount: provider.collectionlList.length,
+                                itemBuilder: (context,index) {
+                                  //   var date= DateFormat('dd-MMM-yyyy').format(provider.collectionlList[index].billDate!);
+                                  DateTime dateTime = DateTime.parse(provider.collectionlList[index].billDate.toString());
+
+                                  String billDate = DateFormat('dd-MM-yyyy').format(dateTime);
+
+                                  return Padding(
+                                    padding:  EdgeInsets.all(4.0),
+                                    child: Container(
+                                      decoration: BoxDecoration(
+
+                                          border: Border.all(
+                                              width: 1,
+                                              color: UIGuide.THEME_LIGHT
+                                          ),
+                                          borderRadius: BorderRadius
+                                              .all(Radius.circular(8)),
+                                          color: Colors.white
+                                      ),
+
+                                      child: Column(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets
+                                                .all(4.0),
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment
+                                                  .spaceBetween,
+                                              children: [
+                                                Row(
+
+                                                  children: [
+                                                    Container(
+
+                                                      child: Padding(
+                                                        padding: const EdgeInsets
+                                                            .all(2.0),
+                                                        child: Text(
+                                                          (index + 1).toString(),),
+                                                      ),
+                                                      decoration: BoxDecoration(
+
+                                                          color: UIGuide.THEME_LIGHT
+                                                      ),
+                                                    ),
+
+                                                    Text("Bill No: "),
+                                                    Text(provider
+                                                        .collectionlList[index]
+                                                        .billNo
+                                                        .toString(),
+                                                      style: TextStyle(
+                                                          color: UIGuide
+                                                              .light_Purple
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                Row(
+
+                                                  children: [
+                                                    Text("Date : "),
+                                                    Text(
+                                                      billDate,
+                                                      style: TextStyle(
+                                                          color: UIGuide
+                                                              .light_Purple
+                                                      ),),
+                                                  ],
+                                                ),
+
+                                              ],
+                                            ),
+                                          ),
+
+                                          Padding(
+                                            padding: const EdgeInsets
+                                                .only(left: 4.0),
+                                            child: Row(
+
+                                              children: [
+                                                Text("Name : "),
+                                                Expanded(
+                                                  child: Padding(
+                                                    padding: const EdgeInsets
+                                                        .only(top: 4.0),
+                                                    child: TextWrapper(
+                                                      text: provider
+                                                          .collectionlList[index]
+                                                          .studentName
+                                                          .toString(),
+                                                      fSize: 14,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets
+                                                .all(4.0),
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment
+                                                  .spaceBetween,
+                                              children: [
+                                                Row(
+
+                                                  children: [
+
+                                                    Text("Admn No: "),
+                                                    Text(provider
+                                                        .collectionlList[index]
+                                                        .admnNo
+                                                        .toString(),
+                                                      style: TextStyle(
+                                                          color: UIGuide
+                                                              .light_Purple
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                Row(
+
+                                                  children: [
+                                                    Text("Class : "),
+                                                    Text(
+                                                      provider
+                                                          .collectionlList[index]
+                                                          .division ==
+                                                          null ? "" :
+                                                      provider
+                                                          .collectionlList[index]
+                                                          .division
+                                                          .toString(),
+                                                      style: TextStyle(
+                                                          color: UIGuide
+                                                              .light_Purple
+                                                      ),),
+                                                  ],
+                                                ),
+                                                Row(
+
+                                                  children: [
+                                                    Text("Roll No : "),
+                                                    Text(
+                                                      provider
+                                                          .collectionlList[index]
+                                                          .rollNo ==
+                                                          null ? "" :
+                                                      provider
+                                                          .collectionlList[index]
+                                                          .rollNo
+                                                          .toString(),
+                                                      style: TextStyle(
+                                                          color: UIGuide
+                                                              .light_Purple
+                                                      ),),
+                                                  ],
+                                                ),
+
+                                              ],
+                                            ),
+                                          ),
+
+                                          Padding(
+                                            padding: const EdgeInsets
+                                                .all(4.0),
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment
+                                                  .spaceBetween,
+                                              children: [
+                                                Row(
+
+                                                  children: [
+
+                                                    Text("Amount : "),
+                                                    Text(provider
+                                                        .collectionlList[index]
+                                                        .amount
+                                                        .toString(),
+                                                      style: TextStyle(
+                                                          color: UIGuide
+                                                              .light_Purple
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                Row(
+
+                                                  children: [
+                                                    Text("Fine : "),
+                                                    Text(
+                                                      provider
+                                                          .collectionlList[index]
+                                                          .fine == null
+                                                          ? ""
+                                                          :
+                                                      provider
+                                                          .collectionlList[index]
+                                                          .fine
+                                                          .toString(),
+                                                      style: TextStyle(
+                                                          color: UIGuide
+                                                              .light_Purple
+                                                      ),),
+                                                  ],
+                                                ),
+                                                Row(
+
+                                                  children: [
+                                                    Text("Subsidy : "),
+                                                    Text(
+                                                      provider
+                                                          .collectionlList[index]
+                                                          .discount ==
+                                                          null ? "" :
+                                                      provider
+                                                          .collectionlList[index]
+                                                          .discount
+                                                          .toString(),
+                                                      style: TextStyle(
+                                                          color: UIGuide
+                                                              .light_Purple
+                                                      ),),
+                                                  ],
+                                                ),
+
+                                              ],
+                                            ),
+                                          ),
+
+                                          Padding(
+                                            padding: const EdgeInsets
+                                                .only(left: 4.0),
+                                            child:
+                                            value.collectionlList[index].isCancelled==true ?
+                                            Row(
+                                              children: [
+                                                Text("Cancelled",
+                                                  style:TextStyle(
+                                                      color: Colors.red
+                                                  ) ,),
+                                              ],
+                                            ):
+                                            Row(
+
+                                              children: [
+
+                                                Text("Total : "),
+                                                Expanded(
+                                                  child: Padding(
+                                                    padding: const EdgeInsets
+                                                        .only(top: 4.0),
+                                                    child: Text(
+                                                      provider
+                                                          .collectionlList[index]
+                                                          .totalAmount
+                                                          .toString(),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+
+
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                }
+
+                            ),
+                          ],
+                        ),
 
 
 
-                          ):
+                      ):
                       Expanded(
                         child:
                         ListView(
@@ -1155,10 +1157,13 @@ class _OfflineFeeCollectionState extends State<OfflineFeeCollection> {
                                                     padding: const EdgeInsets
                                                         .only(top: 4.0),
                                                     child: TextWrapper(
-                                                      text: provider
+                                                      text:
+                                                      provider
                                                           .buscollectionlList[index]
-                                                          .busStop
-                                                          .toString(),
+                                                          .busStop==null? "":
+                                                      provider
+                                                          .buscollectionlList[index]
+                                                          .busStop.toString(),
                                                       fSize: 14,
                                                     ),
                                                   ),
@@ -1371,7 +1376,7 @@ class _OfflineFeeCollectionState extends State<OfflineFeeCollection> {
               height: 35,
               child:
 
-               // Text("Net Total: ${snap.netAmount}")
+              // Text("Net Total: ${snap.netAmount}")
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   elevation: 3,

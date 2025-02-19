@@ -1,13 +1,15 @@
-import 'package:essconnect/Application/AdminProviders/Attendanceprovider.dart';
-import 'package:essconnect/Application/Staff_Providers/Attendencestaff.dart';
-import 'package:essconnect/Constants.dart';
-import 'package:essconnect/Domain/Admin/AttendanceModel.dart';
-import 'package:essconnect/utils/constants.dart';
-import 'package:essconnect/utils/spinkit.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+
+import '../../Application/AdminProviders/Attendanceprovider.dart';
+import '../../Application/Staff_Providers/Attendencestaff.dart';
+import '../../Constants.dart';
+import '../../Domain/Admin/AttendanceModel.dart';
+import '../../utils/constants.dart';
+import '../../utils/spinkit.dart';
 
 class AbsenteesReportStaff extends StatefulWidget {
   const AbsenteesReportStaff({super.key});

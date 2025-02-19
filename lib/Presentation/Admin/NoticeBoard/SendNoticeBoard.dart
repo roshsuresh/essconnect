@@ -38,6 +38,8 @@ class _SendNoticeBoardAdminState extends State<SendNoticeBoardAdmin> {
     datee = DateFormat('dd/MMM/yyyy').format(DateTime.now());
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       var p = Provider.of<NoticeBoardAdminProvider>(context, listen: false);
+      p.setLoadddd(false);
+      p.setLoadSave(false);
       p.courseDropDown.clear();
       p.getVariables();
       p.courseList.clear();
@@ -57,8 +59,10 @@ class _SendNoticeBoardAdminState extends State<SendNoticeBoardAdmin> {
 
       p.indval = 0;
       p.toggleVal = 'all';
+
     });
   }
+
 
   List subjectData = [];
 
@@ -289,8 +293,11 @@ class _SendNoticeBoardAdminState extends State<SendNoticeBoardAdmin> {
                                     'pdf',
                                     'png',
                                     'jpeg',
-                                    'jpg'
-                                  ]);
+                                    'jpg',
+                                    'zip',
+                                    'rar',
+                                  ],
+                              );
                               if (result == null) {
                                 return;
                               }
@@ -299,7 +306,7 @@ class _SendNoticeBoardAdminState extends State<SendNoticeBoardAdmin> {
                               print('Path: ${file.path}');
                               print('Extension: ${file.extension}');
 
-                              if (file.size <= 200000) {
+                              if (file.size <= 5242880) {
                                 await val.noticeImageSave(
                                     context, file.path.toString());
                               } else {
@@ -307,7 +314,7 @@ class _SendNoticeBoardAdminState extends State<SendNoticeBoardAdmin> {
                                 ScaffoldMessenger.of(context)
                                     .showSnackBar(const SnackBar(
                                         content: Text(
-                                  "Size Exceed(Less than 200KB allowed)",
+                                  "Size Exceeded(Less than 5Mb allowed)",
                                   textAlign: TextAlign.center,
                                 )));
                               }
@@ -324,7 +331,7 @@ class _SendNoticeBoardAdminState extends State<SendNoticeBoardAdmin> {
           ),
           const Center(
               child: Text(
-            'Maximum allowed file size is 200 KB',
+            'Maximum allowed file size is 5Mb',
             style: TextStyle(
                 fontSize: 9, color: Color.fromARGB(255, 241, 104, 94)),
           )),

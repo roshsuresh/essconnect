@@ -1,11 +1,5 @@
 
-import 'package:essconnect/Application/Staff_Providers/Anecdotal/AnecdotalStaffListProvider.dart';
-import 'package:essconnect/Constants.dart';
-import 'package:essconnect/Domain/Staff/Anecdotal/InitialSelectionModel.dart';
-import 'package:essconnect/Presentation/Admin/Anecdotal/AddAnecdotalCategory.dart';
-import 'package:essconnect/Presentation/Admin/Anecdotal/AddSubjects.dart';
-import 'package:essconnect/utils/constants.dart';
-import 'package:essconnect/utils/spinkit.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -16,11 +10,17 @@ import 'package:multi_select_flutter/util/multi_select_list_type.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../Application/Staff_Providers/Anecdotal/AncedotalStaffProvider.dart';
-import '../../../../Application/Staff_Providers/Notification_ToGuardianProvider.dart';
 import '../../../../Debouncer.dart';
 import '../../../../Domain/Staff/Anecdotal/StudListviewAnectdotal.dart';
+import '../../../Application/Staff_Providers/Anecdotal/AnecdotalStaffListProvider.dart';
+import '../../../Constants.dart';
+import '../../../Domain/Staff/Anecdotal/InitialSelectionModel.dart';
+import '../../../utils/constants.dart';
+import '../../../utils/spinkit.dart';
+import 'AddAnecdotalCategory.dart';
+import 'AddSubjects.dart';
 class AnecdotalentryScreenAdmin extends StatefulWidget {
-  AnecdotalentryScreenAdmin({super.key});
+  const AnecdotalentryScreenAdmin({super.key});
 
   @override
   State<AnecdotalentryScreenAdmin> createState() => _AnecdotalentryScreenState();
@@ -123,7 +123,7 @@ class _AnecdotalentryScreenState extends State<AnecdotalentryScreenAdmin> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                      const StudentListAnecdotalView()));
+                                          const StudentListAnecdotalView()));
                             },
                             child: const Icon(Icons.list_alt)),
                       )
@@ -158,13 +158,13 @@ class _AnecdotalentryScreenState extends State<AnecdotalentryScreenAdmin> {
                                       return Dialog(
                                           shape: RoundedRectangleBorder(
                                               borderRadius:
-                                              BorderRadius.circular(15)),
+                                                  BorderRadius.circular(15)),
                                           child: LimitedBox(
                                             maxHeight: size.height / 1.3,
                                             child: ListView.builder(
                                                 shrinkWrap: true,
                                                 itemCount:
-                                                value.remarksCategoryList.length,
+                                                    value.remarksCategoryList.length,
                                                 itemBuilder: (context, index) {
                                                   return ListTile(
                                                     onTap: () async {
@@ -172,20 +172,20 @@ class _AnecdotalentryScreenState extends State<AnecdotalentryScreenAdmin> {
 
 
                                                       categoryController.text = value
-                                                          .remarksCategoryList[
-                                                      index]
-                                                          .text ??
+                                                              .remarksCategoryList[
+                                                                  index]
+                                                              .text ??
                                                           '--';
                                                       categoryIDController
                                                           .text = value
-                                                          .remarksCategoryList[
-                                                      index]
-                                                          .value ??
+                                                              .remarksCategoryList[
+                                                                  index]
+                                                              .value ??
                                                           '--';
                                                     },
                                                     title: Text(
                                                       value.remarksCategoryList[index]
-                                                          .text ??
+                                                              .text ??
                                                           '--',
                                                       textAlign: TextAlign.start,
                                                     ),
@@ -206,7 +206,7 @@ class _AnecdotalentryScreenState extends State<AnecdotalentryScreenAdmin> {
                                 decoration: const InputDecoration(
                                     contentPadding: EdgeInsets.only(left: 5, top: 0),
                                     floatingLabelBehavior:
-                                    FloatingLabelBehavior.never,
+                                        FloatingLabelBehavior.never,
                                     filled: true,
                                     fillColor: Colors.transparent,
                                     border: OutlineInputBorder(
@@ -246,7 +246,7 @@ class _AnecdotalentryScreenState extends State<AnecdotalentryScreenAdmin> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          AddanecDotalCategory()));
+                                       const AddanecDotalCategory()));
                             },
                             child: const Icon(Icons.settings_outlined)),
                       )
@@ -277,30 +277,30 @@ class _AnecdotalentryScreenState extends State<AnecdotalentryScreenAdmin> {
                                       return Dialog(
                                           shape: RoundedRectangleBorder(
                                               borderRadius:
-                                              BorderRadius.circular(15)),
+                                                  BorderRadius.circular(15)),
                                           child: LimitedBox(
                                             maxHeight: size.height / 1.3,
                                             child: ListView.builder(
                                                 shrinkWrap: true,
                                                 itemCount:
-                                                value.dairySubjectList.length,
+                                                    value.dairySubjectList.length,
                                                 itemBuilder: (context, index) {
                                                   return ListTile(
                                                     onTap: () async {
                                                       Navigator.of(context).pop();
 
                                                       subjectController.text = value
-                                                          .dairySubjectList[index]
-                                                          .text ??
+                                                              .dairySubjectList[index]
+                                                              .text ??
                                                           '--';
                                                       subjectIDController.text = value
-                                                          .dairySubjectList[index]
-                                                          .value ??
+                                                              .dairySubjectList[index]
+                                                              .value ??
                                                           '--';
                                                     },
                                                     title: Text(
                                                       value.dairySubjectList[index]
-                                                          .text ??
+                                                              .text ??
                                                           '--',
                                                       textAlign: TextAlign.start,
                                                     ),
@@ -319,7 +319,7 @@ class _AnecdotalentryScreenState extends State<AnecdotalentryScreenAdmin> {
                                 decoration: const InputDecoration(
                                     contentPadding: EdgeInsets.only(left: 5, top: 0),
                                     floatingLabelBehavior:
-                                    FloatingLabelBehavior.never,
+                                        FloatingLabelBehavior.never,
                                     filled: true,
                                     fillColor: Colors.transparent,
                                     border: OutlineInputBorder(
@@ -359,7 +359,7 @@ class _AnecdotalentryScreenState extends State<AnecdotalentryScreenAdmin> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                          AddSubjects()));
+                                       const AddSubjects()));
                             },
                             child: const Icon(Icons.settings_outlined)),
                       )
@@ -377,9 +377,9 @@ class _AnecdotalentryScreenState extends State<AnecdotalentryScreenAdmin> {
                               Expanded(
                                 child: Card(
                                   color: Colors.white54,
-                                  shape: RoundedRectangleBorder(
+                                  shape: const RoundedRectangleBorder(
                                     borderRadius: BorderRadius.only(topLeft: Radius.circular(10.0),bottomLeft: Radius.circular(10.0)),
-                                    side: const BorderSide(
+                                    side: BorderSide(
                                       color: UIGuide.light_black,
                                     ),
                                   ),
@@ -390,7 +390,7 @@ class _AnecdotalentryScreenState extends State<AnecdotalentryScreenAdmin> {
                                       padding: const EdgeInsets.only(left: 10),
                                       child: Text(
                                         value.staffname==''?
-                                        value.userName.toString(): value.staffname,
+                                       value.userName.toString(): value.staffname,
                                         style: const TextStyle(
                                             color: UIGuide.BLACK,
                                             fontSize: 14,
@@ -401,29 +401,29 @@ class _AnecdotalentryScreenState extends State<AnecdotalentryScreenAdmin> {
                                   ),
                                 ),
                               ),
-                              Expanded(
-                                child:Card(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.only(bottomRight: Radius.circular(10.0),topRight: Radius.circular(10.0)),
-                                    side: const BorderSide(
-                                      color: UIGuide.light_black,
-                                    ),
+                              const Expanded(
+                              child:Card(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.only(bottomRight: Radius.circular(10.0),topRight: Radius.circular(10.0)),
+                                  side: BorderSide(
+                                    color: UIGuide.light_black,
                                   ),
-                                  elevation: 5,
-                                  child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(left: 10),
-                                      child: Text(
-                                        "Select Staff",
-                                        style: const TextStyle(
-                                            color: Colors.black54,
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w500),
-                                      ),
+                                ),
+                                elevation: 5,
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Padding(
+                                    padding: EdgeInsets.only(left: 10),
+                                    child: Text(
+                                          "Select Staff",
+                                      style: TextStyle(
+                                          color: Colors.black54,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500),
                                     ),
                                   ),
                                 ),
+                              ),
                               ),
                             ],
                           ),
@@ -433,30 +433,30 @@ class _AnecdotalentryScreenState extends State<AnecdotalentryScreenAdmin> {
                         width: 5,
                       ),
                       SizedBox(
-                          height: 38,
-                          child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                elevation: 3,
-                                foregroundColor: UIGuide.BLACK,
-                                backgroundColor: UIGuide.ButtonBlue,
-                                padding: const EdgeInsets.all(0),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                  side: const BorderSide(
-                                    color: UIGuide.light_black,
-                                  ),
-                                ),
-                              ),
-                              onPressed: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context)=> StaffSelection(staffId: value.staffname)));
-                                print(value.staffname);
+                        height: 38,
+                        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            elevation: 3,
+            foregroundColor: UIGuide.BLACK,
+            backgroundColor: UIGuide.ButtonBlue,
+            padding: const EdgeInsets.all(0),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+              side: const BorderSide(
+                color: UIGuide.light_black,
+              ),
+            ),
+          ),
+          onPressed: () {
+           Navigator.push(context, MaterialPageRoute(builder: (context)=> StaffSelection(staffId: value.staffname)));
+           print(value.staffname);
 
 
-                              },
-                              child: const Icon(Icons.list_alt)
-                          )
+          },
+          child: const Icon(Icons.list_alt)
+      )
 
-                      ),
+                        ),
 
                     ],
                   ),
@@ -485,7 +485,7 @@ class _AnecdotalentryScreenState extends State<AnecdotalentryScreenAdmin> {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Icon(
+                                    const Icon(
                                       Icons.schedule_outlined,
                                       color: Colors.grey,
                                     ),
@@ -521,7 +521,7 @@ class _AnecdotalentryScreenState extends State<AnecdotalentryScreenAdmin> {
                                 const SizedBox(
                                   width: 5,
                                 ),
-                                Icon(
+                                const Icon(
                                   Icons.calendar_month_outlined,
                                   color: Colors.grey,
                                 ),
@@ -679,31 +679,31 @@ class _AnecdotalentryScreenState extends State<AnecdotalentryScreenAdmin> {
                               print("dummy lsit");
                               print(obj);
                               print(value.finalSelectedList.length);
-                              if(value.finalSelectedList.length>1){
-                                print("rosssssss");
+                                 if(value.finalSelectedList.length>1){
+                                   print("rosssssss");
 
-                                for(int j=0;j<c.data['results'].length;j++) {
-                                  for (var map in obj) {
-                                    // Compare the relevant properties (studentId, remarksCategory, etc.)
-                                    if (map['studentId'] ==
-                                        c.data['results'][j]['studentId'] &&
-                                        map['remarksCategory'] == c
-                                            .data['results'][j]['remarksCategory'] &&
-                                        map['date'] == c
-                                            .data['results'][j]['date'] &&
-                                        map['subject'] ==
-                                            c.data['results'][j]['subject'] &&
-                                        map['createStaffId'] == c
-                                            .data['results'][j]['createStaffId']) {
-                                      // Set isMatch to true if a match is found
-                                      isMatch = true;
-                                      break;
+                                  for(int j=0;j<c.data['results'].length;j++) {
+                                    for (var map in obj) {
+                                      // Compare the relevant properties (studentId, remarksCategory, etc.)
+                                      if (map['studentId'] ==
+                                          c.data['results'][j]['studentId'] &&
+                                          map['remarksCategory'] == c
+                                              .data['results'][j]['remarksCategory'] &&
+                                          map['date'] == c
+                                              .data['results'][j]['date'] &&
+                                          map['subject'] ==
+                                              c.data['results'][j]['subject'] &&
+                                          map['createStaffId'] == c
+                                              .data['results'][j]['createStaffId']) {
+                                        // Set isMatch to true if a match is found
+                                        isMatch = true;
+                                        break;
+                                      }
                                     }
                                   }
-                                }
 
-                              }
-                              print(isMatch);
+                                 }
+                                 print(isMatch);
 
                               if (value.finalSelectedList.isEmpty ||
                                   categoryIDController.text.trim().isEmpty ||
@@ -713,108 +713,108 @@ class _AnecdotalentryScreenState extends State<AnecdotalentryScreenAdmin> {
                               }
 
 
-                              else if(isMatch==true){
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      //title: Text('Are you sure want to delete'),
-                                      content: Text('Remarks of some students already exist. Are you sure you want to update?'),
-                                      actions: <Widget>[
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                          children: [
+                             else if(isMatch==true){
+                                   showDialog(
+                                     context: context,
+                                     builder: (BuildContext context) {
+                                       return AlertDialog(
+                                        //title: Text('Are you sure want to delete'),
+                                         content: const Text('Remarks of some students already exist. Are you sure you want to update?'),
+                                         actions: <Widget>[
+                                           Row(
+                                             mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                             children: [
 
-                                            TextButton(
-                                              onPressed: () {
-                                                // Close the dialog
-                                                Navigator.of(context).pop();
-                                              },
+                                               TextButton(
+                                                 onPressed: () {
+                                                   // Close the dialog
+                                                   Navigator.of(context).pop();
+                                                 },
+                                                 style: ButtonStyle(
+                                                   backgroundColor: WidgetStateProperty.all(UIGuide.THEME_LIGHT),
+                                                   padding: WidgetStateProperty.all(
+                                                     const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                                                   ),
+                                                   textStyle: WidgetStateProperty.all(
+                                                     const TextStyle(fontSize: 12.0),
+                                                   ),
 
-                                              child: Text('Cancel',style: TextStyle(
-                                                  color: UIGuide.light_Purple
-                                              ),),
-                                              style: ButtonStyle(
-                                                backgroundColor: MaterialStateProperty.all(UIGuide.THEME_LIGHT),
-                                                padding: MaterialStateProperty.all(
-                                                  EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                                                ),
-                                                textStyle: MaterialStateProperty.all(
-                                                  TextStyle(fontSize: 12.0),
-                                                ),
+                                                   shape: WidgetStateProperty.all(
+                                                     RoundedRectangleBorder(
+                                                       borderRadius: BorderRadius.circular(8.0),
+                                                     ),
+                                                   ),
+                                                 ),
 
-                                                shape: MaterialStateProperty.all(
-                                                  RoundedRectangleBorder(
-                                                    borderRadius: BorderRadius.circular(8.0),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            TextButton(
-                                              onPressed: () async{
+                                                 child: const Text('Cancel',style: TextStyle(
+                                                     color: UIGuide.light_Purple
+                                                 ),),
+                                               ),
+                                               TextButton(
+                                                 onPressed: () async{
 
-                                                await value.getSaveAnecdotal(
-                                                    categoryIDController.text,
-                                                    subjectIDController.text,
-                                                    remarkController.text,
-                                                    value.finalSelectedList,
-                                                    value.staffId==''?value.userID.toString()
-                                                        :value.staffId.toString(),
-                                                    context);
+                                                   await value.getSaveAnecdotal(
+                                                       categoryIDController.text,
+                                                       subjectIDController.text,
+                                                       remarkController.text,
+                                                       value.finalSelectedList,
+                                                       value.staffId==''?value.userID.toString()
+                                                           :value.staffId.toString(),
+                                                       context);
 
-                                                value.status==200?
-                                                value.showToGuardian?
-                                                await value.sendanecdotalNotiication(
-                                                    categoryIDController.text,
-                                                    subjectIDController.text,
-                                                    remarkController.text,
-                                                    value.finalSelectedList,
-                                                    value.staffId==''?value.userID.toString()
-                                                        :value.staffId.toString(),
-                                                    context):
-                                                print("not send"):
-                                                print("error");
+                                                   value.status==200?
+                                                   value.showToGuardian?
+                                                   await value.sendanecdotalNotiication(
+                                                       categoryIDController.text,
+                                                       subjectIDController.text,
+                                                       remarkController.text,
+                                                       value.finalSelectedList,
+                                                       value.staffId==''?value.userID.toString()
+                                                           :value.staffId.toString(),
+                                                       context):
+                                                   print("not send"):
+                                                   print("error");
 
-                                                Navigator.pop(context);
-                                                if (value.status == 200) {
-                                                  categoryController.clear();
-                                                  categoryIDController.clear();
-                                                  subjectIDController.clear();
-                                                  subjectController.clear();
-                                                  remarkController.clear();
-                                                  value.staffname='';
-                                                  value.staffId='';
-                                                  value.finalSelectedList.clear();
-                                                }
+                                                   Navigator.pop(context);
+                                                   if (value.status == 200) {
+                                                     categoryController.clear();
+                                                     categoryIDController.clear();
+                                                     subjectIDController.clear();
+                                                     subjectController.clear();
+                                                     remarkController.clear();
+                                                     value.staffname='';
+                                                     value.staffId='';
+                                                     value.finalSelectedList.clear();
+                                                   }
 
-                                              },
+                                                 },
+                                                 style: ButtonStyle(
+                                                   backgroundColor: WidgetStateProperty.all(UIGuide.THEME_LIGHT),
+                                                   padding: WidgetStateProperty.all(
+                                                     const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                                                   ),
+                                                   textStyle: WidgetStateProperty.all(
+                                                     const TextStyle(fontSize: 12.0),
+                                                   ),
 
-                                              child: Text('Yes',style: TextStyle(
-                                                  color: UIGuide.light_Purple
-                                              ),),
-                                              style: ButtonStyle(
-                                                backgroundColor: MaterialStateProperty.all(UIGuide.THEME_LIGHT),
-                                                padding: MaterialStateProperty.all(
-                                                  EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                                                ),
-                                                textStyle: MaterialStateProperty.all(
-                                                  TextStyle(fontSize: 12.0),
-                                                ),
+                                                   shape: WidgetStateProperty.all(
+                                                     RoundedRectangleBorder(
+                                                       borderRadius: BorderRadius.circular(8.0),
+                                                     ),
+                                                   ),
+                                                 ),
 
-                                                shape: MaterialStateProperty.all(
-                                                  RoundedRectangleBorder(
-                                                    borderRadius: BorderRadius.circular(8.0),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
-                              }
+                                                 child: const Text('Yes',style: TextStyle(
+                                                     color: UIGuide.light_Purple
+                                                 ),),
+                                               ),
+                                             ],
+                                           ),
+                                         ],
+                                       );
+                                     },
+                                   );
+                                 }
 
 
                               else {
@@ -828,7 +828,7 @@ class _AnecdotalentryScreenState extends State<AnecdotalentryScreenAdmin> {
                                     value.staffId.toString(),
                                     context);
 
-                                value.status==200?
+                               value.status==200?
                                 value.showToGuardian?
                                 await value.sendanecdotalNotiication(
                                     categoryIDController.text,
@@ -899,7 +899,7 @@ class _StudentListAnecdotalViewState extends State<StudentListAnecdotalView> {
       var p = Provider.of<AnecdotalStaffProviders>(context, listen: false);
       await p.setLoading(false);
       await p.clearAllDetails();
-      await p.getStudentViewList(section, course, division);
+      await p.getStudentViewList(section, course, division,searchController.text);
       p.allSelected = false;
 
       await p.getSectionInitial();
@@ -909,7 +909,7 @@ class _StudentListAnecdotalViewState extends State<StudentListAnecdotalView> {
 
   void _scrollListener() async {
     final provider =
-    Provider.of<AnecdotalStaffProviders>(context, listen: false);
+        Provider.of<AnecdotalStaffProviders>(context, listen: false);
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
       if (provider.hasMoreData()) {
@@ -955,6 +955,8 @@ class _StudentListAnecdotalViewState extends State<StudentListAnecdotalView> {
   String courseToDiv = '';
   String division = '';
 
+  TextEditingController searchController=TextEditingController();
+  final _debouncer = Debouncer(milliseconds: 1000);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -1013,7 +1015,7 @@ class _StudentListAnecdotalViewState extends State<StudentListAnecdotalView> {
                                 ),
                               ],
                               borderRadius:
-                              BorderRadius.all(Radius.circular(10)),
+                                  BorderRadius.all(Radius.circular(10)),
                             ),
                             buttonIcon: const Icon(
                               Icons.arrow_drop_down_outlined,
@@ -1021,19 +1023,19 @@ class _StudentListAnecdotalViewState extends State<StudentListAnecdotalView> {
                             ),
                             buttonText: value.sectionLen == 0
                                 ? const Text(
-                              "Select Section",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
-                              ),
-                            )
+                                    "Select Section",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                    ),
+                                  )
                                 : Text(
-                              "   ${value.sectionLen.toString()} Selected",
-                              style: const TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
-                              ),
-                            ),
+                                    "   ${value.sectionLen.toString()} Selected",
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                    ),
+                                  ),
                             chipDisplay: MultiSelectChipDisplay.none(),
                             onConfirm: (results) async {
                               sectionData = [];
@@ -1041,10 +1043,11 @@ class _StudentListAnecdotalViewState extends State<StudentListAnecdotalView> {
                               courseData.clear();
                               value.courseLen = 0;
                               value.divisionLen = 0;
+                              searchController.text="";
 
                               for (var i = 0; i < results.length; i++) {
                                 SectionsModel data =
-                                results[i] as SectionsModel;
+                                    results[i] as SectionsModel;
                                 print(data.name);
                                 print(data.id);
                                 sectionData.add(data.id);
@@ -1105,7 +1108,7 @@ class _StudentListAnecdotalViewState extends State<StudentListAnecdotalView> {
                                 ),
                               ],
                               borderRadius:
-                              BorderRadius.all(Radius.circular(10)),
+                                  BorderRadius.all(Radius.circular(10)),
                             ),
                             buttonIcon: const Icon(
                               Icons.arrow_drop_down_outlined,
@@ -1113,28 +1116,29 @@ class _StudentListAnecdotalViewState extends State<StudentListAnecdotalView> {
                             ),
                             buttonText: value.courseLen == 0
                                 ? const Text(
-                              "Select Course",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
-                              ),
-                            )
+                                    "Select Course",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                    ),
+                                  )
                                 : Text(
-                              "   ${value.courseLen.toString()} Selected",
-                              style: const TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
-                              ),
-                            ),
+                                    "   ${value.courseLen.toString()} Selected",
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                    ),
+                                  ),
                             chipDisplay: MultiSelectChipDisplay.none(),
                             onConfirm: (results) async {
                               courseData = [];
                               courseData.clear();
                               value.divisionLen = 0;
+                              searchController.text="";
 
                               for (var a = 0; a < results.length; a++) {
                                 SectionsModel data =
-                                results[a] as SectionsModel;
+                                    results[a] as SectionsModel;
 
                                 courseData.add(data.id);
                                 courseData.map((e) => data.id);
@@ -1204,7 +1208,7 @@ class _StudentListAnecdotalViewState extends State<StudentListAnecdotalView> {
                                 ),
                               ],
                               borderRadius:
-                              BorderRadius.all(Radius.circular(10)),
+                                  BorderRadius.all(Radius.circular(10)),
                             ),
                             buttonIcon: const Icon(
                               Icons.arrow_drop_down_outlined,
@@ -1212,26 +1216,27 @@ class _StudentListAnecdotalViewState extends State<StudentListAnecdotalView> {
                             ),
                             buttonText: value.divisionLen == 0
                                 ? const Text(
-                              "Select Division",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
-                              ),
-                            )
+                                    "Select Division",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                    ),
+                                  )
                                 : Text(
-                              "   ${value.divisionLen.toString()} Selected",
-                              style: const TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
-                              ),
-                            ),
+                                    "   ${value.divisionLen.toString()} Selected",
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                    ),
+                                  ),
                             chipDisplay: MultiSelectChipDisplay.none(),
                             onConfirm: (results) async {
                               divisionData = [];
+                              searchController.text="";
 
                               for (var i = 0; i < results.length; i++) {
                                 SectionsModel data =
-                                results[i] as SectionsModel;
+                                    results[i] as SectionsModel;
 
                                 print(data.id);
                                 divisionData.add(data.id);
@@ -1271,9 +1276,10 @@ class _StudentListAnecdotalViewState extends State<StudentListAnecdotalView> {
                             ),
                             onPressed: () async {
                               await value.clearStudentViewList();
+                              searchController.text="";
                               value.currentPage = 2;
                               await value.getStudentViewList(
-                                  section, course, division);
+                                  section, course, division,searchController.text);
                             },
                             child: const Text(
                               'View',
@@ -1288,239 +1294,276 @@ class _StudentListAnecdotalViewState extends State<StudentListAnecdotalView> {
                 ),
                 value.allSelected == true || value.studentViewList.isEmpty
                     ? const SizedBox(
-                  width: 0,
-                  height: 0,
-                )
+                        width: 0,
+                        height: 0,
+                      )
                     : Row(
-                  children: [
-                    const Expanded(
-                      child: SizedBox(height: 20),
-                    ),
+                        children: [
+                          const Expanded(
+                            child: SizedBox(height: 20),
+                          ),
 
-                    Hero(
-                      tag: "tagSelect",
-                      child: SizedBox(
-                        height: 35,
-                        child: InkWell(
-                          onTap: () async {
-                            await value.selectAll(
-                                section, course, division);
-                            // await value.getSelectAllStudents(
-                            //     section, course, division);
-                          },
-                          child: Card(
-                            elevation: 5,
-                            child:
-                            Row(
-                              mainAxisSize: MainAxisSize.min,
-                              //mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Text("  Select all"),
-                                Text(
-                                  ' ${value.countStud == null ? ' ' : value.countStud.toString()} ',
-                                  style: const TextStyle(
-                                      color: UIGuide.light_Purple,
-                                      fontWeight: FontWeight.w600),
+                          Hero(
+                            tag: "tagSelect",
+                            child: SizedBox(
+                              height: 35,
+                              child: InkWell(
+                                onTap: () async {
+                                  await value.selectAll(
+                                      section, course, division,searchController.text);
+                                  // await value.getSelectAllStudents(
+                                  //     section, course, division);
+                                },
+                                child: Card(
+                                  elevation: 5,
+                                  child:
+                                      Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    //mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Text("  Select all"),
+                                      Text(
+                                        ' ${value.countStud == null ? ' ' : value.countStud.toString()} ',
+                                        style: const TextStyle(
+                                            color: UIGuide.light_Purple,
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                      const Text("students  "),
+                                      SvgPicture.asset(
+                                        UIGuide.notcheck,
+                                        color: UIGuide.light_Purple,
+                                      ),
+                                      kWidth
+                                    ],
+                                  ),
                                 ),
-                                const Text("students  "),
-                                SvgPicture.asset(
-                                  UIGuide.notcheck,
-                                  color: UIGuide.light_Purple,
-                                ),
-                                kWidth
-                              ],
+                              ),
                             ),
                           ),
-                        ),
+                        ],
                       ),
-                    ),
-                  ],
-                ),
+                          Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SizedBox(
+                            height: 50,
+                            child: TextField(
+                            controller: searchController,
+                            decoration: InputDecoration(
+                            labelText: 'Search by Name',
+                            prefixIconColor:  UIGuide.light_Purple,
+                            labelStyle: TextStyle(color: UIGuide.light_Purple),
+                            border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+
+
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide(color: UIGuide.light_Purple)
+
+                            ),
+                            prefixIcon: Icon(Icons.search),
+                            ),
+                            onChanged: (value1)  {
+
+                              _debouncer.run(() async {
+                                value
+                                    .studentViewList.clear();
+                                value.getStudentViewList(
+                                    section, course, division,value1);
+                                print('-***--**-*-*-*-*-*');
+                              });
+
+
+
+                            },
+                            ),
+                          ),),
                 value.allSelected == true || value.studentViewList.isEmpty
                     ? const SizedBox(
-                  width: 0,
-                  height: 0,
-                )
+                        width: 0,
+                        height: 0,
+                      )
                     : Container(
-                  decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 241, 243, 245),
-                      border: Border.all(
-                          color: UIGuide.light_black, width: 1)),
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 2.0, bottom: 2),
-                    child: Table(
-                      columnWidths: const {
-                        0: FlexColumnWidth(1.3),
-                        1: FlexColumnWidth(4),
-                        2: FlexColumnWidth(1),
-                      },
-                      children: const [
-                        TableRow(children: [
-                          Text(
-                            ' Sl.No.',
-                            style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Center(
-                            child: Text(
-                              'Name',
-                              style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(right: 6),
-                            child: Text(
-                              'Select',
-                              textAlign: TextAlign.end,
-                              style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                  color: UIGuide.BLACK),
-                            ),
-                          )
-                        ])
-                      ],
-                    ),
-                  ),
-                ),
-                value.allSelected == true
-                    ? Expanded(
-                  child: GestureDetector(
-                    onTap: () async {
-                      await value.selectAll(section, course, division);
-                    },
-                    child: Center(
-                      child: Card(
-                        elevation: 5,
+                        decoration: BoxDecoration(
+                            color: const Color.fromARGB(255, 241, 243, 245),
+                            border: Border.all(
+                                color: UIGuide.light_black, width: 1)),
                         child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                ' ${value.allStudentID.length} ',
-                                style: const TextStyle(
-                                    color: UIGuide.light_Purple,
-                                    fontSize: 17,
-                                    fontWeight: FontWeight.w700),
-                              ),
-                              const Text(
-                                " Students selected  ",
-                                style: TextStyle(fontSize: 17),
-                              ),
-                              SvgPicture.asset(
-                                UIGuide.check,
-                                color: UIGuide.light_Purple,
-                              ),
+                          padding: const EdgeInsets.only(top: 2.0, bottom: 2),
+                          child: Table(
+                            columnWidths: const {
+                              0: FlexColumnWidth(1.3),
+                              1: FlexColumnWidth(4),
+                              2: FlexColumnWidth(1),
+                            },
+                            children: const [
+                              TableRow(children: [
+                                Text(
+                                  ' Sl.No.',
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Center(
+                                  child: Text(
+                                    'Name',
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.only(right: 6),
+                                  child: Text(
+                                    'Select',
+                                    textAlign: TextAlign.end,
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                        color: UIGuide.BLACK),
+                                  ),
+                                )
+                              ])
                             ],
                           ),
                         ),
                       ),
-                    ),
-                  ),
-                )
-                    : Expanded(
-                  child: Scrollbar(
-                    child: ListView.builder(
-                        controller: _scrollController,
-                        itemCount: value.studentViewList.length,
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          return Container(
-                            decoration: BoxDecoration(
-                              color: index.isEven
-                                  ? Colors.white
-                                  : const Color.fromARGB(
-                                  255, 241, 243, 245),
-                              border: Border.all(
-                                  color: UIGuide.light_black, width: 1),
-                            ),
-                            child: ListTile(
-                              dense: true,
-                              titleAlignment:
-                              ListTileTitleAlignment.center,
-                              shape: const RoundedRectangleBorder(),
-                              selectedColor: UIGuide.light_Purple,
-                              leading: Text(
-                                (index + 1).toString(),
-                                textAlign: TextAlign.center,
-                              ),
-                              onTap: () {
-                                value.selectItem(
-                                    value.studentViewList[index]);
-                              },
-                              selectedTileColor:
-                              const Color.fromARGB(255, 10, 27, 141),
-                              title: Text(
-                                value.studentViewList[index].name ?? "",
-                                style: const TextStyle(
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w600,
-                                    color: UIGuide.BLACK),
-                              ),
-                              subtitle: Row(
-                                children: [
-                                  const Text("Adm no: "),
-                                  Expanded(
-                                    child: Text(
-                                      value.studentViewList[index]
-                                          .admNo ??
-                                          '---',
+                value.allSelected == true
+                    ? Expanded(
+                        child: GestureDetector(
+                          onTap: () async {
+                            await value.selectAll(section, course, division,searchController.text);
+                          },
+                          child: Center(
+                            child: Card(
+                              elevation: 5,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      ' ${value.allStudentID.length} ',
+                                      style: const TextStyle(
+                                          color: UIGuide.light_Purple,
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.w700),
                                     ),
-                                  ),
-                                ],
-                              ),
-                              trailing:
-                              value.studentViewList[index].selected !=
-                                  null &&
-                                  value.studentViewList[index]
-                                      .selected!
-                                  ? SvgPicture.asset(
-                                UIGuide.check,
-                                color: UIGuide.light_Purple,
-                              )
-                                  : SvgPicture.asset(
-                                UIGuide.notcheck,
-                                color: UIGuide.light_Purple,
+                                    const Text(
+                                      " Students selected  ",
+                                      style: TextStyle(fontSize: 17),
+                                    ),
+                                    SvgPicture.asset(
+                                      UIGuide.check,
+                                      color: UIGuide.light_Purple,
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                          );
-                        }),
-                  ),
-                ),
-                value.loadingPage
-                    ? const Padding(
-                  padding: EdgeInsets.all(15.0),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        width: 30,
-                        height: 30,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          color: UIGuide.light_Purple,
+                          ),
+                        ),
+                      )
+                    : Expanded(
+                        child: Scrollbar(
+                          child: ListView.builder(
+                              controller: _scrollController,
+                              itemCount: value.studentViewList.length,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                return Container(
+                                  decoration: BoxDecoration(
+                                    color: index.isEven
+                                        ? Colors.white
+                                        : const Color.fromARGB(
+                                            255, 241, 243, 245),
+                                    border: Border.all(
+                                        color: UIGuide.light_black, width: 1),
+                                  ),
+                                  child: ListTile(
+                                    dense: true,
+                                    titleAlignment:
+                                        ListTileTitleAlignment.center,
+                                    shape: const RoundedRectangleBorder(),
+                                    selectedColor: UIGuide.light_Purple,
+                                    leading: Text(
+                                      (index + 1).toString(),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    onTap: () {
+                                      value.selectItem(
+                                          value.studentViewList[index]);
+                                    },
+                                    selectedTileColor:
+                                        const Color.fromARGB(255, 10, 27, 141),
+                                    title: Text(
+                                      value.studentViewList[index].name ?? "",
+                                      style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w600,
+                                          color: UIGuide.BLACK),
+                                    ),
+                                    subtitle: Row(
+                                      children: [
+                                        const Text("Adm no: "),
+                                        Expanded(
+                                          child: Text(
+                                            value.studentViewList[index]
+                                                    .admNo ??
+                                                '---',
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    trailing:
+                                        value.studentViewList[index].selected !=
+                                                    null &&
+                                                value.studentViewList[index]
+                                                    .selected!
+                                            ? SvgPicture.asset(
+                                                UIGuide.check,
+                                                color: UIGuide.light_Purple,
+                                              )
+                                            : SvgPicture.asset(
+                                                UIGuide.notcheck,
+                                                color: UIGuide.light_Purple,
+                                              ),
+                                  ),
+                                );
+                              }),
                         ),
                       ),
-                      kWidth,
-                      Text(
-                        "Please Wait...",
-                        style: TextStyle(
-                            color: UIGuide.light_Purple,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 16),
+                value.loadingPage
+                    ? const Padding(
+                        padding: EdgeInsets.all(15.0),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              width: 30,
+                              height: 30,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: UIGuide.light_Purple,
+                              ),
+                            ),
+                            kWidth,
+                            Text(
+                              "Please Wait...",
+                              style: TextStyle(
+                                  color: UIGuide.light_Purple,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 16),
+                            )
+                          ],
+                        ),
                       )
-                    ],
-                  ),
-                )
                     : const SizedBox(
-                  height: 0,
-                )
+                        height: 0,
+                      )
               ],
             ),
             if (value.loading) pleaseWaitLoader()
@@ -1530,38 +1573,38 @@ class _StudentListAnecdotalViewState extends State<StudentListAnecdotalView> {
       bottomNavigationBar: Consumer<AnecdotalStaffProviders>(
         builder: (context, snap, _) => snap.loading
             ? const SizedBox(
-          height: 0,
-          width: 0,
-        )
+                height: 0,
+                width: 0,
+              )
             : BottomAppBar(
-          child: Padding(
-            padding: const EdgeInsets.only(
-                left: 10, right: 10, top: 5, bottom: 5),
-            child: SizedBox(
-              height: 35,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  elevation: 3,
-                  foregroundColor: UIGuide.WHITE,
-                  backgroundColor: UIGuide.light_Purple,
-                  padding: const EdgeInsets.all(0),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      side: const BorderSide(
-                        color: UIGuide.light_black,
-                      )),
-                ),
-                onPressed: () async {
-                  await snap.submitStudent(context);
-                },
-                child: const Text(
-                  "Proceed",
-                  style: TextStyle(fontSize: 16),
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                      left: 10, right: 10, top: 5, bottom: 5),
+                  child: SizedBox(
+                    height: 35,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        elevation: 3,
+                        foregroundColor: UIGuide.WHITE,
+                        backgroundColor: UIGuide.light_Purple,
+                        padding: const EdgeInsets.all(0),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                            side: const BorderSide(
+                              color: UIGuide.light_black,
+                            )),
+                      ),
+                      onPressed: () async {
+                        await snap.submitStudent(context);
+                      },
+                      child: const Text(
+                        "Proceed",
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
-        ),
       ),
     );
   }
@@ -1569,7 +1612,7 @@ class _StudentListAnecdotalViewState extends State<StudentListAnecdotalView> {
 
 class StaffSelection extends StatefulWidget {
   String staffId;
-  StaffSelection({super.key,required this.staffId});
+   StaffSelection({super.key,required this.staffId});
 
   @override
   State<StaffSelection> createState() => _StaffSelectionState();
@@ -1585,8 +1628,8 @@ class _StaffSelectionState extends State<StaffSelection> {
       _scrollController.addListener(_scrollListener);
       var p = Provider.of<AnecdotalStaffProviders>(context, listen: false);
       p.currentPage=2;
-      p.getStaffList('');
-      p.staffList.clear();
+  p.getStaffList('');
+  p.staffList.clear();
     });
   }
   void _scrollListener() async {
@@ -1609,239 +1652,239 @@ class _StaffSelectionState extends State<StaffSelection> {
       child: Scaffold(
         body: Consumer<AnecdotalStaffProviders>(
           builder: (context,value,_)=>
-              Column(
-                children: [
-                  kheight10,
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: [
-                        IconButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            icon: const Icon(
-                              Icons.arrow_back_ios_new,
-                              color: Colors.grey,
-                            )),
-                        Expanded(
-                          child: SizedBox(
-                            height: 50,
-                            child: TextField(
-                              focusNode: FocusNode(),
-                              autofocus: true,
-                              controller: controller,
-                              onChanged: (value) {
-                                _debouncer.run(() async {
-                                  await Provider.of<AnecdotalStaffProviders>(context,
-                                      listen: false)
-                                      .clearStaffList();
-                                  await Provider.of<AnecdotalStaffProviders>(context,
-                                      listen: false)
-                                      .getStaffList(value);
-                                  print('-***--**-*-*-*-*-*');
-                                });
-                              },
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(20.0),
-                                ),
-                                suffixIcon: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    IconButton(
-                                      icon: const Icon(Icons.close),
-                                      color: Colors.grey,
-                                      onPressed: (() async{
-                                        controller.clear();
-
-                                        await Provider.of<AnecdotalStaffProviders>(context,
-                                            listen: false)
-                                            .clearStaffList();
-                                        await Provider.of<AnecdotalStaffProviders>(context,
-                                            listen: false)
-                                            .getStaffList('');
-                                      }),
-                                    ),
-                                  ],
-                                ),
-                                hintText: 'Search By Name',
-                                hintStyle: const TextStyle(
+          Column(
+            children: [
+              kheight10,
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: const Icon(
+                          Icons.arrow_back_ios_new,
+                          color: Colors.grey,
+                        )),
+                    Expanded(
+                      child: SizedBox(
+                        height: 50,
+                        child: TextField(
+                          focusNode: FocusNode(),
+                          autofocus: true,
+                          controller: controller,
+                          onChanged: (value) {
+                            _debouncer.run(() async {
+                              await Provider.of<AnecdotalStaffProviders>(context,
+                                  listen: false)
+                                  .clearStaffList();
+                              await Provider.of<AnecdotalStaffProviders>(context,
+                                  listen: false)
+                                  .getStaffList(value);
+                              print('-***--**-*-*-*-*-*');
+                            });
+                          },
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
+                            suffixIcon: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  icon: const Icon(Icons.close),
                                   color: Colors.grey,
-                                  fontSize: 20,
+                                  onPressed: (() async{
+                                    controller.clear();
+
+                                    await Provider.of<AnecdotalStaffProviders>(context,
+                                        listen: false)
+                                      .clearStaffList();
+                                    await Provider.of<AnecdotalStaffProviders>(context,
+                                        listen: false)
+                                        .getStaffList('');
+                                  }),
                                 ),
-                                fillColor: UIGuide.light_black,
-                                filled: true,
-                                //  contentPadding: EdgeInsets.only(left: 8),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide:
-                                  const BorderSide(color: Colors.transparent),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                enabledBorder: UnderlineInputBorder(
-                                  borderSide: const BorderSide(color: Colors.grey),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                              ),
-                              style: const TextStyle(color: UIGuide.light_Purple),
+                              ],
+                            ),
+                            hintText: 'Search By Name',
+                            hintStyle: const TextStyle(
+                              color: Colors.grey,
+                              fontSize: 20,
+                            ),
+                            fillColor: UIGuide.light_black,
+                            filled: true,
+                            //  contentPadding: EdgeInsets.only(left: 8),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide:
+                              const BorderSide(color: Colors.transparent),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: const BorderSide(color: Colors.grey),
+                              borderRadius: BorderRadius.circular(10),
                             ),
                           ),
+                          style: const TextStyle(color: UIGuide.light_Purple),
                         ),
-                      ],
+                      ),
                     ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Consumer<AnecdotalStaffProviders>(
-                        builder: (context, provider, child) {
+                  ],
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: Consumer<AnecdotalStaffProviders>(
+                    builder: (context, provider, child) {
 
-                          if (provider.staffList.isEmpty) {
-                            Future.delayed(const Duration(seconds: 2));
+                      if (provider.staffList.isEmpty) {
+                        Future.delayed(const Duration(seconds: 2));
 
-                            return provider.loading
-                                ? spinkitLoader()
-                                : Center(
-                              child: LottieBuilder.network(
-                                  'https://assets2.lottiefiles.com/private_files/lf30_lkquf6qz.json'),
-                            );
-                          }
-                          return provider.loading
-                              ? spinkitLoader()
-                              : ListView.builder(
-                            controller: _scrollController,
-                            physics: const BouncingScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: provider.staffList.isEmpty
-                                ? 0
-                                : provider.staffList.length,
-                            itemBuilder: (context, index) {
-                              return Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  kheight10,
-                                  GestureDetector(
-                                    onTap: () {
-                                      widget.staffId=
-                                          provider.staffList[index].id.toString();
-                                      provider.staffId =  provider.staffList[index].id.toString();
-                                      provider.staffname =  provider.staffList[index].name.toString();
-                                      Navigator.pop(context);
+                        return provider.loading
+                            ? spinkitLoader()
+                            : Center(
+                          child: LottieBuilder.network(
+                              'https://assets2.lottiefiles.com/private_files/lf30_lkquf6qz.json'),
+                        );
+                      }
+                      return provider.loading
+                          ? spinkitLoader()
+                          : ListView.builder(
+                        controller: _scrollController,
+                        physics: const BouncingScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: provider.staffList.isEmpty
+                            ? 0
+                            : provider.staffList.length,
+                        itemBuilder: (context, index) {
+                          return Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              kheight10,
+                              GestureDetector(
+                                onTap: () {
+                             widget.staffId=
+                             provider.staffList[index].id.toString();
+                             provider.staffId =  provider.staffList[index].id.toString();
+                             provider.staffname =  provider.staffList[index].name.toString();
+                             Navigator.pop(context);
 
-                                    },
-                                    child: Container(
-                                      width: size.width - 15,
-                                      decoration: const BoxDecoration(
-                                          color: UIGuide.light_black,
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(10))),
-                                      child: Row(
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                        children: [
-                                          kWidth,
+                                },
+                                child: Container(
+                                  width: size.width - 15,
+                                  decoration: const BoxDecoration(
+                                      color: UIGuide.light_black,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10))),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.center,
+                                    children: [
+                                      kWidth,
 
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
                                               children: [
-                                                Row(
-                                                  children: [
 
-                                                    RichText(
-                                                      overflow:
-                                                      TextOverflow.ellipsis,
-                                                      maxLines: 1,
-                                                      strutStyle: const StrutStyle(
-                                                          fontSize: 8.0),
-                                                      text: TextSpan(
-                                                          style: const TextStyle(
-                                                            fontSize: 13,
-                                                            color: UIGuide
-                                                                .light_Purple,
-                                                            fontWeight:
-                                                            FontWeight.w500,
-                                                          ),
-                                                          text: provider
-                                                              .staffList[
-                                                          index]
-                                                              .name ??
-                                                              '---'),
-                                                    ),
-                                                  ],
-                                                ),
-
-                                                Row(
-                                                  children: [
-
-                                                    RichText(
-                                                      overflow:
-                                                      TextOverflow.ellipsis,
-                                                      maxLines: 1,
-                                                      strutStyle: const StrutStyle(
-                                                          fontSize: 8.0),
-                                                      text: TextSpan(
-                                                        style: const TextStyle(
-                                                          fontSize: 11,
-                                                          fontWeight:
-                                                          FontWeight.w500,
-                                                          color: Colors.black,
-                                                        ),
-                                                        text: provider
-                                                            .staffList[
-                                                        index]
-                                                            .designation ??
-                                                            '---',
+                                                RichText(
+                                                  overflow:
+                                                  TextOverflow.ellipsis,
+                                                  maxLines: 1,
+                                                  strutStyle: const StrutStyle(
+                                                      fontSize: 8.0),
+                                                  text: TextSpan(
+                                                      style: const TextStyle(
+                                                        fontSize: 13,
+                                                        color: UIGuide
+                                                            .light_Purple,
+                                                        fontWeight:
+                                                        FontWeight.w500,
                                                       ),
-                                                    ),
-                                                  ],
+                                                      text: provider
+                                                          .staffList[
+                                                      index]
+                                                          .name ??
+                                                          '---'),
                                                 ),
                                               ],
                                             ),
-                                          )
-                                        ],
-                                      ),
-                                    ),
+
+                                            Row(
+                                              children: [
+
+                                                RichText(
+                                                  overflow:
+                                                  TextOverflow.ellipsis,
+                                                  maxLines: 1,
+                                                  strutStyle: const StrutStyle(
+                                                      fontSize: 8.0),
+                                                  text: TextSpan(
+                                                    style: const TextStyle(
+                                                      fontSize: 11,
+                                                      fontWeight:
+                                                      FontWeight.w500,
+                                                      color: Colors.black,
+                                                    ),
+                                                    text: provider
+                                                        .staffList[
+                                                    index]
+                                                        .designation ??
+                                                        '---',
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      )
+                                    ],
                                   ),
-                                ],
-                              );
-                            },
+                                ),
+                              ),
+                            ],
                           );
-                        }),
-                  ),
-                  value.loadingPage
-                      ? const Padding(
-                    padding: EdgeInsets.all(15.0),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          width: 30,
-                          height: 30,
-                          child: CircularProgressIndicator(
-                            strokeWidth: 2,
-                            color: UIGuide.light_Purple,
-                          ),
-                        ),
-                        kWidth,
-                        Text(
-                          "Please Wait...",
-                          style: TextStyle(
-                              color: UIGuide.light_Purple,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 16),
-                        )
-                      ],
-                    ),
-                  )
-                      : const SizedBox(
-                    height: 0,
-                  )
-                ],
+                        },
+                      );
+                    }),
               ),
+              value.loadingPage
+                  ? const Padding(
+                padding: EdgeInsets.all(15.0),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      width: 30,
+                      height: 30,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: UIGuide.light_Purple,
+                      ),
+                    ),
+                    kWidth,
+                    Text(
+                      "Please Wait...",
+                      style: TextStyle(
+                          color: UIGuide.light_Purple,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 16),
+                    )
+                  ],
+                ),
+              )
+                  : const SizedBox(
+                height: 0,
+              )
+            ],
+          ),
         ),
       ),
     );

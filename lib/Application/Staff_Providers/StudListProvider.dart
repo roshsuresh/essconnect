@@ -6,9 +6,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import '../../utils/constants.dart';
 
-Map? staffStudReportRespo;
-List? studReportinitvalues_stf;
-
 class StudReportListProvider_stf with ChangeNotifier {
   bool _loading = false;
   bool get loading => _loading;
@@ -16,7 +13,8 @@ class StudReportListProvider_stf with ChangeNotifier {
     _loading = value;
     notifyListeners();
   }
-
+  Map? staffStudReportRespo;
+  List<StudReportSectionList> sectionList = [];
   List<StudReportSectionList> selectedSection = [];
 
   String filtersDivision = "";
@@ -43,7 +41,7 @@ class StudReportListProvider_stf with ChangeNotifier {
     notifyListeners();
   }
 
-  //Section List
+  // Section List
   addSelectedSection(StudReportSectionList item) {
     if (selectedSection.contains(item)) {
       print("removing");
@@ -102,9 +100,21 @@ class StudReportListProvider_stf with ChangeNotifier {
 
         //print(data);
         staffStudReportRespo = data['studentReportInitialValues'];
-        studReportinitvalues_stf = staffStudReportRespo!['sectionList'];
-        print(studReportinitvalues_stf);
-        // print(staffStudReportRespo);
+
+        List<StudReportSectionList> templist = List<StudReportSectionList>.from(
+            staffStudReportRespo!['sectionList'].map((x) => StudReportSectionList.fromJson(x))
+        );
+        sectionList.addAll(templist);
+
+        List<StudReportCourse> templist1 = List<StudReportCourse>.from(
+            staffStudReportRespo!["courseList"].map((x) => StudReportCourse.fromJson(x)));
+        courselist.addAll(templist1);
+
+        List<StudReportDivision> templist2 = List<StudReportDivision>.from(
+            staffStudReportRespo!["divisionList"]
+                .map((x) => StudReportDivision.fromJson(x)));
+        divisionlist.addAll(templist2);
+
         setLoading(false);
         notifyListeners();
       } else {
@@ -117,8 +127,7 @@ class StudReportListProvider_stf with ChangeNotifier {
     }
   }
 
-//course List
-
+  // Course List
   List<StudReportCourse> studReportCourse = [];
   addSelectedCourse(StudReportCourse item) {
     if (studReportCourse.contains(item)) {
@@ -131,7 +140,7 @@ class StudReportListProvider_stf with ChangeNotifier {
       notifyListeners();
     }
     clearAllFilters();
-    //addFilterCourse(studReportCourse.first.text);
+    // addFilterCourse(studReportCourse.first.text);
   }
 
   removeCourse(StudReportCourse item) {
@@ -143,9 +152,7 @@ class StudReportListProvider_stf with ChangeNotifier {
     studReportCourse.clear();
   }
 
-  isCourseSelected(
-    StudReportCourse item,
-  ) {
+  isCourseSelected(StudReportCourse item) {
     if (studReportCourse.contains(item)) {
       return true;
     } else {
@@ -172,13 +179,14 @@ class StudReportListProvider_stf with ChangeNotifier {
           'GET',
           Uri.parse(
               '${UIGuide.baseURL}/mobileapp/staffdet/studentreport/course/$sectionId'));
+      print('${UIGuide.baseURL}/mobileapp/staffdet/studentreport/course/$sectionId');
       request.body = json.encode({"SchoolId": pref.getString('schoolId')});
       request.headers.addAll(headers);
       http.StreamedResponse response = await request.send();
       if (response.statusCode == 200) {
         setLoading(true);
-        Map<String, dynamic> data =
-            jsonDecode(await response.stream.bytesToString());
+        var data =
+        jsonDecode(await response.stream.bytesToString());
         List<StudReportCourse> templist = List<StudReportCourse>.from(
             data["course"].map((x) => StudReportCourse.fromJson(x)));
         courselist.addAll(templist);
@@ -186,6 +194,7 @@ class StudReportListProvider_stf with ChangeNotifier {
         notifyListeners();
       } else {
         setLoading(false);
+        notifyListeners();
         print('Error in courseList stf');
       }
     } catch (e) {
@@ -193,8 +202,7 @@ class StudReportListProvider_stf with ChangeNotifier {
     }
   }
 
-  //Division List
-
+  // Division List
   List<StudReportDivision> studReportDivision = [];
   addSelectedDivision(StudReportDivision item) {
     if (studReportDivision.contains(item)) {
@@ -226,9 +234,7 @@ class StudReportListProvider_stf with ChangeNotifier {
     studReportDivision.clear();
   }
 
-  isDivisionSelected(
-    StudReportDivision item,
-  ) {
+  isDivisionSelected(StudReportDivision item) {
     if (studReportDivision.contains(item)) {
       return true;
     } else {
@@ -264,7 +270,7 @@ class StudReportListProvider_stf with ChangeNotifier {
       if (response.statusCode == 200) {
         setLoading(true);
         Map<String, dynamic> data =
-            jsonDecode(await response.stream.bytesToString());
+        jsonDecode(await response.stream.bytesToString());
 
         log(data.toString());
 
@@ -283,13 +289,13 @@ class StudReportListProvider_stf with ChangeNotifier {
     }
   }
 
-  //view initial
-
+  // View initial
   List<ViewStudentReport> viewStudReportListt = [];
   List<ViewStudentReport> viewterminatedList = [];
   List<ViewStudentReport> viewNotTerminatedList = [];
   Future viewStudentReportList(
-      String section, String course, String division) async {
+      String section, String course, String division) async
+  {
     setLoading(true);
     SharedPreferences pref = await SharedPreferences.getInstance();
 
@@ -305,10 +311,12 @@ class StudReportListProvider_stf with ChangeNotifier {
       request.body = json.encode({"SchoolId": pref.getString('schoolId')});
       request.headers.addAll(headers);
       http.StreamedResponse response = await request.send();
-   print(request);
+      print(request);
+
       if (response.statusCode == 200) {
+        setLoading(true);
         Map<String, dynamic> data =
-            jsonDecode(await response.stream.bytesToString());
+        jsonDecode(await response.stream.bytesToString());
         print(data);
         List<ViewStudentReport> templist = List<ViewStudentReport>.from(
             data["viewStudentReport"]
@@ -326,7 +334,8 @@ class StudReportListProvider_stf with ChangeNotifier {
         notifyListeners();
       } else {
         setLoading(false);
-        print('Error in ViewList stf');
+        notifyListeners();
+        print('Error in viewStudentReportList');
       }
     } catch (e) {
       setLoading(false);
@@ -335,8 +344,52 @@ class StudReportListProvider_stf with ChangeNotifier {
 
   clearViewList() {
     viewStudReportListt.clear();
-    viewNotTerminatedList.clear();
     viewterminatedList.clear();
+    viewNotTerminatedList.clear();
     notifyListeners();
   }
+//classteacher
+  List<ClassTeachersModel> classteacherList=[];
+  Future getClassTeacherList() async {
+    setLoading(true);
+    SharedPreferences pref = await SharedPreferences.getInstance();
+
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
+    };
+    try {
+      var request = http.Request(
+          'GET',
+          Uri.parse(
+              '${UIGuide.baseURL}/classteacherreport/viewClassTeacherReport/?section=&course=&'));
+      request.headers.addAll(headers);
+
+      http.StreamedResponse response = await request.send();
+
+      if (response.statusCode == 200) {
+        setLoading(true);
+        var data = jsonDecode(await response.stream.bytesToString());
+
+        log(data.toString());
+        if (data.isEmpty || data == null) {
+          print("Empty or null staff data received.");
+          setLoading(false);
+          return;
+        }
+        classteacherList.clear();
+        List<ClassTeachersModel> templist = List<ClassTeachersModel>.from(
+            data.map((x) => ClassTeachersModel.fromJson(x)));
+        classteacherList.addAll(templist);
+        setLoading(false);
+        notifyListeners();
+      } else {
+        setLoading(false);
+        print('Error in classteacher List');
+      }
+    } catch (e) {
+      setLoading(false);
+    }
+  }
+
 }

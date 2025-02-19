@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'dart:isolate';
 import 'dart:ui';
@@ -156,8 +157,9 @@ class NoticeBoardSA extends StatelessWidget {
                                                     listen: false)
                                                 .staffNoticeBoardAttach(
                                                     noticeattach.toString());
-                                            if (value.extension.toString() ==
-                                                '.pdf') {
+                                            if (value.extension == '.pdf' ||
+                                                value.extension == '.zip' ||
+                                                value.extension == '.rar') {
                                               final result =
                                                   value.url.toString();
                                               final name =
@@ -166,14 +168,14 @@ class NoticeBoardSA extends StatelessWidget {
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) =>
-                                                        const PDFDownloadStaff()),
+                                                         PDFDownload()),
                                               );
                                             } else {
                                               Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) =>
-                                                        PdfViewPageStaff()),
+                                                        PdfViewPage()),
                                               );
                                             }
                                           },
@@ -366,6 +368,267 @@ class PdfViewPageStaff extends StatelessWidget {
       } else if (provider.extension.toString() == '.jfif') {
         final imgResult4 = provider.url.toString();
         return imageview(imgResult4);
+      } else {
+        return const Scaffold(
+          body: Center(
+            child: Text(
+              'No Attachment ',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+            ),
+          ),
+        );
+      }
+    });
+  }
+}
+
+
+
+class PDFDownload extends StatefulWidget {
+  PDFDownload({
+    Key? key,
+  }) : super(key: key);
+  static void downloadCallback(
+      String id, DownloadTaskStatus status, int progress) {
+    final SendPort send =
+    IsolateNameServer.lookupPortByName('downloader_send_port')!;
+    send.send([id, status, progress]);
+  }
+
+  @override
+  State<PDFDownload> createState() => _PDFDownloadState();
+}
+
+class _PDFDownloadState extends State<PDFDownload> {
+  final ReceivePort _port = ReceivePort();
+  @override
+  void initState() {
+    super.initState();
+
+    IsolateNameServer.registerPortWithName(
+        _port.sendPort, 'downloader_send_port');
+    _port.listen((dynamic data) {
+      String id = data[0];
+      DownloadTaskStatus status = data[1];
+      int progress = data[2];
+
+      setState(() {});
+    });
+
+    FlutterDownloader.registerCallback(downloadCallback);
+  }
+
+  static void downloadCallback(String id, int status, int progress) {
+    print('Download task ($id) is in status ($status) and $progress% complete');
+  }
+
+  @override
+  void dispose() {
+    IsolateNameServer.removePortNameMapping('downloader_send_port');
+    super.dispose();
+  }
+
+  Future<void> requestDownload(String _url, String _name) async {
+    var _localPath;
+
+    if (Platform.isAndroid) {
+      _localPath = '/storage/emulated/0/Download';
+    } else if (Platform.isIOS) {
+      final dir = await getApplicationDocumentsDirectory();
+      _localPath = dir.path;
+    }
+    print("pathhhh  $_localPath");
+    final savedDir = Directory(_localPath);
+    await savedDir.create(recursive: true).then((value) async {
+      String? _taskid = await FlutterDownloader.enqueue(
+        savedDir: _localPath,
+        url: _url,
+        fileName: _name,
+        showNotification: true,
+        openFileFromNotification: true,
+      );
+
+      print(_taskid);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<NoticeBoardProvidersSAdmin>(
+      builder: (context, value, child) => Scaffold(
+          appBar: AppBar(
+            title: const Text(''),
+            titleSpacing: 00.0,
+            centerTitle: true,
+            toolbarHeight: 50.2,
+            toolbarOpacity: 0.8,
+            backgroundColor: UIGuide.light_Purple,
+            actions: [
+              Padding(
+                  padding: const EdgeInsets.only(right: 15.0),
+                  child: IconButton(
+                      onPressed: () async {
+                        await requestDownload(
+                          value.url == null ? '--' : value.url.toString(),
+                          value.idd == null
+                              ? '---'
+                              : value.name.toString() + value.idd.toString(),
+                        );
+                      },
+                      icon: const Icon(Icons.download_outlined))),
+            ],
+          ),
+          body: value.extension == '.pdf'?
+          SfPdfViewer.network(
+            value.url == null ? '--' : value.url.toString(),
+          ):
+          Container(
+            child: Center(
+              child: SizedBox(
+                height: 150,
+                child: Image.asset(
+                  'assets/zip_file.png',// Replace with the path to your image asset
+                  fit: BoxFit.fill,// Adjust as needed (e.g., BoxFit.cover, BoxFit.fill)
+                ),
+              ),
+            ),
+          )
+      ),
+    );
+  }
+}
+
+class PdfViewPage extends StatefulWidget {
+  PdfViewPage({Key? key}) : super(key: key);
+  static void downloadCallback(
+      String id, DownloadTaskStatus status, int progress) {
+    final SendPort send =
+    IsolateNameServer.lookupPortByName('downloader_send_port')!;
+    send.send([id, status, progress]);
+  }
+
+  @override
+  State<PdfViewPage> createState() => _PdfViewPageState();
+}
+
+class _PdfViewPageState extends State<PdfViewPage> {
+  final ReceivePort _port = ReceivePort();
+  @override
+  void initState() {
+    super.initState();
+
+    IsolateNameServer.registerPortWithName(
+        _port.sendPort, 'downloader_send_port');
+    _port.listen((dynamic data) {
+      String id = data[0];
+      DownloadTaskStatus status = data[1];
+      int progress = data[2];
+
+      setState(() {});
+    });
+
+    FlutterDownloader.registerCallback(downloadCallback);
+  }
+
+  static void downloadCallback(String id, int status, int progress) {
+    print('Download task ($id) is in status ($status) and $progress% complete');
+  }
+
+  @override
+  void dispose() {
+    IsolateNameServer.removePortNameMapping('downloader_send_port');
+    super.dispose();
+  }
+
+  Future<void> requestDownload(String _url, String _name) async {
+    var _localPath;
+
+    if (Platform.isAndroid) {
+      _localPath = '/storage/emulated/0/Download';
+    } else if (Platform.isIOS) {
+      final dir = await getApplicationDocumentsDirectory();
+      _localPath = dir.path;
+    }
+    print("pathhhh  $_localPath");
+    final savedDir = Directory(_localPath);
+    await savedDir.create(recursive: true).then((value) async {
+      String? _taskid = await FlutterDownloader.enqueue(
+        savedDir: _localPath,
+        url: _url,
+        fileName: " $_name",
+        showNotification: true,
+        openFileFromNotification: true,
+      );
+      log("nweurlll $_url");
+
+      print(_taskid);
+    });
+  }
+
+  bool isLoading = false;
+
+  imageview(String result, String name) {
+
+    return Scaffold(
+      backgroundColor: UIGuide.WHITE,
+      appBar: AppBar(
+        title: const Text('Notice Board'),
+        titleSpacing: 00.0,
+        centerTitle: true,
+        toolbarHeight: 50.2,
+        toolbarOpacity: 0.8,
+        backgroundColor: UIGuide.light_Purple,
+        actions: [
+          Padding(
+              padding: const EdgeInsets.only(right: 15.0),
+              child: IconButton(
+                  onPressed: () async {
+                    await requestDownload(
+                      result == null ? '--' : result.toString(),
+                      name == null ? '---' : name.toString(),
+                    );
+                  },
+                  icon: const Icon(Icons.download_outlined))),
+        ],
+      ),
+      body: isLoading
+          ? spinkitLoader()
+          : Center(
+        child: Container(
+            child: PhotoView(
+              backgroundDecoration: BoxDecoration(color: UIGuide.WHITE),
+              loadingBuilder: (context, event) {
+                return spinkitLoader();
+              },
+              imageProvider: NetworkImage(
+                result == null
+                    ? 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSlmeGlXoJwwpbCE9jGgHgZ2XaE5nnPUSomkZz_vZT7&s'
+                    : result.toString(),
+              ),
+            )),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<NoticeBoardProvidersSAdmin>(builder: (context, provider, _) {
+      if (provider.extension.toString() == '.jpg') {
+        final imgResult = provider.url.toString();
+        final name = provider.name.toString();
+        return imageview(imgResult, name);
+      } else if (provider.extension.toString() == '.png') {
+        final imgResult2 = provider.url.toString();
+        final name = provider.name.toString();
+        return imageview(imgResult2, name);
+      } else if (provider.extension.toString() == '.jpeg') {
+        final imgResult3 = provider.url.toString();
+        final name = provider.name.toString();
+        return imageview(imgResult3, name);
+      } else if (provider.extension.toString() == '.jfif') {
+        final imgResult4 = provider.url.toString();
+        final name = provider.name.toString();
+        return imageview(imgResult4, name);
       } else {
         return const Scaffold(
           body: Center(

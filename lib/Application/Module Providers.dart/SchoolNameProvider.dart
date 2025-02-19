@@ -9,6 +9,7 @@ import '../../utils/constants.dart';
 class SchoolNameProvider with ChangeNotifier {
   String? schoolname;
   String? place;
+  String? allowGPSTracking;
 
   Future<int> getSchoolname() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
@@ -27,8 +28,10 @@ class SchoolNameProvider with ChangeNotifier {
       SchooNameModel ac = SchooNameModel.fromJson(schooldata);
       schoolname = ac.name;
       place = ac.place;
+      allowGPSTracking = ac.allowGPSTracking;
      print(schoolname);
      print(place);
+     print(allowGPSTracking);
 
       notifyListeners();
     } else {

@@ -572,7 +572,7 @@ class StudProfileViewBySearch_Staff extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
-                            'Permenent Address',
+                            'Permanent Address',
                             style: TextStyle(
                                 fontSize: 14, fontWeight: FontWeight.w700),
                           ),

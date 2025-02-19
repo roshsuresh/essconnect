@@ -8,19 +8,19 @@ class AnecDotalInitial {
     if (json['anecdotalList'] != null) {
       anecdotalList = <AnecdotalList>[];
       json['anecdotalList'].forEach((v) {
-        anecdotalList!.add(new AnecdotalList.fromJson(v));
+        anecdotalList!.add(AnecdotalList.fromJson(v));
       });
     }
     maxDate = json['maxDate'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.anecdotalList != null) {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    if (anecdotalList != null) {
       data['anecdotalList'] =
-          this.anecdotalList!.map((v) => v.toJson()).toList();
+          anecdotalList!.map((v) => v.toJson()).toList();
     }
-    data['maxDate'] = this.maxDate;
+    data['maxDate'] = maxDate;
     return data;
   }
 }
@@ -36,17 +36,17 @@ class AnacDotalData {
     if (json['anecdotalList'] != null) {
       anecdotalList = <AnecdotalList>[];
       json['anecdotalList'].forEach((v) {
-        anecdotalList!.add(new AnecdotalList.fromJson(v));
+        anecdotalList!.add(AnecdotalList.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['date'] = this.date;
-    if (this.anecdotalList != null) {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['date'] = date;
+    if (anecdotalList != null) {
       data['anecdotalList'] =
-          this.anecdotalList!.map((v) => v.toJson()).toList();
+          anecdotalList!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -87,16 +87,16 @@ class AnecdotalList {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['remarksDate'] = this.remarksDate;
-    data['studentId'] = this.studentId;
-    data['remarksCategory'] = this.remarksCategory;
-    data['subject'] = this.subject;
-    data['remarks'] = this.remarks;
-    data['remarksBy'] = this.remarksBy;
-    data['enteredBy'] = this.enteredBy;
-    data['time'] = this.time;
-    data['isImportant'] = this.isImportant;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['remarksDate'] = remarksDate;
+    data['studentId'] = studentId;
+    data['remarksCategory'] = remarksCategory;
+    data['subject'] = subject;
+    data['remarks'] = remarks;
+    data['remarksBy'] = remarksBy;
+    data['enteredBy'] = enteredBy;
+    data['time'] = time;
+    data['isImportant'] = isImportant;
     return data;
   }
 }

@@ -33,6 +33,7 @@ class _ExamTTUploadStaffState extends State<ExamTTUploadStaff> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       var p = Provider.of<ExamTTAdmProvidersStaff>(context, listen: false);
       p.courseList.clear();
+      await p.getCourseList();
       p.divisionCounter(0);
       p.divisionDropDown.clear();
       p.divisionList.clear();
@@ -40,7 +41,7 @@ class _ExamTTUploadStaffState extends State<ExamTTUploadStaff> {
       studReportcourseController.clear();
       studReportcourseController1.clear();
       await p.getVariables();
-      p.getCourseList();
+      print(p.courseList[0]);
     });
   }
 
@@ -52,7 +53,31 @@ class _ExamTTUploadStaffState extends State<ExamTTUploadStaff> {
       physics:
           const AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
       child: Consumer<ExamTTAdmProvidersStaff>(
-        builder: (context, val, _) => Column(
+        builder: (context, val, _) =>
+            val.courseList.isEmpty? Container(
+      child: const Center(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.sentiment_dissatisfied_outlined,
+            size: 60,
+            color: Colors.grey,
+          ),
+          kheight10,
+          Text(
+            "Sorry you don't have access",
+            style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+                color: Colors.grey),
+          ),
+        ],
+      ),
+    ),
+    ):
+            Column(
           children: [
             const SizedBox(
               height: 20,

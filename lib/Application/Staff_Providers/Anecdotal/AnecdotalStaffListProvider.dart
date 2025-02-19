@@ -59,13 +59,14 @@ class AnecdotalStaffListProviders with ChangeNotifier {
 
   //getId
   Future<String?> getId()async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
-    String? jwtToken = _pref.getString('accesstoken');
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String? jwtToken = pref.getString('accesstoken');
 
     Map<String, dynamic> payload = Jwt.parseJwt(jwtToken!);
     userId= payload['StaffId'];
     print("iddddddddd");
     print(userId);
+    return null;
   }
 
 
@@ -78,14 +79,14 @@ class AnecdotalStaffListProviders with ChangeNotifier {
   List<AnecdotalListViewModel> anecDotalList = [];
   Map<String, dynamic> data={};
   Future getAnecdotalList() async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
     var parsedResponse =await parseJWT();
     userId= await parsedResponse['StaffID'];
 
     setLoadingPage(true);
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
     };
     try {
       var request = http.Request(
@@ -100,8 +101,8 @@ class AnecdotalStaffListProviders with ChangeNotifier {
       if (response.statusCode == 200) {
         setLoadingPage(true);
 
-         data =
-        jsonDecode(await response.stream.bytesToString());
+        data =
+            jsonDecode(await response.stream.bytesToString());
         print(data);
 
         // demoData =
@@ -135,14 +136,14 @@ class AnecdotalStaffListProviders with ChangeNotifier {
     }
   }
   Future getAnecdotalListPagination() async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
     var parsedResponse =await parseJWT();
     userId= await parsedResponse['StaffID'];
 
     setLoadingPage(true);
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
     };
     try {
       var request = http.Request(
@@ -203,14 +204,14 @@ class AnecdotalStaffListProviders with ChangeNotifier {
 
 //by name
   Future getAnecdotalListbyName(String name) async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
     var parsedResponse =await parseJWT();
     userId= await parsedResponse['StaffID'];
 
     setLoading(true);
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
     };
     try {
       var request = http.Request(
@@ -254,14 +255,14 @@ class AnecdotalStaffListProviders with ChangeNotifier {
     }
   }
   Future getAnecdotalListPaginationByName() async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
     var parsedResponse =await parseJWT();
     userId= await parsedResponse['StaffID'];
 
     setLoadingPage(true);
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
     };
     try {
       var request = http.Request(
@@ -316,11 +317,11 @@ class AnecdotalStaffListProviders with ChangeNotifier {
 
   Future anecdotalDelete(
       BuildContext context, String eventID, int indexx) async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
 
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
     };
     var request = http.Request('DELETE',
         Uri.parse('${UIGuide.baseURL}/anecdotal/delete-event/$eventID'));
@@ -343,9 +344,9 @@ class AnecdotalStaffListProviders with ChangeNotifier {
           title: 'Deleted Successfully',
 
           btnOkOnPress: () async {
-           Navigator.pop(context);
+            Navigator.pop(context);
           },
-          btnOkColor: Color.fromRGBO(
+          btnOkColor: const Color.fromRGBO(
               217,62,71,5))
           .show();
 
@@ -368,7 +369,7 @@ class AnecdotalStaffListProviders with ChangeNotifier {
     }
   }
 //edit
- String? studId;
+  String? studId;
 
   String? name;
   String? admNo;
@@ -388,11 +389,11 @@ class AnecdotalStaffListProviders with ChangeNotifier {
   List<CategorySubjectModel> remarksCategoryList = [];
   List<CategorySubjectModel> dairySubjectList = [];
   Future getInitialRow(String id) async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
     setLoading(true);
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
     };
     var response = await http.get(
         Uri.parse("${UIGuide.baseURL}/anecdotal/getData/$id"),
@@ -493,14 +494,15 @@ class AnecdotalStaffListProviders with ChangeNotifier {
     notifyListeners();
   }
 //update
- int status=0;
+  String? saveId;
+  int status=0;
   Future updateAnecdotal(String id,String categoryID, String subjectID, String remarks,
       String studId,String staffID, BuildContext context) async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
     setLoadingPage(true);
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
     };
     //try {
     var request =
@@ -546,20 +548,81 @@ class AnecdotalStaffListProviders with ChangeNotifier {
           btnOkIcon: Icons.cancel,
           btnOkColor: Colors.green)
           .show();
-     status = 200;
+      status = 200;
+      String data =
+      jsonDecode(await response.stream.bytesToString());
+      saveId= data.toString();
+      print("idddddddddddd");
+      print(saveId);
 
       setLoadingPage(false);
       notifyListeners();
     }
     else if(response.statusCode == 422){
       status=422;
-  snackbarWidget(3, 'Remarks already exists.', context);
+      snackbarWidget(3, 'Remarks already exists.', context);
     }
     else {
       setLoadingPage(false);
       print('Error in getSaveAnecdotal stf');
     }
 
+  }
+
+
+  //notification
+
+  Future sendanecdotalUpdateNotiication(String id,String categoryID, String subjectID, String remarks,
+      String studId,String studentId,String staffID, BuildContext context) async {
+    status = 0;
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    setLoadingPage(true);
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
+    };
+    //try {
+    var request =
+    http.Request('POST', Uri.parse('${UIGuide.baseURL}/anecdotal/sentAnecdotalNotification/$saveId'));
+    print(request);
+    request.body = json.encode({
+      "categoryId": categoryID,
+      "subject": subjectID,
+      "createdDate": dateSend,
+      "remarks": remarks,
+      "isImportant": isimportant,
+      "showInGuardianLogin": showGuardian,
+      "studId": studId,
+      "studentId": [studentId],
+      "staffId": staffID
+    });
+    print(
+        json.encode({
+          "categoryId": categoryID,
+          "subject": subjectID,
+          "createdDate": dateSend,
+          "remarks": remarks,
+          "isImportant": isimportant,
+          "showInGuardianLogin": showGuardian,
+          "studId": studId,
+          "studentId": [studentId],
+          "staffId": staffID
+        })
+    );
+
+
+    request.headers.addAll(headers);
+    print(request.body);
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      print("success");
+      setLoadingPage(false);
+      notifyListeners();
+    } else {
+      setLoadingPage(false);
+      print('Error in send notification');
+    }
   }
 
 }

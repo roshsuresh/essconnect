@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'package:essconnect/Domain/Student/NotificationCountModel.dart';
-import 'package:essconnect/utils/constants.dart';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+
+import '../../Domain/Student/NotificationCountModel.dart';
+import '../../utils/constants.dart';
 
 class StudNotificationCountProviders with ChangeNotifier {
   bool _loading = false;

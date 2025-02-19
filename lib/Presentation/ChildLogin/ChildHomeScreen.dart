@@ -1,35 +1,36 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:essconnect/Application/StudentProviders/CurriculamProviders.dart';
-import 'package:essconnect/Application/StudentProviders/InternetConnection.dart';
-import 'package:essconnect/Application/StudentProviders/NotificationCountProviders.dart';
-import 'package:essconnect/Constants.dart';
-import 'package:essconnect/Presentation/Student/Attendence.dart';
-import 'package:essconnect/Presentation/Student/CurriculamScreen.dart';
-import 'package:essconnect/Presentation/Student/Gallery.dart';
-import 'package:essconnect/Presentation/Student/MarkSheet.dart';
 
-import 'package:essconnect/Presentation/Student/NoInternetScreen.dart';
-import 'package:essconnect/Presentation/Student/NoticeBoard.dart';
-import 'package:essconnect/Presentation/Student/PasswordChange.dart';
-import 'package:essconnect/Presentation/Student/Stud_Notification.dart';
-import 'package:essconnect/Presentation/Student/TimeTable.dart';
-import 'package:essconnect/utils/constants.dart';
-import 'package:essconnect/utils/spinkit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
-import 'package:marquee/marquee.dart';
+
 import 'package:badges/badges.dart' as badges;
+import 'package:flutter_infinite_marquee/flutter_infinite_marquee.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:upgrader/upgrader.dart';
 import '../../Application/Module Providers.dart/Module.dart';
+import '../../Application/StudentProviders/CurriculamProviders.dart';
+import '../../Application/StudentProviders/InternetConnection.dart';
+import '../../Application/StudentProviders/NotificationCountProviders.dart';
 import '../../Application/StudentProviders/ProfileProvider.dart';
 import '../../Application/StudentProviders/TimetableProvider.dart';
+import '../../Constants.dart';
+import '../../utils/constants.dart';
+import '../../utils/spinkit.dart';
 import '../Login_Activation/Login_page.dart';
+import '../Student/Attendence.dart';
+import '../Student/CurriculamScreen.dart';
+import '../Student/Gallery.dart';
+import '../Student/MarkSheet.dart';
+import '../Student/NoInternetScreen.dart';
+import '../Student/NoticeBoard.dart';
+import '../Student/PasswordChange.dart';
 import '../Student/PortionView.dart';
 import '../Student/Reportcard.dart';
+import '../Student/Stud_Notification.dart';
+import '../Student/TimeTable.dart';
 
 class ChildHome extends StatefulWidget {
   ChildHome({Key? key}) : super(key: key);
@@ -1229,61 +1230,19 @@ class _ChildHomeState extends State<ChildHome> {
   }
 
   _noAcess() {
-    var size = MediaQuery.of(context).size;
-    return showAnimatedDialog(
-      animationType: DialogTransitionType.slideFromBottomFade,
-      curve: Curves.fastOutSlowIn,
-      context: context,
-      barrierDismissible: true,
-      builder: (BuildContext context) {
-        return Dialog(
-          shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(10.0))),
-          child: SizedBox(
-            height: size.height / 7.2,
-            width: size.width * 3,
-            child: Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  const Text(
-                    "Sorry, you don't have access to this module",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 15,
-                        color: UIGuide.light_Purple),
-                  ),
-                  Expanded(
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Spacer(),
-                        TextButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: const Text(
-                              'Cancel',
-                              style: TextStyle(),
-                            )),
-                        kWidth,
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
+    var size = MediaQuery
+        .of(context)
+        .size;
+    return
+
+      QuickAlert.show(
+        context: context,
+        type: QuickAlertType.warning,
+        text: "Sorry, you don't have access to this module",
+        autoCloseDuration: const Duration(seconds: 2),
+        showConfirmBtn: false,
+
+      );
   }
 }
 
@@ -1502,29 +1461,37 @@ class _FlashnewsState extends State<Flashnews> {
             )
                 : LimitedBox(
               maxHeight: 30,
-              child: Marquee(
-                text: value.flashnews == null || value.flashnews == ''
-                    ? '-----'
-                    : value.flashnews.toString(),
-                style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.grey,
-                    fontSize: 15),
-                scrollAxis: Axis.horizontal,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                blankSpace: 20.0,
-                velocity: 40.0,
-                pauseAfterRound: const Duration(seconds: 1),
-                showFadingOnlyWhenScrolling: true,
-                fadingEdgeStartFraction: 0.3,
-                fadingEdgeEndFraction: 0.3,
-                numberOfRounds: null,
-                startPadding: 10.0,
-                accelerationDuration: const Duration(seconds: 1),
-                accelerationCurve: Curves.linear,
-                decelerationDuration: const Duration(milliseconds: 500),
-                decelerationCurve: Curves.easeOut,
-              ),
+              child:
+              InfiniteMarquee(
+                itemBuilder: (BuildContext context, int index) {
+                  return Text(value.flashnews == null || value.flashnews == ''
+                      ? '-----'
+                      : "${value.flashnews.toString()}  *  ",style: TextStyle(fontSize: 12),);
+                },
+              )
+              // Marquee(
+              //   text: value.flashnews == null || value.flashnews == ''
+              //       ? '-----'
+              //       : value.flashnews.toString(),
+              //   style: const TextStyle(
+              //       fontWeight: FontWeight.bold,
+              //       color: Colors.grey,
+              //       fontSize: 15),
+              //   scrollAxis: Axis.horizontal,
+              //   crossAxisAlignment: CrossAxisAlignment.start,
+              //   blankSpace: 20.0,
+              //   velocity: 40.0,
+              //   pauseAfterRound: const Duration(seconds: 1),
+              //   showFadingOnlyWhenScrolling: true,
+              //   fadingEdgeStartFraction: 0.3,
+              //   fadingEdgeEndFraction: 0.3,
+              //   numberOfRounds: null,
+              //   startPadding: 10.0,
+              //   accelerationDuration: const Duration(seconds: 1),
+              //   accelerationCurve: Curves.linear,
+              //   decelerationDuration: const Duration(milliseconds: 500),
+              //   decelerationCurve: Curves.easeOut,
+              // ),
             ),
           );
         }

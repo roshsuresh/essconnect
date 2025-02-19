@@ -1,26 +1,28 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class UIGuide {
   static const String notcheck = "assets/square.svg";
   static const String check = "assets/check-square.svg";
 
   static const String curriculamUrl =
-      //"https://api.curriculumtestonline.in";
+     // "https://api.curriculumtestonline.in";
 
-  // "https://api.uatcurriculum.in";
+   // "https://api.uatcurriculum.in";
 
-      "https://api.esscurriculum.in";
+   "https://api.esscurriculum.in";
 
 
   static const String baseURL =
-     // "https://api.esstestonline.in";
+      // "https://api.esstestonline.in";
 
-  //"https://api.essuatonline.in";
+ // "https://api.essuatonline.in";
 
-   "https://api.eschoolweb.org";
+  "https://api.eschoolweb.org";
 
   static const String absent = "assets/aa.svg";
   static const String present = "assets/ppp.svg";
@@ -63,5 +65,74 @@ class LottieAminBus extends StatelessWidget {
     return Scaffold(
       body: Center(child: LottieBuilder.asset("assets/Animated bus.json")),
     );
+  }
+}
+
+class LinkTextWidget extends StatelessWidget {
+  final String text;
+  double? font;
+
+  LinkTextWidget({super.key, required this.text,this.font});
+
+  @override
+  Widget build(BuildContext context) {
+    // Regular expression to find URLs starting with https
+    final RegExp urlRegExp = RegExp(r'(https:\/\/[^\s]+)');
+    final Iterable<Match> matches = urlRegExp.allMatches(text);
+
+    // If no URL matches, return a simple SelectableText
+    if (matches.isEmpty) {
+      return SelectableText(
+        text,
+        style: TextStyle(fontSize: font),
+        toolbarOptions: ToolbarOptions(copy: true, selectAll: true),
+      );
+    } else {
+      final List<TextSpan> textSpans = [];
+      int lastMatchEnd = 0;
+
+      for (final Match match in matches) {
+        if (match.start > lastMatchEnd) {
+          textSpans.add(TextSpan(
+            text: text.substring(lastMatchEnd, match.start),
+          ));
+        }
+
+        final String url = match.group(0)!;
+        textSpans.add(
+          TextSpan(
+            text: url,
+            style: TextStyle(color: Colors.blue, fontSize: font),
+            recognizer: TapGestureRecognizer()
+              ..onTap = () async {
+                if (await canLaunch(url)) {
+                  await launch(url);
+                } else {
+                  throw 'Could not launch $url';
+                }
+              },
+          ),
+        );
+
+        lastMatchEnd = match.end;
+      }
+
+      // Add remaining text after the last match
+      if (lastMatchEnd < text.length) {
+        textSpans.add(TextSpan(
+          text: text.substring(lastMatchEnd),
+        ));
+      }
+
+      return SelectableText.rich(
+        TextSpan(
+          style: DefaultTextStyle.of(context).style.copyWith(fontSize: font),
+          children: textSpans,
+        ),
+        toolbarOptions: ToolbarOptions(copy: true, selectAll: true),
+        cursorColor: Colors.blue,
+        showCursor: true,
+      );
+    }
   }
 }

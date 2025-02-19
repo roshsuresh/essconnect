@@ -1,10 +1,11 @@
 import 'dart:convert';
-import 'package:essconnect/utils/constants.dart';
+
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../Domain/Admin/FeeCollectionDetails.dart';
 import '../../Domain/Admin/FeeReportModel.dart';
+import '../../utils/constants.dart';
 
 class FeeReportProvider with ChangeNotifier {
   bool _loading = false;
@@ -15,19 +16,24 @@ class FeeReportProvider with ChangeNotifier {
   }
 
   double? allTotal;
+  double? genTotal;
+  double? busTotal;
   List<AllFeeCollect> collectionList = [];
+
   Future getFeeReportView(
+      String category,
       String section, String course, String start, String end) async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
+    SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoading(true);
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
     var response = await http.get(
         Uri.parse(
-            "${UIGuide.baseURL}/fee-collection/fees-collection-report?feeCategory=ALL&section=$section&courses=$course&displayStartDate=$start&displayEndDate=$end"),
+            "${UIGuide.baseURL}/fee-collection/fees-collection-report/?section=$section&courses=$course&feeCategory=$category&displayStartDate=$start&displayEndDate=$end"),
         headers: headers);
+    print("${UIGuide.baseURL}/fee-collection/fees-collection-report/?section=$section&courses=$course&feeCategory=$category&displayStartDate=$start&displayEndDate=$end");
     if (response.statusCode == 200) {
       setLoading(true);
       print('correct');
@@ -35,9 +41,30 @@ class FeeReportProvider with ChangeNotifier {
       Map<String, dynamic> fee = data['feeCollectionReportDetails'];
       FeeCollectionReportDetails ac = FeeCollectionReportDetails.fromJson(fee);
       allTotal = ac.allTotal!;
+      genTotal = ac.generalTotal;
+      busTotal = ac.busTotal;
+
+      if(genTotal!=0){
+        allTotal=genTotal;
+      }
+      else if(busTotal!=0){
+        allTotal=busTotal;
+      }
+      else{
+        allTotal=allTotal;
+      }
+
       List<AllFeeCollect> templist = List<AllFeeCollect>.from(
           fee['allFeeCollect'].map((x) => AllFeeCollect.fromJson(x)));
       collectionList.addAll(templist);
+
+      List<AllFeeCollect> templist1 = List<AllFeeCollect>.from(
+          fee['generalFeeCollect'].map((x) => AllFeeCollect.fromJson(x)));
+      collectionList.addAll(templist1);
+
+      List<AllFeeCollect> templist2 = List<AllFeeCollect>.from(
+          fee['busFeeCollect'].map((x) => AllFeeCollect.fromJson(x)));
+      collectionList.addAll(templist2);
       setLoading(false);
       notifyListeners();
     } else {
@@ -66,10 +93,10 @@ class FeeReportProvider with ChangeNotifier {
   List<GeneralCollectDetails> generalList = [];
   List<BusCollectDetails> busFeeList = [];
   Future getAttachmentView(String studId, String feeID, String busId) async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
+    SharedPreferences _pref = await SharedPreferences.getInstance();
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
     var response = await http.get(
         Uri.parse(
@@ -93,19 +120,27 @@ class FeeReportProvider with ChangeNotifier {
       transactionDate = ac.transactionDate;
       print(allTotal);
       general = fee['generalCollectDetails'];
-      List<GeneralCollectDetails> templist = List<GeneralCollectDetails>.from(
-          fee['generalCollectDetails']
-              .map((x) => GeneralCollectDetails.fromJson(x)));
-      generalList.addAll(templist);
+      if (general == null) {
+        print('General Fee No Data');
+      } else {
+        List<GeneralCollectDetails> templist = List<GeneralCollectDetails>.from(
+            fee['generalCollectDetails']
+                .map((x) => GeneralCollectDetails.fromJson(x)));
+        generalList.addAll(templist);
 
-      notifyListeners();
-          busFee = fee['busCollectDetails'];
-      List<BusCollectDetails> templist1 = List<BusCollectDetails>.from(
-          fee['busCollectDetails'].map((x) => BusCollectDetails.fromJson(x)));
-      busFeeList.addAll(templist1);
+        notifyListeners();
+      }
+      busFee = fee['busCollectDetails'];
+      if (busFee == null) {
+        print('bus Fee No Data');
+      } else {
+        List<BusCollectDetails> templist = List<BusCollectDetails>.from(
+            fee['busCollectDetails'].map((x) => BusCollectDetails.fromJson(x)));
+        busFeeList.addAll(templist);
 
+        notifyListeners();
+      }
       notifyListeners();
-          notifyListeners();
     } else {
       print('Error in fee collection report');
     }

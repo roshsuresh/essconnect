@@ -4,17 +4,15 @@ import 'dart:developer';
 
 import 'package:essconnect/Application/Staff_Providers/PortionProvider.dart';
 import 'package:essconnect/Domain/Staff/PortionModel.dart';
-import 'package:essconnect/utils/TextWrap(moreOption).dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
+
 import 'package:intl/intl.dart';
 import 'package:multi_select_flutter/chip_display/multi_select_chip_display.dart';
 import 'package:multi_select_flutter/dialog/multi_select_dialog_field.dart';
 import 'package:multi_select_flutter/util/multi_select_list_type.dart';
 import 'package:provider/provider.dart';
+import 'package:quickalert/quickalert.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 import '../../../Constants.dart';
@@ -47,11 +45,12 @@ class _PortionApprovalState extends State<PortionApproval> {
   final remarksController = TextEditingController();
 
   String? selectedOption;
+  @override
   void initState() {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-     // _scrollController.addListener(_scrollListener);
+      // _scrollController.addListener(_scrollListener);
       var p = Provider.of<PortionProvider>(context, listen: false);
       await p.setLoading(false);
       await p.clearAllDetails();
@@ -85,7 +84,7 @@ class _PortionApprovalState extends State<PortionApproval> {
       },
     );
 
-    image.image.resolve(ImageConfiguration()).addListener(listener);
+    image.image.resolve(const ImageConfiguration()).addListener(listener);
     await completer.future;
     return image;
   }
@@ -97,10 +96,10 @@ class _PortionApprovalState extends State<PortionApproval> {
       builder: (BuildContext context) {
         var size= MediaQuery.of(context).size;
         return AlertDialog(
-          content: Container(
+          content: SizedBox(
 
             height:size.height*0.6,
-            child: Center(
+            child: const Center(
               child: CircularProgressIndicator(
                 color: UIGuide.light_Purple,
               ),
@@ -119,7 +118,7 @@ class _PortionApprovalState extends State<PortionApproval> {
         builder: (BuildContext context) {
           var size= MediaQuery.of(context).size;
           return AlertDialog(
-            content: Container(
+            content: SizedBox(
 
               height: size.height*0.6,
               child: image,
@@ -129,26 +128,26 @@ class _PortionApprovalState extends State<PortionApproval> {
       );
     } catch (e) {
       Navigator.of(context).pop(); // Remove the loading dialog
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            var size= MediaQuery.of(context).size;
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          var size= MediaQuery.of(context).size;
 
-            return
-                 Dialog(
-                child: Container(
-                  padding: EdgeInsets.all(4.0),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                  ext==".pdf"?
-                  SizedBox(
-                      height:size.height*0.6 ,
-                      child: SfPdfViewer.network(photo)):
+          return
+            Dialog(
+              child: Container(
+                padding: const EdgeInsets.all(4.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ext==".pdf"?
+                    SizedBox(
+                        height:size.height*0.6 ,
+                        child: SfPdfViewer.network(photo)):
                     SizedBox(
                       height:size.height*0.6 ,
                       child: Image.network(
-                      photo,
+                        photo,
                       ),
                     ),
                     //  SizedBox(height: size),
@@ -162,13 +161,13 @@ class _PortionApprovalState extends State<PortionApproval> {
                     //     },
                     //     child: Text('Close'),
                     //   ),
-                    ],
-                  ),
+                  ],
                 ),
-              );
+              ),
+            );
 
-          },
-        );
+        },
+      );
     }
   }
 
@@ -265,7 +264,7 @@ class _PortionApprovalState extends State<PortionApproval> {
                                   const SizedBox(
                                     width: 5,
                                   ),
-                                  Icon(
+                                  const Icon(
                                     Icons.calendar_month_outlined,
                                     color: Colors.grey,
                                   ),
@@ -313,7 +312,7 @@ class _PortionApprovalState extends State<PortionApproval> {
                                   const SizedBox(
                                     width: 5,
                                   ),
-                                  Icon(
+                                  const Icon(
                                     Icons.calendar_month_outlined,
                                     color: Colors.grey,
                                   ),
@@ -376,17 +375,17 @@ class _PortionApprovalState extends State<PortionApproval> {
                                                     return ListTile(
                                                       onTap: () async {
                                                         Navigator.of(context).pop();
-                                                       await value.clearDivision();
-                                                       await value.clearSubject();
-                                                       divisionData.clear();
-                                                       div.clear();
-                                                       sub.clear();
-                                                       division='';
-                                                       subject='';
-                                                       value.reportView.clear();
+                                                        await value.clearDivision();
+                                                        await value.clearSubject();
+                                                        divisionData.clear();
+                                                        div.clear();
+                                                        sub.clear();
+                                                        division='';
+                                                        subject='';
+                                                        value.reportView.clear();
                                                         // value.subjectListApproval.clear();
                                                         // value.subSubjectList.clear();
-                                                       //value.finalSelectedList.clear();
+                                                        //value.finalSelectedList.clear();
 
 
 
@@ -461,21 +460,19 @@ class _PortionApprovalState extends State<PortionApproval> {
                               padding: const EdgeInsets.all(.0),
                               child: MultiSelectDialogField(
 
-
-
                                 items: value.divisiondropDown,
-                           selectedColor:UIGuide.THEME_LIGHT,
+                                selectedColor:UIGuide.THEME_LIGHT,
                                 listType: MultiSelectListType.CHIP,
                                 title: courseIDController.text.isEmpty?
-                                Text(
+                                const Text(
                                   "Select Course",
                                   style: TextStyle(color: Colors.grey),
                                 ):
-                                Text(
+                                const Text(
                                   "Select Division",
                                   style: TextStyle(color: Colors.grey),
                                 ),
-                                 // separateSelectedItems:true,
+                                // separateSelectedItems:true,
                                 selectedItemsTextStyle: const TextStyle(
                                     fontWeight: FontWeight.w900,
                                     color: UIGuide.light_Purple),
@@ -527,7 +524,7 @@ class _PortionApprovalState extends State<PortionApproval> {
 
                                   divisionData.clear();
                                   value.reportView.clear();
-                                 // results.clear();
+                                  // results.clear();
                                   for (var i = 0; i < results.length; i++) {
                                     PortionDivisions data =
                                     div[i] as PortionDivisions;
@@ -549,10 +546,10 @@ class _PortionApprovalState extends State<PortionApproval> {
                                 },
                                 chipDisplay:  MultiSelectChipDisplay.none(),
 
+                              ),
                             ),
                           ),
                         ),
-                      ),
                       ),
                     ],
                   ),
@@ -622,7 +619,7 @@ class _PortionApprovalState extends State<PortionApproval> {
                                 ),
                                 chipDisplay: MultiSelectChipDisplay.none(),
                                 onConfirm: (results) async {
-                                 // value.results.clear();
+                                  // value.results.clear();
                                   sub= results;
                                   subjectData.clear();
                                   value.reportView.clear();
@@ -643,7 +640,7 @@ class _PortionApprovalState extends State<PortionApproval> {
                                   print(subject);
                                   await value.subjectCounter(results.length);
                                   //value.studentViewList.clear();
-                                 // results.clear();
+                                  // results.clear();
                                   print("data subject  $subject");
                                 },
                               ),
@@ -663,7 +660,7 @@ class _PortionApprovalState extends State<PortionApproval> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
 
-                            Spacer(),
+                            const Spacer(),
                             GestureDetector(
                               onTap: () {
                                 value.reportView.clear();
@@ -689,14 +686,14 @@ class _PortionApprovalState extends State<PortionApproval> {
                                     },
                                   ),
 
-                                  Text(
+                                  const Text(
                                     "Not Approved",
                                   ),
                                 ],
                               ),
                             ),
 
-                            Spacer(),
+                            const Spacer(),
                             GestureDetector(
                               onTap: () {
                                 value.reportView.clear();
@@ -723,14 +720,14 @@ class _PortionApprovalState extends State<PortionApproval> {
                                       print(types);
                                     },
                                   ),
-                                  Text(
+                                  const Text(
                                     "Approved",
                                   ),
                                 ],
                               ),
                             ),
 
-                            Spacer(),
+                            const Spacer(),
                             GestureDetector(
                               onTap: () {
                                 value.reportView.clear();
@@ -755,13 +752,13 @@ class _PortionApprovalState extends State<PortionApproval> {
                                       print(types);
                                     },
                                   ),
-                                  Text(
+                                  const Text(
                                     "Rejected",
                                   ),
                                 ],
                               ),
                             ),
-                            Spacer(),
+                            const Spacer(),
 
 
 
@@ -770,10 +767,10 @@ class _PortionApprovalState extends State<PortionApproval> {
                       ),
                     ),
                   ):
-                      SizedBox(
-                        height: 0,
-                        width: 0,
-                      ),
+                  const SizedBox(
+                    height: 0,
+                    width: 0,
+                  ),
 
 
                   Consumer<PortionProvider>(
@@ -785,8 +782,8 @@ class _PortionApprovalState extends State<PortionApproval> {
                               width: 150,
                               child: value.loading
                                   ? Padding(
-                                    padding: const EdgeInsets.only(top:8.0),
-                                    child: Container(
+                                padding: const EdgeInsets.only(top:8.0),
+                                child: Container(
                                     height: 40,
                                     decoration: BoxDecoration(
                                       borderRadius:
@@ -803,7 +800,7 @@ class _PortionApprovalState extends State<PortionApproval> {
                                               fontSize: 15,
                                               fontWeight: FontWeight.bold),
                                         ))),
-                                  )
+                              )
                                   : ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                     elevation: 3,
@@ -818,55 +815,55 @@ class _PortionApprovalState extends State<PortionApproval> {
                                   ),
                                   onPressed: () async {
                                     print("from date");
-                                   print( value.fromdateselect);
+                                    print( value.fromdateselect);
                                     print("To date");
                                     print( value.todateselect);
 
-                                     value.reportView.clear();
-                                     if(courseIDController.text.isEmpty){
-                                       Fluttertoast.showToast(
-                                         msg: "Please Select Any Course..",
-                                         toastLength: Toast.LENGTH_SHORT,
-                                         gravity: ToastGravity.BOTTOM,
-                                         timeInSecForIosWeb: 1,
-                                         backgroundColor: Colors.black54,
-                                         textColor: Colors.white,
-                                         fontSize: 14.0,
-                                       );
+                                    value.reportView.clear();
+                                    if(courseIDController.text.isEmpty){
+                                      Fluttertoast.showToast(
+                                        msg: "Please Select Any Course..",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.BOTTOM,
+                                        timeInSecForIosWeb: 1,
+                                        backgroundColor: Colors.black54,
+                                        textColor: Colors.white,
+                                        fontSize: 14.0,
+                                      );
 
-                                     }
-                                     else if(value.fromdateselect!.isAfter(value.todateselect!)){
-                                       Fluttertoast.showToast(
-                                         msg: "Invalid Date Range...",
-                                         toastLength: Toast.LENGTH_SHORT,
-                                         gravity: ToastGravity.BOTTOM,
-                                         timeInSecForIosWeb: 1,
-                                         backgroundColor: Colors.black54,
-                                         textColor: Colors.white,
-                                         fontSize: 14.0,
-                                       );
-                                     }
-                                     else {
-                                       await value.getApprovalReport(
-                                           courseIDController.text,
-                                           division,
-                                           subject,
-                                           value.fromdateSend,
-                                           value.todateSend,
-                                           types.toString());
+                                    }
+                                    else if(value.fromdateselect!.isAfter(value.todateselect!)){
+                                      Fluttertoast.showToast(
+                                        msg: "Invalid Date Range...",
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.BOTTOM,
+                                        timeInSecForIosWeb: 1,
+                                        backgroundColor: Colors.black54,
+                                        textColor: Colors.white,
+                                        fontSize: 14.0,
+                                      );
+                                    }
+                                    else {
+                                      await value.getApprovalReport(
+                                          courseIDController.text,
+                                          division,
+                                          subject,
+                                          value.fromdateSend,
+                                          value.todateSend,
+                                          types.toString());
 
-                                       if (value.reportView.isEmpty) {
-                                         Fluttertoast.showToast(
-                                           msg: "No Data found..",
-                                           toastLength: Toast.LENGTH_SHORT,
-                                           gravity: ToastGravity.BOTTOM,
-                                           timeInSecForIosWeb: 1,
-                                           backgroundColor: Colors.black54,
-                                           textColor: Colors.white,
-                                           fontSize: 14.0,
-                                         );
-                                       }
-                                     }
+                                      if (value.reportView.isEmpty) {
+                                        Fluttertoast.showToast(
+                                          msg: "No Data found..",
+                                          toastLength: Toast.LENGTH_SHORT,
+                                          gravity: ToastGravity.BOTTOM,
+                                          timeInSecForIosWeb: 1,
+                                          backgroundColor: Colors.black54,
+                                          textColor: Colors.white,
+                                          fontSize: 14.0,
+                                        );
+                                      }
+                                    }
 
 
 
@@ -886,7 +883,7 @@ class _PortionApprovalState extends State<PortionApproval> {
 
                           Expanded(
                             child: ListView.builder(
-                             // controller: _scrollController,
+                              // controller: _scrollController,
                               shrinkWrap: true,
                               itemCount: provider.reportView.length,
                               itemBuilder: (context, index) {
@@ -896,572 +893,568 @@ class _PortionApprovalState extends State<PortionApproval> {
                                   children: [
                                     kheight5,
                                     Padding(
-                                              padding: const EdgeInsets.all(4.0),
-                                              child: InkWell(
-                                                onTap: () async{
-                                                  await provider.getApprovalReportDetailView(provider.reportView[index].portionEntryId.toString());
-                                                  remarksController.clear();
-                                                  showAnimatedDialog(
-                                                    animationType: DialogTransitionType.size,
-                                                    context: context,
-                                                    builder: (BuildContext context) {
-                                                      return AlertDialog(
-                                                        // title: Text('Portion Entry Details'),
-                                                        // content: Text('This is an alert dialog.'),
-                                                        actions: <Widget>[
-                                                          Column(
-                                                            children: [
-
-                                                              Row(
-                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                children: [
-                                                                Text("Portion Entry Details",style:
-                                                                  TextStyle(
-                                                                    fontWeight: FontWeight.w500,
-                                                                    color: UIGuide.light_Purple
-                                                                  ),),
-                                                                  IconButton(
-                                                                    splashRadius: 15.0,
-                                                                      onPressed: (){
-                                                                        Navigator.pop(context);
-                                                                      },
-
-                                                                      icon: Icon(Icons.clear))
-                                                                ],
-                                                              ),
-                                                             const Column(
-                                                               children: [
-                                                                 Divider(
-                                                                   height: 1,
-                                                                   thickness: 1.5,
-                                                                 )
-                                                               ],
-                                                             ),
-                                                              kheight5,
-
-                                                              Row(
-                                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                                children: [
-
-                                                                Container(
-                                                                  decoration: BoxDecoration(
-                                                                    color: UIGuide.THEME_LIGHT,
-                                                                    borderRadius: BorderRadius.circular(10)),
-
-
-                                                                    child: Padding(
-                                                                      padding: const EdgeInsets.all(8.0),
-                                                                      child: Text("${provider.portionSubject}"),
-                                                                    )),
-                                                                Container(
-                                                                    decoration: BoxDecoration(
-                                                                        color: UIGuide.THEME_LIGHT,
-                                                                        borderRadius: BorderRadius.circular(10)),
-
-
-                                                                    child: Padding(
-                                                                      padding: const EdgeInsets.all(8.0),
-                                                                      child: Text("$formattedDate"),
-                                                                    )),
-                                                              ],),
-                                                              kheight10,
-
-                                                              Row(
-                                                                children: [
-                                                                  Text("Chapter : "),
-                                                                  Flexible(
-                                                                    child: Text("${provider.portionChapter}",
-                                                                     style: TextStyle(
-                                                                       color: UIGuide.light_Purple
-                                                                     ),
-                                                                   maxLines: 5,
-                                                                      overflow: TextOverflow.ellipsis,
-
-                                                                    ),
-                                                                  )
-                                                                ],
-                                                              ),
-                                                              kheight10,
-                                                              Row(
-                                                                children: [
-                                                                  Text("Topic     : ",
-
-                                                                  ),
-                                                                  Flexible(
-                                                                    child: Text(
-
-                                                                        "${provider.portionTopic==null?"":
-                                                                        provider.portionTopic
-                                                                        }",
-                                                                      style: TextStyle(
-                                                                          color: UIGuide.light_Purple
-                                                                      ),
-                                                                      maxLines: 5,
-                                                                      overflow: TextOverflow.ellipsis,
-
-                                                                    ),
-                                                                  )
-                                                                ],
-                                                              ),
-                                                              kheight10,
-                                                              Row(
-                                                                children: [
-                                                                  Text("Description  : ",
-
-                                                                  ),
-                                                                  Flexible(
-                                                                    child: Text(
-
-                                                                      "${provider.portionDescription==null?"":
-                                                                      provider.portionDescription
-                                                                      }",
-                                                                      style: TextStyle(
-                                                                          color: UIGuide.light_Purple
-                                                                      ),
-                                                                      maxLines: 5,
-                                                                      overflow: TextOverflow.ellipsis,
-
-                                                                    ),
-                                                                  )
-                                                                ],
-                                                              ),
-                                                              kheight10,
-                                                              Row(
-                                                                children: [
-                                                                  Text("Details  : ",
-
-                                                                  ),
-                                                                  Flexible(
-                                                                    child: Text(
-
-                                                                      "${provider.portionDetails==null?"":
-                                                                      provider.portionDetails
-                                                                      }",
-                                                                      style: TextStyle(
-                                                                          color: UIGuide.light_Purple
-                                                                      ),
-                                                                      maxLines: 5,
-                                                                      overflow: TextOverflow.ellipsis,
-
-                                                                    ),
-                                                                  )
-                                                                ],
-                                                              ),
-                                                              kheight10,
-                                                              Row(
-                                                                children: [
-                                                                  Text("Assignment  : ",
-
-                                                                  ),
-                                                                  Flexible(
-                                                                    child: Text(
-
-                                                                      "${provider.portionAssignment==null?"":
-                                                                      provider.portionAssignment
-                                                                      }",
-                                                                      style: TextStyle(
-                                                                          color: UIGuide.light_Purple
-                                                                      ),
-                                                                      maxLines: 5,
-                                                                      overflow: TextOverflow.ellipsis,
-
-                                                                    ),
-                                                                  )
-                                                                ],
-                                                              ),
-                                                              kheight10,
-                                                              provider.photoList1.isNotEmpty?
-                                                              Row(
-                                                                children: [
-                                                                  Text("Attachments :"),
-                                                                ],
-                                                              ):
-                                                              SizedBox(height: 0,width: 0),
-                                                              provider.photoList1.isNotEmpty?
-                                                              SizedBox(
-                                                                height: size.height*0.15,
-                                                                width: size.width*0.6,
-
-                                                                child: ListView.builder(
-                                                                  itemCount:provider.photoList1.length,
-                                                                  itemBuilder: (context, index) {
-                                                                    return Table(
-                                                                      columnWidths: const {
-                                                                        0: FlexColumnWidth(0.5),
-                                                                        1: FlexColumnWidth(2),
-                                                                        2: FlexColumnWidth(0.5),
-                                                                        // 3: FlexColumnWidth(0.5),
-                                                                      },
-                                                                      border: TableBorder.all(
-                                                                          borderRadius: BorderRadius.only(
-                                                                              topLeft: Radius.circular(10),
-                                                                              topRight: Radius.circular(10)),
-                                                                          color: const Color.fromARGB(
-                                                                              255, 248, 248, 248)),
-                                                                      children:  [
-
-                                                                        TableRow(
-                                                                            decoration: BoxDecoration(
-                                                                              borderRadius: BorderRadius.only(
-                                                                                  topLeft: Radius.circular(10),
-                                                                                  topRight: Radius.circular(10)),
-                                                                              color:
-                                                                              UIGuide.ButtonBlue,
-                                                                              //Color.fromARGB(255, 223, 223, 223),
-                                                                            ),
-                                                                            children: [
-                                                                              TableCell(
-                                                                                verticalAlignment:
-                                                                                TableCellVerticalAlignment.middle,
-                                                                                child: Text(
-                                                                                  "${index+1}",
-                                                                                  style: TextStyle(
-                                                                                      fontWeight: FontWeight.w400),
-                                                                                  textAlign: TextAlign.center,
-                                                                                ),
-                                                                              ),
-                                                                              TableCell(
-                                                                                verticalAlignment:
-                                                                                TableCellVerticalAlignment.middle,
-                                                                                child: Padding(
-                                                                                  padding: EdgeInsets.only(
-                                                                                    top: 6.0,
-                                                                                    bottom: 6,
-                                                                                  ),
-                                                                                  child: InkWell(
-                                                                                    onTap:() async{
-
-                                                                                   await showPhotoDialog(context,  provider.photoList1[index]['file']['url'],provider.photoList1[index]['file']['extension']);
-
-                                                                                   print("------url----");
-                                                                                      log( provider.photoList1[index]['file']['url']);
-                                                                                    },
-                                                                                    child: Text(
-                                                                                      provider.photoList1[index]['file']['name'],
-                                                                                      style: TextStyle(
-                                                                                          fontWeight: FontWeight.w400),
-                                                                                      textAlign: TextAlign.center,
-                                                                                    ),
-                                                                                  ),
-                                                                                ),
-                                                                              ),
-                                                                              TableCell(
-                                                                                verticalAlignment:
-                                                                                TableCellVerticalAlignment.middle,
-                                                                                child: Padding(
-                                                                                  padding: EdgeInsets.only(
-                                                                                    top: 6.0,
-                                                                                    bottom: 6,
-                                                                                  ),
-                                                                                  child: InkWell(
-                                                                                    onTap:() {
-                                                                                      showPhotoDialog(context,  provider.photoList1[index]['file']['url'],provider.photoList1[index]['file']['extension']);
-
-                                                                                    },
-
-                                                                                      child: Icon(Icons.visibility,size: 20,))
-                                                                                ),
-                                                                              ),
-
-
-
-                                                                            ])
-                                                                      ],
-                                                                    );
-
-                                                                  },
-
-                                                                ),
-
-                                                              ):SizedBox(height: 0,width: 0),
-
-                                                              kheight10,
-
-                                                              value.isApproval==false?
-                                                              Padding(
-                                                                padding: const EdgeInsets.all(4.0),
-                                                                child: SizedBox(
-                                                                  height: 40,
-                                                                  child: TextFormField(
-
-                                                                    inputFormatters: [LengthLimitingTextInputFormatter(1000)],
-                                                                    controller: remarksController,
-                                                                    minLines: 1,
-                                                                    //  maxLines: 2,
-                                                                    keyboardType: TextInputType.multiline,
-                                                                    decoration: const InputDecoration(
-                                                                      contentPadding: EdgeInsets.fromLTRB(12.0, 10.0, 20.0, 10.0),
-                                                                      labelText: 'Remarks',
-                                                                      hintText: 'Enter Remarks',
-                                                                      labelStyle: TextStyle(
-                                                                          color: UIGuide.BLACK,fontSize: 12),
-                                                                      hintStyle: TextStyle(color: Colors.grey,),
-                                                                      alignLabelWithHint: false,
-                                                                      helperStyle: TextStyle(color: UIGuide.light_Purple),
-                                                                      border: OutlineInputBorder(
-                                                                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                                                                      ),
-                                                                      focusedBorder: OutlineInputBorder(
-                                                                        borderSide: BorderSide(
-                                                                            color: UIGuide.light_Purple, width: 1.0),
-                                                                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                                                                      ),
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ):
-                                                              SizedBox(
-                                                                height: 0,
-                                                                width: 0,
-                                                              ),
-                                                              kheight10,
-
-                                                              Row(
-                                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                                children: [
-
-                                                                  value.isApproval==true?
-                                                                  TextButton(
-                                                                    onPressed: () async {
-                                                                      provider.portionStatus!.isNotEmpty?
-                                                                      await   provider.portionApprovalConfirmUpdate(
-                                                                          context,
-                                                                          provider.portionEntryId.toString(),
-                                                                          "1",
-                                                                          remarksController.text):
-                                                                      await   provider.portionApprovalConfirm(
-                                                                          context,
-                                                                          provider.portionEntryId.toString(),
-                                                                          "1",
-                                                                          remarksController.text);
-                                                                      Navigator.of(context).pop();
-                                                                      provider.reportView.clear();
-                                                                      await value.getApprovalReport(
-                                                                          courseIDController.text,
-                                                                          division,
-                                                                          subject,
-                                                                          value.fromdateSend,
-                                                                          value.todateSend,
-                                                                          types.toString());
-                                                                    },
-                                                                    child: Text('Reject',style: TextStyle(
-                                                                      color: UIGuide.button2
-                                                                    ),),
-                                                                  ):
-                                                                  SizedBox(
-                                                                    height: 0,
-                                                                    width: 0,
-                                                                  ),
-
-                                                                  value.isApproval==true?
-                                                                  TextButton(
-                                                                    onPressed: () async {
-
-                                                                      provider.portionStatus!.isNotEmpty?
-                                                                   await   provider.portionApprovalConfirmUpdate(
-                                                                          context,
-                                                                          provider.portionEntryId.toString(),
-                                                                          "0",
-                                                                          remarksController.text.isEmpty?"null": remarksController.text):
-                                                                      await provider.portionApprovalConfirm(
-                                                                          context,
-                                                                          provider.portionEntryId.toString(),
-                                                                          "0",
-                                                                          remarksController.text.isEmpty?"null": remarksController.text);
-                                                                       Navigator.of(context).pop();
-                                                                      provider.reportView.clear();
-                                                                      await value.getApprovalReport(
-                                                                          courseIDController.text,
-                                                                          division,
-                                                                          subject,
-                                                                          value.fromdateSend,
-                                                                          value.todateSend,
-                                                                          types.toString());
-                                                                    },
-                                                                    child: Text('Approve',style: TextStyle(
-                                                      color: UIGuide.button1),
-                                                                  ),
-                                                                  ):
-                                                                      SizedBox(
-                                                                        height: 0,
-                                                                        width: 0,
-                                                                      )
-                                                                ],
-                                                              ),
-
-                                                            ],
-                                                          )
-                                                        ],
-                                                      );
-                                                    },
-                                                  );
-
-                                                },
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-
-                                                      border: Border.all(
-                                                          width: 1,
-                                                          color: UIGuide.THEME_LIGHT
-                                                      ),
-                                                      borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20),topRight:Radius.circular(20) ),
-                                                      color: UIGuide.ButtonBlue
-                                                  ),
-
-                                                  child: Column(
-                                                    children: [
-                                                      Padding(
-                                                        padding: const EdgeInsets.all(4.0),
-                                                        child: Row(
-                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                          children: [
-
-                                                            Row(
-
-                                                              children: [
-                                                                Container(
-
-                                                                  child:Padding(
-                                                                    padding: const EdgeInsets.all(2.0),
-                                                                    child: Text(
-                                                                    "${index+1}"
-                                                                    ),
-                                                                  ),
-                                                                  decoration: BoxDecoration(
-
-                                                                      color: UIGuide.THEME_LIGHT
-                                                                  ),
-                                                                ),
-                                                                kWidth5,
-
-                                                                Container(
-
-                                                                  child:Padding(
-                                                                    padding: const EdgeInsets.all(4.0),
-                                                                    child: Text(
-                                                                       formattedDate
-                                                                    ),
-                                                                  ),
-                                                                  decoration: BoxDecoration(
-                                                                    borderRadius: BorderRadius.only(
-                                                                        topRight: Radius.circular(40.0),
-                                                                        bottomRight: Radius.circular(40.0),
-                                                                        topLeft: Radius.circular(40.0),
-                                                                        bottomLeft: Radius.circular(40.0)),
-
-
-                                                                      color: UIGuide.THEME_LIGHT
-                                                                  ),
-                                                                ),
-
-                                                              ],
-                                                            ),
-
-                                                            Icon(Icons.visibility,color: UIGuide.light_Purple,)
-
-
-
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      Padding(
-                                                        padding: const EdgeInsets.all(4.0),
-                                                        child: Row(
-
-                                                          children: [
-
-                                                            Text("Staff       : ",style: TextStyle(
-                                                                color: UIGuide.light_Purple
-                                                            ),),
-                                                            Flexible(
-                                                              child: Text(provider.reportView[index].staff.toString(),
-
-                                                                overflow: TextOverflow.ellipsis,
-
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      Padding(
-                                                        padding: const EdgeInsets.all(4.0),
-                                                        child: Row(
-
-                                                          children: [
-
-                                                            Text("Subject  : ",style:
-                                                              TextStyle(
-                                                                  color: UIGuide.light_Purple
-                                                              ),),
-                                                            Flexible(
-                                                              child: Text(provider.reportView[index].subject.toString(),
-
-                                                                overflow: TextOverflow.ellipsis,
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      Padding(
-                                                        padding: const EdgeInsets.all(4.0),
-                                                        child: Row(
-
-                                                          children: [
-
-                                                            Text("Chapter : ", style: TextStyle(
-                                                                color: UIGuide.light_Purple
-                                                            ),),
-                                                            // TextWrapper(text:provider.reportView[index].chapter.toString() ,
-                                                            //     fSize: 12)
-                                                            //
-
-
-                                                            Flexible(
-                                                              child: Text(provider.reportView[index].chapter.toString(),
-
-                                                                softWrap: true,
-                                                                maxLines: 2,
-                                                                overflow: TextOverflow.ellipsis,
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      Padding(
-                                                        padding: const EdgeInsets.all(4.0),
-                                                        child: Row(
-
-                                                          children: [
-
-                                                            Text("Topic     : ", style: TextStyle(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: InkWell(
+                                        onTap: () async{
+                                          await provider.getApprovalReportDetailView(provider.reportView[index].portionEntryId.toString());
+                                          remarksController.clear();
+                                          QuickAlert.show(
+                                            type: QuickAlertType.success,
+                                            animType: QuickAlertAnimType.scale,
+                                            context: context,
+
+                                            widget:  AlertDialog(
+                                              // title: Text('Portion Entry Details'),
+                                              // content: Text('This is an alert dialog.'),
+                                              actions: <Widget>[
+                                                Column(
+                                                  children: [
+
+                                                    Row(
+                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                      children: [
+                                                        const Text("Portion Entry Details",style:
+                                                        TextStyle(
+                                                            fontWeight: FontWeight.w500,
                                                             color: UIGuide.light_Purple
                                                         ),),
-                                                            // TextWrapper(text:provider.reportView[index].chapter.toString() ,
-                                                            //     fSize: 12)
-                                                            //
+                                                        IconButton(
+                                                            splashRadius: 15.0,
+                                                            onPressed: (){
+                                                              Navigator.pop(context);
+                                                            },
 
-                                                            Flexible(
-                                                              child:
-                                                              Text(
-                                                                provider.reportView[index].topic==null?"":provider.reportView[index].topic.toString(),
+                                                            icon: const Icon(Icons.clear))
+                                                      ],
+                                                    ),
+                                                    const Column(
+                                                      children: [
+                                                        Divider(
+                                                          height: 1,
+                                                          thickness: 1.5,
+                                                        )
+                                                      ],
+                                                    ),
+                                                    kheight5,
 
-                                                                softWrap: true,
-                                                                maxLines: 2,
-                                                                overflow: TextOverflow.ellipsis,
-                                                              ),
+                                                    Row(
+                                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                      children: [
+
+                                                        Container(
+                                                            decoration: BoxDecoration(
+                                                                color: UIGuide.THEME_LIGHT,
+                                                                borderRadius: BorderRadius.circular(10)),
+
+
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.all(8.0),
+                                                              child: Text("${provider.portionSubject}"),
+                                                            )),
+                                                        Container(
+                                                            decoration: BoxDecoration(
+                                                                color: UIGuide.THEME_LIGHT,
+                                                                borderRadius: BorderRadius.circular(10)),
+
+
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.all(8.0),
+                                                              child: Text(formattedDate),
+                                                            )),
+                                                      ],),
+                                                    kheight10,
+
+                                                    Row(
+                                                      children: [
+                                                        const Text("Chapter : "),
+                                                        Flexible(
+                                                          child: Text("${provider.portionChapter}",
+                                                            style: const TextStyle(
+                                                                color: UIGuide.light_Purple
                                                             ),
-                                                          ],
+                                                            maxLines: 5,
+                                                            overflow: TextOverflow.ellipsis,
+
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
+                                                    kheight10,
+                                                    Row(
+                                                      children: [
+                                                        const Text("Topic     : ",
+
                                                         ),
+                                                        Flexible(
+                                                          child: Text(
+
+                                                            provider.portionTopic ?? "",
+                                                            style: const TextStyle(
+                                                                color: UIGuide.light_Purple
+                                                            ),
+                                                            maxLines: 5,
+                                                            overflow: TextOverflow.ellipsis,
+
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
+                                                    kheight10,
+                                                    Row(
+                                                      children: [
+                                                        const Text("Description  : ",
+
+                                                        ),
+                                                        Flexible(
+                                                          child: Text(
+
+                                                            provider.portionDescription ?? "",
+                                                            style: const TextStyle(
+                                                                color: UIGuide.light_Purple
+                                                            ),
+                                                            maxLines: 5,
+                                                            overflow: TextOverflow.ellipsis,
+
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
+                                                    kheight10,
+                                                    Row(
+                                                      children: [
+                                                        const Text("Details  : ",
+
+                                                        ),
+                                                        Flexible(
+                                                          child: Text(
+
+                                                            provider.portionDetails ?? "",
+                                                            style: const TextStyle(
+                                                                color: UIGuide.light_Purple
+                                                            ),
+                                                            maxLines: 5,
+                                                            overflow: TextOverflow.ellipsis,
+
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
+                                                    kheight10,
+                                                    Row(
+                                                      children: [
+                                                        const Text("Assignment  : ",
+
+                                                        ),
+                                                        Flexible(
+                                                          child: Text(
+
+                                                            provider.portionAssignment ?? "",
+                                                            style: const TextStyle(
+                                                                color: UIGuide.light_Purple
+                                                            ),
+                                                            maxLines: 5,
+                                                            overflow: TextOverflow.ellipsis,
+
+                                                          ),
+                                                        )
+                                                      ],
+                                                    ),
+                                                    kheight10,
+                                                    provider.photoList1.isNotEmpty?
+                                                    const Row(
+                                                      children: [
+                                                        Text("Attachments :"),
+                                                      ],
+                                                    ):
+                                                    const SizedBox(height: 0,width: 0),
+                                                    provider.photoList1.isNotEmpty?
+                                                    SizedBox(
+                                                      height: size.height*0.15,
+                                                      width: size.width*0.6,
+
+                                                      child: ListView.builder(
+                                                        itemCount:provider.photoList1.length,
+                                                        itemBuilder: (context, index) {
+                                                          return Table(
+                                                            columnWidths: const {
+                                                              0: FlexColumnWidth(0.5),
+                                                              1: FlexColumnWidth(2),
+                                                              2: FlexColumnWidth(0.5),
+                                                              // 3: FlexColumnWidth(0.5),
+                                                            },
+                                                            border: TableBorder.all(
+                                                                borderRadius: const BorderRadius.only(
+                                                                    topLeft: Radius.circular(10),
+                                                                    topRight: Radius.circular(10)),
+                                                                color: const Color.fromARGB(
+                                                                    255, 248, 248, 248)),
+                                                            children:  [
+
+                                                              TableRow(
+                                                                  decoration: const BoxDecoration(
+                                                                    borderRadius: BorderRadius.only(
+                                                                        topLeft: Radius.circular(10),
+                                                                        topRight: Radius.circular(10)),
+                                                                    color:
+                                                                    UIGuide.ButtonBlue,
+                                                                    //Color.fromARGB(255, 223, 223, 223),
+                                                                  ),
+                                                                  children: [
+                                                                    TableCell(
+                                                                      verticalAlignment:
+                                                                      TableCellVerticalAlignment.middle,
+                                                                      child: Text(
+                                                                        "${index+1}",
+                                                                        style: const TextStyle(
+                                                                            fontWeight: FontWeight.w400),
+                                                                        textAlign: TextAlign.center,
+                                                                      ),
+                                                                    ),
+                                                                    TableCell(
+                                                                      verticalAlignment:
+                                                                      TableCellVerticalAlignment.middle,
+                                                                      child: Padding(
+                                                                        padding: const EdgeInsets.only(
+                                                                          top: 6.0,
+                                                                          bottom: 6,
+                                                                        ),
+                                                                        child: InkWell(
+                                                                          onTap:() async{
+
+                                                                            await showPhotoDialog(context,  provider.photoList1[index]['file']['url'],provider.photoList1[index]['file']['extension']);
+
+                                                                            print("------url----");
+                                                                            log( provider.photoList1[index]['file']['url']);
+                                                                          },
+                                                                          child: Text(
+                                                                            provider.photoList1[index]['file']['name'],
+                                                                            style: const TextStyle(
+                                                                                fontWeight: FontWeight.w400),
+                                                                            textAlign: TextAlign.center,
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                    TableCell(
+                                                                      verticalAlignment:
+                                                                      TableCellVerticalAlignment.middle,
+                                                                      child: Padding(
+                                                                          padding: const EdgeInsets.only(
+                                                                            top: 6.0,
+                                                                            bottom: 6,
+                                                                          ),
+                                                                          child: InkWell(
+                                                                              onTap:() {
+                                                                                showPhotoDialog(context,  provider.photoList1[index]['file']['url'],provider.photoList1[index]['file']['extension']);
+
+                                                                              },
+
+                                                                              child: const Icon(Icons.visibility,size: 20,))
+                                                                      ),
+                                                                    ),
+
+
+
+                                                                  ])
+                                                            ],
+                                                          );
+
+                                                        },
+
                                                       ),
 
+                                                    ):const SizedBox(height: 0,width: 0),
+
+                                                    kheight10,
+
+                                                    value.isApproval==false?
+                                                    Padding(
+                                                      padding: const EdgeInsets.all(4.0),
+                                                      child: SizedBox(
+                                                        height: 40,
+                                                        child: TextFormField(
+
+                                                          inputFormatters: [LengthLimitingTextInputFormatter(1000)],
+                                                          controller: remarksController,
+                                                          minLines: 1,
+                                                          //  maxLines: 2,
+                                                          keyboardType: TextInputType.multiline,
+                                                          decoration: const InputDecoration(
+                                                            contentPadding: EdgeInsets.fromLTRB(12.0, 10.0, 20.0, 10.0),
+                                                            labelText: 'Remarks',
+                                                            hintText: 'Enter Remarks',
+                                                            labelStyle: TextStyle(
+                                                                color: UIGuide.BLACK,fontSize: 12),
+                                                            hintStyle: TextStyle(color: Colors.grey,),
+                                                            alignLabelWithHint: false,
+                                                            helperStyle: TextStyle(color: UIGuide.light_Purple),
+                                                            border: OutlineInputBorder(
+                                                              borderRadius: BorderRadius.all(Radius.circular(10)),
+                                                            ),
+                                                            focusedBorder: OutlineInputBorder(
+                                                              borderSide: BorderSide(
+                                                                  color: UIGuide.light_Purple, width: 1.0),
+                                                              borderRadius: BorderRadius.all(Radius.circular(10)),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ):
+                                                    const SizedBox(
+                                                      height: 0,
+                                                      width: 0,
+                                                    ),
+                                                    kheight10,
+
+                                                    Row(
+                                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                      children: [
+
+                                                        value.isApproval==true?
+                                                        TextButton(
+                                                          onPressed: () async {
+                                                            provider.portionStatus!.isNotEmpty?
+                                                            await   provider.portionApprovalConfirmUpdate(
+                                                                context,
+                                                                provider.portionEntryId.toString(),
+                                                                "1",
+                                                                remarksController.text):
+                                                            await   provider.portionApprovalConfirm(
+                                                                context,
+                                                                provider.portionEntryId.toString(),
+                                                                "1",
+                                                                remarksController.text);
+                                                            Navigator.of(context).pop();
+                                                            provider.reportView.clear();
+                                                            await value.getApprovalReport(
+                                                                courseIDController.text,
+                                                                division,
+                                                                subject,
+                                                                value.fromdateSend,
+                                                                value.todateSend,
+                                                                types.toString());
+                                                          },
+                                                          child: const Text('Reject',style: TextStyle(
+                                                              color: UIGuide.button2
+                                                          ),),
+                                                        ):
+                                                        const SizedBox(
+                                                          height: 0,
+                                                          width: 0,
+                                                        ),
+
+                                                        value.isApproval==true?
+                                                        TextButton(
+                                                          onPressed: () async {
+
+                                                            provider.portionStatus!.isNotEmpty?
+                                                            await   provider.portionApprovalConfirmUpdate(
+                                                                context,
+                                                                provider.portionEntryId.toString(),
+                                                                "0",
+                                                                remarksController.text.isEmpty?"null": remarksController.text):
+                                                            await provider.portionApprovalConfirm(
+                                                                context,
+                                                                provider.portionEntryId.toString(),
+                                                                "0",
+                                                                remarksController.text.isEmpty?"null": remarksController.text);
+                                                            Navigator.of(context).pop();
+                                                            provider.reportView.clear();
+                                                            await value.getApprovalReport(
+                                                                courseIDController.text,
+                                                                division,
+                                                                subject,
+                                                                value.fromdateSend,
+                                                                value.todateSend,
+                                                                types.toString());
+                                                          },
+                                                          child: const Text('Approve',style: TextStyle(
+                                                              color: UIGuide.button1),
+                                                          ),
+                                                        ):
+                                                        const SizedBox(
+                                                          height: 0,
+                                                          width: 0,
+                                                        )
+                                                      ],
+                                                    ),
+
+                                                  ],
+                                                )
+                                              ],
+                                            ),
+                                          );
 
 
 
-                                                    ],
-                                                  ),
+                                        },
+                                        child: Container(
+                                          decoration: BoxDecoration(
+
+                                              border: Border.all(
+                                                  width: 1,
+                                                  color: UIGuide.THEME_LIGHT
+                                              ),
+                                              borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(20),topRight:Radius.circular(20) ),
+                                              color: UIGuide.ButtonBlue
+                                          ),
+
+                                          child: Column(
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.all(4.0),
+                                                child: Row(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  children: [
+
+                                                    Row(
+
+                                                      children: [
+                                                        Container(
+
+                                                          decoration: const BoxDecoration(
+
+                                                              color: UIGuide.THEME_LIGHT
+                                                          ),
+
+                                                          child:Padding(
+                                                            padding: const EdgeInsets.all(2.0),
+                                                            child: Text(
+                                                                "${index+1}"
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        kWidth5,
+
+                                                        Container(
+
+                                                          decoration: const BoxDecoration(
+                                                              borderRadius: BorderRadius.only(
+                                                                  topRight: Radius.circular(40.0),
+                                                                  bottomRight: Radius.circular(40.0),
+                                                                  topLeft: Radius.circular(40.0),
+                                                                  bottomLeft: Radius.circular(40.0)),
+
+
+                                                              color: UIGuide.THEME_LIGHT
+                                                          ),
+
+                                                          child:Padding(
+                                                            padding: const EdgeInsets.all(4.0),
+                                                            child: Text(
+                                                                formattedDate
+                                                            ),
+                                                          ),
+                                                        ),
+
+                                                      ],
+                                                    ),
+
+                                                    const Icon(Icons.visibility,color: UIGuide.light_Purple,)
+
+
+
+                                                  ],
                                                 ),
                                               ),
-                                            )
+                                              Padding(
+                                                padding: const EdgeInsets.all(4.0),
+                                                child: Row(
+
+                                                  children: [
+
+                                                    const Text("Staff       : ",style: TextStyle(
+                                                        color: UIGuide.light_Purple
+                                                    ),),
+                                                    Flexible(
+                                                      child: Text(provider.reportView[index].staff.toString(),
+
+                                                        overflow: TextOverflow.ellipsis,
+
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.all(4.0),
+                                                child: Row(
+
+                                                  children: [
+
+                                                    const Text("Subject  : ",style:
+                                                    TextStyle(
+                                                        color: UIGuide.light_Purple
+                                                    ),),
+                                                    Flexible(
+                                                      child: Text(provider.reportView[index].subject.toString(),
+
+                                                        overflow: TextOverflow.ellipsis,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.all(4.0),
+                                                child: Row(
+
+                                                  children: [
+
+                                                    const Text("Chapter : ", style: TextStyle(
+                                                        color: UIGuide.light_Purple
+                                                    ),),
+                                                    // TextWrapper(text:provider.reportView[index].chapter.toString() ,
+                                                    //     fSize: 12)
+                                                    //
+
+
+                                                    Flexible(
+                                                      child: Text(provider.reportView[index].chapter.toString(),
+
+                                                        softWrap: true,
+                                                        maxLines: 2,
+                                                        overflow: TextOverflow.ellipsis,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding: const EdgeInsets.all(4.0),
+                                                child: Row(
+
+                                                  children: [
+
+                                                    const Text("Topic     : ", style: TextStyle(
+                                                        color: UIGuide.light_Purple
+                                                    ),),
+                                                    // TextWrapper(text:provider.reportView[index].chapter.toString() ,
+                                                    //     fSize: 12)
+                                                    //
+
+                                                    Flexible(
+                                                      child:
+                                                      Text(
+                                                        provider.reportView[index].topic==null?"":provider.reportView[index].topic.toString(),
+
+                                                        softWrap: true,
+                                                        maxLines: 2,
+                                                        overflow: TextOverflow.ellipsis,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+
+
+
+
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    )
 
 
 

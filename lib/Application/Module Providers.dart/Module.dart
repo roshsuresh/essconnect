@@ -1,6 +1,9 @@
 import 'dart:developer';
-import 'package:essconnect/utils/constants.dart';
+
 import 'package:flutter/material.dart';
+
+import '../../utils/constants.dart';
+
 
 class ModuleProviders extends ChangeNotifier {
   bool fees = false;
@@ -12,59 +15,78 @@ class ModuleProviders extends ChangeNotifier {
   bool offlineTab = false;
   bool attendenceEntry = false;
   bool offlineFees = false;
-  bool mobileApp =false;
+  bool mobileApp = false;
+  bool hpc = false;
+  // bool gps = false;
   Future getModuleDetails() async {
     var parsedResponse = await parseJWT();
+
     final newParse = await parsedResponse['Modules'];
     print(newParse);
     String data = await newParse;
 
-    if (data.contains('FEE')) {
+    if (RegExp(r'\bFEE\b').hasMatch(data)) {
       fees = true;
       notifyListeners();
       print('Fees Module Provided');
     }
-    if (data.contains('TT')) {
+    if (RegExp(r'\bTT\b').hasMatch(data)) {
       timetable = true;
       notifyListeners();
     }
-    if (data.contains('TAB')) {
+    if (RegExp(r'\bTAB\b').hasMatch(data)) {
       tabulation = true;
       notifyListeners();
     }
-    if (data.contains('CC')) {
+    if (RegExp(r'\bCC\b').hasMatch(data)) {
       curiculam = true;
       notifyListeners();
     }
-    if (data.contains('OFFLINE_ATT')) {
+    if (RegExp(r'\bOFFLINE_ATT\b').hasMatch(data)) {
       offlineAttendence = true;
       notifyListeners();
     }
-    if (data.contains('OFFLINE_TAB')) {
+    if (RegExp(r'\bOFFLINE_TAB\b').hasMatch(data))
+    {
       offlineTab = true;
       notifyListeners();
     }
 
-    if (data.contains('ATT')) {
+    if(RegExp(r'\bATT\b').hasMatch(data))
+    {
       attendenceEntry = true;
       notifyListeners();
     }
-    if (data.contains('FEE_ONLY')) {
+    if(RegExp(r'\bFEE_ONLY\b').hasMatch(data))
+    {
       feesOnly = true;
       notifyListeners();
     }
-    if (data.contains('OFFLINE_FEES')) {
+    if (RegExp(r'\bOFFLINE_FEES\b').hasMatch(data))
+    {
       offlineFees = true;
       notifyListeners();
     }
-    if (data.contains('MOB_APP')) {
-      mobileApp = await true;
+    if (RegExp(r'\bMOB_APP\b').hasMatch(data))
+    {
+      mobileApp = true;
       notifyListeners();
       print('Mobile App not provided');
     }
-
+    print("fesssssssss  $fees");
     log('Module Checked '.toString());
-
+    if (RegExp(r'\bHPC\b').hasMatch(data))
+    {
+      hpc = true;
+      notifyListeners();
+      print('HPC Provided');
+    }
+    // if (RegExp(r'\bHPC\b').hasMatch(data))
+    // {
+    //   gps = true;
+    //   notifyListeners();
+    //   print('GPS Provided');
+    // }
     notifyListeners();
   }
 }

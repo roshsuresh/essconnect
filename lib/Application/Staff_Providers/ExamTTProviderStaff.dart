@@ -1,15 +1,16 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:essconnect/Domain/Admin/ExamTTModel.dart';
-import 'package:essconnect/Domain/Staff/ExamTTModelStaff.dart';
-import 'package:essconnect/Domain/Staff/GallerySendStaff.dart';
-import 'package:essconnect/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:multi_select_flutter/util/multi_select_item.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../Domain/Admin/ExamTTModel.dart';
+import '../../Domain/Staff/ExamTTModelStaff.dart';
+import '../../Domain/Staff/GallerySendStaff.dart';
+import '../../utils/constants.dart';
 
 class ExamTTAdmProvidersStaff with ChangeNotifier {
   getVariables() {
@@ -372,9 +373,9 @@ class ExamTTAdmProvidersStaff with ChangeNotifier {
               animType: AnimType.rightSlide,
               headerAnimationLoop: false,
               title: 'Success',
-              desc: 'Uploaded Successfully',
+              desc: 'Saved Successfully',
               btnOkOnPress: () {},
-              btnOkIcon: Icons.cancel,
+              btnOkIcon: Icons.check,
               btnOkColor: Colors.green)
           .show();
       getVariables();

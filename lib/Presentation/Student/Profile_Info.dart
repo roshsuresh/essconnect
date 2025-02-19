@@ -7,14 +7,23 @@ import 'package:essconnect/Presentation/Student/ProfileEdit.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:essconnect/utils/spinkit.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class Profile_Info extends StatelessWidget {
   const Profile_Info({Key? key}) : super(key: key);
+  String formatDOB(String dobString) {
+    // Parse the string into a DateTime object
+    DateTime dob = DateTime.parse(dobString);
+
+    // Format the DateTime object to 'dd-MMM-yyyy'
+    return DateFormat('dd-MMM-yyyy').format(dob);
+  }
 
   @override
   Widget build(BuildContext context) {
     Provider.of<ProfileProvider>(context, listen: false).profileData();
+
     var size = MediaQuery.of(context).size;
 
     var width = size.width;
@@ -285,8 +294,8 @@ class Profile_Info extends StatelessWidget {
                                                     Text(
                                                       provider.dob == null
                                                           ? '--'
-                                                          : provider.dob
-                                                              .toString(),
+                                                          : formatDOB(provider.dob
+                                                          .toString()),
                                                       style: const TextStyle(
                                                           color: UIGuide
                                                               .light_Purple),
@@ -673,6 +682,92 @@ class Profile_Info extends StatelessWidget {
                                                         ),
                                                         const Text(
                                                           'Guardian Phone',
+                                                          style: TextStyle(
+                                                              color: Colors
+                                                                  .black38,
+                                                              fontSize: 12),
+                                                        ),
+                                                      ],
+                                                    )
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                            kheight10,
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    TableRow(
+                                      children: [
+                                        Column(
+                                          children: [
+                                            Row(
+                                              children: [
+                                                const Icon(
+                                                  Icons.directions_bus_sharp,
+                                                  size: 22,
+                                                ),
+                                                kWidth,
+                                                Column(
+                                                  crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      provider.busName ==
+                                                          null
+                                                          ? '--'
+                                                          : provider.busName
+                                                          .toString(),
+                                                      style: const TextStyle(
+                                                        color: UIGuide
+                                                            .light_Purple,
+                                                      ),
+                                                    ),
+                                                    const Text(
+                                                      'Bus',
+                                                      style: TextStyle(
+                                                          color: Colors.black38,
+                                                          fontSize: 12),
+                                                    )
+                                                  ],
+                                                )
+                                              ],
+                                            ),
+                                            kheight10,
+                                          ],
+                                        ),
+                                        Column(
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Row(
+                                                  children: [
+                                                    const Icon(
+                                                      Icons.departure_board,
+                                                      size: 22,
+                                                    ),
+                                                    kWidth,
+                                                    Column(
+                                                      crossAxisAlignment:
+                                                      CrossAxisAlignment
+                                                          .start,
+                                                      children: [
+                                                        Text(
+                                                          provider.busStop ==
+                                                              null
+                                                              ? '--'
+                                                              : provider
+                                                              .busStop
+                                                              .toString(),
+                                                          style:
+                                                          const TextStyle(
+                                                            color: UIGuide
+                                                                .light_Purple,
+                                                          ),
+                                                        ),
+                                                        const Text(
+                                                          'Stop',
                                                           style: TextStyle(
                                                               color: Colors
                                                                   .black38,

@@ -1,9 +1,12 @@
 import 'dart:convert';
-import 'package:essconnect/Domain/Student/DiaryModel.dart';
-import 'package:essconnect/utils/constants.dart';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+
+
+import '../../Domain/Student/DiaryModel.dart';
+import '../../utils/constants.dart';
 
 class DiaryProvidersstud with ChangeNotifier {
   bool _loading = false;

@@ -28,22 +28,22 @@ class BusFEEDetailModel {
     if (json['totalList'] != null) {
       totalList = <TotalListBus>[];
       json['totalList'].forEach((v) {
-        totalList!.add(TotalListBus.fromJson(v));
+        totalList!.add(new TotalListBus.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    if (feesSummary != null) {
-      data['feesSummary'] = feesSummary!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.feesSummary != null) {
+      data['feesSummary'] = this.feesSummary!.map((v) => v.toJson()).toList();
     }
-    data['uploadedDate'] = uploadedDate;
-    data['showConcessionColumn'] = showConcessionColumn;
-    data['busName'] = busName;
-    data['busStop'] = busStop;
-    if (totalList != null) {
-      data['totalList'] = totalList!.map((v) => v.toJson()).toList();
+    data['uploadedDate'] = this.uploadedDate;
+    data['showConcessionColumn'] = this.showConcessionColumn;
+    data['busName'] = this.busName;
+    data['busStop'] = this.busStop;
+    if (this.totalList != null) {
+      data['totalList'] = this.totalList!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -80,15 +80,15 @@ class FeesSummaryBusModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['uploadedDate'] = uploadedDate;
-    data['installment'] = installment;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['uploadedDate'] = this.uploadedDate;
+    data['installment'] = this.installment;
 
-    data['fineStartsFrom'] = fineStartsFrom;
-    data['amount'] = amount;
-    data['concessionAmount'] = concessionAmount;
-    data['paidAmount'] = paidAmount;
-    data['balanceAmount'] = balanceAmount;
+    data['fineStartsFrom'] = this.fineStartsFrom;
+    data['amount'] = this.amount;
+    data['concessionAmount'] = this.concessionAmount;
+    data['paidAmount'] = this.paidAmount;
+    data['balanceAmount'] = this.balanceAmount;
     return data;
   }
 }
@@ -113,11 +113,11 @@ class TotalListBus {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['totalAmount'] = totalAmount;
-    data['totalConcessionAmount'] = totalConcessionAmount;
-    data['totalPaidAmount'] = totalPaidAmount;
-    data['totalBalanceAmount'] = totalBalanceAmount;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['totalAmount'] = this.totalAmount;
+    data['totalConcessionAmount'] = this.totalConcessionAmount;
+    data['totalPaidAmount'] = this.totalPaidAmount;
+    data['totalBalanceAmount'] = this.totalBalanceAmount;
     return data;
   }
 }

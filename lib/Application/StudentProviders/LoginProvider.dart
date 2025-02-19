@@ -1,24 +1,24 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:essconnect/Application/StudentProviders/SiblingsProvider.dart';
-import 'package:essconnect/Constants.dart';
-import 'package:essconnect/Domain/Student/LoginModel.dart';
-import 'package:essconnect/Presentation/Admin/AdminHome.dart';
-import 'package:essconnect/Presentation/ChildLogin/ChildHomeScreen.dart';
-import 'package:essconnect/Presentation/SchoolHead/SchoolHeadHome.dart';
-import 'package:essconnect/Presentation/SchoolSuperAdmin/SuperAdminHome.dart';
-import 'package:essconnect/Presentation/Staff/StaffHome.dart';
-import 'package:essconnect/Presentation/StaffAsGuardian.dart/StaffHomeScreen.dart';
-import 'package:essconnect/Presentation/Student/Student_home.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../Constants.dart';
+import '../../Domain/Student/LoginModel.dart';
 import '../../Domain/Student/activation_model.dart';
+import '../../Presentation/Admin/AdminHome.dart';
+import '../../Presentation/ChildLogin/ChildHomeScreen.dart';
+import '../../Presentation/SchoolHead/SchoolHeadHome.dart';
+import '../../Presentation/SchoolSuperAdmin/SuperAdminHome.dart';
+import '../../Presentation/Staff/StaffHome.dart';
+import '../../Presentation/StaffAsGuardian.dart/StaffHomeScreen.dart';
+import '../../Presentation/Student/Student_home.dart';
 import '../../utils/constants.dart';
+import 'SiblingsProvider.dart';
 
 class LoginProvider with ChangeNotifier {
   bool isLoginned = false;
@@ -107,9 +107,9 @@ class LoginProvider with ChangeNotifier {
       await pass.setString('password', password);
 
       await getToken(context);
-      await getMobileViewerId();
-      await getsavemobileViewer(context);
-      await sendUserDetails(context);
+      // await getMobileViewerId();
+      // await getsavemobileViewer(context);
+      // await sendUserDetails(context);
       var parsedResponse = await parseJWT();
       List<dynamic> roleList = [];
       print(parsedResponse['role'] is List);

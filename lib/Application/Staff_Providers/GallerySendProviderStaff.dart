@@ -1,13 +1,15 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:essconnect/Domain/Staff/GalleryListViewStaff.dart';
-import 'package:essconnect/Domain/Staff/GallerySendStaff.dart';
-import 'package:essconnect/utils/constants.dart';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../Domain/Staff/GalleryListViewStaff.dart';
+import '../../Domain/Staff/GallerySendStaff.dart';
+import '../../utils/constants.dart';
 
 class GallerySendProvider_Stf with ChangeNotifier {
   DateTime? fromexam;

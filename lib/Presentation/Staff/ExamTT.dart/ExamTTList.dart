@@ -7,6 +7,11 @@ import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
+import '../../../Application/AdminProviders/ExamTTPtoviders.dart';
+import '../../Admin/ExamTimetable/ExamEdit.dart';
+import '../../Admin/ExamTimetable/ExamList.dart';
+import 'ExamEditStaff.dart';
+
 class ExamTTHistoryStaff extends StatefulWidget {
   const ExamTTHistoryStaff({Key? key}) : super(key: key);
 
@@ -23,7 +28,7 @@ class _ExamTTHistoryStaffState extends State<ExamTTHistoryStaff> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       var p = Provider.of<ExamTTAdmProvidersStaff>(context, listen: false);
-      p.courseList.clear();
+      // p.courseList.clear();
       await p.clearTTexamList();
       await p.getExamTimeTableList();
       parsedResponse = await parseJWT();
@@ -75,7 +80,6 @@ class _ExamTTHistoryStaffState extends State<ExamTTHistoryStaff> {
                       }
                       String staffid =
                           provider.examlist[index].createdStaffId ?? '--';
-                      if (parsedStaff == staffid) {
                         return Padding(
                           padding: const EdgeInsets.all(4.0),
                           child: Container(
@@ -104,47 +108,227 @@ class _ExamTTHistoryStaffState extends State<ExamTTHistoryStaff> {
                                       ),
                                       const Spacer(),
                                       kWidth,
-                                      InkWell(
+                                      //Edit
+                                      GestureDetector(
                                         onTap: () async {
                                           String staffid = provider
-                                                  .examlist[index]
-                                                  .createdStaffId ??
+                                              .examlist[index].createdStaffId ??
                                               '--';
 
-                                          //   var parsedResponse = await parseJWT();
-                                          if (parsedStaff == staffid) {
+                                          var parsedResponse = await parseJWT();
+                                          if (parsedResponse['StaffId'] ==
+                                              staffid && provider.courseList.isNotEmpty) {
                                             String event = provider
                                                 .examlist[index].id
                                                 .toString();
-                                            await provider.examTTDelete(
-                                                event, context, index);
+                                            await Navigator.push(context, MaterialPageRoute(builder: (context)=>  ExamTTEditStaff(eventId: event,)));
                                             // await provider.clearTTexamList();
-                                            // await provider
-                                            //     .getExamTimeTableList();
+                                            // await provider.getExamTimeTableList();
                                           } else {
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(
                                               const SnackBar(
                                                 elevation: 10,
                                                 shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(10)),
+                                                  borderRadius: BorderRadius.all(
+                                                      Radius.circular(10)),
                                                 ),
                                                 duration: Duration(seconds: 1),
                                                 margin: EdgeInsets.only(
                                                     bottom: 80,
                                                     left: 30,
                                                     right: 30),
-                                                behavior:
-                                                    SnackBarBehavior.floating,
+                                                behavior: SnackBarBehavior.floating,
                                                 content: Text(
-                                                  'Sorry, you have no access to delete ',
+                                                  'Sorry, you have no access to edit ',
                                                   textAlign: TextAlign.center,
                                                 ),
                                               ),
                                             );
                                           }
+                                        },
+                                        child: const Padding(
+                                          padding: EdgeInsets.only(
+                                              left: 8,
+                                              right: 8,
+                                              top: 3,
+                                              bottom: 2),
+                                          child: Icon(
+                                            Icons.edit,
+                                            color: UIGuide.button1,
+                                            size: 22,
+                                          ),
+                                        ),
+                                      ),
+                                      kWidth,
+                                      //view Eye
+                                      Consumer<ExamTTAdmProviders>(
+                                builder: (context, val, child) => GestureDetector(
+                                          onTap: () async {
+                                            String att =
+                                                provider.examlist[index].id ?? '--';
+                                            await val.viewAttachmentAdmin(att);
+                                            if (val.extensionExam ==
+                                                '.pdf') {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                    const ExamPdfViewAdmin()),
+                                              );
+                                            } else {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                    const ImageViewExamAdmin()),
+                                              );
+                                            }
+                                          },
+                                          child: Padding(
+                                            padding:
+                                            const EdgeInsets.only(top: 8,bottom: 8,),
+                                            child: SizedBox(
+                                              height: 25,
+                                              width: 25,
+                                              child: LottieBuilder.network(
+                                                  "https://assets2.lottiefiles.com/temp/lf20_D0nz3r.json") ?? const Icon(Icons
+                                                  .remove_red_eye_outlined),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      kWidth,
+                                      //Delete
+                                      InkWell(
+                                        onTap: () async {
+                                          showDialog(
+                                            context: context,
+                                            builder:
+                                                (BuildContext context) {
+                                              return AlertDialog(
+                                                title: const Center(
+                                                  child: Text(
+                                                    "Are You Sure Want To Delete",
+                                                    style: TextStyle(
+                                                      fontSize: 15,
+                                                    ),
+                                                  ),
+                                                ),
+                                                actions: <Widget>[
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
+                                                    children: [
+                                                      Padding(
+                                                        padding:
+                                                        const EdgeInsets
+                                                            .only(
+                                                            left:
+                                                            8.0),
+                                                        child:
+                                                        OutlinedButton(
+                                                          onPressed:
+                                                              () {
+                                                            Navigator.of(
+                                                                context)
+                                                                .pop();
+                                                          },
+                                                          style: ButtonStyle(
+                                                              side: WidgetStateProperty.all(const BorderSide(
+                                                                  color: UIGuide
+                                                                      .light_Purple,
+                                                                  width:
+                                                                  1.0,
+                                                                  style:
+                                                                  BorderStyle.solid))),
+                                                          child:
+                                                          const Text(
+                                                            '  Cancel  ',
+                                                            style:
+                                                            TextStyle(
+                                                              color: Color.fromARGB(
+                                                                  255,
+                                                                  201,
+                                                                  13,
+                                                                  13),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      OutlinedButton(
+                                                        onPressed: () async {
+                                                          String staffid = provider
+                                                              .examlist[index]
+                                                              .createdStaffId ??
+                                                              '--';
+
+                                                          //   var parsedResponse = await parseJWT();
+                                                          if (parsedStaff == staffid && provider.courseList.isNotEmpty) {
+                                                            String event = provider
+                                                                .examlist[index].id
+                                                                .toString();
+                                                            await provider.examTTDelete(
+                                                                event, context, index);
+                                                            // await provider.clearTTexamList();
+                                                            // await provider
+                                                            //     .getExamTimeTableList();
+                                                          } else {
+                                                            ScaffoldMessenger.of(context)
+                                                                .showSnackBar(
+                                                              const SnackBar(
+                                                                elevation: 10,
+                                                                shape: RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                  BorderRadius.all(
+                                                                      Radius.circular(10)),
+                                                                ),
+                                                                duration: Duration(seconds: 1),
+                                                                margin: EdgeInsets.only(
+                                                                    bottom: 80,
+                                                                    left: 30,
+                                                                    right: 30),
+                                                                behavior:
+                                                                SnackBarBehavior.floating,
+                                                                content: Text(
+                                                                  'Sorry, you have no access to delete ',
+                                                                  textAlign: TextAlign.center,
+                                                                ),
+                                                              ),
+                                                            );
+                                                          }
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                        style: ButtonStyle(
+                                                            side: WidgetStateProperty.all(const BorderSide(
+                                                                color: UIGuide
+                                                                    .light_Purple,
+                                                                width:
+                                                                1.0,
+                                                                style: BorderStyle
+                                                                    .solid))),
+                                                        child:
+                                                        const Text(
+                                                          'Confirm',
+                                                          style:
+                                                          TextStyle(
+                                                            color: Color
+                                                                .fromARGB(
+                                                                255,
+                                                                12,
+                                                                162,
+                                                                46),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  )
+                                                ],
+                                              );
+                                            },
+                                          );
                                         },
                                         child: Container(
                                           decoration: BoxDecoration(
@@ -282,12 +466,6 @@ class _ExamTTHistoryStaffState extends State<ExamTTHistoryStaff> {
                             ),
                           ),
                         );
-                      } else {
-                        return const SizedBox(
-                          height: 0,
-                          width: 0,
-                        );
-                      }
                     });
       },
     );

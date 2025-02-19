@@ -4,4 +4,8 @@
 -keep class androidx.** { *; }
 -keep class io.flutter.app.** { *; }
 -keep class io.flutter.plugin.** { *; }
+-keepclassmembers class com.easebuzz.payment.kit.**{*;}
 -dontwarn proguard.**
+-keep class com.google.firebase.** { *; }
+-keep class com.google.android.gms.** { *; }
+-dontwarn okhttp3.**

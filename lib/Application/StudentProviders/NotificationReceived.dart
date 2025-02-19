@@ -1,9 +1,11 @@
 import 'dart:convert';
-import 'package:essconnect/Domain/Student/NotificationReceivedStud.dart';
-import 'package:essconnect/utils/constants.dart';
+
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../Domain/Student/NotificationReceivedStud.dart';
+import '../../utils/constants.dart';
 
 class NotificationReceivedProviderStudent with ChangeNotifier {
   bool _loading = false;

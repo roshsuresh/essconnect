@@ -1,10 +1,11 @@
 import 'dart:convert';
-import 'package:essconnect/Domain/Staff/StudentReport_staff.dart';
-import 'package:essconnect/utils/constants.dart';
+
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../Domain/Admin/FeeDetails.dart';
+import '../../Domain/Staff/StudentReport_staff.dart';
+import '../../utils/constants.dart';
 
 class FeeDetailsProvider with ChangeNotifier {
   bool _loading = false;

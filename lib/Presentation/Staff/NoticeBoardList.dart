@@ -90,8 +90,11 @@ class _NoticeBoardListstaffState extends State<NoticeBoardListstaff> {
                                           String event = provider
                                               .noticeList[index].id
                                               .toString();
-                                          await provider.noticeDeleteStaff(
-                                              context, event, index);
+                                          setState(() async {
+                                            await provider.noticeDeleteStaff(
+                                                context, event, index);
+                                          });
+
                                         },
                                         child: Container(
                                           decoration: BoxDecoration(

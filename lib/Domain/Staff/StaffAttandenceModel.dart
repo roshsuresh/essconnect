@@ -1,6 +1,7 @@
 class Attendenceinitvalues {
   bool? isClassTeacher;
   bool? isDualAttendance;
+  bool? smsLinkAttendance;
   List<AttendenceCourse>? course;
 
   Attendenceinitvalues(
@@ -9,6 +10,7 @@ class Attendenceinitvalues {
   Attendenceinitvalues.fromJson(Map<String, dynamic> json) {
     isClassTeacher = json['isClassTeacher'];
     isDualAttendance = json['isDualAttendance'];
+    smsLinkAttendance = json['smsLinkAttendance'];
     if (json['course'] != null) {
       course = [];
       json['course'].forEach((v) {
@@ -21,6 +23,7 @@ class Attendenceinitvalues {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['isClassTeacher'] = isClassTeacher;
     data['isDualAttendance'] = isDualAttendance;
+    data['smsLinkAttendance'] = smsLinkAttendance;
     if (course != null) {
       data['course'] = course!.map((v) => v.toJson()).toList();
     }
@@ -43,10 +46,10 @@ class AttendenceCourse {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['value'] = value;
-    data['text'] = text;
-    data['order'] = order;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['value'] = this.value;
+    data['text'] = this.text;
+    data['order'] = this.order;
     return data;
   }
 }
@@ -71,6 +74,33 @@ class AttendenceDivisions {
 }
 
 //view
+
+
+class StudentAttendance {
+  List<StudentsAttendenceView_stf>? studentList;
+  bool? isDisabled;
+
+  StudentAttendance({this.studentList, this.isDisabled});
+
+  StudentAttendance.fromJson(Map<String, dynamic> json) {
+    if (json['studentList'] != null) {
+      studentList = <StudentsAttendenceView_stf>[];
+      json['studentList'].forEach((v) {
+        studentList!.add(new StudentsAttendenceView_stf.fromJson(v));
+      });
+    }
+    isDisabled = json['isDisabled'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.studentList != null) {
+      data['studentList'] = this.studentList!.map((v) => v.toJson()).toList();
+    }
+    data['isDisabled'] = this.isDisabled;
+    return data;
+  }
+}
 
 class StudentsAttendenceView_stf {
   String? studAttId;

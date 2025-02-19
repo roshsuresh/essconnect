@@ -1,48 +1,54 @@
-import 'package:essconnect/Application/Module%20Providers.dart/Module.dart';
-import 'package:essconnect/Application/Module%20Providers.dart/SchoolNameProvider.dart';
-import 'package:essconnect/Application/Staff_Providers/NotificationCount.dart';
-import 'package:essconnect/Application/StudentProviders/CurriculamProviders.dart';
-import 'package:essconnect/Application/StudentProviders/InternetConnection.dart';
-import 'package:essconnect/Presentation/Admin/Birthday/InitialScreen.dart';
-import 'package:essconnect/Presentation/Admin/WebViewLogin.dart';
-import 'package:essconnect/Presentation/Staff/AbsenteesReport.dart';
-import 'package:essconnect/Presentation/Staff/Anecdotal/StudAnecdotal/AnecdotalInitialScreen.dart';
-import 'package:essconnect/Presentation/Staff/ExamTT.dart/ExamTTScreen.dart';
-import 'package:essconnect/Presentation/Staff/MarkEntryNew.dart';
-import 'package:essconnect/Presentation/Staff/MissingReport.dart';
-import 'package:essconnect/Presentation/Staff/ScreenNotification.dart';
-import 'package:essconnect/Presentation/Staff/StudentReportNew/InitialScreen.dart';
-import 'package:essconnect/Presentation/Staff/ToolMarkEntry.dart';
-import 'package:essconnect/Presentation/Student/CurriculamScreen.dart';
-import 'package:essconnect/Presentation/Student/NoInternetScreen.dart';
-import 'package:essconnect/utils/spinkit.dart';
+
+import 'package:essconnect/Presentation/Staff/staff_feedback.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
-import 'package:flutter_animated_dialog/flutter_animated_dialog.dart';
+import 'package:flutter_infinite_marquee/flutter_infinite_marquee.dart';
+
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:marquee/marquee.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:upgrader/upgrader.dart';
+import '../../Application/Module Providers.dart/Module.dart';
+import '../../Application/Module Providers.dart/SchoolNameProvider.dart';
+import '../../Application/Staff_Providers/NotificationCount.dart';
 import '../../Application/Staff_Providers/Notification_ToGuardianProvider.dart';
 import '../../Application/Staff_Providers/StaffFlashnews.dart';
 import '../../Application/Staff_Providers/StaffProfile.dart';
+import '../../Application/StudentProviders/CurriculamProviders.dart';
+import '../../Application/StudentProviders/InternetConnection.dart';
 import '../../Constants.dart';
 import '../../utils/constants.dart';
+import '../../utils/spinkit.dart';
+import '../Admin/Birthday/InitialScreen.dart';
+import '../Admin/WebViewLogin.dart';
 import '../Login_Activation/Login_page.dart';
+import '../Student/CurriculamScreen.dart';
+import '../Student/NoInternetScreen.dart';
 import '../Student/PasswordChange.dart';
+import '../Student/Student_home.dart';
+import 'AbsenteesReport.dart';
+import 'Anecdotal/StudAnecdotal/AnecdotalInitialScreen.dart';
 import 'CommunicationToGuardian.dart';
+import 'ExamTT.dart/ExamTTScreen.dart';
 import 'GalleryUpload.dart';
+import 'HPC/HPC_Home_Page.dart';
+import 'MarkEntryNew.dart';
+import 'MissingReport.dart';
 import 'NoticeBoard.dart';
 import 'Portion/Portions.dart';
 import 'RemarksEntry.dart';
+import 'ScreenNotification.dart';
 import 'StaffProfile.dart';
 import 'StaffTimeTable.dart';
 import 'StudAttendenceEntry.dart';
 import 'StudReport.dart';
+import 'StudentReportNew/InitialScreen.dart';
 import 'ToGuardian.dart';
+import 'ToolMarkEntry.dart';
 
 class StaffHome extends StatefulWidget {
   const StaffHome({Key? key}) : super(key: key);
@@ -56,6 +62,7 @@ class _StaffHomeState extends State<StaffHome> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      Provider.of<IconClickNotifier>(context, listen: false).enableIcons();
       Provider.of<ConnectivityProvider>(context, listen: false);
       await Provider.of<StaffProfileProvider>(context, listen: false)
           .staff_profileData();
@@ -80,7 +87,7 @@ class _StaffHomeState extends State<StaffHome> {
             ? const NoInternetConnection()
             : UpgradeAlert(
                 upgrader: Upgrader(
-                    showReleaseNotes: false,
+                    showReleaseNotes: true,
                     showIgnore: false,
                     dialogStyle: UpgradeDialogStyle.cupertino,
                     durationUntilAlertAgain: const Duration(days: 1)),
@@ -429,9 +436,11 @@ class _StaffHomeState extends State<StaffHome> {
                                                             height: 38,
                                                             width: 38,
                                                             decoration:
-                                                                const BoxDecoration(
+                                                                 BoxDecoration(
                                                               image:
                                                                   DecorationImage(
+                                                                    opacity:  module.timetable ==
+                                                                  true? 20 :0.2,
                                                                 image:
                                                                     AssetImage(
                                                                   'assets/Timetable.png',
@@ -442,7 +451,7 @@ class _StaffHomeState extends State<StaffHome> {
                                                         ),
                                                       ),
                                                       kheight10,
-                                                      const Text(
+                                                       Text(
                                                         'Timetable',
                                                         textAlign:
                                                             TextAlign.center,
@@ -451,7 +460,9 @@ class _StaffHomeState extends State<StaffHome> {
                                                                 FontWeight.w600,
                                                             fontSize: 11,
                                                             color:
-                                                                Colors.black),
+                                                            module.timetable ==
+                                                                true  ? Colors.black:
+                                                            Colors.black26),
                                                       )
                                                     ],
                                                   ),
@@ -497,8 +508,10 @@ class _StaffHomeState extends State<StaffHome> {
                                                       height: 38,
                                                       width: 38,
                                                       decoration:
-                                                          const BoxDecoration(
+                                                           BoxDecoration(
                                                         image: DecorationImage(
+                                                          opacity:  module.timetable ==
+                                                              true? 20 :0.2,
                                                           image: AssetImage(
                                                             'assets/diary.png',
                                                           ),
@@ -508,14 +521,16 @@ class _StaffHomeState extends State<StaffHome> {
                                                   ),
                                                 ),
                                                 kheight10,
-                                                const Text(
+                                                 Text(
                                                   'Exam\nTimetable',
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
                                                       fontWeight:
                                                           FontWeight.w600,
                                                       fontSize: 11,
-                                                      color: Colors.black),
+                                                      color: module.timetable ==
+                                                          true  ? Colors.black:
+                                                      Colors.black26),
                                                 )
                                               ],
                                             ),
@@ -540,7 +555,7 @@ class _StaffHomeState extends State<StaffHome> {
                                   child: Padding(
                                     padding: const EdgeInsets.all(6.0),
                                     child: Container(
-                                      height: 170,
+                                      height: 280,
                                       decoration: BoxDecoration(
                                           color: const Color.fromARGB(
                                               255, 236, 237, 245),
@@ -595,7 +610,7 @@ class _StaffHomeState extends State<StaffHome> {
                                                                 type: PageTransitionType
                                                                     .rightToLeft,
                                                                 child:
-                                                                    const AttendenceEntry(),
+                                                                     AttendenceEntry(),
                                                                 duration:
                                                                     const Duration(
                                                                         milliseconds:
@@ -626,10 +641,11 @@ class _StaffHomeState extends State<StaffHome> {
                                                               height: 38,
                                                               width: 38,
                                                               decoration:
-                                                                  const BoxDecoration(
+                                                                   BoxDecoration(
                                                                 image:
                                                                     DecorationImage(
-                                                                  opacity: 20,
+                                                                    opacity:   module.attendenceEntry ==
+                                                                          true? 20 :0.2,
                                                                   image: AssetImage(
                                                                       'assets/Attendance entry.png'),
                                                                 ),
@@ -638,7 +654,7 @@ class _StaffHomeState extends State<StaffHome> {
                                                           ),
                                                         ),
                                                         kheight10,
-                                                        const Text(
+                                                         Text(
                                                           'Attendance',
                                                           style: TextStyle(
                                                               fontWeight:
@@ -646,7 +662,9 @@ class _StaffHomeState extends State<StaffHome> {
                                                                       .w600,
                                                               fontSize: 11,
                                                               color:
-                                                                  Colors.black),
+                                                              module.attendenceEntry ==
+                                                                  true  ? Colors.black:
+                                                              Colors.black26),
                                                         )
                                                       ],
                                                     ),
@@ -693,10 +711,12 @@ class _StaffHomeState extends State<StaffHome> {
                                                               height: 38,
                                                               width: 38,
                                                               decoration:
-                                                                  const BoxDecoration(
+                                                                   BoxDecoration(
                                                                 image:
                                                                     DecorationImage(
-                                                                  opacity: 20,
+                                                                  opacity:
+                                                                  module.tabulation ==
+                                                                          true? 20 :0.2,
                                                                   image:
                                                                       AssetImage(
                                                                     'assets/Tabulation.png',
@@ -707,7 +727,7 @@ class _StaffHomeState extends State<StaffHome> {
                                                           ),
                                                         ),
                                                         kheight10,
-                                                        const Text(
+                                                         Text(
                                                           'MarkEntry',
                                                           textAlign:
                                                               TextAlign.center,
@@ -717,7 +737,9 @@ class _StaffHomeState extends State<StaffHome> {
                                                                       .w600,
                                                               fontSize: 11,
                                                               color:
-                                                                  Colors.black),
+                                                              module.tabulation ==
+                                                                  true  ? Colors.black:
+                                                              Colors.black26),
                                                         )
                                                       ],
                                                     ),
@@ -764,9 +786,12 @@ class _StaffHomeState extends State<StaffHome> {
                                                               height: 38,
                                                               width: 38,
                                                               decoration:
-                                                                  const BoxDecoration(
+                                                                   BoxDecoration(
                                                                 image:
                                                                     DecorationImage(
+                                                                      opacity:
+                                                                  module.tabulation ==
+                                                                  true? 20 :0.2,
                                                                   image:
                                                                       AssetImage(
                                                                     'assets/ToolMarkEntry.png',
@@ -777,7 +802,7 @@ class _StaffHomeState extends State<StaffHome> {
                                                           ),
                                                         ),
                                                         kheight10,
-                                                        const Text(
+                                                         Text(
                                                           'Tool Mark\nEntry',
                                                           textAlign:
                                                               TextAlign.center,
@@ -787,75 +812,9 @@ class _StaffHomeState extends State<StaffHome> {
                                                                       .w600,
                                                               fontSize: 11,
                                                               color:
-                                                                  Colors.black),
-                                                        )
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                                Expanded(
-                                                  child: GestureDetector(
-                                                    onTap: () async {
-                                                      module.tabulation == true
-                                                          ? await Navigator.push(
-                                                              context,
-                                                              PageTransition(
-                                                                type: PageTransitionType
-                                                                    .rightToLeft,
-                                                                child:
-                                                                    const RemarksEntry(),
-                                                                duration:
-                                                                    const Duration(
-                                                                        milliseconds:
-                                                                            300),
-                                                              ))
-                                                          : _noAcess();
-                                                    },
-                                                    child: Column(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceEvenly,
-                                                      children: [
-                                                        Card(
-                                                          elevation: 10,
-                                                          color: Colors.white,
-                                                          shape:
-                                                              RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        12.0),
-                                                          ),
-                                                          child: Padding(
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(8.0),
-                                                            child: Container(
-                                                              height: 38,
-                                                              width: 38,
-                                                              decoration:
-                                                                  const BoxDecoration(
-                                                                image:
-                                                                    DecorationImage(
-                                                                  image:
-                                                                      AssetImage(
-                                                                    'assets/Remarks.png',
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        kheight10,
-                                                        const Text(
-                                                          'Remarks Entry',
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600,
-                                                              fontSize: 11,
-                                                              color:
-                                                                  Colors.black),
+                                                              module.tabulation ==
+                                                                  true  ? Colors.black:
+                                                              Colors.black26),
                                                         )
                                                       ],
                                                     ),
@@ -864,6 +823,168 @@ class _StaffHomeState extends State<StaffHome> {
                                                 kWidth,
                                               ],
                                             ),
+                                          ),
+                                          kheight10,
+                                          Consumer<ModuleProviders>(
+                                            builder: (context, module, child) =>
+                                                Row(
+                                                  crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment.spaceEvenly,
+                                                  children: [
+                                                    kWidth,
+                                                    Expanded(
+                                                      child: GestureDetector(
+                                                        onTap: () async {
+                                                          module.tabulation == true
+                                                              ? await Navigator.push(
+                                                              context,
+                                                              PageTransition(
+                                                                type: PageTransitionType
+                                                                    .rightToLeft,
+                                                                child:
+                                                                const RemarksEntry(),
+                                                                duration:
+                                                                const Duration(
+                                                                    milliseconds:
+                                                                    300),
+                                                              ))
+                                                              : _noAcess();
+                                                        },
+                                                        child: Column(
+                                                          mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
+                                                          children: [
+                                                            Card(
+                                                              elevation: 10,
+                                                              color: Colors.white,
+                                                              shape:
+                                                              RoundedRectangleBorder(
+                                                                borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                    12.0),
+                                                              ),
+                                                              child: Padding(
+                                                                padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
+                                                                child: Container(
+                                                                  height: 38,
+                                                                  width: 38,
+                                                                  decoration:
+                                                                  BoxDecoration(
+                                                                    image:
+                                                                    DecorationImage(
+                                                                      opacity:
+                                                                      module.tabulation ==
+                                                                          true? 20 :0.2,
+                                                                      image:
+                                                                      AssetImage(
+                                                                        'assets/Remarks.png',
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            kheight10,
+                                                            Text(
+                                                              'Remarks Entry',
+                                                              style: TextStyle(
+                                                                  fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                                  fontSize: 11,
+                                                                  color:
+                                                                  module.tabulation ==
+                                                                      true  ? Colors.black:
+                                                                  Colors.black26),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                      child: GestureDetector(
+                                                        onTap: () async {
+                                                          module.hpc == true
+                                                              ? await Navigator.push(
+                                                              context,
+                                                              PageTransition(
+                                                                type: PageTransitionType
+                                                                    .rightToLeft,
+                                                                child:
+                                                                //   SelfAssessmentEntry(),
+                                                                HpcMain(),
+                                                                //   const HpcEntry(),
+                                                                duration:
+                                                                const Duration(
+                                                                    milliseconds:
+                                                                    300),
+                                                              ))
+                                                              : _noAcess();
+                                                        },
+                                                        child: Column(
+                                                          mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
+                                                          children: [
+                                                            Card(
+                                                              elevation: 10,
+                                                              color: Colors.white,
+                                                              shape:
+                                                              RoundedRectangleBorder(
+                                                                borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                    12.0),
+                                                              ),
+                                                              child: Padding(
+                                                                padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
+                                                                child: Container(
+                                                                  height: 38,
+                                                                  width: 38,
+                                                                  decoration:
+                                                                  BoxDecoration(
+                                                                    image:
+                                                                    DecorationImage(
+                                                                      opacity:
+                                                                      module.hpc ==
+                                                                          true? 20 :0.2,
+                                                                      image:
+                                                                      AssetImage(
+                                                                        'assets/hpc.png',
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                            kheight10,
+                                                            Text(
+                                                              'HPC',
+                                                              style: TextStyle(
+                                                                  fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                                  fontSize: 11,
+                                                                  color:
+                                                                  module.tabulation ==
+                                                                      true  ? Colors.black:
+                                                                  Colors.black26),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    kWidth,
+                                                  ],
+                                                ),
                                           ),
                                         ],
                                       ),
@@ -1070,10 +1191,12 @@ class _StaffHomeState extends State<StaffHome> {
                                                                 height: 38,
                                                                 width: 38,
                                                                 decoration:
-                                                                    const BoxDecoration(
+                                                                     BoxDecoration(
                                                                   image:
                                                                       DecorationImage(
-                                                                    opacity: 20,
+                                                                        opacity:
+                                                                        module.attendenceEntry ==
+                                                                            true? 20 :0.2,
                                                                     image:
                                                                         AssetImage(
                                                                       'assets/attendance report.png',
@@ -1084,7 +1207,7 @@ class _StaffHomeState extends State<StaffHome> {
                                                             ),
                                                           ),
                                                           kheight10,
-                                                          const Text(
+                                                           Text(
                                                             'Absentees\nReport',
                                                             textAlign: TextAlign
                                                                 .center,
@@ -1093,8 +1216,9 @@ class _StaffHomeState extends State<StaffHome> {
                                                                     FontWeight
                                                                         .w600,
                                                                 fontSize: 11,
-                                                                color: Colors
-                                                                    .black),
+                                                                color:  module.attendenceEntry ==
+                                                                    true  ? Colors.black:
+                                                                Colors.black26),
                                                           )
                                                         ],
                                                       ),
@@ -1147,10 +1271,11 @@ class _StaffHomeState extends State<StaffHome> {
                                                                 height: 38,
                                                                 width: 38,
                                                                 decoration:
-                                                                    const BoxDecoration(
+                                                                     BoxDecoration(
                                                                   image:
                                                                       DecorationImage(
-                                                                    opacity: 20,
+                                                                    opacity:     module.tabulation ==
+                                                                            true? 20 :0.2,
                                                                     image:
                                                                         AssetImage(
                                                                       'assets/missing report.png',
@@ -1161,7 +1286,7 @@ class _StaffHomeState extends State<StaffHome> {
                                                             ),
                                                           ),
                                                           kheight10,
-                                                          const Text(
+                                                           Text(
                                                             'MarkEntry\nMissing Report ',
                                                             textAlign: TextAlign
                                                                 .center,
@@ -1170,11 +1295,74 @@ class _StaffHomeState extends State<StaffHome> {
                                                                     FontWeight
                                                                         .w600,
                                                                 fontSize: 11,
-                                                                color: Colors
-                                                                    .black),
+                                                                color: module.tabulation ==
+                                                                    true  ? Colors.black:
+                                                                Colors.black26),
                                                           )
                                                         ],
                                                       ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  child: GestureDetector(
+                                                    onTap: () {
+                                                      Navigator.push(context,
+                                                          MaterialPageRoute(builder: (context)=>const FeedbackList3()));
+                                                    },
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
+                                                      children: [
+                                                        Card(
+                                                          elevation: 10,
+                                                          color: Colors.white,
+                                                          shape:
+                                                          RoundedRectangleBorder(
+                                                            borderRadius:
+                                                            BorderRadius
+                                                                .circular(
+                                                                12.0),
+                                                          ),
+                                                          child: Padding(
+                                                            padding:
+                                                            const EdgeInsets
+                                                                .all(8.0),
+                                                            child: Container(
+                                                              height: 38,
+                                                              width: 38,
+                                                              decoration:
+                                                              BoxDecoration(
+                                                                image:
+                                                                DecorationImage(
+                                                                  opacity:
+                                                                  module.tabulation ==
+                                                                      true? 20 :0.2,
+                                                                  image:
+                                                                  AssetImage(
+                                                                    'assets/feedback_entry_icon.png',
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                        kheight10,
+                                                        Text(
+                                                          'Guardian\nFeedback',
+                                                          textAlign: TextAlign.center,
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                              FontWeight
+                                                                  .w600,
+                                                              fontSize: 11,
+                                                              color:
+                                                              module.tabulation ==
+                                                                  true  ? Colors.black:
+                                                              Colors.black26),
+                                                        )
+                                                      ],
                                                     ),
                                                   ),
                                                 ),
@@ -1359,10 +1547,11 @@ class _StaffHomeState extends State<StaffHome> {
                                                         height: 38,
                                                         width: 38,
                                                         decoration:
-                                                            const BoxDecoration(
+                                                             BoxDecoration(
                                                           image:
                                                               DecorationImage(
-                                                            opacity: 20,
+                                                                opacity:  module.curiculam ==
+                                                                    true? 20 :0.2,
                                                             image: AssetImage(
                                                               'assets/01communicationto guardian.png',
                                                             ),
@@ -1372,13 +1561,15 @@ class _StaffHomeState extends State<StaffHome> {
                                                     ),
                                                   ),
                                                   kheight10,
-                                                  const Text(
+                                                   Text(
                                                     'To Guardian',
                                                     style: TextStyle(
                                                         fontWeight:
                                                             FontWeight.w600,
                                                         fontSize: 11,
-                                                        color: Colors.black),
+                                                        color:  module.curiculam ==
+                                                            true  ? Colors.black:
+                                                        Colors.black26),
                                                   )
                                                 ],
                                               ),
@@ -1495,10 +1686,11 @@ class _StaffHomeState extends State<StaffHome> {
                                                         height: 38,
                                                         width: 38,
                                                         decoration:
-                                                        const BoxDecoration(
+                                                         BoxDecoration(
                                                           image:
                                                           DecorationImage(
-                                                            opacity: 20,
+                                                            opacity:  module.curiculam ==
+                                                                true? 20 :0.2,
                                                             image: AssetImage(
                                                               'assets/anecdotal.png',
                                                             ),
@@ -1508,13 +1700,15 @@ class _StaffHomeState extends State<StaffHome> {
                                                     ),
                                                   ),
                                                   kheight10,
-                                                  const Text(
+                                                   Text(
                                                     'Anecdotal',
                                                     style: TextStyle(
                                                         fontWeight:
                                                         FontWeight.w600,
                                                         fontSize: 11,
-                                                        color: Colors.black),
+                                                        color:  module.curiculam ==
+                                                            true  ? Colors.black:
+                                                        Colors.black26),
                                                   )
                                                 ],
                                               ),
@@ -1559,10 +1753,11 @@ class _StaffHomeState extends State<StaffHome> {
                                                         height: 38,
                                                         width: 38,
                                                         decoration:
-                                                            const BoxDecoration(
+                                                             BoxDecoration(
                                                           image:
                                                               DecorationImage(
-                                                            opacity: 20,
+                                                                opacity:  module.curiculam ==
+                                                                    true? 20 :0.2,
                                                             image: AssetImage(
                                                               'assets/Gallery.png',
                                                             ),
@@ -1572,13 +1767,15 @@ class _StaffHomeState extends State<StaffHome> {
                                                     ),
                                                   ),
                                                   kheight10,
-                                                  const Text(
+                                                   Text(
                                                     'Gallery',
                                                     style: TextStyle(
                                                         fontWeight:
                                                             FontWeight.w600,
                                                         fontSize: 11,
-                                                        color: Colors.black),
+                                                        color:  module.curiculam ==
+                                                            true  ? Colors.black:
+                                                        Colors.black26),
                                                   )
                                                 ],
                                               ),
@@ -1595,87 +1792,193 @@ class _StaffHomeState extends State<StaffHome> {
                             Consumer<ModuleProviders>(
                               builder: (context, module, child) => Row(
                                 children: [
-                                  Consumer<Curriculamprovider>(
-                                    builder: (context, curri, child) =>
-                                        Expanded(
-                                      child: GestureDetector(
-                                        onTap: () async {
-                                          if (module.curiculam == true) {
-                                            await Provider.of<
-                                                        Curriculamprovider>(
-                                                    context,
-                                                    listen: false)
-                                                .getCuriculamtoken();
-                                            String token =
-                                                curri.token.toString();
+                                  // Consumer<Curriculamprovider>(
+                                  //   builder: (context, curri, child) =>
+                                  //       Expanded(
+                                  //     child: GestureDetector(
+                                  //       onTap: () async {
+                                  //         if (module.curiculam == true) {
+                                  //           await Provider.of<
+                                  //                       Curriculamprovider>(
+                                  //                   context,
+                                  //                   listen: false)
+                                  //               .getCuriculamtoken();
+                                  //           String token =
+                                  //               curri.token.toString();
+                                  //
+                                  //           await Navigator.push(
+                                  //             context,
+                                  //             PageTransition(
+                                  //               type: PageTransitionType
+                                  //                   .rightToLeft,
+                                  //               child: CurriculamPage(
+                                  //                 token: token,
+                                  //               ),
+                                  //               duration: const Duration(
+                                  //                   milliseconds: 300),
+                                  //             ),
+                                  //           );
+                                  //         } else {
+                                  //           _noAcess();
+                                  //         }
+                                  //       },
+                                  //       child: Padding(
+                                  //         padding: const EdgeInsets.only(
+                                  //             left: 5, right: 5),
+                                  //         child: Column(
+                                  //           mainAxisAlignment:
+                                  //               MainAxisAlignment.spaceEvenly,
+                                  //           children: [
+                                  //             Card(
+                                  //               elevation: 10,
+                                  //               color: Colors.white,
+                                  //               shape: RoundedRectangleBorder(
+                                  //                 borderRadius:
+                                  //                     BorderRadius.circular(
+                                  //                         12.0),
+                                  //               ),
+                                  //               child: Padding(
+                                  //                 padding:
+                                  //                     const EdgeInsets.all(8.0),
+                                  //                 child: Container(
+                                  //                   height: 38,
+                                  //                   width: 38,
+                                  //                   decoration: BoxDecoration(
+                                  //                     image:
+                                  //                          DecorationImage(
+                                  //                           opacity:  module.curiculam ==
+                                  //                               true? 20 :0.2,
+                                  //                       image: AssetImage(
+                                  //                         'assets/Curriculum.png',
+                                  //                       ),
+                                  //                     ),
+                                  //                     borderRadius:
+                                  //                         BorderRadius.circular(
+                                  //                             10),
+                                  //                   ),
+                                  //                 ),
+                                  //               ),
+                                  //             ),
+                                  //             kheight10,
+                                  //              Text(
+                                  //               'e-Class room',
+                                  //               style: TextStyle(
+                                  //                   fontWeight: FontWeight.w600,
+                                  //                   fontSize: 11,
+                                  //                   color:  module.curiculam ==
+                                  //                       true  ? Colors.black:
+                                  //                   Colors.black26),
+                                  //             )
+                                  //           ],
+                                  //         ),
+                                  //       ),
+                                  //     ),
+                                  //   ),
+                                  // ),    // e-classsroom old
+                                  Consumer<IconClickNotifier>(
+                                    builder: (context, iconClickNotifier, child) =>
+                                        Consumer<Curriculamprovider>(
+                                          builder: (context, curri, child) =>
+                                              Expanded(
+                                                  child:
+                                                  GestureDetector(
+                                                        onTap: iconClickNotifier.areIconsClickable
+                                                            ? () async {
+                                                          // Disable all icons
+                                                          iconClickNotifier.disableIcons();
 
-                                            await Navigator.push(
-                                              context,
-                                              PageTransition(
-                                                type: PageTransitionType
-                                                    .rightToLeft,
-                                                child: CurriculamPage(
-                                                  token: token,
-                                                ),
-                                                duration: const Duration(
-                                                    milliseconds: 300),
-                                              ),
-                                            );
-                                          } else {
-                                            _noAcess();
-                                          }
-                                        },
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 5, right: 5),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              Card(
-                                                elevation: 10,
-                                                color: Colors.white,
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          12.0),
-                                                ),
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: Container(
-                                                    height: 38,
-                                                    width: 38,
-                                                    decoration: BoxDecoration(
-                                                      image:
-                                                          const DecorationImage(
-                                                        opacity: 20,
-                                                        image: AssetImage(
-                                                          'assets/Curriculum.png',
+                                                          // Navigate to a new page
+                                                          if (module.curiculam == true) {
+                                                            await Provider.of<
+                                                                Curriculamprovider>(
+                                                                context,
+                                                                listen: false)
+                                                                .getCuriculamtoken();
+                                                            String token =
+                                                            curri.token.toString();
+
+                                                            await Navigator.push(
+                                                                context,
+                                                                PageTransition(
+                                                                  type: PageTransitionType
+                                                                      .rightToLeft,
+                                                                  child:
+                                                                  //  const SubjectPage(),
+                                                                  CurriculamPage(
+                                                                    token: token,
+                                                                  ),
+                                                                  duration:
+                                                                  const Duration(
+                                                                      milliseconds:
+                                                                      300),
+                                                                )).then((_) {
+                                                              // Re-enable icons when returning
+                                                              iconClickNotifier.enableIcons();
+                                                            });
+                                                          } else {
+                                                            _noAcess();
+                                                          }
+
+                                                        }
+                                                            : null,
+                                                        child: Padding(
+                                                          padding:
+                                                          const EdgeInsets.only(
+                                                              left: 10, right: 10),
+                                                          child: Column(
+                                                            mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceEvenly,
+                                                            children: [
+                                                              Card(
+                                                                elevation: 10,
+                                                                color: Colors.white,
+                                                                shape:
+                                                                RoundedRectangleBorder(
+                                                                  borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                      12.0),
+                                                                ),
+                                                                child: Padding(
+                                                                  padding:
+                                                                  const EdgeInsets
+                                                                      .all(8.0),
+                                                                  child: Container(
+                                                                    height: 38,
+                                                                    width: 38,
+                                                                    decoration:
+                                                                    const BoxDecoration(
+                                                                      image:
+                                                                      DecorationImage(
+                                                                        opacity: 20,
+                                                                        image:
+                                                                        AssetImage(
+                                                                          'assets/Curriculum.png',
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                              kheight10,
+                                                              const Text(
+                                                                'e-Classroom',
+                                                                // 'Bus Tracking',
+                                                                style: TextStyle(
+                                                                    fontWeight:
+                                                                    FontWeight.w600,
+                                                                    fontSize: 11,
+                                                                    color:
+                                                                    Colors.black),
+                                                              )
+                                                            ],
+                                                          ),
                                                         ),
-                                                      ),
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                    ),
-                                                  ),
-                                                ),
+                                                      )
                                               ),
-                                              kheight10,
-                                              const Text(
-                                                'e-Class room',
-                                                style: TextStyle(
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 11,
-                                                    color: Colors.black),
-                                              )
-                                            ],
-                                          ),
                                         ),
-                                      ),
-                                    ),
                                   ),
-
 
                                   Consumer<Curriculamprovider>(
                                     builder: (context, curri, child) =>
@@ -1728,8 +2031,9 @@ class _StaffHomeState extends State<StaffHome> {
                                                         width: 38,
                                                         decoration: BoxDecoration(
                                                           image:
-                                                          const DecorationImage(
-                                                            opacity: 20,
+                                                           DecorationImage(
+                                                            opacity:  module.curiculam ==
+                                                                true? 20 :0.2,
                                                             image: AssetImage(
                                                               'assets/Portion Entry.png',
                                                             ),
@@ -1742,12 +2046,14 @@ class _StaffHomeState extends State<StaffHome> {
                                                     ),
                                                   ),
                                                   kheight10,
-                                                  const Text(
+                                                   Text(
                                                     'Portion',
                                                     style: TextStyle(
                                                         fontWeight: FontWeight.w600,
                                                         fontSize: 11,
-                                                        color: Colors.black),
+                                                        color: module.curiculam ==
+                                                            true  ? Colors.black:
+                                                        Colors.black26),
                                                   )
                                                 ],
                                               ),
@@ -1755,7 +2061,6 @@ class _StaffHomeState extends State<StaffHome> {
                                           ),
                                         ),
                                   ),
-
 
                                   Expanded(
                                     child: GestureDetector(
@@ -2091,61 +2396,19 @@ class _StaffHomeState extends State<StaffHome> {
   }
 
   _noAcess() {
-    var size = MediaQuery.of(context).size;
-    return showAnimatedDialog(
-      animationType: DialogTransitionType.slideFromBottomFade,
-      curve: Curves.fastOutSlowIn,
-      context: context,
-      barrierDismissible: true,
-      builder: (BuildContext context) {
-        return Dialog(
-          shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(10.0))),
-          child: SizedBox(
-            height: size.height / 7.2,
-            width: size.width * 3,
-            child: Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  const Text(
-                    "Sorry, you don't have access to this module",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 15,
-                        color: UIGuide.light_Purple),
-                  ),
-                  Expanded(
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Spacer(),
-                        TextButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: const Text(
-                              'Cancel',
-                              style: TextStyle(),
-                            )),
-                        kWidth,
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
+    var size = MediaQuery
+        .of(context)
+        .size;
+    return
+
+      QuickAlert.show(
+        context: context,
+        type: QuickAlertType.warning,
+        text: "Sorry, you don't have access to this module",
+        autoCloseDuration: const Duration(seconds: 2),
+        showConfirmBtn: false,
+
+      );
   }
 }
 
@@ -2281,29 +2544,37 @@ class StaffFlashNews extends StatelessWidget {
                   )
                 : LimitedBox(
                     maxHeight: 30,
-                    child: Marquee(
-                      text: value.flashnews == null || value.flashnews == ''
-                          ? '-----'
-                          : value.flashnews.toString(),
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey,
-                          fontSize: 14),
-                      scrollAxis: Axis.horizontal,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      blankSpace: 60.0,
-                      velocity: 40.0,
-                      pauseAfterRound: const Duration(seconds: 1),
-                      showFadingOnlyWhenScrolling: true,
-                      fadingEdgeStartFraction: 0.3,
-                      fadingEdgeEndFraction: 0.3,
-                      numberOfRounds: null,
-                      startPadding: 10.0,
-                      accelerationDuration: const Duration(seconds: 1),
-                      accelerationCurve: Curves.linear,
-                      decelerationDuration: const Duration(milliseconds: 500),
-                      decelerationCurve: Curves.easeOut,
+                    child:
+                    InfiniteMarquee(
+                      itemBuilder: (BuildContext context, int index) {
+                        return Text(value.flashnews == null || value.flashnews == ''
+                            ? '-----'
+                            : "${value.flashnews.toString()}  *  ",style: TextStyle(fontSize: 12),);
+                      },
                     ),
+                    // Marquee(
+                    //   text: value.flashnews == null || value.flashnews == ''
+                    //       ? '-----'
+                    //       : value.flashnews.toString(),
+                    //   style: const TextStyle(
+                    //       fontWeight: FontWeight.bold,
+                    //       color: Colors.grey,
+                    //       fontSize: 14),
+                    //   scrollAxis: Axis.horizontal,
+                    //   crossAxisAlignment: CrossAxisAlignment.start,
+                    //   blankSpace: 60.0,
+                    //   velocity: 40.0,
+                    //   pauseAfterRound: const Duration(seconds: 1),
+                    //   showFadingOnlyWhenScrolling: true,
+                    //   fadingEdgeStartFraction: 0.3,
+                    //   fadingEdgeEndFraction: 0.3,
+                    //   numberOfRounds: null,
+                    //   startPadding: 10.0,
+                    //   accelerationDuration: const Duration(seconds: 1),
+                    //   accelerationCurve: Curves.linear,
+                    //   decelerationDuration: const Duration(milliseconds: 500),
+                    //   decelerationCurve: Curves.easeOut,
+                    // ),
                   ),
           );
         }

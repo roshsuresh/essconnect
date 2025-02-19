@@ -70,12 +70,16 @@ class TeachingStaff extends StatefulWidget {
 }
 
 class _TeachingStaffState extends State<TeachingStaff> {
+  String _selectedValue="Working";
+
+  String terminatedStatus="Working";
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       var p = Provider.of<StaffReportProviders>(context, listen: false);
-      p.staffReportt();
+      p.staffReportt(terminatedStatus);
       p.clearStudentList();
     });
   }
@@ -83,14 +87,71 @@ class _TeachingStaffState extends State<TeachingStaff> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    return ListView(
-      children: [
-        LimitedBox(
-          maxHeight: size.height - 110,
-          child: Consumer<StaffReportProviders>(
-            builder: (context, value, child) => value.loading
-                ? spinkitLoader()
-                : AnimationLimiter(
+    return Consumer<StaffReportProviders>(
+      builder: (context,prov,_)=>
+          ListView(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+
+                  padding: EdgeInsets.symmetric(horizontal: 12.0),
+                  decoration: BoxDecoration(
+                    color: Colors.white, // Background color of the box
+                    border: Border.all(color: UIGuide.light_Purple, width: 1.5), // Border color and width
+                    borderRadius: BorderRadius.circular(8), // Rounded corners
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black26, // Shadow color
+                        blurRadius: 6.0, // Shadow blur effect
+                        offset: Offset(0, 2), // Shadow position
+                      ),
+                    ],
+                  ),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      value: _selectedValue,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          _selectedValue = newValue!;
+                          prov.clearAllFilters();
+                          if(_selectedValue=="Relieved"){
+                            terminatedStatus="Terminated";
+                          }
+                          else if(_selectedValue=="Both"){
+                            terminatedStatus="Both";
+                          }
+                          else{
+                            terminatedStatus="Working";
+                          }
+                          prov.staffReportt(terminatedStatus);
+
+
+
+                          print("seeleeeee $_selectedValue");
+
+                        });
+                      },
+                      items: <String>['Working','Relieved','Both']
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value,style: TextStyle(
+                              fontWeight: FontWeight.w600
+                          ),),
+                        );
+                      }).toList(),
+                      isExpanded: true,
+                    ),
+                  ),
+                ),
+              ),
+              LimitedBox(
+                maxHeight: size.height - 200,
+                child: Consumer<StaffReportProviders>(
+                  builder: (context, value, child) => value.loading
+                      ? spinkitLoader()
+                      : AnimationLimiter(
                     child: ListView.builder(
                       physics: const BouncingScrollPhysics(
                           parent: AlwaysScrollableScrollPhysics()),
@@ -100,10 +161,10 @@ class _TeachingStaffState extends State<TeachingStaff> {
                           : value.staffReportList.length,
                       itemBuilder: (BuildContext context, int index) {
                         String status =
-                            value.staffReportList[index].staffRole == null
-                                ? '--'
-                                : value.staffReportList[index].staffRole
-                                    .toString();
+                        value.staffReportList[index].staffRole == null
+                            ? '--'
+                            : value.staffReportList[index].staffRole
+                            .toString();
 
                         if (status.toString() == "Teacher") {
                           return AnimationConfiguration.staggeredList(
@@ -131,9 +192,9 @@ class _TeachingStaffState extends State<TeachingStaff> {
                                         child: Center(
                                           child: Column(
                                             crossAxisAlignment:
-                                                CrossAxisAlignment.center,
+                                            CrossAxisAlignment.center,
                                             mainAxisAlignment:
-                                                MainAxisAlignment.center,
+                                            MainAxisAlignment.center,
                                             children: [
                                               const SizedBox(
                                                 height: 2,
@@ -144,8 +205,8 @@ class _TeachingStaffState extends State<TeachingStaff> {
                                                     MaterialPageRoute(
                                                       builder: (context) =>
                                                           StaffInfo(
-                                                       staff: value.staffReportList[index],
-                                                      ),
+                                                            staff: value.staffReportList[index],
+                                                          ),
                                                     ),
                                                   );
                                                 },
@@ -156,13 +217,13 @@ class _TeachingStaffState extends State<TeachingStaff> {
                                                     decoration: const BoxDecoration(
                                                         color: UIGuide.WHITE,
                                                         borderRadius:
-                                                            BorderRadius.all(
-                                                                Radius.circular(
-                                                                    10))),
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                10))),
                                                     child: Row(
                                                       crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
+                                                      CrossAxisAlignment
+                                                          .start,
                                                       children: [
                                                         kWidth,
                                                         Center(
@@ -171,32 +232,32 @@ class _TeachingStaffState extends State<TeachingStaff> {
                                                             height: 70,
                                                             decoration: BoxDecoration(
                                                                 color:
-                                                                    const Color.fromARGB(
-                                                                        255,
-                                                                        236,
-                                                                        233,
-                                                                        233),
+                                                                const Color.fromARGB(
+                                                                    255,
+                                                                    236,
+                                                                    233,
+                                                                    233),
                                                                 image: DecorationImage(
                                                                     fit: BoxFit
                                                                         .cover,
                                                                     image: NetworkImage(value.staffReportList[index].staffPhoto ==
-                                                                            null
+                                                                        null
                                                                         ? 'https://gj-eschool-files-public.s3.ap-south-1.amazonaws.com/ess-connect/student/avathar-01.jpeg'
                                                                         : value.staffReportList[index].staffPhoto
-                                                                            .toString())),
+                                                                        .toString())),
                                                                 borderRadius:
-                                                                    const BorderRadius.all(
-                                                                        Radius.circular(10))),
+                                                                const BorderRadius.all(
+                                                                    Radius.circular(10))),
                                                           ),
                                                         ),
                                                         Padding(
                                                           padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
+                                                          const EdgeInsets
+                                                              .all(8.0),
                                                           child: Column(
                                                             crossAxisAlignment:
-                                                                CrossAxisAlignment
-                                                                    .start,
+                                                            CrossAxisAlignment
+                                                                .start,
                                                             children: [
                                                               Row(
                                                                 children: [
@@ -204,23 +265,23 @@ class _TeachingStaffState extends State<TeachingStaff> {
                                                                     'Name : ',
                                                                     style: TextStyle(
                                                                         fontWeight:
-                                                                            FontWeight
-                                                                                .w500,
+                                                                        FontWeight
+                                                                            .w500,
                                                                         fontSize:
-                                                                            13),
+                                                                        13),
                                                                   ),
                                                                   RichText(
                                                                     overflow:
-                                                                        TextOverflow
-                                                                            .ellipsis,
+                                                                    TextOverflow
+                                                                        .ellipsis,
                                                                     maxLines: 1,
                                                                     strutStyle: const StrutStyle(
                                                                         fontSize:
-                                                                            8.0),
+                                                                        8.0),
                                                                     text: TextSpan(
                                                                         style: const TextStyle(
                                                                             fontSize:
-                                                                                12,
+                                                                            12,
                                                                             color: UIGuide
                                                                                 .light_Purple,
                                                                             fontWeight: FontWeight
@@ -235,35 +296,35 @@ class _TeachingStaffState extends State<TeachingStaff> {
                                                                   const Text(
                                                                     'Section : ',
                                                                     textAlign:
-                                                                        TextAlign
-                                                                            .start,
+                                                                    TextAlign
+                                                                        .start,
                                                                     style: TextStyle(
                                                                         fontWeight:
-                                                                            FontWeight
-                                                                                .w500,
+                                                                        FontWeight
+                                                                            .w500,
                                                                         fontSize:
-                                                                            13),
+                                                                        13),
                                                                   ),
                                                                   RichText(
                                                                     overflow:
-                                                                        TextOverflow
-                                                                            .ellipsis,
+                                                                    TextOverflow
+                                                                        .ellipsis,
                                                                     maxLines: 1,
                                                                     strutStyle: const StrutStyle(
                                                                         fontSize:
-                                                                            8.0),
+                                                                        8.0),
                                                                     text:
-                                                                        TextSpan(
+                                                                    TextSpan(
                                                                       style:
-                                                                          const TextStyle(
+                                                                      const TextStyle(
                                                                         fontSize:
-                                                                            12,
+                                                                        12,
                                                                         color: Colors
                                                                             .black,
                                                                       ),
                                                                       text: value
-                                                                              .staffReportList[index]
-                                                                              .section ??
+                                                                          .staffReportList[index]
+                                                                          .section ??
                                                                           '--',
                                                                     ),
                                                                   ),
@@ -274,35 +335,35 @@ class _TeachingStaffState extends State<TeachingStaff> {
                                                                   const Text(
                                                                     'Designation : ',
                                                                     textAlign:
-                                                                        TextAlign
-                                                                            .start,
+                                                                    TextAlign
+                                                                        .start,
                                                                     style: TextStyle(
                                                                         fontWeight:
-                                                                            FontWeight
-                                                                                .w500,
+                                                                        FontWeight
+                                                                            .w500,
                                                                         fontSize:
-                                                                            13),
+                                                                        13),
                                                                   ),
                                                                   RichText(
                                                                     overflow:
-                                                                        TextOverflow
-                                                                            .ellipsis,
+                                                                    TextOverflow
+                                                                        .ellipsis,
                                                                     maxLines: 1,
                                                                     strutStyle: const StrutStyle(
                                                                         fontSize:
-                                                                            8.0),
+                                                                        8.0),
                                                                     text:
-                                                                        TextSpan(
+                                                                    TextSpan(
                                                                       style:
-                                                                          const TextStyle(
+                                                                      const TextStyle(
                                                                         fontSize:
-                                                                            12,
+                                                                        12,
                                                                         color: Colors
                                                                             .black,
                                                                       ),
                                                                       text: value
-                                                                              .staffReportList[index]
-                                                                              .designation ??
+                                                                          .staffReportList[index]
+                                                                          .designation ??
                                                                           '--',
                                                                     ),
                                                                   ),
@@ -313,35 +374,35 @@ class _TeachingStaffState extends State<TeachingStaff> {
                                                                   const Text(
                                                                     'Staff Role : ',
                                                                     textAlign:
-                                                                        TextAlign
-                                                                            .start,
+                                                                    TextAlign
+                                                                        .start,
                                                                     style: TextStyle(
                                                                         fontWeight:
-                                                                            FontWeight
-                                                                                .w500,
+                                                                        FontWeight
+                                                                            .w500,
                                                                         fontSize:
-                                                                            13),
+                                                                        13),
                                                                   ),
                                                                   RichText(
                                                                     overflow:
-                                                                        TextOverflow
-                                                                            .ellipsis,
+                                                                    TextOverflow
+                                                                        .ellipsis,
                                                                     maxLines: 1,
                                                                     strutStyle: const StrutStyle(
                                                                         fontSize:
-                                                                            8.0),
+                                                                        8.0),
                                                                     text:
-                                                                        TextSpan(
+                                                                    TextSpan(
                                                                       style:
-                                                                          const TextStyle(
+                                                                      const TextStyle(
                                                                         fontSize:
-                                                                            12,
+                                                                        12,
                                                                         color: Colors
                                                                             .black,
                                                                       ),
                                                                       text: value
-                                                                              .staffReportList[index]
-                                                                              .staffRole ??
+                                                                          .staffReportList[index]
+                                                                          .staffRole ??
                                                                           '---',
                                                                     ),
                                                                   ),
@@ -350,9 +411,9 @@ class _TeachingStaffState extends State<TeachingStaff> {
                                                               GestureDetector(
                                                                 onTap: () {
                                                                   _makingPhoneCall(value
-                                                                          .staffReportList[
-                                                                              index]
-                                                                          .mobileNo ??
+                                                                      .staffReportList[
+                                                                  index]
+                                                                      .mobileNo ??
                                                                       '---');
                                                                 },
                                                                 child: Row(
@@ -360,31 +421,31 @@ class _TeachingStaffState extends State<TeachingStaff> {
                                                                     const Text(
                                                                       'Phone : ',
                                                                       textAlign:
-                                                                          TextAlign
-                                                                              .start,
+                                                                      TextAlign
+                                                                          .start,
                                                                       style: TextStyle(
                                                                           fontWeight: FontWeight
                                                                               .w500,
                                                                           fontSize:
-                                                                              13),
+                                                                          13),
                                                                     ),
                                                                     RichText(
                                                                       overflow:
-                                                                          TextOverflow
-                                                                              .ellipsis,
+                                                                      TextOverflow
+                                                                          .ellipsis,
                                                                       maxLines:
-                                                                          1,
+                                                                      1,
                                                                       strutStyle:
-                                                                          const StrutStyle(
-                                                                              fontSize: 8.0),
+                                                                      const StrutStyle(
+                                                                          fontSize: 8.0),
                                                                       text:
-                                                                          TextSpan(
+                                                                      TextSpan(
                                                                         style:
-                                                                            const TextStyle(
+                                                                        const TextStyle(
                                                                           fontSize:
-                                                                              13,
+                                                                          13,
                                                                           color:
-                                                                              Colors.black,
+                                                                          Colors.black,
                                                                         ),
                                                                         text: value.staffReportList[index].mobileNo ??
                                                                             '---',
@@ -419,9 +480,10 @@ class _TeachingStaffState extends State<TeachingStaff> {
                       },
                     ),
                   ),
+                ),
+              ),
+            ],
           ),
-        ),
-      ],
     );
   }
 
@@ -445,13 +507,16 @@ class NonTeachingStaff extends StatefulWidget {
 }
 
 class _NonTeachingStaffState extends State<NonTeachingStaff> {
+  String _selectedValue="Working";
+
+  String terminatedStatus="Working";
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       var p = Provider.of<StaffReportProviders>(context, listen: false);
-
-      p.staffReportt();
+      p.staffReportt(terminatedStatus);
       p.clearStudentList();
     });
   }
@@ -459,14 +524,74 @@ class _NonTeachingStaffState extends State<NonTeachingStaff> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    return ListView(
-      children: [
-        LimitedBox(
-          maxHeight: size.height - 110,
-          child: Consumer<StaffReportProviders>(
-            builder: (context, value, child) => value.loading
-                ? spinkitLoader()
-                : AnimationLimiter(
+    return Consumer<StaffReportProviders>(
+      builder: (context,prov,_)=>
+          ListView(
+            children: [
+              kheight5,
+
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+
+                  padding: EdgeInsets.symmetric(horizontal: 12.0),
+                  decoration: BoxDecoration(
+                    color: Colors.white, // Background color of the box
+                    border: Border.all(color: UIGuide.light_Purple, width: 1.5), // Border color and width
+                    borderRadius: BorderRadius.circular(8), // Rounded corners
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black26, // Shadow color
+                        blurRadius: 6.0, // Shadow blur effect
+                        offset: Offset(0, 2), // Shadow position
+                      ),
+                    ],
+                  ),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+                      value: _selectedValue,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          _selectedValue = newValue!;
+                          prov.clearAllFilters();
+
+                          if(_selectedValue=="Relieved"){
+                            terminatedStatus="Terminated";
+                          }
+                          else if(_selectedValue=="Both"){
+                            terminatedStatus="Both";
+                          }
+                          else{
+                            terminatedStatus="Working";
+                          }
+                          prov.staffReportt(terminatedStatus);
+
+
+
+
+
+                        });
+                      },
+                      items: <String>['Working','Relieved','Both']
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value,style: TextStyle(
+                              fontWeight: FontWeight.w600
+                          ),),
+                        );
+                      }).toList(),
+                      isExpanded: true,
+                    ),
+                  ),
+                ),
+              ),
+              LimitedBox(
+                maxHeight: size.height - 200,
+                child: Consumer<StaffReportProviders>(
+                  builder: (context, value, child) => value.loading
+                      ? spinkitLoader()
+                      : AnimationLimiter(
                     child: ListView.builder(
                       // padding: EdgeInsets.all(size.width / 30),
                       physics: const BouncingScrollPhysics(
@@ -477,10 +602,10 @@ class _NonTeachingStaffState extends State<NonTeachingStaff> {
                           : value.staffReportList.length,
                       itemBuilder: (BuildContext context, int index) {
                         String status =
-                            value.staffReportList[index].staffRole == null
-                                ? '--'
-                                : value.staffReportList[index].staffRole
-                                    .toString();
+                        value.staffReportList[index].staffRole == null
+                            ? '--'
+                            : value.staffReportList[index].staffRole
+                            .toString();
                         if (status.toString() == "NonTeachingStaff") {
                           return AnimationConfiguration.staggeredList(
                               position: index,
@@ -515,8 +640,8 @@ class _NonTeachingStaffState extends State<NonTeachingStaff> {
                                                   MaterialPageRoute(
                                                     builder: (context) =>
                                                         StaffInfo(
-                                                        staff:  value.staffReportList[index],
-                                                    ),
+                                                          staff:  value.staffReportList[index],
+                                                        ),
                                                   ),
                                                 );
                                               },
@@ -527,12 +652,12 @@ class _NonTeachingStaffState extends State<NonTeachingStaff> {
                                                     color: Color.fromARGB(
                                                         255, 255, 255, 255),
                                                     borderRadius:
-                                                        BorderRadius.all(
-                                                            Radius.circular(
-                                                                10))),
+                                                    BorderRadius.all(
+                                                        Radius.circular(
+                                                            10))),
                                                 child: Row(
                                                   crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
+                                                  CrossAxisAlignment.start,
                                                   children: [
                                                     kWidth,
                                                     Center(
@@ -548,23 +673,23 @@ class _NonTeachingStaffState extends State<NonTeachingStaff> {
                                                                 image: NetworkImage(value.staffReportList[index].staffPhoto == null
                                                                     ? 'https://gj-eschool-files-public.s3.ap-south-1.amazonaws.com/ess-connect/student/avathar-01.jpeg'
                                                                     : value
-                                                                        .staffReportList[
-                                                                            index]
-                                                                        .staffPhoto
-                                                                        .toString())),
+                                                                    .staffReportList[
+                                                                index]
+                                                                    .staffPhoto
+                                                                    .toString())),
                                                             borderRadius:
-                                                                const BorderRadius.all(
-                                                                    Radius.circular(10))),
+                                                            const BorderRadius.all(
+                                                                Radius.circular(10))),
                                                       ),
                                                     ),
                                                     Padding(
                                                       padding:
-                                                          const EdgeInsets.all(
-                                                              8.0),
+                                                      const EdgeInsets.all(
+                                                          8.0),
                                                       child: Column(
                                                         crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .start,
+                                                        CrossAxisAlignment
+                                                            .start,
                                                         children: [
                                                           Row(
                                                             children: [
@@ -572,32 +697,32 @@ class _NonTeachingStaffState extends State<NonTeachingStaff> {
                                                                 'Name : ',
                                                                 style: TextStyle(
                                                                     fontWeight:
-                                                                        FontWeight
-                                                                            .w500,
+                                                                    FontWeight
+                                                                        .w500,
                                                                     fontSize:
-                                                                        13),
+                                                                    13),
                                                               ),
                                                               RichText(
                                                                 overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
+                                                                TextOverflow
+                                                                    .ellipsis,
                                                                 maxLines: 1,
                                                                 strutStyle:
-                                                                    const StrutStyle(
-                                                                        fontSize:
-                                                                            8.0),
+                                                                const StrutStyle(
+                                                                    fontSize:
+                                                                    8.0),
                                                                 text: TextSpan(
                                                                     style: const TextStyle(
                                                                         fontSize:
-                                                                            12,
+                                                                        12,
                                                                         color: UIGuide
                                                                             .light_Purple,
                                                                         fontWeight:
-                                                                            FontWeight
-                                                                                .w600),
+                                                                        FontWeight
+                                                                            .w600),
                                                                     text: value
-                                                                            .staffReportList[index]
-                                                                            .name ??
+                                                                        .staffReportList[index]
+                                                                        .name ??
                                                                         '--'),
                                                               ),
                                                             ],
@@ -607,36 +732,36 @@ class _NonTeachingStaffState extends State<NonTeachingStaff> {
                                                               const Text(
                                                                 'Section : ',
                                                                 textAlign:
-                                                                    TextAlign
-                                                                        .start,
+                                                                TextAlign
+                                                                    .start,
                                                                 style: TextStyle(
                                                                     fontWeight:
-                                                                        FontWeight
-                                                                            .w500,
+                                                                    FontWeight
+                                                                        .w500,
                                                                     fontSize:
-                                                                        13),
+                                                                    13),
                                                               ),
                                                               RichText(
                                                                 overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
+                                                                TextOverflow
+                                                                    .ellipsis,
                                                                 maxLines: 1,
                                                                 strutStyle:
-                                                                    const StrutStyle(
-                                                                        fontSize:
-                                                                            8.0),
+                                                                const StrutStyle(
+                                                                    fontSize:
+                                                                    8.0),
                                                                 text: TextSpan(
                                                                   style:
-                                                                      const TextStyle(
+                                                                  const TextStyle(
                                                                     fontSize:
-                                                                        12,
+                                                                    12,
                                                                     color: Colors
                                                                         .black,
                                                                   ),
                                                                   text: value
-                                                                          .staffReportList[
-                                                                              index]
-                                                                          .section ??
+                                                                      .staffReportList[
+                                                                  index]
+                                                                      .section ??
                                                                       '--',
                                                                 ),
                                                               ),
@@ -647,36 +772,36 @@ class _NonTeachingStaffState extends State<NonTeachingStaff> {
                                                               const Text(
                                                                 'Designation : ',
                                                                 textAlign:
-                                                                    TextAlign
-                                                                        .start,
+                                                                TextAlign
+                                                                    .start,
                                                                 style: TextStyle(
                                                                     fontWeight:
-                                                                        FontWeight
-                                                                            .w500,
+                                                                    FontWeight
+                                                                        .w500,
                                                                     fontSize:
-                                                                        13),
+                                                                    13),
                                                               ),
                                                               RichText(
                                                                 overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
+                                                                TextOverflow
+                                                                    .ellipsis,
                                                                 maxLines: 1,
                                                                 strutStyle:
-                                                                    const StrutStyle(
-                                                                        fontSize:
-                                                                            8.0),
+                                                                const StrutStyle(
+                                                                    fontSize:
+                                                                    8.0),
                                                                 text: TextSpan(
                                                                   style:
-                                                                      const TextStyle(
+                                                                  const TextStyle(
                                                                     fontSize:
-                                                                        12,
+                                                                    12,
                                                                     color: Colors
                                                                         .black,
                                                                   ),
                                                                   text: value
-                                                                          .staffReportList[
-                                                                              index]
-                                                                          .designation ??
+                                                                      .staffReportList[
+                                                                  index]
+                                                                      .designation ??
                                                                       '--',
                                                                 ),
                                                               ),
@@ -687,36 +812,36 @@ class _NonTeachingStaffState extends State<NonTeachingStaff> {
                                                               const Text(
                                                                 'Staff Role : ',
                                                                 textAlign:
-                                                                    TextAlign
-                                                                        .start,
+                                                                TextAlign
+                                                                    .start,
                                                                 style: TextStyle(
                                                                     fontWeight:
-                                                                        FontWeight
-                                                                            .w500,
+                                                                    FontWeight
+                                                                        .w500,
                                                                     fontSize:
-                                                                        13),
+                                                                    13),
                                                               ),
                                                               RichText(
                                                                 overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
+                                                                TextOverflow
+                                                                    .ellipsis,
                                                                 maxLines: 1,
                                                                 strutStyle:
-                                                                    const StrutStyle(
-                                                                        fontSize:
-                                                                            8.0),
+                                                                const StrutStyle(
+                                                                    fontSize:
+                                                                    8.0),
                                                                 text: TextSpan(
                                                                   style:
-                                                                      const TextStyle(
+                                                                  const TextStyle(
                                                                     fontSize:
-                                                                        12,
+                                                                    12,
                                                                     color: Colors
                                                                         .black,
                                                                   ),
                                                                   text: value
-                                                                          .staffReportList[
-                                                                              index]
-                                                                          .staffRole ??
+                                                                      .staffReportList[
+                                                                  index]
+                                                                      .staffRole ??
                                                                       '---',
                                                                 ),
                                                               ),
@@ -725,9 +850,9 @@ class _NonTeachingStaffState extends State<NonTeachingStaff> {
                                                           GestureDetector(
                                                             onTap: () {
                                                               _makingPhoneCall(value
-                                                                      .staffReportList[
-                                                                          index]
-                                                                      .mobileNo ??
+                                                                  .staffReportList[
+                                                              index]
+                                                                  .mobileNo ??
                                                                   '---');
                                                             },
                                                             child: Row(
@@ -735,36 +860,36 @@ class _NonTeachingStaffState extends State<NonTeachingStaff> {
                                                                 const Text(
                                                                   'Phone : ',
                                                                   textAlign:
-                                                                      TextAlign
-                                                                          .start,
+                                                                  TextAlign
+                                                                      .start,
                                                                   style: TextStyle(
                                                                       fontWeight:
-                                                                          FontWeight
-                                                                              .w500,
+                                                                      FontWeight
+                                                                          .w500,
                                                                       fontSize:
-                                                                          13),
+                                                                      13),
                                                                 ),
                                                                 RichText(
                                                                   overflow:
-                                                                      TextOverflow
-                                                                          .ellipsis,
+                                                                  TextOverflow
+                                                                      .ellipsis,
                                                                   maxLines: 1,
                                                                   strutStyle:
-                                                                      const StrutStyle(
-                                                                          fontSize:
-                                                                              8.0),
-                                                                  text:
-                                                                      TextSpan(
-                                                                    style:
-                                                                        const TextStyle(
+                                                                  const StrutStyle(
                                                                       fontSize:
-                                                                          13,
+                                                                      8.0),
+                                                                  text:
+                                                                  TextSpan(
+                                                                    style:
+                                                                    const TextStyle(
+                                                                      fontSize:
+                                                                      13,
                                                                       color: Colors
                                                                           .black,
                                                                     ),
                                                                     text: value
-                                                                            .staffReportList[index]
-                                                                            .mobileNo ??
+                                                                        .staffReportList[index]
+                                                                        .mobileNo ??
                                                                         '---',
                                                                   ),
                                                                 ),
@@ -794,9 +919,10 @@ class _NonTeachingStaffState extends State<NonTeachingStaff> {
                       },
                     ),
                   ),
+                ),
+              ),
+            ],
           ),
-        ),
-      ],
     );
   }
 
@@ -820,13 +946,16 @@ class BothStaff extends StatefulWidget {
 }
 
 class _BothStaffState extends State<BothStaff> {
+  String _selectedValue="Working";
+  String terminatedStatus= "Working";
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       var p = Provider.of<StaffReportProviders>(context, listen: false);
 
-      p.staffReportt();
+      p.staffReportt(terminatedStatus);
       p.clearStudentList();
     });
   }
@@ -834,14 +963,70 @@ class _BothStaffState extends State<BothStaff> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    return ListView(
-      children: [
-        LimitedBox(
-          maxHeight: size.height - 110,
-          child: Consumer<StaffReportProviders>(
-            builder: (context, value, child) => value.loading
-                ? spinkitLoader()
-                : AnimationLimiter(
+    return Consumer<StaffReportProviders>(
+      builder: (context,prov,_)=>
+          ListView(
+            children: [
+
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+
+                  padding: EdgeInsets.symmetric(horizontal: 12.0),
+                  decoration: BoxDecoration(
+                    color: Colors.white, // Background color of the box
+                    border: Border.all(color: UIGuide.light_Purple, width: 1.5), // Border color and width
+                    borderRadius: BorderRadius.circular(8), // Rounded corners
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black26, // Shadow color
+                        blurRadius: 6.0, // Shadow blur effect
+                        offset: Offset(0, 2), // Shadow position
+                      ),
+                    ],
+                  ),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+
+                      value: _selectedValue,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          _selectedValue = newValue!;
+                          prov.clearAllFilters();
+                          if(_selectedValue=="Relieved"){
+                            terminatedStatus="Terminated";
+                          }
+                          else if(_selectedValue=="Both"){
+                            terminatedStatus="Both";
+                          }
+                          else{
+                            terminatedStatus="Working";
+                          }
+                          prov.staffReportt(terminatedStatus);
+
+
+                        });
+                      },
+                      items: <String>['Working','Relieved','Both']
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value,style: TextStyle(
+                              fontWeight: FontWeight.w600
+                          ),),
+                        );
+                      }).toList(),
+                      isExpanded: true,
+                    ),
+                  ),
+                ),
+              ),
+              LimitedBox(
+                maxHeight: size.height - 200,
+                child: Consumer<StaffReportProviders>(
+                  builder: (context, value, child) => value.loading
+                      ? spinkitLoader()
+                      : AnimationLimiter(
                     child: ListView.builder(
                       physics: const BouncingScrollPhysics(
                           parent: AlwaysScrollableScrollPhysics()),
@@ -883,8 +1068,8 @@ class _BothStaffState extends State<BothStaff> {
                                                 MaterialPageRoute(
                                                   builder: (context) =>
                                                       StaffInfo(
-                                                    staff: value.staffReportList[index],
-                                                  ),
+                                                        staff: value.staffReportList[index],
+                                                      ),
                                                 ),
                                               );
                                             },
@@ -895,11 +1080,11 @@ class _BothStaffState extends State<BothStaff> {
                                                   color: Color.fromARGB(
                                                       255, 255, 255, 255),
                                                   borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(10))),
+                                                  BorderRadius.all(
+                                                      Radius.circular(10))),
                                               child: Row(
                                                 crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
+                                                CrossAxisAlignment.start,
                                                 children: [
                                                   kWidth,
                                                   Center(
@@ -912,26 +1097,26 @@ class _BothStaffState extends State<BothStaff> {
                                                           image: DecorationImage(
                                                               fit: BoxFit.cover,
                                                               image: NetworkImage(value.staffReportList[index].staffPhoto ==
-                                                                      null
+                                                                  null
                                                                   ? 'https://gj-eschool-files-public.s3.ap-south-1.amazonaws.com/ess-connect/student/avathar-01.jpeg'
                                                                   : value
-                                                                      .staffReportList[
-                                                                          index]
-                                                                      .staffPhoto
-                                                                      .toString())),
+                                                                  .staffReportList[
+                                                              index]
+                                                                  .staffPhoto
+                                                                  .toString())),
                                                           borderRadius:
-                                                              const BorderRadius.all(
-                                                                  Radius.circular(10))),
+                                                          const BorderRadius.all(
+                                                              Radius.circular(10))),
                                                     ),
                                                   ),
                                                   Padding(
                                                     padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
+                                                    const EdgeInsets.all(
+                                                        8.0),
                                                     child: Column(
                                                       crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
+                                                      CrossAxisAlignment
+                                                          .start,
                                                       children: [
                                                         Row(
                                                           children: [
@@ -939,32 +1124,32 @@ class _BothStaffState extends State<BothStaff> {
                                                               'Name : ',
                                                               style: TextStyle(
                                                                   fontWeight:
-                                                                      FontWeight
-                                                                          .w500,
+                                                                  FontWeight
+                                                                      .w500,
                                                                   fontSize: 13),
                                                             ),
                                                             RichText(
                                                               overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
+                                                              TextOverflow
+                                                                  .ellipsis,
                                                               maxLines: 1,
                                                               strutStyle:
-                                                                  const StrutStyle(
-                                                                      fontSize:
-                                                                          8.0),
+                                                              const StrutStyle(
+                                                                  fontSize:
+                                                                  8.0),
                                                               text: TextSpan(
                                                                   style: const TextStyle(
                                                                       fontSize:
-                                                                          12,
+                                                                      12,
                                                                       color: UIGuide
                                                                           .light_Purple,
                                                                       fontWeight:
-                                                                          FontWeight
-                                                                              .w600),
+                                                                      FontWeight
+                                                                          .w600),
                                                                   text: value
-                                                                          .staffReportList[
-                                                                              index]
-                                                                          .name ??
+                                                                      .staffReportList[
+                                                                  index]
+                                                                      .name ??
                                                                       '--'),
                                                             ),
                                                           ],
@@ -974,34 +1159,34 @@ class _BothStaffState extends State<BothStaff> {
                                                             const Text(
                                                               'Section : ',
                                                               textAlign:
-                                                                  TextAlign
-                                                                      .start,
+                                                              TextAlign
+                                                                  .start,
                                                               style: TextStyle(
                                                                   fontWeight:
-                                                                      FontWeight
-                                                                          .w500,
+                                                                  FontWeight
+                                                                      .w500,
                                                                   fontSize: 13),
                                                             ),
                                                             RichText(
                                                               overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
+                                                              TextOverflow
+                                                                  .ellipsis,
                                                               maxLines: 1,
                                                               strutStyle:
-                                                                  const StrutStyle(
-                                                                      fontSize:
-                                                                          8.0),
+                                                              const StrutStyle(
+                                                                  fontSize:
+                                                                  8.0),
                                                               text: TextSpan(
                                                                 style:
-                                                                    const TextStyle(
+                                                                const TextStyle(
                                                                   fontSize: 12,
                                                                   color: Colors
                                                                       .black,
                                                                 ),
                                                                 text: value
-                                                                        .staffReportList[
-                                                                            index]
-                                                                        .section ??
+                                                                    .staffReportList[
+                                                                index]
+                                                                    .section ??
                                                                     '--',
                                                               ),
                                                             ),
@@ -1012,34 +1197,34 @@ class _BothStaffState extends State<BothStaff> {
                                                             const Text(
                                                               'Designation : ',
                                                               textAlign:
-                                                                  TextAlign
-                                                                      .start,
+                                                              TextAlign
+                                                                  .start,
                                                               style: TextStyle(
                                                                   fontWeight:
-                                                                      FontWeight
-                                                                          .w500,
+                                                                  FontWeight
+                                                                      .w500,
                                                                   fontSize: 13),
                                                             ),
                                                             RichText(
                                                               overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
+                                                              TextOverflow
+                                                                  .ellipsis,
                                                               maxLines: 1,
                                                               strutStyle:
-                                                                  const StrutStyle(
-                                                                      fontSize:
-                                                                          8.0),
+                                                              const StrutStyle(
+                                                                  fontSize:
+                                                                  8.0),
                                                               text: TextSpan(
                                                                 style:
-                                                                    const TextStyle(
+                                                                const TextStyle(
                                                                   fontSize: 12,
                                                                   color: Colors
                                                                       .black,
                                                                 ),
                                                                 text: value
-                                                                        .staffReportList[
-                                                                            index]
-                                                                        .designation ??
+                                                                    .staffReportList[
+                                                                index]
+                                                                    .designation ??
                                                                     '--',
                                                               ),
                                                             ),
@@ -1050,34 +1235,34 @@ class _BothStaffState extends State<BothStaff> {
                                                             const Text(
                                                               'Staff Role : ',
                                                               textAlign:
-                                                                  TextAlign
-                                                                      .start,
+                                                              TextAlign
+                                                                  .start,
                                                               style: TextStyle(
                                                                   fontWeight:
-                                                                      FontWeight
-                                                                          .w500,
+                                                                  FontWeight
+                                                                      .w500,
                                                                   fontSize: 13),
                                                             ),
                                                             RichText(
                                                               overflow:
-                                                                  TextOverflow
-                                                                      .ellipsis,
+                                                              TextOverflow
+                                                                  .ellipsis,
                                                               maxLines: 1,
                                                               strutStyle:
-                                                                  const StrutStyle(
-                                                                      fontSize:
-                                                                          8.0),
+                                                              const StrutStyle(
+                                                                  fontSize:
+                                                                  8.0),
                                                               text: TextSpan(
                                                                 style:
-                                                                    const TextStyle(
+                                                                const TextStyle(
                                                                   fontSize: 12,
                                                                   color: Colors
                                                                       .black,
                                                                 ),
                                                                 text: value
-                                                                        .staffReportList[
-                                                                            index]
-                                                                        .staffRole ??
+                                                                    .staffReportList[
+                                                                index]
+                                                                    .staffRole ??
                                                                     '---',
                                                               ),
                                                             ),
@@ -1086,9 +1271,9 @@ class _BothStaffState extends State<BothStaff> {
                                                         GestureDetector(
                                                           onTap: () {
                                                             _makingPhoneCall(value
-                                                                    .staffReportList[
-                                                                        index]
-                                                                    .mobileNo ??
+                                                                .staffReportList[
+                                                            index]
+                                                                .mobileNo ??
                                                                 '---');
                                                           },
                                                           child: Row(
@@ -1096,36 +1281,36 @@ class _BothStaffState extends State<BothStaff> {
                                                               const Text(
                                                                 'Phone : ',
                                                                 textAlign:
-                                                                    TextAlign
-                                                                        .start,
+                                                                TextAlign
+                                                                    .start,
                                                                 style: TextStyle(
                                                                     fontWeight:
-                                                                        FontWeight
-                                                                            .w500,
+                                                                    FontWeight
+                                                                        .w500,
                                                                     fontSize:
-                                                                        13),
+                                                                    13),
                                                               ),
                                                               RichText(
                                                                 overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis,
+                                                                TextOverflow
+                                                                    .ellipsis,
                                                                 maxLines: 1,
                                                                 strutStyle:
-                                                                    const StrutStyle(
-                                                                        fontSize:
-                                                                            8.0),
+                                                                const StrutStyle(
+                                                                    fontSize:
+                                                                    8.0),
                                                                 text: TextSpan(
                                                                   style:
-                                                                      const TextStyle(
+                                                                  const TextStyle(
                                                                     fontSize:
-                                                                        13,
+                                                                    13,
                                                                     color: Colors
                                                                         .black,
                                                                   ),
                                                                   text: value
-                                                                          .staffReportList[
-                                                                              index]
-                                                                          .mobileNo ??
+                                                                      .staffReportList[
+                                                                  index]
+                                                                      .mobileNo ??
                                                                       '---',
                                                                 ),
                                                               ),
@@ -1149,9 +1334,10 @@ class _BothStaffState extends State<BothStaff> {
                       },
                     ),
                   ),
+                ),
+              ),
+            ],
           ),
-        ),
-      ],
     );
   }
 

@@ -6,8 +6,9 @@ import 'package:billDeskSDK/src/utilities/sdk_logger.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:flutter_jailbreak_detection/flutter_jailbreak_detection.dart';
 import 'package:get/get.dart';
-import 'package:safe_device/safe_device.dart';
+// import 'package:safe_device/safe_device.dart';
 import '../../sdk.dart';
 
 class SDKWebviewController{
@@ -33,10 +34,13 @@ class SDKWebviewController{
 
   checkJailBreakOrRootStatus() async {
 
-    final bool jailBreak = await SafeDevice.isJailBroken;
-    final bool isPhysicalDevice = await SafeDevice.isRealDevice;
+    // final bool jailBreak = false;
+    final bool isPhysicalDevice = true;
 
-    if (jailBreak && !isPhysicalDevice) {
+    final bool jailBreak = await FlutterJailbreakDetection.jailbroken;
+    // final bool isDeveloperMode = await SecurityDevice.isDeveloperMode;
+
+    if (jailBreak) {
       throw SdkException(sdkError: SdkError(msg: "Oops! It seems like your device is jailbroken or emulator. Please note that our app is not compatible with jailbroken devices for security reasons.",
           description: 'Forbidden',
           code: 403,
@@ -48,10 +52,10 @@ class SDKWebviewController{
   checkDevModeStatus() async {
     bool devMode = false;
     if(Platform.isAndroid){
-      devMode = await SafeDevice.isDevelopmentModeEnable;
+      devMode = await FlutterJailbreakDetection.developerMode;
     }
     else if(Platform.isIOS) {
-      devMode = !await isPhysicalDevice();
+      devMode = await FlutterJailbreakDetection.developerMode;
     }
 
     if (devMode) {

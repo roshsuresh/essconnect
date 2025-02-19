@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:essconnect/Domain/Password/PasswordModel.dart';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../Domain/Password/PasswordModel.dart';
 import '../../utils/constants.dart';
 
 class PasswordChangeprovider with ChangeNotifier {

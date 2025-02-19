@@ -13,7 +13,13 @@ import '../../utils/constants.dart';
 import 'LoginProvider.dart';
 
 class SibingsProvider with ChangeNotifier {
-  bool isLoading = false;
+  bool _loading = false;
+  bool get loading => _loading;
+  setLoading(bool value) {
+    _loading = value;
+    notifyListeners();
+  }
+
 
   clearSiblingsList() {
     siblingList.clear();
@@ -22,10 +28,10 @@ class SibingsProvider with ChangeNotifier {
 
   List<SiblingsNameModel> siblingList = [];
   Future getSiblingName() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
+    SharedPreferences _pref = await SharedPreferences.getInstance();
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
     var response = await http.get(
         Uri.parse("${UIGuide.baseURL}/parent-home/get-guardian-children"),
@@ -43,16 +49,17 @@ class SibingsProvider with ChangeNotifier {
   }
 
   Future getToken(String childId) async {
+
     Map<String, dynamic> data = await parseJWT();
-    SharedPreferences pref = await SharedPreferences.getInstance();
+    SharedPreferences _pref = await SharedPreferences.getInstance();
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
     String? token = await FirebaseMessaging.instance.getToken();
     print("firebase token");
     print(token);
-    var request = http.Request(
+    var request = await http.Request(
         'POST', Uri.parse('${UIGuide.baseURL}/mobileapp/token/saveusertoken'));
     request.body = json.encode({
       "MobileToken": token,
@@ -75,7 +82,7 @@ class SibingsProvider with ChangeNotifier {
   }
 
   Future getSibling(BuildContext context, String childId) async {
-    isLoading = true;
+    setLoading(true);
     SharedPreferences pref = await SharedPreferences.getInstance();
     var headers = {
       'Content-Type': 'application/json',
@@ -93,23 +100,16 @@ class SibingsProvider with ChangeNotifier {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       prefs.setString('accesstoken', respo.accessToken);
       print('accessToken ${respo.accessToken}');
-      await Provider.of<LoginProvider>(context, listen: false)
-          .getToken(context);
-      await Provider.of<LoginProvider>(context, listen: false)
-          .getMobileViewerId();
-      await Provider.of<LoginProvider>(context, listen: false)
-          .getsavemobileViewer(context);
-      await Provider.of<LoginProvider>(context, listen: false)
-          .sendUserDetails(context);
-      print("ddddddddddddd");
       await Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => const StudentHome()),
-        (Route<dynamic> route) => false,
+            (Route<dynamic> route) => false,
       );
-      isLoading = false;
+
+      setLoading(false);
       notifyListeners();
     } else {
+      setLoading(false);
       print('something went wrong in siblings list provider');
     }
   }
@@ -117,11 +117,11 @@ class SibingsProvider with ChangeNotifier {
   //For teacher -- guardian
 
   Future getSiblingByStaff(BuildContext context, String childId) async {
-    isLoading = true;
-    SharedPreferences pref = await SharedPreferences.getInstance();
+    setLoading(true);
+    SharedPreferences _pref = await SharedPreferences.getInstance();
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
     var request = http.Request('POST',
         Uri.parse('${UIGuide.baseURL}/user/load-new-token-guardian/$childId'));
@@ -137,13 +137,15 @@ class SibingsProvider with ChangeNotifier {
       print('accessToken ${respo.accessToken}');
       await Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => const StudentHomeByStaff()),
-        (Route<dynamic> route) => false,
+        MaterialPageRoute(builder: (context) => StudentHomeByStaff()),
+            (Route<dynamic> route) => route.settings.name == '/' || route.isFirst,
       );
 
-      isLoading = false;
+      setLoading(false);
       notifyListeners();
     } else {
+      setLoading(false);
+      notifyListeners();
       print('something went wrong in siblings list provider');
     }
   }

@@ -1,12 +1,13 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'package:essconnect/Domain/Admin/Course&DivsionList.dart';
-import 'package:essconnect/Domain/Admin/TimeTableAdmin.dart';
-import 'package:essconnect/utils/constants.dart';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../Domain/Admin/Course&DivsionList.dart';
+import '../../Domain/Admin/TimeTableAdmin.dart';
 import '../../Domain/Staff/NoticeboardSendModel.dart';
+import '../../utils/constants.dart';
 
 class TimeTableClassProvidersAdmin with ChangeNotifier {
   List<CourseListModel> course = [];

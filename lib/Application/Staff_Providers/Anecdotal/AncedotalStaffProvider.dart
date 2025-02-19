@@ -126,7 +126,7 @@ class AnecdotalStaffProviders with ChangeNotifier {
   String get formattedTime => DateFormat('hh:mm a').format(_currentTime);
 
   timeModel() {
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       _currentTime = DateTime.now();
       hour = _currentTime.hour;
       minute = _currentTime.minute;
@@ -162,14 +162,14 @@ class AnecdotalStaffProviders with ChangeNotifier {
   Future getCategorySubject() async {
     remarksCategoryList.clear();
     dairySubjectList.clear();
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
     var parsedResponse =await parseJWT();
     userName= await parsedResponse['StaffName'];
     userID= await parsedResponse['StaffId'];
     setLoading(true);
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
     };
     try {
       var response = await http.get(
@@ -252,11 +252,11 @@ class AnecdotalStaffProviders with ChangeNotifier {
   List<MultiSelectItem> sectiondropDown = [];
 
   Future getSectionInitial() async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
     setLoading(true);
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
     };
     try {
       var response = await http.get(
@@ -293,11 +293,11 @@ class AnecdotalStaffProviders with ChangeNotifier {
   List<SectionsModel> courseList = [];
   List<MultiSelectItem> coursedropDown = [];
   Future getCourseList(String section) async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
     setLoading(true);
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
     };
     try {
       var response = await http.get(
@@ -334,11 +334,11 @@ class AnecdotalStaffProviders with ChangeNotifier {
   List<SectionsModel> divisionList = [];
   List<MultiSelectItem> divisiondropDown = [];
   Future getDivisionList(String course) async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
     setLoading(true);
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
     };
     try {
       var response = await http.get(
@@ -443,12 +443,12 @@ class AnecdotalStaffProviders with ChangeNotifier {
 
   List<StudentViewAnecdotalModel> studentViewList = [];
   Future getStudentViewList(
-      String section, String course, String division) async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+      String section, String course, String division,String search) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
     setLoading(true);
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
     };
     try {
       var request =
@@ -457,7 +457,7 @@ class AnecdotalStaffProviders with ChangeNotifier {
       http.Request(
           'GET',
           Uri.parse(
-              '${UIGuide.baseURL}/student-selector?filterStudyingStatus=studying&avoidRelievedStaff=all&searchOption=contains&page=1&$section&$course&$division'));
+              '${UIGuide.baseURL}/student-selector?filterStudyingStatus=studying&avoidRelievedStaff=all&name=$search&searchOption=contains&page=1&$section&$course&$division'));
 
       request.headers.addAll(headers);
       print(request);
@@ -496,12 +496,12 @@ class AnecdotalStaffProviders with ChangeNotifier {
 
   Future getStudentViewByPagination(
       String section, String course, String division) async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
     setLoading(true);
     print("Paginationnew");
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
     };
     try {
       var request = http.Request(
@@ -558,13 +558,13 @@ class AnecdotalStaffProviders with ChangeNotifier {
   List allStudentID = [];
   bool allSelected = false;
 
-  selectAll(String section, String course, String division) async {
+  selectAll(String section, String course, String division,String search) async {
     if (allSelected == true) {
       allStudentID.clear();
       allSelected = false;
       isselectAll = false;
     } else {
-      await getSelectAllStudents(section, course, division);
+      await getSelectAllStudents(section, course, division,search);
       allSelected = true;
       isselectAll = true;
     }
@@ -572,18 +572,18 @@ class AnecdotalStaffProviders with ChangeNotifier {
   }
 
   Future getSelectAllStudents(
-      String section, String course, String division) async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+      String section, String course, String division,String search) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
     setLoading(true);
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
     };
     try {
       var request = http.Request(
           'GET',
           Uri.parse(
-              '${UIGuide.baseURL}/student-selector?filterStudyingStatus=studying&avoidRelievedStaff=all&searchOption=contains&page=$currentPage&fetchAllIds=1&$section&$course&$division'));
+              '${UIGuide.baseURL}/student-selector?filterStudyingStatus=studying&avoidRelievedStaff=all&name=$search&searchOption=contains&page=$currentPage&fetchAllIds=1&$section&$course&$division'));
 
       request.headers.addAll(headers);
       print(request);
@@ -650,11 +650,11 @@ class AnecdotalStaffProviders with ChangeNotifier {
 
   Future getStaffList(
       String name) async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
     setLoading(true);
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
     };
     try {
       var request = http.Request(
@@ -699,11 +699,11 @@ class AnecdotalStaffProviders with ChangeNotifier {
 
   Future getStaffListbyPagination(
       String name) async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
     setLoadingPage(true);
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
     };
     try {
       var request = http.Request(
@@ -855,11 +855,11 @@ class AnecdotalStaffProviders with ChangeNotifier {
   Future getSaveAnecdotal(String categoryID, String subjectID, String remarks,
       List studList,String staffID, BuildContext context) async {
     status = 0;
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
     setLoadingPage(true);
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
     };
     //try {
     var request =
@@ -937,11 +937,11 @@ class AnecdotalStaffProviders with ChangeNotifier {
   Future sendanecdotalNotiication(String categoryID, String subjectID, String remarks,
       List studList,String staffID, BuildContext context) async {
     status = 0;
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
     setLoadingPage(true);
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
     };
     //try {
     var request =
@@ -994,11 +994,11 @@ class AnecdotalStaffProviders with ChangeNotifier {
 //Update
   Future updateAnecdotal(String id,String categoryID, String subjectID, String remarks,
       String studId,String staffID, BuildContext context) async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
     setLoadingPage(true);
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
     };
     //try {
     var request =
@@ -1074,11 +1074,11 @@ class AnecdotalStaffProviders with ChangeNotifier {
 
 
   Future getInitialRow(String id) async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
     setLoading(true);
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
     };
     var response = await http.get(
         Uri.parse("${UIGuide.baseURL}/anecdotal/getData/$id"),
@@ -1125,11 +1125,11 @@ class AnecdotalStaffProviders with ChangeNotifier {
 
   Future getReportView(
       String section,String course,String division,String childIdd,String category,bool important,bool terminated) async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
     setLoadingPage(true);
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
     };
     try {
       var request =
@@ -1188,11 +1188,11 @@ class AnecdotalStaffProviders with ChangeNotifier {
 //by date
   Future getReportViewByDate(
       String section,String course,String division,String childIdd,String category,String fromDate,String toDate,bool important,bool terminated) async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
     setLoadingPage(true);
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
     };
     try {
       var request =
@@ -1252,11 +1252,11 @@ class AnecdotalStaffProviders with ChangeNotifier {
 
   Future getReportDataByPaginationbyDate(
       String section,String course,String division,String childIdd,String category,String fromDate,String toDate,bool important,bool terminated) async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
     setLoading(true);
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
     };
     try {
       var request =
@@ -1308,11 +1308,11 @@ class AnecdotalStaffProviders with ChangeNotifier {
   //
   Future getReportDataByPagination(
       String section,String course,String division,String childIdd,String category,bool important,bool terminated) async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
     setLoading(true);
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
     };
     try {
       var request =
@@ -1375,11 +1375,11 @@ class AnecdotalStaffProviders with ChangeNotifier {
   List<StudentViewAnecdotalModel> studentViewListReport = [];
   Future getStudentReportViewList(
       ) async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
     setLoading(true);
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
     };
     try {
       var request = http.Request(
@@ -1425,11 +1425,11 @@ class AnecdotalStaffProviders with ChangeNotifier {
   //pagination
   Future getStudentReportViewListBypagination(
       ) async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
     setLoadingPage(true);
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
     };
     try {
       var request =
@@ -1489,11 +1489,11 @@ class AnecdotalStaffProviders with ChangeNotifier {
 
   Future getStudentReportViewListByName(
       String name) async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
     setLoading(true);
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
     };
     try {
       var request = http.Request(
@@ -1545,12 +1545,12 @@ class AnecdotalStaffProviders with ChangeNotifier {
   int? lastNo;
   List<AnecdotalCategory> categoryListt = [];
   Future<bool> categoryList() async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
     setLoading(true);
 
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
     };
     var request = http.Request('GET',
         Uri.parse('${UIGuide.baseURL}/settings/general/remarksCategory'));
@@ -1586,11 +1586,11 @@ class AnecdotalStaffProviders with ChangeNotifier {
       String name,
       String sortOrder,
       ) async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
 
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
     };
     var request = http.Request('POST',
         Uri.parse('${UIGuide.baseURL}/settings/general/remarksCategory'));
@@ -1654,11 +1654,11 @@ class AnecdotalStaffProviders with ChangeNotifier {
   }
 
   Future anecDotalcategoryDelete(String eventID, BuildContext context) async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
 
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
     };
     var request = http.Request(
         'DELETE',
@@ -1731,12 +1731,12 @@ class AnecdotalStaffProviders with ChangeNotifier {
   List<AnecdotalSubjects> subjectList = [];
   int? subLastno;
   Future<bool> getsubjectList() async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
     setLoading(true);
 
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
     };
     var request = http.Request('GET',
         Uri.parse('${UIGuide.baseURL}/settings/general/diarySubject'));
@@ -1770,11 +1770,11 @@ class AnecdotalStaffProviders with ChangeNotifier {
       String name,
       String sortOrder,
       ) async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
 
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
     };
     var request = http.Request('POST',
         Uri.parse('${UIGuide.baseURL}/settings/general/diarySubject'));
@@ -1838,11 +1838,11 @@ class AnecdotalStaffProviders with ChangeNotifier {
   }
 
   Future anecDotalSubjectDelete(String eventID, BuildContext context) async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
 
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
     };
     var request = http.Request(
         'DELETE',

@@ -1,10 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import '../../Application/Module Providers.dart/Module.dart';
 import '../../Application/StudentProviders/InternetConnection.dart';
-import '../../Application/StudentProviders/ReportCardProvider.dart';
 import '../../utils/constants.dart';
 import 'HpcReportCard.dart';
 import 'NoInternetScreen.dart';

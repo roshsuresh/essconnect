@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:essconnect/utils/spinkit.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../Application/Staff_Providers/StaffProfile.dart';
@@ -10,6 +11,13 @@ import '../../utils/constants.dart';
 
 class StaffProfileView extends StatelessWidget {
   const StaffProfileView({Key? key}) : super(key: key);
+  String formatDOB(String dobString) {
+    // Parse the string into a DateTime object
+    DateTime dob = DateTime.parse(dobString);
+
+    // Format the DateTime object to 'dd-MMM-yyyy'
+    return DateFormat('dd-MMM-yyyy').format(dob);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -187,7 +195,7 @@ class StaffProfileView extends StatelessWidget {
                                 Text(
                                   value.dateOfBirth == null
                                       ? '--'
-                                      : value.dateOfBirth.toString(),
+                                      : formatDOB(value.dateOfBirth.toString()),
                                   overflow: TextOverflow.clip,
                                   style: const TextStyle(
                                     fontWeight: FontWeight.w500,
@@ -199,10 +207,12 @@ class StaffProfileView extends StatelessWidget {
                             kheight10,
                             GestureDetector(
                               onTap: () {
-                                _makingPhoneCall();
+                                _makingPhoneCall(value.mobileNo.toString());
                               },
                               child: Row(
                                 children: [
+
+
                                   const Icon(
                                     Icons.phone,
                                     color: Colors.grey,
@@ -282,7 +292,7 @@ class StaffProfileView extends StatelessWidget {
                                       size: 20,
                                     ),
                                     Text(
-                                      '  Permenent Address',
+                                      '  Permanent Address',
                                     ),
                                   ],
                                 ),
@@ -313,8 +323,8 @@ class StaffProfileView extends StatelessWidget {
     );
   }
 
-  _makingPhoneCall() async {
-    var url = Uri.parse("tel:807812564");
+  _makingPhoneCall(String phn) async {
+    var url = Uri.parse("tel:$phn");
     if (await canLaunchUrl(url)) {
       await launchUrl(url);
     } else {

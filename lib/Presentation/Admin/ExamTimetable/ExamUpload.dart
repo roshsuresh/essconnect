@@ -458,7 +458,6 @@ class _ExamTTUploadState extends State<ExamTTUpload> {
                   color: UIGuide.light_Purple,
                   onPressed: (() async {
                     var parsedResponse = await parseJWT();
-                    if (parsedResponse['role'] == "SystemAdmin") {
                       if (val.imageid!.isEmpty || val.imageid == null) {
                         ScaffoldMessenger.of(context)
                             .showSnackBar(const SnackBar(
@@ -512,24 +511,25 @@ class _ExamTTUploadState extends State<ExamTTUpload> {
                         val.divisionLen = 0;
                         val.divisionClear();
                       }
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          elevation: 10,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
-                          ),
-                          duration: Duration(seconds: 3),
-                          margin:
-                              EdgeInsets.only(bottom: 80, left: 30, right: 30),
-                          behavior: SnackBarBehavior.floating,
-                          content: Text(
-                            "Sorry, you don't have access",
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      );
-                    }
+
+                    // else {
+                    //   ScaffoldMessenger.of(context).showSnackBar(
+                    //     const SnackBar(
+                    //       elevation: 10,
+                    //       shape: RoundedRectangleBorder(
+                    //         borderRadius: BorderRadius.all(Radius.circular(20)),
+                    //       ),
+                    //       duration: Duration(seconds: 3),
+                    //       margin:
+                    //           EdgeInsets.only(bottom: 80, left: 30, right: 30),
+                    //       behavior: SnackBarBehavior.floating,
+                    //       content: Text(
+                    //         "Sorry, you don't have access",
+                    //         textAlign: TextAlign.center,
+                    //       ),
+                    //     ),
+                    //   );
+                    // }
                   }),
                   child: const Text(
                     'Save',

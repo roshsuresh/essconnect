@@ -1,7 +1,8 @@
 import 'dart:convert';
-import 'package:essconnect/Domain/Admin/MobileAppCkeckinModel.dart';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import '../../Domain/Admin/MobileAppCkeckinModel.dart';
 import '../../utils/constants.dart';
 
 class MobileAppCheckinProvider extends ChangeNotifier {

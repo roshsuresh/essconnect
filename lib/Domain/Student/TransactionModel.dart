@@ -139,3 +139,309 @@ class PaytmFinalStatusModel {
     return data;
   }
 }
+//Smrtgateway
+
+
+class SmartGatewayModel {
+  String? smartgatewayurl;
+  String? smartgatewayRequest;
+
+  SmartGatewayModel({this.smartgatewayurl, this.smartgatewayRequest});
+
+  SmartGatewayModel.fromJson(Map<String, dynamic> json) {
+    smartgatewayurl = json['smartgatewayurl'];
+    smartgatewayRequest = json['smartgatewayRequest'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['smartgatewayurl'] = smartgatewayurl;
+    data['smartgatewayRequest'] = smartgatewayRequest;
+    return data;
+  }
+}
+
+
+
+class SdkPayload {
+  String? requestId;
+  String? service;
+  Payload? payload;
+  String? expiry;
+
+  SdkPayload({this.requestId, this.service, this.payload, this.expiry});
+
+  SdkPayload.fromJson(Map<String, dynamic> json) {
+    requestId = json['requestId'];
+    service = json['service'];
+    payload =
+    json['payload'] != null ? Payload.fromJson(json['payload']) : null;
+    expiry = json['expiry'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['requestId'] = requestId;
+    data['service'] = service;
+    if (payload != null) {
+      data['payload'] = payload!.toJson();
+    }
+    data['expiry'] = expiry;
+    return data;
+  }
+}
+
+class Payload {
+  bool? collectAvsInfo;
+  String? clientId;
+  String? amount;
+  String? merchantId;
+  String? clientAuthToken;
+  String? udf2;
+  String? service;
+  String? clientAuthTokenExpiry;
+  String? environment;
+  String? lastName;
+  String? action;
+  String? udf1;
+  String? customerId;
+  String? returnUrl;
+  String? currency;
+  String? firstName;
+  String? customerPhone;
+  String? customerEmail;
+  String? orderId;
+  String? description;
+  String? displayBusinessAs;
+
+  Payload(
+      {this.collectAvsInfo,
+        this.clientId,
+        this.amount,
+        this.merchantId,
+        this.clientAuthToken,
+        this.udf2,
+        this.service,
+        this.clientAuthTokenExpiry,
+        this.environment,
+        this.lastName,
+        this.action,
+        this.udf1,
+        this.customerId,
+        this.returnUrl,
+        this.currency,
+        this.firstName,
+        this.customerPhone,
+        this.customerEmail,
+        this.orderId,
+        this.description,
+        this.displayBusinessAs});
+
+  Payload.fromJson(Map<String, dynamic> json) {
+    collectAvsInfo = json['collectAvsInfo'];
+    clientId = json['clientId'];
+    amount = json['amount'];
+    merchantId = json['merchantId'];
+    clientAuthToken = json['clientAuthToken'];
+    udf2 = json['udf2'];
+    service = json['service'];
+    clientAuthTokenExpiry = json['clientAuthTokenExpiry'];
+    environment = json['environment'];
+    lastName = json['lastName'];
+    action = json['action'];
+    udf1 = json['udf1'];
+    customerId = json['customerId'];
+    returnUrl = json['returnUrl'];
+    currency = json['currency'];
+    firstName = json['firstName'];
+    customerPhone = json['customerPhone'];
+    customerEmail = json['customerEmail'];
+    orderId = json['orderId'];
+    description = json['description'];
+    displayBusinessAs = json['displayBusinessAs'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['collectAvsInfo'] = collectAvsInfo;
+    data['clientId'] = clientId;
+    data['amount'] = amount;
+    data['merchantId'] = merchantId;
+    data['clientAuthToken'] = clientAuthToken;
+    data['udf2'] = udf2;
+    data['service'] = service;
+    data['clientAuthTokenExpiry'] = clientAuthTokenExpiry;
+    data['environment'] = environment;
+    data['lastName'] = lastName;
+    data['action'] = action;
+    data['udf1'] = udf1;
+    data['customerId'] = customerId;
+    data['returnUrl'] = returnUrl;
+    data['currency'] = currency;
+    data['firstName'] = firstName;
+    data['customerPhone'] = customerPhone;
+    data['customerEmail'] = customerEmail;
+    data['orderId'] = orderId;
+    data['description'] = description;
+    data['displayBusinessAs'] = displayBusinessAs;
+    return data;
+  }
+}
+
+//Smarttt Response
+
+class SmartFinalStatus {
+  String? orderId;
+  String? readableOrderId;
+  String? reponseCode;
+  String? reponseMsg;
+  String? dbstatus;
+  String? txnId;
+  String? paymentMode;
+
+  SmartFinalStatus(
+      {this.orderId,
+        this.readableOrderId,
+        this.reponseCode,
+        this.reponseMsg,
+        this.txnId,
+        this.paymentMode});
+
+  SmartFinalStatus.fromJson(Map<String, dynamic> json) {
+    orderId = json['orderId'];
+    readableOrderId = json['readableOrderId'];
+    reponseCode = json['reponseCode'];
+    reponseMsg = json['reponseMsg'];
+    dbstatus = json['dbstatus'];
+    txnId = json['txnId'];
+    paymentMode = json['paymentMode'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['orderId'] = orderId;
+    data['readableOrderId'] = readableOrderId;
+    data['reponseCode'] = reponseCode;
+    data['reponseMsg'] = reponseMsg;
+    data['dbstatus'] = dbstatus;
+    data['txnId'] = txnId;
+    data['paymentMode'] = paymentMode;
+    return data;
+  }
+}
+
+//BillDesk Status///
+///////////////////
+
+class BillDeskResponse {
+  String? orderId;
+  String? readableOrderId;
+  String? reponseCode;
+  String? reponseMsg;
+  String? txnId;
+  String? paymentMode;
+
+  BillDeskResponse(
+      {this.orderId,
+        this.readableOrderId,
+        this.reponseCode,
+        this.reponseMsg,
+        this.txnId,
+        this.paymentMode});
+
+  BillDeskResponse.fromJson(Map<String, dynamic> json) {
+    orderId = json['orderId'];
+    readableOrderId = json['readableOrderId'];
+    reponseCode = json['reponseCode'];
+    reponseMsg = json['reponseMsg'];
+    txnId = json['txnId'];
+    paymentMode = json['paymentMode'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['orderId'] = orderId;
+    data['readableOrderId'] = readableOrderId;
+    data['reponseCode'] = reponseCode;
+    data['reponseMsg'] = reponseMsg;
+    data['txnId'] = txnId;
+    data['paymentMode'] = paymentMode;
+    return data;
+  }
+}
+//TraknPaya ststus
+class TrakNPatStatus {
+  String? orderId;
+  String? readableOrderId;
+  String? reponseCode;
+  String? reponseMsg;
+  String? txnId;
+  String? paymentMode;
+
+  TrakNPatStatus(
+      {this.orderId,
+        this.readableOrderId,
+        this.reponseCode,
+        this.reponseMsg,
+        this.txnId,
+        this.paymentMode});
+
+  TrakNPatStatus.fromJson(Map<String, dynamic> json) {
+    orderId = json['orderId'];
+    readableOrderId = json['readableOrderId'];
+    reponseCode = json['reponseCode'];
+    reponseMsg = json['reponseMsg'];
+    txnId = json['txnId'];
+    paymentMode = json['paymentMode'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['orderId'] = this.orderId;
+    data['readableOrderId'] = this.readableOrderId;
+    data['reponseCode'] = this.reponseCode;
+    data['reponseMsg'] = this.reponseMsg;
+    data['txnId'] = this.txnId;
+    data['paymentMode'] = this.paymentMode;
+    return data;
+  }
+}
+
+//EaseBuzz Status
+
+class EaseBuzzResponse {
+  String? orderId;
+  String? readableOrderId;
+  String? reponseCode;
+  String? reponseMsg;
+  String? txnId;
+  String? paymentMode;
+
+  EaseBuzzResponse(
+      {this.orderId,
+        this.readableOrderId,
+        this.reponseCode,
+        this.reponseMsg,
+        this.txnId,
+        this.paymentMode});
+
+  EaseBuzzResponse.fromJson(Map<String, dynamic> json) {
+    orderId = json['orderId'];
+    readableOrderId = json['readableOrderId'];
+    reponseCode = json['reponseCode'];
+    reponseMsg = json['reponseMsg'];
+    txnId = json['txnId'];
+    paymentMode = json['paymentMode'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['orderId'] = orderId;
+    data['readableOrderId'] = readableOrderId;
+    data['reponseCode'] = reponseCode;
+    data['reponseMsg'] = reponseMsg;
+    data['txnId'] = txnId;
+    data['paymentMode'] = paymentMode;
+    return data;
+  }
+}

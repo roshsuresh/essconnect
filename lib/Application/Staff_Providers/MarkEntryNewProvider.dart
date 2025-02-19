@@ -1,15 +1,23 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:essconnect/Constants.dart';
 import 'package:essconnect/Domain/Staff/MarkEntry/InitailModel.dart';
 import 'package:essconnect/Domain/Staff/MarkEntry/UASViewModel.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MarkEntryNewProvider with ChangeNotifier {
+
+
+
   //String? examStatus;
   bool? isLocked;
   courseClear() {
@@ -19,12 +27,12 @@ class MarkEntryNewProvider with ChangeNotifier {
 
   List<MarkEntryInitialValues> markEntryInitialValues = [];
   Future getMarkEntryInitialValues(BuildContext context) async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
     setLoading(true);
     await courseClear();
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
     };
     try {
       var request = http.Request('GET',
@@ -37,15 +45,15 @@ class MarkEntryNewProvider with ChangeNotifier {
       if (response.statusCode == 200) {
         setLoading(true);
         Map<String, dynamic> data =
-            jsonDecode(await response.stream.bytesToString());
+        jsonDecode(await response.stream.bytesToString());
         MarkEntryViewModel view = MarkEntryViewModel.fromJson(data);
         isLocked = view.isLocked;
 
         log(data.toString());
 
         List<MarkEntryInitialValues> templist =
-            List<MarkEntryInitialValues>.from(data["courseList"]
-                .map((x) => MarkEntryInitialValues.fromJson(x)));
+        List<MarkEntryInitialValues>.from(data["courseList"]
+            .map((x) => MarkEntryInitialValues.fromJson(x)));
         markEntryInitialValues.addAll(templist);
 
         print(templist);
@@ -70,11 +78,11 @@ class MarkEntryNewProvider with ChangeNotifier {
   String? typeCode;
   List<MarkEntryDivisionList> markEntryDivisionList = [];
   Future getMarkEntryDivisionValues(String id, BuildContext context) async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
     setLoading(true);
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
     };
     try {
       var request = http.Request('GET',
@@ -87,7 +95,7 @@ class MarkEntryNewProvider with ChangeNotifier {
       if (response.statusCode == 200) {
         setLoading(true);
         Map<String, dynamic> data =
-            jsonDecode(await response.stream.bytesToString());
+        jsonDecode(await response.stream.bytesToString());
         MarkEntryDivisionList inita =
         MarkEntryDivisionList.fromJson(data);
         typeCode = inita.typeCode;
@@ -120,11 +128,11 @@ class MarkEntryNewProvider with ChangeNotifier {
   List<MarkEntryPartList> markEntryPartList = [];
   Future getMarkEntryPartValues(
       String courseId, String divisionId, BuildContext context) async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
     setLoading(true);
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
     };
     try {
       var request = http.Request(
@@ -139,7 +147,7 @@ class MarkEntryNewProvider with ChangeNotifier {
       if (response.statusCode == 200) {
         setLoading(true);
         Map<String, dynamic> data =
-            jsonDecode(await response.stream.bytesToString());
+        jsonDecode(await response.stream.bytesToString());
 
         log(data.toString());
         MarkEntryPartList inita =
@@ -172,12 +180,12 @@ class MarkEntryNewProvider with ChangeNotifier {
   List<MarkEntrySubjectList> markEntrySubjectList = [];
   Future getMarkEntrySubjectValues(
       String divionId, String partId, BuildContext context) async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
     print('object');
     setLoading(true);
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
     };
     try {
       var request = http.Request(
@@ -192,7 +200,7 @@ class MarkEntryNewProvider with ChangeNotifier {
       if (response.statusCode == 200) {
         setLoading(true);
         Map<String, dynamic> data =
-            jsonDecode(await response.stream.bytesToString());
+        jsonDecode(await response.stream.bytesToString());
 
         log(data.toString());
 
@@ -221,12 +229,12 @@ class MarkEntryNewProvider with ChangeNotifier {
   List<MarkEntryOptionSubjectModel> markEntryOptionSubjectList = [];
   Future getMarkEntryOptionSubject(String subject, String division, String part,
       BuildContext context) async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
     setLoading(true);
 
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
     };
     try {
       var request = http.Request(
@@ -243,13 +251,13 @@ class MarkEntryNewProvider with ChangeNotifier {
         setLoading(true);
         print('correct');
         Map<String, dynamic> data =
-            jsonDecode(await response.stream.bytesToString());
+        jsonDecode(await response.stream.bytesToString());
 
         log(data.toString());
 
         List<MarkEntryOptionSubjectModel> templist =
-            List<MarkEntryOptionSubjectModel>.from(data['subjectList']
-                .map((x) => MarkEntryOptionSubjectModel.fromJson(x)));
+        List<MarkEntryOptionSubjectModel>.from(data['subjectList']
+            .map((x) => MarkEntryOptionSubjectModel.fromJson(x)));
         markEntryOptionSubjectList.addAll(templist);
         setLoading(false);
         notifyListeners();
@@ -272,12 +280,12 @@ class MarkEntryNewProvider with ChangeNotifier {
   List<MarkEntryExamList> markEntryExamList = [];
   Future getMarkEntryExamValues(String subject, String division, String part,
       String optionSub, BuildContext context) async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
     setLoading(true);
     print('object');
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
     };
     try {
       var request = http.Request(
@@ -293,7 +301,7 @@ class MarkEntryNewProvider with ChangeNotifier {
         setLoading(true);
         print('correct');
         Map<String, dynamic> data =
-            jsonDecode(await response.stream.bytesToString());
+        jsonDecode(await response.stream.bytesToString());
 
         log(data.toString());
 
@@ -320,12 +328,12 @@ class MarkEntryNewProvider with ChangeNotifier {
       String optionSub,
       String caption,
       BuildContext context) async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
     setLoading(true);
     print('object');
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
     };
     try {
       var request = http.Request(
@@ -341,7 +349,7 @@ class MarkEntryNewProvider with ChangeNotifier {
         setLoading(true);
         print('correct');
         Map<String, dynamic> data =
-            jsonDecode(await response.stream.bytesToString());
+        jsonDecode(await response.stream.bytesToString());
 
         log(data.toString());
 
@@ -389,6 +397,7 @@ class MarkEntryNewProvider with ChangeNotifier {
   String? optionSubjectUAS;
   String? staffIdUAS;
   String? staffNameUAS;
+  String? verifiedStaffName;
   String? entryMethodUAS;
   String? examUAS;
   bool includeTerminatedStudentsUAS = false;
@@ -404,10 +413,11 @@ class MarkEntryNewProvider with ChangeNotifier {
   String? examStatusUAS;
   String? updatedAtUAS;
   var partsUAS;
-
+  String? verifedfileID;
   List<MarkEntryDetailsUAS> studListUAS = [];
   List<GradeListUAS> gradeListUAS = [];
   Future getMarkEntryUASView(
+      BuildContext context,
       String course,
       String division,
       String exam,
@@ -419,12 +429,12 @@ class MarkEntryNewProvider with ChangeNotifier {
       var partItems,
       String subjectCaption,
       bool terminated) async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
     setLoading(true);
 
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
     };
     setLoading(true);
     try {
@@ -448,12 +458,58 @@ class MarkEntryNewProvider with ChangeNotifier {
       setLoading(true);
       http.StreamedResponse response = await request.send();
       print(request.body);
-      if (response.statusCode == 200) {
+      Map<String, dynamic> data =
+      jsonDecode(await response.stream.bytesToString());
+      if (response.statusCode==422 && data.containsKey('message') && data['message'] == "Tool Mark entry is already uploaded") {
+        String message = data['message'];
+
+        print('Message from response #####################: $message');
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          elevation: 10,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+          ),
+          duration: Duration(seconds: 2),
+          margin: EdgeInsets.only(bottom: 50, left: 30, right: 30),
+          behavior: SnackBarBehavior.floating,
+          content: Text(
+            'Tool Mark entry is already uploaded',
+            textAlign: TextAlign.center,
+          ),
+        ));
+        setLoading(false);
+        notifyListeners();
+
+
+      }
+
+      else  if (response.statusCode==422 && data.containsKey('message') && data['message'] == "No student details") {
+        String message = data['message'];
+
+        print('Message from response : $message');
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          elevation: 10,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+          ),
+          duration: Duration(seconds: 2),
+          margin: EdgeInsets.only(bottom: 50, left: 30, right: 30),
+          behavior: SnackBarBehavior.floating,
+          content: Text(
+            'No student details',
+            textAlign: TextAlign.center,
+          ),
+        ));
+        setLoading(false);
+        notifyListeners();
+
+
+      }
+      else if (response.statusCode == 200) {
         setLoading(true);
 
         print('---------------------correct--------------------------');
-        Map<String, dynamic> data =
-            jsonDecode(await response.stream.bytesToString());
+
 
         // log(data.toString());
         setLoading(true);
@@ -472,6 +528,7 @@ class MarkEntryNewProvider with ChangeNotifier {
         optionSubjectUAS = marku.optionSubject;
         staffIdUAS = marku.staffId;
         staffNameUAS = marku.staffName;
+        verifiedStaffName =marku.verifiedStaffName;
         entryMethodUAS = marku.entryMethod;
         examUAS = marku.exam;
         includeTerminatedStudentsUAS = marku.includeTerminatedStudents!;
@@ -484,6 +541,8 @@ class MarkEntryNewProvider with ChangeNotifier {
         isBlockedUAS = marku.isBlocked;
         examStatusUAS = marku.examStatus;
         updatedAtUAS = marku.updatedAt;
+        verifedfileID =marku.verifiedFileId;
+        print("verrr $verifedfileID");
         print("es=xisttttttttttttt $existCeAttendance ");
         setLoading(false);
         List<MarkEntryDetailsUAS> templist = List<MarkEntryDetailsUAS>.from(
@@ -501,6 +560,20 @@ class MarkEntryNewProvider with ChangeNotifier {
         setLoading(false);
         notifyListeners();
       } else {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          elevation: 10,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+          ),
+          duration: Duration(seconds: 2),
+          margin: EdgeInsets.only(bottom: 50, left: 30, right: 30),
+          behavior: SnackBarBehavior.floating,
+          content: Text(
+            'Something went wrong',
+            textAlign: TextAlign.center,
+          ),
+        ));
+        notifyListeners();
         setLoading(false);
         print('Error in MarkEntryView UAS');
       }
@@ -523,12 +596,12 @@ class MarkEntryNewProvider with ChangeNotifier {
       var partItems,
       String subjectCaption,
       bool terminated) async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
     setLoading(true);
 
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
     };
     setLoading(true);
     try {
@@ -557,8 +630,8 @@ class MarkEntryNewProvider with ChangeNotifier {
 
         print('---------------------correct-STATE-------------------------');
         Map<String, dynamic> data =
-            jsonDecode(await response.stream.bytesToString());
-  log(data.toString());
+        jsonDecode(await response.stream.bytesToString());
+        //log(data.toString());
         // log(data.toString());
         setLoading(true);
 
@@ -576,6 +649,7 @@ class MarkEntryNewProvider with ChangeNotifier {
         optionSubjectUAS = marku.optionSubject;
         staffIdUAS = marku.staffId;
         staffNameUAS = marku.staffName;
+        verifiedStaffName = marku.verifiedStaffName;
         entryMethodUAS = marku.entryMethod;
         examUAS = marku.exam;
         includeTerminatedStudentsUAS = marku.includeTerminatedStudents!;
@@ -663,14 +737,14 @@ class MarkEntryNewProvider with ChangeNotifier {
       List studentListSave,
       List gradeListSave,
       var partItemm) async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
     setLoadSave(true);
     setLoadCommon(true);
     setLoading(true);
 
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
     };
     try {
       var request = http.Request(
@@ -680,7 +754,7 @@ class MarkEntryNewProvider with ChangeNotifier {
         "markEntryId": markEntryId == "null" ? null : markEntryId,
         "schoolId": schoolId == "null" ? null : schoolId,
         "tabulationTypeCode":
-            tabulationTypeCode == "null" ? null : tabulationTypeCode,
+        tabulationTypeCode == "null" ? null : tabulationTypeCode,
         "subjectCaption": subjectCaption == "null" ? null : subjectCaption,
         "division": division == "null" ? null : division,
         "course": course == "null" ? null : course,
@@ -701,10 +775,13 @@ class MarkEntryNewProvider with ChangeNotifier {
         "ceCaption": ceCaption == "null" ? null : ceCaption,
         "isBlocked": false,
         "examStatus": examStatus == "null" ? null : examStatus,
+        "existPeAttendance": existPeAttendance,
+        "existCeAttendance": existCeAttendance,
         "updatedAt": updatedAt == "null" ? null : updatedAt,
         "markEntryDetails": studentListSave,
         "gradeList": gradeListSave.isEmpty ? null : gradeListSave,
-        "partItem": partItemm
+        "partItem": partItemm,
+        "fromDevice":"mobileapp",
       });
       log(request.body);
       request.headers.addAll(headers);
@@ -719,32 +796,48 @@ class MarkEntryNewProvider with ChangeNotifier {
 
         print('Correct........______________________________');
         print(await response.stream.bytesToString());
-        await AwesomeDialog(
-                dismissOnTouchOutside: false,
-                dismissOnBackKeyPress: false,
-                context: context,
-                dialogType: DialogType.success,
-                animType: AnimType.rightSlide,
-                headerAnimationLoop: false,
-                title: 'Success',
-                desc: 'Successfully Saved',
-                btnOkOnPress: () async {
-                  await clearStudentMEList();
-                  await getMarkEntryUASView(
-                      course,
-                      division,
-                      exam,
-                      part,
-                      subject,
-                      subSubject,
-                      optionSubject,
-                      tabulationTypeCode,
-                      partItemm,
-                      subjectCaption,
-                      isTerminated);
-                },
-                btnOkColor: Colors.green)
-            .show();
+
+        QuickAlert.show(
+            context: context,
+            type: QuickAlertType.success,
+            barrierDismissible: false,
+            text: 'Entry Saved Successfully!',
+            confirmBtnColor: UIGuide.light_Purple,
+            onConfirmBtnTap: ()async{
+              await clearStudentMEList();
+              Navigator.pop(context);
+              tabulationTypeCode=="UAS"?
+
+              await getMarkEntryUASView(
+                context,
+                  course,
+                  division,
+                  exam,
+                  part,
+                  subject,
+                  subSubject,
+                  optionSubject,
+                  tabulationTypeCode,
+                  partItemm,
+                  subjectCaption,
+                  isTerminated):
+              await getMarkEntrySTATEView(
+                  course,
+                  division,
+                  exam,
+                  part,
+                  subject,
+                  subSubject,
+                  optionSubject,
+                  tabulationTypeCode,
+                  partItemm,
+                  subjectCaption,
+                  isTerminated);
+              print("view fbbbbbbbbbbbbbb444");
+
+
+            }
+        );
 
         setLoadSave(false);
         setLoadCommon(false);
@@ -820,14 +913,14 @@ class MarkEntryNewProvider with ChangeNotifier {
       List studentListSave,
       List gradeListSave,
       var partItemm) async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
     setLoadSave(true);
     setLoadCommon(true);
     setLoading(true);
 
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
     };
     try {
       var request = http.Request(
@@ -837,7 +930,7 @@ class MarkEntryNewProvider with ChangeNotifier {
         "markEntryId": markEntryId == "null" ? null : markEntryId,
         "schoolId": schoolId == "null" ? null : schoolId,
         "tabulationTypeCode":
-            tabulationTypeCode == "null" ? null : tabulationTypeCode,
+        tabulationTypeCode == "null" ? null : tabulationTypeCode,
         "subjectCaption": subjectCaption == "null" ? null : subjectCaption,
         "division": division == "null" ? null : division,
         "course": course == "null" ? null : course,
@@ -863,7 +956,8 @@ class MarkEntryNewProvider with ChangeNotifier {
         "updatedAt": updatedAt == "null" ? null : updatedAt,
         "markEntryDetails": studentListSave,
         "gradeList": gradeListSave.isEmpty ? null : gradeListSave,
-        "partItem": partItemm
+        "partItem": partItemm,
+        "fromDevice":"mobileapp",
       });
 
       print("save dattttta");
@@ -881,32 +975,31 @@ class MarkEntryNewProvider with ChangeNotifier {
         print('Correct........______________________________State');
         log(request.body.toString());
         print(await response.stream.bytesToString());
-        await AwesomeDialog(
-                dismissOnTouchOutside: false,
-                dismissOnBackKeyPress: false,
-                context: context,
-                dialogType: DialogType.success,
-                animType: AnimType.rightSlide,
-                headerAnimationLoop: false,
-                title: 'Success',
-                desc: 'Successfully Saved',
-                btnOkOnPress: () async {
-                  await clearStudentMEList();
-                  await getMarkEntrySTATEView(
-                      course,
-                      division,
-                      exam,
-                      part,
-                      subject,
-                      subSubject,
-                      optionSubject,
-                      tabulationTypeCode,
-                      partItemm,
-                      subjectCaption,
-                      isTerminated);
-                },
-                btnOkColor: Colors.green)
-            .show();
+        await QuickAlert.show(
+          context: context,
+          type: QuickAlertType.success,
+
+          barrierDismissible: false,
+          text: 'Entry Saved Successfully',
+          confirmBtnColor: UIGuide.light_Purple,
+          onConfirmBtnTap: () async {
+            await clearStudentMEList();
+            Navigator.pop(context);
+            await getMarkEntrySTATEView(
+                course,
+                division,
+                exam,
+                part,
+                subject,
+                subSubject,
+                optionSubject,
+                tabulationTypeCode,
+                partItemm,
+                subjectCaption,
+                isTerminated);
+          },
+        );
+
 
         setLoadSave(false);
         setLoadCommon(false);
@@ -948,7 +1041,8 @@ class MarkEntryNewProvider with ChangeNotifier {
     _loadVerify = value;
     notifyListeners();
   }
-
+  String? printurl;
+  bool? blockPdfDownload;
   Future markEntryVerify(
       String markEntryId,
       String schoolId,
@@ -976,135 +1070,165 @@ class MarkEntryNewProvider with ChangeNotifier {
       String updatedAt,
       List studentListSave,
       List gradeListSave,
-      var partItemm) async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+      var partItemm,
+      String? coursename,
+      String divName,
+      String? examName,
+      String? subName,
+      String? subSubjectName,
+      String? subCaption,
+
+
+      ) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
     setLoadVerify(true);
     setLoadCommon(true);
     setLoading(true);
 
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
     };
-    try {
-      var request = http.Request(
-          'POST', Uri.parse('${UIGuide.baseURL}/markentry-latest/verify'));
 
-      request.body = json.encode({
-        "markEntryId": markEntryId == "null" ? null : markEntryId,
-        "schoolId": schoolId == "null" ? null : schoolId,
-        "tabulationTypeCode":
-            tabulationTypeCode == "null" ? null : tabulationTypeCode,
-        "subjectCaption": subjectCaption == "null" ? null : subjectCaption,
-        "division": division == "null" ? null : division,
-        "course": course == "null" ? null : course,
-        "part": part == "null" ? null : part,
-        "subject": subject == "null" ? null : subject,
-        "subSubject": subSubject == "null" ? null : subSubject,
-        "optionSubject": optionSubject == "null" ? null : optionSubject,
-        "staffId": staffId == "null" ? null : staffId,
-        "staffName": staffName == "null" ? null : staffName,
-        "entryMethod": entryMethod == "null" ? null : entryMethod,
-        "exam": exam == "null" ? null : exam,
-        "includeTerminatedStudents": includeTerminatedStudents,
-        "teMax": teMax == "null" ? null : teMax,
-        "peMax": peMax == "null" ? null : peMax,
-        "ceMax": ceMax == "null" ? null : ceMax,
-        "teCaption": teCaption == "null" ? null : teCaption,
-        "peCaption": peCaption == "null" ? null : peCaption,
-        "ceCaption": ceCaption == "null" ? null : ceCaption,
-        "isBlocked": false,
-        "examStatus": examStatus == "null" ? null : examStatus,
-        "updatedAt": updatedAt == "null" ? null : updatedAt,
-        "markEntryDetails": studentListSave,
-        "gradeList": null,
-        "partItem": partItemm
-      });
-      log(request.body);
-      request.headers.addAll(headers);
+    var request = http.Request(
+        'POST', Uri.parse('${UIGuide.baseURL}/markentry-latest/verify'));
 
-      http.StreamedResponse response = await request.send();
+    request.body = json.encode({
+      "markEntryId": markEntryId == "null" ? null : markEntryId,
+      "schoolId": schoolId == "null" ? null : schoolId,
+      "tabulationTypeCode":
+      tabulationTypeCode == "null" ? null : tabulationTypeCode,
+      "subjectCaption": subjectCaption == "null" ? null : subjectCaption,
+      "division": division == "null" ? null : division,
+      "course": course == "null" ? null : course,
+      "part": part == "null" ? null : part,
+      "subject": subject == "null" ? null : subject,
+      "subSubject": subSubject == "null" ? null : subSubject,
+      "optionSubject": optionSubject == "null" ? null : optionSubject,
+      "staffId": staffId == "null" ? null : staffId,
+      "staffName": staffName == "null" ? null : staffName,
+      "entryMethod": entryMethod == "null" ? null : entryMethod,
+      "exam": exam == "null" ? null : exam,
+      "includeTerminatedStudents": includeTerminatedStudents,
+      "teMax": teMax == "null" ? null : teMax,
+      "peMax": peMax == "null" ? null : peMax,
+      "ceMax": ceMax == "null" ? null : ceMax,
+      "teCaption": teCaption == "null" ? null : teCaption,
+      "peCaption": peCaption == "null" ? null : peCaption,
+      "ceCaption": ceCaption == "null" ? null : ceCaption,
+      "isBlocked": false,
+      "examStatus": examStatus == "null" ? null : examStatus,
+      "updatedAt": updatedAt == "null" ? null : updatedAt,
+      "markEntryDetails": studentListSave,
+      "gradeList": null,
+      "verifiedStaffId":staffId == "null" ? null : staffId,
+      "verifiedStaffName":staffName == "null" ? null : staffName,
+      "pdfDetails":{
+        "Course" :coursename ,
+        "Division": divName,
+        "Exam": examName,
+        "Subject":subName,
+        "SubSubjectCaption": subCaption??"",
+        "SubSubject" : subSubjectName??null
+
+      },
+      "existCeAttendance": existCeAttendance,
+      "existPeAttendance": existPeAttendance,
+      "partItem": partItemm,
+      "fromDevice":null,
+
+    });
+    log(request.body);
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+    setLoadVerify(true);
+
+    if (response.statusCode == 200) {
       setLoadVerify(true);
+      setLoadCommon(true);
+      setLoading(true);
+      var data=  jsonDecode(await response.stream.bytesToString());
 
-      if (response.statusCode == 200) {
-        setLoadVerify(true);
-        setLoadCommon(true);
-        setLoading(true);
+      print("log data");
 
-        print('Correct........______________________________');
-        print(await response.stream.bytesToString());
-        await AwesomeDialog(
-                dismissOnTouchOutside: false,
-                dismissOnBackKeyPress: false,
-                context: context,
-                dialogType: DialogType.success,
-                animType: AnimType.rightSlide,
-                headerAnimationLoop: false,
-                title: 'Verified',
-                desc: 'Verified Successfully',
-                btnOkOnPress: () async {
-                  await clearStudentMEList();
-                  typeCode == 'UAS'
-                      ? await getMarkEntryUASView(
-                          course,
-                          division,
-                          exam,
-                          part,
-                          subject,
-                          subSubject,
-                          optionSubject,
-                          tabulationTypeCode,
-                          partItemm,
-                          subjectCaption,
-                          isTerminated)
-                      : await getMarkEntrySTATEView(
-                          course,
-                          division,
-                          exam,
-                          part,
-                          subject,
-                          subSubject,
-                          optionSubject,
-                          tabulationTypeCode,
-                          partItemm,
-                          subjectCaption,
-                          isTerminated);
-                },
-                btnOkColor: Colors.green)
-            .show();
+      PrintDocument prindata = PrintDocument.fromJson(data['printDocument']);
 
-        setLoadVerify(false);
-        setLoadCommon(false);
-        setLoading(false);
+      printurl=prindata.url;
+      blockPdfDownload = data['blockPdfDownload'];
+      print("blockPdfDownload : ");
+      print(blockPdfDownload);
+      print("printurl   $printurl");
+      print('Correct........______________________________');
+      // print(await response.stream.bytesToString());
+      await QuickAlert.show(
+        context: context,
+        type: QuickAlertType.success,
+        text: 'Entry Verified Successfully',
+        confirmBtnColor: UIGuide.light_Purple,
+        barrierDismissible: false,
+        onConfirmBtnTap: () async {
+          await clearStudentMEList();
+          Navigator.pop(context);
+          typeCode == 'UAS'
+              ? await getMarkEntryUASView(
+              context,
+              course,
+              division,
+              exam,
+              part,
+              subject,
+              subSubject,
+              optionSubject,
+              tabulationTypeCode,
+              partItemm,
+              subjectCaption,
+              isTerminated)
+              : await getMarkEntrySTATEView(
+              course,
+              division,
+              exam,
+              part,
+              subject,
+              subSubject,
+              optionSubject,
+              tabulationTypeCode,
+              partItemm,
+              subjectCaption,
+              isTerminated);
 
-        notifyListeners();
-      } else {
-        print(response.reasonPhrase);
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          elevation: 10,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(20)),
-          ),
-          duration: Duration(seconds: 4),
-          margin: EdgeInsets.only(bottom: 80, left: 30, right: 30),
-          behavior: SnackBarBehavior.floating,
-          content: Text(
-            'Something Went Wrong ....',
-            textAlign: TextAlign.center,
-          ),
-        ));
-        setLoadVerify(false);
-        setLoadCommon(false);
-        setLoading(false);
-        print('Error Response Verify');
-      }
-    } catch (e) {
-      snackbarWidget(4, 'Something Went Wrong....', context);
+        },
+      );
+
+
 
       setLoadVerify(false);
       setLoadCommon(false);
       setLoading(false);
+
+      notifyListeners();
     }
+    else {
+      print(response.reasonPhrase);
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        elevation: 10,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20)),
+        ),
+        duration: Duration(seconds: 4),
+        margin: EdgeInsets.only(bottom: 80, left: 30, right: 30),
+        behavior: SnackBarBehavior.floating,
+        content: Text(
+          'Something Went Wrong ....',
+          textAlign: TextAlign.center,
+        ),
+      ));
+      setLoadVerify(false);
+      setLoadCommon(false);
+      setLoading(false);
+      print('Error Response Verify');
+    }
+
   }
 
   //delete
@@ -1144,14 +1268,14 @@ class MarkEntryNewProvider with ChangeNotifier {
       List studentListSave,
       List gradeListSave,
       var partItemm) async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
     setLoadDelete(true);
     setLoadCommon(true);
     setLoading(true);
     try {
       var headers = {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+        'Authorization': 'Bearer ${pref.getString('accesstoken')}'
       };
 
       var request = http.Request(
@@ -1161,7 +1285,7 @@ class MarkEntryNewProvider with ChangeNotifier {
         "markEntryId": markEntryId == "null" ? null : markEntryId,
         "schoolId": schoolId == "null" ? null : schoolId,
         "tabulationTypeCode":
-            tabulationTypeCode == "null" ? null : tabulationTypeCode,
+        tabulationTypeCode == "null" ? null : tabulationTypeCode,
         "subjectCaption": subjectCaption == "null" ? null : subjectCaption,
         "division": division == "null" ? null : division,
         "course": course == "null" ? null : course,
@@ -1201,18 +1325,18 @@ class MarkEntryNewProvider with ChangeNotifier {
         print('Correct........______________________________');
         print(await response.stream.bytesToString());
         await AwesomeDialog(
-                dismissOnTouchOutside: false,
-                dismissOnBackKeyPress: false,
-                context: context,
-                dialogType: DialogType.error,
-                animType: AnimType.rightSlide,
-                headerAnimationLoop: false,
-                title: 'Delete',
-                desc: 'Deleted Successfully',
-                btnOkOnPress: () async {
-                  await clearStudentMEList();
-                },
-                btnOkColor: Colors.red)
+            dismissOnTouchOutside: false,
+            dismissOnBackKeyPress: false,
+            context: context,
+            dialogType: DialogType.error,
+            animType: AnimType.rightSlide,
+            headerAnimationLoop: false,
+            title: 'Delete',
+            desc: 'Deleted Successfully',
+            btnOkOnPress: () async {
+              await clearStudentMEList();
+            },
+            btnOkColor: Colors.red)
             .show();
 
         setLoadDelete(false);
@@ -1279,14 +1403,14 @@ class MarkEntryNewProvider with ChangeNotifier {
       List studentListSave,
       List gradeListSave,
       var partItemm) async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
     setLoadDelete(true);
     setLoadCommon(true);
     setLoading(true);
 
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
     };
     print("/state-delete/All");
     try {
@@ -1297,7 +1421,7 @@ class MarkEntryNewProvider with ChangeNotifier {
         "markEntryId": markEntryId == "null" ? null : markEntryId,
         "schoolId": schoolId == "null" ? null : schoolId,
         "tabulationTypeCode":
-            tabulationTypeCode == "null" ? null : tabulationTypeCode,
+        tabulationTypeCode == "null" ? null : tabulationTypeCode,
         "subjectCaption": subjectCaption == "null" ? null : subjectCaption,
         "division": division == "null" ? null : division,
         "course": course == "null" ? null : course,
@@ -1337,18 +1461,18 @@ class MarkEntryNewProvider with ChangeNotifier {
         print('Correct........______________________________');
         print(await response.stream.bytesToString());
         await AwesomeDialog(
-                dismissOnTouchOutside: false,
-                dismissOnBackKeyPress: false,
-                context: context,
-                dialogType: DialogType.error,
-                animType: AnimType.rightSlide,
-                headerAnimationLoop: false,
-                title: 'Delete',
-                desc: 'Deleted Successfully',
-                btnOkOnPress: () async {
-                  await clearStudentMEList();
-                },
-                btnOkColor: Colors.red)
+            dismissOnTouchOutside: false,
+            dismissOnBackKeyPress: false,
+            context: context,
+            dialogType: DialogType.error,
+            animType: AnimType.rightSlide,
+            headerAnimationLoop: false,
+            title: 'Delete',
+            desc: 'Deleted Successfully',
+            btnOkOnPress: () async {
+              await clearStudentMEList();
+            },
+            btnOkColor: Colors.red)
             .show();
 
         setLoadDelete(false);

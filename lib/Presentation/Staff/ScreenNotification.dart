@@ -1,6 +1,7 @@
 import 'package:essconnect/Application/Staff_Providers/NotificationCount.dart';
 import 'package:essconnect/Application/Staff_Providers/StaffNotificationScreen.dart';
 import 'package:essconnect/Constants.dart';
+import 'package:essconnect/Presentation/Student/Stud_Notification.dart';
 import 'package:essconnect/utils/spinkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
@@ -158,11 +159,15 @@ class StaffNotificationReceived extends StatelessWidget {
                                         ],
                                       ),
                                       kheight,
-                                      TextWrapper(
-                                        text: value.notificationList[index]
-                                                .message ??
-                                            '--',
-                                        fSize: 14,
+                                      LinkTextWidget(
+                                        text:  value.notificationList[index]
+                                            .message ==
+                                            null
+                                            ? '--'
+                                            : value.notificationList[index]
+                                            .message
+                                            .toString(),
+
                                       ),
                                       kheight10,
                                       Row(
@@ -294,8 +299,9 @@ class StaffNotificationSendHistory extends StatelessWidget {
                                           SizedBox(
                                             height: 25,
                                             width: 25,
-                                            child: LottieBuilder.network(
-                                                'https://assets7.lottiefiles.com/private_files/lf30_ggnpo3y5.json'),
+                                            child: Icon(Icons.notifications,
+                                              color: Color.fromARGB(
+                                                  213, 231, 210, 30),),
                                           ),
                                           SizedBox(
                                             width: size.width - 90,

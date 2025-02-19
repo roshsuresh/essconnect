@@ -11,6 +11,7 @@ class MarkEntryUASModel {
   String? optionSubject;
   String? staffId;
   String? staffName;
+  String? verifiedStaffName;
   String? entryMethod;
   String? exam;
   bool? includeTerminatedStudents;
@@ -28,37 +29,41 @@ class MarkEntryUASModel {
   List<MarkEntryDetailsUAS>? markEntryDetails;
   List<GradeListUAS>? gradeList;
   PartItemView? partItem;
+  String? verifiedFileId;
 
   MarkEntryUASModel(
       {this.markEntryId,
-      this.schoolId,
-      this.tabulationTypeCode,
-      this.subjectCaption,
-      this.division,
-      this.course,
-      this.part,
-      this.subject,
-      this.subSubject,
-      this.optionSubject,
-      this.staffId,
-      this.staffName,
-      this.entryMethod,
-      this.exam,
-      this.includeTerminatedStudents,
-      this.teMax,
-      this.peMax,
-      this.ceMax,
-      this.existPeAttendance,
-      this.existCeAttendance,
-      this.teCaption,
-      this.peCaption,
-      this.ceCaption,
-      this.isBlocked,
-      this.examStatus,
-      this.updatedAt,
-      this.markEntryDetails,
-      this.gradeList,
-      this.partItem});
+        this.schoolId,
+        this.tabulationTypeCode,
+        this.subjectCaption,
+        this.division,
+        this.course,
+        this.part,
+        this.subject,
+        this.subSubject,
+        this.optionSubject,
+        this.staffId,
+        this.staffName,
+        this.entryMethod,
+        this.exam,
+        this.includeTerminatedStudents,
+        this.teMax,
+        this.peMax,
+        this.ceMax,
+        this.existPeAttendance,
+        this.existCeAttendance,
+        this.teCaption,
+        this.peCaption,
+        this.ceCaption,
+        this.isBlocked,
+        this.examStatus,
+        this.updatedAt,
+        this.markEntryDetails,
+        this.gradeList,
+        this.partItem,
+        this.verifiedFileId,
+        this.verifiedStaffName,
+      });
 
   MarkEntryUASModel.fromJson(Map<String, dynamic> json) {
     markEntryId = json['markEntryId'];
@@ -86,6 +91,7 @@ class MarkEntryUASModel {
     ceCaption = json['ceCaption'];
     isBlocked = json['isBlocked'];
     examStatus = json['examStatus'];
+    verifiedStaffName = json['verifiedStaffName'];
     updatedAt = json['updatedAt'];
     if (json['markEntryDetails'] != null) {
       markEntryDetails = <MarkEntryDetailsUAS>[];
@@ -96,51 +102,54 @@ class MarkEntryUASModel {
     if (json['gradeList'] != null) {
       gradeList = <GradeListUAS>[];
       json['gradeList'].forEach((v) {
-        gradeList!.add(new GradeListUAS.fromJson(v));
+        gradeList!.add(GradeListUAS.fromJson(v));
       });
     }
     partItem = json['partItem'] != null
         ? PartItemView.fromJson(json['partItem'])
         : null;
+    verifiedFileId = json['verifiedFileId'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['markEntryId'] = this.markEntryId;
-    data['schoolId'] = this.schoolId;
-    data['tabulationTypeCode'] = this.tabulationTypeCode;
-    data['subjectCaption'] = this.subjectCaption;
-    data['division'] = this.division;
-    data['course'] = this.course;
-    data['part'] = this.part;
-    data['subject'] = this.subject;
-    data['subSubject'] = this.subSubject;
-    data['optionSubject'] = this.optionSubject;
-    data['staffId'] = this.staffId;
-    data['staffName'] = this.staffName;
-    data['entryMethod'] = this.entryMethod;
-    data['exam'] = this.exam;
-    data['includeTerminatedStudents'] = this.includeTerminatedStudents;
-    data['teMax'] = this.teMax;
-    data['peMax'] = this.peMax;
-    data['ceMax'] = this.ceMax;
-    data['existPeAttendance']=this.existPeAttendance;
-    data['existCeAttendance']=this.existCeAttendance;
-    data['teCaption'] = this.teCaption;
-    data['peCaption'] = this.peCaption;
-    data['ceCaption'] = this.ceCaption;
-    data['isBlocked'] = this.isBlocked;
-    data['examStatus'] = this.examStatus;
-    data['updatedAt'] = this.updatedAt;
-    if (this.markEntryDetails != null) {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['markEntryId'] = markEntryId;
+    data['schoolId'] = schoolId;
+    data['tabulationTypeCode'] = tabulationTypeCode;
+    data['subjectCaption'] = subjectCaption;
+    data['division'] = division;
+    data['course'] = course;
+    data['part'] = part;
+    data['subject'] = subject;
+    data['subSubject'] = subSubject;
+    data['optionSubject'] = optionSubject;
+    data['staffId'] = staffId;
+    data['staffName'] = staffName;
+    data['entryMethod'] = entryMethod;
+    data['exam'] = exam;
+    data['includeTerminatedStudents'] = includeTerminatedStudents;
+    data['teMax'] = teMax;
+    data['peMax'] = peMax;
+    data['ceMax'] = ceMax;
+    data['existPeAttendance']=existPeAttendance;
+    data['existCeAttendance']=existCeAttendance;
+    data['teCaption'] = teCaption;
+    data['peCaption'] = peCaption;
+    data['ceCaption'] = ceCaption;
+    data['isBlocked'] = isBlocked;
+    data['examStatus'] = examStatus;
+    data['updatedAt'] = updatedAt;
+    data['verifiedFileId'] = verifiedFileId;
+    data['verifiedStaffName'] = verifiedStaffName;
+    if (markEntryDetails != null) {
       data['markEntryDetails'] =
-          this.markEntryDetails!.map((v) => v.toJson()).toList();
+          markEntryDetails!.map((v) => v.toJson()).toList();
     }
-    if (this.gradeList != null) {
-      data['gradeList'] = this.gradeList!.map((v) => v.toJson()).toList();
+    if (gradeList != null) {
+      data['gradeList'] = gradeList!.map((v) => v.toJson()).toList();
     }
-    if (this.partItem != null) {
-      data['partItem'] = this.partItem!.toJson();
+    if (partItem != null) {
+      data['partItem'] = partItem!.toJson();
     }
     return data;
   }
@@ -151,6 +160,7 @@ class MarkEntryDetailsUAS {
   String? ceAttendance;
   String? peAttendance;
   String? studentName;
+  String? admissionNo;
   int? rollNo;
   String? studentId;
   String? markEntryDetId;
@@ -167,36 +177,42 @@ class MarkEntryDetailsUAS {
   String? tabMarkEntryId;
   bool? isEdited;
   bool? isDisabled;
+  bool? isPeDisabled;
+  bool? isCeDisabled;
   bool? isAttendanceDisabled;
 
   MarkEntryDetailsUAS(
       {this.attendance,
         this.peAttendance,
         this.ceAttendance,
-      this.studentName,
-      this.rollNo,
-      this.studentId,
-      this.markEntryDetId,
-      this.teMark,
-      this.peMark,
-      this.ceMark,
-      this.teGrade,
-      this.peGrade,
-      this.ceGrade,
-      this.total,
-      this.teGradeId,
-      this.peGradeId,
-      this.ceGradeId,
-      this.tabMarkEntryId,
-      this.isEdited,
-      this.isDisabled,
-      this.isAttendanceDisabled});
+        this.studentName,
+        this.admissionNo,
+        this.rollNo,
+        this.studentId,
+        this.markEntryDetId,
+        this.teMark,
+        this.peMark,
+        this.ceMark,
+        this.teGrade,
+        this.peGrade,
+        this.ceGrade,
+        this.total,
+        this.teGradeId,
+        this.peGradeId,
+        this.ceGradeId,
+        this.tabMarkEntryId,
+        this.isEdited,
+        this.isDisabled,
+        this.isPeDisabled,
+        this.isCeDisabled,
+        this.isAttendanceDisabled});
 
   MarkEntryDetailsUAS.fromJson(Map<String, dynamic> json) {
     attendance = json['attendance'];
     peAttendance = json['peAttendance'];
     ceAttendance = json['ceAttendance'];
     studentName = json['studentName'];
+    admissionNo = json['admissionNo'];
     rollNo = json['rollNo'];
     studentId = json['studentId'];
     markEntryDetId = json['markEntryDetId'];
@@ -213,32 +229,37 @@ class MarkEntryDetailsUAS {
     tabMarkEntryId = json['tabMarkEntryId'];
     isEdited = json['isEdited'];
     isDisabled = json['isDisabled'];
+    isPeDisabled = json['isPeDisabled'];
+    isCeDisabled = json['isCeDisabled'];
     isAttendanceDisabled = json['isAttendanceDisabled'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['attendance'] = this.attendance;
-    data['peAttendance'] = this.peAttendance;
-    data['ceAttendance'] = this.ceAttendance;
-    data['studentName'] = this.studentName;
-    data['rollNo'] = this.rollNo;
-    data['studentId'] = this.studentId;
-    data['markEntryDetId'] = this.markEntryDetId;
-    data['teMark'] = this.teMark;
-    data['peMark'] = this.peMark;
-    data['ceMark'] = this.ceMark;
-    data['teGrade'] = this.teGrade;
-    data['peGrade'] = this.peGrade;
-    data['ceGrade'] = this.ceGrade;
-    data['total'] = this.total;
-    data['teGradeId'] = this.teGradeId;
-    data['peGradeId'] = this.peGradeId;
-    data['ceGradeId'] = this.ceGradeId;
-    data['tabMarkEntryId'] = this.tabMarkEntryId;
-    data['isEdited'] = this.isEdited;
-    data['isDisabled'] = this.isDisabled;
-    data['isAttendanceDisabled'] = this.isAttendanceDisabled;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['attendance'] = attendance;
+    data['peAttendance'] = peAttendance;
+    data['ceAttendance'] = ceAttendance;
+    data['studentName'] = studentName;
+    data['admissionNo'] = admissionNo;
+    data['rollNo'] = rollNo;
+    data['studentId'] = studentId;
+    data['markEntryDetId'] = markEntryDetId;
+    data['teMark'] = teMark;
+    data['peMark'] = peMark;
+    data['ceMark'] = ceMark;
+    data['teGrade'] = teGrade;
+    data['peGrade'] = peGrade;
+    data['ceGrade'] = ceGrade;
+    data['total'] = total;
+    data['teGradeId'] = teGradeId;
+    data['peGradeId'] = peGradeId;
+    data['ceGradeId'] = ceGradeId;
+    data['tabMarkEntryId'] = tabMarkEntryId;
+    data['isEdited'] = isEdited;
+    data['isDisabled'] = isDisabled;
+    data['isPeDisabled'] = isPeDisabled;
+    data['isCeDisabled'] = isCeDisabled;
+    data['isAttendanceDisabled'] = isAttendanceDisabled;
     return data;
   }
 }
@@ -257,10 +278,10 @@ class GradeListUAS {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['value'] = this.value;
-    data['text'] = this.text;
-    data['order'] = this.order;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['value'] = value;
+    data['text'] = text;
+    data['order'] = order;
     return data;
   }
 }
@@ -279,10 +300,10 @@ class PartItemView {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['value'] = this.value;
-    data['text'] = this.text;
-    data['order'] = this.order;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['value'] = value;
+    data['text'] = text;
+    data['order'] = order;
     return data;
   }
 }

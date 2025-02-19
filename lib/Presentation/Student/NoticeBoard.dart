@@ -167,16 +167,23 @@ class NoticeBoard extends StatelessWidget {
                                       ),
                                     ),
                                     kheight10,
-                                    TextWrapper(
-                                      text: noticeresponse![index]
-                                      ['matter'] ==
-                                          null
-                                          ? '------'
-                                          : noticeresponse![index]
-                                      ['matter']
-                                          .toString(),
-                                      fSize: 16,
-                                    ),
+                                    // TextWrapper(
+                                    //   text: noticeresponse![index]
+                                    //   ['matter'] ==
+                                    //       null
+                                    //       ? '------'
+                                    //       : noticeresponse![index]
+                                    //   ['matter']
+                                    //       .toString(),
+                                    //   fSize: 16,
+                                    // ),
+                                    LinkTextWidget(text:  noticeresponse![index]
+                                        ['matter'] ==
+                                            null
+                                            ? '------'
+                                            : noticeresponse![index]
+                                        ['matter']
+                                            .toString(),font: 16,),
                                     kheight10,
                                     Row(
                                       crossAxisAlignment:
@@ -224,9 +231,9 @@ class NoticeBoard extends StatelessWidget {
                                                 listen: false)
                                                 .noticeAttachement(
                                                 noticeattach);
-                                            if (value.extension
-                                                .toString() ==
-                                                '.pdf') {
+                                            if (value.extension == '.pdf' ||
+                                                value.extension == '.zip' ||
+                                                value.extension == '.rar') {
                                               final result = value.url
                                                   .toString();
                                               final name = value.name
@@ -239,7 +246,8 @@ class NoticeBoard extends StatelessWidget {
                                                       PDFDownload(),
                                                 ),
                                               );
-                                            } else {
+                                            }
+                                            else {
                                               Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
@@ -370,15 +378,28 @@ class _PDFDownloadState extends State<PDFDownload> {
                           value.url == null ? '--' : value.url.toString(),
                           value.idd == null
                               ? '---'
-                              : value.idd.toString() + value.name.toString(),
+                              : value.name.toString() + value.idd.toString(),
                         );
                       },
                       icon: const Icon(Icons.download_outlined))),
             ],
           ),
-          body: SfPdfViewer.network(
+          body: value.extension == '.pdf'?
+          SfPdfViewer.network(
             value.url == null ? '--' : value.url.toString(),
-          )),
+          ):
+          Container(
+            child: Center(
+              child: SizedBox(
+                height: 150,
+                child: Image.asset(
+                  'assets/zip_file.png',// Replace with the path to your image asset
+                  fit: BoxFit.fill,// Adjust as needed (e.g., BoxFit.cover, BoxFit.fill)
+                ),
+              ),
+            ),
+          )
+      ),
     );
   }
 }
@@ -453,6 +474,7 @@ class _PdfViewPageState extends State<PdfViewPage> {
   bool isLoading = false;
 
   imageview(String result, String name) {
+
     return Scaffold(
       backgroundColor: UIGuide.WHITE,
       appBar: AppBar(

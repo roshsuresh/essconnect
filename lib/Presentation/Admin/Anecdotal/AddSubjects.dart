@@ -1,13 +1,15 @@
-import 'package:essconnect/Application/Staff_Providers/Anecdotal/AncedotalStaffProvider.dart';
-import 'package:essconnect/Constants.dart';
-import 'package:essconnect/utils/constants.dart';
-import 'package:essconnect/utils/spinkit.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
+import '../../../Application/Staff_Providers/Anecdotal/AncedotalStaffProvider.dart';
+import '../../../Constants.dart';
+import '../../../utils/constants.dart';
+import '../../../utils/spinkit.dart';
+
 class AddSubjects extends StatefulWidget {
-  AddSubjects({Key? key}) : super(key: key);
+  const AddSubjects({Key? key}) : super(key: key);
 
   @override
   State<AddSubjects> createState() => _AddSubjectsState();
@@ -17,6 +19,7 @@ class _AddSubjectsState extends State<AddSubjects> {
   final addsubjectController = TextEditingController();
 
   final sortController = TextEditingController();
+  @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
@@ -38,7 +41,7 @@ class _AddSubjectsState extends State<AddSubjects> {
             Provider.of<AnecdotalStaffProviders>(context, listen: false).getCategorySubject();
 
           },
-          icon: Icon(Icons.arrow_back_outlined),
+          icon: const Icon(Icons.arrow_back_outlined),
         ),
         title: const Text('Diary Subject'),
         titleSpacing: 00.0,
@@ -121,11 +124,6 @@ class _AddSubjectsState extends State<AddSubjects> {
                   width: 150,
                   height: 45,
                   child: MaterialButton(
-                      child: Text(
-                        'Save',
-                        style: TextStyle(color: UIGuide.WHITE, fontSize: 18),
-                      ),
-                      // minWidth: size.width - 150,
                       shape: const RoundedRectangleBorder(
                           borderRadius:
                           BorderRadius.all(Radius.circular(10.0))),
@@ -167,13 +165,17 @@ class _AddSubjectsState extends State<AddSubjects> {
                             ),
                           ));
                         }
-                      }),
+                      },
+                      child: const Text(
+                        'Save',
+                        style: TextStyle(color: UIGuide.WHITE, fontSize: 18),
+                      )),
                 ),
               ),
               kheight20,
               Table(
                 border:
-                TableBorder.all(color: Color.fromARGB(255, 255, 255, 255)),
+                TableBorder.all(color: const Color.fromARGB(255, 255, 255, 255)),
                 columnWidths: const {
                   0: FlexColumnWidth(1),
                   1: FlexColumnWidth(4),
@@ -228,7 +230,7 @@ class _AddSubjectsState extends State<AddSubjects> {
                       itemBuilder: (context, index) {
                         return Table(
                           border: TableBorder.all(
-                              color: Color.fromARGB(255, 255, 255, 255)),
+                              color: const Color.fromARGB(255, 255, 255, 255)),
                           columnWidths: const {
                             0: FlexColumnWidth(1),
                             1: FlexColumnWidth(4),
@@ -236,7 +238,7 @@ class _AddSubjectsState extends State<AddSubjects> {
                           },
                           children: [
                             TableRow(
-                                decoration: BoxDecoration(
+                                decoration: const BoxDecoration(
                                   color:
                                   Color.fromARGB(255, 247, 247, 247),
                                 ),
@@ -287,7 +289,7 @@ class _AddSubjectsState extends State<AddSubjects> {
                                   ),
                                   GestureDetector(
                                     onTap: () async {
-                                      String eventid = await category
+                                      String eventid = category
                                           .subjectList[index].id ??
                                           '--';
                                       await category.anecDotalSubjectDelete(
@@ -300,7 +302,7 @@ class _AddSubjectsState extends State<AddSubjects> {
                                       width: 15,
                                       color: Colors.transparent,
                                       height: 30,
-                                      child: Center(
+                                      child: const Center(
                                           child: Icon(
                                             Icons.delete_outline_outlined,
                                             color: Colors.red,

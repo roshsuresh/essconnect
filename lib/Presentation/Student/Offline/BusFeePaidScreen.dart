@@ -22,7 +22,7 @@ class BusFeePaidScreen extends StatelessWidget {
       builder: (context, value, _) => Scaffold(
           body: value.loadingBP
               ? spinkitLoader()
-              : value.busPaidList.isEmpty
+              : value.busPaidList.isEmpty || value.busPaidList == null
                   ? LottieBuilder.network(
                       'https://assets2.lottiefiles.com/private_files/lf30_lkquf6qz.json')
                   : Column(
@@ -506,7 +506,7 @@ class BusFeePaidScreen extends StatelessWidget {
                                                         const Spacer(),
                                                         value.busPaidList[index]
                                                                     .isCancelled ==
-                                                                true
+                                                                "true"
                                                             ? const Expanded(
                                                                 child: Text(
                                                                   "Cancelled",

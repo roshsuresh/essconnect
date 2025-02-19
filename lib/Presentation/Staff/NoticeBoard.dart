@@ -331,7 +331,7 @@ class _StaffNoticeBoard_sentState extends State<StaffNoticeBoard_sent> {
                         onPressed: (() async {
                           final result = await FilePicker.platform.pickFiles(
                               type: FileType.custom,
-                              allowedExtensions: ['pdf', 'png', 'jpeg', 'jpg']);
+                              allowedExtensions: ['pdf', 'png', 'jpeg', 'jpg','zip','rar']);
                           if (result == null) {
                             return;
                           }
@@ -342,7 +342,7 @@ class _StaffNoticeBoard_sentState extends State<StaffNoticeBoard_sent> {
 
                           int sizee = file.size;
 
-                          if (sizee <= 200000) {
+                          if (sizee <= 5242880) {
                             await val.noticeImageSave(
                                 context, file.path.toString());
                           } else {
@@ -359,7 +359,7 @@ class _StaffNoticeBoard_sentState extends State<StaffNoticeBoard_sent> {
                                   bottom: 80, left: 30, right: 30),
                               behavior: SnackBarBehavior.floating,
                               content: Text(
-                                "Size Exceed(Less than 200KB allowed)",
+                                "Size Exceeded(Less than 5Mb allowed)",
                                 textAlign: TextAlign.center,
                               ),
                             ));
@@ -374,7 +374,7 @@ class _StaffNoticeBoard_sentState extends State<StaffNoticeBoard_sent> {
           ),
           const Center(
               child: Text(
-            'Maximum allowed file size is 200 KB',
+            'Maximum allowed file size is 5Mb',
             style: TextStyle(
                 fontSize: 9, color: Color.fromARGB(255, 241, 104, 94)),
           )),

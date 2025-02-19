@@ -1,12 +1,14 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:essconnect/Constants.dart';
-import 'package:essconnect/Domain/Staff/ToolMarkEntryModel.dart';
-import 'package:essconnect/utils/constants.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+
+import '../../Constants.dart';
+import '../../Domain/Staff/ToolMarkEntryModel.dart';
+import '../../utils/constants.dart';
 
 class ToolMarkEntryProviders with ChangeNotifier {
   bool? isLocked;
@@ -50,7 +52,7 @@ class ToolMarkEntryProviders with ChangeNotifier {
         setLoading(false);
         notifyListeners();
       } else {
-        setLoading(true);
+        setLoading(false);
         print('Error in ToolInitialValues stf');
       }
     } catch (e) {

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:isolate';
 import 'dart:ui';
 
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:essconnect/utils/constants.dart';
 import 'package:flutter/material.dart';
@@ -242,17 +243,33 @@ class _StudentPortionsState extends State<StudentPortions> {
 
 
 
-  final CarouselController _carouselController = CarouselController();
+
   @override
   Widget build(BuildContext context) {
     var size= MediaQuery.of(context).size;
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Portion'),
+        titleSpacing: 00.0,
+        centerTitle: true,
+        toolbarHeight: 60.2,
+        toolbarOpacity: 0.8,
+        // shape: const RoundedRectangleBorder(
+        //   borderRadius: BorderRadius.only(
+        //       bottomRight: Radius.circular(25),
+        //       bottomLeft: Radius.circular(25)),
+        // ),
+        backgroundColor: UIGuide.light_Purple,
+      ),
+
+
       body:  Consumer<StudentPortionProvider>(
           builder: (context, value, _)=>
           value.loading
               ? spinkitLoader()
               :  Stack(
           children: [
+
             Container(
               decoration: const BoxDecoration(
                   gradient: LinearGradient(begin: Alignment.bottomRight, stops: [
@@ -382,118 +399,116 @@ class _StudentPortionsState extends State<StudentPortions> {
                                                 fontWeight:
                                                 FontWeight
                                                     .w500),),
-                                          TextWrapper(text: value.studportionDetailList[index].details ?? "--",
-                                              fSize: 12),
+                                          LinkTextWidget(text: value.studportionDetailList[index].details ?? "--"),
+
+                                          // TextWrapper(text: value.studportionDetailList[index].details ?? "--",
+                                          //     fSize: 12),
                                           Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Row(
-                                                children: [
-                                                  const Text("Send by: "),
-                                                  Text(value.studportionDetailList[index].submittedBy.toString(),
-                                                    style: const TextStyle(
+                                              const Text("Send by: "),
+                                              Text(value.studportionDetailList[index].submittedBy.toString(),
+                                                style: const TextStyle(
                                                     color: UIGuide.light_Purple
-                                                  ),
-                                                  overflow: TextOverflow.ellipsis,
-                                                  )
-                                                ],
-                                              ),
+                                                ),
+                                                overflow: TextOverflow.ellipsis,
+                                              )
+                                            ],
+                                          ),
+                                          value.studportionDetailList[index].photoList!.isEmpty?
+                                          SizedBox(height: 0,):kheight10,
 
-                                              value.studportionDetailList[index].photoList!.isEmpty?
-                                                  SizedBox(height: 0,width: 0,):
-                                              Row(
-                                                children: [
-                                                  InkWell(
-                                                    onTap: (){
-                                                      List<PhotoList> photoList = value.studportionDetailList.isNotEmpty ? value.studportionDetailList[index].photoList! : [];
-                                                      imageUrls.clear();
-                                                      imageName.clear();
-                                                      imageExtension.clear();
-                                                      if(photoList.isNotEmpty) {
-                                                        for (int i = 0; i < photoList.length; i++) {
-                                                          imageUrls.add(photoList[i].url!);
-                                                          imageName.add(photoList[i].name!);
-                                                          imageExtension.add(photoList[i].extension!);
+                                          value.studportionDetailList[index].photoList!.isEmpty?
+                                          const SizedBox(height: 0,width: 0,):
+                                          Row(
+                                            children: [
+                                              InkWell(
+                                                onTap: (){
+                                                  List<PhotoList> photoList = value.studportionDetailList.isNotEmpty ? value.studportionDetailList[index].photoList! : [];
+                                                  imageUrls.clear();
+                                                  imageName.clear();
+                                                  imageExtension.clear();
+                                                  if(photoList.isNotEmpty) {
+                                                    for (int i = 0; i < photoList.length; i++) {
+                                                      imageUrls.add(photoList[i].url!);
+                                                      imageName.add(photoList[i].name!);
+                                                      imageExtension.add(photoList[i].extension!);
 
-                                                        }
-                                                      }
-
-
-                                                      showDialog(
-                                                        context: context,
-                                                        builder: (BuildContext context) {
-                                                       return  CarouselDialog(urlImages: imageUrls,imageName:imageName,ext: imageExtension,);
-                                                        },
-                                                      );
+                                                    }
+                                                  }
 
 
+                                                  showDialog(
+                                                    context: context,
+                                                    builder: (BuildContext context) {
+                                                      return  CarouselDialog(urlImages: imageUrls,imageName:imageName,ext: imageExtension,);
                                                     },
-                                                    child: SizedBox(
-                                                      height: 25,width: 25,
-                                                      child: Icon(
-                                                        Icons.visibility_rounded
-                                                      ),
-                                                    ),
+                                                  );
+
+
+                                                },
+                                                child: const SizedBox(
+                                                  height: 25,width: 25,
+                                                  child: Icon(
+                                                      Icons.visibility_rounded
                                                   ),
-                                                 kWidth,
-                                                  InkWell(
-                                                    onTap: () async{
-                                              List<PhotoList> photoList = value.studportionDetailList.isNotEmpty ? value.studportionDetailList[index].photoList! : [];
-                                              imageUrls.clear();
-                                              imageName.clear();
-                                              imageExtension.clear();
-                                              if(photoList.isNotEmpty) {
-                                              for (int i = 0; i < photoList.length; i++) {
-                                                imageUrls.add(
-                                                    photoList[i].url!);
-                                                imageName.add(
-                                                    photoList[i].name!);
-                                                imageExtension.add(
-                                                    photoList[i].extension!);
-                                              }}
+                                                ),
+                                              ),
+                                              kWidth20,
+                                              InkWell(
+                                                onTap: () async{
+                                                  List<PhotoList> photoList = value.studportionDetailList.isNotEmpty ? value.studportionDetailList[index].photoList! : [];
+                                                  imageUrls.clear();
+                                                  imageName.clear();
+                                                  imageExtension.clear();
+                                                  if(photoList.isNotEmpty) {
+                                                    for (int i = 0; i < photoList.length; i++) {
+                                                      imageUrls.add(
+                                                          photoList[i].url!);
+                                                      imageName.add(
+                                                          photoList[i].name!);
+                                                      imageExtension.add(
+                                                          photoList[i].extension!);
+                                                    }}
 
-                                              if(photoList.isEmpty){
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(
-                                                const SnackBar(
-                                                elevation: 10,
-                                                shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.all(
-                                                Radius.circular(10)),
-                                                ),
-                                                duration: Duration(seconds: 1),
-                                                margin: EdgeInsets.only(
-                                                bottom: 80,
-                                                left: 30,
-                                                right: 30),
-                                                behavior: SnackBarBehavior.floating,
-                                                content: Text(
-                                                'No Attachments Found..',
-                                                textAlign: TextAlign.center,
-                                                ),
-                                                ),
-                                                );
-                                              }
+                                                  if(photoList.isEmpty){
+                                                    ScaffoldMessenger.of(context)
+                                                        .showSnackBar(
+                                                      const SnackBar(
+                                                        elevation: 10,
+                                                        shape: RoundedRectangleBorder(
+                                                          borderRadius: BorderRadius.all(
+                                                              Radius.circular(10)),
+                                                        ),
+                                                        duration: Duration(seconds: 1),
+                                                        margin: EdgeInsets.only(
+                                                            bottom: 80,
+                                                            left: 30,
+                                                            right: 30),
+                                                        behavior: SnackBarBehavior.floating,
+                                                        content: Text(
+                                                          'No Attachments Found..',
+                                                          textAlign: TextAlign.center,
+                                                        ),
+                                                      ),
+                                                    );
+                                                  }
 
-                                                   else{
+                                                  else{
 
 
                                                     await downloadFiles(imageUrls,imageName);
 
 
-                                                    }
-                                                    },
+                                                  }
+                                                },
 
-                                                    child: SizedBox(
-                                                      height: 25,width: 25,
-                                                      child: Icon(
-                                                          Icons.download
-                                                      ),
-                                                    ),
+                                                child: const SizedBox(
+                                                  height: 25,width: 25,
+                                                  child: Icon(
+                                                      Icons.download
                                                   ),
-
-                                                ],
-                                              )
+                                                ),
+                                              ),
 
                                             ],
                                           )

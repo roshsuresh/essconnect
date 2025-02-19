@@ -15,20 +15,20 @@ class AttendanceInitial {
 class AttendanceModel {
   AttendanceModel(
       {this.studentId,
-      this.admNo,
-      this.rollNo,
-      this.name,
-      this.divisionId,
-      this.division,
-      this.attendanceDate,
-      this.isattendanceTaken,
-      this.absentDayForeNoon,
-      this.absentDayAfterNoon,
-      this.guardianName,
-      this.mobileNo,
-      this.checked,
-      this.terminatedStatus,
-      this.selected});
+        this.admNo,
+        this.rollNo,
+        this.name,
+        this.divisionId,
+        this.division,
+        this.attendanceDate,
+        this.isattendanceTaken,
+        this.absentDayForeNoon,
+        this.absentDayAfterNoon,
+        this.guardianName,
+        this.mobileNo,
+        this.checked,
+        this.terminatedStatus,
+        this.selected});
 
   String? studentId;
   String? admNo;
@@ -65,21 +65,21 @@ class AttendanceModel {
       );
 
   Map<String, dynamic> toJson() => {
-        "studentId": studentId,
-        "admNo": admNo,
-        "rollNo": rollNo,
-        "name": name,
-        "divisionId": divisionId,
-        "division": division,
-        "attendanceDate": attendanceDate,
-        "isattendanceTaken": isattendanceTaken,
-        "absentDayForeNoon": absentDayForeNoon,
-        "absentDayAfterNoon": absentDayAfterNoon,
-        "guardianName": guardianName,
-        "mobileNo": mobileNo,
-        "checked": checked,
-        "terminatedStatus": terminatedStatus,
-      };
+    "studentId": studentId,
+    "admNo": admNo,
+    "rollNo": rollNo,
+    "name": name,
+    "divisionId": divisionId,
+    "division": division,
+    "attendanceDate": attendanceDate,
+    "isattendanceTaken": isattendanceTaken,
+    "absentDayForeNoon": absentDayForeNoon,
+    "absentDayAfterNoon": absentDayAfterNoon,
+    "guardianName": guardianName,
+    "mobileNo": mobileNo,
+    "checked": checked,
+    "terminatedStatus": terminatedStatus,
+  };
 }
 
 //Taken/Not
@@ -90,11 +90,13 @@ class StudentAttendancetakenDatum {
     this.attendanceTaken,
     this.afternoon,
     this.optedStaffs,
+    this.enteredOrUpdatedStaff,
   });
 
   String? classTeacher;
   String? division;
   String? attendanceTaken;
+  String? enteredOrUpdatedStaff;
   dynamic afternoon;
   List<String?>? optedStaffs;
 
@@ -103,6 +105,7 @@ class StudentAttendancetakenDatum {
         classTeacher: json["classTeacher"],
         division: json["division"],
         attendanceTaken: json["attendanceTaken"],
+        enteredOrUpdatedStaff: json["enteredOrUpdatedStaff"],
         afternoon: json["afternoon"],
         optedStaffs: json["optedStaffs"] == null
             ? []
@@ -110,14 +113,15 @@ class StudentAttendancetakenDatum {
       );
 
   Map<String, dynamic> toJson() => {
-        "classTeacher": classTeacher,
-        "division": division,
-        "attendanceTaken": attendanceTaken,
-        "afternoon": afternoon,
-        "optedStaffs": optedStaffs == null
-            ? []
-            : List<dynamic>.from(optedStaffs!.map((x) => x)),
-      };
+    "classTeacher": classTeacher,
+    "division": division,
+    "attendanceTaken": attendanceTaken,
+    "enteredOrUpdatedStaff": enteredOrUpdatedStaff,
+    "afternoon": afternoon,
+    "optedStaffs": optedStaffs == null
+        ? []
+        : List<dynamic>.from(optedStaffs!.map((x) => x)),
+  };
 }
 
 class AttendanceSmsFormat {
@@ -139,10 +143,10 @@ class AttendanceSmsFormat {
       );
 
   Map<String, dynamic> toJson() => {
-        "text": text,
-        "value": value,
-        "isApproved": isApproved,
-      };
+    "text": text,
+    "value": value,
+    "isApproved": isApproved,
+  };
 }
 
 //get numbers
@@ -168,22 +172,22 @@ class GetNumbers {
 
   GetNumbers(
       {this.id,
-      this.studentId,
-      this.admNo,
-      this.classTeacher,
-      this.name,
-      this.course,
-      this.division,
-      this.rollNo,
-      this.guardianName,
-      this.fatherName,
-      this.motherName,
-      this.guardianMobile,
-      this.guardianEmail,
-      this.fatherMobile,
-      this.fatherEmail,
-      this.motherMobile,
-      this.motherEmail});
+        this.studentId,
+        this.admNo,
+        this.classTeacher,
+        this.name,
+        this.course,
+        this.division,
+        this.rollNo,
+        this.guardianName,
+        this.fatherName,
+        this.motherName,
+        this.guardianMobile,
+        this.guardianEmail,
+        this.fatherMobile,
+        this.fatherEmail,
+        this.motherMobile,
+        this.motherEmail});
 
   GetNumbers.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -249,10 +253,10 @@ class AttendanceSmsSave {
       );
 
   Map<String, dynamic> toJson() => {
-        "sendFailed": sendFailed,
-        "sendSuccess": sendSuccess,
-        "typeSend": typeSend,
-      };
+    "sendFailed": sendFailed,
+    "sendSuccess": sendSuccess,
+    "typeSend": typeSend,
+  };
 }
 
 //smsprovider
@@ -265,13 +269,13 @@ class SmsProvider {
   CurrentSmsProvider currentSmsProvider;
 
   factory SmsProvider.fromJson(Map<String, dynamic> json) => SmsProvider(
-        currentSmsProvider:
-            CurrentSmsProvider.fromJson(json["currentSmsProvider"]),
-      );
+    currentSmsProvider:
+    CurrentSmsProvider.fromJson(json["currentSmsProvider"]),
+  );
 
   Map<String, dynamic> toJson() => {
-        "currentSmsProvider": currentSmsProvider.toJson(),
-      };
+    "currentSmsProvider": currentSmsProvider.toJson(),
+  };
 }
 
 class CurrentSmsProvider {
@@ -296,9 +300,9 @@ class CurrentSmsProvider {
       );
 
   Map<String, dynamic> toJson() => {
-        "smstype": smstype,
-        "senderId": senderId,
-        "providerName": providerName,
-        "providerId": providerId,
-      };
+    "smstype": smstype,
+    "senderId": senderId,
+    "providerName": providerName,
+    "providerId": providerId,
+  };
 }

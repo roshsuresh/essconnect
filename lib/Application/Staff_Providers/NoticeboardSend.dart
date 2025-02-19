@@ -1,13 +1,15 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:essconnect/Domain/Staff/NoticeBoardListModel.dart';
-import 'package:essconnect/Domain/Staff/NoticeboardSendModel.dart';
-import 'package:essconnect/utils/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+
+import '../../Domain/Staff/NoticeBoardListModel.dart';
+import '../../Domain/Staff/NoticeboardSendModel.dart';
+import '../../utils/constants.dart';
 
 Map? noticeboardInitialStf;
 List? noticeCourseStf;

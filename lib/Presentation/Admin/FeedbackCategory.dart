@@ -179,7 +179,14 @@ class _FeedbackEntryState extends State<FeedbackEntry> {
                     checkColor: Colors.white, // Color of the tick itself
                   ),
 
-                  const Text('School Super Admin'),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        schoolSuperAdmin = !schoolSuperAdmin; // Toggle the checkbox state
+                      });
+                    },
+                    child: const Text('School Super Admin'),
+                  ),
                 ],
               ),
               Row(
@@ -200,50 +207,70 @@ class _FeedbackEntryState extends State<FeedbackEntry> {
                     }),
                     checkColor: Colors.white, // Color of the tick itself
                   ),
-                  const Text('School Head'),
+                  GestureDetector(
+                      onTap: (){
+                        setState(() {
+                          schoolHead = !schoolHead;
+                        });
+                      },
+                      child: const Text('School Head')),
                 ],
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Checkbox(
-                    value: systemAdmin,
-                    onChanged: (value) {
-                      setState(() {
-                        systemAdmin = value!;
-                      });
-                    },
-                    fillColor: MaterialStateProperty.resolveWith((states) {
-                      if (states.contains(MaterialState.selected)) {
-                        return Color.fromARGB(255, 7, 68, 126); // Color when the checkbox is checked
-                      }
-                      return Colors.white; // Color when the checkbox is unchecked
-                    }),
-                    checkColor: Colors.white, // Color of the tick itself
-                  ),
-                  const Text('System Admin'),
-                ],
+              GestureDetector(
+                onTap: (){
+                  setState(() {
+                    systemAdmin = !systemAdmin;
+                  });
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Checkbox(
+                      value: systemAdmin,
+                      onChanged: (value) {
+                        setState(() {
+                          systemAdmin = value!;
+                        });
+                      },
+                      fillColor: MaterialStateProperty.resolveWith((states) {
+                        if (states.contains(MaterialState.selected)) {
+                          return Color.fromARGB(255, 7, 68, 126); // Color when the checkbox is checked
+                        }
+                        return Colors.white; // Color when the checkbox is unchecked
+                      }),
+                      checkColor: Colors.white, // Color of the tick itself
+                    ),
+                    const Text('System Admin'),
+                  ],
+                ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Checkbox(
-                    value: classTeacher,
-                    onChanged: (value) {
-                      setState(() {
-                        classTeacher = value!;
-                      });
-                    },
-                    fillColor: MaterialStateProperty.resolveWith((states) {
-                      if (states.contains(MaterialState.selected)) {
-                        return Color.fromARGB(255, 7, 68, 126); // Color when the checkbox is checked
-                      }
-                      return Colors.white; // Color when the checkbox is unchecked
-                    }),
-                    checkColor: Colors.white, // Color of the tick itself
-                  ),
-                  const Text('Class Teacher'),
-                ],
+              GestureDetector(
+                onTap: (){
+                  setState(() {
+                    classTeacher = !classTeacher;
+                  });
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Checkbox(
+                      value: classTeacher,
+                      onChanged: (value) {
+                        setState(() {
+                          classTeacher = value!;
+                        });
+                      },
+                      fillColor: MaterialStateProperty.resolveWith((states) {
+                        if (states.contains(MaterialState.selected)) {
+                          return Color.fromARGB(255, 7, 68, 126); // Color when the checkbox is checked
+                        }
+                        return Colors.white; // Color when the checkbox is unchecked
+                      }),
+                      checkColor: Colors.white, // Color of the tick itself
+                    ),
+                    const Text('Class Teacher'),
+                  ],
+                ),
               ),
               const SizedBox(height: 20),
               TextFormField(
@@ -715,89 +742,121 @@ class _EditFeedbackPageState extends State<EditFeedbackPage> {
                   return null;
                 },
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Checkbox(
-                    value: adminProvider.selectedFeedbackCategory!.schoolSuperAdmin==true?true:false,
-                    onChanged: (value) {
-                      setState(() {
-                        adminProvider.selectedFeedbackCategory!.schoolSuperAdmin = value!;
-                      });
-                    },
-                    fillColor: MaterialStateProperty.resolveWith((states) {
-                      if (states.contains(MaterialState.selected)) {
-                        return Color.fromARGB(255, 7, 68, 126); // Color when the checkbox is checked
-                      }
-                      return Colors.white; // Color when the checkbox is unchecked
-                    }),
-                    checkColor: Colors.white, // Color of the tick itself
-                  ),
-                  const Text('School Super Admin'),
-                ],
+              GestureDetector(
+                onTap: (){
+                  setState(() {
+                    bool value= adminProvider.selectedFeedbackCategory!.schoolSuperAdmin==true?true:false;
+                    adminProvider.selectedFeedbackCategory!.schoolSuperAdmin = !value;
+                  });
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Checkbox(
+                      value: adminProvider.selectedFeedbackCategory!.schoolSuperAdmin==true?true:false,
+                      onChanged: (value) {
+                        setState(() {
+                          adminProvider.selectedFeedbackCategory!.schoolSuperAdmin = value!;
+                        });
+                      },
+                      fillColor: MaterialStateProperty.resolveWith((states) {
+                        if (states.contains(MaterialState.selected)) {
+                          return Color.fromARGB(255, 7, 68, 126); // Color when the checkbox is checked
+                        }
+                        return Colors.white; // Color when the checkbox is unchecked
+                      }),
+                      checkColor: Colors.white, // Color of the tick itself
+                    ),
+                    const Text('School Super Admin'),
+                  ],
+                ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Checkbox(
-                    value: adminProvider.selectedFeedbackCategory!.schoolHead==true?true:false,
-                    onChanged: (value) {
-                      setState(() {
-                        adminProvider.selectedFeedbackCategory!.schoolHead = value!;
-                      });
-                    },
-                    fillColor: MaterialStateProperty.resolveWith((states) {
-                      if (states.contains(MaterialState.selected)) {
-                        return Color.fromARGB(255, 7, 68, 126); // Color when the checkbox is checked
-                      }
-                      return Colors.white; // Color when the checkbox is unchecked
-                    }),
-                    checkColor: Colors.white, // Color of the tick itself
-                  ),
-                  const Text('School Head'),
-                ],
+              GestureDetector(
+                onTap: (){
+                  bool value = adminProvider.selectedFeedbackCategory!.schoolHead==true?true:false;
+                  setState(() {
+                    adminProvider.selectedFeedbackCategory!.schoolHead = !value;
+                  });
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Checkbox(
+                      value: adminProvider.selectedFeedbackCategory!.schoolHead==true?true:false,
+                      onChanged: (value) {
+                        setState(() {
+                          adminProvider.selectedFeedbackCategory!.schoolHead = value!;
+                        });
+                      },
+                      fillColor: MaterialStateProperty.resolveWith((states) {
+                        if (states.contains(MaterialState.selected)) {
+                          return Color.fromARGB(255, 7, 68, 126); // Color when the checkbox is checked
+                        }
+                        return Colors.white; // Color when the checkbox is unchecked
+                      }),
+                      checkColor: Colors.white, // Color of the tick itself
+                    ),
+                    const Text('School Head'),
+                  ],
+                ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Checkbox(
-                    value: adminProvider.selectedFeedbackCategory!.systemAdmin==true?true:false,
-                    onChanged: (value) {
-                      setState(() {
-                        adminProvider.selectedFeedbackCategory!.systemAdmin = value!;
-                      });
-                    },
-                    fillColor: MaterialStateProperty.resolveWith((states) {
-                      if (states.contains(MaterialState.selected)) {
-                        return Color.fromARGB(255, 7, 68, 126); // Color when the checkbox is checked
-                      }
-                      return Colors.white; // Color when the checkbox is unchecked
-                    }),
-                    checkColor: Colors.white, // Color of the tick itself
-                  ),
-                  const Text('System Admin'),
-                ],
+              GestureDetector(
+                onTap: (){
+                  bool value = adminProvider.selectedFeedbackCategory!.systemAdmin==true?true:false;
+                  setState(() {
+                    adminProvider.selectedFeedbackCategory!.systemAdmin = !value;
+                  });
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Checkbox(
+                      value: adminProvider.selectedFeedbackCategory!.systemAdmin==true?true:false,
+                      onChanged: (value) {
+                        setState(() {
+                          adminProvider.selectedFeedbackCategory!.systemAdmin = value!;
+                        });
+                      },
+                      fillColor: MaterialStateProperty.resolveWith((states) {
+                        if (states.contains(MaterialState.selected)) {
+                          return Color.fromARGB(255, 7, 68, 126); // Color when the checkbox is checked
+                        }
+                        return Colors.white; // Color when the checkbox is unchecked
+                      }),
+                      checkColor: Colors.white, // Color of the tick itself
+                    ),
+                    const Text('System Admin'),
+                  ],
+                ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Checkbox(
-                    value: adminProvider.selectedFeedbackCategory!.classTeacher==true?true:false,
-                    onChanged: (value) {
-                      setState(() {
-                        adminProvider.selectedFeedbackCategory!.classTeacher = value!;
-                      });
-                    },
-                    fillColor: MaterialStateProperty.resolveWith((states) {
-                      if (states.contains(MaterialState.selected)) {
-                        return Color.fromARGB(255, 7, 68, 126); // Color when the checkbox is checked
-                      }
-                      return Colors.white; // Color when the checkbox is unchecked
-                    }),
-                    checkColor: Colors.white, // Color of the tick itself
-                  ),
-                  const Text('Class Teacher'),
-                ],
+              GestureDetector(
+                onTap: (){
+                  bool value = adminProvider.selectedFeedbackCategory!.classTeacher==true?true:false;
+                  setState(() {
+                    adminProvider.selectedFeedbackCategory!.classTeacher = !value;
+                  });
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Checkbox(
+                      value: adminProvider.selectedFeedbackCategory!.classTeacher==true?true:false,
+                      onChanged: (value) {
+                        setState(() {
+                          adminProvider.selectedFeedbackCategory!.classTeacher = value!;
+                        });
+                      },
+                      fillColor: MaterialStateProperty.resolveWith((states) {
+                        if (states.contains(MaterialState.selected)) {
+                          return Color.fromARGB(255, 7, 68, 126); // Color when the checkbox is checked
+                        }
+                        return Colors.white; // Color when the checkbox is unchecked
+                      }),
+                      checkColor: Colors.white, // Color of the tick itself
+                    ),
+                    const Text('Class Teacher'),
+                  ],
+                ),
               ),
               TextFormField(
                 controller: sortOrderController,
@@ -948,27 +1007,30 @@ class _FeedbackList2State extends State<FeedbackList2> {
                   width: 325,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: MultiSelectDropdown(
-                      items: fbProvider.categories
-                          .map((category) => MultiSelectItem(
-                          category.value!, category.text!))
-                          .toList(),
-                      initialSelectedValues: selectedCategoryIds,
-                      hint: 'Category',
-                      isMultiSelect: true,
-                      selectAllflag: true,
-                      colorHeading: Color.fromARGB(255, 7, 68, 126),
-                      colorPlaceholder: Colors.grey,
-                      colorDropdownIcon: Color.fromARGB(255, 7, 68, 126),
-                      radius: 10,
-                      borderColor: Color.fromARGB(255, 7, 68, 126),
-                      onChanged: (values) {
-                        setState(() {
-                          show = false;
-                          selectedCategoryIds = values;
-                        });
-                      },
-                    ),
+                    child: Theme(
+                      data: ThemeData.light().copyWith(
+                      ),
+                      child:MultiSelectDropdown(
+                        items: fbProvider.categories
+                            .map((category) => MultiSelectItem(
+                            category.value!, category.text!))
+                            .toList(),
+                        initialSelectedValues: selectedCategoryIds,
+                        hint: 'Category',
+                        isMultiSelect: true,
+                        selectAllflag: true,
+                        colorHeading: Color.fromARGB(255, 7, 68, 126),
+                        colorPlaceholder: Colors.grey,
+                        colorDropdownIcon: Color.fromARGB(255, 7, 68, 126),
+                        radius: 10,
+                        borderColor: Color.fromARGB(255, 7, 68, 126),
+                        onChanged: (values) {
+                          setState(() {
+                            show = false;
+                            selectedCategoryIds = values;
+                          });
+                        },
+                      ),),
                   ),
                 ),
               ],
@@ -978,43 +1040,59 @@ class _FeedbackList2State extends State<FeedbackList2> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Row(
-                children: [
-                  Radio<int>(
-                    value: 1,
-                    activeColor: Color.fromARGB(255, 7, 68, 126),
-                    groupValue: selectedRadio,
-                    onChanged: (value) {
-                      setState(() {
-                        show=false;
-                        selectedRadio = value;
-                      });
-                    },
-                  ),
-                  const Text(
-                    'Category-wise',
-                    style: TextStyle(fontSize: 11),
-                  ),
-                ],
+              GestureDetector(
+                onTap: (){
+                  setState(() {
+                    show=false;
+                    selectedRadio = 1;
+                  });
+                },
+                child: Row(
+                  children: [
+                    Radio<int>(
+                      value: 1,
+                      activeColor: Color.fromARGB(255, 7, 68, 126),
+                      groupValue: selectedRadio,
+                      onChanged: (value) {
+                        setState(() {
+                          show=false;
+                          selectedRadio = value;
+                        });
+                      },
+                    ),
+                    const Text(
+                      'Category-wise',
+                      style: TextStyle(fontSize: 11),
+                    ),
+                  ],
+                ),
               ),
-              Row(
-                children: [
-                  Radio<int>(
-                    value: 2,
-                    activeColor: Color.fromARGB(255, 7, 68, 126),
-                    groupValue: selectedRadio,
-                    onChanged: (value) {
-                      setState(() {
-                        show=false;
-                        selectedRadio = value;
-                      });
-                    },
-                  ),
-                  const Text(
-                    'Date-wise',
-                    style: TextStyle(fontSize: 11),
-                  ),
-                ],
+              GestureDetector(
+                onTap: (){
+                  setState(() {
+                    show=false;
+                    selectedRadio = 2;
+                  });
+                },
+                child: Row(
+                  children: [
+                    Radio<int>(
+                      value: 2,
+                      activeColor: Color.fromARGB(255, 7, 68, 126),
+                      groupValue: selectedRadio,
+                      onChanged: (value) {
+                        setState(() {
+                          show=false;
+                          selectedRadio = value;
+                        });
+                      },
+                    ),
+                    const Text(
+                      'Date-wise',
+                      style: TextStyle(fontSize: 11),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
@@ -1029,8 +1107,43 @@ class _FeedbackList2State extends State<FeedbackList2> {
                       backgroundColor: MaterialStateProperty.all(Color.fromARGB(255, 7, 68, 126)),
                     ),
                     onPressed: () {
-                      show = true;
-                      fetchFeedback(context);
+                      if(selectedCategoryIds.isNotEmpty) {
+                        show = true;
+                        fetchFeedback(context);
+                      }
+                      else{
+                        ScaffoldMessenger.of(
+                            context)
+                            .showSnackBar(
+                            const SnackBar(
+                              elevation:
+                              10,
+                              shape:
+                              RoundedRectangleBorder(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(10)),
+                              ),
+                              duration: Duration(
+                                  seconds:
+                                  1),
+                              margin: EdgeInsets.only(
+                                  bottom:
+                                  80,
+                                  left:
+                                  30,
+                                  right:
+                                  30),
+                              behavior:
+                              SnackBarBehavior
+                                  .floating,
+                              content:
+                              Text(
+                                "Please select any category!",
+                                textAlign:
+                                TextAlign.center,
+                              ),
+                            ));
+                      }
                     },
                     child: const Text(
                       'View',
@@ -1058,7 +1171,6 @@ class _FeedbackList2State extends State<FeedbackList2> {
               ),
             ],
           ),
-
           show == true
               ? Expanded(
             child: Consumer<FbProvider>(

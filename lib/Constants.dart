@@ -1,4 +1,5 @@
 import 'dart:core';
+import 'package:essconnect/Application/StudentProviders/LocationServiceProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
@@ -72,6 +73,23 @@ import '../Application/StudentProviders/StudLocationProvider.dart';
 import '../Application/StudentProviders/TimetableProvider.dart';
 import '../Application/StudentProviders/TokenCheckProviders.dart';
 import '../Application/SuperAdminProviders/NoticeBoardProvidersSA.dart';
+import 'Application/AdminProviders/AdminPortalprovider.dart';
+import 'Application/AdminProviders/FeedbackCategoryProvider.dart';
+import 'Application/AdminProviders/FeedbackProvider.dart';
+import 'Application/AdminProviders/OfflineFeesCollectionProvider.dart';
+import 'Application/Staff_Providers/HPC/FeedbackProvider.dart';
+import 'Application/Staff_Providers/HPC/PeerAssessmentProvider.dart';
+import 'Application/Staff_Providers/HPC/PeerLearningProvider.dart';
+import 'Application/Staff_Providers/HPC/PeerProgressProvider.dart';
+import 'Application/Staff_Providers/HPC/SelfAssessmentProvider.dart';
+import 'Application/Staff_Providers/HPC/SelfLearningProvider.dart';
+import 'Application/Staff_Providers/HPC/SelfProgressGridProvider.dart';
+import 'Application/Staff_Providers/PortionProvider.dart';
+import 'Application/StudentProviders/AdminPortalResultprovider.dart';
+import 'Application/StudentProviders/FeedbackEntryProvider.dart';
+import 'Application/StudentProviders/FeesWiseProvider.dart';
+import 'Application/StudentProviders/PortionProvider.dart';
+import 'Presentation/Student/Student_home.dart';
 
 
 //sized box
@@ -112,10 +130,13 @@ snackbarWidget(int second, content, BuildContext context) {
   );
 }
 
-List<SingleChildWidget> getProviders() {
+List<SingleChildWidget> getProviders()
+{
   return [
+
     ChangeNotifierProvider(create: (context) => LoginProvider()),
     ChangeNotifierProvider(create: (context) => ProfileProvider()),
+    ChangeNotifierProvider(create: (context) => TokenExpiryCheckProviders()),
     ChangeNotifierProvider(create: (context) => NoticeProvider()),
     ChangeNotifierProvider(create: (context) => AttendenceProvider()),
     ChangeNotifierProvider(create: (context) => FeesProvider()),
@@ -198,13 +219,25 @@ List<SingleChildWidget> getProviders() {
     ChangeNotifierProvider(create: (context) => AnecDotalStudViewProvider()),
     ChangeNotifierProvider(create: (context) => AnecdotalStaffListProviders()),
     ChangeNotifierProvider(create: (context) => TimeTableUploadProvider()),
-
     ChangeNotifierProvider(create: (context) => AppReviewProvider()),
-
-
-
-    ChangeNotifierProvider(
-        create: (context) => TokenExpiryCheckProviders()),
+    ChangeNotifierProvider(create: (context) => PortionProvider()),
+    ChangeNotifierProvider(create: (context) => StudentPortionProvider()),
+    ChangeNotifierProvider(create: (context) => FeeWiseProvider()),
+    ChangeNotifierProvider(create: (context) => OffflineFeesProvider()),
+    ChangeNotifierProvider(create: (context) => LocationProvider()),
+    ChangeNotifierProvider(create: (context)=>Hpcprovider()),
+    ChangeNotifierProvider(create: (context)=>HPC_SelfAssessment_Provider()),
+    ChangeNotifierProvider(create: (context)=>HPC_PeerAssessment_Provider()),
+    ChangeNotifierProvider(create: (context)=>HPC_SelfProgressGrid_Provider()),
+    ChangeNotifierProvider(create: (context)=>HPC_SelfLearning_Provider()),
+    ChangeNotifierProvider(create: (context)=>HPC_PeerLearning_Provider()),
+    ChangeNotifierProvider(create: (context)=>HPC_PeerProgressGrid_Provider()),
+    ChangeNotifierProvider(create: (context)=>AdminPortalProvider()),
+    ChangeNotifierProvider(create: (context)=>StudentPortalProvider()),
+    ChangeNotifierProvider(create: (context)=>FeedbackCategoryProvider()),
+    ChangeNotifierProvider(create: (context)=>FbProvider()),
+    ChangeNotifierProvider(create: (context)=>FeedbackProvider()),
+    ChangeNotifierProvider(create: (context)=>IconClickNotifier()),
 
   ];
 }

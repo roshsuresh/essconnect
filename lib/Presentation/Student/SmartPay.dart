@@ -11,8 +11,9 @@ import 'package:provider/provider.dart';
 import '../../../Application/StudentProviders/FinalStatusProvider.dart';
 import '../../../Constants.dart';
 import '../../../utils/constants.dart';
-import '../Student_home.dart';
-import '../response.dart';
+import 'Student_home.dart';
+
+
 
 class PaymentPage extends StatefulWidget {
   Map<String, dynamic> sdkPayload = {};
@@ -90,6 +91,7 @@ class _PaymentPageState extends State<PaymentPage> {
         });
         break;
       case "process_result":
+      //  CircularProgressIndicator();
         var args = {};
 
         try {
@@ -126,12 +128,7 @@ class _PaymentPageState extends State<PaymentPage> {
   Future showAlertSmartGateway(
      String orderID, String response) async {
     var size = MediaQuery.of(context).size;
-   //  List words = [];
-   //  words.clear();
-   //  words = response.split("|");
-   //  print(words);
-   //  print(words[5]);
-   // String paymentGatewayTransactionId = words[5];
+
     await Future.delayed(const Duration(seconds: 5));
     await Provider.of<FinalStatusProvider>(context, listen: false)
         .transactionStatusSmart(orderID, orderID,response.toString());
@@ -294,20 +291,6 @@ class _PaymentPageState extends State<PaymentPage> {
               );
             } else if (
             trak.reponseMsgSmart == 'Processing')
-              //||
-            //     trak.reponseCodeSmart == '23'||
-            //     trak.reponseCodeSmart == '28' ||
-            //     trak.reponseCodeSmart == '29' ||
-            //     trak.reponseCodeSmart == '20' ||
-            //     trak.reponseCodeSmart == '36'||
-            //     trak.reponseCodeSmart == '37' ||
-            //     trak.reponseCodeSmart == 'NEW'||
-            //     trak.reponseCodeSmart == 'PENDING_VBV' ||
-            //     trak.reponseCodeSmart == 'AUTHORIZING' ||
-            //     trak.reponseCodeSmart == 'COD_INITIATED' ||
-            //     trak.reponseCodeSmart == 'STARTED'||
-            //  trak.reponseCodeSmart == 'AUTO_REFUNDED' ||
-            // trak.reponseCodeSmart == 'PARTIAL_CHARGED'
              {
               return AlertDialog(
                 shape: RoundedRectangleBorder(

@@ -6,7 +6,10 @@ import 'package:essconnect/Domain/Student/FeeWiseDomain.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import '../../Domain/Student/BillDeskModel.dart';
+import '../../Domain/Student/EaseBuzzModel.dart';
 import '../../Domain/Student/FeesModel.dart';
+import '../../Domain/Student/PayuHdfcModel.dart';
 import '../../Domain/Student/RazorPayModel.dart';
 import '../../Domain/Student/TrakNpayModel.dart';
 import '../../Domain/Student/TransactionModel.dart';
@@ -20,6 +23,7 @@ class FeeWiseProvider with ChangeNotifier {
 
   bool? existFeeWise;
   bool? instWiseForfeesWise;
+  bool? webViewforMobileappPayment;
 
   bool _loading = false;
 
@@ -31,10 +35,10 @@ class FeeWiseProvider with ChangeNotifier {
   }
 
   Future getFeeWiseStatus(BuildContext context) async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
     };
 
     var response = await http.get(
@@ -49,7 +53,7 @@ class FeeWiseProvider with ChangeNotifier {
         print("daaaata:  $data");
         FeesWise prev = FeesWise.fromJson(data);
         existFeeWise = prev.existFeeWisePayment;
-
+        webViewforMobileappPayment = prev.webViewforMobileappPayment;
         print("exist ffewise , $existFeeWise");
 
 
@@ -78,6 +82,7 @@ class FeeWiseProvider with ChangeNotifier {
   List<GeneralFeesList> generalFeesList = [];
   List<FeeBusInstallments>  busFeeList=[];
   List<Transactiontype> transactionList=[];
+  List<MiscellaneousFeesSchedule> miscFeeList=[];
   List<GeneralFeesList> parseGeneralFeesList(Map<String, dynamic> json) {
     var list = json['generalFeesList'] as List;
     return list.map((i) => GeneralFeesList.fromJson(i)).toList();
@@ -85,11 +90,11 @@ class FeeWiseProvider with ChangeNotifier {
 
   Future<Object> feeWiseData() async {
     setLoading(true);
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
 
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
     };
     setLoading(true);
     var response = await http.get(
@@ -104,7 +109,7 @@ class FeeWiseProvider with ChangeNotifier {
         Map<String, dynamic> data = await json.decode(response.body);
 
         FeesWiseFeesCollection inita = FeesWiseFeesCollection.fromJson(data);
-       isLocked = inita.isLocked;
+        isLocked = inita.isLocked;
         existFeeOrderWisePayment= inita.existFeeOrderWisePayment;
         hideBusFeesPayment =inita.hideBusFeesPayment;
         instWiseForfeesWise =inita.instWiseForfeesWise;
@@ -113,15 +118,15 @@ class FeeWiseProvider with ChangeNotifier {
         // isBusFeeGeneralFeeTogether=inita.isBusFeeGeneralFeeTogether;
         // Map<String, dynamic> feeinitial =
         // await data['onlineFeePaymentStudentDetails'];
-      Map<String, dynamic> feedata = await data['feeOrder'];
-         FeeOrder fee = FeeOrder.fromJson(feedata);
+        Map<String, dynamic> feedata = await data['feeOrder'];
+        FeeOrder fee = FeeOrder.fromJson(feedata);
         // OnlineFeePayModel feemode = OnlineFeePayModel.fromJson(feeinitial);
         // allowPartialPayment = feemode.allowPartialPayment;
         // print("--------------$allowPartialPayment");
-       lastOrderStatus = fee.lastOrderStatus;
-    lastTransactionStartDate = fee.lastTransactionStartDate;
-     lastTransactionAmount = fee.lastTransactionAmount;
-       readableOrderId = fee.readableOrderId;
+        lastOrderStatus = fee.lastOrderStatus;
+        lastTransactionStartDate = fee.lastTransactionStartDate;
+        lastTransactionAmount = fee.lastTransactionAmount;
+        readableOrderId = fee.readableOrderId;
         paymentGatewayId = fee.paymentGatewayId;
         orderId = fee.lastOrderId;
 
@@ -132,7 +137,7 @@ class FeeWiseProvider with ChangeNotifier {
                 .map((x) => GeneralFeesList.fromJson(x)));
         feeWiseDataList.addAll(templistt);
         print("netdue");
-       // print(feeWiseDataList[0].netDue);
+        // print(feeWiseDataList[0].netDue);
         // feeWiseDataList = data.map((data) => GeneralFeesList.fromJson(data['generalFeesList'])).toList();
         setLoading(true);
 
@@ -144,6 +149,7 @@ class FeeWiseProvider with ChangeNotifier {
                 .map((x) => FeeBusInstallments.fromJson(x)));
         busFeeList.addAll(templist2);
         setLoading(true);
+
 
         List<Transactiontype> templis = List<Transactiontype>.from(
             data['transactiontype']
@@ -191,7 +197,66 @@ class FeeWiseProvider with ChangeNotifier {
 
   //       FeeWise Selection-- Random
 //-------------------------------------
+   //Misc Fees Collection
+  //--------------------------
 
+  List miscFeesCategory=[];
+
+  List miscTransaction=[];
+  double totalMiscFees = 0;
+  void onMiscFeesSelected(bool selected, feeName, int index, feeNetDue) {
+    if (selected == true) {
+      miscFeesCategory.add(feeName);
+
+      miscTransaction.add(
+          {
+            "InstallmentNetDue": null,
+            "ConcessionAmount": null,
+            "Fine": null,
+            "TotalPaidAmount": miscFeeList[index].amount,
+            "NetDue": null,
+            "OfflineInstallmentId": miscFeeList[index].miscFeesOfflineScheduleId,
+            "OnlineInstallmentId": miscFeeList[index].miscellaneousFeesScheduleId,
+            "InstallmentOrder": null,
+            "InstallmentName": miscFeeList[index].feesName
+          }
+      );
+
+
+      print(index);
+      final double tot = feeNetDue;
+      print(feeName);
+      print(tot);
+      totalMiscFees = tot + totalMiscFees;
+      print(totalMiscFees);
+      total = totalFees + totalBusFee+totalStoreFees+totalMiscFees;
+      print(total);
+      print("selectStoreCategorys   $storeCategory");
+      notifyListeners();
+    }
+    else {
+      miscFeesCategory.remove(feeName);
+
+      // Find the exact transaction to remove based on some unique criteria.
+      int transactionIndex = miscTransaction.indexWhere((transaction) =>
+      transaction["OnlineInstallmentId"] == miscFeeList[index].miscellaneousFeesScheduleId &&
+          transaction["OfflineInstallmentId"] == miscFeeList[index].miscFeesOfflineScheduleId
+      );
+
+      // If the transaction exists in the list, remove it.
+      if (transactionIndex != -1) {
+        miscTransaction.removeAt(transactionIndex);
+      }
+
+      totalMiscFees -= feeNetDue;
+      total = totalFees + totalBusFee + totalStoreFees + totalMiscFees;
+    }
+
+    print("misccccccatttttttttttttttt");
+    print(miscTransaction);
+    notifyListeners();
+
+  }
   void onFeeSelectedRandom(bool selected, String installmentName,double feeNetDue, int index) {
 
     generalFeesList[index].checkedInstallment = selected;
@@ -211,7 +276,7 @@ class FeeWiseProvider with ChangeNotifier {
     generalFeesList[installmentIndex].checkedInstallment = generalFeesList[installmentIndex].feesDetails!.every((fee) => fee.checkedFees!);
 
 
-   // generalFeesList[installmentIndex].checkedInstallment = generalFeesList[installmentIndex].feesDetails!.every((fee) => fee.checkedFees!);
+    // generalFeesList[installmentIndex].checkedInstallment = generalFeesList[installmentIndex].feesDetails!.every((fee) => fee.checkedFees!);
     _updateSelectedInstallments();
     _updateTotalSelectedFees();
     _updateGrandTotal();
@@ -543,11 +608,11 @@ class FeeWiseProvider with ChangeNotifier {
   String? idd;
 
   Future pdfDownload(String orderID) async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
 
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
     };
     // print(headers);
     var response = await http.get(
@@ -577,41 +642,6 @@ class FeeWiseProvider with ChangeNotifier {
 
   //status Payment
 
-  String? statusss;
-
-  Future payStatusButton(String orderId) async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
-    setLoading(true);
-    var headers = {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
-    };
-    // print(headers);
-    var response = await http.get(
-        Uri.parse(
-            "${UIGuide.baseURL}/onlinepayment/get-order-details/$orderId"),
-        headers: headers);
-
-    try {
-      if (response.statusCode == 200) {
-        Map<String, dynamic> data = await json.decode(response.body);
-
-        StatusPayment att = await StatusPayment.fromJson(data);
-        log(data.toString());
-
-        statusss = await att.status;
-        print(statusss);
-
-        notifyListeners();
-      } else {
-        setLoading(false);
-        print("Error in  status  response");
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
-
 
 
   //////////////////////////////////////////////////////////////////////////////////////////
@@ -630,7 +660,7 @@ class FeeWiseProvider with ChangeNotifier {
 
   Future getDataOne(List transaction, String amount,List feesData,
       String gateName) async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
     setLoading(true);
 
     final http.Response response = await http.post(
@@ -638,7 +668,7 @@ class FeeWiseProvider with ChangeNotifier {
           '${UIGuide.baseURL}/online-payment/paytm/get-data?ismobileapp=true'),
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+        'Authorization': 'Bearer ${pref.getString('accesstoken')}'
       },
       body: jsonEncode({
         "Description": "Online Fees Payment",
@@ -712,14 +742,14 @@ class FeeWiseProvider with ChangeNotifier {
 
   Future getDataOneRAZORPAY(List transaction,
       String amount,List feesData, String gateName) async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
     setLoading(true);
 
     final http.Response response = await http.post(
       Uri.parse('${UIGuide.baseURL}/online-payment/razor-pay/get-data'),
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+        'Authorization': 'Bearer ${pref.getString('accesstoken')}'
       },
       body: jsonEncode({
         "Description": "Online Fees Payment",
@@ -777,6 +807,72 @@ class FeeWiseProvider with ChangeNotifier {
     }
   }
 
+  Future getDataOneHdfcRAZORPAY(List transaction,
+      String amount,List feesData, String gateName) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    setLoading(true);
+
+    final http.Response response = await http.post(
+      Uri.parse('${UIGuide.baseURL}/online-payment/hdfc-razor-pay/get-data'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ${pref.getString('accesstoken')}'
+      },
+      body: jsonEncode({
+        "Description": "Online Fees Payment",
+        "TransactionType": transaction,
+        "ReturnUrl": "",
+        "Amount": amount,
+        "feeWiseDetails":feesData,
+        "PaymentGateWay": gateName
+      }),
+    );
+
+    print(json.encode({
+      "Description": "Online Fees Payment",
+      "TransactionType": transaction,
+      "ReturnUrl": "",
+      "Amount": amount,
+      "feeWiseDetails":feesData,
+      "PaymentGateWay": gateName
+    }));
+
+    try {
+      if (response.statusCode == 200) {
+        Map<String, dynamic> data = await json.decode(response.body);
+
+        print(data);
+        RazorPayModel raz = RazorPayModel.fromJson(data);
+        key1Razo = raz.key;
+        amount1Razo = raz.amount;
+        name1Razo = raz.name;
+        description1Razo = raz.description;
+        order1 = raz.orderId;
+
+        Map<String, dynamic> pre = await data['prefill'];
+        Prefill info = Prefill.fromJson(pre);
+        customer1Razo = info.name;
+        email1Razo = info.email;
+        contact1Razo = info.contact;
+
+        Map<String, dynamic> note = await data['notes'];
+        Notes inf = Notes.fromJson(note);
+        readableOrderid1 = inf.readableOrderid;
+        admnNo1 = inf.admissionNumber;
+        schoolId1 =inf.schoold;
+
+
+
+
+        notifyListeners();
+      } else {
+        setLoading(false);
+        print("Error in  transaction index one RAZORPAY response");
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
 
 //////////////////////////////////////////////////////////////////////////////////////////
 ////////------------------------------ TRAKNPAY  ---------------------------------------
@@ -808,23 +904,27 @@ class FeeWiseProvider with ChangeNotifier {
   String? descriptionTPay1;
   String? udf1TPay1;
   String? addressLine2TPay1;
+  String? formactionUrl;
+  String? mode;
+  var split_info;
 
-  Future getDataOneTpay(List transaction,
-      String amount, String gateName) async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+  Future getDataOneTpay(List transaction, String amount,List feesData,
+      String gateName) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
     setLoading(true);
 
     final http.Response response = await http.post(
       Uri.parse('${UIGuide.baseURL}/online-payment/traknpay/get-data'),
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+        'Authorization': 'Bearer ${pref.getString('accesstoken')}'
       },
       body: jsonEncode({
         "Description": "Online Fees Payment",
         "TransactionType": transaction,
         "ReturnUrl": "",
         "Amount": amount,
+        "feeWiseDetails":feesData,
         "PaymentGateWay": gateName
       }),
     );
@@ -834,6 +934,7 @@ class FeeWiseProvider with ChangeNotifier {
       "TransactionType": transaction,
       "ReturnUrl": "",
       "Amount": amount,
+      "feeWiseDetails":feesData,
       "PaymentGateWay": gateName
     }));
 
@@ -869,6 +970,9 @@ class FeeWiseProvider with ChangeNotifier {
         descriptionTPay1 = trak.description;
         udf1TPay1 = trak.udf1;
         addressLine2TPay1 = trak.addressLine2;
+        formactionUrl = trak.formActionUrl;
+        mode= trak.mode;
+        split_info=trak.split_info;
 
         notifyListeners();
       } else {
@@ -879,6 +983,8 @@ class FeeWiseProvider with ChangeNotifier {
       print(e);
     }
   }
+
+
 
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -899,21 +1005,22 @@ class FeeWiseProvider with ChangeNotifier {
   String? cartDescription1WL;
 
   Future getDataOneWORLDLINE(List transaction,
-      String amount, String gateName) async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+      String amount, List feesData, String gateName) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
     setLoading(true);
 
     final http.Response response = await http.post(
       Uri.parse('${UIGuide.baseURL}/online-payment/world-line/get-data'),
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+        'Authorization': 'Bearer ${pref.getString('accesstoken')}'
       },
       body: jsonEncode({
         "Description": "Online Fees Payment",
         "TransactionType": transaction,
         "ReturnUrl": "",
         "Amount": amount,
+        "feeWiseDetails":feesData,
         "PaymentGateWay": gateName
       }),
     );
@@ -923,6 +1030,7 @@ class FeeWiseProvider with ChangeNotifier {
       "TransactionType": transaction,
       "ReturnUrl": "",
       "Amount": amount,
+      "feeWiseDetails":feesData,
       "PaymentGateWay": gateName
     }));
 
@@ -960,6 +1068,337 @@ class FeeWiseProvider with ChangeNotifier {
   }
 
 
+
+  ////////////////BILL DESK//////////////////////////////////
+  /////////////////////////////////////////////////////////////
+
+
+  String? mercId;
+  String? bdOrderId;
+  String? authToken;
+  String? returnUrlBilldesk;
+  Future getBillDeskDataFeeWise(List transaction, String amount,
+      List feesData,
+      String gateName) async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    setLoading(true);
+
+    final http.Response response = await http.post(
+      Uri.parse(
+          '${UIGuide.baseURL}/online-payment/billdesk/get-data?ismobileapp=true'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ${pref.getString('accesstoken')}'
+      },
+      body: jsonEncode({
+        "Description": "Online Fees Payment",
+        "TransactionType": transaction,
+        "ReturnUrl": "",
+        "Amount": amount,
+        "feeWiseDetails":feesData,
+        "PaymentGateWay": gateName
+      }),
+    );
+
+    print(json.encode({
+      "Description": "Online Fees Payment",
+      "TransactionType": transaction,
+      "ReturnUrl": "",
+      "Amount": amount,
+      "feeWiseDetails":feesData,
+      "PaymentGateWay": gateName
+    }));
+
+    try {
+      if (response.statusCode == 200) {
+        Map<String, dynamic> data = await json.decode(response.body);
+        print("csddsdsdsss");
+        print(data);
+        BillDeskData txn = BillDeskData.fromJson(data);
+
+        mercId =txn.mercid;
+        bdOrderId=txn.bdorderid;
+        authToken=data['links'][1]['headers']['authorization'].toString();
+        returnUrlBilldesk=txn.ru;
+        print("auuutoken  $authToken");
+
+
+
+
+        notifyListeners();
+      } else {
+        setLoading(false);
+        print("Error in  transaction index one  response");
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+
+
+
+  ////////////////////////////////////////////////////////
+  /////             Smartgateway
+  ///////////////////////////////////////////////////////
+
+  String? requestId;
+  String?  service;
+  bool? collectAvsInfo;
+  String? clientId;
+  String? amountt;
+  String? merchantId;
+  String? clientAuthToken;
+  String? clientAuthTokenExpiry;
+  String? environment;
+  String? action;
+  String? customerId;
+  String? returnUrl;
+  String? currency;
+  String? customerPhone;
+  String? customerEmail;
+  String? orderIdd;
+  String?  displayBusinessAs;
+  String? expiry;
+  String? smartUrl;
+  String? smartgatewayRequest;
+
+  Future getSmartData(List transaction, String amount,List feesData,
+      String gateName) async
+  {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    setLoading(true);
+
+    final http.Response response = await http.post(
+      Uri.parse(
+          '${UIGuide.baseURL}/online-payment/hdfc-smart-gateway/get-data?ismobileapp=true'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ${pref.getString('accesstoken')}'
+      },
+      body: jsonEncode({
+        "Description": "Online Fees Payment",
+        "TransactionType": transaction,
+        "ReturnUrl": "",
+        "Amount": amount,
+        "feeWiseDetails":feesData,
+        "PaymentGateWay": gateName
+      }),
+    );
+
+    print(json.encode({
+      "Description": "Online Fees Payment",
+      "TransactionType": transaction,
+      "ReturnUrl": "",
+      "Amount": amount,
+      "feeWiseDetails":feesData,
+      "PaymentGateWay": gateName
+    }));
+
+    try {
+      if (response.statusCode == 200) {
+        Map<String, dynamic> data = await json.decode(response.body);
+
+        print(data);
+        SmartGatewayModel txn = SmartGatewayModel.fromJson(data);
+
+        smartUrl=txn.smartgatewayurl;
+        smartgatewayRequest = txn.smartgatewayRequest;
+        print("urlllllllllllll");
+        print(smartgatewayRequest);
+
+
+        Map<String, dynamic> decodedMap = jsonDecode(smartgatewayRequest!);
+        print("decoded");
+        print(decodedMap);
+
+
+        print("sssddddddddddsssssssss");
+        print('requestId: ${decodedMap['id']}');
+
+        requestId=decodedMap['sdk_payload']['requestId'];
+        service= decodedMap['sdk_payload']['service'];
+        collectAvsInfo= decodedMap['sdk_payload']['payload']['collectAvsInfo'];
+        clientId= decodedMap['sdk_payload']['payload']['clientId'];
+        amountt = decodedMap['sdk_payload']['payload']['amount'];
+        merchantId = decodedMap['sdk_payload']['payload']['merchantId'];
+        clientAuthToken= decodedMap['sdk_payload']['payload']['clientAuthToken'];
+        clientAuthTokenExpiry= decodedMap['sdk_payload']['payload']['clientAuthTokenExpiry'];
+        environment= decodedMap['sdk_payload']['payload']['environment'];
+        action= decodedMap['sdk_payload']['payload']['action'];
+        customerId= decodedMap['sdk_payload']['payload']['customerId'];
+        returnUrl= decodedMap['sdk_payload']['payload']['returnUrl'];
+        currency= decodedMap['sdk_payload']['payload']['currency'];
+        customerPhone= decodedMap['sdk_payload']['payload']['customerPhone'];
+        customerEmail= decodedMap['sdk_payload']['payload']['customerEmail'];
+        orderIdd= decodedMap['sdk_payload']['payload']['orderId'];
+        displayBusinessAs= decodedMap['sdk_payload']['payload']['displayBusinessAs'];
+        expiry= decodedMap['sdk_payload']['expiry'];
+
+
+
+
+        notifyListeners();
+      } else {
+        setLoading(false);
+        print("Error in  transaction index one  response");
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+
+//////////////// Eazebuzz/////////////////////////////
+////////////////////////////////////////////////////////
+  String? access_key;
+  String? pgKeyForMobileapp;
+  Future getEazebuzzData(List transaction, String amount,List feesData,
+      String gateName) async
+  {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    setLoading(true);
+
+    final http.Response response = await http.post(
+      Uri.parse(
+          '${UIGuide.baseURL}/online-payment/easebuzz/get-data'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ${pref.getString('accesstoken')}'
+      },
+      body: jsonEncode({
+        "Description": "Online Fees Payment",
+        "TransactionType": transaction,
+        "ReturnUrl": "",
+        "Amount": amount,
+        "feeWiseDetails":feesData,
+        "PaymentGateWay": gateName
+      }),
+    );
+
+    print(json.encode({
+      "Description": "Online Fees Payment",
+      "TransactionType": transaction,
+      "ReturnUrl": "",
+      "Amount": amount,
+      "feeWiseDetails":feesData,
+      "PaymentGateWay": gateName
+    }));
+
+    try {
+      if (response.statusCode == 200) {
+        Map<String, dynamic> data = await json.decode(response.body);
+        print("csddsdsdsss");
+        print(data);
+        EaseBuzzModel txn = EaseBuzzModel.fromJson(data);
+
+        access_key=txn.accessKey;
+        pgKeyForMobileapp=txn.pgKeyForMobileapp;
+
+
+
+        notifyListeners();
+      } else {
+        setLoading(false);
+        print("Error in  transaction index one  response");
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+///////////////////PAYU-HDFC///////////////////
+  //////////////////////////////////////////////
+  String? payufirstname;
+  String? payulastname;
+  String? payusurl;
+  String? payuphone;
+  String? payukey;
+  String? payuhash;
+  String? payuSalt;
+  String? payucurl;
+  String? payufurl;
+  String? payutxnid;
+  String? payuproductinfo;
+  String? payuamount;
+  String? payuemail;
+  String? payuudf1;
+  String? payuudf2;
+  String? payuformAction;
+  String? payupaymentMode;
+  var splitRequest;
+  Future getPayuData(List transaction, String amount,List feesData,
+      String gateName) async
+  {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    setLoading(true);
+
+    final http.Response response = await http.post(
+      Uri.parse(
+          '${UIGuide.baseURL}/online-payment/payu-hdfc/get-data?ismobileapp=true'),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ${pref.getString('accesstoken')}'
+      },
+      body: jsonEncode({
+      "Description": "Online Fees Payment",
+      "TransactionType": transaction,
+      "ReturnUrl": "",
+      "Amount": amount,
+      "feeWiseDetails":feesData,
+      "PaymentGateWay": gateName
+      }),
+    );
+
+    print(json.encode({
+      "Description": "Online Fees Payment",
+      "TransactionType": transaction,
+      "ReturnUrl": "",
+      "Amount": amount,
+      "feeWiseDetails":feesData,
+      "PaymentGateWay": gateName
+    }));
+
+    try {
+      if (response.statusCode == 200) {
+        Map<String, dynamic> data = await json.decode(response.body);
+        print("csddsdsdsss");
+        print(data);
+        PayuHdfcModel payutxn = PayuHdfcModel.fromJson(data);
+        payufirstname =payutxn.firstname;
+        payulastname=payutxn.lastname;
+        payusurl=payutxn.surl;
+        payuphone=payutxn.phone;
+        payukey=payutxn.key;
+        payuhash=payutxn.hash;
+        payucurl=payutxn.curl;
+        payufurl=payutxn.furl;
+        payutxnid=payutxn.txnid;
+        payuproductinfo=payutxn.productinfo;
+        payuamount= payutxn.amount;
+        payuemail=payutxn.email;
+        payuudf1=payutxn.udf1;
+        payuudf2=payutxn.udf2;
+        payuformAction=payutxn.formAction;
+        payupaymentMode=payutxn.paymentMode;
+        payuSalt=payutxn.salt;
+        splitRequest=payutxn.splitRequest;
+
+        print("auuutoken  $authToken");
+        setLoading(false);
+        notifyListeners();
+      } else {
+        setLoading(false);
+        print("Error in  transaction index one  response");
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+
+
+
   //////////////////////////////////////////////////////////////////////////////
 
   //////////////////////        gateway NAME          /////////////////////////
@@ -967,11 +1406,11 @@ class FeeWiseProvider with ChangeNotifier {
   ////////////////////////////////////////////////////////////////////////////
   String gateway="";
   Future gatewayName() async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
     setLoading(true);
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
     };
     var response = await http.get(
         Uri.parse(
@@ -1016,11 +1455,11 @@ class FeeWiseProvider with ChangeNotifier {
   ////////////////////////////////////////////////////////////////////////////
   bool? existMap;
   Future vendorMapping() async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
     setLoading(true);
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
     };
     var response = await http.get(
         Uri.parse("${UIGuide.baseURL}/vendor-mapping/exist-vendor-map-fees-wise"),

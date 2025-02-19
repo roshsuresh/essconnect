@@ -1,13 +1,16 @@
 import 'dart:convert';
-import 'package:essconnect/Domain/Student/OfflineFee/BusFeeDetailModel.dart';
-import 'package:essconnect/Domain/Student/OfflineFee/BusFeePaidModel.dart';
-import 'package:essconnect/Domain/Student/OfflineFee/FeesDetailModel.dart';
-import 'package:essconnect/Domain/Student/OfflineFee/FeesPaidModel.dart';
-import 'package:essconnect/utils/constants.dart';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+
+import '../../Domain/Student/OfflineFee/BusFeeDetailModel.dart';
+import '../../Domain/Student/OfflineFee/BusFeePaidModel.dart';
+import '../../Domain/Student/OfflineFee/FeesDetailModel.dart';
+import '../../Domain/Student/OfflineFee/FeesPaidModel.dart';
+import '../../utils/constants.dart';
 
 class OfflineFeeProviders with ChangeNotifier {
   bool _loading = false;
@@ -31,11 +34,11 @@ class OfflineFeeProviders with ChangeNotifier {
   List<FeesSummaryBusModel> busFeeDetailList = [];
   List<TotalListBus> totalListBus = [];
   Future getBusDetailList() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
+    SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoading(true);
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
 
     var response = await http.get(
@@ -58,7 +61,7 @@ class OfflineFeeProviders with ChangeNotifier {
             data["totalList"].map((x) => TotalListBus.fromJson(x)));
         totalListBus.addAll(templist1);
         String createddate = busDateDetail ?? '--';
-        DateFormat inputFormat = DateFormat("MM/dd/yyyy HH:mm:ss");
+        DateFormat inputFormat = DateFormat("yyyy/MM/dd HH:mm:ss");
         DateTime parsedDate = inputFormat.parse(createddate);
         DateFormat outputFormat = DateFormat("dd-MM-yyyy");
         finalBusDateDetail = outputFormat.format(parsedDate);
@@ -94,11 +97,11 @@ class OfflineFeeProviders with ChangeNotifier {
   String? finalBusDatePaid;
   List<DetailedFeesSummaryList> busPaidList = [];
   Future getBusPAIDList() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
+    SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoadingBP(true);
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
 
     var response = await http.get(
@@ -118,7 +121,7 @@ class OfflineFeeProviders with ChangeNotifier {
                 .map((x) => DetailedFeesSummaryList.fromJson(x)));
         busPaidList.addAll(templist);
         String createddate = busDatePaid ?? '--';
-        DateFormat inputFormat = DateFormat("MM/dd/yyyy HH:mm:ss");
+        DateFormat inputFormat = DateFormat("yyyy/MM/dd HH:mm:ss");
         DateTime parsedDate = inputFormat.parse(createddate);
         DateFormat outputFormat = DateFormat("dd-MM-yyyy");
         finalBusDatePaid = outputFormat.format(parsedDate);
@@ -137,6 +140,7 @@ class OfflineFeeProviders with ChangeNotifier {
 
   //FEE  DETAILS
 
+
   clearFEEDetailList() {
     feesDetailList.clear();
     totalListFee.clear();
@@ -149,11 +153,11 @@ class OfflineFeeProviders with ChangeNotifier {
   String? feeDate;
   String? finalFeeDateDetail;
   Future getFEEDetailList() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
+    SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoading(true);
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
 
     var response = await http.get(
@@ -175,7 +179,7 @@ class OfflineFeeProviders with ChangeNotifier {
             data["totalList"].map((x) => TotalListFees.fromJson(x)));
         totalListFee.addAll(templist1);
         String createddate = feeDate ?? '--';
-        DateFormat inputFormat = DateFormat("MM/dd/yyyy HH:mm:ss");
+        DateFormat inputFormat = DateFormat("yyyy/MM/dd HH:mm:ss");
         DateTime parsedDate = inputFormat.parse(createddate);
         DateFormat outputFormat = DateFormat("dd-MM-yyyy");
         finalFeeDateDetail = outputFormat.format(parsedDate);
@@ -211,34 +215,54 @@ class OfflineFeeProviders with ChangeNotifier {
   String? finalfeeDatePaid;
   List<DetailedFeesSummary> feePAIDList = [];
   Future getFEEsPAIDList() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
+    SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoadingFees(true);
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
 
-    var response = await http.get(
-        Uri.parse("${UIGuide.baseURL}/fee-summary/get-detailed-fees-summary"),
-        headers: headers);
+    // var response = await http.get(
+    //     Uri.parse("${UIGuide.baseURL}/fee-summary/get-detailed-fees-summary"),
+    //     headers: headers);
+    // print("${UIGuide.baseURL}/fee-summary/get-detailed-fees-summary");
     try {
+    var request =
+
+
+    http.Request(
+        'GET',
+        Uri.parse(
+            '${UIGuide.baseURL}/fee-summary/get-detailed-fees-summary'));
+
+    request.headers.addAll(headers);
+    print(request);
+    http.StreamedResponse response = await request.send();
+
+
       if (response.statusCode == 200) {
-        final data = await json.decode(response.body);
-        print(data);
+
+       var data  =  jsonDecode(await response.stream.bytesToString());
+
+        log(data.toString());
         FeePaidModel mod = FeePaidModel.fromJson(data);
-        showConcessionFEES = mod.showConcessionFEES;
+        showConcessionFEES = mod.showConcession;
+
+
         feeDatePaid = mod.uploadedDate;
 
         List<DetailedFeesSummary> templist = List<DetailedFeesSummary>.from(
             data["detailedFeesSummary"]
                 .map((x) => DetailedFeesSummary.fromJson(x)));
         feePAIDList.addAll(templist);
+        print("fffffffffffffffffff");
         String createddate = feeDatePaid ?? '--';
-        DateFormat inputFormat = DateFormat("MM/dd/yyyy HH:mm:ss");
+        DateFormat inputFormat = DateFormat("yyyy/MM/dd HH:mm:ss");
         DateTime parsedDate = inputFormat.parse(createddate);
         DateFormat outputFormat = DateFormat("dd-MM-yyyy");
 
         finalfeeDatePaid = outputFormat.format(parsedDate);
+        print(finalfeeDatePaid);
 
         setLoadingFees(false);
         notifyListeners();

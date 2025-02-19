@@ -54,7 +54,7 @@ class AnecdotalInitialScreen extends StatelessWidget {
           ),
           backgroundColor: UIGuide.light_Purple,
         ),
-        body: TabBarView(
+        body: const TabBarView(
           physics: NeverScrollableScrollPhysics(),
           children: [
             AnecdotalentryScreen(),

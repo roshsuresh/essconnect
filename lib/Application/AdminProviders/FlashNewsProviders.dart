@@ -1,12 +1,13 @@
 import 'dart:convert';
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:essconnect/Presentation/Admin/FlashNews/FlashnewsScreen.dart';
-import 'package:essconnect/utils/constants.dart';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import '../../Domain/Admin/FlashNewsList.dart';
+import '../../Presentation/Admin/FlashNews/FlashnewsScreen.dart';
+import '../../utils/constants.dart';
 
 class FlashNewsProviderAdmin with ChangeNotifier {
   DateTime? fromexam;

@@ -1,13 +1,14 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:essconnect/Constants.dart';
-import 'package:essconnect/Domain/Staff/StaffAttandenceModel.dart';
-import 'package:essconnect/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+
+import '../../Constants.dart';
+import '../../Domain/Staff/StaffAttandenceModel.dart';
+import '../../utils/constants.dart';
 
 Map? staffAttendeceRespo;
 List? attendecourse;
@@ -52,6 +53,7 @@ class AttendenceStaffProvider with ChangeNotifier {
     dateSend = DateFormat('yyyy-MM-dd').format(dateselect!);
     print("dateDisplay:  $dateDisplay");
     print("dateSend:  $dateSend");
+    studentsAttendenceView.clear();
     notifyListeners();
   }
 
@@ -115,6 +117,7 @@ class AttendenceStaffProvider with ChangeNotifier {
   List<AttendenceCourse> attendenceInitialValues = [];
   bool? isClassTeacher;
   bool? isDualAttendance;
+  bool? smsLinkAttendance;
 
   bool _load = false;
   bool get load => _load;
@@ -124,11 +127,11 @@ class AttendenceStaffProvider with ChangeNotifier {
   }
 
   Future attendenceCourseStaff() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
+    SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoad(true);
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
     var response = await http.get(
         Uri.parse("${UIGuide.baseURL}/mobileapp/staff/AttendenceInitialvalues"),
@@ -145,6 +148,7 @@ class AttendenceStaffProvider with ChangeNotifier {
             Attendenceinitvalues.fromJson(data['attendenceinitvalues']);
         isClassTeacher = att.isClassTeacher;
         isDualAttendance = att.isDualAttendance;
+        smsLinkAttendance=att.smsLinkAttendance;
         attendecourse = staffAttendeceRespo!['course'];
         print(attendecourse);
         print(isClassTeacher);
@@ -206,12 +210,12 @@ class AttendenceStaffProvider with ChangeNotifier {
 
   List<AttendenceDivisions> attendenceDivisionList = [];
   Future<bool> getAttendenceDivisionValues(String id) async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
+    SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoadDivision(true);
 
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
     var request = http.Request('GET',
         Uri.parse('${UIGuide.baseURL}/mobileapp/staff/AttendenceDivision/$id'));
@@ -258,12 +262,13 @@ class AttendenceStaffProvider with ChangeNotifier {
   }
 
   List<StudentsAttendenceView_stf> studentsAttendenceView = [];
-  Future<bool> getstudentsAttendenceView(String date, String id) async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
+  bool? attandance_disable;
+  Future<bool> getstudentsAttendenceView(BuildContext context,String date, String id) async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoading(true);
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
     var request = http.Request(
         'GET',
@@ -279,10 +284,29 @@ class AttendenceStaffProvider with ChangeNotifier {
       setLoading(true);
       Map<String, dynamic> data =
           jsonDecode(await response.stream.bytesToString());
+      StudentAttendance sdt = StudentAttendance.fromJson(data);
+      attandance_disable = sdt.isDisabled;
+      print("isdissabled");
+      print(attandance_disable);
       List<StudentsAttendenceView_stf> templist =
           List<StudentsAttendenceView_stf>.from(data["studentsAttendenceView"]
               .map((x) => StudentsAttendenceView_stf.fromJson(x)));
       studentsAttendenceView.addAll(templist);
+if(studentsAttendenceView.isEmpty){
+  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+    elevation: 10,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.all(Radius.circular(20)),
+    ),
+    duration: Duration(seconds: 1),
+    margin: EdgeInsets.only(bottom: 80, left: 30, right: 30),
+    behavior: SnackBarBehavior.floating,
+    content: Text(
+      'No data for specified condition',
+      textAlign: TextAlign.center,
+    ),
+  ));
+}
       setLoading(false);
       notifyListeners();
     } else {
@@ -302,12 +326,12 @@ class AttendenceStaffProvider with ChangeNotifier {
 
   Future attendanceSave(BuildContext context, List finallList, String date,
       int forecount, int aftcount) async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
+    SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoading(true);
     // setLoadinggNull(true);
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
 
     var request = http.Request('POST',
@@ -382,12 +406,12 @@ class AttendenceStaffProvider with ChangeNotifier {
 
   Future attendanceDelete(
       String divisionid, String date, BuildContext context) async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
+    SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoading(true);
     // setLoadinggNull(true);
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
     var request = http.Request(
         'DELETE',

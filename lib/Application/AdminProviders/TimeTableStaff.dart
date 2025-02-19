@@ -1,9 +1,11 @@
 import 'dart:convert';
-import 'package:essconnect/Domain/Staff/StudentReport_staff.dart';
-import 'package:essconnect/utils/constants.dart';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+
+import '../../Domain/Staff/StudentReport_staff.dart';
+import '../../utils/constants.dart';
 
 class TimetableStaffProviders with ChangeNotifier {
   //Section List

@@ -195,7 +195,9 @@ class _LoginScreenWebState extends State<LoginScreenWeb> {
                           ? InAppWebView(
                               key: webViewKey,
 
-                              initialUrlRequest: URLRequest(url: Uri.parse(
+                              initialUrlRequest: URLRequest(
+                                  url:
+                                  WebUri(
                                   // 'https://${widget.schdomain}.esstestonline.in/parent/fees-payment'
                                   'https://${widget.schdomain}.eschoolweb.org')),
                               // initialFile: "assets/index.html",

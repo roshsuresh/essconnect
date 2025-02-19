@@ -1,36 +1,36 @@
 class FeePaidModel {
   List<DetailedFeesSummary>? detailedFeesSummary;
-  bool? showConcessionFEES;
+  bool? showConcession;
   String? uploadedDate;
   bool? showFeesWise;
 
   FeePaidModel(
       {this.detailedFeesSummary,
-      this.showConcessionFEES,
-      this.uploadedDate,
-      this.showFeesWise});
+        this.showConcession,
+        this.uploadedDate,
+        this.showFeesWise});
 
   FeePaidModel.fromJson(Map<String, dynamic> json) {
     if (json['detailedFeesSummary'] != null) {
       detailedFeesSummary = <DetailedFeesSummary>[];
       json['detailedFeesSummary'].forEach((v) {
-        detailedFeesSummary!.add(DetailedFeesSummary.fromJson(v));
+        detailedFeesSummary!.add(new DetailedFeesSummary.fromJson(v));
       });
     }
-    showConcessionFEES = json['showConcession'];
+    showConcession = json['showConcession'];
     uploadedDate = json['uploadedDate'];
     showFeesWise = json['showFeesWise'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    if (detailedFeesSummary != null) {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    if (this.detailedFeesSummary != null) {
       data['detailedFeesSummary'] =
-          detailedFeesSummary!.map((v) => v.toJson()).toList();
+          this.detailedFeesSummary!.map((v) => v.toJson()).toList();
     }
-    data['showConcession'] = showConcessionFEES;
-    data['uploadedDate'] = uploadedDate;
-    data['showFeesWise'] = showFeesWise;
+    data['showConcession'] = this.showConcession;
+    data['uploadedDate'] = this.uploadedDate;
+    data['showFeesWise'] = this.showFeesWise;
     return data;
   }
 }
@@ -39,7 +39,7 @@ class DetailedFeesSummary {
   String? uploadedDate;
   String? receiptDate;
   String? receiptNumber;
-  bool? isCancelled;
+  String? isCancelled;
   double? fine;
   double? subsidy;
   double? totalAmount;
@@ -53,19 +53,19 @@ class DetailedFeesSummary {
 
   DetailedFeesSummary(
       {this.uploadedDate,
-      this.receiptDate,
-      this.receiptNumber,
-      this.isCancelled,
-      this.fine,
-      this.subsidy,
-      this.totalAmount,
-      this.totalConcessionAmount,
-      this.totalPaidAmount,
-      this.netAmount,
-      this.totalActualAmount,
-      this.totalConAmount,
-      this.netTotalAmount,
-      this.detailedFeesList});
+        this.receiptDate,
+        this.receiptNumber,
+        this.isCancelled,
+        this.fine,
+        this.subsidy,
+        this.totalAmount,
+        this.totalConcessionAmount,
+        this.totalPaidAmount,
+        this.netAmount,
+        this.totalActualAmount,
+        this.totalConAmount,
+        this.netTotalAmount,
+        this.detailedFeesList});
 
   DetailedFeesSummary.fromJson(Map<String, dynamic> json) {
     uploadedDate = json['uploadedDate'];
@@ -84,29 +84,29 @@ class DetailedFeesSummary {
     if (json['detailedFeesList'] != null) {
       detailedFeesList = <DetailedFeesList>[];
       json['detailedFeesList'].forEach((v) {
-        detailedFeesList!.add(DetailedFeesList.fromJson(v));
+        detailedFeesList!.add(new DetailedFeesList.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['uploadedDate'] = uploadedDate;
-    data['receiptDate'] = receiptDate;
-    data['receiptNumber'] = receiptNumber;
-    data['isCancelled'] = isCancelled;
-    data['fine'] = fine;
-    data['subsidy'] = subsidy;
-    data['totalAmount'] = totalAmount;
-    data['totalConcessionAmount'] = totalConcessionAmount;
-    data['totalPaidAmount'] = totalPaidAmount;
-    data['netAmount'] = netAmount;
-    data['totalActualAmount'] = totalActualAmount;
-    data['totalConAmount'] = totalConAmount;
-    data['netTotalAmount'] = netTotalAmount;
-    if (detailedFeesList != null) {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['uploadedDate'] = this.uploadedDate;
+    data['receiptDate'] = this.receiptDate;
+    data['receiptNumber'] = this.receiptNumber;
+    data['isCancelled'] = this.isCancelled;
+    data['fine'] = this.fine;
+    data['subsidy'] = this.subsidy;
+    data['totalAmount'] = this.totalAmount;
+    data['totalConcessionAmount'] = this.totalConcessionAmount;
+    data['totalPaidAmount'] = this.totalPaidAmount;
+    data['netAmount'] = this.netAmount;
+    data['totalActualAmount'] = this.totalActualAmount;
+    data['totalConAmount'] = this.totalConAmount;
+    data['netTotalAmount'] = this.netTotalAmount;
+    if (this.detailedFeesList != null) {
       data['detailedFeesList'] =
-          detailedFeesList!.map((v) => v.toJson()).toList();
+          this.detailedFeesList!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -121,10 +121,10 @@ class DetailedFeesList {
 
   DetailedFeesList(
       {this.installment,
-      this.fees,
-      this.actualAmount,
-      this.concessionAmount,
-      this.amount});
+        this.fees,
+        this.actualAmount,
+        this.concessionAmount,
+        this.amount});
 
   DetailedFeesList.fromJson(Map<String, dynamic> json) {
     installment = json['installment'];
@@ -135,12 +135,12 @@ class DetailedFeesList {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['installment'] = installment;
-    data['fees'] = fees;
-    data['actualAmount'] = actualAmount;
-    data['concessionAmount'] = concessionAmount;
-    data['amount'] = amount;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['installment'] = this.installment;
+    data['fees'] = this.fees;
+    data['actualAmount'] = this.actualAmount;
+    data['concessionAmount'] = this.concessionAmount;
+    data['amount'] = this.amount;
     return data;
   }
 }

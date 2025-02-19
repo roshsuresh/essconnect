@@ -10,6 +10,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../Domain/Student/Flashnews.dart';
 import '../../Domain/Student/profileModel.dart';
+
 import '../../utils/constants.dart';
 
 Map? mapResponse;
@@ -50,6 +51,11 @@ class ProfileProvider with ChangeNotifier {
   String? guardianName;
   String? guardianMobile;
   String? guardianEmail;
+  bool? bankIntegrationSettings;
+  String? bankAdmissionNo;
+  String? imeiNumber;
+  String? busName;
+  String? busStop;
 
   bool _loading = false;
   bool get loading => _loading;
@@ -59,11 +65,11 @@ class ProfileProvider with ChangeNotifier {
   }
 
   Future profileData() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
+    SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoading(true);
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
 
     setLoading(true);
@@ -80,7 +86,7 @@ class ProfileProvider with ChangeNotifier {
         print("corect..........");
         setLoading(true);
         StudentProfileModel std =
-            StudentProfileModel.fromJson(mapResponse!['studentDetails']);
+        StudentProfileModel.fromJson(mapResponse!['studentDetails']);
         studPhoto = std.studentPhoto;
         studName = std.studentName;
         print(studName);
@@ -109,9 +115,16 @@ class ProfileProvider with ChangeNotifier {
         editProfile = std.editProfile;
         guardianMobile = std.guardianMobile;
         guardianEmail = std.guardianEmail;
+        bankIntegrationSettings=std.bankIntegrationSettings;
+        bankAdmissionNo=std.bankAdmissionNo;
+        imeiNumber= std.imeiNumber;
+        busName= std.busName;
+        busStop= std.busStop;
         setLoading(false);
         notifyListeners();
       } else {
+        setLoading(false);
+        notifyListeners();
         print("Error in profile Response");
       }
     } catch (e) {
@@ -121,10 +134,10 @@ class ProfileProvider with ChangeNotifier {
 
   String? flashnews;
   Future flashNewsProvider() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
+    SharedPreferences _pref = await SharedPreferences.getInstance();
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
 
     try {
@@ -146,10 +159,10 @@ class ProfileProvider with ChangeNotifier {
   }
 
   Future siblingsAPI() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
+    SharedPreferences _pref = await SharedPreferences.getInstance();
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
 
     final response = await http.get(
@@ -203,11 +216,11 @@ class ProfileProvider with ChangeNotifier {
   String? offlineBloodGroupName;
   List<BloodGroupListModel> bloodGrpList = [];
   Future getProfileEdit() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
+    SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoadingg(true);
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
 
     final response = await http.get(
@@ -233,7 +246,7 @@ class ProfileProvider with ChangeNotifier {
       print(studentIdEdit);
 
       OfflineStudentValues off =
-          OfflineStudentValues.fromJson(data["offlineStudentValues"]);
+      OfflineStudentValues.fromJson(data["offlineStudentValues"]);
 
       idOffline = off.id;
       studentIdOffline = off.studentId;
@@ -282,11 +295,11 @@ class ProfileProvider with ChangeNotifier {
   File? selectedImage;
   String? attachmentid;
   Future studentImageSave(BuildContext context, String path) async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
+    SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoadingg(true);
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
     var request = http.MultipartRequest(
         'POST', Uri.parse('${UIGuide.baseURL}/files/single/Students'));
@@ -299,7 +312,7 @@ class ProfileProvider with ChangeNotifier {
     if (response.statusCode == 200) {
       setLoadingg(true);
       Map<String, dynamic> data =
-          jsonDecode(await response.stream.bytesToString());
+      jsonDecode(await response.stream.bytesToString());
 
       NoticeImageId idd = NoticeImageId.fromJson(data);
       attachmentid = idd.id;
@@ -353,11 +366,11 @@ class ProfileProvider with ChangeNotifier {
       String mobileNoE,
       String studentPhoId,
       String bloodGrpID) async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
+    SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoadingg(true);
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
     var request = http.Request(
         'POST', Uri.parse('${UIGuide.baseURL}/student-profile/saveprofile'));
@@ -388,20 +401,20 @@ class ProfileProvider with ChangeNotifier {
       print(await response.stream.bytesToString());
       setLoadingg(false);
       await AwesomeDialog(
-              context: context,
-              dismissOnTouchOutside: false,
-              dialogType: DialogType.success,
-              animType: AnimType.rightSlide,
-              headerAnimationLoop: false,
-              title: 'Saved Successfully',
-              btnOkOnPress: () async {
-                await Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const ProfileEdit()));
-              },
-              btnOkIcon: Icons.cancel,
-              btnOkColor: Colors.green)
+          context: context,
+          dismissOnTouchOutside: false,
+          dialogType: DialogType.success,
+          animType: AnimType.rightSlide,
+          headerAnimationLoop: false,
+          title: 'Saved Successfully',
+          btnOkOnPress: () async {
+            await Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const ProfileEdit()));
+          },
+          btnOkIcon: Icons.cancel,
+          btnOkColor: Colors.green)
           .show();
     } else {
       setLoadingg(false);
@@ -435,7 +448,7 @@ class ProfileProvider with ChangeNotifier {
       String studentPhoId,
       String offID,
       String bloodGrpID) async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
+    SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoadingg(true);
     print({
       "offlineId": offlineID,
@@ -455,7 +468,7 @@ class ProfileProvider with ChangeNotifier {
     });
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
     var request = http.Request('PATCH',
         Uri.parse('${UIGuide.baseURL}/student-profile/updateprofile/$offID'));
@@ -486,20 +499,20 @@ class ProfileProvider with ChangeNotifier {
       print(await response.stream.bytesToString());
       setLoadingg(false);
       await AwesomeDialog(
-              context: context,
-              dialogType: DialogType.success,
-              animType: AnimType.rightSlide,
-              dismissOnTouchOutside: false,
-              headerAnimationLoop: false,
-              title: 'Updated Successfully',
-              btnOkOnPress: () async {
-                await Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const ProfileEdit()));
-              },
-              btnOkIcon: Icons.cancel,
-              btnOkColor: Colors.green)
+          context: context,
+          dialogType: DialogType.success,
+          animType: AnimType.rightSlide,
+          dismissOnTouchOutside: false,
+          headerAnimationLoop: false,
+          title: 'Updated Successfully',
+          btnOkOnPress: () async {
+            await Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const ProfileEdit()));
+          },
+          btnOkIcon: Icons.cancel,
+          btnOkColor: Colors.green)
           .show();
     } else {
       setLoadingg(false);
@@ -522,7 +535,7 @@ class ProfileProvider with ChangeNotifier {
 
   removeSelectedImage() {
     studentPhotoOffline!.url =
-        'https://gj-eschool-files-public.s3.ap-south-1.amazonaws.com/ess-connect/student/avathar-02.jpeg';
+    'https://gj-eschool-files-public.s3.ap-south-1.amazonaws.com/ess-connect/student/avathar-02.jpeg';
     studentPhotoIdOffline = null;
     selectedImage = null;
     notifyListeners();
@@ -532,11 +545,11 @@ class ProfileProvider with ChangeNotifier {
 
   Future deleteStudentImage(
       BuildContext context, String imgID, int offlineIDd, int instaIDd) async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
+    SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoadingg(true);
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
     var request = http.Request(
         'DELETE', Uri.parse('${UIGuide.baseURL}/files/$imgID/Students'));
@@ -549,7 +562,7 @@ class ProfileProvider with ChangeNotifier {
       setLoadingg(true);
       await deleteStudentImageFromS3(imgID, offlineIDd, instaIDd);
       studentPhotoOffline!.url =
-          'https://gj-eschool-files-public.s3.ap-south-1.amazonaws.com/ess-connect/student/avathar-02.jpeg';
+      'https://gj-eschool-files-public.s3.ap-south-1.amazonaws.com/ess-connect/student/avathar-02.jpeg';
       studentPhotoIdOffline = null;
 
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -593,11 +606,11 @@ class ProfileProvider with ChangeNotifier {
 
   Future deleteStudentImageFromS3(
       String imgID, int offlineIDd, int instaIDd) async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
+    SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoadingg(true);
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
     var request = http.Request(
         'POST', Uri.parse('${UIGuide.baseURL}/student-profile/deletePhoto'));

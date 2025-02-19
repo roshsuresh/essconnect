@@ -67,16 +67,16 @@ class MarkEntryDivisionInitailModel {
     if (json['divisionList'] != null) {
       divisionList = <MarkEntryDivisionList>[];
       json['divisionList'].forEach((v) {
-        divisionList!.add(new MarkEntryDivisionList.fromJson(v));
+        divisionList!.add(MarkEntryDivisionList.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['typeCode'] = this.typeCode;
-    if (this.divisionList != null) {
-      data['divisionList'] = this.divisionList!.map((v) => v.toJson()).toList();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['typeCode'] = typeCode;
+    if (divisionList != null) {
+      data['divisionList'] = divisionList!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -200,6 +200,58 @@ class MarkEntryExamList {
     data['value'] = value;
     data['text'] = text;
 
+    return data;
+  }
+}
+
+
+//Print verified document
+
+class PrintDocument {
+  String? name;
+  String? extension;
+  String? path;
+  String? url;
+  bool? isTemporary;
+  bool? isDeleted;
+  String? images;
+  String? createdAt;
+  String? id;
+
+  PrintDocument(
+      {this.name,
+        this.extension,
+        this.path,
+        this.url,
+        this.isTemporary,
+        this.isDeleted,
+        this.images,
+        this.createdAt,
+        this.id});
+
+  PrintDocument.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    extension = json['extension'];
+    path = json['path'];
+    url = json['url'];
+    isTemporary = json['isTemporary'];
+    isDeleted = json['isDeleted'];
+    images = json['images'];
+    createdAt = json['createdAt'];
+    id = json['id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['name'] = this.name;
+    data['extension'] = this.extension;
+    data['path'] = this.path;
+    data['url'] = this.url;
+    data['isTemporary'] = this.isTemporary;
+    data['isDeleted'] = this.isDeleted;
+    data['images'] = this.images;
+    data['createdAt'] = this.createdAt;
+    data['id'] = this.id;
     return data;
   }
 }

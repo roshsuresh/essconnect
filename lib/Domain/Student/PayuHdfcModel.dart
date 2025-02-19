@@ -15,6 +15,8 @@ class PayuHdfcModel {
   String? udf2;
   String? formAction;
   String? paymentMode;
+  String? salt;
+  var splitRequest;
 
   PayuHdfcModel(
       {this.firstname,
@@ -32,7 +34,10 @@ class PayuHdfcModel {
         this.udf1,
         this.udf2,
         this.formAction,
-        this.paymentMode});
+        this.paymentMode,
+        this.salt,
+        this.splitRequest
+      });
 
   PayuHdfcModel.fromJson(Map<String, dynamic> json) {
     firstname = json['firstname'];
@@ -51,6 +56,8 @@ class PayuHdfcModel {
     udf2 = json['udf2'];
     formAction = json['formAction'];
     paymentMode = json['paymentMode'];
+    salt = json['salt'];
+    splitRequest = json['splitRequest'];
   }
 
   Map<String, dynamic> toJson() {
@@ -71,6 +78,8 @@ class PayuHdfcModel {
     data['udf2'] = this.udf2;
     data['formAction'] = this.formAction;
     data['paymentMode'] = this.paymentMode;
+    data['salt'] = this.salt;
+    data['splitRequest'] = this.splitRequest;
     return data;
   }
 }

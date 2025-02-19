@@ -22,7 +22,7 @@ class FeeDetailsScreen extends StatelessWidget {
       body: Consumer<OfflineFeeProviders>(
         builder: (context, value, _) => value.loading
             ? spinkitLoader()
-            : value.feesDetailList.isEmpty
+            : value.feesDetailList.isEmpty || value.feesDetailList == null
                 ? LottieBuilder.network(
                     'https://assets2.lottiefiles.com/private_files/lf30_lkquf6qz.json')
                 : ListView(

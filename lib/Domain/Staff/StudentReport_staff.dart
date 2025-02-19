@@ -1,67 +1,64 @@
-class StudentReportInitialValues {
-  List<StudReportSectionList>? sectionList;
-
-  StudentReportInitialValues({this.sectionList});
-
-  StudentReportInitialValues.fromJson(Map<String, dynamic> json) {
-    if (json['sectionList'] != null) {
-      sectionList = [];
-      json['sectionList'].forEach((v) {
-        sectionList!.add(StudReportSectionList.fromJson(v));
-      });
-    }
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    if (sectionList != null) {
-      data['sectionList'] = sectionList!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
-}
 
 class StudReportSectionList {
   String? value;
   String? text;
   bool? selected;
+  bool? active;
+  int? order;
 
-  StudReportSectionList({this.value, this.text, this.selected});
+  StudReportSectionList({this.value, this.text, this.selected, this.active, this.order});
 
   StudReportSectionList.fromJson(Map<String, dynamic> json) {
     value = json['value'];
     text = json['text'];
     selected = json['selected'];
+    active = json['active'];
+    order = json['order'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['value'] = value;
-    data['text'] = text;
-    data['selected'] = selected;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['value'] = this.value;
+    data['text'] = this.text;
+    data['selected'] = this.selected;
+    data['active'] = this.active;
+    data['order'] = this.order;
     return data;
   }
 }
 
+
 //course
 
 class StudReportCourse {
-  StudReportCourse({this.value, required this.text});
-
   String? value;
   String? text;
+  bool? selected;
+  bool? active;
+  int? order;
 
-  factory StudReportCourse.fromJson(Map<String, dynamic> json) =>
-      StudReportCourse(
-        value: json["value"],
-        text: json["text"],
-      );
+  StudReportCourse({this.value, this.text, this.selected, this.active, this.order});
 
-  Map<String, dynamic> toJson() => {
-        "value": value,
-        "text": text,
-      };
+  StudReportCourse.fromJson(Map<String, dynamic> json) {
+    value = json['value'];
+    text = json['text'];
+    selected = json['selected'];
+    active = json['active'];
+    order = json['order'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['value'] = this.value;
+    data['text'] = this.text;
+    data['selected'] = this.selected;
+    data['active'] = this.active;
+    data['order'] = this.order;
+    return data;
+  }
 }
+
+
 
 //Division
 
@@ -113,28 +110,28 @@ class ViewStudentReport {
 
   ViewStudentReport(
       {this.studentId,
-      this.admnNo,
-      this.name,
-      this.division,
-      this.course,
-      this.sectionOrder,
-      this.courseOrder,
-      this.divisionOrder,
-      this.rollNo,
-      this.mobNo,
-      this.address,
-      this.bus,
-      this.stop,
-      this.studentPhotoId,
-      this.photo,
-      this.photoId,
-      this.studentPhoto,
-      this.terminationStatus,
-      this.sectionId,
-      this.courseId,
-      this.divisionId,
-      this.schoolId,
-      this.selected});
+        this.admnNo,
+        this.name,
+        this.division,
+        this.course,
+        this.sectionOrder,
+        this.courseOrder,
+        this.divisionOrder,
+        this.rollNo,
+        this.mobNo,
+        this.address,
+        this.bus,
+        this.stop,
+        this.studentPhotoId,
+        this.photo,
+        this.photoId,
+        this.studentPhoto,
+        this.terminationStatus,
+        this.sectionId,
+        this.courseId,
+        this.divisionId,
+        this.schoolId,
+        this.selected});
 
   ViewStudentReport.fromJson(Map<String, dynamic> json) {
     studentId = json['studentId'];
@@ -185,6 +182,44 @@ class ViewStudentReport {
     data['courseId'] = courseId;
     data['divisionId'] = divisionId;
     data['schoolId'] = schoolId;
+    return data;
+  }
+}
+//Class Teachers
+
+class ClassTeachersModel {
+  String? name;
+  String? division;
+  String? classTeacherId;
+  String? sortOrder;
+  String? mobileNo;
+  String? emailId;
+
+  ClassTeachersModel(
+      {this.name,
+        this.division,
+        this.classTeacherId,
+        this.sortOrder,
+        this.mobileNo,
+        this.emailId});
+
+  ClassTeachersModel.fromJson(Map<String, dynamic> json) {
+    name = json['name'];
+    division = json['division'];
+    classTeacherId = json['classTeacherId'];
+    sortOrder = json['sortOrder'];
+    mobileNo = json['mobileNo'];
+    emailId = json['emailId'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['name'] = this.name;
+    data['division'] = this.division;
+    data['classTeacherId'] = this.classTeacherId;
+    data['sortOrder'] = this.sortOrder;
+    data['mobileNo'] = this.mobileNo;
+    data['emailId'] = this.emailId;
     return data;
   }
 }

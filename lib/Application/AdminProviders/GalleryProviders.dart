@@ -1,18 +1,19 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:essconnect/Domain/Admin/GalleryEdit.dart';
-import 'package:essconnect/Domain/Staff/GallerySendStaff.dart';
-import 'package:essconnect/Domain/Staff/StudentReport_staff.dart';
-import 'package:essconnect/Presentation/Admin/Gallery/GalleryScreen.dart';
-import 'package:essconnect/utils/constants.dart';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:multi_select_flutter/util/multi_select_item.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../Domain/Admin/Course&DivsionList.dart';
+import '../../Domain/Admin/GalleryEdit.dart';
 import '../../Domain/Staff/GalleryListViewStaff.dart';
+import '../../Domain/Staff/GallerySendStaff.dart';
+import '../../Domain/Staff/StudentReport_staff.dart';
+import '../../Presentation/Admin/Gallery/GalleryScreen.dart';
+import '../../utils/constants.dart';
 
 List? galleryAdm;
 Map? editGallery;

@@ -26,19 +26,6 @@ class ReportCard extends StatelessWidget {
     });
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Report card'),
-        titleSpacing: 00.0,
-        centerTitle: true,
-        toolbarHeight: 60.2,
-        toolbarOpacity: 0.8,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-              bottomRight: Radius.circular(25),
-              bottomLeft: Radius.circular(25)),
-        ),
-        backgroundColor: UIGuide.light_Purple,
-      ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Consumer<ReportCardProvider>(
@@ -66,9 +53,10 @@ class ReportCard extends StatelessWidget {
                                   color:
                                       const Color.fromARGB(255, 255, 255, 255)),
                               columnWidths: const {
-                                0: FlexColumnWidth(3),
-                                1: FlexColumnWidth(5),
-                                2: FlexColumnWidth(2),
+                                0: FlexColumnWidth(2),
+                                1: FlexColumnWidth(2.5),
+                                2: FlexColumnWidth(4),
+                                3: FlexColumnWidth(1.5),
                               },
                               children: const [
                                 TableRow(
@@ -86,7 +74,18 @@ class ReportCard extends StatelessWidget {
                                         child: Text(
                                           'Date',
                                           style: TextStyle(
-                                              fontWeight: FontWeight.w600),
+                                              fontWeight: FontWeight.w600,fontSize: 13),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 30,
+                                      child: Center(
+                                        child: Text(
+                                          'Academic\nYear',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w600,fontSize: 13),
                                         ),
                                       ),
                                     ),
@@ -96,7 +95,7 @@ class ReportCard extends StatelessWidget {
                                         child: Text(
                                           'Description',
                                           style: TextStyle(
-                                              fontWeight: FontWeight.w600),
+                                              fontWeight: FontWeight.w600,fontSize: 13),
                                         ),
                                       ),
                                     ),
@@ -106,7 +105,7 @@ class ReportCard extends StatelessWidget {
                                           child: Text(
                                         'View',
                                         style: TextStyle(
-                                            fontWeight: FontWeight.w600),
+                                            fontWeight: FontWeight.w600,fontSize: 13),
                                       )),
                                     ),
                                   ],
@@ -168,9 +167,10 @@ class ReportCard extends StatelessWidget {
                                                 color: const Color.fromARGB(
                                                     255, 255, 255, 255)),
                                             columnWidths: const {
-                                              0: FlexColumnWidth(3),
-                                              1: FlexColumnWidth(5),
-                                              2: FlexColumnWidth(2),
+                                              0: FlexColumnWidth(2),
+                                              1: FlexColumnWidth(2.5),
+                                              2: FlexColumnWidth(4),
+                                              3: FlexColumnWidth(1.5),
                                             },
                                             children: [
                                               TableRow(
@@ -192,13 +192,38 @@ class ReportCard extends StatelessWidget {
                                                             : corectTym
                                                                 .toString(),
                                                         style: const TextStyle(
-                                                            fontSize: 14,
+                                                            fontSize: 12,
                                                             fontWeight:
                                                                 FontWeight.w400,
                                                             color: UIGuide
                                                                 .light_Purple),
                                                         textAlign:
                                                             TextAlign.center,
+                                                      ),
+                                                    ),
+                                                    Padding(
+                                                      padding:
+                                                      const EdgeInsets.all(
+                                                          8.0),
+                                                      child: Text(
+                                                        value
+                                                            .reportcardList[
+                                                        index]
+                                                            .academicYear ==
+                                                            null
+                                                            ? '----'
+                                                            : value
+                                                            .reportcardList[
+                                                        index]
+                                                            .academicYear
+                                                            .toString(),
+                                                        style: const TextStyle(
+                                                            color: UIGuide
+                                                                .light_Purple,
+                                                            fontSize: 12,
+                                                            fontWeight:
+                                                            FontWeight
+                                                                .w400),
                                                       ),
                                                     ),
                                                     Padding(
@@ -220,7 +245,7 @@ class ReportCard extends StatelessWidget {
                                                         style: const TextStyle(
                                                             color: UIGuide
                                                                 .light_Purple,
-                                                            fontSize: 14,
+                                                            fontSize: 12,
                                                             fontWeight:
                                                                 FontWeight
                                                                     .w400),
@@ -299,7 +324,7 @@ class _PdfDownloadState extends State<PdfDownload> {
   }
 
   Future<void> requestDownload(String url, String name) async {
-    String? localPath;
+    String localPath="";
 
     if (Platform.isAndroid) {
       localPath = '/storage/emulated/0/Download';
@@ -308,10 +333,10 @@ class _PdfDownloadState extends State<PdfDownload> {
       localPath = dir.path;
     }
     print("pathhhh  $localPath");
-    final savedDir = Directory(localPath!);
+    final savedDir = Directory(localPath);
     await savedDir.create(recursive: true).then((value) async {
       String? taskid = await FlutterDownloader.enqueue(
-        savedDir: localPath!,
+        savedDir: localPath,
         url: url,
         fileName: "Report Card $name.pdf",
         showNotification: true,

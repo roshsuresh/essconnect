@@ -23,7 +23,7 @@ class BusFeeDetails extends StatelessWidget {
       body: Consumer<OfflineFeeProviders>(
         builder: (context, value, _) => value.loading
             ? spinkitLoader()
-            : value.busFeeDetailList.isEmpty
+            : value.busFeeDetailList.isEmpty || value.busFeeDetailList == null
                 ? LottieBuilder.network(
                     'https://assets2.lottiefiles.com/private_files/lf30_lkquf6qz.json')
                 : ListView(
@@ -410,7 +410,7 @@ class BusFeeDetails extends StatelessWidget {
                                                     children: [
                                                       Container(
                                                         padding:
-                                                            const EdgeInsets.all(3),
+                                                            EdgeInsets.all(3),
                                                         decoration: BoxDecoration(
                                                             color: UIGuide
                                                                 .LightBlue,

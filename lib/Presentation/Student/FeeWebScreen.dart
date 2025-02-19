@@ -196,10 +196,13 @@ class _FeeWebScreenState extends State<FeeWebScreen> {
                               key: webViewKey,
 
                               initialUrlRequest: URLRequest(
-                                  url: Uri.parse(
+                                  url:
+
+                                 WebUri(
                                       //'https://${widget.schdomain}.esstestonline.in/parent/fees-payment'
                                          'https://${widget.schdomain}.eschoolweb.org/parent/fees-payment'
-                                      )),
+                                      )
+                      ),
                               // initialFile: "assets/index.html",
                               initialUserScripts:
                                   UnmodifiableListView<UserScript>([]),

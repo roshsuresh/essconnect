@@ -1,16 +1,16 @@
 import 'dart:convert';
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:essconnect/Domain/Admin/NoticeBoardList.dart';
-import 'package:essconnect/Domain/Staff/StudentReport_staff.dart';
-import 'package:essconnect/Presentation/Admin/NoticeBoard/NoticeboardScreen.dart';
-import 'package:essconnect/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:multi_select_flutter/util/multi_select_item.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import '../../Domain/Admin/Course&DivsionList.dart';
+import '../../Domain/Admin/NoticeBoardList.dart';
 import '../../Domain/Staff/NoticeboardSendModel.dart';
+import '../../Domain/Staff/StudentReport_staff.dart';
+import '../../Presentation/Admin/NoticeBoard/NoticeboardScreen.dart';
+import '../../utils/constants.dart';
 
 Map? noticeboardInitialaAdmin;
 
@@ -421,8 +421,8 @@ class NoticeBoardAdminProvider with ChangeNotifier {
       Map<String, dynamic> data =
           jsonDecode(await response.stream.bytesToString());
       print(data);
-      // NoticeSuccessModel notice = NoticeSuccessModel.fromJson(data);
-      // noticeBoardId = notice.noticeBoardId;
+      NoticeSuccessModel notice = NoticeSuccessModel.fromJson(data);
+      noticeBoardId = notice.noticeBoardId;
 
       // await noticeBoardSendNotification(
       //     entryDate,

@@ -108,14 +108,24 @@ class StaffNoticeBoardReceived extends StatelessWidget {
                                     ),
                                   ),
                                   kheight10,
-                                  TextWrapper(
+
+                                  LinkTextWidget(
                                     text: staffNoticeView![index]['matter'] ==
-                                            null
+                                        null
                                         ? '--'
                                         : staffNoticeView![index]['matter']
-                                            .toString(),
-                                    fSize: 14,
+                                        .toString(),
+                                    font: 14,
+
                                   ),
+                                  // TextWrapper(
+                                  //   text: staffNoticeView![index]['matter'] ==
+                                  //           null
+                                  //       ? '--'
+                                  //       : staffNoticeView![index]['matter']
+                                  //           .toString(),
+                                  //   fSize: 14,
+                                  // ),
                                   kheight10,
                                   Row(
                                     crossAxisAlignment: CrossAxisAlignment.end,
@@ -150,8 +160,9 @@ class StaffNoticeBoardReceived extends StatelessWidget {
                                                   listen: false)
                                               .staffNoticeBoardAttach(
                                                   noticeattach.toString());
-                                          if (value.extension.toString() ==
-                                              '.pdf') {
+                                          if (value.extension == '.pdf' ||
+                                              value.extension == '.zip' ||
+                                              value.extension == '.rar') {
                                             final result = value.url.toString();
                                             final name = value.name.toString();
                                             Navigator.push(
@@ -287,9 +298,22 @@ class _PDFDownloadStaffState extends State<PDFDownloadStaff> {
                       icon: const Icon(Icons.download_outlined))),
             ],
           ),
-          body: SfPdfViewer.network(
+          body: value.extension == '.pdf'?
+          SfPdfViewer.network(
             value.url == null ? '--' : value.url.toString(),
-          )),
+          ):
+          Container(
+            child: Center(
+              child: SizedBox(
+                height: 150,
+                child: Image.asset(
+                  'assets/zip_file.png',// Replace with the path to your image asset
+                  fit: BoxFit.fill,// Adjust as needed (e.g., BoxFit.cover, BoxFit.fill)
+                ),
+              ),
+            ),
+          )
+      ),
     );
   }
 }

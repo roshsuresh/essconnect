@@ -1,10 +1,12 @@
 import 'dart:convert';
-import 'package:essconnect/Domain/Admin/StaffReportModel.dart';
-import 'package:essconnect/Domain/Staff/StudentReport_staff.dart';
-import 'package:essconnect/utils/constants.dart';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../Domain/Admin/StaffReportModel.dart';
+import '../../Domain/Staff/StudentReport_staff.dart';
+import '../../utils/constants.dart';
 
 class StaffReportProviders with ChangeNotifier {
   bool _loading = false;
@@ -20,20 +22,20 @@ class StaffReportProviders with ChangeNotifier {
   }
 
   List<StaffReportByAdmin> staffReportList = [];
-  Future<bool> staffReportt() async {
+  Future<bool> staffReportt(String terminateStatus) async {
     setLoading(true);
-    SharedPreferences pref = await SharedPreferences.getInstance();
+    SharedPreferences _pref = await SharedPreferences.getInstance();
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
     var request = http.Request(
-        'GET', Uri.parse('${UIGuide.baseURL}/mobileapp/admin/viewStaffReport'));
+        'GET', Uri.parse('${UIGuide.baseURL}/mobileapp/admin/viewStaffReport/?terminatedStatus=$terminateStatus'));
     request.headers.addAll(headers);
     http.StreamedResponse response = await request.send();
     if (response.statusCode == 200) {
       Map<String, dynamic> data =
-          jsonDecode(await response.stream.bytesToString());
+      jsonDecode(await response.stream.bytesToString());
       List<StaffReportByAdmin> templist = List<StaffReportByAdmin>.from(
           data["staffReport"].map((x) => StaffReportByAdmin.fromJson(x)));
       staffReportList.addAll(templist);
@@ -70,6 +72,7 @@ class StaffReportProviders with ChangeNotifier {
   clearAllFilters() {
     filtersDivision = "";
     filterCourse = "";
+    staffReportList.clear();
 
     notifyListeners();
   }
@@ -113,10 +116,10 @@ class StaffReportProviders with ChangeNotifier {
   List<StudReportSectionList> stdReportInitialValues = [];
 
   Future stdReportSectionStaff() async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
+    SharedPreferences _pref = await SharedPreferences.getInstance();
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
     };
     var response = await http.get(
         Uri.parse(

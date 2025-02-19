@@ -1,9 +1,11 @@
 import 'dart:convert';
-import 'package:essconnect/Domain/Admin/StudStatitics.dart';
-import 'package:essconnect/utils/constants.dart';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../Domain/Admin/StudStatitics.dart';
+import '../../utils/constants.dart';
 
 class StudStatiticsProvider with ChangeNotifier {
   List<StatisticsData> statiticsList = [];

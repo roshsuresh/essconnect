@@ -30,39 +30,50 @@ class StudentProfileModel {
   String? guardianName;
   String? guardianMobile;
   String? guardianEmail;
+  bool? bankIntegrationSettings;
+  String? bankAdmissionNo;
+  String? imeiNumber;
+  String? busName;
+  String? busStop;
 
   StudentProfileModel(
       {this.studentName,
-      this.admissionNo,
-      this.rollNo,
-      this.classc,
-      this.divisionName,
-      this.divisionId,
-      this.bloodGroup,
-      this.houseGroup,
-      this.classTeacher,
-      this.dob,
-      this.studentPhoto,
-      this.studentPhotoId,
-      this.fatherPhoto,
-      this.fatherPhotoId,
-      this.motherPhoto,
-      this.motherPhotoId,
-      this.gender,
-      this.height,
-      this.weight,
-      this.address,
-      this.fatherName,
-      this.fatherMailId,
-      this.fatherMobileno,
-      this.motherName,
-      this.motherMailId,
-      this.motherMobileno,
-      this.area,
-      this.editProfile,
-      this.guardianName,
-      this.guardianMobile,
-      this.guardianEmail});
+        this.admissionNo,
+        this.rollNo,
+        this.classc,
+        this.divisionName,
+        this.divisionId,
+        this.bloodGroup,
+        this.houseGroup,
+        this.classTeacher,
+        this.dob,
+        this.studentPhoto,
+        this.studentPhotoId,
+        this.fatherPhoto,
+        this.fatherPhotoId,
+        this.motherPhoto,
+        this.motherPhotoId,
+        this.gender,
+        this.height,
+        this.weight,
+        this.address,
+        this.fatherName,
+        this.fatherMailId,
+        this.fatherMobileno,
+        this.motherName,
+        this.motherMailId,
+        this.motherMobileno,
+        this.area,
+        this.editProfile,
+        this.guardianName,
+        this.guardianMobile,
+        this.guardianEmail,
+        this.bankIntegrationSettings,
+        this.bankAdmissionNo,
+        this.imeiNumber,
+        this.busName,
+        this.busStop
+      });
 
   StudentProfileModel.fromJson(Map<String, dynamic> json) {
     studentName = json['studentName'];
@@ -96,6 +107,11 @@ class StudentProfileModel {
     guardianName = json['guardianName'];
     guardianMobile = json['guardianMobile'];
     guardianEmail = json['guardianEmail'];
+    bankIntegrationSettings = json['bankIntegrationSettings'];
+    bankAdmissionNo = json['bankAdmissionNo'];
+    imeiNumber = json['imeiNumber'];
+    busName = json['busName'];
+    busStop = json['busStop'];
   }
 
   Map<String, dynamic> toJson() {
@@ -131,6 +147,11 @@ class StudentProfileModel {
     data['guardianName'] = guardianName;
     data['guardianMobile'] = guardianMobile;
     data['guardianEmail'] = guardianEmail;
+    data['bankIntegrationSettings'] = bankIntegrationSettings;
+    data['bankAdmissionNo'] = bankAdmissionNo;
+    data['imeiNumber'] = imeiNumber;
+    data['busName'] = busName;
+    data['busStop'] = busStop;
     return data;
   }
 }

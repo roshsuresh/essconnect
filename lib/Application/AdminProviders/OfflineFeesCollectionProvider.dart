@@ -164,7 +164,7 @@ class OffflineFeesProvider with ChangeNotifier{
     notifyListeners();
   }
 
- List<OfflineCourse> courseList= [];
+  List<OfflineCourse> courseList= [];
   List<MultiSelectItem> courseDrop = [];
   Future getCourseList() async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
@@ -250,7 +250,7 @@ class OffflineFeesProvider with ChangeNotifier{
   List<BusExportList> exportBusFeesList = [];
 
   Future getFeeCollectionReport(
-    List courseId, List divId, String fromDate,toDate) async {
+      List courseId, List divId, String fromDate,toDate) async {
     SharedPreferences _pref = await SharedPreferences.getInstance();
     setLoading(true);
     var headers = {
@@ -265,12 +265,12 @@ class OffflineFeesProvider with ChangeNotifier{
     request.body =
         json.encode({
 
-        "courses":courseId,
-        "divisions":divId,
-        "fromDate":fromDate,
-        "toDate":toDate
+          "courses":courseId,
+          "divisions":divId,
+          "fromDate":fromDate,
+          "toDate":toDate
 
-    });
+        });
     print(request.body);
     request.headers.addAll(headers);
 
@@ -281,7 +281,7 @@ class OffflineFeesProvider with ChangeNotifier{
 
       final data = await jsonDecode(await response.stream.bytesToString());
       print('correct');
-    // Map<String, dynamic> data = json.decode(response.body);
+      // Map<String, dynamic> data = json.decode(response.body);
 
       List<Results> templist2 = List<Results>.from(
           data["results"].map((x) => Results.fromJson(x)));
@@ -291,7 +291,7 @@ class OffflineFeesProvider with ChangeNotifier{
       exportFeesList.addAll(templist3);
 
       OfflineFeeView res = OfflineFeeView.fromJson(data);
-        netAmount= res.netAmount!.toStringAsFixed(2);
+      netAmount= res.netAmount!.toStringAsFixed(2);
 
       if(collectionlList.isNotEmpty) {
         DateTime dateTime = DateTime.parse(res.uploadedDate.toString());

@@ -196,7 +196,9 @@ class _CurriculamPageState extends State<CurriculamPage> {
                           ? InAppWebView(
                               key: webViewKey,
                               // contextMenu: contextMenu,
-                              initialUrlRequest: URLRequest(url: Uri.parse(
+                              initialUrlRequest: URLRequest(
+                                  url:
+                                  WebUri(
                                   //   'https://curriculumtestonline.in/login-via-token?token=${widget.token}'
                                   'https://esscurriculum.in/login-via-token?token=${widget.token}')),
                               // initialFile: "assets/index.html",

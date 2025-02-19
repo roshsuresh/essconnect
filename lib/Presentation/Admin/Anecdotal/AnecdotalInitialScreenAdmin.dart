@@ -1,11 +1,10 @@
 
-import 'package:essconnect/Presentation/Admin/Anecdotal/AnecdotalentryScreenAdmin.dart';
-import 'package:essconnect/Presentation/Staff/Anecdotal/StudAnecdotal/AnecdotalListscreen.dart';
-import 'package:essconnect/utils/constants.dart';
 import 'package:flutter/material.dart';
 
+import '../../../utils/constants.dart';
 import '../../Staff/Anecdotal/StudAnecdotal/AnecdotalReport.dart';
 import 'AnecdotalListAdminscreen.dart';
+import 'AnecdotalentryScreenAdmin.dart';
 
 
 
@@ -60,7 +59,7 @@ class AnecdotalInitialScreenAdmin extends StatelessWidget {
           ),
           backgroundColor: UIGuide.light_Purple,
         ),
-        body: TabBarView(
+        body: const TabBarView(
           physics: NeverScrollableScrollPhysics(),
           children: [
             AnecdotalentryScreenAdmin(),

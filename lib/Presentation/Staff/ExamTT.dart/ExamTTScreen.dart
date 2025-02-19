@@ -13,7 +13,10 @@ class ExamTimetableStaff extends StatelessWidget {
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       var p = Provider.of<ExamTTAdmProvidersStaff>(context, listen: false);
-      //  await p.getCourseList();
+      // p.courseList.clear();
+      // await p.getCourseList();
+      // print(p.isClassTeacher);
+
     });
     return DefaultTabController(
       length: 2,
@@ -48,46 +51,16 @@ class ExamTimetableStaff extends StatelessWidget {
             indicatorWeight: 5,
             tabs: [
               Tab(
-                text: "Upload",
+                text: "Entry",
               ),
-              Tab(text: "History"),
+              Tab(text: "List"),
             ],
           ),
           backgroundColor: UIGuide.light_Purple,
         ),
         body: TabBarView(
           children: [
-            Consumer<ExamTTAdmProvidersStaff>(
-              builder: (context, value, child) {
-                if (value.isClassTeacher != false) {
-                  return const ExamTTUploadStaff();
-                } else {
-                  return Container(
-                    child: const Center(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.sentiment_dissatisfied_outlined,
-                            size: 60,
-                            color: Colors.grey,
-                          ),
-                          kheight10,
-                          Text(
-                            "Sorry you don't have access",
-                            style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.grey),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                }
-              },
-            ),
+            const ExamTTUploadStaff(),
             // Consumer<ExamTTAdmProvidersStaff>(
             //   builder: (context, value, child) {
             //     if (value.isClassTeacher != false) {

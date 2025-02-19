@@ -90,6 +90,12 @@ class _BusSelectionScreenState extends State<BusSelectionScreen> {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
+                      focusedBorder:OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide(
+                              color: UIGuide.light_Purple
+                          )
+                      ),
                       contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     ),
                     items: prov.buslist.map((bus) {

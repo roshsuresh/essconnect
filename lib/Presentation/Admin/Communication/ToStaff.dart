@@ -54,6 +54,8 @@ class _AdminToStaffNotificationState extends State<AdminToStaffNotification> {
 
   String types = "sms";
 
+  String _selectedValue="Working";
+  String terminatedStatus="Working";
   @override
   void initState() {
     super.initState();
@@ -72,6 +74,7 @@ class _AdminToStaffNotificationState extends State<AdminToStaffNotification> {
   final ScrollController _scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
+    var size=MediaQuery.of(context).size;
     return Scaffold(
       body: Consumer<NotificationToStaffAdminProviders>(
         builder: (context, val, _) => Column(
@@ -80,137 +83,195 @@ class _AdminToStaffNotificationState extends State<AdminToStaffNotification> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Consumer<SchoolPhotoProviders>(
-                  builder: (context, value, child) => Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: MultiSelectDialogField(
-                        // height: 200,
-                        items: value.dropDown,
+                  builder: (context, value, child) =>
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: MultiSelectDialogField(
+                          // height: 200,
+                          items: value.dropDown,
 
-                        listType: MultiSelectListType.CHIP,
-                        title: const Text(
-                          "Select Section",
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                        selectedItemsTextStyle: const TextStyle(
-                            fontWeight: FontWeight.w900,
-                            color: UIGuide.light_Purple),
-                        confirmText: const Text(
-                          'OK',
-                          style: TextStyle(color: UIGuide.light_Purple),
-                        ),
-                        cancelText: const Text(
-                          'Cancel',
-                          style: TextStyle(color: UIGuide.light_Purple),
-                        ),
-                        separateSelectedItems: true,
-                        //  checkColor: Colors.lightBlue,
-                        decoration: const BoxDecoration(
-                          color: UIGuide.ButtonBlue,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey,
-                              offset: Offset(0, 2),
-                              blurRadius: 4,
-                              spreadRadius: 0,
-                            ),
-                          ],
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                        ),
-                        buttonIcon: const Icon(
-                          Icons.arrow_drop_down_outlined,
-                          color: Colors.grey,
-                        ),
-                        buttonText: value.sectionLen == 0
-                            ? const Text(
-                                "Select Section",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                ),
-                              )
-                            : Text(
-                                "   ${value.sectionLen.toString()} Selected",
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                ),
+                          listType: MultiSelectListType.CHIP,
+                          title: const Text(
+                            "Select Section",
+                            style: TextStyle(color: Colors.grey),
+                          ),
+                          selectedItemsTextStyle: const TextStyle(
+                              fontWeight: FontWeight.w900,
+                              color: UIGuide.light_Purple),
+                          confirmText: const Text(
+                            'OK',
+                            style: TextStyle(color: UIGuide.light_Purple),
+                          ),
+                          cancelText: const Text(
+                            'Cancel',
+                            style: TextStyle(color: UIGuide.light_Purple),
+                          ),
+                          separateSelectedItems: true,
+                          //  checkColor: Colors.lightBlue,
+                          decoration: const BoxDecoration(
+                            color: UIGuide.ButtonBlue,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey,
+                                offset: Offset(0, 2),
+                                blurRadius: 4,
+                                spreadRadius: 0,
                               ),
-                        chipDisplay: MultiSelectChipDisplay.none(),
-                        onConfirm: (results) async {
-                          subjectData = [];
-                          for (var i = 0; i < results.length; i++) {
-                            StudReportSectionList data =
-                                results[i] as StudReportSectionList;
+                            ],
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                          ),
+                          buttonIcon: const Icon(
+                            Icons.arrow_drop_down_outlined,
+                            color: Colors.grey,
+                          ),
+                          buttonText: value.sectionLen == 0
+                              ? const Text(
+                            "Select Section",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                            ),
+                          )
+                              : Text(
+                            "   ${value.sectionLen.toString()} Selected",
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 16,
+                            ),
+                          ),
+                          chipDisplay: MultiSelectChipDisplay.none(),
+                          onConfirm: (results) async {
+                            subjectData = [];
+                            for (var i = 0; i < results.length; i++) {
+                              StudReportSectionList data =
+                              results[i] as StudReportSectionList;
 
-                            subjectData.add(data.value);
-                            subjectData.map((e) => data.value);
-                            print("${subjectData.map((e) => data.value)}");
-                          }
-                          section = subjectData.join(',');
-                          await Provider.of<SchoolPhotoProviders>(context,
-                                  listen: false)
-                              .sectionCounter(results.length);
-                          await val.clearStaffList();
-                          print("data $section");
+                              subjectData.add(data.value);
+                              subjectData.map((e) => data.value);
+                              print("${subjectData.map((e) => data.value)}");
+                            }
+                            section = subjectData.join(',');
+                            await Provider.of<SchoolPhotoProviders>(context,
+                                listen: false)
+                                .sectionCounter(results.length);
+                            await val.clearStaffList();
+                            print("data $section");
 
-                          print(subjectData.join(','));
-                        },
+                            print(subjectData.join(','));
+                          },
+                        ),
                       ),
+
+                ),
+                Container(
+                  width:size.width*0.4 ,
+                  height: 45,
+
+                  padding: EdgeInsets.symmetric(horizontal: 12.0),
+                  decoration: BoxDecoration(
+                    color: Colors.white, // Background color of the box
+                    border: Border.all(color: UIGuide.light_Purple, width: 1), // Border color and width
+                    borderRadius: BorderRadius.circular(8), // Rounded corners
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black26, // Shadow color
+                        blurRadius: 6.0, // Shadow blur effect
+                        offset: Offset(0, 2), // Shadow position
+                      ),
+                    ],
+                  ),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<String>(
+
+                      value: _selectedValue,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          _selectedValue = newValue!;
+                          val.clearStaffList();
+                          if(_selectedValue=="Relieved"){
+                            terminatedStatus="Terminated";
+                          }
+                          else if(_selectedValue=="Both"){
+                            terminatedStatus="Both";
+                          }
+                          else{
+                            terminatedStatus="Working";
+                          }
+
+
+
+                        });
+                      },
+                      items: <String>['Working','Relieved','Both']
+                          .map<DropdownMenuItem<String>>((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value,style: TextStyle(
+                              fontWeight: FontWeight.w500
+                          ),),
+                        );
+                      }).toList(),
+                      isExpanded: true,
                     ),
                   ),
                 ),
+
                 //  const Spacer(),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 10.0, right: 10),
-                    child: SizedBox(
-                      height: 43,
-                      child: Consumer<NotificationToStaffAdminProviders>(
-                        builder: (context, val, child) => val.loading
-                            ? const Center(
-                                child: Text(
-                                "Loading",
-                                style: TextStyle(
-                                    color: UIGuide.light_Purple, fontSize: 16),
-                              ))
-                            : ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  elevation: 3,
-                                  foregroundColor: UIGuide.WHITE,
-                                  backgroundColor: UIGuide.light_Purple,
-                                  padding: const EdgeInsets.all(0),
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      side: const BorderSide(
-                                        color: UIGuide.light_black,
-                                      )),
-                                ),
-                                onPressed: () async {
-                                  await val.clearStaffList();
 
-                                  await val.getNotificationView(section);
+              ],
+            ),
 
-                                  if (val.stafflist.isEmpty) {
-                                    snackbarWidget(
-                                        2,
-                                        "No data for specified condition",
-                                        context);
-                                  }
-                                },
-                                child: const Text(
-                                  'View',
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 10.0, right: 10),
+                  child: SizedBox(
+                    width: 150,
+                    height: 43,
+                    child: Consumer<NotificationToStaffAdminProviders>(
+                      builder: (context, val, child) => val.loading
+                          ? const Center(
+                          child: Text(
+                            "Loading",
+                            style: TextStyle(
+                                color: UIGuide.light_Purple, fontSize: 16),
+                          ))
+                          : ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          elevation: 3,
+                          foregroundColor: UIGuide.WHITE,
+                          backgroundColor: UIGuide.light_Purple,
+                          padding: const EdgeInsets.all(0),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              side: const BorderSide(
+                                color: UIGuide.light_black,
+                              )),
+                        ),
+                        onPressed: () async {
+                          await val.clearStaffList();
+
+                          await val.getNotificationView(section,terminatedStatus);
+
+                          if (val.stafflist.isEmpty) {
+                            snackbarWidget(
+                                2,
+                                "No data for specified condition",
+                                context);
+                          }
+                        },
+                        child: const Text(
+                          'View',
+                          style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600),
+                        ),
                       ),
                     ),
                   ),
                 )
-              ],
-            ),
+              ],),
             SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -243,7 +304,7 @@ class _AdminToStaffNotificationState extends State<AdminToStaffNotification> {
                                   print(types);
                                 },
                               ),
-                              const Text(
+                              Text(
                                 "SMS",
                               ),
                             ],
@@ -271,7 +332,7 @@ class _AdminToStaffNotificationState extends State<AdminToStaffNotification> {
                                   print(types);
                                 },
                               ),
-                              const Text(
+                              Text(
                                 "E-mail",
                               ),
                             ],
@@ -316,96 +377,96 @@ class _AdminToStaffNotificationState extends State<AdminToStaffNotification> {
             kheight10,
             val.stafflist.isEmpty
                 ? const SizedBox(
-                    height: 0,
-                    width: 0,
-                  )
+              height: 0,
+              width: 0,
+            )
                 : Container(
-                    decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 241, 243, 245),
-                        border:
-                            Border.all(color: UIGuide.light_black, width: 1)),
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 2.0, bottom: 2),
-                      child: Table(
-                        columnWidths: const {
-                          0: FlexColumnWidth(1.3),
-                          1: FlexColumnWidth(4),
-                          2: FlexColumnWidth(1.4),
-                        },
-                        children: [
-                          TableRow(children: [
-                            const Text(
-                              ' Sl.No.',
-                              style: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.bold),
-                            ),
-                            const Text(
-                              'Name',
-                              style: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.bold),
-                            ),
-                            Consumer<NotificationToStaffAdminProviders>(
-                              builder: (context, value, child) =>
-                                  GestureDetector(
-                                      onTap: () {
-                                        value.selectAllStaff();
-                                      },
-                                      child: value.isSelectAllStaff
-                                          ? Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 15),
-                                              child: SvgPicture.asset(
-                                                UIGuide.check,
-                                                color: UIGuide.light_Purple,
-                                              ),
-                                            )
-                                          : const Text(
-                                              'Select All',
-                                              style: TextStyle(
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: UIGuide.light_Purple),
-                                            )),
-                            )
-                          ])
-                        ],
+              decoration: BoxDecoration(
+                  color: const Color.fromARGB(255, 241, 243, 245),
+                  border:
+                  Border.all(color: UIGuide.light_black, width: 1)),
+              child: Padding(
+                padding: const EdgeInsets.only(top: 2.0, bottom: 2),
+                child: Table(
+                  columnWidths: const {
+                    0: FlexColumnWidth(1.3),
+                    1: FlexColumnWidth(4),
+                    2: FlexColumnWidth(1.4),
+                  },
+                  children: [
+                    TableRow(children: [
+                      const Text(
+                        ' Sl.No.',
+                        style: TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.bold),
                       ),
-                    ),
-                  ),
+                      const Text(
+                        'Name',
+                        style: TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.bold),
+                      ),
+                      Consumer<NotificationToStaffAdminProviders>(
+                        builder: (context, value, child) =>
+                            GestureDetector(
+                                onTap: () {
+                                  value.selectAllStaff();
+                                },
+                                child: value.isSelectAllStaff
+                                    ? Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 15),
+                                  child: SvgPicture.asset(
+                                    UIGuide.check,
+                                    color: UIGuide.light_Purple,
+                                  ),
+                                )
+                                    : const Text(
+                                  'Select All',
+                                  style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                      color: UIGuide.light_Purple),
+                                )),
+                      )
+                    ])
+                  ],
+                ),
+              ),
+            ),
             Consumer<NotificationToStaffAdminProviders>(
               builder: (context, value, child) {
                 return value.loading
                     ? Expanded(
-                        child: Center(child: spinkitLoader()),
-                      )
+                  child: Center(child: spinkitLoader()),
+                )
                     : Expanded(
-                        child: Scrollbar(
-                          thickness: 5,
-                          controller: _scrollController,
-                          child: ListView.builder(
-                            scrollDirection: Axis.vertical,
-                            itemCount: value.stafflist.isEmpty
-                                ? 0
-                                : value.stafflist.length,
-                            itemBuilder: ((context, index) {
-                              return Container(
-                                decoration: BoxDecoration(
-                                  color: index.isEven
-                                      ? Colors.white
-                                      : const Color.fromARGB(
-                                          255, 241, 243, 245),
-                                  border: Border.all(
-                                      color: UIGuide.light_black, width: 1),
-                                ),
-                                child: Notification_StudListAdmin(
-                                  viewStud: value.stafflist[index],
-                                  indexx: index,
-                                ),
-                              );
-                            }),
+                  child: Scrollbar(
+                    thickness: 5,
+                    controller: _scrollController,
+                    child: ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      itemCount: value.stafflist.isEmpty
+                          ? 0
+                          : value.stafflist.length,
+                      itemBuilder: ((context, index) {
+                        return Container(
+                          decoration: BoxDecoration(
+                            color: index.isEven
+                                ? Colors.white
+                                : const Color.fromARGB(
+                                255, 241, 243, 245),
+                            border: Border.all(
+                                color: UIGuide.light_black, width: 1),
                           ),
-                        ),
-                      );
+                          child: Notification_StudListAdmin(
+                            viewStud: value.stafflist[index],
+                            indexx: index,
+                          ),
+                        );
+                      }),
+                    ),
+                  ),
+                );
               },
             ),
           ],
@@ -418,102 +479,102 @@ class _AdminToStaffNotificationState extends State<AdminToStaffNotification> {
           child: Consumer<NotificationToStaffAdminProviders>(
               builder: (context, value, child) => value.loading
                   ? MaterialButton(
-                      shape: const RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(10.0))),
-                      color: UIGuide.light_Purple,
-                      onPressed: () {},
-                      child: const Text('Please Wait...',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400)),
-                    )
+                shape: const RoundedRectangleBorder(
+                    borderRadius:
+                    BorderRadius.all(Radius.circular(10.0))),
+                color: UIGuide.light_Purple,
+                onPressed: () {},
+                child: const Text('Please Wait...',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400)),
+              )
                   : value.stafflist.isEmpty
-                      ? const SizedBox(
-                          height: 0,
-                          width: 0,
-                        )
-                      : MaterialButton(
-                          shape: const RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10.0))),
-                          color: UIGuide.light_Purple,
-                          onPressed: () async {
-                            if (types == 'notification') {
-                              await Provider.of<
-                                          NotificationToStaffAdminProviders>(
-                                      context,
-                                      listen: false)
-                                  .submitStaff(context);
-                            } else {
-                              await Provider.of<
-                                          NotificationToStaffAdminProviders>(
-                                      context,
-                                      listen: false)
-                                  .getProvider();
-                              value.types = types;
-                              if (types == 'email') {
-                                await Provider.of<
-                                            NotificationToStaffAdminProviders>(
-                                        context,
-                                        listen: false)
-                                    .submitSmsStaff(context);
-                              } else if (types == 'sms') {
-                                if (value.providerName == null) {
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(
-                                    const SnackBar(
-                                      elevation: 10,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(10)),
-                                      ),
-                                      duration: Duration(seconds: 1),
-                                      margin: EdgeInsets.only(
-                                          bottom: 80, left: 30, right: 30),
-                                      behavior: SnackBarBehavior.floating,
-                                      content: Text(
-                                        'Sms Provider Not Found.....!',
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ),
-                                  );
-                                } else {
-                                  await Provider.of<
-                                              NotificationToStaffAdminProviders>(
-                                          context,
-                                          listen: false)
-                                      .submitSmsStaff(context);
-                                }
-                              } else {
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(
-                                  const SnackBar(
-                                    elevation: 10,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(10)),
-                                    ),
-                                    duration: Duration(seconds: 1),
-                                    margin: EdgeInsets.only(
-                                        bottom: 80, left: 30, right: 30),
-                                    behavior: SnackBarBehavior.floating,
-                                    content: Text(
-                                      'Something went wrong.....!',
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                );
-                              }
-                            }
-                          },
-                          child: const Text('Proceed',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400)),
-                        )),
+                  ? const SizedBox(
+                height: 0,
+                width: 0,
+              )
+                  : MaterialButton(
+                shape: const RoundedRectangleBorder(
+                    borderRadius:
+                    BorderRadius.all(Radius.circular(10.0))),
+                color: UIGuide.light_Purple,
+                onPressed: () async {
+                  if (types == 'notification') {
+                    await Provider.of<
+                        NotificationToStaffAdminProviders>(
+                        context,
+                        listen: false)
+                        .submitStaff(context);
+                  } else {
+                    await Provider.of<
+                        NotificationToStaffAdminProviders>(
+                        context,
+                        listen: false)
+                        .getProvider();
+                    value.types = types;
+                    if (types == 'email') {
+                      await Provider.of<
+                          NotificationToStaffAdminProviders>(
+                          context,
+                          listen: false)
+                          .submitSmsStaff(context);
+                    } else if (types == 'sms') {
+                      if (value.providerName == null) {
+                        await ScaffoldMessenger.of(context)
+                            .showSnackBar(
+                          const SnackBar(
+                            elevation: 10,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(10)),
+                            ),
+                            duration: Duration(seconds: 1),
+                            margin: EdgeInsets.only(
+                                bottom: 80, left: 30, right: 30),
+                            behavior: SnackBarBehavior.floating,
+                            content: Text(
+                              'Sms Provider Not Found.....!',
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        );
+                      } else {
+                        await Provider.of<
+                            NotificationToStaffAdminProviders>(
+                            context,
+                            listen: false)
+                            .submitSmsStaff(context);
+                      }
+                    } else {
+                      await ScaffoldMessenger.of(context)
+                          .showSnackBar(
+                        const SnackBar(
+                          elevation: 10,
+                          shape: RoundedRectangleBorder(
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(10)),
+                          ),
+                          duration: Duration(seconds: 1),
+                          margin: EdgeInsets.only(
+                              bottom: 80, left: 30, right: 30),
+                          behavior: SnackBarBehavior.floating,
+                          content: Text(
+                            'Something went wrong.....!',
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      );
+                    }
+                  }
+                },
+                child: Text('Proceed',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400)),
+              )),
         ),
       ),
     );
@@ -548,16 +609,16 @@ class Notification_StudListAdmin extends StatelessWidget {
               fontSize: 14, fontWeight: FontWeight.w600, color: UIGuide.BLACK),
         ),
         subtitle:
-            Text(viewStud.staffRole!.isEmpty ? '---' : viewStud.staffRole!),
+        Text(viewStud.staffRole!.isEmpty ? '---' : viewStud.staffRole!),
         trailing: viewStud.selected != null && viewStud.selected!
             ? SvgPicture.asset(
-                UIGuide.check,
-                color: UIGuide.light_Purple,
-              )
+          UIGuide.check,
+          color: UIGuide.light_Purple,
+        )
             : SvgPicture.asset(
-                UIGuide.notcheck,
-                color: UIGuide.light_Purple,
-              ),
+          UIGuide.notcheck,
+          color: UIGuide.light_Purple,
+        ),
       ),
     );
   }
@@ -621,7 +682,7 @@ class Text_Matter_NotificationAdminToStaff extends StatelessWidget {
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderSide:
-                          BorderSide(color: UIGuide.light_Purple, width: 1.0),
+                      BorderSide(color: UIGuide.light_Purple, width: 1.0),
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(20),
                           topRight: Radius.circular(0),
@@ -656,7 +717,7 @@ class Text_Matter_NotificationAdminToStaff extends StatelessWidget {
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderSide:
-                          BorderSide(color: UIGuide.light_Purple, width: 1.0),
+                      BorderSide(color: UIGuide.light_Purple, width: 1.0),
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(20),
                           topRight: Radius.circular(0),
@@ -672,54 +733,54 @@ class Text_Matter_NotificationAdminToStaff extends StatelessWidget {
               builder: (context, value, _) => value.load
                   ? spinkitLoader()
                   : SizedBox(
-                      width: 150,
-                      height: 40,
-                      child: MaterialButton(
-                        onPressed: () async {
-                          if (titleController.text.trim().isNotEmpty &&
-                              matterController.text.trim().isNotEmpty) {
-                            await value.sendNotification(
-                                context,
-                                titleController.text,
-                                matterController.text,
-                                toList,
-                                sentTo: type);
-                            titleController.clear();
-                            matterController.clear();
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                elevation: 10,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10)),
-                                ),
-                                duration: Duration(seconds: 1),
-                                margin: EdgeInsets.only(
-                                    bottom: 80, left: 30, right: 30),
-                                behavior: SnackBarBehavior.floating,
-                                content: Text(
-                                  'Enter Title & Matter!',
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            );
-                          }
-                        },
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(20),
-                              topRight: Radius.circular(0),
-                              bottomLeft: Radius.circular(0),
-                              bottomRight: Radius.circular(20)),
+                width: 150,
+                height: 40,
+                child: MaterialButton(
+                  onPressed: () async {
+                    if (titleController.text.trim().isNotEmpty &&
+                        matterController.text.trim().isNotEmpty) {
+                      await value.sendNotification(
+                          context,
+                          titleController.text,
+                          matterController.text,
+                          toList,
+                          sentTo: type);
+                      titleController.clear();
+                      matterController.clear();
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          elevation: 10,
+                          shape: RoundedRectangleBorder(
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(10)),
+                          ),
+                          duration: Duration(seconds: 1),
+                          margin: EdgeInsets.only(
+                              bottom: 80, left: 30, right: 30),
+                          behavior: SnackBarBehavior.floating,
+                          content: Text(
+                            'Enter Title & Matter!',
+                            textAlign: TextAlign.center,
+                          ),
                         ),
-                        color: UIGuide.light_Purple,
-                        child: const Text(
-                          'Send',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    ),
+                      );
+                    }
+                  },
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(0),
+                        bottomLeft: Radius.circular(0),
+                        bottomRight: Radius.circular(20)),
+                  ),
+                  color: UIGuide.light_Purple,
+                  child: const Text(
+                    'Send',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
             )
           ],
         ),

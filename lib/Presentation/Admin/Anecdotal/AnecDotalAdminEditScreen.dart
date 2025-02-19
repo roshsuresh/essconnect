@@ -1,11 +1,4 @@
 
-import 'package:essconnect/Application/Staff_Providers/Anecdotal/AnecdotalStaffListProvider.dart';
-import 'package:essconnect/Constants.dart';
-import 'package:essconnect/Domain/Staff/Anecdotal/InitialSelectionModel.dart';
-import 'package:essconnect/Domain/Staff/Anecdotal/StudListviewAnectdotal.dart';
-import 'package:essconnect/Presentation/Admin/Anecdotal/AnecdotalInitialScreenAdmin.dart';
-import 'package:essconnect/utils/constants.dart';
-import 'package:essconnect/utils/spinkit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -17,6 +10,13 @@ import 'package:multi_select_flutter/util/multi_select_list_type.dart';
 import 'package:provider/provider.dart';
 import '../../../../Application/Staff_Providers/Anecdotal/AncedotalStaffProvider.dart';
 import '../../../../Debouncer.dart';
+import '../../../Application/Staff_Providers/Anecdotal/AnecdotalStaffListProvider.dart';
+import '../../../Constants.dart';
+import '../../../Domain/Admin/TimeTableUploadModel.dart';
+import '../../../Domain/Staff/Anecdotal/InitialSelectionModel.dart';
+import '../../../utils/constants.dart';
+import '../../../utils/spinkit.dart';
+import 'AnecdotalInitialScreenAdmin.dart';
 class AnecdotalAdminEditScreen extends StatefulWidget {
   String id;
   AnecdotalAdminEditScreen({super.key,required this.id});
@@ -234,17 +234,17 @@ class _AnecdotalAdminEditScreenState extends State<AnecdotalAdminEditScreen> {
                           // textAlign: TextAlign.center,
                           controller: categoryController,
                           decoration:  InputDecoration(
-                              contentPadding: EdgeInsets.only(left: 15, top: 0),
+                              contentPadding: const EdgeInsets.only(left: 15, top: 0),
                               floatingLabelBehavior:
                               FloatingLabelBehavior.never,
                               filled: true,
                               fillColor: Colors.transparent,
-                              border: OutlineInputBorder(
+                              border: const OutlineInputBorder(
                                 borderSide: BorderSide(
                                     style: BorderStyle.none, width: 0),
                               ),
                               labelText:  value.category.toString(),
-                              labelStyle: TextStyle(
+                              labelStyle: const TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
                                 color: UIGuide.BLACK,
@@ -324,18 +324,18 @@ class _AnecdotalAdminEditScreenState extends State<AnecdotalAdminEditScreen> {
                               overflow: TextOverflow.clip),
                           controller: subjectController,
                           decoration:  InputDecoration(
-                              contentPadding: EdgeInsets.only(left: 15 ,top: 0),
+                              contentPadding: const EdgeInsets.only(left: 15 ,top: 0),
                               floatingLabelBehavior:
                               FloatingLabelBehavior.never,
                               filled: true,
                               fillColor: Colors.transparent,
-                              border: OutlineInputBorder(
+                              border: const OutlineInputBorder(
                                 borderSide: BorderSide(
                                     style: BorderStyle.none, width: 0),
                               ),
                               labelText: " ${value.subject==null||value.subject==''?"Select Subject":value.subject.toString()}",
 
-                              labelStyle: TextStyle(
+                              labelStyle: const TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w500,
                                 color: UIGuide.BLACK,
@@ -446,7 +446,7 @@ class _AnecdotalAdminEditScreenState extends State<AnecdotalAdminEditScreen> {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Icon(
+                                      const Icon(
                                         Icons.schedule_outlined,
                                         color: Colors.grey,
                                       ),
@@ -487,7 +487,7 @@ class _AnecdotalAdminEditScreenState extends State<AnecdotalAdminEditScreen> {
                                   const SizedBox(
                                     width: 5,
                                   ),
-                                  Icon(
+                                  const Icon(
                                     Icons.calendar_month_outlined,
                                     color: Colors.grey,
                                   ),
@@ -517,7 +517,7 @@ class _AnecdotalAdminEditScreenState extends State<AnecdotalAdminEditScreen> {
 
 
 
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       filled: true,
 
 
@@ -547,7 +547,7 @@ class _AnecdotalAdminEditScreenState extends State<AnecdotalAdminEditScreen> {
                       minLines: 1,
                       maxLines: 15,
                       keyboardType: TextInputType.multiline,
-                      decoration:  InputDecoration(
+                      decoration:  const InputDecoration(
                         labelText: 'Remarks',
                         hintText: 'Enter Remarks',
 
@@ -778,12 +778,33 @@ class _AnecdotalAdminEditScreenState extends State<AnecdotalAdminEditScreen> {
                                           listen: false)
                                           .staffId,
                                       context);
-                                 if(value.status==200){
-
-                                  await Navigator.pushReplacement(context,
-                                      MaterialPageRoute(builder: (context) =>
-                                          AnecdotalInitialScreenAdmin()));
-                                  }
+                                  value.status==200?
+                                  value.showGuardian==true?
+                                  await value.sendanecdotalUpdateNotiication(
+                                      widget.id,
+                                      categoryIDController.text,
+                                      subjectIDController.text,
+                                      remarkController.text,
+                                      value.studId.toString(),
+                                      value.studId.toString(),
+                                      Provider
+                                          .of<AnecdotalStaffProviders>(context,
+                                          listen: false)
+                                          .staffId == '' ? staffId :
+                                      Provider
+                                          .of<AnecdotalStaffProviders>(context,
+                                          listen: false)
+                                          .staffId,
+                                      context)
+                                      :
+                                  print("not send"):
+                                  print("error");
+                                 // if(value.status==200){
+                                 //
+                                 //  await Navigator.pushReplacement(context,
+                                 //      MaterialPageRoute(builder: (context) =>
+                                 //          AnecdotalInitialScreenAdmin()));
+                                 //  }
 
                               }
 
@@ -813,7 +834,7 @@ class StudentListAnecdotalView extends StatefulWidget {
 
 class _StudentListAnecdotalViewState extends State<StudentListAnecdotalView> {
   final ScrollController _scrollController = ScrollController();
-
+  TextEditingController searchController=TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -822,7 +843,7 @@ class _StudentListAnecdotalViewState extends State<StudentListAnecdotalView> {
       var p = Provider.of<AnecdotalStaffProviders>(context, listen: false);
       await p.setLoading(false);
       await p.clearAllDetails();
-      await p.getStudentViewList(section, course, division);
+      await p.getStudentViewList(section, course, division,searchController.text);
       p.allSelected = false;
 
       await p.getSectionInitial();
@@ -1170,7 +1191,7 @@ class _StudentListAnecdotalViewState extends State<StudentListAnecdotalView> {
                               await value.clearStudentViewList();
                              value.currentPage = 0;
                               await value.getStudentViewList(
-                                  section, course, division);
+                                  section, course, division,searchController.text);
                             },
                             child: const Text(
                               'View',
@@ -1202,7 +1223,7 @@ class _StudentListAnecdotalViewState extends State<StudentListAnecdotalView> {
                           child: InkWell(
                             onTap: () async {
                               await value.selectAll(
-                                  section, course, division);
+                                  section, course, division,searchController.text);
                               // await value.getSelectAllStudents(
                               //     section, course, division);
                             },
@@ -1304,7 +1325,7 @@ class _StudentListAnecdotalViewState extends State<StudentListAnecdotalView> {
                     ? Expanded(
                   child: GestureDetector(
                     onTap: () async {
-                      await value.selectAll(section, course, division);
+                      await value.selectAll(section, course, division,searchController.text);
                     },
                     child: Center(
                       child: Card(

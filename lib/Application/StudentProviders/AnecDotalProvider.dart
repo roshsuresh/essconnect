@@ -17,11 +17,11 @@ class AnecDotalStudViewProvider with ChangeNotifier {
 
 
   Future getanecDotalInitial() async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
     setLoading(true);
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
     };
 
 
@@ -33,13 +33,24 @@ class AnecDotalStudViewProvider with ChangeNotifier {
 
     if (response.statusCode == 200 ) {
 
-      Map<String, dynamic> data = await json.decode(response.body);
+      var data = await json.decode(response.body);
       AnecDotalInitial inita = AnecDotalInitial.fromJson(data);
       maxDate =inita.maxDate;
+
+      if (data.isEmpty || data["anecdotalList"] == null) {
+        print("Empty or null anecdotal data received.");
+        setLoading(false);
+        return; // Return early if data is empty or invalid
+      }
+      List<AnecdotalList> templist = List<AnecdotalList>.from(
+          data["anecdotalList"].map((x) =>
+              AnecdotalList.fromJson(x)));
+      anecdotallist.addAll(templist);
       setLoading(false);
       notifyListeners();
     } else {
       setLoading(false);
+      notifyListeners();
       print("Error in anecdotal response");
     }
   }
@@ -50,11 +61,11 @@ class AnecDotalStudViewProvider with ChangeNotifier {
   String? date;
   List<AnecdotalList> anecdotallist = [];
   Future getanecDotalVieList(String fromDate,String toDate ) async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
     setLoading(true);
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
     };
 
 
@@ -102,11 +113,11 @@ class AnecDotalStudViewProvider with ChangeNotifier {
   //update count
 
   Future seeAnecdotal() async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
+    SharedPreferences pref = await SharedPreferences.getInstance();
     setLoading(true);
     var headers = {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer ${_pref.getString('accesstoken')}'
+      'Authorization': 'Bearer ${pref.getString('accesstoken')}'
     };
     var parsedResponse = await parseJWT();
     final studId = await parsedResponse['ChildId'];

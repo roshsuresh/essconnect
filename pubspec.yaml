@@ -17,7 +17,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 1.1.25+30
+version: 1.1.50+56
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
@@ -29,54 +29,56 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  archive: ^3.6.1
   anim_search_bar: ^2.0.2
   animate_gradient: ^0.0.2+1
   animated_text_kit: ^4.2.2
   awesome_dialog: ^3.0.1
-  awesome_notifications: ^0.7.4+1
+  awesome_notifications: ^0.9.3+1
   badges: ^3.1.1
-  carousel_slider: ^4.2.1
+  carousel_slider: ^5.0.0
   collection: ^1.17.0
   connectivity_plus: ^4.0.2
   cupertino_icons: ^1.0.2
-  file_picker: ^5.3.3
+  file_picker: ^8.1.2
   firebase_auth: ^4.7.2
   firebase_core: ^2.15.0
   firebase_messaging: ^14.6.5
   flutter:
     sdk: flutter
-  flutter_animated_dialog: ^2.0.1
+  billDeskSDK:
+    path: ./billDeskSDK
   flutter_downloader: ^1.11.3
-  flutter_inappwebview: ^5.7.2+3
-  flutter_local_notifications: ^15.1.1
+  flutter_inappwebview: ^6.1.3
+  flutter_local_notifications: ^17.2.2
   flutter_pw_validator: ^1.6.0
   flutter_spinkit: ^5.2.0
   flutter_staggered_animations: ^1.1.1
   flutter_svg: ^2.0.7
   http: ^1.1.0
-  intl: ^0.18.1
+  intl: ^0.19.0
   jwt_decoder: ^2.0.1
   loading_indicator: ^3.1.1
   lottie: ^2.5.0
-  marquee: ^2.2.3
   material_dialogs: ^1.1.4
   modal_bottom_sheet: ^2.1.2
   multi_select_flutter: ^4.1.3
   page_transition: ^2.0.9
   path_provider: ^2.0.15
-  paytm_allinonesdk: ^1.2.0
+  paytm_allinonesdk: ^1.2.6
   percent_indicator: ^4.2.3
   permission_handler: ^11.0.0
   photo_view: ^0.14.0
   provider: any
+  quickalert: ^1.1.0
   razorpay_flutter: ^1.3.6
   rect_getter: ^1.1.0
   shared_preferences: ^2.2.0
-  syncfusion_flutter_pdfviewer: ^23.1.38
+  syncfusion_flutter_pdfviewer: ^27.1.51
   toggle_switch: ^2.0.1
   upgrader: ^8.0.0
   url_launcher: ^6.1.5
-  webview_flutter: ^3.0.4
+  webview_flutter: any
   weipl_checkout_flutter: ^1.0.7
   read_more_text: ^0.0.5
   jwt_decode: ^0.3.1
@@ -85,6 +87,22 @@ dependencies:
   dots_indicator: ^3.0.0
   image: ^4.1.7
   fluttertoast: ^8.2.5
+  hypersdkflutter: ^4.0.21
+  get: ^4.6.5
+  flutter_map: ^7.0.1
+  latlong2: ^0.9.1
+  flutter_background_service: ^5.0.6
+  geolocator: ^13.0.1
+  flutter_map_location_marker: ^9.1.1
+  syncfusion_flutter_pdf: any
+  device_info_plus: ^10.1.2
+  flutter_jailbreak_detection: ^1.10.0
+  flutter_infinite_marquee: ^1.0.0
+  payment_gateway_plugin: ^3.0.5
+  multiselect_dropdown_with_select_all: ^0.4.0
+  open_file: ^3.5.10
+  excel: ^4.0.6
+  payu_checkoutpro_flutter: ^1.2.5
 dev_dependencies:
   flutter_lints: ^2.0.0
   flutter_test:
@@ -128,3 +146,4 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+

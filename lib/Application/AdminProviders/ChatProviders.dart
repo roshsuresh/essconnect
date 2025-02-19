@@ -1,9 +1,10 @@
 import 'dart:convert';
-import 'package:essconnect/Domain/Admin/ChatModel.dart';
-import 'package:essconnect/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+
+import '../../Domain/Admin/ChatModel.dart';
+import '../../utils/constants.dart';
 
 class ChatProviders with ChangeNotifier {
   List<ChatUserIdsModel> initialList = [];

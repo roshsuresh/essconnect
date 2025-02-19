@@ -1,112 +1,120 @@
 class TrackNPayModel {
-  String? orderId;
-  String? addressLine1;
-  String? city;
-  String? udf5;
-  String? state;
-  String? udf4;
-  String? phone;
-  String? zipCode;
-  String? currency;
-  String? returnUrlFailure;
-  String? hash;
-  String? returnUrlCancel;
-  String? email;
-  String? country;
-  String? mode;
-  String? salt;
-  String? amount;
-  String? name;
   String? apiKey;
-  String? udf3;
-  String? udf2;
-  String? returnUrl;
-  String? description;
-  String? udf1;
+  String? country;
+  String? name;
+  String? orderId;
   String? addressLine2;
+  String? addressLine1;
+  String? returnUrlCancel;
+  String? hash;
+  String? udf1;
+  String? zipCode;
+  String? description;
+  String? city;
+  String? currency;
+  String? email;
+  String? formActionUrl;
+  String? udf2;
+  String? udf4;
+  String? amount;
+  String? returnUrlFailure;
+  String? mode;
+  String? state;
+  String? udf5;
+  String? returnUrl;
+  String? udf3;
+  String? phone;
+  String? salt;
+  var split_info;
 
   TrackNPayModel(
-      {this.orderId,
-      this.addressLine1,
-      this.city,
-      this.udf5,
-      this.state,
-      this.udf4,
-      this.phone,
-      this.zipCode,
-      this.currency,
-      this.returnUrlFailure,
-      this.hash,
-      this.returnUrlCancel,
-      this.email,
-      this.country,
-      this.mode,
-      this.salt,
-      this.amount,
-      this.name,
-      this.apiKey,
-      this.udf3,
-      this.udf2,
-      this.returnUrl,
-      this.description,
-      this.udf1,
-      this.addressLine2});
+      {this.apiKey,
+        this.country,
+        this.name,
+        this.orderId,
+        this.addressLine2,
+        this.addressLine1,
+        this.returnUrlCancel,
+        this.hash,
+        this.udf1,
+        this.zipCode,
+        this.description,
+        this.city,
+        this.currency,
+        this.email,
+        this.formActionUrl,
+        this.udf2,
+        this.udf4,
+        this.amount,
+        this.returnUrlFailure,
+        this.mode,
+        this.state,
+        this.udf5,
+        this.returnUrl,
+        this.udf3,
+        this.phone,
+        this.salt,
+      this.split_info});
 
   TrackNPayModel.fromJson(Map<String, dynamic> json) {
-    orderId = json['order_id'];
-    addressLine1 = json['address_line_1'];
-    city = json['city'];
-    udf5 = json['udf5'];
-    state = json['state'];
-    udf4 = json['udf4'];
-    phone = json['phone'];
-    zipCode = json['zip_code'];
-    currency = json['currency'];
-    returnUrlFailure = json['return_url_failure'];
-    hash = json['hash'];
-    returnUrlCancel = json['return_url_cancel'];
-    email = json['email'];
-    country = json['country'];
-    mode = json['mode'];
-    salt = json['salt'];
-    amount = json['amount'];
-    name = json['name'];
     apiKey = json['api_key'];
-    udf3 = json['udf3'];
-    udf2 = json['udf2'];
-    returnUrl = json['return_url'];
-    description = json['description'];
-    udf1 = json['udf1'];
+    country = json['country'];
+    name = json['name'];
+    orderId = json['order_id'];
     addressLine2 = json['address_line_2'];
+    addressLine1 = json['address_line_1'];
+    returnUrlCancel = json['return_url_cancel'];
+    hash = json['hash'];
+    udf1 = json['udf1'];
+    zipCode = json['zip_code'];
+    description = json['description'];
+    city = json['city'];
+    currency = json['currency'];
+    email = json['email'];
+    formActionUrl = json['formActionUrl'];
+    udf2 = json['udf2'];
+    udf4 = json['udf4'];
+    amount = json['amount'];
+    returnUrlFailure = json['return_url_failure'];
+    mode = json['mode'];
+    state = json['state'];
+    udf5 = json['udf5'];
+    returnUrl = json['return_url'];
+    udf3 = json['udf3'];
+    phone = json['phone'];
+    salt = json['salt'];
+    split_info = json['split_info'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['order_id'] = orderId;
-    data['address_line_1'] = addressLine1;
-    data['city'] = city;
-    data['udf5'] = udf5;
-    data['state'] = state;
-    data['udf4'] = udf4;
-    data['phone'] = phone;
-    data['zip_code'] = zipCode;
-    data['currency'] = currency;
-    data['return_url_failure'] = returnUrlFailure;
-    data['hash'] = hash;
-    data['return_url_cancel'] = returnUrlCancel;
-    data['email'] = email;
-    data['country'] = country;
-    data['mode'] = mode;
-    data['salt'] = salt;
-    data['amount'] = amount;
-    data['name'] = name;
-    data['api_key'] = apiKey;
-    data['udf3'] = udf3;
-    data['udf2'] = udf2;
-    data['return_url'] = returnUrl;
-    data['description'] = description;
-    data['udf1'] = udf1;
-    data['address_line_2'] = addressLine2;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['api_key'] = this.apiKey;
+    data['country'] = this.country;
+    data['name'] = this.name;
+    data['order_id'] = this.orderId;
+    data['address_line_2'] = this.addressLine2;
+    data['address_line_1'] = this.addressLine1;
+    data['return_url_cancel'] = this.returnUrlCancel;
+    data['hash'] = this.hash;
+    data['udf1'] = this.udf1;
+    data['zip_code'] = this.zipCode;
+    data['description'] = this.description;
+    data['city'] = this.city;
+    data['currency'] = this.currency;
+    data['email'] = this.email;
+    data['formActionUrl'] = this.formActionUrl;
+    data['udf2'] = this.udf2;
+    data['udf4'] = this.udf4;
+    data['amount'] = this.amount;
+    data['return_url_failure'] = this.returnUrlFailure;
+    data['mode'] = this.mode;
+    data['state'] = this.state;
+    data['udf5'] = this.udf5;
+    data['return_url'] = this.returnUrl;
+    data['udf3'] = this.udf3;
+    data['phone'] = this.phone;
+    data['salt'] = this.salt;
+    data['split_info'] = this.split_info;
     return data;
   }
 }

@@ -30,15 +30,17 @@ class ReportCardModel {
   String? uploadedDate;
   String? description;
   String? fileId;
+  String? academicYear;
 
   ReportCardModel(
-      {this.studentId, this.uploadedDate, this.description, this.fileId});
+      {this.studentId, this.uploadedDate, this.description, this.fileId,this.academicYear});
 
   ReportCardModel.fromJson(Map<String, dynamic> json) {
     studentId = json['studentId'];
     uploadedDate = json['uploadedDate'];
     description = json['description'];
     fileId = json['fileId'];
+    academicYear= json['academicYear'];
   }
 
   Map<String, dynamic> toJson() {
@@ -47,6 +49,7 @@ class ReportCardModel {
     data['uploadedDate'] = uploadedDate;
     data['description'] = description;
     data['fileId'] = fileId;
+    data['academicYear']=academicYear;
     return data;
   }
 }
@@ -64,14 +67,14 @@ class ReportAttachment {
 
   ReportAttachment(
       {this.name,
-      this.extension,
-      this.path,
-      this.url,
-      this.isTemporary,
-      this.isDeleted,
-      this.images,
-      this.createdAt,
-      this.id});
+        this.extension,
+        this.path,
+        this.url,
+        this.isTemporary,
+        this.isDeleted,
+        this.images,
+        this.createdAt,
+        this.id});
 
   ReportAttachment.fromJson(Map<String, dynamic> json) {
     name = json['name'];

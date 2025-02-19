@@ -1,12 +1,13 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:essconnect/Constants.dart';
-import 'package:essconnect/utils/constants.dart';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../Constants.dart';
 import '../../Domain/Staff/RemarkentryStaff.dart';
+import '../../utils/constants.dart';
 
 class RemarksEntryProvider with ChangeNotifier {
   //String? examStatus;

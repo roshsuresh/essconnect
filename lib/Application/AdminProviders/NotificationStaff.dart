@@ -1,17 +1,17 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:essconnect/Constants.dart';
-import 'package:essconnect/Domain/Admin/StaffListModel.dart';
-import 'package:essconnect/Domain/Staff/NotifcationSendModel.dart';
-import 'package:essconnect/Presentation/Admin/Communication/ToStaff.dart';
-import 'package:essconnect/utils/constants.dart';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 import '../../Domain/Admin/AttendanceModel.dart';
+import '../../Domain/Admin/StaffListModel.dart';
+import '../../Domain/Staff/NotifcationSendModel.dart';
 import '../../Presentation/Admin/Communication/SmsFormatToStaff.dart';
+import '../../Presentation/Admin/Communication/ToStaff.dart';
+import '../../utils/constants.dart';
 
 class NotificationToStaffAdminProviders with ChangeNotifier {
   bool _loading = false;
@@ -24,7 +24,7 @@ class NotificationToStaffAdminProviders with ChangeNotifier {
 
   //view
   List<StaffReportNotification> stafflist = [];
-  Future<bool> getNotificationView(String section) async {
+  Future<bool> getNotificationView(String section,String status) async {
     setLoading(true);
     SharedPreferences _pref = await SharedPreferences.getInstance();
     notifyListeners();
@@ -35,7 +35,7 @@ class NotificationToStaffAdminProviders with ChangeNotifier {
     var request = http.Request(
         'GET',
         Uri.parse(
-            '${UIGuide.baseURL}/mobileapp/admin/viewStaffReport?section=$section'));
+            '${UIGuide.baseURL}/mobileapp/admin/viewStaffReport?section=$section&terminatedStatus=$status'));
 
     request.headers.addAll(headers);
 
@@ -43,12 +43,12 @@ class NotificationToStaffAdminProviders with ChangeNotifier {
 
     if (response.statusCode == 200) {
       Map<String, dynamic> data =
-          jsonDecode(await response.stream.bytesToString());
+      jsonDecode(await response.stream.bytesToString());
 
       log(data.toString());
       List<StaffReportNotification> templistt =
-          List<StaffReportNotification>.from(data["staffReport"]
-              .map((x) => StaffReportNotification.fromJson(x)));
+      List<StaffReportNotification>.from(data["staffReport"]
+          .map((x) => StaffReportNotification.fromJson(x)));
 
       stafflist.addAll(templistt);
 
@@ -57,6 +57,8 @@ class NotificationToStaffAdminProviders with ChangeNotifier {
       notifyListeners();
     } else {
       print('Error in notificationView Admin to staff');
+      setLoading(false);
+      notifyListeners();
     }
     return true;
   }
@@ -75,13 +77,13 @@ class NotificationToStaffAdminProviders with ChangeNotifier {
 
   bool isSelected(StaffReportNotification model) {
     StaffReportNotification selected =
-        stafflist.firstWhere((element) => element.id == model.id);
+    stafflist.firstWhere((element) => element.id == model.id);
     return selected.selected ??= false;
   }
 
   void selectItem(StaffReportNotification model) {
     StaffReportNotification selected =
-        stafflist.firstWhere((element) => element.id == model.id);
+    stafflist.firstWhere((element) => element.id == model.id);
 
     selected.selected ??= false;
     selected.selected = !selected.selected!;
@@ -136,7 +138,7 @@ class NotificationToStaffAdminProviders with ChangeNotifier {
       "Title": body,
       "Body": content,
       "FromStaffId":
-          data['role'] == "Guardian" ? data['StudentId'] : data["StaffId"],
+      data['role'] == "Guardian" ? data['StudentId'] : data["StaffId"],
       "SentTo": sentTo,
       "ToId": to,
       "IsSeen": false
@@ -146,7 +148,7 @@ class NotificationToStaffAdminProviders with ChangeNotifier {
       "Title": body,
       "Body": content,
       "FromStaffId":
-          data['role'] == "Guardian" ? data['StudentId'] : data["StaffId"],
+      data['role'] == "Guardian" ? data['StudentId'] : data["StaffId"],
       "SentTo": sentTo,
       "ToId": to,
       "IsSeen": false
@@ -160,15 +162,15 @@ class NotificationToStaffAdminProviders with ChangeNotifier {
       setLoad(true);
       print(await response.stream.bytesToString());
       await AwesomeDialog(
-              context: context,
-              dialogType: DialogType.success,
-              animType: AnimType.rightSlide,
-              headerAnimationLoop: false,
-              title: 'Success',
-              desc: 'Notification Sent Successfully',
-              btnOkOnPress: () {},
-              btnOkIcon: Icons.cancel,
-              btnOkColor: Colors.green)
+          context: context,
+          dialogType: DialogType.success,
+          animType: AnimType.rightSlide,
+          headerAnimationLoop: false,
+          title: 'Success',
+          desc: 'Notification Sent Successfully',
+          btnOkOnPress: () {},
+          btnOkIcon: Icons.cancel,
+          btnOkColor: Colors.green)
           .show();
       setLoad(false);
       notifyListeners();
@@ -216,9 +218,9 @@ class NotificationToStaffAdminProviders with ChangeNotifier {
           context,
           MaterialPageRoute(
               builder: (_) => Text_Matter_NotificationAdminToStaff(
-                    toList: selectedStaffList.map((e) => e.id!).toList(),
-                    type: "Staff",
-                  )));
+                toList: selectedStaffList.map((e) => e.id!).toList(),
+                type: "Staff",
+              )));
     }
   }
 
@@ -250,11 +252,11 @@ class NotificationToStaffAdminProviders with ChangeNotifier {
     try {
       if (response.statusCode == 200) {
         Map<String, dynamic> data =
-            jsonDecode(await response.stream.bytesToString());
+        jsonDecode(await response.stream.bytesToString());
 
         List<AdminStaffNotificationHistory> templist =
-            List<AdminStaffNotificationHistory>.from(data["results"]
-                .map((x) => AdminStaffNotificationHistory.fromJson(x)));
+        List<AdminStaffNotificationHistory>.from(data["results"]
+            .map((x) => AdminStaffNotificationHistory.fromJson(x)));
         historyList.addAll(templist);
         setLoading(false);
         notifyListeners();
@@ -291,13 +293,13 @@ class NotificationToStaffAdminProviders with ChangeNotifier {
 
     if (response.statusCode == 200) {
       Map<String, dynamic> data =
-          jsonDecode(await response.stream.bytesToString());
+      jsonDecode(await response.stream.bytesToString());
 
       Map<String, dynamic> providerrrr = data['currentSmsProvider'];
       print(data);
       print(providerrrr);
       CurrentSmsProvider prov =
-          CurrentSmsProvider.fromJson(data['currentSmsProvider']);
+      CurrentSmsProvider.fromJson(data['currentSmsProvider']);
       providerName = prov.providerName;
       print("provid,$providerName".toString());
 
@@ -356,8 +358,8 @@ class NotificationToStaffAdminProviders with ChangeNotifier {
       print(data);
 
       List<SmsFormatsAdminCompleteview> templist =
-          List<SmsFormatsAdminCompleteview>.from(data["smsFormats"]
-              .map((x) => SmsFormatsAdminCompleteview.fromJson(x)));
+      List<SmsFormatsAdminCompleteview>.from(data["smsFormats"]
+          .map((x) => SmsFormatsAdminCompleteview.fromJson(x)));
       formatlists.addAll(templist);
       print(formatlists);
 
@@ -426,7 +428,7 @@ class NotificationToStaffAdminProviders with ChangeNotifier {
       print(Uri.parse(
           '${UIGuide.baseURL}/sendsmstostaff/save-format/$formatid'));
       request.body = json.encode({
-      "group": "guardianGeneralSMS",
+        "group": "guardianGeneralSMS",
         "name": {
           "id":formatid,
           "name": name,
@@ -529,7 +531,7 @@ class NotificationToStaffAdminProviders with ChangeNotifier {
       print('correct');
       Map<String, dynamic> dashboard = json.decode(response.body);
       SmsFormatsAdminCompleteview ac =
-          SmsFormatsAdminCompleteview.fromJson(dashboard);
+      SmsFormatsAdminCompleteview.fromJson(dashboard);
       smsBody = ac.smsBody;
       extractedValuesStaff = extractValuesInDoubleBrackets(smsBody!);
       print("binithaaaa");
@@ -598,7 +600,7 @@ class NotificationToStaffAdminProviders with ChangeNotifier {
     if (response.statusCode == 200) {
       setLoadSMS(true);
       Map<String, dynamic> data =
-          jsonDecode(await response.stream.bytesToString());
+      jsonDecode(await response.stream.bytesToString());
       Map<String, dynamic> result = data["result"];
       SmsResult smres = SmsResult.fromJson(result);
       issuccess = smres.sendSuccess.toString();
@@ -608,19 +610,19 @@ class NotificationToStaffAdminProviders with ChangeNotifier {
       print(
           ' _ _ _ _ _ _ _ _ _ _ _ _ _ Correct_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _');
       await AwesomeDialog(
-              dismissOnTouchOutside: false,
-              dismissOnBackKeyPress: false,
-              context: context,
-              dialogType: DialogType.success,
-              animType: AnimType.rightSlide,
-              headerAnimationLoop: false,
-              title: 'Sent Successfully',
-              desc: 'Success: $issuccess \n Failed: $isfailed',
-              btnOkOnPress: () async {
-                //  stafflist.clear();
-                balance = "";
-              },
-              btnOkColor: Colors.green)
+          dismissOnTouchOutside: false,
+          dismissOnBackKeyPress: false,
+          context: context,
+          dialogType: DialogType.success,
+          animType: AnimType.rightSlide,
+          headerAnimationLoop: false,
+          title: 'Sent Successfully',
+          desc: 'Success: $issuccess \n Failed: $isfailed',
+          btnOkOnPress: () async {
+            //  stafflist.clear();
+            balance = "";
+          },
+          btnOkColor: Colors.green)
           .show();
       setLoadSMS(false);
     } else {

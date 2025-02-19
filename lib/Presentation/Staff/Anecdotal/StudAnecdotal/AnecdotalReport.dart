@@ -184,7 +184,7 @@ class _AnecdotalReportState extends State<AnecdotalReport> {
                           value.childId!=''?
                               TextField(
                                 enabled: false,
-                                decoration: InputDecoration(
+                                decoration: const InputDecoration(
                                   labelText: "Section"
                                 ),
                                 onTap: (){},
@@ -285,7 +285,7 @@ class _AnecdotalReportState extends State<AnecdotalReport> {
                           value.childId!=''?
                           TextField(
                             enabled: false,
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                                 labelText: "Course"
                             ),
                             onTap: (){},
@@ -399,7 +399,7 @@ class _AnecdotalReportState extends State<AnecdotalReport> {
                               value.childId!=''?
                               TextField(
                                 enabled: false,
-                                decoration: InputDecoration(
+                                decoration: const InputDecoration(
                                     labelText: "Division"
                                 ),
                                 onTap: (){},
@@ -621,7 +621,7 @@ class _AnecdotalReportState extends State<AnecdotalReport> {
                               const SizedBox(
                                 width: 5,
                               ),
-                              Icon(
+                              const Icon(
                                 Icons.calendar_month_outlined,
                                 color: Colors.grey,
                               ),
@@ -667,7 +667,7 @@ class _AnecdotalReportState extends State<AnecdotalReport> {
                               const SizedBox(
                                 width: 5,
                               ),
-                              Icon(
+                              const Icon(
                                 Icons.calendar_month_outlined,
                                 color: Colors.grey,
                               ),
@@ -883,9 +883,9 @@ class _AnecdotalReportState extends State<AnecdotalReport> {
                      Container(
                        height: 20,
                          width: 20,
-                       color:   Color.fromARGB(255, 252, 249, 208),
+                       color:   const Color.fromARGB(255, 252, 249, 208),
                      ),
-                     Text("Important")
+                     const Text("Important")
                    ],)
                   ],
                 ),
@@ -911,19 +911,19 @@ class _AnecdotalReportState extends State<AnecdotalReport> {
                                  mainAxisAlignment: MainAxisAlignment.start,
                                  children: [
                                    Container(
+                                     decoration: BoxDecoration(
+                                        border: Border.all(width: 1, color: Colors.black12),
+                                        borderRadius: const BorderRadius.all(Radius.circular(8)),
+                                        color: UIGuide.THEME_LIGHT),
                                      child: Padding(
                                        padding: const EdgeInsets.all(3.0),
                                        child: Text(formattedDate),),
-                                      decoration: BoxDecoration(
-                                        border: Border.all(width: 1, color: Colors.black12),
-                                        borderRadius: BorderRadius.all(Radius.circular(8)),
-                                        color: UIGuide.THEME_LIGHT),
                                    ),
                                  ],),
                               kheight5,
                               ListView.builder(
                                 shrinkWrap: true,
-                                  physics: NeverScrollableScrollPhysics(),
+                                  physics: const NeverScrollableScrollPhysics(),
                                   itemCount: provider.results[index].diaryList.length,
                                   itemBuilder: (context,ind)=>
 
@@ -936,9 +936,9 @@ class _AnecdotalReportState extends State<AnecdotalReport> {
                                                   width: 1,
                                                   color: UIGuide.THEME_LIGHT
                                               ),
-                                            borderRadius: BorderRadius.all(Radius.circular(8)),
+                                            borderRadius: const BorderRadius.all(Radius.circular(8)),
                                             color: provider.results[index].diaryList[ind].isImportant==true?
-                                               Color.fromARGB(255, 252, 249, 208)
+                                               const Color.fromARGB(255, 252, 249, 208)
                                                 :Colors.white
                                           ),
 
@@ -955,21 +955,22 @@ class _AnecdotalReportState extends State<AnecdotalReport> {
                                                       children: [
                                                         Container(
 
+                                                          decoration: const BoxDecoration(
+
+                                                              color: UIGuide.THEME_LIGHT
+                                                          ),
+
                                                           child:Padding(
                                                             padding: const EdgeInsets.all(2.0),
                                                             child: Text(
                                                                 provider.results[index].diaryList[ind].slNo.toString()),
                                                           ),
-                                                          decoration: BoxDecoration(
-
-                                                              color: UIGuide.THEME_LIGHT
-                                                          ),
                                                         ),
 
 
-                                                        Text("Name : "),
+                                                        const Text("Name : "),
                                                         Text(provider.results[index].diaryList[ind].name.toString(),
-                                                          style: TextStyle(
+                                                          style: const TextStyle(
                                                               color: UIGuide.light_Purple
                                                           ),
                                                           overflow: TextOverflow.ellipsis,
@@ -991,9 +992,9 @@ class _AnecdotalReportState extends State<AnecdotalReport> {
 
                                                       children: [
 
-                                                        Text("Admn No: "),
+                                                        const Text("Admn No: "),
                                                         Text(provider.results[index].diaryList[ind].admissionNo.toString(),
-                                                          style: TextStyle(
+                                                          style: const TextStyle(
                                                               color: UIGuide.light_Purple
                                                           ),
                                                         ),
@@ -1002,11 +1003,11 @@ class _AnecdotalReportState extends State<AnecdotalReport> {
                                                     Row(
 
                                                       children: [
-                                                        Text("Class : "),
+                                                        const Text("Class : "),
                                                         Text(
                                                           provider.results[index].diaryList[ind].division==null?"":
                                                           provider.results[index].diaryList[ind].division.toString(),
-                                                          style: TextStyle(
+                                                          style: const TextStyle(
                                                               color: UIGuide.light_Purple
                                                           ),),
                                                       ],
@@ -1014,11 +1015,11 @@ class _AnecdotalReportState extends State<AnecdotalReport> {
                                                     Row(
 
                                                       children: [
-                                                        Text("Roll No : "),
+                                                        const Text("Roll No : "),
                                                         Text(
                                                             provider.results[index].diaryList[ind].rollNo==null?"":
                                                           provider.results[index].diaryList[ind].rollNo.toString(),
-                                                          style: TextStyle(
+                                                          style: const TextStyle(
                                                               color: UIGuide.light_Purple
                                                           ),),
                                                       ],
@@ -1032,7 +1033,7 @@ class _AnecdotalReportState extends State<AnecdotalReport> {
                                                 child: Row(
 
                                                   children: [
-                                                    Text("Category : "),
+                                                    const Text("Category : "),
                                                     Expanded(
                                                       child: Padding(
                                                         padding: const EdgeInsets.only(top:4.0),
@@ -1056,7 +1057,7 @@ class _AnecdotalReportState extends State<AnecdotalReport> {
                                                 child: Row(
 
                                                   children: [
-                                                    Text("Subject : "),
+                                                    const Text("Subject : "),
                                                     Expanded(
                                                       child: Padding(
                                                         padding: const EdgeInsets.only(top:4.0),
@@ -1081,9 +1082,9 @@ class _AnecdotalReportState extends State<AnecdotalReport> {
                                                 child: Row(
 
                                                   children: [
-                                                    Text("Remarks By: "),
+                                                    const Text("Remarks By: "),
                                                     Text(provider.results[index].diaryList[ind].remarksBy.toString(),
-                                                      style: TextStyle(
+                                                      style: const TextStyle(
                                                           color: UIGuide.light_Purple
                                                       ),
                                                         overflow: TextOverflow.ellipsis
@@ -1096,9 +1097,9 @@ class _AnecdotalReportState extends State<AnecdotalReport> {
                                                 child: Row(
 
                                                   children: [
-                                                    Text("Created By : "),
+                                                    const Text("Created By : "),
                                                     Text(provider.results[index].diaryList[ind].createdBy.toString(),
-                                                      style: TextStyle(
+                                                      style: const TextStyle(
                                                           color: UIGuide.light_Purple
                                                       ),
                                                         overflow: TextOverflow.ellipsis
@@ -1111,7 +1112,7 @@ class _AnecdotalReportState extends State<AnecdotalReport> {
                                                 child: Row(
 
                                                   children: [
-                                                    Text("Remarks : "),
+                                                    const Text("Remarks : "),
                                                     Expanded(
                                                       child: Padding(
                                                         padding: const EdgeInsets.only(top:4.0),
@@ -1335,12 +1336,12 @@ class _StudentListAnecdotalReportState extends State<StudentListAnecdotalReport>
                                 },
                                 child: Container(
                                   width: size.width - 15,
-                                  decoration:  BoxDecoration(
+                                  decoration:  const BoxDecoration(
                                       color: UIGuide.light_black,
                                       borderRadius: BorderRadius.all(
                                           Radius.circular(10))),
                                   child: Padding(
-                                    padding:  EdgeInsets.all(8.0),
+                                    padding:  const EdgeInsets.all(8.0),
                                     child: Column(
                                       // crossAxisAlignment:
                                       // CrossAxisAlignment.start,
@@ -1351,7 +1352,7 @@ class _StudentListAnecdotalReportState extends State<StudentListAnecdotalReport>
 
                                             Row(
                                               children: [
-                                                Text("Name: ",style: TextStyle(
+                                                const Text("Name: ",style: TextStyle(
                                                   fontSize: 12
                                                 ),),
                                                 RichText(
@@ -1377,7 +1378,7 @@ class _StudentListAnecdotalReportState extends State<StudentListAnecdotalReport>
                                             ),
                                             Row(
                                               children: [
-                                                Text("Adm No: ",style: TextStyle(
+                                                const Text("Adm No: ",style: TextStyle(
                                                     fontSize: 12
                                                 ),),
                                                 RichText(
@@ -1410,17 +1411,17 @@ class _StudentListAnecdotalReportState extends State<StudentListAnecdotalReport>
 
                                             Row(
                                               children: [
-                                                Text("Div: ",style: TextStyle(
+                                                const Text("Div: ",style: TextStyle(
                                                     fontSize: 12
                                                 ),),
                                                 RichText(
                                                   overflow:
                                                   TextOverflow.ellipsis,
                                                   maxLines: 1,
-                                                  strutStyle:  StrutStyle(
+                                                  strutStyle:  const StrutStyle(
                                                       fontSize: 8.0),
                                                   text: TextSpan(
-                                                    style:  TextStyle(
+                                                    style:  const TextStyle(
                                                       fontSize: 11,
 
                                                       color: UIGuide.light_Purple,
@@ -1436,17 +1437,17 @@ class _StudentListAnecdotalReportState extends State<StudentListAnecdotalReport>
                                             ),
                                             Row(
                                               children: [
-                                                Text("Roll No: ",style: TextStyle(
+                                                const Text("Roll No: ",style: TextStyle(
                                                     fontSize: 12
                                                 ),),
                                                 RichText(
                                                   overflow:
                                                   TextOverflow.ellipsis,
                                                   maxLines: 1,
-                                                  strutStyle:  StrutStyle(
+                                                  strutStyle:  const StrutStyle(
                                                       fontSize: 8.0),
                                                   text: TextSpan(
-                                                    style:  TextStyle(
+                                                    style:  const TextStyle(
                                                       fontSize: 11,
 
                                                       color: UIGuide.light_Purple,

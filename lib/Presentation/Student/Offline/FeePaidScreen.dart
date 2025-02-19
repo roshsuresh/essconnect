@@ -22,7 +22,7 @@ class FeePaidScreen extends StatelessWidget {
       builder: (context, value, _) => Scaffold(
           body: value.loadingFees
               ? spinkitLoader()
-              : value.feePAIDList.isEmpty
+              : value.feePAIDList.isEmpty || value.feePAIDList == null
                   ? LottieBuilder.network(
                       'https://assets2.lottiefiles.com/private_files/lf30_lkquf6qz.json')
                   : Column(
@@ -246,7 +246,7 @@ class FeePaidScreen extends StatelessWidget {
                                                                                     const Text("Amount: "),
                                                                                     Expanded(
                                                                                       child: Text(
-                                                                                        value.feePAIDList[index].detailedFeesList![ind].amount == null ? "0.00" : value.feePAIDList[index].detailedFeesList![ind].amount!.toStringAsFixed(2),
+                                                                                        value.feePAIDList[index].detailedFeesList![ind].actualAmount == null ? "0.00" : value.feePAIDList[index].detailedFeesList![ind].actualAmount!.toStringAsFixed(2),
                                                                                         style: const TextStyle(
                                                                                           fontWeight: FontWeight.w600,
                                                                                           color: UIGuide.light_Purple,
@@ -506,7 +506,7 @@ class FeePaidScreen extends StatelessWidget {
                                                         const Spacer(),
                                                         value.feePAIDList[index]
                                                                     .isCancelled ==
-                                                                true
+                                                                "true"
                                                             ? const Expanded(
                                                                 child: Text(
                                                                   "Cancelled",

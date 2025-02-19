@@ -135,7 +135,7 @@ class _AnecDotalState extends State<AnecDotal> {
               kheight10,
               Row(
                 children: [
-                  Spacer(),
+                  const Spacer(),
                   SizedBox(
                     width: size.width * .43,
                     height: 45,
@@ -172,7 +172,7 @@ class _AnecDotalState extends State<AnecDotal> {
                                       textTheme: ButtonTextTheme.primary),
                                 ),
                                 child: child!);
-                          },barrierDismissible: false
+                          },
                         );
                         setState(() {
                           fromDate = DateFormat('dd-MMM-yyyy')
@@ -194,7 +194,7 @@ class _AnecDotalState extends State<AnecDotal> {
                       ),
                     ),
                   ),
-                  Spacer(),
+                  const Spacer(),
 
                   SizedBox(
                     width: size.width * .43,
@@ -232,7 +232,6 @@ class _AnecDotalState extends State<AnecDotal> {
                                 ),
                                 child: child!);
                           },
-                            barrierDismissible: false
                         );
                         setState(() {
                           toDate = DateFormat('dd-MMM-yyyy')
@@ -254,7 +253,7 @@ class _AnecDotalState extends State<AnecDotal> {
                       ),
                     ),
                   ),
-                  Spacer(),
+                  const Spacer(),
                 ],
               ),
               kheight10,
@@ -350,9 +349,9 @@ class _AnecDotalState extends State<AnecDotal> {
                     Container(
                       height: 20,
                       width: 20,
-                      color:   Color.fromARGB(255, 252, 249, 208),
+                      color:   const Color.fromARGB(255, 252, 249, 208),
                     ),
-                    Text(" Important")
+                    const Text(" Important")
                   ],)
                 ],
               ),
@@ -399,7 +398,7 @@ class _AnecDotalState extends State<AnecDotal> {
 
                                         color:
 
-                                        Color.fromARGB(
+                                        const Color.fromARGB(
                                             255, 234, 234, 236),
                                         border: Border.all(
                                             color: UIGuide.light_Purple),
@@ -417,10 +416,10 @@ class _AnecDotalState extends State<AnecDotal> {
                                                 .anecdotallist[
                                             index].isImportant!
                                                 ?
-                                            Color.fromARGB(255, 252, 249, 208):
-                                            Color.fromARGB(
+                                            const Color.fromARGB(255, 252, 249, 208):
+                                            const Color.fromARGB(
                                                 255, 255, 255, 255),
-                                            borderRadius: BorderRadius.all(
+                                            borderRadius: const BorderRadius.all(
                                               Radius.circular(5),
                                             ),
                                           ),
@@ -520,7 +519,7 @@ class _AnecDotalState extends State<AnecDotal> {
 
                                                     Row(
                                                       children: [
-                                                        Text("Remarks By: ",
+                                                        const Text("Remarks By: ",
                                                           style: TextStyle(
                                                               color: Colors.grey
                                                           ),
