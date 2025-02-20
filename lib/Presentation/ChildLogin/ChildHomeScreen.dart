@@ -70,10 +70,9 @@ class _ChildHomeState extends State<ChildHome> {
       body: Consumer<ConnectivityProvider>(
         builder: (context, connection, child) => connection.isOnline == false
             ? const NoInternetConnection()
-            : UpgradeAlert(
-          upgrader: Upgrader(
-              dialogStyle: UpgradeDialogStyle.cupertino,
-              durationUntilAlertAgain: Duration(days: 1)),
+            :
+        UpgradeAlert(
+          dialogStyle: UpgradeDialogStyle.cupertino,
           child: ListView(
             physics: const NeverScrollableScrollPhysics(),
             children: [

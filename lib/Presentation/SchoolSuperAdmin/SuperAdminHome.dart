@@ -72,11 +72,7 @@ class _SuperAdminHomeState extends State<SuperAdminHome> {
         builder: (context, connection, child) => connection.isOnline == false
             ? const NoInternetConnection()
             : UpgradeAlert(
-          upgrader: Upgrader(
-              showReleaseNotes: true,
-              showIgnore: false,
-              dialogStyle: UpgradeDialogStyle.cupertino,
-              durationUntilAlertAgain: const Duration(days: 1)),
+          dialogStyle: UpgradeDialogStyle.cupertino,
           child: ListView(
             physics: const BouncingScrollPhysics(),
             children: [
