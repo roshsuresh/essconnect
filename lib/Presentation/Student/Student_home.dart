@@ -258,8 +258,8 @@ class _StudentHomeState extends State<StudentHome> {
                                                         const BoxDecoration(
                                                       image: DecorationImage(
                                                         opacity: 20,
-                                                        image: AssetImage(
-                                                          'assets/Profilee.png',
+                                                        image: NetworkImage(
+                                                          'https://gj-eschool-files-public.s3.amazonaws.com/mobileapp/assets/Profilee.png',
                                                         ),
                                                       ),
                                                     ),
@@ -315,8 +315,8 @@ class _StudentHomeState extends State<StudentHome> {
                                                                     const DecorationImage(
                                                                   opacity: 20,
                                                                   image:
-                                                                      AssetImage(
-                                                                    'assets/Noticeboard.png',
+                                                                      NetworkImage(
+                                                                    'https://gj-eschool-files-public.s3.amazonaws.com/mobileapp/assets/Noticeboard.png',
                                                                   ),
                                                                 ),
                                                                 borderRadius:
@@ -425,8 +425,8 @@ class _StudentHomeState extends State<StudentHome> {
                                                                       opacity:
                                                                           20,
                                                                       image:
-                                                                          AssetImage(
-                                                                        'assets/Noticeboard.png',
+                                                                          NetworkImage(
+                                                                        'https://gj-eschool-files-public.s3.amazonaws.com/mobileapp/assets/Noticeboard.png',
                                                                       ),
                                                                     ),
                                                                     borderRadius:
@@ -489,8 +489,8 @@ class _StudentHomeState extends State<StudentHome> {
                                                                     const DecorationImage(
                                                                   opacity: 20,
                                                                   image:
-                                                                      AssetImage(
-                                                                    'assets/notificationnew.png',
+                                                                      NetworkImage(
+                                                                    'https://gj-eschool-files-public.s3.amazonaws.com/mobileapp/assets/Notification.png',
                                                                   ),
                                                                 ),
                                                                 borderRadius:
@@ -598,8 +598,8 @@ class _StudentHomeState extends State<StudentHome> {
                                                                       opacity:
                                                                           20,
                                                                       image:
-                                                                          AssetImage(
-                                                                        'assets/notificationnew.png',
+                                                                          NetworkImage(
+                                                                        'https://gj-eschool-files-public.s3.amazonaws.com/mobileapp/assets/Notification.png',
                                                                       ),
                                                                     ),
                                                                     borderRadius:
@@ -627,75 +627,6 @@ class _StudentHomeState extends State<StudentHome> {
                                                   ),
                                       ),
 
-                                      // Padding(
-                                      //   padding: const EdgeInsets.only(
-                                      //       left: 10, right: 10),
-                                      //   child: GestureDetector(
-                                      //     onTap: () async {
-                                      //       await Provider.of<
-                                      //           Curriculamprovider>(
-                                      //           context,
-                                      //           listen: false)
-                                      //           .getCuriculamtoken();
-                                      //       await Navigator.push(
-                                      //         context,
-                                      //         PageTransition(
-                                      //           type: PageTransitionType
-                                      //               .rightToLeft,
-                                      //           child:
-                                      //           // PortionView(),
-                                      //           // StudentPortions(),
-                                      //           const StudentPortal(),
-                                      //           duration: const Duration(
-                                      //               milliseconds: 300),
-                                      //         ),
-                                      //       );
-                                      //     },
-                                      //     child: Column(
-                                      //       mainAxisAlignment:
-                                      //       MainAxisAlignment.spaceEvenly,
-                                      //       children: [
-                                      //         Card(
-                                      //           elevation: 10,
-                                      //           color: Colors.white,
-                                      //           shape: RoundedRectangleBorder(
-                                      //             borderRadius:
-                                      //             BorderRadius.circular(
-                                      //                 12.0),
-                                      //           ),
-                                      //           child: Padding(
-                                      //             padding:
-                                      //             const EdgeInsets.all(8.0),
-                                      //             child: Container(
-                                      //               height: 38,
-                                      //               width: 38,
-                                      //               decoration: BoxDecoration(
-                                      //                 image:
-                                      //                 const DecorationImage(
-                                      //                   opacity: 20,
-                                      //                   image: AssetImage(
-                                      //                     'assets/adminportal.png',
-                                      //                   ),
-                                      //                 ),
-                                      //                 borderRadius:
-                                      //                 BorderRadius.circular(
-                                      //                     10),
-                                      //               ),
-                                      //             ),
-                                      //           ),
-                                      //         ),
-                                      //         kheight,
-                                      //         const Text(
-                                      //           'School Portal',
-                                      //           style: TextStyle(
-                                      //               fontWeight: FontWeight.w600,
-                                      //               fontSize: 11,
-                                      //               color: Colors.black),
-                                      //         )
-                                      //       ],
-                                      //     ),
-                                      //   ),
-                                      // ),
 
                                       Consumer<IconClickNotifier>(
                                         builder: (context, iconClickNotifier,
@@ -754,8 +685,8 @@ class _StudentHomeState extends State<StudentHome> {
                                                           const BoxDecoration(
                                                         image: DecorationImage(
                                                           opacity: 20,
-                                                          image: AssetImage(
-                                                            'assets/adminportal.png',
+                                                          image: NetworkImage(
+                                                            'https://gj-eschool-files-public.s3.amazonaws.com/mobileapp/assets/adminportal.png',
                                                           ),
                                                         ),
                                                       ),
@@ -854,113 +785,7 @@ class _StudentHomeState extends State<StudentHome> {
                                                         MainAxisAlignment
                                                             .spaceEvenly,
                                                     children: [
-                                                      // Expanded(
-                                                      //   child: GestureDetector(
-                                                      //     onTap: () async {
-                                                      //       await Provider.of<
-                                                      //           FeeWiseProvider>(
-                                                      //           context,
-                                                      //           listen:
-                                                      //           false)
-                                                      //           .getFeeWiseStatus(
-                                                      //           context);
-                                                      //       status = Provider.of<
-                                                      //           FeeWiseProvider>(
-                                                      //           context,
-                                                      //           listen:
-                                                      //           false)
-                                                      //           .existFeeWise;
-                                                      //       print(
-                                                      //           "modulee ${module.fees}");
-                                                      //       module.fees ==
-                                                      //           true ||
-                                                      //           module.feesOnly ==
-                                                      //               true
-                                                      //           ? await Navigator
-                                                      //           .push(
-                                                      //           context,
-                                                      //           PageTransition(
-                                                      //             type:
-                                                      //             PageTransitionType.rightToLeft,
-                                                      //             child:  schoolid=="aae5cd74-bf25-4f4d-8fcd-fe19448c313f"
-                                                      //                 ||
-                                                      //                 schoolid=="aa923813-71dc-4af0-861b-bb2d4c625aa8"
-                                                      //                 ||
-                                                      //                 schoolid=="82fe07de-c0f7-44b1-9f85-07cfb26caf04"
-                                                      //                 ? FeeWebScreen(schdomain: subDomain!)
-                                                      //                 :
-                                                      //             status==true?
-                                                      //             PayFeeWise():
-                                                      //             PayFee(),
-                                                      //             duration:
-                                                      //             const Duration(milliseconds: 300),
-                                                      //           ))
-                                                      //           : _noAcess();
-                                                      //     },
-                                                      //     child: Column(
-                                                      //       mainAxisAlignment:
-                                                      //       MainAxisAlignment
-                                                      //           .spaceEvenly,
-                                                      //       children: [
-                                                      //         Card(
-                                                      //           elevation: 10,
-                                                      //           color: Colors
-                                                      //               .white,
-                                                      //           shape:
-                                                      //           RoundedRectangleBorder(
-                                                      //             borderRadius:
-                                                      //             BorderRadius
-                                                      //                 .circular(
-                                                      //                 12.0),
-                                                      //           ),
-                                                      //           child: Padding(
-                                                      //             padding:
-                                                      //             const EdgeInsets
-                                                      //                 .all(
-                                                      //                 8.0),
-                                                      //             child:
-                                                      //             Container(
-                                                      //               height: 38,
-                                                      //               width: 38,
-                                                      //               decoration:
-                                                      //               BoxDecoration(
-                                                      //                 image:
-                                                      //                 DecorationImage(
-                                                      //                   opacity: module.fees == true ||
-                                                      //                       module.feesOnly == true
-                                                      //                       ? 20
-                                                      //                       : 0.2,
-                                                      //                   image:
-                                                      //                   const AssetImage(
-                                                      //                     'assets/payNew.png',
-                                                      //                   ),
-                                                      //                 ),
-                                                      //               ),
-                                                      //             ),
-                                                      //           ),
-                                                      //         ),
-                                                      //         kheight,
-                                                      //         Text(
-                                                      //           'Pay Fee',
-                                                      //           style: TextStyle(
-                                                      //               fontWeight:
-                                                      //               FontWeight
-                                                      //                   .w600,
-                                                      //               fontSize:
-                                                      //               11,
-                                                      //               color: module.fees ==
-                                                      //                   true ||
-                                                      //                   module.feesOnly ==
-                                                      //                       true
-                                                      //                   ? Colors
-                                                      //                   .black
-                                                      //                   : Colors
-                                                      //                   .black26),
-                                                      //         )
-                                                      //       ],
-                                                      //     ),
-                                                      //   ),
-                                                      // ),
+
 
                                                       Consumer<
                                                           IconClickNotifier>(
@@ -1052,8 +877,8 @@ class _StudentHomeState extends State<StudentHome> {
                                                                             opacity:
                                                                                 20,
                                                                             image:
-                                                                                AssetImage(
-                                                                              'assets/payNew.png',
+                                                                                NetworkImage(
+                                                                              'https://gj-eschool-files-public.s3.amazonaws.com/mobileapp/assets/payNew.png',
                                                                             ),
                                                                           ),
                                                                         ),
@@ -1134,8 +959,8 @@ class _StudentHomeState extends State<StudentHome> {
                                                                             ? 20
                                                                             : 0.2,
                                                                         image:
-                                                                            const AssetImage(
-                                                                          'assets/Payment History.png',
+                                                                            const NetworkImage(
+                                                                          'https://gj-eschool-files-public.s3.ap-south-1.amazonaws.com/mobileapp/assets/Payment+History.png',
                                                                         ),
                                                                       ),
                                                                       borderRadius:
@@ -1289,8 +1114,8 @@ class _StudentHomeState extends State<StudentHome> {
                                                                             ? 20
                                                                             : 0.2,
                                                                         image:
-                                                                            const AssetImage(
-                                                                          'assets/offline fee.png',
+                                                                            const NetworkImage(
+                                                                          'https://gj-eschool-files-public.s3.ap-south-1.amazonaws.com/mobileapp/assets/offline+fee.png',
                                                                         ),
                                                                       ),
                                                                     ),
@@ -1369,8 +1194,8 @@ class _StudentHomeState extends State<StudentHome> {
                                                                             ? 20
                                                                             : 0.2,
                                                                         image:
-                                                                            const AssetImage(
-                                                                          'assets/offline bus fee.png',
+                                                                            const NetworkImage(
+                                                                          'https://gj-eschool-files-public.s3.ap-south-1.amazonaws.com/mobileapp/assets/offline+bus+fee.png',
                                                                         ),
                                                                       ),
                                                                       borderRadius:
@@ -1514,8 +1339,8 @@ class _StudentHomeState extends State<StudentHome> {
                                                                   ? 20
                                                                   : 0.2,
                                                           image:
-                                                              const AssetImage(
-                                                            'assets/Attendance.png',
+                                                              const NetworkImage(
+                                                            'https://gj-eschool-files-public.s3.amazonaws.com/mobileapp/assets/attendance',
                                                           ),
                                                         ),
                                                       ),
@@ -1539,101 +1364,7 @@ class _StudentHomeState extends State<StudentHome> {
                                             ),
                                           ),
                                         ),
-                                        // Consumer<ProfileProvider>(
-                                        //   builder: (context, value, child) {
-                                        //     return
-                                        //       GestureDetector(
-                                        //       onTap: () async {
-                                        //         if (module.timetable == true) {
-                                        //           var divId =
-                                        //           value.divisionId == null
-                                        //               ? 'divId is null'
-                                        //               : value.divisionId
-                                        //               .toString();
-                                        //           print(divId);
-                                        //           await Provider.of<
-                                        //               Timetableprovider>(
-                                        //               context,
-                                        //               listen: false)
-                                        //               .getTimeTable(divId);
-                                        //           await Navigator.push(
-                                        //               context,
-                                        //               PageTransition(
-                                        //                 type: PageTransitionType
-                                        //                     .rightToLeft,
-                                        //                 child:
-                                        //                 const Timetable(),
-                                        //                 duration:
-                                        //                 const Duration(
-                                        //                     milliseconds:
-                                        //                     300),
-                                        //               ));
-                                        //         } else {
-                                        //           _noAcess();
-                                        //         }
-                                        //       },
-                                        //       child: Padding(
-                                        //         padding: const EdgeInsets.only(
-                                        //             left: 10, right: 10),
-                                        //         child: Column(
-                                        //           mainAxisAlignment:
-                                        //           MainAxisAlignment
-                                        //               .spaceEvenly,
-                                        //           children: [
-                                        //             Card(
-                                        //               elevation: 10,
-                                        //               color: Colors.white,
-                                        //               shape:
-                                        //               RoundedRectangleBorder(
-                                        //                 borderRadius:
-                                        //                 BorderRadius
-                                        //                     .circular(12.0),
-                                        //               ),
-                                        //               child: Padding(
-                                        //                 padding:
-                                        //                 const EdgeInsets
-                                        //                     .all(8.0),
-                                        //                 child: Container(
-                                        //                   height: 38,
-                                        //                   width: 38,
-                                        //                   decoration:
-                                        //                   BoxDecoration(
-                                        //                     image:
-                                        //                     DecorationImage(
-                                        //                       opacity:
-                                        //                       module.timetable ==
-                                        //                           true
-                                        //                           ? 20
-                                        //                           : 0.2,
-                                        //                       image:
-                                        //                       const AssetImage(
-                                        //                         'assets/Timetable.png',
-                                        //                       ),
-                                        //                     ),
-                                        //                   ),
-                                        //                 ),
-                                        //               ),
-                                        //             ),
-                                        //             kheight,
-                                        //             Text(
-                                        //               'Timetable',
-                                        //               style: TextStyle(
-                                        //                   fontWeight:
-                                        //                   FontWeight.w600,
-                                        //                   fontSize: 11,
-                                        //                   color:
-                                        //                   module.timetable ==
-                                        //                       true
-                                        //                       ? Colors.black
-                                        //                       : Colors
-                                        //                       .black26),
-                                        //             )
-                                        //           ],
-                                        //         ),
-                                        //       ),
-                                        //     );
-                                        //   },
-                                        // ), //timetable_old
+
 
                                         Consumer<IconClickNotifier>(
                                           builder: (context, iconClickNotifier,
@@ -1717,8 +1448,8 @@ class _StudentHomeState extends State<StudentHome> {
                                                                   DecorationImage(
                                                                 opacity: 20,
                                                                 image:
-                                                                    AssetImage(
-                                                                  'assets/Timetable.png',
+                                                                    NetworkImage(
+                                                                  'https://gj-eschool-files-public.s3.amazonaws.com/mobileapp/assets/Timetable.png',
                                                                 ),
                                                               ),
                                                             ),
@@ -1784,8 +1515,8 @@ class _StudentHomeState extends State<StudentHome> {
                                                           const BoxDecoration(
                                                         image: DecorationImage(
                                                           opacity: 20,
-                                                          image: AssetImage(
-                                                            'assets/diary.png',
+                                                          image: NetworkImage(
+                                                            'https://gj-eschool-files-public.s3.amazonaws.com/mobileapp/assets/diary.png',
                                                           ),
                                                         ),
                                                       ),
@@ -1805,75 +1536,6 @@ class _StudentHomeState extends State<StudentHome> {
                                             ),
                                           ),
                                         ),
-
-                                        // GestureDetector(
-                                        //   onTap: () async {
-                                        //
-                                        //     module.curiculam == true
-                                        //         ?
-                                        //         await Navigator.push(
-                                        //             context,
-                                        //             PageTransition(
-                                        //               type:
-                                        //               PageTransitionType
-                                        //                   .rightToLeft,
-                                        //               child:
-                                        //               const AnecDotal(),
-                                        //               duration:
-                                        //               const Duration(
-                                        //                   milliseconds:
-                                        //                   300),
-                                        //             ))
-                                        //
-                                        //         : _noAcess();
-                                        //   },
-                                        //   child: Padding(
-                                        //     padding: const EdgeInsets.only(
-                                        //         left: 10, right: 10),
-                                        //     child: Column(
-                                        //       mainAxisAlignment:
-                                        //       MainAxisAlignment.spaceEvenly,
-                                        //       children: [
-                                        //         Card(
-                                        //           elevation: 10,
-                                        //           color: Colors.white,
-                                        //           shape: RoundedRectangleBorder(
-                                        //             borderRadius:
-                                        //             BorderRadius.circular(
-                                        //                 12.0),
-                                        //           ),
-                                        //           child: Padding(
-                                        //             padding:
-                                        //             const EdgeInsets.all(
-                                        //                 8.0),
-                                        //             child: Container(
-                                        //               height: 38,
-                                        //               width: 38,
-                                        //               decoration:
-                                        //               const BoxDecoration(
-                                        //                 image: DecorationImage(
-                                        //                   opacity: 20,
-                                        //                   image: AssetImage(
-                                        //                     'assets/Loginwebb.png',
-                                        //                   ),
-                                        //                 ),
-                                        //               ),
-                                        //             ),
-                                        //           ),
-                                        //         ),
-                                        //         kheight,
-                                        //         const Text(
-                                        //           'Anecdotal',
-                                        //           style: TextStyle(
-                                        //               fontWeight:
-                                        //               FontWeight.w600,
-                                        //               fontSize: 11,
-                                        //               color: Colors.black),
-                                        //         )
-                                        //       ],
-                                        //     ),
-                                        //   ),
-                                        // ),
                                       ],
                                     ),
                                   ),
@@ -1948,8 +1610,8 @@ class _StudentHomeState extends State<StudentHome> {
                                                                   ? 20
                                                                   : 0.2,
                                                           image:
-                                                              const AssetImage(
-                                                            'assets/Reportcard.png',
+                                                              const NetworkImage(
+                                                            'https://gj-eschool-files-public.s3.amazonaws.com/mobileapp/assets/Reportcard.png',
                                                           ),
                                                         ),
                                                         borderRadius:
@@ -2024,8 +1686,8 @@ class _StudentHomeState extends State<StudentHome> {
                                                                   ? 20
                                                                   : 0.2,
                                                           image:
-                                                              const AssetImage(
-                                                            'assets/Marksheet.png',
+                                                              const NetworkImage(
+                                                            'https://gj-eschool-files-public.s3.amazonaws.com/mobileapp/assets/Marksheet.png',
                                                           ),
                                                         ),
                                                         borderRadius:
@@ -2089,8 +1751,8 @@ class _StudentHomeState extends State<StudentHome> {
                                                                       const DecorationImage(
                                                                     opacity: 20,
                                                                     image:
-                                                                        AssetImage(
-                                                                      'assets/anecdotal.png',
+                                                                        NetworkImage(
+                                                                      'https://gj-eschool-files-public.s3.amazonaws.com/mobileapp/assets/anecdotal.png',
                                                                     ),
                                                                   ),
                                                                   borderRadius:
@@ -2209,8 +1871,8 @@ class _StudentHomeState extends State<StudentHome> {
                                                                             ? 20
                                                                             : 0.2,
                                                                         image:
-                                                                            const AssetImage(
-                                                                          'assets/anecdotal.png',
+                                                                            const NetworkImage(
+                                                                          'https://gj-eschool-files-public.s3.amazonaws.com/mobileapp/assets/anecdotal.png',
                                                                         ),
                                                                       ),
                                                                       borderRadius:
@@ -2269,147 +1931,6 @@ class _StudentHomeState extends State<StudentHome> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceEvenly,
                                       children: [
-                                        // Consumer<Curriculamprovider>(
-                                        //   builder: (context, curri, child) =>
-                                        //       Consumer<
-                                        //           StudNotificationCountProviders>(
-                                        //     builder: (context, count, child) =>
-                                        //         badges.Badge(
-                                        //       showBadge: count.portionCount ==
-                                        //                   0 ||
-                                        //               count.portionCount == null
-                                        //           ? false
-                                        //           : true,
-                                        //       badgeAnimation: const badges
-                                        //           .BadgeAnimation.rotation(
-                                        //         animationDuration:
-                                        //             Duration(seconds: 1),
-                                        //         colorChangeAnimationDuration:
-                                        //             Duration(seconds: 1),
-                                        //         loopAnimation: false,
-                                        //         curve: Curves.fastOutSlowIn,
-                                        //         colorChangeAnimationCurve:
-                                        //             Curves.easeInCubic,
-                                        //       ),
-                                        //       position:
-                                        //           badges.BadgePosition.topEnd(
-                                        //               end: 9),
-                                        //       badgeContent: Text(
-                                        //         count.portionCount == null ||
-                                        //                 count.portionCount == 0
-                                        //             ? ''
-                                        //             : count.portionCount
-                                        //                 .toString(),
-                                        //         style: const TextStyle(
-                                        //             color: Colors.white,
-                                        //             fontSize: 10,
-                                        //             fontWeight:
-                                        //                 FontWeight.bold),
-                                        //       ),
-                                        //       child: Padding(
-                                        //         padding: const EdgeInsets.only(left: 10,),
-                                        //         child: GestureDetector(
-                                        //           onTap: () async {
-                                        //             if (module.curiculam ==
-                                        //                 true) {
-                                        //               await Provider.of<
-                                        //                           Curriculamprovider>(
-                                        //                       context,
-                                        //                       listen: false)
-                                        //                   .getCuriculamtoken();
-                                        //               String token =
-                                        //                   curri.token.toString();
-                                        //
-                                        //               await Navigator.push(
-                                        //                   context,
-                                        //                   PageTransition(
-                                        //                     type:
-                                        //                         PageTransitionType
-                                        //                             .rightToLeft,
-                                        //                     child:
-                                        //                         //HomeWorkInbox(),
-                                        //
-                                        //                         const PortionView(),
-                                        //                     duration:
-                                        //                         const Duration(
-                                        //                             milliseconds:
-                                        //                                 300),
-                                        //                   ));
-                                        //             } else {
-                                        //               _noAcess();
-                                        //             }
-                                        //           },
-                                        //           child: Padding(
-                                        //             padding:
-                                        //                 const EdgeInsets.only(
-                                        //                     left: 10, right: 10),
-                                        //             child: Column(
-                                        //               mainAxisAlignment:
-                                        //                   MainAxisAlignment
-                                        //                       .spaceEvenly,
-                                        //               children: [
-                                        //                 Card(
-                                        //                   elevation: 10,
-                                        //                   color: Colors.white,
-                                        //                   shape:
-                                        //                       RoundedRectangleBorder(
-                                        //                     borderRadius:
-                                        //                         BorderRadius
-                                        //                             .circular(
-                                        //                                 12.0),
-                                        //                   ),
-                                        //                   child: Padding(
-                                        //                     padding:
-                                        //                         const EdgeInsets
-                                        //                             .all(8.0),
-                                        //                     child: Container(
-                                        //                       height: 38,
-                                        //                       width: 38,
-                                        //                       decoration:
-                                        //                           BoxDecoration(
-                                        //                         image:
-                                        //                             DecorationImage(
-                                        //                           opacity:
-                                        //                               module.curiculam ==
-                                        //                                       true
-                                        //                                   ? 20
-                                        //                                   : 0.2,
-                                        //                           image:
-                                        //                               const AssetImage(
-                                        //                             'assets/PortionEntryReport.png',
-                                        //                           ),
-                                        //                         ),
-                                        //                         borderRadius:
-                                        //                             BorderRadius
-                                        //                                 .circular(
-                                        //                                     10),
-                                        //                       ),
-                                        //                     ),
-                                        //                   ),
-                                        //                 ),
-                                        //                 kheight,
-                                        //                 Text(
-                                        //                   'portion',
-                                        //                   style: TextStyle(
-                                        //                       fontWeight:
-                                        //                           FontWeight.w600,
-                                        //                       fontSize: 11,
-                                        //                       color: module
-                                        //                                   .curiculam ==
-                                        //                               true
-                                        //                           ? Colors.black
-                                        //                           : Colors
-                                        //                               .black26),
-                                        //                 )
-                                        //               ],
-                                        //             ),
-                                        //           ),
-                                        //         ),
-                                        //       ),
-                                        //     ),
-                                        //   ),
-                                        // ), //portion_old
-
                                         Consumer<IconClickNotifier>(
                                           builder: (context, iconClickNotifier, child) =>
                                               Consumer<Curriculamprovider>(
@@ -2452,7 +1973,7 @@ class _StudentHomeState extends State<StudentHome> {
                                                         Padding(
                                                           padding: const EdgeInsets.only(left: 10),
                                                           child: GestureDetector(
-                                                                                                                onTap: iconClickNotifier.areIconsClickable
+                                                            onTap: iconClickNotifier.areIconsClickable
                                                             ? () async {
                                                           // Disable all icons
                                                           iconClickNotifier.disableIcons();
@@ -2491,9 +2012,9 @@ class _StudentHomeState extends State<StudentHome> {
                                                             _noAcess();
                                                           }
 
-                                                                                                                }
+                                                            }
                                                             : null,
-                                                                                                                child: Padding(
+                                                            child: Padding(
                                                           padding:
                                                           const EdgeInsets.only(
                                                               left: 10, right: 10),
@@ -2525,8 +2046,8 @@ class _StudentHomeState extends State<StudentHome> {
                                                                       DecorationImage(
                                                                         opacity: 20,
                                                                         image:
-                                                                        AssetImage(
-                                                                          'assets/PortionEntryReport.png',
+                                                                        NetworkImage(
+                                                                          'https://gj-eschool-files-public.s3.amazonaws.com/mobileapp/assets/PortionEntryReport.png',
                                                                         ),
                                                                       ),
                                                                     ),
@@ -2632,8 +2153,8 @@ class _StudentHomeState extends State<StudentHome> {
                                                                           DecorationImage(
                                                                             opacity: 20,
                                                                             image:
-                                                                            AssetImage(
-                                                                              'assets/Curriculum.png',
+                                                                            NetworkImage(
+                                                                              'https://gj-eschool-files-public.s3.amazonaws.com/mobileapp/assets/Curriculum.png',
                                                                             ),
                                                                           ),
                                                                         ),
@@ -2658,109 +2179,6 @@ class _StudentHomeState extends State<StudentHome> {
                                                     ),
                                               ),
                                         ), //e-classroom_new
-
-                                        // Consumer<Curriculamprovider>(
-                                        //   builder: (context, curri, child) =>
-                                        //       Consumer<
-                                        //           StudNotificationCountProviders>(
-                                        //     builder: (context, count, child) =>
-                                        //         GestureDetector(
-                                        //       onTap: () async {
-                                        //         if (module.curiculam == true) {
-                                        //           await Provider.of<
-                                        //                       Curriculamprovider>(
-                                        //                   context,
-                                        //                   listen: false)
-                                        //               .getCuriculamtoken();
-                                        //           String token =
-                                        //               curri.token.toString();
-                                        //
-                                        //           await Navigator.push(
-                                        //               context,
-                                        //               PageTransition(
-                                        //                 type: PageTransitionType
-                                        //                     .rightToLeft,
-                                        //                 child:
-                                        //                     //  const SubjectPage(),
-                                        //                     CurriculamPage(
-                                        //                   token: token,
-                                        //                 ),
-                                        //                 duration:
-                                        //                     const Duration(
-                                        //                         milliseconds:
-                                        //                             300),
-                                        //               ));
-                                        //         } else {
-                                        //           _noAcess();
-                                        //         }
-                                        //       },
-                                        //       child: Padding(
-                                        //         padding: const EdgeInsets.only(
-                                        //             left: 10, right: 10),
-                                        //         child: Column(
-                                        //           mainAxisAlignment:
-                                        //               MainAxisAlignment
-                                        //                   .spaceEvenly,
-                                        //           children: [
-                                        //             Card(
-                                        //               elevation: 10,
-                                        //               color: Colors.white,
-                                        //               shape:
-                                        //                   RoundedRectangleBorder(
-                                        //                 borderRadius:
-                                        //                     BorderRadius
-                                        //                         .circular(12.0),
-                                        //               ),
-                                        //               child: Padding(
-                                        //                 padding:
-                                        //                     const EdgeInsets
-                                        //                         .all(8.0),
-                                        //                 child: Container(
-                                        //                   height: 38,
-                                        //                   width: 38,
-                                        //                   decoration:
-                                        //                       BoxDecoration(
-                                        //                     image:
-                                        //                         DecorationImage(
-                                        //                       opacity:
-                                        //                           module.curiculam ==
-                                        //                                   true
-                                        //                               ? 20
-                                        //                               : 0.2,
-                                        //                       image:
-                                        //                           const AssetImage(
-                                        //                         'assets/Curriculum.png',
-                                        //                       ),
-                                        //                     ),
-                                        //                     borderRadius:
-                                        //                         BorderRadius
-                                        //                             .circular(
-                                        //                                 10),
-                                        //                   ),
-                                        //                 ),
-                                        //               ),
-                                        //             ),
-                                        //             kheight,
-                                        //             Text(
-                                        //               'e-Classroom',
-                                        //               style: TextStyle(
-                                        //                   fontWeight:
-                                        //                       FontWeight.w600,
-                                        //                   fontSize: 11,
-                                        //                   color:
-                                        //                       module.curiculam ==
-                                        //                               true
-                                        //                           ? Colors.black
-                                        //                           : Colors
-                                        //                               .black26),
-                                        //             )
-                                        //           ],
-                                        //         ),
-                                        //       ),
-                                        //     ),
-                                        //   ),
-                                        // ),
-
 
                                         Padding(
                                           padding: const EdgeInsets.only(
@@ -2804,8 +2222,8 @@ class _StudentHomeState extends State<StudentHome> {
                                                         image:
                                                             const DecorationImage(
                                                           opacity: 20,
-                                                          image: AssetImage(
-                                                            'assets/Gallery.png',
+                                                          image: NetworkImage(
+                                                            'https://gj-eschool-files-public.s3.amazonaws.com/mobileapp/assets/Gallery.png',
                                                           ),
                                                         ),
                                                         borderRadius:
@@ -2915,68 +2333,6 @@ class _StudentHomeState extends State<StudentHome> {
                                             ),
                                           ),
                                         ),
-                                        // Expanded(
-                                        //   child: GestureDetector(
-                                        //     onTap: () {
-                                        //       Navigator.push(
-                                        //           context,
-                                        //           MaterialPageRoute(
-                                        //               builder: (context) =>
-                                        //               const DomainList()));
-                                        //     },
-                                        //     child: Column(
-                                        //       mainAxisAlignment:
-                                        //       MainAxisAlignment.spaceEvenly,
-                                        //       children: [
-                                        //         Card(
-                                        //           elevation: 10,
-                                        //           color: Colors.white,
-                                        //           shape: RoundedRectangleBorder(
-                                        //             borderRadius:
-                                        //             BorderRadius.circular(
-                                        //                 12.0),
-                                        //           ),
-                                        //           child: Padding(
-                                        //             padding:
-                                        //             const EdgeInsets.all(
-                                        //                 8.0),
-                                        //             child: Container(
-                                        //               height: 38,
-                                        //               width: 38,
-                                        //               decoration: BoxDecoration(
-                                        //                 image: DecorationImage(
-                                        //                   opacity:
-                                        //                   module.tabulation ==
-                                        //                       true
-                                        //                       ? 20
-                                        //                       : 0.2,
-                                        //                   image: AssetImage(
-                                        //                     'assets/hpc.png',
-                                        //                   ),
-                                        //                 ),
-                                        //               ),
-                                        //             ),
-                                        //           ),
-                                        //         ),
-                                        //         kheight10,
-                                        //         Text(
-                                        //           'HPC',
-                                        //           textAlign: TextAlign.center,
-                                        //           style: TextStyle(
-                                        //               fontWeight:
-                                        //               FontWeight.w600,
-                                        //               fontSize: 11,
-                                        //               color:
-                                        //               module.tabulation ==
-                                        //                   true
-                                        //                   ? Colors.black
-                                        //                   : Colors.black26),
-                                        //         )
-                                        //       ],
-                                        //     ),
-                                        //   ),
-                                        // ),
-                                        /////////////////////////////////   BUs Start   ///////////////////////////////////////
                                         Consumer<SchoolNameProvider>(
                                           builder: (context, snap, child) =>
                                               snap.allowGPSTracking == "true"
@@ -3044,8 +2400,8 @@ class _StudentHomeState extends State<StudentHome> {
                                                                         opacity:
                                                                             20,
                                                                         image:
-                                                                            AssetImage(
-                                                                          'assets/bus-station.png',
+                                                                            NetworkImage(
+                                                                          'https://gj-eschool-files-public.s3.amazonaws.com/mobileapp/assets/bus-station.png',
                                                                         ),
                                                                       ),
                                                                     ),
