@@ -695,7 +695,7 @@ class _StudentHomeState extends State<StudentHome> {
                                                 ),
                                                 kheight,
                                                 const Text(
-                                                  'School Portal',
+                                                  'School\nPortal',
                                                   // 'Bus Tracking',
                                                   style: TextStyle(
                                                       fontWeight:
