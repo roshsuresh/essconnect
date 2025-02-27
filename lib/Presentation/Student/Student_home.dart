@@ -1340,7 +1340,7 @@ class _StudentHomeState extends State<StudentHome> {
                                                                   : 0.2,
                                                           image:
                                                               const NetworkImage(
-                                                            'https://gj-eschool-files-public.s3.amazonaws.com/mobileapp/assets/attendance',
+                                                            'https://gj-eschool-files-public.s3.amazonaws.com/mobileapp/assets/Attendance.png',
                                                           ),
                                                         ),
                                                       ),
